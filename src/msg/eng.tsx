@@ -1,0 +1,10 @@
+import { Msg } from './Msg'
+
+export const engMsg: Msg = {
+    years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,
+    months: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'month' : 'months'}`,
+    days: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'day' : 'days'}`,
+    h: (qta: number, formattedQta: string) => `${formattedQta}h`,
+    m: (qta: number, formattedQta: string) => `${formattedQta}m`,
+    s: (qta: number, formattedQta: string) => `${formattedQta}s`,
+}

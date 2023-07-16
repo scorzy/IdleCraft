@@ -1,0 +1,43 @@
+:root {
+    --border-radius: 0.375rem;
+    --font-size: 1rem;
+    --element-height: 2.25rem;
+    --element-size: 2.5rem;
+    --list-item-height: 1.5rem;
+
+    --padding: 1rem;
+    --padding-sm: 0.75rem;
+
+    --transition-properties: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    --transition-duration: 0.2s;
+    --transition-timing-function: ease;
+}
+
+.light {
+    --bg-color: var(--bg-color-50);
+    --border-color: var(--bg-color-300);
+    --font-color: var(--bg-color-950);
+    --font-color-secondary: var(--bg-color-600);
+    --solid-bg: var(--color-500);
+    --solid-bg-hover: var(--color-600);
+    --solid-bg-active: var(--color-700);
+    --solid-bg-font-color: white;
+    --soft-bg: var(--color-100);
+    --soft-bg-font-color: var(--color-950);
+
+    --border-1px: 1px solid var(--border-color);
+}
+.dark {
+    --bg-color: var(--bg-color-950);
+    --border-color: var(--bg-color-700);
+    --font-color: var(--bg-color-50);
+    --font-color-secondary: var(--bg-color-300);
+    --solid-bg: var(--color-300);
+    --solid-bg-hover: var(--color-400);
+    --solid-bg-active: var(--color-500);
+    --solid-bg-font-color: var(--color-950);
+    --soft-bg: var(--color-900);
+    --soft-bg-font-color: var(--color-50);
+
+    --border-1px: 1px solid var(--border-color);
+}
