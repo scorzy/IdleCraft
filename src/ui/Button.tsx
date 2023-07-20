@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { UiVariants } from './UiVariants'
+import { UiVariants } from './state/UiVariants'
 
 export const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: UiVariants }> = ({
     ...props

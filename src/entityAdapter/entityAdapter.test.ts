@@ -1,79 +1,87 @@
 import { describe, expect, it } from 'vitest'
-import { createEntityAdapter } from './entityAdapter'
+import { AbstractEntityAdapter } from './entityAdapter'
+
+class TestEntityAdapter extends AbstractEntityAdapter<{ name: string }> {
+    getId(data: { name: string }): string {
+        return data.name
+    }
+}
+class TestEntityAdapter2 extends AbstractEntityAdapter<{ id: string; name: string }> {
+    getId(data: { id: string; name: string }): string {
+        return data.id
+    }
+}
 
 describe('EntityAdapter', () => {
-    const adapter = createEntityAdapter<{ name: string }>({
-        getId: (data) => data.name,
-    })
-    const adapter2 = createEntityAdapter<{ id: string; name: string }>({
-        getId: (data) => data.id,
-    })
+    const adapter = new TestEntityAdapter()
+    const adapter2 = new TestEntityAdapter2()
 
     it('create first', () => {
-        const state = {}
+        const state = adapter.getInitialState()
         const newState = adapter.create(state, { name: 'first' })
-        expect(newState).toEqual({
-            first: {
-                name: 'first',
-            },
-        })
+        expect(newState).toEqual({ entries: { first: { name: 'first' } }, ids: ['first'] })
+        expect(adapter.getIds(newState)).toEqual(['first'])
     })
     it('create second', () => {
-        const state = { first: { name: 'first' } }
+        const state = { entries: { first: { name: 'first' } }, ids: ['first'] }
         const newState = adapter.create(state, { name: 'second' })
         expect(newState).toEqual({
-            first: {
-                name: 'first',
+            entries: {
+                first: { name: 'first' },
+                second: { name: 'second' },
             },
-            second: {
-                name: 'second',
-            },
+            ids: ['first', 'second'],
         })
     })
     it('re create first', () => {
-        const state = { first: { name: 'first' } }
+        const state = { entries: { first: { name: 'first' } }, ids: ['first'] }
         expect(() => adapter.create(state, { name: 'first' })).toThrowError('first already exists')
     })
     it('update', () => {
-        const state = { first: { id: 'first', name: 'name1' } }
+        const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }
         const newState = adapter2.update(state, 'first', { name: 'second' })
-        expect(newState).toEqual({
-            first: { id: 'first', name: 'second' },
-        })
+        expect(newState).toEqual({ entries: { first: { name: 'second' } }, ids: ['first'] })
     })
     it('update not exists', () => {
-        const state = { first: { id: 'first', name: 'name1' } }
+        const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }
         expect(() => adapter2.update(state, 'second', { name: 'second' })).toThrowError("second doesn't exists")
     })
     it('upsertMerge', () => {
-        const state = { first: { id: 'first', name: 'name1' } }
+        const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }
         const newState = adapter2.upsertMerge(state, { id: 'first', name: 'name2' })
-        expect(newState).toEqual({
-            first: { id: 'first', name: 'name2' },
-        })
+        expect(newState).toEqual({ entries: { first: { id: 'first', name: 'name2' } }, ids: ['first'] })
     })
     it('upsertMerge', () => {
-        const state = { first: { id: 'first', name: 'name1' } }
+        const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }
         const newState = adapter2.upsertMerge(state, { id: 'second', name: 'name2' })
         expect(newState).toEqual({
-            first: { id: 'first', name: 'name1' },
-            second: { id: 'second', name: 'name2' },
+            entries: { first: { id: 'first', name: 'name1' }, second: { id: 'second', name: 'name2' } },
+            ids: ['first', 'second'],
         })
     })
     it('remove by id', () => {
         const state = {
-            first: { id: 'first', name: 'name1' },
-            second: { id: 'second', name: 'name2' },
+            entries: {
+                first: { id: 'first', name: 'name1' },
+                second: { id: 'second', name: 'name2' },
+            },
+            ids: ['first', 'second'],
         }
         const newState = adapter2.remove(state, 'second')
         expect(newState).toEqual({
-            first: { id: 'first', name: 'name1' },
+            entries: {
+                first: { id: 'first', name: 'name1' },
+            },
+            ids: ['first'],
         })
     })
     it('remove by id not exists', () => {
         const state = {
-            first: { id: 'first', name: 'name1' },
-            second: { id: 'second', name: 'name2' },
+            entries: {
+                first: { id: 'first', name: 'name1' },
+                second: { id: 'second', name: 'name2' },
+            },
+            ids: ['first', 'second'],
         }
         expect(() => adapter2.remove(state, 'third')).toThrowError("third doesn't exists")
     })

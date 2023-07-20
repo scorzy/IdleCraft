@@ -1,34 +1,52 @@
-export interface CreateEntityAdapterParams<T> {
-    getId: (data: T) => string
+export interface InitialState<T> {
+    ids: string[]
+    entries: {
+        [k: string]: T
+    }
 }
-export function createEntityAdapter<T>({ getId }: CreateEntityAdapterParams<T>) {
-    const create = (state: { [k: string]: T }, data: T) => {
-        const id = getId(data)
-        const existing = state[id]
+
+export abstract class AbstractEntityAdapter<T> {
+    abstract getId(data: T): string
+    getInitialState(): InitialState<T> {
+        return {
+            ids: [],
+            entries: {},
+        }
+    }
+    create(state: InitialState<T>, data: T) {
+        const id = this.getId(data)
+        const existing = state.entries[id]
         if (existing !== undefined) throw new Error(`${id} already exists`)
-        state = { ...state, [id]: data }
+        state = { ...state, entries: { ...state.entries, [id]: data }, ids: [...state.ids, id] }
+
         return state
     }
-    const update = (state: { [k: string]: T }, id: string, data: Partial<T>) => {
-        const existing = state[id]
+    update(state: InitialState<T>, id: string, data: Partial<T>) {
+        const existing = state.entries[id]
         if (existing === undefined) throw new Error(`${id} doesn't exists`)
-        state = { ...state, [id]: { ...existing, ...data } }
+        return { ...state, entries: { ...state.entries, [id]: data } }
+    }
+    upsertMerge(state: InitialState<T>, data: T) {
+        const id = this.getId(data)
+        const existing = state.entries[id]
+        state = { ...state, entries: { ...state.entries, [id]: data } }
+
+        if (existing === undefined) state = { ...state, ids: [...state.ids, id] }
+
         return state
     }
-    const upsertMerge = (state: { [k: string]: T }, data: T) => {
-        const id = getId(data)
-        const existing = state[id]
-        state = { ...state, [id]: { ...existing, ...data } }
-        return state
-    }
-    const remove = (state: { [k: string]: T }, id: string) => {
+    remove(state: InitialState<T>, id: string) {
         if (id === undefined) throw new Error('id undefined')
-        const existing = state[id]
+        const existing = state.entries[id]
         if (existing === undefined) throw new Error(`${id} doesn't exists`)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { [id]: value, ...newState } = state
-        return newState
-    }
+        const { [id]: value, ...newEntries } = state.entries
 
-    return { create, update, upsertMerge, remove }
+        state = { entries: newEntries, ids: state.ids.filter((e) => e !== id) }
+
+        return state
+    }
+    getIds(state: InitialState<T>): string[] {
+        return state.ids
+    }
 }

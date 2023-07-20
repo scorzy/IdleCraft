@@ -5,6 +5,7 @@ import { ActivityAdapter, ActivityState, ActivityTypes } from './ActivityState'
 export enum ActivityStartResult {
     Started,
     NotPossible,
+    Ended,
 }
 export interface StartResult {
     gameState: GameState
@@ -12,7 +13,11 @@ export interface StartResult {
 }
 
 export abstract class AbstractActivity<T> {
-    constructor(private id: string) {}
+    private id: string | undefined
+
+    constructor(id?: string) {
+        this.id = id
+    }
 
     add(state: GameState, type: ActivityTypes, params: T): GameState {
         this.id = getUniqueId()
@@ -28,12 +33,16 @@ export abstract class AbstractActivity<T> {
     abstract onAdd(state: GameState, params: T): GameState
 
     remove(state: GameState): GameState {
+        if (this.id === undefined) throw new Error('activity id undefined')
+
         state = { ...state, activities: ActivityAdapter.remove(state.activities, this.id) }
         return this.onRemove(state)
     }
     abstract onRemove(state: GameState): GameState
 
     start(state: GameState): StartResult {
+        if (this.id === undefined) throw new Error('activity id undefined')
+
         const res = this.onStart(state)
         return {
             gameState: res.gameState,
@@ -43,6 +52,8 @@ export abstract class AbstractActivity<T> {
     abstract onStart(state: GameState): StartResult
 
     exec(state: GameState): StartResult {
+        if (this.id === undefined) throw new Error('activity id undefined')
+
         const res = this.onExec(state)
         return {
             gameState: res.gameState,

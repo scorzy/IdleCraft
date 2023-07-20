@@ -1,9 +1,5 @@
 import { create } from 'zustand'
-import { createUiSlice } from '../ui/UiSlice'
-import { createActivitySlice } from '../activities/ActivitySlice'
 import { GameState } from './GameState'
+import { InitialGameState } from './InitialGameState'
 
-export const useStore = create<GameState>()((...a) => ({
-    ...createUiSlice(...a),
-    ...createActivitySlice(...a),
-}))
+export const useGameStore = create<GameState, []>(() => InitialGameState)

@@ -1,15 +1,15 @@
-import { useStore } from '../game/state'
 import classes from './appShell.module.css'
+
+import { useGameStore } from '../game/state'
 import { clsx } from 'clsx'
 import { Button } from './Button'
-import { UiVariants } from './UiVariants'
 import { Sidebar } from './Sidebar'
+import { UiVariants } from './state/UiVariants'
+import { toggle, toggleTheme } from './state/uiFunctions'
 
 export function AppShell() {
-    const open = useStore((s) => s.open)
-    const toggle = useStore((s) => s.toggle)
-    const dark = useStore((s) => s.dark)
-    const toggleTheme = useStore((s) => s.toggleTheme)
+    const open = useGameStore((s) => s.open)
+    const dark = useGameStore((s) => s.dark)
 
     const theme = dark ? 'dark' : 'light'
 

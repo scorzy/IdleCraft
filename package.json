@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "analyze": "tsc && vite build -c vite.config.analyze.ts && start dist\\stats.html",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0 && prettier --write .",
-    "test": "vitest",
+    "test": "vitest -w",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
     "@vitejs/plugin-react": "^4.0.1",
+    "@vitest/coverage-c8": "^0.33.0",
     "@vitest/coverage-v8": "^0.33.0",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",

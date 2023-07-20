@@ -1,4 +1,4 @@
-import { createEntityAdapter } from '../entityAdapter/entityAdapter'
+import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 
 export enum ActivityTypes {
     Woodcutting = 'Woodcutting',
@@ -8,4 +8,9 @@ export interface ActivityState {
     type: ActivityTypes
     max: number
 }
-export const ActivityAdapter = createEntityAdapter<ActivityState>({ getId: (a: ActivityState) => a.id })
+class ActivityAdapterInt extends AbstractEntityAdapter<ActivityState> {
+    getId(data: ActivityState): string {
+        return data.id
+    }
+}
+export const ActivityAdapter = new ActivityAdapterInt()

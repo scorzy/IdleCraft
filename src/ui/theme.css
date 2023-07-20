@@ -14,6 +14,7 @@
 }
 
 .light {
+    color-scheme: light;
     --bg-color: var(--bg-color-50);
     --border-color: var(--bg-color-300);
     --font-color: var(--bg-color-950);
@@ -26,8 +27,11 @@
     --soft-bg-font-color: var(--color-950);
 
     --border-1px: 1px solid var(--border-color);
+
+    accent-color: var(--color-600);
 }
 .dark {
+    color-scheme: dark;
     --bg-color: var(--bg-color-950);
     --border-color: var(--bg-color-700);
     --font-color: var(--bg-color-50);
@@ -40,4 +44,6 @@
     --soft-bg-font-color: var(--color-50);
 
     --border-1px: 1px solid var(--border-color);
+
+    accent-color: var(--color-600);
 }
