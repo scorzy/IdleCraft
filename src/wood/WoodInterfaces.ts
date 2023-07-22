@@ -5,3 +5,7 @@ export interface ForestsState {
     hp: number
 }
 export type ForestsType = { [k in WoodTypes]?: ForestsState }
+export interface Woodcutting {
+    activityId: string
+    woodType: WoodTypes
+}

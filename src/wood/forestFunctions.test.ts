@@ -20,7 +20,6 @@ describe('Forest Functions', () => {
     })
     test('Add Tree 3', () => {
         let state = GetInitialGameState()
-        const def = selectDefaultForest(WoodTypes.Fir)
         state.locations.StartVillage.forests.Fir = {
             qta: 2,
             hp: 1,

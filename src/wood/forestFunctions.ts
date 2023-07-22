@@ -1,6 +1,6 @@
 import { GameState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
-import { ForestsState } from './ForestSate'
+import { ForestsState } from './WoodInterfaces'
 import { WoodData } from './WoodData'
 import { WoodTypes } from './WoodTypes'
 
@@ -104,4 +104,7 @@ export function cutTree(
         state,
         cut,
     }
+}
+export function hasTrees(state: GameState, woodType: WoodTypes, location?: GameLocations): boolean {
+    return (state.locations[location ?? state.location].forests[woodType]?.qta ?? 1) > 0
 }

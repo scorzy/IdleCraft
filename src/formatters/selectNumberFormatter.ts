@@ -1,15 +1,16 @@
-import { createSelector } from 'reselect'
 import { getFormatter } from './formatNumber'
 import { getTimeFormatter } from './formatTime'
-import { GameState } from '../game/GameState'
-import { useGameState } from '../game/gameStore'
 import { messages } from '../msg/allMsg'
+import { useGameStore } from '../game/state'
+import { useMemo } from 'react'
+import { selectNotation, selectComma, selectLang } from '../ui/state/uiSelectors'
 
-export const selectNumberFormatter = createSelector(
-    (state: GameState) => state.numberFormatNotation,
-    (state: GameState) => state.comma,
-    (state: GameState) => state.lang,
-    (notation, comma, lang) => {
+export const useNumberFormatter = () => {
+    const notation = useGameStore(selectNotation)
+    const comma = useGameStore(selectComma)
+    const lang = useGameStore(selectLang)
+
+    return useMemo(() => {
         const formatter = getFormatter(notation, comma)
         const t = messages[lang]
         return {
@@ -17,10 +18,5 @@ export const selectNumberFormatter = createSelector(
             p: formatter[1],
             ft: getTimeFormatter(formatter[0], t),
         }
-    }
-)
-
-export const useNumberFormatter = () => {
-    const formatter = useGameState((state) => selectNumberFormatter(state))
-    return formatter
+    }, [comma, lang, notation])
 }

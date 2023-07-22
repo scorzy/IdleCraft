@@ -9,7 +9,7 @@
     --padding-sm: 0.75rem;
 
     --transition-properties: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-    --transition-duration: 0.2s;
+    --transition-duration: 0.25s;
     --transition-timing-function: ease;
 }
 

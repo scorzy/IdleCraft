@@ -8,8 +8,8 @@ import { UiVariants } from './state/UiVariants'
 import { toggle, toggleTheme } from './state/uiFunctions'
 
 export function AppShell() {
-    const open = useGameStore((s) => s.open)
-    const dark = useGameStore((s) => s.dark)
+    const open = useGameStore((s) => s.ui.open)
+    const dark = useGameStore((s) => s.ui.dark)
 
     const theme = dark ? 'dark' : 'light'
 

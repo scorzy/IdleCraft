@@ -1,5 +1,10 @@
 import { ActivityAdapter } from '../activities/ActivityState'
+import { CommaTypes } from '../formatters/CommaTypes'
+import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { TimerAdapter } from '../timers/Timer'
+import { UiPages } from '../ui/state/UiPages'
+import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { GameState, LocationState } from './GameState'
 
 const InitialVillageState: LocationState = {
@@ -11,10 +16,20 @@ const InitialVillageState: LocationState = {
 }
 
 export const InitialGameState: GameState = {
-    open: false,
-    dark: true,
+    ui: {
+        open: false,
+        dark: true,
+        page: UiPages.Storage,
+        comma: CommaTypes.AUTO,
+        lang: 'Eng',
+        numberFormatNotation: NotationTypes.STANDARD,
+    },
     location: GameLocations.StartVillage,
     activities: ActivityAdapter.getInitialState(),
+    timers: TimerAdapter.getInitialState(),
+    now: Date.now(),
+    loading: false,
+    woodcutting: WoodcuttingAdapter.getInitialState(),
     locations: {
         [GameLocations.StartVillage]: InitialVillageState,
     },

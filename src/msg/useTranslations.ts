@@ -1,7 +1,8 @@
-import { useGameState } from '../game/gameStore'
+import { useGameStore } from '../game/state'
+import { selectLang } from '../ui/state/uiSelectors'
 import { messages } from './allMsg'
 
 export const useTranslations = () => {
-    const lang = useGameState((s) => s.lang)
+    const lang = useGameStore(selectLang)
     return messages[lang]
 }

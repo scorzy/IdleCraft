@@ -12,53 +12,52 @@ export interface StartResult {
     result: ActivityStartResult
 }
 
-export abstract class AbstractActivity<T> {
-    private id: string | undefined
-
-    constructor(id?: string) {
-        this.id = id
-    }
-
-    add(state: GameState, type: ActivityTypes, params: T): GameState {
+export abstract class AbstractActivityCreator {
+    abstract type: ActivityTypes
+    protected id: string
+    constructor(protected state: GameState) {
         this.id = getUniqueId()
+    }
+    protected createActivity(): GameState {
         const activity: ActivityState = {
             id: this.id,
-            type,
+            type: this.type,
             max: 1,
         }
-        state = { ...state, activities: ActivityAdapter.create(state.activities, activity) }
+        this.state = { ...this.state, activities: ActivityAdapter.create(this.state.activities, activity) }
 
-        return this.onAdd(state, params)
+        return this.state
     }
-    abstract onAdd(state: GameState, params: T): GameState
+}
 
-    remove(state: GameState): GameState {
-        if (this.id === undefined) throw new Error('activity id undefined')
+export abstract class AbstractActivity<T> {
+    protected state: GameState
+    protected id: string
+    protected data: T
 
-        state = { ...state, activities: ActivityAdapter.remove(state.activities, this.id) }
-        return this.onRemove(state)
+    constructor(state: GameState, id: string) {
+        this.state = state
+        this.id = id
+        this.data = this.getData()
     }
-    abstract onRemove(state: GameState): GameState
 
-    start(state: GameState): StartResult {
-        if (this.id === undefined) throw new Error('activity id undefined')
+    abstract getData(): T
 
-        const res = this.onStart(state)
+    start(): StartResult {
+        const res = this.onStart()
         return {
             gameState: res.gameState,
             result: res.result,
         }
     }
-    abstract onStart(state: GameState): StartResult
+    abstract onStart(): StartResult
 
-    exec(state: GameState): StartResult {
-        if (this.id === undefined) throw new Error('activity id undefined')
-
-        const res = this.onExec(state)
+    exec(): StartResult {
+        const res = this.onExec()
         return {
             gameState: res.gameState,
             result: res.result,
         }
     }
-    abstract onExec(state: GameState): StartResult
+    abstract onExec(): StartResult
 }
