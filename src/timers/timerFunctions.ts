@@ -2,6 +2,8 @@ import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { getUniqueId } from '../utils/getUniqueId'
 import { Timer, TimerAdapter, TimerTypes } from './Timer'
+import { removeActivityTimers } from '../../../IdleCraft_Mui/src/timers/removeActivityTimers'
+import { Timer } from '../../../IdleCraft_Mui/src/timers/Timer'
 
 export const execTimer = (timerId: string) => useGameStore.setState((s) => onTimer(s, timerId))
 
@@ -42,5 +44,20 @@ export function onTimer(state: GameState, timerId: string) {
         case TimerTypes.Woodcutting:
     }
 
+    return state
+}
+
+export function removeActivityTimers(state: GameState, activityId: string): GameState {
+    let timers = state.timers
+
+    for (const id of timers.ids) {
+        const timer = TimerAdapter.select(timers, id)
+        if (timer && activityId === timer.actId) {
+            timers = TimerAdapter.remove(timers, id)
+            if (timer.intervalId) window.clearInterval(timer.intervalId)
+        }
+    }
+
+    state = { ...state, timers }
     return state
 }

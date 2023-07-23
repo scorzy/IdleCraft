@@ -10,6 +10,7 @@ import { AbstractActivityCreator } from '../activities/AbstractActivity'
 import { startTimer } from '../timers/timerFunctions'
 import { TimerTypes } from '../timers/Timer'
 import { addItem } from '../storage/storageFunctions'
+import { getWoodcuttingDamage, getWoodcuttingTime } from './WoodcuttingSelectors'
 
 export class WoodcuttingActivityCreator extends AbstractActivityCreator {
     type = ActivityTypes.Woodcutting
@@ -42,7 +43,7 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
                 result: ActivityStartResult.NotPossible,
             }
 
-        const time = 2e3
+        const time = getWoodcuttingTime()
         this.state = startTimer(this.state, time, TimerTypes.Woodcutting, this.id)
 
         return {
@@ -56,7 +57,7 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
                 gameState: this.state,
                 result: ActivityStartResult.NotPossible,
             }
-        const damage = 25
+        const damage = getWoodcuttingDamage()
         const res = cutTree(this.state, this.data.woodType, damage, this.state.location)
         this.state = res.state
         if (res.cut) {

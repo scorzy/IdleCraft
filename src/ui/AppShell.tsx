@@ -26,7 +26,12 @@ export function AppShell() {
             <div className={classes.side}>
                 <Sidebar />
             </div>
-            <div className={classes.content}>content</div>
+            <div className={classes.side2}>
+                <Sidebar />
+            </div>
+            <div className={classes.content}>
+                <span>content</span>
+            </div>
         </div>
     )
 }

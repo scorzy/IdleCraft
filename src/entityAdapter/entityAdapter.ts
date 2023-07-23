@@ -65,9 +65,7 @@ export abstract class AbstractEntityAdapter<T> {
         }
         return state
     }
-    select(state: InitialState<T>, id: string): T {
-        const ret = state.entries[id]
-        if (ret === undefined) throw new Error(`Activity not found id: ${id}`)
-        return ret
+    select(state: InitialState<T>, id: string): T | undefined {
+        return state.entries[id]
     }
 }

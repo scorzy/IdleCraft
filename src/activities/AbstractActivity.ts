@@ -1,6 +1,8 @@
 import { GameState } from '../game/GameState'
 import { getUniqueId } from '../utils/getUniqueId'
 import { ActivityAdapter, ActivityState, ActivityTypes } from './ActivityState'
+import { Activities } from './ActivitySlice'
+import { removeActivityTimers } from '../timers/timerFunctions'
 
 export enum ActivityStartResult {
     Started,
@@ -60,4 +62,25 @@ export abstract class AbstractActivity<T> {
         }
     }
     abstract onExec(): StartResult
+
+    remove(): GameState {
+        this.state = this.onRemove()
+        const activityId = this.id
+        const lastActivityDone =
+            this.state.lastActivityDone >= this.state.orderedActivities.indexOf(activityId)
+                ? Math.max(0, this.state.lastActivityDone - 1)
+                : this.state.lastActivityDone
+        const activities = ActivityAdapter.remove(this.state.activities, activityId)
+        this.state = {
+            ...this.state,
+            activities,
+            lastActivityDone,
+            activityId: activityId === this.state.activityId ? null : this.state.activityId,
+            orderedActivities: this.state.orderedActivities.filter((id) => id !== activityId),
+        }
+        this.state = removeActivityTimers(this.state, activityId)
+
+        return this.state
+    }
+    abstract onRemove(): GameState
 }

@@ -25,6 +25,10 @@ export interface GameState {
     now: number
     location: GameLocations
     activities: InitialState<ActivityState>
+    orderedActivities: string[]
+    activityId: string | null
+    activityDone: number
+    lastActivityDone: number
     woodcutting: InitialState<Woodcutting>
     locations: {
         [k in GameLocations]: LocationState
