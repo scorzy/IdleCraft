@@ -1,7 +1,6 @@
 import { GameState } from '../game/GameState'
 import { getUniqueId } from '../utils/getUniqueId'
 import { ActivityAdapter, ActivityState, ActivityTypes } from './ActivityState'
-import { Activities } from './ActivitySlice'
 import { removeActivityTimers } from '../timers/timerFunctions'
 
 export enum ActivityStartResult {

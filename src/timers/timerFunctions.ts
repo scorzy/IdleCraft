@@ -2,8 +2,6 @@ import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { getUniqueId } from '../utils/getUniqueId'
 import { Timer, TimerAdapter, TimerTypes } from './Timer'
-import { removeActivityTimers } from '../../../IdleCraft_Mui/src/timers/removeActivityTimers'
-import { Timer } from '../../../IdleCraft_Mui/src/timers/Timer'
 
 export const execTimer = (timerId: string) => useGameStore.setState((s) => onTimer(s, timerId))
 

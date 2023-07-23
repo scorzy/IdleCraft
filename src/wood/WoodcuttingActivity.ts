@@ -29,7 +29,9 @@ export class WoodcuttingActivityCreator extends AbstractActivityCreator {
 
 export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
     getData(): Woodcutting {
-        return WoodcuttingAdapter.select(this.state.woodcutting, this.id)
+        const ret = WoodcuttingAdapter.select(this.state.woodcutting, this.id)
+        if (ret === undefined) throw new Error(`[getData] woodcutting not found ${this.id}`)
+        return ret
     }
 
     onRemove(): GameState {
