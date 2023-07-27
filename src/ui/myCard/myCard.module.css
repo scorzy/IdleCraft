@@ -1,0 +1,25 @@
+.title {
+    --Icon-fontSize: 1.25em;
+    margin: var(--Typography-margin, 0px);
+    margin-bottom: 8px;
+    font-family: var(--joy-fontFamily-body);
+    display: block;
+    font-weight: var(--joy-fontWeight-md, 500);
+    font-size: var(--Typography-fontSize, var(--joy-fontSize-xl3, 1.875rem));
+    line-height: var(--joy-lineHeight-sm, 1.25);
+    color: var(--joy-palette-text-primary, var(--joy-palette-neutral-800, #25252d));
+}
+
+.label {
+    --Icon-fontSize: 1.25em;
+    margin: var(--Typography-margin, 0px);
+    font-family: var(--joy-fontFamily-body);
+    display: block;
+    font-size: var(--Typography-fontSize, var(--joy-fontSize-md, 1rem));
+    line-height: var(--joy-lineHeight-md, 1.5);
+    color: var(--joy-palette-neutral-plainColor, var(--joy-palette-neutral-800, #25252d));
+    border-radius: var(--joy-radius-xs);
+    padding-block: min(0.15em, 4px);
+    margin-bottom: 0;
+    --variant-borderWidth: 0px;
+}

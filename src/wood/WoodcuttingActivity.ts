@@ -1,29 +1,26 @@
 import { AbstractActivity, StartResult, ActivityStartResult } from '../activities/AbstractActivity'
 import { ActivityTypes } from '../activities/ActivityState'
-
 import { GameState } from '../game/GameState'
 import { Woodcutting } from './WoodInterfaces'
 import { WoodcuttingAdapter } from './WoodcuttingAdapter'
-import { cutTree, hasTrees } from './forestFunctions'
 import { WoodTypes } from './WoodTypes'
-import { AbstractActivityCreator } from '../activities/AbstractActivity'
+import { AbstractActivityCreator } from '../activities/AbstractActivityCreator'
 import { startTimer } from '../timers/timerFunctions'
 import { TimerTypes } from '../timers/Timer'
 import { addItem } from '../storage/storageFunctions'
 import { getWoodcuttingDamage, getWoodcuttingTime } from './WoodcuttingSelectors'
+import { hasTrees, cutTree } from './forest/forestFunctions'
 
-export class WoodcuttingActivityCreator extends AbstractActivityCreator {
-    type = ActivityTypes.Woodcutting
-    create(woodType: WoodTypes): GameState {
-        this.state = this.create(woodType)
+export class WoodcuttingActivityCreator extends AbstractActivityCreator<WoodTypes> {
+    protected type = ActivityTypes.Woodcutting
+    onAdd() {
         this.state = {
             ...this.state,
             woodcutting: WoodcuttingAdapter.create(this.state.woodcutting, {
                 activityId: this.id,
-                woodType,
+                woodType: this.data,
             }),
         }
-        return this.state
     }
 }
 
@@ -46,7 +43,7 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
             }
 
         const time = getWoodcuttingTime()
-        this.state = startTimer(this.state, time, TimerTypes.Woodcutting, this.id)
+        this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
 
         return {
             gameState: this.state,
@@ -66,6 +63,9 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
             //  Add Item
             //  Add exp
             this.state = addItem(this.state, '', null, 1)
+        } else {
+            const time = getWoodcuttingTime()
+            this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
         }
 
         return {

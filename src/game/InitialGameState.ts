@@ -4,7 +4,9 @@ import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { TimerAdapter } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
+import { WoodTypes } from '../wood/WoodTypes'
 import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
+import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { GameState, LocationState } from './GameState'
 
 const InitialVillageState: LocationState = {
@@ -21,8 +23,9 @@ export const InitialGameState: GameState = {
         dark: true,
         page: UiPages.Storage,
         comma: CommaTypes.AUTO,
-        lang: 'Eng',
+        lang: 'eng',
         numberFormatNotation: NotationTypes.STANDARD,
+        woodType: WoodTypes.DeadTree,
     },
     location: GameLocations.StartVillage,
     activities: ActivityAdapter.getInitialState(),
@@ -37,6 +40,7 @@ export const InitialGameState: GameState = {
     locations: {
         [GameLocations.StartVillage]: InitialVillageState,
     },
+    treeGrowth: TreeGrowthAdapter.getInitialState(),
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return

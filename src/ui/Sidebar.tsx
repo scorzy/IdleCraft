@@ -1,13 +1,15 @@
+import List from '@mui/joy/List'
 import { MenuItem } from './MenuItem'
-import classes from './sidebar.module.css'
 import { UiPages } from './state/UiPages'
+import { memo } from 'react'
 
-export function Sidebar() {
+export const Sidebar = memo(() => {
     return (
-        <ul className={classes.sidebarList}>
-            <MenuItem text="Activities" page={UiPages.Activities} />
-            <MenuItem text="Storage" page={UiPages.Storage} />
-            <MenuItem text="Woodcutting" page={UiPages.Woodcutting} />
-        </ul>
+        <List>
+            <MenuItem page={UiPages.Activities} />
+            <MenuItem page={UiPages.Storage} />
+            <MenuItem page={UiPages.Woodcutting} />
+        </List>
     )
-}
+})
+Sidebar.displayName = 'Sidebar'

@@ -1,0 +1,13 @@
+@keyframes timer-progress {
+    from {
+        transform: translateX(var(--timer-progress));
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+.animate {
+    animation: timer-progress var(--timer-time) linear;
+}

@@ -1,3 +1,4 @@
 export enum WoodTypes {
-    Fir = 'Fir',
+    DeadTree = 'DeadTree',
+    Oak = 'Oak',
 }

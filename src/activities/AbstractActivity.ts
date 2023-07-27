@@ -1,6 +1,5 @@
 import { GameState } from '../game/GameState'
-import { getUniqueId } from '../utils/getUniqueId'
-import { ActivityAdapter, ActivityState, ActivityTypes } from './ActivityState'
+import { ActivityAdapter } from './ActivityState'
 import { removeActivityTimers } from '../timers/timerFunctions'
 
 export enum ActivityStartResult {
@@ -11,24 +10,6 @@ export enum ActivityStartResult {
 export interface StartResult {
     gameState: GameState
     result: ActivityStartResult
-}
-
-export abstract class AbstractActivityCreator {
-    abstract type: ActivityTypes
-    protected id: string
-    constructor(protected state: GameState) {
-        this.id = getUniqueId()
-    }
-    protected createActivity(): GameState {
-        const activity: ActivityState = {
-            id: this.id,
-            type: this.type,
-            max: 1,
-        }
-        this.state = { ...this.state, activities: ActivityAdapter.create(this.state.activities, activity) }
-
-        return this.state
-    }
 }
 
 export abstract class AbstractActivity<T> {
@@ -46,6 +27,8 @@ export abstract class AbstractActivity<T> {
 
     start(): StartResult {
         const res = this.onStart()
+        if (res.result === ActivityStartResult.NotPossible) this.state = this.remove()
+        this.state = { ...this.state, activityId: this.id }
         return {
             gameState: res.gameState,
             result: res.result,
@@ -55,6 +38,16 @@ export abstract class AbstractActivity<T> {
 
     exec(): StartResult {
         const res = this.onExec()
+        if (res.result === ActivityStartResult.NotPossible) {
+            this.state = this.remove()
+        } else if (res.result === ActivityStartResult.Ended) {
+            this.state = {
+                ...this.state,
+                activityDone: this.state.activityDone + 1,
+                activityId: this.id,
+                lastActivityDone: this.state.orderedActivities.indexOf(this.id),
+            }
+        }
         return {
             gameState: res.gameState,
             result: res.result,

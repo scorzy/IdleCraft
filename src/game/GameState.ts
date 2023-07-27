@@ -6,7 +6,11 @@ import { GameLocations } from '../gameLocations/GameLocations'
 import { StorageState } from '../storage/storageState'
 import { Timer } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
-import { ForestsType, Woodcutting } from '../wood/WoodInterfaces'
+import { ForestsType } from '../wood/ForestsState'
+import { Woodcutting } from '../wood/WoodInterfaces'
+import { WoodTypes } from '../wood/WoodTypes'
+import { TreeGrowth } from '../wood/forest/forestGrowth'
+
 export interface LocationState {
     storage: StorageState
     forests: ForestsType
@@ -19,6 +23,7 @@ export interface GameState {
         comma: CommaTypes
         numberFormatNotation: NotationTypes
         lang: string
+        woodType: WoodTypes
     }
     timers: InitialState<Timer>
     loading: boolean
@@ -30,7 +35,6 @@ export interface GameState {
     activityDone: number
     lastActivityDone: number
     woodcutting: InitialState<Woodcutting>
-    locations: {
-        [k in GameLocations]: LocationState
-    }
+    locations: { [k in GameLocations]: LocationState }
+    treeGrowth: InitialState<TreeGrowth>
 }

@@ -1,5 +1,8 @@
 import { GameState } from '../../game/GameState'
+import { WoodTypes } from '../../wood/WoodTypes'
 
 export const selectNotation = (state: GameState) => state.ui.numberFormatNotation
 export const selectComma = (state: GameState) => state.ui.comma
 export const selectLang = (state: GameState) => state.ui.lang
+export const isWoodSelected = (woodType: WoodTypes) => (state: GameState) => state.ui.woodType === woodType
+export const selectWoodType = (state: GameState) => state.ui.woodType

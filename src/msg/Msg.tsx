@@ -1,4 +1,12 @@
 export interface Msg {
+    Activities: string
+    Storage: string
+    Woodcutting: string
+
+    //  Trees
+    DeadTree: 'Dead Tree'
+    Oak: 'Oak'
+
     // Time
     years: (qta: number, formattedQta: string) => string
     months: (qta: number, formattedQta: string) => string

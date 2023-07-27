@@ -1,8 +1,13 @@
-import { GameState } from '../game/GameState'
-import { GameLocations } from '../gameLocations/GameLocations'
-import { ForestsState } from './WoodInterfaces'
-import { WoodData } from './WoodData'
-import { WoodTypes } from './WoodTypes'
+import { GameState } from '../../game/GameState'
+import { GameLocations } from '../../gameLocations/GameLocations'
+import { WoodData } from '../WoodData'
+import { ForestsState } from '../ForestsState'
+import { WoodTypes } from '../WoodTypes'
+import { selectTreeGrowthTime } from './forestSelectors'
+import { startTimer } from '../../timers/timerFunctions'
+import { TimerTypes } from '../../timers/Timer'
+import { getUniqueId } from '../../utils/getUniqueId'
+import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
 
 export function selectDefaultForest(woodType: WoodTypes): ForestsState {
     const data = WoodData[woodType]
@@ -81,6 +86,15 @@ export function cutTree(
         hp = def.hp
         qta = Math.max(0, qta - 1)
         cut = true
+
+        const growthTime = selectTreeGrowthTime()
+        const treeData: TreeGrowth = {
+            id: getUniqueId(),
+            location,
+            woodType,
+        }
+        state = { ...state, treeGrowth: TreeGrowthAdapter.create(state.treeGrowth, treeData) }
+        state = startTimer(state, growthTime, TimerTypes.Tree, treeData.id)
     }
 
     state = {
@@ -107,4 +121,11 @@ export function cutTree(
 }
 export function hasTrees(state: GameState, woodType: WoodTypes, location?: GameLocations): boolean {
     return (state.locations[location ?? state.location].forests[woodType]?.qta ?? 1) > 0
+}
+
+export function growTree(state: GameState, id: string): GameState {
+    const data = TreeGrowthAdapter.select(state.treeGrowth, id)
+    if (data === undefined) return state
+
+    return addTree(state, data.woodType, 1, data.location)
 }

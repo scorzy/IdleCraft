@@ -12,12 +12,18 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/inconsolata": "^5.0.5",
+    "@fontsource/public-sans": "^5.0.5",
+    "@mui/joy": "5.0.0-alpha.88",
+    "@radix-ui/react-progress": "^1.0.3",
     "clsx": "^1.2.1",
-    "inter-ui": "^3.19.3",
     "normalize.css": "^8.0.1",
     "postcss-preset-env": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
     "zustand": "^4.3.9"
   },
   "devDependencies": {

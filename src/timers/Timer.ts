@@ -1,14 +1,15 @@
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 
 export enum TimerTypes {
-    Woodcutting = 'Woodcutting',
+    Activity = 'Activity',
+    Tree = 'Tree',
 }
 
 export interface Timer {
     id: string
     from: number
     to: number
-    intervalId: number
+    intervalId?: number
     type: TimerTypes
     actId?: string
     data?: unknown
