@@ -4,7 +4,7 @@ import classes from './myCard.module.css'
 export const MyCardTitle = memo((props: { title: string }) => {
     const { title } = props
 
-    return <h3 className={classes.title}>{title}</h3>
+    return <h2 className={classes.title}>{title}</h2>
 })
 MyCardTitle.displayName = 'MyCardTitle'
 

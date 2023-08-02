@@ -17,8 +17,11 @@ export function AppShell() {
     return (
         <div className={clsx(classes.container, { sideOpen: open }, { contentOpen: !open })}>
             <div className={classes.header}>
-                <Button onClick={() => toggle()}>Open</Button>
-                <Button onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>Theme</Button>
+                <div></div>
+                <div>
+                    <Button onClick={() => toggle()}>Open</Button>
+                    <Button onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>Theme</Button>
+                </div>
             </div>
             <div className={classes.side}>
                 <Sidebar />

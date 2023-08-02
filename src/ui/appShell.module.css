@@ -14,7 +14,12 @@
     align-items: center;
     display: flex;
     gap: 10px;
+    display: grid;
+    align-content: space-between;
     border-bottom: var(--border-1px);
+    grid-template-columns: 1fr auto;
+    justify-content: space-between;
+    align-content: center;
 }
 .side {
     overflow: auto;

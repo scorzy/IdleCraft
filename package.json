@@ -14,6 +14,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fontsource-variable/public-sans": "^5.0.6",
     "@fontsource/inconsolata": "^5.0.5",
     "@fontsource/public-sans": "^5.0.5",
     "@mui/joy": "5.0.0-alpha.88",
@@ -23,6 +24,7 @@
     "postcss-preset-env": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-fast-compare": "^3.2.2",
     "react-icons": "^4.10.1",
     "zustand": "^4.3.9"
   },

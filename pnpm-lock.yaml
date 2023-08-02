@@ -11,6 +11,9 @@ dependencies:
   '@emotion/styled':
     specifier: ^11.11.0
     version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.15)(react@18.2.0)
+  '@fontsource-variable/public-sans':
+    specifier: ^5.0.6
+    version: 5.0.6
   '@fontsource/inconsolata':
     specifier: ^5.0.5
     version: 5.0.5
@@ -38,6 +41,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-fast-compare:
+    specifier: ^3.2.2
+    version: 3.2.2
   react-icons:
     specifier: ^4.10.1
     version: 4.10.1(react@18.2.0)
@@ -1025,6 +1031,10 @@ packages:
     resolution: {integrity: sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
+
+  /@fontsource-variable/public-sans@5.0.6:
+    resolution: {integrity: sha512-OL0q+gZeK41gX4wT/uAOD+dV3RdJ14PHpVCaOUxPmQGJ0aInJkxGf3hjPKypcGUsEx+OpYgGYiaRz7e3NzRoTQ==}
+    dev: false
 
   /@fontsource/inconsolata@5.0.5:
     resolution: {integrity: sha512-uU9t2j/hq4UweFXTjo+geLPFqhTucDdeei/a4BEHdtFPwJIfXLXmzlHeDrjOatHYGbRlJlydS4Ipr16A4O/e5A==}
@@ -3145,6 +3155,10 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-fast-compare@3.2.2:
+    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
     dev: false
 
   /react-icons@4.10.1(react@18.2.0):

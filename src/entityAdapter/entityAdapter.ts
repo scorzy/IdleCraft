@@ -68,4 +68,12 @@ export abstract class AbstractEntityAdapter<T> {
     select(state: InitialState<T>, id: string): T | undefined {
         return state.entries[id]
     }
+
+    find(state: InitialState<T>, fun: (entity: T) => boolean): T | undefined {
+        const ids = state.ids
+        for (const id of ids) {
+            const data = state.entries[id]
+            if (data && fun(data)) return data
+        }
+    }
 }
