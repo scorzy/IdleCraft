@@ -50,6 +50,7 @@
     justify-content: start;
     justify-items: start;
     align-content: start;
+    border: var(--border-1px);
 }
 
 .color-primary {
