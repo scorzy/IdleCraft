@@ -3,5 +3,10 @@
     padding: 0;
     padding: var(--padding);
     display: grid;
-    margin: 8px;
+    margin: 0.5rem;
+}
+@media (min-width: 768px) {
+    .sidebar {
+        margin: 0.75rem;
+    }
 }

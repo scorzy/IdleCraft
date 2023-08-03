@@ -8,6 +8,7 @@ import { memo } from 'react'
 import { Woodcutting } from '../wood/ui/Woodcutting'
 import { Button } from './button/Button'
 import { Sidebar } from './sidebar/Sidebar'
+import { UiStorage } from '../storage/ui/Storage'
 
 export function AppShell() {
     const open = useGameStore((s) => s.ui.open)
@@ -52,6 +53,8 @@ export const Content = memo(() => {
     switch (page) {
         case UiPages.Woodcutting:
             return <Woodcutting />
+        case UiPages.Storage:
+            return <UiStorage />
     }
 })
 Content.displayName = 'Content'

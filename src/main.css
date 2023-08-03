@@ -7,20 +7,20 @@
     --min-element-width: 3rem;
 
     color-scheme: light;
-    --bg-color: var(--bg-50);
+    --bg-color: #ffffff;
     --font-color: var(--bg-950);
     --font-color-secondary: var(--bg-700);
     --border-color: var(--bg-400);
-    --border-color: transparent;
+    --border-color: #e4e4e7;
 }
 
 [theme='dark'] body {
     color-scheme: dark;
-    --bg-color: var(--bg-950);
+    --bg-color: #09090b;
     --font-color: var(--bg-50);
     --font-color-secondary: var(--bg-300);
     --border-color: var(--bg-500);
-    --border-color: transparent;
+    --border-color: #27272a;
 }
 
 html {
@@ -65,9 +65,6 @@ body {
     .my-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-    }
-    .my-container:nth-child(odd) {
-        border: var(--border-1px);
     }
 }
 
