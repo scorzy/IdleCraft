@@ -1,21 +1,20 @@
 import { useTranslations } from '../../msg/useTranslations'
-import { MyListItem } from '../../ui/MenuItem'
 import { WoodTypes } from '../WoodTypes'
 import { WoodData } from '../WoodData'
 import { useGameStore } from '../../game/state'
 import { isWoodSelected } from '../../ui/state/uiSelectors'
 import { setWood } from '../../ui/state/uiFunctions'
-import List from '@mui/joy/List'
+import { MyListItem } from '../../ui/sidebar/MenuItem'
 
 const trees = Object.values(WoodTypes)
 
 export function WoodcuttingSidebar() {
     return (
-        <List>
+        <nav className="sidebar">
             {trees.map((t) => (
                 <TreeLink key={t} woodType={t} />
             ))}
-        </List>
+        </nav>
     )
 }
 

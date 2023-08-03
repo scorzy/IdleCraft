@@ -1,6 +1,7 @@
-.sidebarList {
-    list-style-type: none;
+.sidebar {
     margin: 0;
     padding: 0;
     padding: var(--padding);
+    display: grid;
+    margin: 8px;
 }

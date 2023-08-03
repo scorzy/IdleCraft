@@ -1,23 +1,20 @@
 import { useGameStore } from '../../game/state'
 import { selectWoodType } from '../../ui/state/uiSelectors'
-import { WoodData } from '../WoodData'
-import { useTranslations } from '../../msg/useTranslations'
-import { Title } from '../../ui/Title'
-import { Button } from '@mui/joy'
 import { addWoodcutting } from '../WoodcuttingFunctions'
-import { GameTimerProgress, TimerProgressFromId } from '../../ui/TimerProgress'
+import { GameTimerProgress, TimerProgressFromId } from '../../ui/progress/TimerProgress'
 import { WoodTypes } from '../WoodTypes'
 import { GameState } from '../../game/GameState'
 import { selectForest, selectForestQta, selectGrowingTrees, woodCuttingActId } from '../forest/forestSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { RestartProgress } from '../../ui/RestartProgress'
+import { RestartProgress } from '../../ui/progress/RestartProgress'
 import { getWoodcuttingTime } from '../WoodcuttingSelectors'
-import { ProgressBar } from '../../ui/ProgressBar'
+import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { selectDefaultForest } from '../forest/forestFunctions'
 import { MyCardLabel, MyCardTitle } from '../../ui/myCard/myCard'
 import { memo, useCallback } from 'react'
 import { removeActivity } from '../../activities/activityFunctions'
 import { memoize } from '../../utils/memoize'
+import { Button } from '../../ui/button/Button'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -28,11 +25,9 @@ const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
 
 export function Woodcutting() {
     const woodType = useGameStore(selectWoodType)
-    const data = WoodData[woodType]
-    const t = useTranslations()
+
     return (
         <div className="my-parent-container">
-            <Title icon={data.icon} text={data.getName(t)} />
             <div className="my-container" key={woodType}>
                 <Cutting />
                 <Forest />

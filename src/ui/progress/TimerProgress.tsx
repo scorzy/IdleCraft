@@ -3,8 +3,8 @@ import styles from './timerProgress.module.css'
 
 import { memo, useEffect, useRef } from 'react'
 import { usePageVisibility } from './usePageVisibility'
-import { useGameStore } from '../game/state'
-import { Colors, getColorClass } from './state/uiFunctions'
+import { useGameStore } from '../../game/state'
+import { Colors } from '../state/uiFunctions'
 
 const TimerProgress = memo(
     (props: { className?: string; start: number | undefined; end: number | undefined; color: Colors }) => {
@@ -24,7 +24,7 @@ const TimerProgress = memo(
 
         const classes = className ?? ''
         return (
-            <div className={`progress__root ${classes} ${getColorClass(color)}`}>
+            <div className={`theme progress__root ${classes} ${color}`}>
                 {start !== undefined && <div ref={inputEl} className={`progress__bar ${styles.animate}`} />}
             </div>
         )

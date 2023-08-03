@@ -32,7 +32,6 @@
 .side2 {
     grid-row: 2;
     grid-column: 1 / span 2;
-
     border-bottom: var(--border-1px);
 }
 :global(.contentOpen) .side,
@@ -60,6 +59,7 @@
         grid-row: 2;
         grid-column: 2;
         border-right: var(--border-1px);
+        border-bottom: none;
     }
     :global(.contentOpen) .side {
         display: block;

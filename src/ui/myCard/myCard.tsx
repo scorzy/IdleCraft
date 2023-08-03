@@ -11,5 +11,5 @@ MyCardTitle.displayName = 'MyCardTitle'
 export function MyCardLabel(props: { children: ReactNode }) {
     const { children } = props
 
-    return <h3 className={classes.label}>{children}</h3>
+    return <span className={classes.label}>{children}</span>
 }

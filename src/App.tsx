@@ -1,7 +1,9 @@
-import { AppShell } from "./ui/AppShell";
+import { AppShell } from './ui/AppShell'
+import { useTheme } from './ui/useTheme'
 
 function App() {
-  return <AppShell />;
+    useTheme()
+    return <AppShell />
 }
 
-export default App;
+export default App
