@@ -23,7 +23,7 @@ export function WoodcuttingSidebar() {
 function TreeLink(props: { woodType: WoodTypes; collapsed: boolean }) {
     const { woodType, collapsed } = props
     const data = WoodData[woodType]
-    const t = useTranslations()
+    const { t } = useTranslations()
     const selected = useGameStore(isWoodSelected(woodType))
 
     return (

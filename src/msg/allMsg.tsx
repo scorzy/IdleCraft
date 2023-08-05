@@ -1,6 +1,6 @@
-import { engMsg } from './eng'
-import { Msg } from './Msg'
+import { engMsg, engMsgFun } from './eng'
+import { Msg, MsgFunctions } from './Msg'
 
-export const messages: { [K: string]: Msg } = {
-    eng: engMsg,
+export const messages: { [K: string]: { t: Msg; fun: MsgFunctions } } = {
+    eng: { t: engMsg, fun: engMsgFun },
 }

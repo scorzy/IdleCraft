@@ -12,7 +12,7 @@ import { isCollapsed } from '../state/uiSelectors'
 
 export const MenuItem = memo(function MenuItem(props: { page: UiPages }) {
     const { page } = props
-    const t = useTranslations()
+    const { t } = useTranslations()
     const data = UiPagesData[page]
     const active = useGameStore((s) => s.ui.page === page)
     const collapsed = useGameStore(isCollapsed('sidebar'))

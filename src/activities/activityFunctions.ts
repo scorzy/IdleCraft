@@ -14,7 +14,8 @@ export function makeActivityFun(state: GameState, type: ActivityTypes, id: strin
 function removeActivityInt(state: GameState, id: string): GameState {
     const act = ActivityAdapter.select(state.activities, id)
     if (act === undefined) return state
-    return makeActivityFun(state, act.type, id).remove()
+    state = makeActivityFun(state, act.type, id).remove()
+    return startNextActivity(state)
 }
 
 export const removeActivity = (id: string | undefined) => {

@@ -17,6 +17,9 @@ import { memoize } from '../../utils/memoize'
 import { MyButton } from '../../ui/button/Button'
 import { PageWithSidebar } from '../../ui/shell/AppShell'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
+import { useTranslations } from '../../msg/useTranslations'
+import { WoodData } from '../WoodData'
+import { GiWoodAxe } from 'react-icons/gi'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -25,15 +28,15 @@ const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     }
 })
 
-export function Woodcutting() {
+export const Woodcutting = memo(function Woodcutting() {
     return (
         <PageWithSidebar sidebar={<WoodcuttingSidebar />}>
             <WoodcuttingContainer />
         </PageWithSidebar>
     )
-}
+})
 
-function WoodcuttingContainer() {
+const WoodcuttingContainer = memo(function WoodcuttingContainer() {
     const woodType = useGameStore(selectWoodType)
     return (
         <div className="my-container" key={woodType}>
@@ -41,66 +44,72 @@ function WoodcuttingContainer() {
             <Forest />
         </div>
     )
-}
+})
 
-function Cutting() {
+const Cutting = memo(function Cutting() {
     const woodType = useGameStore(selectWoodType)
     const forest = useGameStore(selectForest(woodType))
     const act = useGameStore(selectWoodcutting(woodType))
     const { f, ft } = useNumberFormatter()
+    const { t } = useTranslations()
     const def = selectDefaultForest(woodType)
     const hpPercent = Math.floor((100 * forest.hp) / def.hp)
     const time = getWoodcuttingTime()
 
     return (
-        <MyCard title={'Cutting'} actions={<CuttingButton />}>
+        <MyCard title={t.Cutting} actions={<CuttingButton />} icon={<GiWoodAxe />}>
             <MyCardLabel>
-                Tree HP{' '}
+                {t.TreeHP}{' '}
                 <span className="monospace">
                     {f(forest.hp)}/{f(def.hp)}
                 </span>
             </MyCardLabel>
-            <RestartProgress value={hpPercent} className="mb" color="error" />
+            <RestartProgress value={hpPercent} color="error" />
             <MyCardLabel>
-                Time <span className="monospace">{ft(time)}</span>
+                {t.Time} <span className="monospace">{ft(time)}</span>
             </MyCardLabel>
-            <GameTimerProgress actionId={act} className="mb" color="primary" />
+            <GameTimerProgress actionId={act} color="primary" />
         </MyCard>
     )
-}
+})
 
-const CuttingButton = memo(() => {
+const CuttingButton = memo(function CuttingButton() {
     const woodType = useGameStore(selectWoodType)
     const actId = useGameStore(woodCuttingActId(woodType))
     const onClickStart = useCallback(() => addWoodcutting(woodType), [woodType])
     const onClickRemove = useCallback(() => removeActivity(actId?.activityId), [actId])
+    const { t } = useTranslations()
 
-    if (actId === undefined) return <MyButton onClick={onClickStart} text={'Cut'} variant="text" />
+    if (actId === undefined) return <MyButton onClick={onClickStart} text={t.Cut} variant="text" />
 
-    return <MyButton onClick={onClickRemove} color="error" text={'Stop'} variant="text" />
+    return <MyButton onClick={onClickRemove} color="error" text={t.Stop} variant="text" />
 })
-CuttingButton.displayName = 'CuttingButton'
 
-function Forest() {
+const Forest = memo(function Forest() {
+    const woodType = useGameStore(selectWoodType)
+    const { t } = useTranslations()
+    const data = WoodData[woodType]
+
     return (
-        <MyCard title={'Forest'}>
+        <MyCard title={t[`${woodType}Forest`]} icon={data.icon}>
             <ForestQta />
             <Trees />
         </MyCard>
     )
-}
+})
 
-function ForestQta() {
+const ForestQta = memo(function ForestQta() {
     const woodType = useGameStore(selectWoodType)
     const qta = useGameStore(selectForestQta(woodType))
     const def = selectDefaultForest(woodType)
     const { f } = useNumberFormatter()
+    const { t } = useTranslations()
     const treePercent = Math.floor((100 * qta) / def.qta)
 
     return (
         <>
             <MyCardLabel>
-                Trees{' '}
+                {t.Trees}{' '}
                 <span className="monospace">
                     {f(qta)}/{f(def.qta)}
                 </span>
@@ -108,16 +117,17 @@ function ForestQta() {
             <ProgressBar value={treePercent} color="success" className="mb" />
         </>
     )
-}
+})
 
-const Trees = memo(() => {
+const Trees = memo(function Trees() {
     const woodType = useGameStore(selectWoodType)
     const trees = useGameStore(selectGrowingTrees(woodType))
     const { f } = useNumberFormatter()
+    const { t } = useTranslations()
     return (
         <>
             <MyCardLabel>
-                Growing Trees: <span className="monospace">{f(trees.length)}</span>
+                {t.GrowingTrees} <span className="monospace">{f(trees.length)}</span>
             </MyCardLabel>
 
             {trees.map((t) => (
@@ -126,11 +136,9 @@ const Trees = memo(() => {
         </>
     )
 })
-Trees.displayName = 'Trees'
 
-const Tree = memo((props: { id: string }) => {
+const Tree = memo(function Tree(props: { id: string }) {
     const { id } = props
 
-    return <TimerProgressFromId timerId={id} color="success" className="mb" />
+    return <TimerProgressFromId timerId={id} color="success" />
 })
-Tree.displayName = 'Tree'

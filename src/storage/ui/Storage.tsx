@@ -12,11 +12,14 @@ import List from '@mui/material/List'
 import { Collapse, Divider, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
-import { memo, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { MyCard } from '../../ui/myCard/myCard'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
 import classes from './storage.module.css'
+import { setSelectedItem } from '../storageFunctions'
+import { SelectedItem } from '../../items/ui/SelectedItem'
+import { useTranslations } from '../../msg/useTranslations'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
@@ -29,7 +32,7 @@ export function UiStorage() {
                         <LocationStorage key={l} location={GameLocations.StartVillage} />
                     ))}
                 </MyCard>
-                <MyCard>Ciao</MyCard>
+                <SelectedItem />
             </div>
         </Page>
     )
@@ -74,20 +77,26 @@ const StorageItem = memo(function StorageItem(props: {
 }) {
     const { isLast, location, stdItemId, craftItemId } = props
     const { f } = useNumberFormatter()
+    const { t } = useTranslations()
     const qta = useGameStore(selectItemQta(location, stdItemId, craftItemId))
     const item = useGameStore(selectItem(stdItemId, craftItemId))
+
+    const onClick = useCallback(
+        () => setSelectedItem(stdItemId, craftItemId, location),
+        [stdItemId, craftItemId, location]
+    )
 
     if (!item) return <></>
 
     return (
         <>
-            <ListItemButton>
+            <ListItemButton onClick={onClick}>
                 <ListItemIcon>{IconsData[item.icon]}</ListItemIcon>
                 <ListItemText
                     disableTypography
                     primary={
                         <div className={classes.item}>
-                            <span>{item.nameId}</span>
+                            <span>{t[item.nameId]}</span>
                             <span className="monospace">{f(qta)}</span>
                         </div>
                     }

@@ -13,7 +13,7 @@ const makeFormatter = memoizeOne((comma: CommaTypes, lang: string, notation: Not
     return {
         f: formatter[0],
         p: formatter[1],
-        ft: getTimeFormatter(formatter[0], t),
+        ft: getTimeFormatter(formatter[0], t.fun),
     }
 })
 

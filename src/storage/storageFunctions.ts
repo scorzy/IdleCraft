@@ -1,4 +1,5 @@
 import { GameState } from '../game/GameState'
+import { useGameStore } from '../game/state'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { StorageState } from './storageState'
 
@@ -69,3 +70,13 @@ export function hasItem(
     const storage = state.locations[location].storage
     return subHasItem(storage, stdItemId, craftItemId, qta)
 }
+
+export const setSelectedItem = (stdItemId: string | null, craftItemId: string | null, location: GameLocations) =>
+    useGameStore.setState((s) => ({
+        ui: {
+            ...s.ui,
+            selectedStdItemId: stdItemId,
+            selectedCraftedItemId: craftItemId,
+            selectedItemLocation: location,
+        },
+    }))

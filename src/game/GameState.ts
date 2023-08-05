@@ -24,8 +24,11 @@ export interface GameState {
         comma: CommaTypes
         numberFormatNotation: NotationTypes
         lang: string
-        woodType: WoodTypes
         collapsed: { [k: string]: boolean }
+        woodType: WoodTypes
+        selectedStdItemId: string | null
+        selectedCraftedItemId: string | null
+        selectedItemLocation: GameLocations | null
     }
     timers: InitialState<Timer>
     loading: boolean

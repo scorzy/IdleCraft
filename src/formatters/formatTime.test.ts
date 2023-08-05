@@ -1,6 +1,6 @@
 import { formatTime } from './formatTime'
 import { describe, test, expect } from 'vitest'
-import { engMsg as t } from '../msg/eng'
+import { engMsgFun as t } from '../msg/eng'
 
 const f = (num: number) => `${num}`
 

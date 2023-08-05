@@ -1,14 +1,14 @@
-import { Msg } from '../msg/Msg'
+import { MsgFunctions } from '../msg/Msg'
 const SEC_IN_HOUR = 3600
 const SEC_IN_DAY = 3600 * 24
 const SEC_IN_MONTH = 3600 * 24 * 30
 const SEC_IN_YEAR = 3600 * 24 * 365
 
-export function getTimeFormatter(numberFormat: (num: number) => string, t: Msg) {
+export function getTimeFormatter(numberFormat: (num: number) => string, t: MsgFunctions) {
     return (time: number) => formatTime(time, numberFormat, t)
 }
 
-export function formatTime(time: number, numberFormat: (num: number) => string, t: Msg): string {
+export function formatTime(time: number, numberFormat: (num: number) => string, t: MsgFunctions): string {
     time /= 1000
 
     const years = Math.floor(time / SEC_IN_YEAR)

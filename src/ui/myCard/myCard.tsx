@@ -4,33 +4,35 @@ import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
-import { GiDeadWood } from 'react-icons/gi'
 
-export const MyCardTitle = memo((props: { title: string }) => {
-    const { title } = props
+export const MyCardTitle = memo(function MyCardLabel(props: { title: string; icon?: ReactNode }) {
+    const { title, icon } = props
 
     return (
-        <Typography variant="h5" gutterBottom>
-            <GiDeadWood /> {title}
+        <Typography variant="h5" gutterBottom className={classes.title}>
+            {icon} {title}
         </Typography>
     )
 })
-MyCardTitle.displayName = 'MyCardTitle'
 
-export const MyCardLabel = memo((props: { children: ReactNode }) => {
+export const MyCardLabel = memo(function MyCardLabel(props: { children: ReactNode }) {
     const { children } = props
 
     return <Typography variant="body1">{children}</Typography>
 })
-MyCardLabel.displayName = 'MyCardLabel'
 
-export const MyCard = memo((props: { children?: ReactNode; title?: string; actions?: ReactNode }) => {
-    const { children, title, actions } = props
+export const MyCard = memo(function MyCard(props: {
+    children?: ReactNode
+    title?: string
+    actions?: ReactNode
+    icon?: ReactNode
+}) {
+    const { children, title, actions, icon } = props
 
     return (
         <Card variant="outlined">
             <CardContent>
-                {title && <MyCardTitle title={title} />}
+                {title && <MyCardTitle title={title} icon={icon} />}
                 {children}
             </CardContent>
             {actions && (
@@ -41,4 +43,3 @@ export const MyCard = memo((props: { children?: ReactNode; title?: string; actio
         </Card>
     )
 })
-MyCard.displayName = 'MyCard'
