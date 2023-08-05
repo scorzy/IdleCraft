@@ -26,7 +26,6 @@ export function addTree(state: GameState, woodType: WoodTypes, qta: number, loca
     qta = Math.max(0, Math.min(cur.qta + qta, def.qta))
 
     if (qta >= def.qta) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [woodType]: value, ...newForests } = state.locations[location].forests
         state = {
             ...state,

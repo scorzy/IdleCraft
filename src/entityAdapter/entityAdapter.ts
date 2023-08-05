@@ -45,7 +45,7 @@ export abstract class AbstractEntityAdapter<T> {
         if (id === undefined) throw new Error('id undefined')
         const existing = state.entries[id]
         if (existing === undefined) throw new Error(`${id} doesn't exists`)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
         const { [id]: value, ...newEntries } = state.entries
 
         state = { entries: newEntries, ids: state.ids.filter((e) => e !== id) }

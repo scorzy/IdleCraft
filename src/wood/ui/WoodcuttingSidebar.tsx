@@ -5,16 +5,17 @@ import { useGameStore } from '../../game/state'
 import { isWoodSelected } from '../../ui/state/uiSelectors'
 import { setWood } from '../../ui/state/uiFunctions'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
+import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 
 const trees = Object.values(WoodTypes)
 
 export function WoodcuttingSidebar() {
     return (
-        <nav className="sidebar">
+        <SidebarContainer>
             {trees.map((t) => (
                 <TreeLink key={t} woodType={t} />
             ))}
-        </nav>
+        </SidebarContainer>
     )
 }
 

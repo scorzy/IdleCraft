@@ -7,5 +7,4 @@ export const toggleTheme = () => useGameStore.setState((s) => ({ ui: { ...s.ui, 
 export const setPage = (page: UiPages) => useGameStore.setState((s) => ({ ui: { ...s.ui, page } }))
 export const setWood = (woodType: WoodTypes) => useGameStore.setState((s) => ({ ui: { ...s.ui, woodType } }))
 
-export type Colors = 'primary' | 'neutral' | 'danger' | 'info' | 'success' | 'warning'
-export const getColorClass = (color: Colors) => `color-${color}`
+export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'

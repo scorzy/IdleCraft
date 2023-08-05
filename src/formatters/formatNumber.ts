@@ -81,7 +81,7 @@ export function getFormatter(
 
                 const suffix = suffixes[index] !== '' ? suffixes[index] : ''
                 const split = val.split('E')
-                const prefix = split.length > 0 ? split[0] : split
+                const prefix: string = split[0]
                 return `${prefix}${suffix}`
             }
             break

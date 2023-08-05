@@ -1,0 +1,13 @@
+.text {
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    display: block;
+}
+.icon {
+    min-width: 36px;
+}
+.item {
+    padding-bottom: 4px;
+}

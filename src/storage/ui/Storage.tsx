@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useGameStore } from '../../game/state'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { selectLocationItems, selectStorageLocations } from '../StorageSelectors'
-import { Button } from '../../ui/button/Button'
+import { MyButton } from '../../ui/button/Button'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
@@ -22,7 +22,7 @@ function LocationStorage(props: { location: GameLocations }) {
 
     return (
         <div>
-            <Button onClick={() => setOpen(!open)}>{location}</Button>
+            <MyButton onClick={() => setOpen(!open)} text={location} />
 
             {open && items.map((i) => <StorageItem key={i.id + i.type} id={i.id} type={i.type} />)}
         </div>

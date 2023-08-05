@@ -1,16 +1,41 @@
+.primary {
+    --progress-bg: var(--mui-palette-LinearProgress-primaryBg);
+    --progress-color: var(--mui-palette-primary-main);
+}
+.secondary {
+    --progress-bg: var(--mui-palette-LinearProgress-secondaryBg);
+    --progress-color: var(--mui-palette-secondary-main);
+}
+.success {
+    --progress-bg: var(--mui-palette-LinearProgress-successBg);
+    --progress-color: var(--mui-palette-success-main);
+}
+.error {
+    --progress-bg: var(--mui-palette-LinearProgress-errorBg);
+    --progress-color: var(--mui-palette-error-main);
+}
+.info {
+    --progress-bg: var(--mui-palette-LinearProgress-infoBg);
+    --progress-color: var(--mui-palette-info-main);
+}
+.warning {
+    --progress-bg: var(--mui-palette-LinearProgress-warningBg);
+    --progress-color: var(--mui-palette-warning-main);
+}
 .progress__root {
     width: 100%;
     height: 8px;
     overflow: hidden;
-    border-radius: var(--radius-md);
-    background-color: var(--soft-bg);
+    margin-bottom: 8px;
+    border-radius: var(--radius);
+    background-color: var(--progress-bg);
 }
 
 .progress__bar {
-    border-radius: var(--radius-md);
+    border-radius: var(--radius);
     width: 100%;
     height: 8px;
     opacity: 1;
-    background-color: var(--plain-color);
+    background-color: var(--progress-color);
     transition: transform 0.2s linear;
 }

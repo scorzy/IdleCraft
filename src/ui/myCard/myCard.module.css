@@ -10,3 +10,6 @@
     margin-bottom: 2px;
     color: var(--font-color-secondary);
 }
+.actions {
+    padding-top: 0;
+}

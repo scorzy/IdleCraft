@@ -21,7 +21,6 @@ function subAddItem(
     const newQta = Math.max(qta + (old || 0), 0)
 
     if (Math.abs(newQta) < Number.EPSILON) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [id]: value, ...newSubState } = subState
         subState = newSubState
     } else subState = { ...subState, [id]: newQta }

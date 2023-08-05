@@ -1,28 +1,7 @@
 :root {
-    --radius-md: 6px;
-    --fontWeights-semibold: 500;
-    --transition-property-common: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-    --transition-duration-normal: 200ms;
-    --sizes-element-width: 35px;
-    --min-element-width: 3rem;
-
-    color-scheme: light;
-    --bg-color: #ffffff;
-    --font-color: var(--bg-950);
-    --font-color-secondary: var(--bg-700);
-    --border-color: var(--bg-400);
-    --border-color: #e4e4e7;
+    --radius: 8px;
+    --mui-shape-borderRadius: 8px;
 }
-
-[theme='dark'] body {
-    color-scheme: dark;
-    --bg-color: #09090b;
-    --font-color: var(--bg-50);
-    --font-color-secondary: var(--bg-300);
-    --border-color: var(--bg-500);
-    --border-color: #27272a;
-}
-
 html {
     font-family: 'Inter', 'system-ui';
 }
@@ -34,21 +13,38 @@ html {
 }
 
 body {
-    --border-1px: 1px solid var(--border-color);
-    background-color: var(--bg-color);
-    color: var(--font-color);
+    --mui-shape-borderRadius: var(--radius);
+    --mui-shadows-24: none;
+    --mui-shadows-23: none;
+    --mui-shadows-22: none;
+    --mui-shadows-21: none;
+    --mui-shadows-20: none;
+    --mui-shadows-19: none;
+    --mui-shadows-18: none;
+    --mui-shadows-17: none;
+    --mui-shadows-16: none;
+    --mui-shadows-15: none;
+    --mui-shadows-14: none;
+    --mui-shadows-13: none;
+    --mui-shadows-12: none;
+    --mui-shadows-11: none;
+    --mui-shadows-10: none;
+    --mui-shadows-9: none;
+    --mui-shadows-8: none;
+    --mui-shadows-7: none;
+    --mui-shadows-6: none;
+    --mui-shadows-5: none;
+    --mui-shadows-4: none;
+    --mui-shadows-3: none;
+    --mui-shadows-2: none;
+    --mui-shadows-1: none;
+    --border-1px: 1px solid var(--mui-palette-divider);
 }
 
 .monospace {
     font-family: 'Roboto Mono Variable', monospace;
 }
 
-.mb {
-    margin-bottom: 8px;
-}
-.mb-2 {
-    margin-bottom: 16px;
-}
 .my-parent-container {
     container-type: inline-size;
 }

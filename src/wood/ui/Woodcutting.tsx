@@ -10,11 +10,11 @@ import { RestartProgress } from '../../ui/progress/RestartProgress'
 import { getWoodcuttingTime } from '../WoodcuttingSelectors'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { selectDefaultForest } from '../forest/forestFunctions'
-import { MyCardLabel, MyCardTitle } from '../../ui/myCard/myCard'
+import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
 import { memo, useCallback } from 'react'
 import { removeActivity } from '../../activities/activityFunctions'
 import { memoize } from '../../utils/memoize'
-import { Button } from '../../ui/button/Button'
+import { MyButton } from '../../ui/button/Button'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -45,24 +45,19 @@ export function Cutting() {
     const time = getWoodcuttingTime()
 
     return (
-        <div className="my-card">
-            <MyCardTitle title={'Cutting'} />
-
+        <MyCard title={'Cutting'} actions={<CuttingButton />}>
             <MyCardLabel>
                 Tree HP{' '}
                 <span className="monospace">
                     {f(forest.hp)}/{f(def.hp)}
                 </span>
             </MyCardLabel>
-            <RestartProgress value={hpPercent} className="mb" color="danger" />
-
+            <RestartProgress value={hpPercent} className="mb" color="error" />
             <MyCardLabel>
                 Time <span className="monospace">{ft(time)}</span>
             </MyCardLabel>
             <GameTimerProgress actionId={act} className="mb" color="primary" />
-
-            <CuttingButton />
-        </div>
+        </MyCard>
     )
 }
 
@@ -72,23 +67,18 @@ const CuttingButton = memo(() => {
     const onClickStart = useCallback(() => addWoodcutting(woodType), [woodType])
     const onClickRemove = useCallback(() => removeActivity(actId?.activityId), [actId])
 
-    if (actId === undefined) return <Button onClick={onClickStart}>Cut</Button>
+    if (actId === undefined) return <MyButton onClick={onClickStart} text={'Cut'} variant="text" />
 
-    return (
-        <Button onClick={onClickRemove} color="danger">
-            Stop
-        </Button>
-    )
+    return <MyButton onClick={onClickRemove} color="error" text={'Stop'} variant="text" />
 })
 CuttingButton.displayName = 'CuttingButton'
 
 function Forest() {
     return (
-        <div className="my-card">
-            <MyCardTitle title={'Forest'} />
+        <MyCard title={'Forest'}>
             <ForestQta />
             <Trees />
-        </div>
+        </MyCard>
     )
 }
 
