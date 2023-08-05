@@ -1,15 +1,7 @@
-import 'normalize.css/normalize.css'
-import './ui/palette.css'
 import './main.css'
-import './ui/button/button.css'
 
 import 'inter-ui/inter-latin.css'
 import '@fontsource-variable/roboto-mono'
-
-import '@fontsource/roboto/300.css'
-import '@fontsource/roboto/400.css'
-import '@fontsource/roboto/500.css'
-import '@fontsource/roboto/700.css'
 
 import {
     Experimental_CssVarsProvider as CssVarsProvider,
@@ -56,6 +48,13 @@ const theme = extendTheme({
             styleOverrides: {
                 root: {
                     borderRadius: 'var(--radius)',
+                },
+            },
+        },
+        MuiListItemIcon: {
+            styleOverrides: {
+                root: {
+                    minWidth: '36px',
                 },
             },
         },

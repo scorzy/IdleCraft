@@ -6,3 +6,4 @@ export const selectComma = (state: GameState) => state.ui.comma
 export const selectLang = (state: GameState) => state.ui.lang
 export const isWoodSelected = (woodType: WoodTypes) => (state: GameState) => state.ui.woodType === woodType
 export const selectWoodType = (state: GameState) => state.ui.woodType
+export const isCollapsed = (id: string) => (s: GameState) => s.ui.collapsed[id] ?? true

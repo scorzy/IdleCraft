@@ -1,4 +1,4 @@
-import { AppShell } from './ui/AppShell'
+import { AppShell } from './ui/shell/AppShell'
 import { useTheme } from './ui/useTheme'
 
 function App() {

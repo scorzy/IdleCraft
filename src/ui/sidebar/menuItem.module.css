@@ -4,10 +4,19 @@
     line-height: 1.43;
     letter-spacing: 0.01071em;
     display: block;
+    text-wrap: nowrap;
 }
 .icon {
     min-width: 36px;
 }
 .item {
     padding-bottom: 4px;
+}
+.btn {
+    transition-property: padding-left;
+    transition-duration: 300ms;
+}
+.btnCollapsed {
+    --radius: 0;
+    padding-left: 10px;
 }

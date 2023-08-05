@@ -15,6 +15,8 @@ import { memo, useCallback } from 'react'
 import { removeActivity } from '../../activities/activityFunctions'
 import { memoize } from '../../utils/memoize'
 import { MyButton } from '../../ui/button/Button'
+import { PageWithSidebar } from '../../ui/shell/AppShell'
+import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -24,18 +26,24 @@ const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
 })
 
 export function Woodcutting() {
-    const woodType = useGameStore(selectWoodType)
-
     return (
-        <div className="my-parent-container">
-            <div className="my-container" key={woodType}>
-                <Cutting />
-                <Forest />
-            </div>
+        <PageWithSidebar sidebar={<WoodcuttingSidebar />}>
+            <WoodcuttingContainer />
+        </PageWithSidebar>
+    )
+}
+
+function WoodcuttingContainer() {
+    const woodType = useGameStore(selectWoodType)
+    return (
+        <div className="my-container" key={woodType}>
+            <Cutting />
+            <Forest />
         </div>
     )
 }
-export function Cutting() {
+
+function Cutting() {
     const woodType = useGameStore(selectWoodType)
     const forest = useGameStore(selectForest(woodType))
     const act = useGameStore(selectWoodcutting(woodType))

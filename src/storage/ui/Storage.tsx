@@ -1,38 +1,99 @@
-import { useState } from 'react'
 import { useGameStore } from '../../game/state'
 import { GameLocations } from '../../gameLocations/GameLocations'
-import { selectLocationItems, selectStorageLocations } from '../StorageSelectors'
-import { MyButton } from '../../ui/button/Button'
+import {
+    selectItem,
+    selectItemQta,
+    selectLocationItems,
+    selectStorageLocations,
+    uniqueItemId,
+} from '../StorageSelectors'
+import { Page } from '../../ui/shell/AppShell'
+import List from '@mui/material/List'
+import { Collapse, Divider, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import { memo, useState } from 'react'
+import { MyCard } from '../../ui/myCard/myCard'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { IconsData } from '../../icons/Icons'
+import classes from './storage.module.css'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
-    console.log(locations)
+
+    return (
+        <Page>
+            <div className="my-container">
+                <MyCard>
+                    {locations.map((l) => (
+                        <LocationStorage key={l} location={GameLocations.StartVillage} />
+                    ))}
+                </MyCard>
+                <MyCard>Ciao</MyCard>
+            </div>
+        </Page>
+    )
+}
+const LocationStorage = memo(function LocationStorage(props: { location: GameLocations }) {
+    const { location } = props
+    const items = useGameStore(selectLocationItems(location))
+    const [open, setOpen] = useState(true)
+    const handleClick = () => setOpen(!open)
+    const len = items.length
+
+    return (
+        <List dense component="div">
+            <ListItemButton onClick={handleClick}>
+                {/* <ListItemIcon></ListItemIcon> */}
+                <ListItemText primary={location} disableTypography />
+                {open ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+
+            <Collapse in={open} timeout="auto" unmountOnExit>
+                <List dense component="div" disablePadding>
+                    {items.map((i, index) => (
+                        <StorageItem
+                            key={uniqueItemId(i)}
+                            isLast={index >= len - 1}
+                            stdItemId={i.stdItemId}
+                            craftItemId={i.craftItemId}
+                            location={location}
+                        />
+                    ))}
+                </List>
+            </Collapse>
+        </List>
+    )
+})
+
+const StorageItem = memo(function StorageItem(props: {
+    isLast: boolean
+    location: GameLocations
+    stdItemId: string | null
+    craftItemId: string | null
+}) {
+    const { isLast, location, stdItemId, craftItemId } = props
+    const { f } = useNumberFormatter()
+    const qta = useGameStore(selectItemQta(location, stdItemId, craftItemId))
+    const item = useGameStore(selectItem(stdItemId, craftItemId))
+
+    if (!item) return <></>
+
     return (
         <>
-            {locations.map((l) => (
-                <LocationStorage key={l} location={GameLocations.StartVillage} />
-            ))}
+            <ListItemButton>
+                <ListItemIcon>{IconsData[item.icon]}</ListItemIcon>
+                <ListItemText
+                    disableTypography
+                    primary={
+                        <div className={classes.item}>
+                            <span>{item.nameId}</span>
+                            <span className="monospace">{f(qta)}</span>
+                        </div>
+                    }
+                />
+            </ListItemButton>
+            {!isLast && <Divider />}
         </>
     )
-}
-function LocationStorage(props: { location: GameLocations }) {
-    const { location } = props
-    const [open, setOpen] = useState(true)
-    const items = useGameStore(selectLocationItems(location))
-
-    return (
-        <div>
-            <MyButton onClick={() => setOpen(!open)} text={location} />
-
-            {open && items.map((i) => <StorageItem key={i.id + i.type} id={i.id} type={i.type} />)}
-        </div>
-    )
-}
-function StorageItem(props: { type: string; id: string }) {
-    const { type, id } = props
-    return (
-        <div>
-            {id} {type}
-        </div>
-    )
-}
+})

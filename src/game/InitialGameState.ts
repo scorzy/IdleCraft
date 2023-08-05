@@ -26,6 +26,7 @@ export const InitialGameState: GameState = {
         lang: 'eng',
         numberFormatNotation: NotationTypes.STANDARD,
         woodType: WoodTypes.DeadTree,
+        collapsed: {},
     },
     location: GameLocations.StartVillage,
     activities: ActivityAdapter.getInitialState(),
@@ -36,6 +37,7 @@ export const InitialGameState: GameState = {
     timers: TimerAdapter.getInitialState(),
     now: Date.now(),
     loading: false,
+    craftedItems: {},
     woodcutting: WoodcuttingAdapter.getInitialState(),
     locations: {
         [GameLocations.StartVillage]: InitialVillageState,

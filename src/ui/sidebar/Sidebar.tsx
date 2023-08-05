@@ -3,13 +3,12 @@ import { MenuItem } from './MenuItem'
 import { memo } from 'react'
 import { SidebarContainer } from './SidebarContainer'
 
-export const Sidebar = memo(() => {
+export const Sidebar = memo(function Sidebar() {
     return (
-        <SidebarContainer>
+        <SidebarContainer id="sidebar">
             <MenuItem page={UiPages.Activities} />
             <MenuItem page={UiPages.Storage} />
             <MenuItem page={UiPages.Woodcutting} />
         </SidebarContainer>
     )
 })
-Sidebar.displayName = 'Sidebar'

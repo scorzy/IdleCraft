@@ -1,3 +1,26 @@
 .sidebarContainer {
-    margin: 0.75rem;
+    margin-right: 0.75rem;
+    margin-left: 0.75rem;
+    width: 220px;
+    transition-property: margin-left, border-radius;
+    transition-duration: 300ms;
+}
+.collapsed {
+    margin-left: 0;
+}
+.collapseContainer {
+    display: grid;
+    height: 100%;
+    grid-template-rows: 1fr auto;
+}
+.muiCollapse {
+    height: 100%;
+    display: flex;
+}
+.icon {
+    transition-property: transform;
+    transition-duration: 300ms;
+}
+.iconCollapsed {
+    transform: rotate(180deg);
 }

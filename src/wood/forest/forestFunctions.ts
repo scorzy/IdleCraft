@@ -8,14 +8,15 @@ import { startTimer } from '../../timers/timerFunctions'
 import { TimerTypes } from '../../timers/Timer'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
+import { memoize } from '../../utils/memoize'
 
-export function selectDefaultForest(woodType: WoodTypes): ForestsState {
+export const selectDefaultForest = memoize(function selectDefaultForest(woodType: WoodTypes): ForestsState {
     const data = WoodData[woodType]
     return {
         hp: data.maxHp,
         qta: data.maxQta,
     }
-}
+})
 
 export function addTree(state: GameState, woodType: WoodTypes, qta: number, location: GameLocations): GameState {
     const def = selectDefaultForest(woodType)

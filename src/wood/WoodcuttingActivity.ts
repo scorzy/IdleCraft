@@ -62,7 +62,7 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
         if (res.cut) {
             //  Add Item
             //  Add exp
-            this.state = addItem(this.state, 'std', null, 1)
+            this.state = addItem(this.state, `${this.data.woodType}Log`, null, 1)
         } else {
             const time = getWoodcuttingTime()
             this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)

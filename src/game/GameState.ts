@@ -3,6 +3,7 @@ import { InitialState } from '../entityAdapter/entityAdapter'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { Item } from '../items/Item'
 import { StorageState } from '../storage/storageState'
 import { Timer } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
@@ -24,6 +25,7 @@ export interface GameState {
         numberFormatNotation: NotationTypes
         lang: string
         woodType: WoodTypes
+        collapsed: { [k: string]: boolean }
     }
     timers: InitialState<Timer>
     loading: boolean
@@ -34,6 +36,7 @@ export interface GameState {
     activityId: string | null
     activityDone: number
     lastActivityDone: number
+    craftedItems: { [k: string]: Item }
     woodcutting: InitialState<Woodcutting>
     locations: { [k in GameLocations]: LocationState }
     treeGrowth: InitialState<TreeGrowth>
