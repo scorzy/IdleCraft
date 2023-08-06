@@ -10,6 +10,7 @@ import { UiStorage } from '../../storage/ui/Storage'
 import { useColorScheme } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import { TbSunHigh, TbMoonStars, TbMenu2 } from 'react-icons/tb'
+import { Activities } from '../../activities/ui/Activities'
 
 export const AppShell = memo(function AppShell() {
     const open = useGameStore((s) => s.ui.open)
@@ -45,6 +46,8 @@ export const PageContent = memo(function PageContent() {
             return <Woodcutting />
         case UiPages.Storage:
             return <UiStorage />
+        case UiPages.Activities:
+            return <Activities />
     }
 })
 

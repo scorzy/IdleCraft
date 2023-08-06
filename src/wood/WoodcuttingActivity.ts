@@ -10,6 +10,9 @@ import { TimerTypes } from '../timers/Timer'
 import { addItem } from '../storage/storageFunctions'
 import { getWoodcuttingDamage, getWoodcuttingTime } from './WoodcuttingSelectors'
 import { hasTrees, cutTree } from './forest/forestFunctions'
+import { ReactNode } from 'react'
+import { WoodData } from './WoodData'
+import { Translations } from '../msg/Msg'
 
 export class WoodcuttingActivityCreator extends AbstractActivityCreator<WoodTypes> {
     protected type = ActivityTypes.Woodcutting
@@ -35,27 +38,17 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
         this.state = { ...this.state, woodcutting: WoodcuttingAdapter.remove(this.state.woodcutting, this.id) }
         return this.state
     }
-    onStart(): StartResult {
-        if (!hasTrees(this.state, this.data.woodType))
-            return {
-                gameState: this.state,
-                result: ActivityStartResult.NotPossible,
-            }
+    onStart(): ActivityStartResult {
+        if (!hasTrees(this.state, this.data.woodType)) return ActivityStartResult.NotPossible
 
         const time = getWoodcuttingTime()
         this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
 
-        return {
-            gameState: this.state,
-            result: ActivityStartResult.Started,
-        }
+        return ActivityStartResult.Started
     }
-    onExec(): StartResult {
-        if (!hasTrees(this.state, this.data.woodType))
-            return {
-                gameState: this.state,
-                result: ActivityStartResult.NotPossible,
-            }
+    onExec(): ActivityStartResult {
+        if (!hasTrees(this.state, this.data.woodType)) return ActivityStartResult.NotPossible
+
         const damage = getWoodcuttingDamage()
         const res = cutTree(this.state, this.data.woodType, damage, this.state.location)
         this.state = res.state
@@ -68,9 +61,13 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
             this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
         }
 
-        return {
-            gameState: this.state,
-            result: res.cut ? ActivityStartResult.Ended : ActivityStartResult.Started,
-        }
+        return res.cut ? ActivityStartResult.Ended : ActivityStartResult.Started
+    }
+
+    getTitleInt(t: Translations): string {
+        return t.fun.cutting(this.data.woodType)
+    }
+    getIcon(): ReactNode {
+        return WoodData[this.data.woodType].icon
     }
 }

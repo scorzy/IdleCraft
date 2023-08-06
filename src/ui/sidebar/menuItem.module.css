@@ -16,7 +16,9 @@
     transition-property: padding-left;
     transition-duration: 300ms;
 }
-.btnCollapsed {
-    --radius: 0;
-    padding-left: 10px;
+@media (min-width: 900px) {
+    .btnCollapsed {
+        --radius: 0;
+        padding-left: 10px;
+    }
 }

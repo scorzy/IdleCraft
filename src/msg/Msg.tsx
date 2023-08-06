@@ -1,9 +1,14 @@
+export type Translations = { t: Msg; fun: MsgFunctions }
+
 export interface Msg {
     Activities: string
     Storage: string
     Woodcutting: string
     Time: string
     Stop: string
+    MoveUp: string
+    MoveDown: string
+    Remove: string
 
     //  Trees
     Cutting: string
@@ -32,4 +37,8 @@ export interface MsgFunctions {
     h: (qta: number, formattedQta: string) => string
     m: (qta: number, formattedQta: string) => string
     s: (qta: number, formattedQta: string) => string
+
+    //
+    cutting: (woodName: keyof Msg) => string
 }
+export type makeMsgFun = (msg: Msg) => MsgFunctions

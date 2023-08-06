@@ -7,19 +7,19 @@ export interface WoodDataType {
     maxHp: number
     maxQta: number
     icon: ReactNode
-    getName: (m: Msg) => string
+    nameId: keyof Msg
 }
 export const WoodData: { [k in WoodTypes]: WoodDataType } = {
     [WoodTypes.DeadTree]: {
         maxHp: 100,
         maxQta: 10,
         icon: <GiDeadWood />,
-        getName: (m: Msg) => m.DeadTree,
+        nameId: 'DeadTree',
     },
     [WoodTypes.Oak]: {
         maxHp: 200,
         maxQta: 5,
         icon: <GiOak />,
-        getName: (m: Msg) => m.Oak,
+        nameId: 'Oak',
     },
 }

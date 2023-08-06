@@ -1,6 +1,7 @@
-import { TbList } from 'react-icons/tb'
+import { TbCube, TbList } from 'react-icons/tb'
 import { UiPages, UiPageData } from './UiPages'
 import { Msg } from '../../msg/Msg'
+import { GiWoodAxe } from 'react-icons/gi'
 
 export const UiPagesData: { [k in UiPages]: UiPageData } = {
     [UiPages.Activities]: {
@@ -9,10 +10,10 @@ export const UiPagesData: { [k in UiPages]: UiPageData } = {
     },
     [UiPages.Storage]: {
         getText: (m: Msg) => m.Storage,
-        icon: <TbList />,
+        icon: <TbCube />,
     },
     [UiPages.Woodcutting]: {
         getText: (m: Msg) => m.Woodcutting,
-        icon: <TbList />,
+        icon: <GiWoodAxe />,
     },
 }

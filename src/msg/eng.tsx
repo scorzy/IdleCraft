@@ -17,12 +17,16 @@ export const engMsg: Msg = {
     Cut: 'Cut',
     Trees: 'Trees',
     GrowingTrees: 'Growing Trees',
+    MoveUp: 'Move Up',
+    MoveDown: 'Move Down',
+    Remove: 'Remove',
 }
-export const engMsgFun: MsgFunctions = {
+export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,
     months: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'month' : 'months'}`,
     days: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'day' : 'days'}`,
     h: (_qta: number, formattedQta: string) => `${formattedQta}h`,
     m: (_qta: number, formattedQta: string) => `${formattedQta}m`,
     s: (_qta: number, formattedQta: string) => `${formattedQta}s`,
-}
+    cutting: (woodName: keyof Msg) => `Cutting ${msg[woodName]}`,
+})

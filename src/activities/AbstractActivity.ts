@@ -1,6 +1,9 @@
 import { GameState } from '../game/GameState'
 import { ActivityAdapter } from './ActivityState'
 import { removeActivityTimers } from '../timers/timerFunctions'
+import { ReactNode } from 'react'
+import { Translations } from '../msg/Msg'
+import { selectTranslations } from '../msg/useTranslations'
 
 export enum ActivityStartResult {
     Started,
@@ -26,21 +29,21 @@ export abstract class AbstractActivity<T> {
     abstract getData(): T
 
     start(): StartResult {
-        const res = this.onStart()
-        if (res.result === ActivityStartResult.NotPossible) this.state = this.remove()
+        const result = this.onStart()
+        if (result === ActivityStartResult.NotPossible) this.state = this.remove()
         this.state = { ...this.state, activityId: this.id }
         return {
-            gameState: res.gameState,
-            result: res.result,
+            gameState: this.state,
+            result,
         }
     }
-    abstract onStart(): StartResult
+    abstract onStart(): ActivityStartResult
 
     exec(): StartResult {
-        const res = this.onExec()
-        if (res.result === ActivityStartResult.NotPossible) {
+        const result = this.onExec()
+        if (result === ActivityStartResult.NotPossible) {
             this.state = this.remove()
-        } else if (res.result === ActivityStartResult.Ended) {
+        } else if (result === ActivityStartResult.Ended) {
             this.state = {
                 ...this.state,
                 activityDone: this.state.activityDone + 1,
@@ -49,11 +52,11 @@ export abstract class AbstractActivity<T> {
             }
         }
         return {
-            gameState: res.gameState,
-            result: res.result,
+            gameState: this.state,
+            result,
         }
     }
-    abstract onExec(): StartResult
+    abstract onExec(): ActivityStartResult
 
     remove(): GameState {
         this.state = this.onRemove()
@@ -75,4 +78,11 @@ export abstract class AbstractActivity<T> {
         return this.state
     }
     abstract onRemove(): GameState
+    getTitle(): string {
+        const t = selectTranslations(this.state)
+        return this.getTitleInt(t)
+    }
+
+    protected abstract getTitleInt(t: Translations): string
+    abstract getIcon(): ReactNode
 }

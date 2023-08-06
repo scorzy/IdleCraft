@@ -71,3 +71,28 @@ export function startNextActivity(state: GameState): GameState {
 
     return state
 }
+
+export const moveActivityNext = (id: string) =>
+    useGameStore.setState((s) => {
+        const index = s.activities.ids.indexOf(id)
+        if (index < 0) return s
+        if (index >= s.activities.ids.length - 1) return s
+        const ids = [...s.activities.ids]
+        const tmp = ids[index + 1]
+        ids[index + 1] = id
+        ids[index] = tmp
+        s = { ...s, activities: { ...s.activities, ids } }
+        return s
+    })
+export const moveActivityPrev = (id: string) =>
+    useGameStore.setState((s) => {
+        const index = s.activities.ids.indexOf(id)
+        if (index < 0) return s
+        if (index < 1) return s
+        const ids = [...s.activities.ids]
+        const tmp = ids[index - 1]
+        ids[index - 1] = id
+        ids[index] = tmp
+        s = { ...s, activities: { ...s.activities, ids } }
+        return s
+    })

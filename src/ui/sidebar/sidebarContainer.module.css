@@ -1,7 +1,7 @@
 .sidebarContainer {
     margin-right: 0.75rem;
     margin-left: 0.75rem;
-    width: 220px;
+
     transition-property: margin-left, border-radius;
     transition-duration: 300ms;
 }
@@ -23,4 +23,9 @@
 }
 .iconCollapsed {
     transform: rotate(180deg);
+}
+@media (min-width: 900px) {
+    .sidebarContainer {
+        width: 220px;
+    }
 }

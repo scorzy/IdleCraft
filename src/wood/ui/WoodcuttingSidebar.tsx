@@ -28,7 +28,7 @@ function TreeLink(props: { woodType: WoodTypes; collapsed: boolean }) {
 
     return (
         <MyListItem
-            text={data.getName(t)}
+            text={t[data.nameId]}
             collapsed={collapsed}
             icon={data.icon}
             active={selected}

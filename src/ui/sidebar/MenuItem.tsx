@@ -16,6 +16,7 @@ export const MenuItem = memo(function MenuItem(props: { page: UiPages }) {
     const data = UiPagesData[page]
     const active = useGameStore((s) => s.ui.page === page)
     const collapsed = useGameStore(isCollapsed('sidebar'))
+
     return (
         <MyListItem
             onClick={() => setPage(page)}
