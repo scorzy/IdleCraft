@@ -9,6 +9,7 @@ export interface Msg {
     MoveUp: string
     MoveDown: string
     Remove: string
+    CraftingUnknown: string
 
     //  Trees
     Cutting: string
@@ -25,6 +26,10 @@ export interface Msg {
     DeadTreeLog: string
     OakLog: string
 
+    //  Planks
+    DeadTreePlank: string
+    OakPlank: string
+
     //  Forest
     DeadTreeForest: string
     OakForest: string
@@ -40,5 +45,6 @@ export interface MsgFunctions {
 
     //
     cutting: (woodName: keyof Msg) => string
+    crafting: (itemNameId: keyof Msg) => string
 }
 export type makeMsgFun = (msg: Msg) => MsgFunctions

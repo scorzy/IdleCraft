@@ -21,18 +21,18 @@ describe('Storage Functions', () => {
     })
     test('Add Item craft 2', () => {
         let state = GetInitialGameState()
-        state.locations.StartVillage.storage.StdItems = { std: 1 }
+        state.locations.StartVillage.storage.StdItems = { OakLog: 1 }
         state.locations.StartVillage.storage.CraftedItems = { std: 1, craft: 2 }
         state = addItem(state, null, 'craft', 3)
         expect(state.locations.StartVillage.storage).toEqual({
-            StdItems: { std: 1 },
+            StdItems: { OakLog: 1 },
             CraftedItems: { std: 1, craft: 5 },
         })
     })
     test('Remove Item 1', () => {
         let state = GetInitialGameState()
-        state.locations.StartVillage.storage.StdItems = { std: 1 }
-        state = removeItem(state, 'std', null, 1)
+        state.locations.StartVillage.storage.StdItems = { OakLog: 1 }
+        state = removeItem(state, 'OakLog', null, 1)
         expect(state.locations.StartVillage.storage).toEqual({
             StdItems: {},
             CraftedItems: {},
@@ -40,10 +40,10 @@ describe('Storage Functions', () => {
     })
     test('Remove Item 2', () => {
         let state = GetInitialGameState()
-        state.locations.StartVillage.storage.StdItems = { std: 10 }
-        state = removeItem(state, 'std', null, 2)
+        state.locations.StartVillage.storage.StdItems = { OakLog: 10 }
+        state = removeItem(state, 'OakLog', null, 2)
         expect(state.locations.StartVillage.storage).toEqual({
-            StdItems: { std: 8 },
+            StdItems: { OakLog: 8 },
             CraftedItems: {},
         })
     })
@@ -75,7 +75,7 @@ describe('Storage Functions', () => {
     })
     test('Has Item No', () => {
         const state = GetInitialGameState()
-        expect(hasItem(state, 'a', null, 1)).toBe(false)
+        expect(hasItem(state, 'DeadTreePlank', null, 1)).toBe(false)
     })
     test('Has Item Yes', () => {
         const state = GetInitialGameState()

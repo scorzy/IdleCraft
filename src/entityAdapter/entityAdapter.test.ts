@@ -40,7 +40,7 @@ describe('EntityAdapter', () => {
     it('update', () => {
         const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }
         const newState = adapter2.update(state, 'first', { name: 'second' })
-        expect(newState).toEqual({ entries: { first: { name: 'second' } }, ids: ['first'] })
+        expect(newState).toEqual({ entries: { first: { id: 'first', name: 'second' } }, ids: ['first'] })
     })
     it('update not exists', () => {
         const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }

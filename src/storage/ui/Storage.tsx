@@ -20,6 +20,7 @@ import classes from './storage.module.css'
 import { setSelectedItem } from '../storageFunctions'
 import { SelectedItem } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
+import { StdItems } from '../../items/stdItems'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
@@ -72,7 +73,7 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
 const StorageItem = memo(function StorageItem(props: {
     isLast: boolean
     location: GameLocations
-    stdItemId: string | null
+    stdItemId: keyof typeof StdItems | null
     craftItemId: string | null
 }) {
     const { isLast, location, stdItemId, craftItemId } = props

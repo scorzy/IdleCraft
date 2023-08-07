@@ -27,7 +27,8 @@ export abstract class AbstractEntityAdapter<T> {
     update(state: InitialState<T>, id: string, data: Partial<T>) {
         const existing = state.entries[id]
         if (existing === undefined) throw new Error(`${id} doesn't exists`)
-        return { ...state, entries: { ...state.entries, [id]: data } }
+        state = { ...state, entries: { ...state.entries, [id]: { ...state.entries[id], ...data } } }
+        return state
     }
     upsertMerge(state: InitialState<T>, data: T) {
         const id = this.getId(data)
@@ -67,6 +68,11 @@ export abstract class AbstractEntityAdapter<T> {
     }
     select(state: InitialState<T>, id: string): T | undefined {
         return state.entries[id]
+    }
+    selectEx(state: InitialState<T>, id: string): T {
+        const ret = state.entries[id]
+        if (ret === undefined) throw new Error(`Data not found ${id}`)
+        return ret
     }
 
     find(state: InitialState<T>, fun: (entity: T) => boolean): T | undefined {

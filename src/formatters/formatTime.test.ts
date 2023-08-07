@@ -1,7 +1,8 @@
 import { formatTime } from './formatTime'
 import { describe, test, expect } from 'vitest'
-import { engMsgFun as t } from '../msg/eng'
+import { messages } from '../msg/allMsg'
 
+const t = messages['eng'].fun
 const f = (num: number) => `${num}`
 
 describe('time formatting', () => {

@@ -2,12 +2,15 @@ import { ReactNode } from 'react'
 import { WoodTypes } from './WoodTypes'
 import { GiDeadWood, GiOak } from 'react-icons/gi'
 import { Msg } from '../msg/Msg'
+import { StdItems } from '../items/stdItems'
 
 export interface WoodDataType {
     maxHp: number
     maxQta: number
     icon: ReactNode
     nameId: keyof Msg
+    logId: keyof typeof StdItems
+    plankId: keyof typeof StdItems
 }
 export const WoodData: { [k in WoodTypes]: WoodDataType } = {
     [WoodTypes.DeadTree]: {
@@ -15,11 +18,15 @@ export const WoodData: { [k in WoodTypes]: WoodDataType } = {
         maxQta: 10,
         icon: <GiDeadWood />,
         nameId: 'DeadTree',
+        logId: 'DeadTreeLog',
+        plankId: 'DeadTreePlank',
     },
     [WoodTypes.Oak]: {
         maxHp: 200,
         maxQta: 5,
         icon: <GiOak />,
         nameId: 'Oak',
+        logId: 'OakLog',
+        plankId: 'OakPlank',
     },
 }

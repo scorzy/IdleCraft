@@ -1,10 +1,12 @@
+import { StdItems } from '../items/stdItems'
+
 export interface ItemId {
-    stdItemId: string | null
+    stdItemId: keyof typeof StdItems | null
     craftItemId: string | null
 }
 export interface StorageState {
     StdItems: {
-        [k: string]: number
+        [k in keyof typeof StdItems]?: number
     }
     CraftedItems: {
         [k: string]: number

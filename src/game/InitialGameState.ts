@@ -1,7 +1,9 @@
 import { ActivityAdapter } from '../activities/ActivityState'
+import { CraftingAdapter } from '../crafting/CraftingAdapter'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { ItemAdapter } from '../storage/storageFunctions'
 import { TimerAdapter } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
 import { WoodTypes } from '../wood/WoodTypes'
@@ -40,12 +42,13 @@ export const InitialGameState: GameState = {
     timers: TimerAdapter.getInitialState(),
     now: Date.now(),
     loading: false,
-    craftedItems: {},
+    craftedItems: ItemAdapter.getInitialState(),
     woodcutting: WoodcuttingAdapter.getInitialState(),
     locations: {
         [GameLocations.StartVillage]: InitialVillageState,
     },
     treeGrowth: TreeGrowthAdapter.getInitialState(),
+    crafting: CraftingAdapter.getInitialState(),
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return

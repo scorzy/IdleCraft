@@ -4,6 +4,8 @@ import { StdItems } from '../items/stdItems'
 import { memoize } from '../utils/memoize'
 import { memoizeOne } from '../utils/memoizeOne'
 import { ItemId } from './storageState'
+import { ItemAdapter } from './storageFunctions'
+import { Entries } from '../utils/types'
 
 export function uniqueItemId(itemId: ItemId): string {
     if (itemId.stdItemId !== null) return `Sdt_${itemId.stdItemId}`
@@ -24,8 +26,8 @@ const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]:
 export const selectStorageLocations = (state: GameState) => selectStorageLocationsInt(state.locations)
 
 export const selectLocationItems = memoize((location: GameLocations) => {
-    const orderItems = memoizeOne((std: { [k: string]: number }, craft: { [k: string]: number }) => {
-        const ret: ItemId[] = Object.entries(std)
+    const orderItems = memoizeOne((std: { [k in keyof typeof StdItems]?: number }, craft: { [k: string]: number }) => {
+        const ret: ItemId[] = (Object.entries<number>(std) as Entries<{ [k in keyof typeof StdItems]: number }>)
             .map<ItemId>((e) => {
                 return {
                     stdItemId: e[0],
@@ -50,16 +52,18 @@ export const selectLocationItems = memoize((location: GameLocations) => {
 })
 
 export const selectItemQta =
-    (location: GameLocations, stdItemId: string | null, craftItemId: string | null) => (state: GameState) => {
+    (location: GameLocations, stdItemId?: keyof typeof StdItems | null, craftItemId?: string | null) =>
+    (state: GameState) => {
         const storage = state.locations[location].storage
         if (stdItemId) return storage.StdItems[stdItemId] ?? 0
         if (craftItemId) return storage.CraftedItems[craftItemId] ?? 0
         return 0
     }
-export const selectItem = (stdItemId: string | null, craftItemId: string | null) => (state: GameState) => {
-    if (stdItemId) return StdItems[stdItemId]
-    if (craftItemId) return state.craftedItems[craftItemId]
-}
+export const selectItem =
+    (stdItemId: keyof typeof StdItems | null, craftItemId: string | null) => (state: GameState) => {
+        if (stdItemId) return StdItems[stdItemId]
+        if (craftItemId) return ItemAdapter.select(state.craftedItems, craftItemId)
+    }
 
 export const getSelectedItem = (state: GameState) => {
     if (state.ui.selectedItemLocation === null) return

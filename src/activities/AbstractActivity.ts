@@ -59,7 +59,7 @@ export abstract class AbstractActivity<T> {
     abstract onExec(): ActivityStartResult
 
     remove(): GameState {
-        this.state = this.onRemove()
+        this.onRemove()
         const activityId = this.id
         const lastActivityDone =
             this.state.lastActivityDone >= this.state.orderedActivities.indexOf(activityId)
@@ -77,7 +77,7 @@ export abstract class AbstractActivity<T> {
 
         return this.state
     }
-    abstract onRemove(): GameState
+    abstract onRemove(): void
     getTitle(): string {
         const t = selectTranslations(this.state)
         return this.getTitleInt(t)

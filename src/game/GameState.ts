@@ -1,9 +1,11 @@
 import { ActivityState } from '../activities/ActivityState'
+import { Crafting } from '../crafting/CraftingIterfaces'
 import { InitialState } from '../entityAdapter/entityAdapter'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
+import { StdItems } from '../items/stdItems'
 import { StorageState } from '../storage/storageState'
 import { Timer } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
@@ -26,7 +28,7 @@ export interface GameState {
         lang: string
         collapsed: { [k: string]: boolean }
         woodType: WoodTypes
-        selectedStdItemId: string | null
+        selectedStdItemId: keyof typeof StdItems | null
         selectedCraftedItemId: string | null
         selectedItemLocation: GameLocations | null
     }
@@ -39,8 +41,9 @@ export interface GameState {
     activityId: string | null
     activityDone: number
     lastActivityDone: number
-    craftedItems: { [k: string]: Item }
+    craftedItems: InitialState<Item>
     woodcutting: InitialState<Woodcutting>
     locations: { [k in GameLocations]: LocationState }
     treeGrowth: InitialState<TreeGrowth>
+    crafting: InitialState<Crafting>
 }

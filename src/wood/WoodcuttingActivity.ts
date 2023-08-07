@@ -1,6 +1,5 @@
-import { AbstractActivity, StartResult, ActivityStartResult } from '../activities/AbstractActivity'
+import { AbstractActivity, ActivityStartResult } from '../activities/AbstractActivity'
 import { ActivityTypes } from '../activities/ActivityState'
-import { GameState } from '../game/GameState'
 import { Woodcutting } from './WoodInterfaces'
 import { WoodcuttingAdapter } from './WoodcuttingAdapter'
 import { WoodTypes } from './WoodTypes'
@@ -29,14 +28,11 @@ export class WoodcuttingActivityCreator extends AbstractActivityCreator<WoodType
 
 export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
     getData(): Woodcutting {
-        const ret = WoodcuttingAdapter.select(this.state.woodcutting, this.id)
-        if (ret === undefined) throw new Error(`[getData] woodcutting not found ${this.id}`)
-        return ret
+        return WoodcuttingAdapter.selectEx(this.state.woodcutting, this.id)
     }
 
-    onRemove(): GameState {
+    onRemove() {
         this.state = { ...this.state, woodcutting: WoodcuttingAdapter.remove(this.state.woodcutting, this.id) }
-        return this.state
     }
     onStart(): ActivityStartResult {
         if (!hasTrees(this.state, this.data.woodType)) return ActivityStartResult.NotPossible
