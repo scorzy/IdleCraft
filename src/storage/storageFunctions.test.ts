@@ -5,9 +5,9 @@ import { addItem, hasItem, removeItem } from './storageFunctions'
 describe('Storage Functions', () => {
     test('Add Item', () => {
         let state = GetInitialGameState()
-        state = addItem(state, 'std', null, 1)
+        state = addItem(state, 'OakLog', null, 1)
         expect(state.locations.StartVillage.storage).toEqual({
-            StdItems: { std: 1 },
+            StdItems: { OakLog: 1 },
             CraftedItems: {},
         })
     })

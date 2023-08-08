@@ -30,6 +30,12 @@ export abstract class AbstractEntityAdapter<T> {
         state = { ...state, entries: { ...state.entries, [id]: { ...state.entries[id], ...data } } }
         return state
     }
+    replace(state: InitialState<T>, id: string, data: T) {
+        const existing = state.entries[id]
+        if (existing === undefined) throw new Error(`${id} doesn't exists`)
+        state = { ...state, entries: { ...state.entries, [id]: data } }
+        return state
+    }
     upsertMerge(state: InitialState<T>, data: T) {
         const id = this.getId(data)
         const existing = state.entries[id]

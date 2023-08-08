@@ -43,6 +43,7 @@ function subAddItem(
 
     return state
 }
+
 function subHasItem(
     state: StorageState,
     stdItemId: keyof typeof StdItems | null,
@@ -67,6 +68,7 @@ export function addItem(
     state = { ...state, locations: { ...state.locations, [location]: { ...state.locations[location], storage } } }
     return state
 }
+
 export function removeItem(
     state: GameState,
     stdItemId: keyof typeof StdItems | null,
@@ -76,6 +78,7 @@ export function removeItem(
 ): GameState {
     return addItem(state, stdItemId, craftItemId, qta * -1, location)
 }
+
 export function hasItem(
     state: GameState,
     stdItemId: keyof typeof StdItems | null,
@@ -102,12 +105,44 @@ export const setSelectedItem = (
         },
     }))
 
+const craftIdsByType = new Map<string, string[]>()
+
 export function saveCraftItem(state: InitialState<Item>, item: Item): { id: string; state: InitialState<Item> } {
+    const byType = craftIdsByType.get(item.type)
+    if (byType) {
+        for (const id of byType) {
+            const itemByType = ItemAdapter.select(state, id)
+            if (itemByType && myCompare(item, itemByType)) {
+                return {
+                    id: itemByType.id,
+                    state,
+                }
+            }
+        }
+    }
+
     const res = ItemAdapter.find(state, (i) => myCompare(i, item))
     if (res) return { id: res.id, state }
 
     const newItem = { ...item, id: getUniqueId() }
     state = ItemAdapter.create(state, newItem)
 
+    craftIdsByType.set(newItem.type, [...(byType ?? []), newItem.id])
+
     return { id: newItem.id, state }
+}
+export function removeCraftItem(state: InitialState<Item>, id: string): InitialState<Item> {
+    const item = ItemAdapter.select(state, id)
+    const ret = ItemAdapter.remove(state, id)
+
+    if (!item) return ret
+
+    const arr = craftIdsByType.get(item.type)
+    if (!arr) return ret
+
+    const newArr = arr.filter((a) => a !== id)
+    if (newArr.length < 1) craftIdsByType.delete(item.type)
+    else craftIdsByType.set(item.type, newArr)
+
+    return ret
 }

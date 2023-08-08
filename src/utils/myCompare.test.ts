@@ -34,15 +34,15 @@ describe('myCompare', () => {
         const a = { id: 2, a: 'aaa', arr: [] }
         const b = { id: 1, a: 'aaa' }
 
-        expect(myCompare(a, b)).toBeTruthy()
-        expect(myCompare(b, a)).toBeTruthy()
+        expect(myCompare(a, b)).toBeFalsy()
+        expect(myCompare(b, a)).toBeFalsy()
     })
     test('myCompare 7', () => {
         const a = { id: 5, a: 'aaa', obj: {} }
         const b = { id: 1, a: 'aaa' }
 
-        expect(myCompare(a, b)).toBeTruthy()
-        expect(myCompare(b, a)).toBeTruthy()
+        expect(myCompare(a, b)).toBeFalsy()
+        expect(myCompare(b, a)).toBeFalsy()
     })
     test('myCompare 8', () => {
         const a = { id: 1, a: 'aaa' }

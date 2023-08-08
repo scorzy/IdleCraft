@@ -4,9 +4,7 @@ import { StdItems } from '../items/stdItems'
 import { WoodData } from './WoodData'
 
 const LogToPlank = new Map<keyof typeof StdItems, keyof typeof StdItems>()
-Object.values(WoodData).forEach((w) => {
-    LogToPlank.set(w.logId, w.plankId)
-})
+Object.values(WoodData).forEach((w) => LogToPlank.set(w.logId, w.plankId))
 
 const plankParam: RecipeParameter[] = [
     {

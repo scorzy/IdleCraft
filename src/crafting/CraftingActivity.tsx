@@ -15,14 +15,13 @@ import { GiCube } from 'react-icons/gi'
 
 export class CraftingActivity extends AbstractActivity<Crafting> {
     recipe: Recipe
-    craftResult: RecipeResult | undefined
     constructor(state: GameState, id: string) {
         super(state, id)
         this.recipe = Recipes[this.data.recipeId]
     }
-    canCraft(): boolean {
-        if (this.craftResult === undefined) return false
-        for (const r of this.craftResult.requirements)
+    canCraft(craftResult: RecipeResult): boolean {
+        if (craftResult === undefined) return false
+        for (const r of craftResult.requirements)
             if (selectItemQta(this.state.location, r.stdItem, r.craftedItem)(this.state) < r.qta) return false
         return true
     }
@@ -30,33 +29,30 @@ export class CraftingActivity extends AbstractActivity<Crafting> {
         return CraftingAdapter.selectEx(this.state.crafting, this.id)
     }
     onStart(): ActivityStartResult {
-        this.craftResult = this.recipe.getResult(this.state, this.data.params)
-        if (this.craftResult === undefined) return ActivityStartResult.NotPossible
-        if (!this.canCraft()) return ActivityStartResult.NotPossible
+        const craftResult = this.recipe.getResult(this.state, this.data.params)
+        if (craftResult === undefined) return ActivityStartResult.NotPossible
+        if (!this.canCraft(craftResult)) return ActivityStartResult.NotPossible
 
         this.state = {
             ...this.state,
-            crafting: CraftingAdapter.update(this.state.crafting, this.id, { result: this.craftResult }),
+            crafting: CraftingAdapter.update(this.state.crafting, this.id, { result: craftResult }),
         }
 
-        this.state = startTimer(this.state, this.craftResult.time, TimerTypes.Activity, this.id)
+        this.state = startTimer(this.state, craftResult.time, TimerTypes.Activity, this.id)
 
         return ActivityStartResult.Started
     }
     onExec(): ActivityStartResult {
         if (this.data.result === undefined) return ActivityStartResult.NotPossible
-        this.craftResult = this.data.result
-        if (!this.canCraft()) return ActivityStartResult.NotPossible
+        const craftResult = this.data.result
+        if (!this.canCraft(craftResult)) return ActivityStartResult.NotPossible
 
-        if (this.craftResult.results.craftedItem) {
-            const { id, state: craftedItems } = saveCraftItem(
-                this.state.craftedItems,
-                this.craftResult.results.craftedItem
-            )
+        if (craftResult.results.craftedItem) {
+            const { id, state: craftedItems } = saveCraftItem(this.state.craftedItems, craftResult.results.craftedItem)
             this.state = { ...this.state, craftedItems }
-            this.state = addItem(this.state, null, id, this.craftResult.results.qta)
-        } else if (this.craftResult.results.stdItem) {
-            this.state = addItem(this.state, this.craftResult.results.stdItem, null, this.craftResult.results.qta)
+            this.state = addItem(this.state, null, id, craftResult.results.qta)
+        } else if (craftResult.results.stdItem) {
+            this.state = addItem(this.state, craftResult.results.stdItem, null, craftResult.results.qta)
         }
 
         return ActivityStartResult.Ended
