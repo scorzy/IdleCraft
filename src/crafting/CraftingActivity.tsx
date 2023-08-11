@@ -22,7 +22,7 @@ export class CraftingActivity extends AbstractActivity<Crafting> {
     canCraft(craftResult: RecipeResult): boolean {
         if (craftResult === undefined) return false
         for (const r of craftResult.requirements)
-            if (selectItemQta(this.state.location, r.stdItem, r.craftedItem)(this.state) < r.qta) return false
+            if (selectItemQta(this.state.location, r.stdItemId, r.craftedItemId)(this.state) < r.qta) return false
         return true
     }
     getData(): Crafting {
@@ -47,12 +47,15 @@ export class CraftingActivity extends AbstractActivity<Crafting> {
         const craftResult = this.data.result
         if (!this.canCraft(craftResult)) return ActivityStartResult.NotPossible
 
-        if (craftResult.results.craftedItem) {
-            const { id, state: craftedItems } = saveCraftItem(this.state.craftedItems, craftResult.results.craftedItem)
+        if (craftResult.results.craftedItemId) {
+            const { id, state: craftedItems } = saveCraftItem(
+                this.state.craftedItems,
+                craftResult.results.craftedItemId
+            )
             this.state = { ...this.state, craftedItems }
             this.state = addItem(this.state, null, id, craftResult.results.qta)
-        } else if (craftResult.results.stdItem) {
-            this.state = addItem(this.state, craftResult.results.stdItem, null, craftResult.results.qta)
+        } else if (craftResult.results.stdItemId) {
+            this.state = addItem(this.state, craftResult.results.stdItemId, null, craftResult.results.qta)
         }
 
         return ActivityStartResult.Ended
@@ -61,14 +64,15 @@ export class CraftingActivity extends AbstractActivity<Crafting> {
         this.state = { ...this.state, crafting: CraftingAdapter.remove(this.state.crafting, this.id) }
     }
     protected getTitleInt(t: Translations): string {
-        if (this.data.result.results.stdItem) return t.fun.crafting(StdItems[this.data.result.results.stdItem].nameId)
-        else if (this.data.result.results.craftedItem)
-            return t.fun.crafting(this.data.result.results.craftedItem.nameId)
+        if (this.data.result.results.stdItemId)
+            return t.fun.crafting(StdItems[this.data.result.results.stdItemId].nameId)
+        else if (this.data.result.results.craftedItemId)
+            return t.fun.crafting(this.data.result.results.craftedItemId.nameId)
         else return t.t.CraftingUnknown
     }
     getIcon(): ReactNode {
-        if (this.data.result.results.stdItem) return StdItems[this.data.result.results.stdItem].icon
-        else if (this.data.result.results.craftedItem) return this.data.result.results.craftedItem.icon
+        if (this.data.result.results.stdItemId) return StdItems[this.data.result.results.stdItemId].icon
+        else if (this.data.result.results.craftedItemId) return this.data.result.results.craftedItemId.icon
         else return <GiCube />
     }
 }

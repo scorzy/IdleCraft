@@ -54,6 +54,7 @@ export function addTree(state: GameState, woodType: WoodTypes, qta: number, loca
             },
         },
     }
+
     return state
 }
 export function cutTree(

@@ -9,6 +9,7 @@ export const Sidebar = memo(function Sidebar() {
             <MenuItem page={UiPages.Activities} />
             <MenuItem page={UiPages.Storage} />
             <MenuItem page={UiPages.Woodcutting} />
+            <MenuItem page={UiPages.Woodworking} />
         </SidebarContainer>
     )
 })

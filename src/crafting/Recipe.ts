@@ -1,24 +1,35 @@
 import { GameState } from '../game/GameState'
-import { Item } from '../items/Item'
-import { StdItems } from '../items/stdItems'
+import { Item, ItemTypes } from '../items/Item'
+import { Msg } from '../msg/Msg'
+
+export enum RecipeTypes {
+    Woodworking = 'Woodworking',
+}
 export enum RecipeParamType {
     ItemType = 'ItemType',
 }
+
 export interface RecipeParameter {
     id: string
-    nameId: string
+    nameId: keyof Msg
     type: RecipeParamType
-    stdItem?: keyof typeof StdItems
+    itemType?: ItemTypes
+    stdItem?: string
+}
+export interface RecipeParameterValue {
+    id: string
+    stdItemId?: string | null
+    craftItemId?: string | null
 }
 export interface RecipeItemReq {
     qta: number
-    stdItem?: keyof typeof StdItems
-    craftedItem?: string
+    stdItemId?: string | null
+    craftedItemId?: string | null
 }
 export interface RecipeItem {
     qta: number
-    stdItem?: keyof typeof StdItems
-    craftedItem?: Item
+    stdItemId?: string
+    craftedItemId?: Item
 }
 export interface RecipeResult {
     time: number
@@ -27,6 +38,8 @@ export interface RecipeResult {
 }
 export interface Recipe {
     id: string
+    nameId: keyof Msg
+    type: RecipeTypes
     getParameters(state: GameState): RecipeParameter[]
-    getResult(state: GameState, params: RecipeParameter[]): RecipeResult | undefined
+    getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined
 }

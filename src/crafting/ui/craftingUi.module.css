@@ -1,0 +1,5 @@
+.craftingForm {
+    display: grid;
+    grid-auto-flow: 1fr;
+    gap: 4px;
+}

@@ -35,8 +35,12 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
         this.state = { ...this.state, woodcutting: WoodcuttingAdapter.remove(this.state.woodcutting, this.id) }
     }
     onStart(): ActivityStartResult {
-        if (!hasTrees(this.state, this.data.woodType)) return ActivityStartResult.NotPossible
+        if (!hasTrees(this.state, this.data.woodType)) {
+            this.state = { ...this.state, waitingTrees: this.id }
+            return ActivityStartResult.Started
+        }
 
+        this.state = { ...this.state, waitingTrees: null }
         const time = getWoodcuttingTime()
         this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
 

@@ -3,10 +3,9 @@ import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
-import { StdItems } from '../items/stdItems'
 import { getUniqueId } from '../utils/getUniqueId'
 import { myCompare } from '../utils/myCompare'
-import { StorageState } from './storageState'
+import { ItemId, StorageState } from './storageState'
 
 class ItemAdapterInt extends AbstractEntityAdapter<Item> {
     getId(data: Item): string {
@@ -14,6 +13,14 @@ class ItemAdapterInt extends AbstractEntityAdapter<Item> {
     }
 }
 export const ItemAdapter = new ItemAdapterInt()
+export const getItemId2 = (stdItemId: string | null | undefined, craftItemId: string | null | undefined) =>
+    stdItemId ? `s${stdItemId}` : craftItemId ? `c${craftItemId}` : ''
+
+export function getItemId(s: string): ItemId | undefined {
+    if (!s || s === '') return
+    if (s.startsWith('s')) return { stdItemId: s.substring(1), craftItemId: null }
+    else return { craftItemId: s.substring(1), stdItemId: null }
+}
 
 function subAddItem(
     state: StorageState,
@@ -44,12 +51,7 @@ function subAddItem(
     return state
 }
 
-function subHasItem(
-    state: StorageState,
-    stdItemId: keyof typeof StdItems | null,
-    craftItemId: string | null,
-    qta: number
-): boolean {
+function subHasItem(state: StorageState, stdItemId: string | null, craftItemId: string | null, qta: number): boolean {
     if (stdItemId !== null) return (state.StdItems[stdItemId] ?? 0) >= qta
     else if (craftItemId !== null) return (state.CraftedItems[craftItemId] ?? 0) >= qta
     else throw new Error('[hasItem] stdItemId and craftItemId null')
@@ -57,7 +59,7 @@ function subHasItem(
 
 export function addItem(
     state: GameState,
-    stdItemId: keyof typeof StdItems | null,
+    stdItemId: string | null,
     craftItemId: string | null,
     qta: number,
     location?: GameLocations
@@ -71,7 +73,7 @@ export function addItem(
 
 export function removeItem(
     state: GameState,
-    stdItemId: keyof typeof StdItems | null,
+    stdItemId: string | null,
     craftItemId: string | null,
     qta: number,
     location?: GameLocations
@@ -81,7 +83,7 @@ export function removeItem(
 
 export function hasItem(
     state: GameState,
-    stdItemId: keyof typeof StdItems | null,
+    stdItemId: string | null,
     craftItemId: string | null,
     qta: number,
     location?: GameLocations
@@ -91,11 +93,7 @@ export function hasItem(
     return subHasItem(storage, stdItemId, craftItemId, qta)
 }
 
-export const setSelectedItem = (
-    stdItemId: keyof typeof StdItems | null,
-    craftItemId: string | null,
-    location: GameLocations
-) =>
+export const setSelectedItem = (stdItemId: string | null, craftItemId: string | null, location: GameLocations) =>
     useGameStore.setState((s) => ({
         ui: {
             ...s.ui,

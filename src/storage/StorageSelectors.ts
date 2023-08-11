@@ -6,12 +6,8 @@ import { memoizeOne } from '../utils/memoizeOne'
 import { ItemId } from './storageState'
 import { ItemAdapter } from './storageFunctions'
 import { Entries } from '../utils/types'
-
-export function uniqueItemId(itemId: ItemId): string {
-    if (itemId.stdItemId !== null) return `Sdt_${itemId.stdItemId}`
-    if (itemId.craftItemId !== null) return `Craft_${itemId.craftItemId}`
-    throw new Error(`[uniqueItemId] ${JSON.stringify(itemId)}`)
-}
+import { Item, ItemTypes } from '../items/Item'
+import { InitialState } from '../entityAdapter/entityAdapter'
 
 const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]: LocationState }) => {
     const res: GameLocations[] = []
@@ -26,8 +22,8 @@ const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]:
 export const selectStorageLocations = (state: GameState) => selectStorageLocationsInt(state.locations)
 
 export const selectLocationItems = memoize((location: GameLocations) => {
-    const orderItems = memoizeOne((std: { [k in keyof typeof StdItems]?: number }, craft: { [k: string]: number }) => {
-        const ret: ItemId[] = (Object.entries<number>(std) as Entries<{ [k in keyof typeof StdItems]: number }>)
+    const orderItems = memoizeOne((std: { [k in string]: number }, craft: { [k: string]: number }) => {
+        const ret: ItemId[] = (Object.entries<number>(std) as Entries<{ [k in string]: number }>)
             .map<ItemId>((e) => {
                 return {
                     stdItemId: e[0],
@@ -52,15 +48,15 @@ export const selectLocationItems = memoize((location: GameLocations) => {
 })
 
 export const selectItemQta =
-    (location: GameLocations, stdItemId?: keyof typeof StdItems | null, craftItemId?: string | null) =>
-    (state: GameState) => {
+    (location: GameLocations | null, stdItemId?: string | null, craftItemId?: string | null) => (state: GameState) => {
+        location = location ?? state.location
         const storage = state.locations[location].storage
         if (stdItemId) return storage.StdItems[stdItemId] ?? 0
         if (craftItemId) return storage.CraftedItems[craftItemId] ?? 0
         return 0
     }
 export const selectItem =
-    (stdItemId: keyof typeof StdItems | null, craftItemId: string | null) => (state: GameState) => {
+    (stdItemId: string | null | undefined, craftItemId: string | null | undefined) => (state: GameState) => {
         if (stdItemId) return StdItems[stdItemId]
         if (craftItemId) return ItemAdapter.select(state.craftedItems, craftItemId)
     }
@@ -79,3 +75,37 @@ export const getSelectedItemQta = (state: GameState) => {
         state.ui.selectedCraftedItemId
     )(state)
 }
+
+const getSortId = (i: ItemId) => (i.stdItemId ? `1${i.stdItemId}` : '') + (i.craftItemId ? `2${i.craftItemId}` : '')
+export const selectItemsByType = memoize(function (itemType: ItemTypes | undefined): (state: GameState) => ItemId[] {
+    const getStdItems = memoizeOne((std: { [k in string]?: number }) => {
+        const ret: ItemId[] = []
+        for (const stdItemId of Object.keys(std)) {
+            const item = StdItems[stdItemId]
+            if (item?.type === itemType) ret.push({ stdItemId, craftItemId: null })
+        }
+        return ret
+    })
+    const getCraftItems = memoizeOne((craft: { [k: string]: number }, crafted: InitialState<Item>) => {
+        const ret: ItemId[] = []
+        for (const craftItemId of Object.keys(craft)) {
+            const item = ItemAdapter.select(crafted, craftItemId)
+            if (item?.type === itemType) ret.push({ stdItemId: null, craftItemId })
+        }
+        return ret
+    })
+
+    const combine = memoizeOne((std: ItemId[], craft: ItemId[]) => {
+        return std.concat(craft).sort((a, b) => getSortId(a).localeCompare(getSortId(b)))
+    })
+
+    return (state: GameState) => {
+        if (!itemType) return []
+
+        const loc = state.locations[state.location]
+
+        const std = getStdItems(loc.storage.StdItems)
+        const crafted = getCraftItems(loc.storage.CraftedItems, state.craftedItems)
+        return combine(std, crafted)
+    }
+})

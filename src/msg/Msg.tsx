@@ -10,6 +10,12 @@ export interface Msg {
     MoveDown: string
     Remove: string
     CraftingUnknown: string
+    Woodworking: string
+    Log: string
+    None: string
+    Recipe: string
+    Plank: string
+    Requirements: string
 
     //  Trees
     Cutting: string

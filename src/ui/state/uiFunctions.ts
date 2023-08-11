@@ -1,11 +1,16 @@
 import { useGameStore } from '../../game/state'
 import { UiPages } from './UiPages'
 import { WoodTypes } from '../../wood/WoodTypes'
+import { UiPagesData } from './UiPagesData'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
 
 export const toggle = () => useGameStore.setState((s) => ({ ui: { ...s.ui, open: !s.ui.open } }))
-export const setPage = (page: UiPages) => useGameStore.setState((s) => ({ ui: { ...s.ui, page, open: false } }))
+export const setPage = (page: UiPages) =>
+    useGameStore.setState((s) => {
+        const data = UiPagesData[page]
+        return { ui: { ...s.ui, page, open: false, recipeType: data.recipeType } }
+    })
 export const setWood = (woodType: WoodTypes) => useGameStore.setState((s) => ({ ui: { ...s.ui, woodType } }))
 
 export const collapse = (id: string) =>

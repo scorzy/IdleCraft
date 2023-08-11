@@ -52,11 +52,20 @@ body {
     grid-template-columns: 1fr;
     align-items: start;
 }
-
+@container (min-width: 600px) {
+    .my-container-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
 @container (min-width: 768px) {
     .my-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
+    }
+    .my-container-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
     }
 }
 

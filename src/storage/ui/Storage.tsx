@@ -1,12 +1,6 @@
 import { useGameStore } from '../../game/state'
 import { GameLocations } from '../../gameLocations/GameLocations'
-import {
-    selectItem,
-    selectItemQta,
-    selectLocationItems,
-    selectStorageLocations,
-    uniqueItemId,
-} from '../StorageSelectors'
+import { selectItem, selectItemQta, selectLocationItems, selectStorageLocations } from '../StorageSelectors'
 import { Page } from '../../ui/shell/AppShell'
 import List from '@mui/material/List'
 import { Collapse, Divider, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
@@ -17,10 +11,9 @@ import { MyCard } from '../../ui/myCard/myCard'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
 import classes from './storage.module.css'
-import { setSelectedItem } from '../storageFunctions'
+import { getItemId2, setSelectedItem } from '../storageFunctions'
 import { SelectedItem } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
-import { StdItems } from '../../items/stdItems'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
@@ -57,7 +50,7 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
                 <List dense component="div" disablePadding>
                     {items.map((i, index) => (
                         <StorageItem
-                            key={uniqueItemId(i)}
+                            key={getItemId2(i.stdItemId, i.craftItemId)}
                             isLast={index >= len - 1}
                             stdItemId={i.stdItemId}
                             craftItemId={i.craftItemId}
@@ -73,7 +66,7 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
 const StorageItem = memo(function StorageItem(props: {
     isLast: boolean
     location: GameLocations
-    stdItemId: keyof typeof StdItems | null
+    stdItemId: string | null
     craftItemId: string | null
 }) {
     const { isLast, location, stdItemId, craftItemId } = props

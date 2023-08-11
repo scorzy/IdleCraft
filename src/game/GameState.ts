@@ -1,11 +1,11 @@
 import { ActivityState } from '../activities/ActivityState'
 import { Crafting } from '../crafting/CraftingIterfaces'
+import { RecipeParameter, RecipeParameterValue, RecipeResult, RecipeTypes } from '../crafting/Recipe'
 import { InitialState } from '../entityAdapter/entityAdapter'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
-import { StdItems } from '../items/stdItems'
 import { StorageState } from '../storage/storageState'
 import { Timer } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
@@ -28,9 +28,10 @@ export interface GameState {
         lang: string
         collapsed: { [k: string]: boolean }
         woodType: WoodTypes
-        selectedStdItemId: keyof typeof StdItems | null
+        selectedStdItemId: string | null
         selectedCraftedItemId: string | null
         selectedItemLocation: GameLocations | null
+        recipeType?: RecipeTypes
     }
     timers: InitialState<Timer>
     loading: boolean
@@ -43,7 +44,14 @@ export interface GameState {
     lastActivityDone: number
     craftedItems: InitialState<Item>
     woodcutting: InitialState<Woodcutting>
+    waitingTrees: string | null
     locations: { [k in GameLocations]: LocationState }
     treeGrowth: InitialState<TreeGrowth>
     crafting: InitialState<Crafting>
+    recipeId: string
+    craftingForm: {
+        params: RecipeParameter[]
+        paramsValue: RecipeParameterValue[]
+        result: RecipeResult | undefined
+    }
 }

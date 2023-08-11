@@ -1,4 +1,4 @@
-import { execActivityOnTimer } from '../activities/activityFunctions'
+import { execActivityOnTimer, startNextActivity } from '../activities/activityFunctions'
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { getUniqueId } from '../utils/getUniqueId'
@@ -47,7 +47,10 @@ export function onTimer(state: GameState, timerId: string) {
     const actId = timer.actId
     if (actId) {
         if (timer.type === TimerTypes.Tree) {
-            return growTree(state, actId)
+            state = growTree(state, actId)
+            if (state.waitingTrees === state.activityId) state = startNextActivity(state)
+
+            return state
         }
 
         state = execActivityOnTimer(state, actId)

@@ -16,13 +16,13 @@ export const WoodItems = {
     },
     DeadTreePlank: {
         id: 'DeadTreePlank',
-        icon: Icons.Log,
+        icon: Icons.Plank,
         nameId: 'DeadTreePlank',
         type: ItemTypes.Plank,
     },
     OakPlank: {
         id: 'OakPlank',
-        icon: Icons.Log,
+        icon: Icons.Plank,
         nameId: 'OakPlank',
         type: ItemTypes.Plank,
     },

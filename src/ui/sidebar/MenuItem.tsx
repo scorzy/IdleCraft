@@ -20,7 +20,7 @@ export const MenuItem = memo(function MenuItem(props: { page: UiPages }) {
     return (
         <MyListItem
             onClick={() => setPage(page)}
-            text={data.getText(t)}
+            text={t[data.nameId]}
             active={active}
             icon={data.icon}
             collapsed={collapsed}

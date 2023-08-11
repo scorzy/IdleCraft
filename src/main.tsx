@@ -58,6 +58,16 @@ const theme = extendTheme({
                 },
             },
         },
+        MuiFormControl: {
+            defaultProps: {
+                variant: 'standard',
+            },
+        },
+        MuiMenuItem: {
+            defaultProps: {
+                dense: true,
+            },
+        },
     },
 })
 

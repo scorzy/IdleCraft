@@ -1,9 +1,16 @@
-import { Recipe, RecipeParamType, RecipeParameter, RecipeResult } from '../crafting/Recipe'
+import {
+    Recipe,
+    RecipeParamType,
+    RecipeParameter,
+    RecipeParameterValue,
+    RecipeResult,
+    RecipeTypes,
+} from '../crafting/Recipe'
 import { GameState } from '../game/GameState'
-import { StdItems } from '../items/stdItems'
+import { ItemTypes } from '../items/Item'
 import { WoodData } from './WoodData'
 
-const LogToPlank = new Map<keyof typeof StdItems, keyof typeof StdItems>()
+const LogToPlank = new Map<string, string>()
 Object.values(WoodData).forEach((w) => LogToPlank.set(w.logId, w.plankId))
 
 const plankParam: RecipeParameter[] = [
@@ -11,29 +18,32 @@ const plankParam: RecipeParameter[] = [
         id: 'log',
         nameId: 'Log',
         type: RecipeParamType.ItemType,
+        itemType: ItemTypes.Log,
     },
 ]
 export const PlankRecipe: Recipe = {
     id: 'PlankRecipe',
+    type: RecipeTypes.Woodworking,
+    nameId: 'Plank',
     getParameters: function (_state: GameState): RecipeParameter[] {
         return plankParam
     },
-    getResult: function (_state: GameState, params: RecipeParameter[]): RecipeResult | undefined {
+    getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const log = params.find((i) => i.id === 'log')
         if (log === undefined) return
-        if (log.stdItem === undefined) return
+        if (!log.stdItemId) return
 
         return {
             time: 3e3,
             requirements: [
                 {
                     qta: 1,
-                    stdItem: log.stdItem,
+                    stdItemId: log.stdItemId,
                 },
             ],
             results: {
                 qta: 1,
-                stdItem: LogToPlank.get(log.stdItem),
+                stdItemId: LogToPlank.get(log.stdItemId),
             },
         }
     },

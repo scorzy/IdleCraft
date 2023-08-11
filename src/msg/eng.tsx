@@ -4,6 +4,7 @@ export const engMsg: Msg = {
     Activities: 'Activities',
     Storage: 'Storage',
     Woodcutting: 'Woodcutting',
+    Woodworking: 'Woodworking',
     Time: 'Time',
     Stop: 'Stop',
     CraftingUnknown: 'Crafting ??',
@@ -23,6 +24,11 @@ export const engMsg: Msg = {
     MoveUp: 'Move Up',
     MoveDown: 'Move Down',
     Remove: 'Remove',
+    Log: 'Log',
+    None: 'None',
+    Recipe: 'Recipe',
+    Plank: 'Plank',
+    Requirements: 'Requirements',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

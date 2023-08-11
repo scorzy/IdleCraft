@@ -44,11 +44,18 @@ export const InitialGameState: GameState = {
     loading: false,
     craftedItems: ItemAdapter.getInitialState(),
     woodcutting: WoodcuttingAdapter.getInitialState(),
+    waitingTrees: null,
     locations: {
         [GameLocations.StartVillage]: InitialVillageState,
     },
     treeGrowth: TreeGrowthAdapter.getInitialState(),
     crafting: CraftingAdapter.getInitialState(),
+    recipeId: '',
+    craftingForm: {
+        params: [],
+        paramsValue: [],
+        result: undefined,
+    },
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return

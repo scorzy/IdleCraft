@@ -15,7 +15,7 @@ export const selectForest = memoize((woodType: WoodTypes) => (state: GameState) 
     return selectDefaultForest(woodType)
 })
 
-export const selectTreeGrowthTime = () => 30e3
+export const selectTreeGrowthTime = () => 60e3
 export const selectForestQta = memoize((woodType: WoodTypes) => (state: GameState) => selectForest(woodType)(state).qta)
 
 const selectGrowingTreesInt = (
@@ -36,7 +36,6 @@ const selectGrowingTreesInt = (
 }
 
 export const selectGrowingTrees = memoize((woodType: WoodTypes) => {
-    console.log('selectGrowingTrees')
     const memo = memoizeOne(selectGrowingTreesInt)
     return (state: GameState) => memo(woodType, state.location, state.treeGrowth, state.timers)
 })
