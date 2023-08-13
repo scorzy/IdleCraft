@@ -1,33 +1,31 @@
 import classes from './appShell.module.css'
 import { useGameStore } from '../../game/state'
 import { clsx } from 'clsx'
-import { toggle } from '../state/uiFunctions'
 import { UiPages } from '../state/UiPages'
 import { ReactNode, memo } from 'react'
 import { Woodcutting } from '../../wood/ui/Woodcutting'
 import { Sidebar } from '../sidebar/Sidebar'
 import { UiStorage } from '../../storage/ui/Storage'
-import { useColorScheme } from '@mui/material/styles'
-import IconButton from '@mui/material/IconButton'
-import { TbSunHigh, TbMoonStars, TbMenu2 } from 'react-icons/tb'
 import { Activities } from '../../activities/ui/Activities'
 import { CraftingUi } from '../../crafting/ui/CraftingUi'
+import { ModeToggle } from '../modeToggle'
+import { Button } from '../../components/ui/button'
+import { toggle } from '../state/uiFunctions'
+import { LuMenu } from 'react-icons/lu'
 
 export const AppShell = memo(function AppShell() {
     const open = useGameStore((s) => s.ui.open)
-    const { mode, setMode } = useColorScheme()
+
     return (
         <div className={clsx(classes.container, { sideOpen: open }, { contentOpen: !open })}>
             <header className={classes.header}>
                 <div>
-                    <IconButton onClick={() => toggle()} aria-label="open menu" className={classes.menu}>
-                        <TbMenu2 />
-                    </IconButton>
+                    <Button onClick={() => toggle()} className={classes.menu} variant="outline">
+                        <LuMenu />
+                    </Button>
                 </div>
                 <div>
-                    <IconButton onClick={() => setMode(mode === 'light' ? 'dark' : 'light')} aria-label="change theme">
-                        {mode === 'dark' ? <TbSunHigh /> : <TbMoonStars />}
-                    </IconButton>
+                    <ModeToggle />
                 </div>
             </header>
 

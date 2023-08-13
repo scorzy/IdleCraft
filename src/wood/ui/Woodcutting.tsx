@@ -14,12 +14,12 @@ import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
 import { memo, useCallback } from 'react'
 import { removeActivity } from '../../activities/activityFunctions'
 import { memoize } from '../../utils/memoize'
-import { MyButton } from '../../ui/button/Button'
 import { PageWithSidebar } from '../../ui/shell/AppShell'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { useTranslations } from '../../msg/useTranslations'
 import { WoodData } from '../WoodData'
 import { GiWoodAxe } from 'react-icons/gi'
+import { Button } from '@/components/ui/button'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -80,9 +80,13 @@ const CuttingButton = memo(function CuttingButton() {
     const onClickRemove = useCallback(() => removeActivity(actId?.activityId), [actId])
     const { t } = useTranslations()
 
-    if (actId === undefined) return <MyButton onClick={onClickStart} text={t.Cut} variant="text" />
+    if (actId === undefined) return <Button onClick={onClickStart}>{t.Cut}</Button>
 
-    return <MyButton onClick={onClickRemove} color="error" text={t.Stop} variant="text" />
+    return (
+        <Button onClick={onClickRemove} variant="destructive">
+            {t.Stop}
+        </Button>
+    )
 })
 
 const Forest = memo(function Forest() {

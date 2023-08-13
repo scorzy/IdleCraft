@@ -2,10 +2,6 @@ import { useGameStore } from '../../game/state'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { selectItem, selectItemQta, selectLocationItems, selectStorageLocations } from '../StorageSelectors'
 import { Page } from '../../ui/shell/AppShell'
-import List from '@mui/material/List'
-import { Collapse, Divider, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import ExpandLess from '@mui/icons-material/ExpandLess'
-import ExpandMore from '@mui/icons-material/ExpandMore'
 import { memo, useCallback, useState } from 'react'
 import { MyCard } from '../../ui/myCard/myCard'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -14,6 +10,10 @@ import classes from './storage.module.css'
 import { getItemId2, setSelectedItem } from '../storageFunctions'
 import { SelectedItem } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
+import { Button, buttonVariants } from '../../components/ui/button'
+import { cn } from '../../lib/utils'
+import { LuChevronsUpDown } from 'react-icons/lu'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
@@ -39,15 +39,16 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
     const len = items.length
 
     return (
-        <List dense component="div">
-            <ListItemButton onClick={handleClick}>
-                {/* <ListItemIcon></ListItemIcon> */}
-                <ListItemText primary={location} disableTypography />
-                {open ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-
-            <Collapse in={open} timeout="auto" unmountOnExit>
-                <List dense component="div" disablePadding>
+        <div>
+            <Collapsible onClick={handleClick} open={open}>
+                <CollapsibleTrigger>
+                    <Button variant="ghost" size="sm">
+                        {location}
+                        <LuChevronsUpDown className="h-4 w-4 ml-2" />
+                        <span className="sr-only">{location}</span>
+                    </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
                     {items.map((i, index) => (
                         <StorageItem
                             key={getItemId2(i.stdItemId, i.craftItemId)}
@@ -57,9 +58,9 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
                             location={location}
                         />
                     ))}
-                </List>
-            </Collapse>
-        </List>
+                </CollapsibleContent>
+            </Collapsible>
+        </div>
     )
 })
 
@@ -69,7 +70,7 @@ const StorageItem = memo(function StorageItem(props: {
     stdItemId: string | null
     craftItemId: string | null
 }) {
-    const { isLast, location, stdItemId, craftItemId } = props
+    const { location, stdItemId, craftItemId } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const qta = useGameStore(selectItemQta(location, stdItemId, craftItemId))
@@ -84,19 +85,18 @@ const StorageItem = memo(function StorageItem(props: {
 
     return (
         <>
-            <ListItemButton onClick={onClick}>
-                <ListItemIcon>{IconsData[item.icon]}</ListItemIcon>
-                <ListItemText
-                    disableTypography
-                    primary={
-                        <div className={classes.item}>
-                            <span>{t[item.nameId]}</span>
-                            <span className="monospace">{f(qta)}</span>
-                        </div>
-                    }
-                />
-            </ListItemButton>
-            {!isLast && <Divider />}
+            <button
+                onClick={onClick}
+                className={cn(
+                    buttonVariants({ variant: 'ghost' }),
+                    'w-full justify-start gap-4 font-normal',
+                    classes.item
+                )}
+            >
+                {IconsData[item.icon]}
+                <span className="justify-self-start">{t[item.nameId]}</span>
+                <span className="monospace">{f(qta)}</span>
+            </button>
         </>
     )
 })

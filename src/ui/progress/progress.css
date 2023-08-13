@@ -1,26 +1,26 @@
 .primary {
-    --progress-bg: var(--mui-palette-LinearProgress-primaryBg);
-    --progress-color: var(--mui-palette-primary-main);
+    --progress-bg: hsl(var(--primary) / 0.2);
+    --progress-color: hsl(var(--primary));
 }
 .secondary {
-    --progress-bg: var(--mui-palette-LinearProgress-secondaryBg);
-    --progress-color: var(--mui-palette-secondary-main);
+    --progress-bg: hsl(var(--primary) / 0.2);
+    --progress-color: hsl(var(--primary));
 }
 .success {
-    --progress-bg: var(--mui-palette-LinearProgress-successBg);
-    --progress-color: var(--mui-palette-success-main);
+    --progress-bg: hsl(var(--success) / 0.2);
+    --progress-color: hsl(var(--success));
 }
 .error {
-    --progress-bg: var(--mui-palette-LinearProgress-errorBg);
-    --progress-color: var(--mui-palette-error-main);
+    --progress-bg: hsl(var(--destructive) / 0.2);
+    --progress-color: hsl(var(--destructive));
 }
 .info {
-    --progress-bg: var(--mui-palette-LinearProgress-infoBg);
-    --progress-color: var(--mui-palette-info-main);
+    --progress-bg: hsl(var(--primary) / 0.2);
+    --progress-color: hsl(var(--primary));
 }
 .warning {
-    --progress-bg: var(--mui-palette-LinearProgress-warningBg);
-    --progress-color: var(--mui-palette-warning-main);
+    --progress-bg: hsl(var(--primary) / 0.2);
+    --progress-color: hsl(var(--primary));
 }
 .progress__root {
     width: 100%;

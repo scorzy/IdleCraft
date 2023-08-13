@@ -1,24 +1,10 @@
 import { ReactNode, memo } from 'react'
-import classes from './myCard.module.css'
-import Typography from '@mui/material/Typography'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import CardActions from '@mui/material/CardActions'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
-export const MyCardTitle = memo(function MyCardLabel(props: { title: string; icon?: ReactNode }) {
-    const { title, icon } = props
-
-    return (
-        <Typography variant="h5" gutterBottom className={classes.title}>
-            {icon} {title}
-        </Typography>
-    )
-})
-
-export const MyCardLabel = memo(function MyCardLabel(props: { children: ReactNode }) {
+export const MyCardLabel = memo(function MyCardLabel(props: { children?: ReactNode }) {
     const { children } = props
 
-    return <Typography variant="body1">{children}</Typography>
+    return <>{children}</>
 })
 
 export const MyCard = memo(function MyCard(props: {
@@ -30,16 +16,16 @@ export const MyCard = memo(function MyCard(props: {
     const { children, title, actions, icon } = props
 
     return (
-        <Card variant="outlined">
-            <CardContent>
-                {title && <MyCardTitle title={title} icon={icon} />}
-                {children}
-            </CardContent>
-            {actions && (
-                <CardActions disableSpacing className={classes.actions}>
-                    {actions}
-                </CardActions>
+        <Card className={title ? '' : 'pt-6'}>
+            {title && (
+                <CardHeader>
+                    <CardTitle>
+                        {icon} <span>{title}</span>
+                    </CardTitle>
+                </CardHeader>
             )}
+            <CardContent>{children}</CardContent>
+            {actions && <CardFooter>{actions}</CardFooter>}
         </Card>
     )
 })

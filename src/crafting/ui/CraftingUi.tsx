@@ -1,20 +1,20 @@
 import { memo } from 'react'
 import { MyCard } from '../../ui/myCard/myCard'
 import { Page } from '../../ui/shell/AppShell'
-import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, ListItemIcon, ListItemText } from '@mui/material'
 import { memoize } from '../../utils/memoize'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../Recipe'
 import { Recipes } from '../Recipes'
 import { useGameStore } from '../../game/state'
-import { changeRecipe, getRecipeParamId, setRecipeItemParam } from '../CraftingFunctions'
 import { selectRecipeItemValue, selectRecipeParams, selectRecipeReq, selectRecipeResult } from '../CraftingSelectors'
-import { selectItem, selectItemQta, selectItemsByType } from '../../storage/StorageSelectors'
 import { useTranslations } from '../../msg/useTranslations'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { IconsData } from '../../icons/Icons'
 import classes from './craftingUi.module.css'
 import { CraftingReq, CraftingResult } from './CraftingResult'
-import { getItemId } from '../../storage/storageFunctions'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { changeRecipe, getRecipeParamId, setRecipeItemParam } from '../CraftingFunctions'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { IconsData } from '../../icons/Icons'
+import { selectItemsByType, selectItem, selectItemQta } from '../../storage/StorageSelectors'
+import { ItemId } from '../../storage/storageState'
 
 const selectRecipes = memoize((t: RecipeTypes) => Object.values(Recipes).filter((r) => r.type === t))
 
@@ -53,29 +53,28 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     const recipeType = useGameStore((s) => s.ui.recipeType)
     const recipeId = useGameStore((s) => s.recipeId)
     const { t } = useTranslations()
-    const handleRecipeChange = (event: SelectChangeEvent<string>) => changeRecipe(event.target.value)
+    const handleRecipeChange = (value: string) => changeRecipe(value)
 
     if (!recipeType) return <></>
     const recipes = selectRecipes(recipeType)
 
     return (
-        <FormControl fullWidth>
-            <InputLabel id="recipe-label-Id">{t.Recipe}</InputLabel>
-            <Select
-                labelId="recipe-label-Id"
-                id="recipe-select"
-                value={recipeId}
-                label="Recipe"
-                onChange={handleRecipeChange}
-            >
-                <MenuItem value={''}>{t.None}</MenuItem>
-                {recipes.map((r) => (
-                    <MenuItem key={r.id} value={r.id}>
-                        {t[r.nameId]}
-                    </MenuItem>
-                ))}
+        <div>
+            <label id="recipe-label-Id">{t.Recipe}</label>
+            <Select value={recipeId} onValueChange={handleRecipeChange}>
+                <SelectTrigger>
+                    <SelectValue placeholder="select a recipe" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="">{t.None}</SelectItem>
+                    {recipes.map((r) => (
+                        <SelectItem key={r.id} value={r.id}>
+                            {t[r.nameId]}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
             </Select>
-        </FormControl>
+        </div>
     )
 })
 
@@ -93,42 +92,29 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
     const { t } = useTranslations()
     const itemsId = useGameStore(selectItemsByType(recipeParam.itemType))
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
-    const handleRecipeChange = (event: SelectChangeEvent<string>) =>
-        setRecipeItemParam(recipeParam.id, event.target.value ?? '')
+    const handleRecipeChange = (value: string) => setRecipeItemParam(recipeParam.id, value)
     const selectedValue = getRecipeParamId(selected)
     return (
-        <FormControl fullWidth>
-            <InputLabel id={`${recipeParam.id}-label`}>{t[recipeParam.nameId]}</InputLabel>
-            <Select
-                labelId={`${recipeParam.id}-label`}
-                id={recipeParam.id}
-                value={selectedValue}
-                label={t[recipeParam.nameId]}
-                onChange={handleRecipeChange}
-                renderValue={(value) => {
-                    return (
-                        <MenuItem key={value} value={value}>
-                            <ParamItem item={value} />
-                        </MenuItem>
-                    )
-                }}
-            >
-                <MenuItem value={undefined}> {t.None} </MenuItem>
-                {itemsId.map((t) => {
-                    const value = getRecipeParamId(t)
-                    return (
-                        <MenuItem key={value} value={value} selected={value === selectedValue}>
-                            <ParamItem item={value} />
-                        </MenuItem>
-                    )
-                })}
+        <div>
+            <label id={`${recipeParam.id}-label`}>{t[recipeParam.nameId]}</label>
+            <Select value={selectedValue} onValueChange={handleRecipeChange}>
+                <SelectTrigger>
+                    <SelectValue placeholder="select a recipe" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="">{t.None}</SelectItem>
+                    {itemsId.map((t) => {
+                        const value = getRecipeParamId(t)
+                        return <ParamItem itemId={t} key={value} />
+                    })}
+                </SelectContent>
             </Select>
-        </FormControl>
+        </div>
     )
 })
-const ParamItem = memo(function ParamItem(props: { item: string }) {
-    const { item } = props
-    const itemId = getItemId(item)
+const ParamItem = memo(function ParamItem(props: { itemId: ItemId }) {
+    const { itemId } = props
+    const value = getRecipeParamId(itemId)
     const itemObj = useGameStore(selectItem(itemId?.stdItemId ?? null, itemId?.craftItemId ?? null))
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
@@ -136,15 +122,8 @@ const ParamItem = memo(function ParamItem(props: { item: string }) {
     const text = itemObj ? t[itemObj.nameId] : t.None
 
     return (
-        <>
-            <ListItemIcon>{itemObj && IconsData[itemObj.icon]}</ListItemIcon>
-            <ListItemText
-                primary={
-                    <>
-                        {text} <span className="monospace">{f(qta)}</span>
-                    </>
-                }
-            />
-        </>
+        <SelectItem value={value} icon={itemObj && IconsData[itemObj.icon]}>
+            {text} <span className="monospace">{f(qta)}</span>
+        </SelectItem>
     )
 })

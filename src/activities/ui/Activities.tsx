@@ -1,19 +1,15 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { useGameStore } from '../../game/state'
 import { selectActivityIcon, selectActivityId, selectActivityTitle } from '../ActivitySelectors'
-import List from '@mui/material/List'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import ListItem from '@mui/material/ListItem'
 import { Page } from '../../ui/shell/AppShell'
-import { MyCard } from '../../ui/myCard/myCard'
-import IconButton from '@mui/material/IconButton'
-import { TbArrowDown, TbArrowUp, TbTrash } from 'react-icons/tb'
 import { moveActivityNext, moveActivityPrev, removeActivity } from '../activityFunctions'
 import classes from './activities.module.css'
-import { Chip, Divider } from '@mui/material'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { MyCard } from '../../ui/myCard/myCard'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { LuArrowDown, LuArrowUp, LuTrash2 } from 'react-icons/lu'
 
 export const Activities = memo(function Activities() {
     const ids = useGameStore(selectActivityId)
@@ -22,11 +18,9 @@ export const Activities = memo(function Activities() {
         <Page>
             <div className="my-container">
                 <MyCard>
-                    <List dense disablePadding>
-                        {ids.map((i, index) => (
-                            <ActivityCard id={i} key={i} isFirst={index === 0} isLast={index >= max} />
-                        ))}
-                    </List>
+                    {ids.map((i, index) => (
+                        <ActivityCard id={i} key={i} isFirst={index === 0} isLast={index >= max} />
+                    ))}
                 </MyCard>
             </div>
         </Page>
@@ -43,50 +37,41 @@ export const ActivityCard = memo(function ActivityCard(props: { id: string; isFi
     const cur = useGameStore((s) => (active ? s.activityDone + 1 : 0))
     const { f } = useNumberFormatter()
 
+    const onClickPrev = useCallback(() => moveActivityPrev(id), [id])
+    const onClickNext = useCallback(() => moveActivityNext(id), [id])
+    const onClickRemove = useCallback(() => removeActivity(id), [id])
+
     if (act === undefined) return <></>
 
     return (
-        <>
-            <ListItem
-                secondaryAction={
-                    <>
-                        {!isFirst && (
-                            <IconButton aria-label={t.MoveUp} onClick={() => moveActivityPrev(id)}>
-                                <TbArrowUp />
-                            </IconButton>
-                        )}
-                        {!isLast && (
-                            <IconButton aria-label={t.MoveDown} onClick={() => moveActivityNext(id)}>
-                                <TbArrowDown />
-                            </IconButton>
-                        )}
-                        <IconButton aria-label={t.Remove} color="error" onClick={() => removeActivity(id)}>
-                            <TbTrash />
-                        </IconButton>
-                    </>
-                }
-            >
-                <ListItemIcon className={classes.icon}>{icon}</ListItemIcon>
-                <ListItemText
-                    disableTypography
-                    primary={<div>{title}</div>}
-                    secondary={
-                        <Chip
-                            label={
-                                <>
-                                    {active ? 'Active' : 'In Queue'}{' '}
-                                    <span className="monospace">
-                                        {f(cur)}/{f(act.max)}
-                                    </span>
-                                </>
-                            }
-                            color={active ? 'primary' : 'default'}
-                            size="small"
-                        />
-                    }
-                />
-            </ListItem>
-            {!isLast && <Divider />}
-        </>
+        <div className={classes.container}>
+            <div className={classes.icon}>{icon}</div>
+            <div className={classes.title}>
+                <div>{title}</div>
+                <Badge variant={active ? 'default' : 'secondary'}>
+                    <span> {active ? 'Active' : 'In Queue'}</span>
+                    <span className="monospace ml-2">
+                        {f(cur)}/{f(act.max)}
+                    </span>
+                </Badge>
+            </div>
+            <div className={classes.actions}>
+                <>
+                    {!isFirst && (
+                        <Button onClick={onClickPrev} variant="ghost">
+                            <LuArrowUp className="text-lg" />
+                        </Button>
+                    )}
+                    {!isLast && (
+                        <Button aria-label={t.MoveDown} onClick={onClickNext} variant="ghost">
+                            <LuArrowDown className="text-lg" />
+                        </Button>
+                    )}
+                    <Button aria-label={t.Remove} color="error" onClick={onClickRemove} variant="ghost">
+                        <LuTrash2 className="text-lg" />
+                    </Button>
+                </>
+            </div>
+        </div>
     )
 })

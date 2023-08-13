@@ -1,7 +1,3 @@
-:root {
-    --radius: 8px;
-    --mui-shape-borderRadius: 8px;
-}
 html {
     font-family: 'Inter', 'system-ui';
 }
@@ -12,37 +8,17 @@ html {
     }
 }
 
-body {
-    --mui-shape-borderRadius: var(--radius);
-    --mui-shadows-24: none;
-    --mui-shadows-23: none;
-    --mui-shadows-22: none;
-    --mui-shadows-21: none;
-    --mui-shadows-20: none;
-    --mui-shadows-19: none;
-    --mui-shadows-18: none;
-    --mui-shadows-17: none;
-    --mui-shadows-16: none;
-    --mui-shadows-15: none;
-    --mui-shadows-14: none;
-    --mui-shadows-13: none;
-    --mui-shadows-12: none;
-    --mui-shadows-11: none;
-    --mui-shadows-10: none;
-    --mui-shadows-9: none;
-    --mui-shadows-8: none;
-    --mui-shadows-7: none;
-    --mui-shadows-6: none;
-    --mui-shadows-5: none;
-    --mui-shadows-4: none;
-    --mui-shadows-3: none;
-    --mui-shadows-2: none;
-    --mui-shadows-1: none;
-    --border-1px: 1px solid var(--mui-palette-divider);
-}
-
 .monospace {
     font-family: 'Roboto Mono Variable', monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Raleway Variable', 'system-ui';
 }
 
 .my-container {
@@ -69,14 +45,30 @@ body {
     }
 }
 
-.my-card {
-    padding: 4px;
-    border-radius: 8px;
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: start;
-    justify-content: start;
-    justify-items: start;
-    align-content: start;
-    border: var(--border-1px);
+.CollapsibleContent {
+    overflow: hidden;
+}
+.CollapsibleContent[data-state='open'] {
+    animation: slideDown 300ms ease-out;
+}
+.CollapsibleContent[data-state='closed'] {
+    animation: slideUp 300ms ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        height: 0;
+    }
+    to {
+        height: var(--radix-collapsible-content-height);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        height: var(--radix-collapsible-content-height);
+    }
+    to {
+        height: 0;
+    }
 }

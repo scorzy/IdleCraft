@@ -1,16 +1,16 @@
-import { TbCube, TbList } from 'react-icons/tb'
 import { UiPages, UiPageData } from './UiPages'
 import { GiWoodAxe } from 'react-icons/gi'
 import { RecipeTypes } from '../../crafting/Recipe'
+import { LuBox, LuLayoutList } from 'react-icons/lu'
 
 export const UiPagesData: { [k in UiPages]: UiPageData } = {
     [UiPages.Activities]: {
         nameId: 'Activities',
-        icon: <TbList />,
+        icon: <LuLayoutList />,
     },
     [UiPages.Storage]: {
         nameId: 'Storage',
-        icon: <TbCube />,
+        icon: <LuBox />,
     },
     [UiPages.Woodcutting]: {
         nameId: 'Woodcutting',

@@ -1,4 +1,18 @@
 .item {
     display: grid;
-    grid-template-columns: auto 2rem;
+    grid-template-columns: auto 1fr 2rem;
+}
+.item:not(:last-child) {
+    border-bottom-width: 1px;
+}
+.container {
+    overflow: hidden;
+    transition-property: height, max-height;
+    transition-duration: 300ms;
+}
+.closed {
+    max-height: 0;
+}
+.opened {
+    max-height: 100vh;
 }

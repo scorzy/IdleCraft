@@ -1,6 +1,7 @@
 {
     "map": true,
     "plugins": {
+        "tailwindcss": {},
         "postcss-preset-env": {}
     }
 }

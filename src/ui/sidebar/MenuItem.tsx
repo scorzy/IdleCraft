@@ -1,14 +1,13 @@
-import classes from './menuItem.module.css'
-
-import { ReactNode, memo, useMemo } from 'react'
+import { ReactNode, memo, useCallback } from 'react'
 import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
 import { UiPages } from '../state/UiPages'
 import { UiPagesData } from '../state/UiPagesData'
-import { setPage } from '../state/uiFunctions'
-import { ListItem, ListItemButton, ListItemIcon, ListItemText, Tooltip } from '@mui/material'
-import clsx from 'clsx'
-import { isCollapsed } from '../state/uiSelectors'
+import { isCollapsed, setPage } from '../state/uiFunctions'
+import { cn } from '@/lib/utils'
+import { buttonVariants } from '@/components/ui/button'
+import classes from './menuItem.module.css'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 export const MenuItem = memo(function MenuItem(props: { page: UiPages }) {
     const { page } = props
@@ -16,16 +15,9 @@ export const MenuItem = memo(function MenuItem(props: { page: UiPages }) {
     const data = UiPagesData[page]
     const active = useGameStore((s) => s.ui.page === page)
     const collapsed = useGameStore(isCollapsed('sidebar'))
+    const onClick = useCallback(() => setPage(page), [page])
 
-    return (
-        <MyListItem
-            onClick={() => setPage(page)}
-            text={t[data.nameId]}
-            active={active}
-            icon={data.icon}
-            collapsed={collapsed}
-        />
-    )
+    return <MyListItem onClick={onClick} text={t[data.nameId]} active={active} icon={data.icon} collapsed={collapsed} />
 })
 
 export const MyListItem = memo(function MyListItem(props: {
@@ -37,23 +29,40 @@ export const MyListItem = memo(function MyListItem(props: {
 }) {
     const { text, onClick, active, icon, collapsed } = props
 
-    const textItem = useMemo(() => <ListItemText primary={text} className={classes.text} disableTypography />, [text])
-    const tooltip = useMemo(
-        () => (
-            <Tooltip arrow title={text} placement="right">
-                <ListItemIcon className={classes.icon}>{icon}</ListItemIcon>
-            </Tooltip>
-        ),
-        [text, icon]
-    )
+    if (!collapsed)
+        return (
+            <button
+                onClick={onClick}
+                className={cn(
+                    buttonVariants({ variant: 'ghost' }),
+                    active ? 'bg-muted hover:bg-muted' : 'hover:bg-muted ',
+                    'justify-start gap-4',
+                    classes.item,
+                    collapsed ? classes.itemCollapsed : ''
+                )}
+            >
+                {icon}
+                {text}
+            </button>
+        )
 
     return (
-        <ListItem disablePadding onClick={onClick} className={classes.item}>
-            <ListItemButton selected={active} className={clsx(classes.btn, { [classes.btnCollapsed]: !collapsed })}>
-                {!collapsed && tooltip}
-                {collapsed && <ListItemIcon className={classes.icon}>{icon}</ListItemIcon>}
-                {textItem}
-            </ListItemButton>
-        </ListItem>
+        <TooltipProvider delayDuration={150}>
+            <Tooltip>
+                <TooltipTrigger
+                    onClick={onClick}
+                    className={cn(
+                        buttonVariants({ variant: 'ghost' }),
+                        active ? 'bg-muted hover:bg-muted' : 'hover:bg-muted ',
+                        'justify-start gap-4',
+                        classes.item,
+                        collapsed ? classes.itemCollapsed : ''
+                    )}
+                >
+                    {icon}
+                </TooltipTrigger>
+                <TooltipContent side="right">{text}</TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
     )
 })

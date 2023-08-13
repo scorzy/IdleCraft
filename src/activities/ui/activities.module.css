@@ -1,4 +1,40 @@
+.container {
+    container-type: inline-size;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+    gap: 0.375em;
+}
+.container:not(:last-child) {
+    border-bottom-width: 1px;
+    padding-bottom: 0.75rem;
+}
+.container:not(:first-child) {
+    padding-top: 0.75rem;
+}
 .icon {
     font-size: 2rem;
     margin-right: 8px;
+    grid-column-start: 1;
+    justify-self: start;
+    align-self: center;
+}
+.title {
+    grid-column-start: 2;
+    justify-self: start;
+    align-self: center;
+}
+.actions {
+    grid-row: 2;
+    grid-column: 1 / span 2;
+    justify-self: center;
+    align-self: center;
+}
+@container (min-width: 300px) {
+    .actions {
+        grid-column: 3;
+        grid-row: 1;
+        justify-self: end;
+        align-self: center;
+    }
 }

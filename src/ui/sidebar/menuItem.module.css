@@ -1,24 +1,11 @@
-.text {
-    font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 1.43;
-    letter-spacing: 0.01071em;
-    display: block;
-    text-wrap: nowrap;
-}
-.icon {
-    min-width: 36px;
-}
 .item {
-    padding-bottom: 4px;
-}
-.btn {
-    transition-property: padding-left;
-    transition-duration: 300ms;
+    width: 100%;
+    transition-property: margin-left, border-radius, color, background-color, border-color, text-decoration-color, fill,
+        stroke;
 }
 @media (min-width: 900px) {
-    .btnCollapsed {
-        --radius: 0;
-        padding-left: 10px;
+    .itemCollapsed {
+        border-radius: 0;
+        max-width: 46px;
     }
 }

@@ -1,15 +1,16 @@
 import { memo } from 'react'
-import { MyCard } from '../../ui/myCard/myCard'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { StdItems } from '../../items/stdItems'
 import { Item } from '../../items/Item'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { RecipeItem, RecipeItemReq } from '../Recipe'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { Table, TableBody, TableCell, TableRow } from '@mui/material'
 import { useGameStore } from '../../game/state'
 import { selectItem, selectItemQta } from '../../storage/StorageSelectors'
 import { getItemId2 } from '../../storage/storageFunctions'
+import { MyCard } from '../../ui/myCard/myCard'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
 export const CraftingResult = memo(function CraftingResult(props: { result: RecipeItem | undefined }) {
     const { result } = props
@@ -22,9 +23,17 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
     if (!item) return <></>
 
     return (
-        <MyCard icon={IconsData[item.icon]} title={t[item.nameId]}>
-            Quantity <span className="monospace">{f(result.qta)}</span>
-        </MyCard>
+        <Card>
+            <CardHeader>
+                <CardTitle>
+                    {IconsData[item.icon]}
+                    {t[item.nameId]}
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                Quantity <span className="monospace">{f(result.qta)}</span>
+            </CardContent>
+        </Card>
     )
 })
 export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq[] | undefined }) {
@@ -36,7 +45,7 @@ export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq
 
     return (
         <MyCard title={'Require'}>
-            <Table size="small">
+            <Table>
                 {/* <TableHead>
                     <TableRow>
                         <TableCell></TableCell>

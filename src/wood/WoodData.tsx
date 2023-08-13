@@ -13,8 +13,8 @@ export interface WoodDataType {
 }
 export const WoodData: { [k in WoodTypes]: WoodDataType } = {
     [WoodTypes.DeadTree]: {
-        maxHp: 1,
-        maxQta: 1,
+        maxHp: 100,
+        maxQta: 10,
         icon: <GiDeadWood />,
         nameId: 'DeadTree',
         logId: 'DeadTreeLog',
