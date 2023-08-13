@@ -1,7 +1,7 @@
 import { GameState } from '../game/GameState'
 import { getUniqueId } from '../utils/getUniqueId'
 import { ActivityAdapter, ActivityState, ActivityTypes } from './ActivityState'
-import { makeActivityFun } from './activityFunctions'
+import { makeActivityFun } from './makeActivityFun'
 
 export abstract class AbstractActivityCreator<T> {
     protected abstract type: ActivityTypes

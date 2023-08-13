@@ -1,6 +1,6 @@
 import { ActivityState } from '../activities/ActivityState'
 import { Crafting } from '../crafting/CraftingIterfaces'
-import { RecipeParameter, RecipeParameterValue, RecipeResult, RecipeTypes } from '../crafting/Recipe'
+import { RecipeParameter, RecipeParameterValue, RecipeResult, RecipeTypes } from '../crafting/RecipeInterfaces'
 import { InitialState } from '../entityAdapter/entityAdapter'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
@@ -21,7 +21,7 @@ export interface LocationState {
 export interface GameState {
     ui: {
         open: boolean
-        dark: boolean
+        theme: string
         page: UiPages
         comma: CommaTypes
         numberFormatNotation: NotationTypes

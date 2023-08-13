@@ -1,5 +1,5 @@
 import { GameState } from '../game/GameState'
-import { makeActivityFun } from './activityFunctions'
+import { makeActivityFun } from './makeActivityFun'
 
 export const selectActivityId = (state: GameState) => state.activities.ids
 export const selectActivityTitle = (id: string) => (state: GameState) => {

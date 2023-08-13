@@ -1,6 +1,6 @@
 import { UiPages, UiPageData } from './UiPages'
 import { GiWoodAxe } from 'react-icons/gi'
-import { RecipeTypes } from '../../crafting/Recipe'
+import { RecipeTypes } from '../../crafting/RecipeInterfaces'
 import { LuBox, LuLayoutList } from 'react-icons/lu'
 
 export const UiPagesData: { [k in UiPages]: UiPageData } = {

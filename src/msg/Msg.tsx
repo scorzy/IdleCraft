@@ -16,6 +16,7 @@ export interface Msg {
     Recipe: string
     Plank: string
     Requirements: string
+    NoItems: string
 
     //  Trees
     Cutting: string

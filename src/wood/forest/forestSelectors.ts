@@ -4,10 +4,19 @@ import { GameLocations } from '../../gameLocations/GameLocations'
 import { Timer, TimerTypes } from '../../timers/Timer'
 import { memoize } from '../../utils/memoize'
 import { memoizeOne } from '../../utils/memoizeOne'
+import { ForestsState } from '../ForestsState'
+import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
 import { WoodcuttingAdapter } from '../WoodcuttingAdapter'
-import { selectDefaultForest } from './forestFunctions'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
+
+export const selectDefaultForest = memoize(function selectDefaultForest(woodType: WoodTypes): ForestsState {
+    const data = WoodData[woodType]
+    return {
+        hp: data.maxHp,
+        qta: data.maxQta,
+    }
+})
 
 export const selectForest = memoize((woodType: WoodTypes) => (state: GameState) => {
     const forest = state.locations[state.location].forests[woodType]

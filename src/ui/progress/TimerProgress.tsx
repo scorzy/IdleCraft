@@ -45,7 +45,7 @@ export const TimerProgressFix = (props: {
     return <TimerProgress className={className} start={start} end={end} key={key} color={color} />
 }
 
-export const GameTimerProgress = (props: { className?: string; actionId?: string; color: Colors }) => {
+export const GameTimerProgress = (props: { className?: string; actionId?: string | null; color: Colors }) => {
     const { className, actionId, color } = props
 
     const timerId = useGameStore((s) => Object.entries(s.timers.entries).find((kv) => kv[1].actId === actionId)?.[0])

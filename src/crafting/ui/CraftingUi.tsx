@@ -2,19 +2,34 @@ import { memo } from 'react'
 import { MyCard } from '../../ui/myCard/myCard'
 import { Page } from '../../ui/shell/AppShell'
 import { memoize } from '../../utils/memoize'
-import { RecipeParamType, RecipeParameter, RecipeTypes } from '../Recipe'
+import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
 import { Recipes } from '../Recipes'
 import { useGameStore } from '../../game/state'
-import { selectRecipeItemValue, selectRecipeParams, selectRecipeReq, selectRecipeResult } from '../CraftingSelectors'
+import {
+    canCraft,
+    selectCraftTime,
+    selectCurrentCrafting,
+    selectRecipeItemValue,
+    selectRecipeParams,
+    selectRecipeReq,
+    selectRecipeResult,
+    selectRecipeType,
+} from '../CraftingSelectors'
 import { useTranslations } from '../../msg/useTranslations'
 import classes from './craftingUi.module.css'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { changeRecipe, getRecipeParamId, setRecipeItemParam } from '../CraftingFunctions'
+import { addCrafting, changeRecipe, getRecipeParamId, setRecipeItemParam } from '../CraftingFunctions'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
 import { selectItemsByType, selectItem, selectItemQta } from '../../storage/StorageSelectors'
 import { ItemId } from '../../storage/storageState'
+import { Label } from '@/components/ui/label'
+import { FormItem } from '@/components/ui/form'
+import { Button } from '../../components/ui/button'
+import { Badge } from '../../components/ui/badge'
+import { LuHourglass } from 'react-icons/lu'
+import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 
 const selectRecipes = memoize((t: RecipeTypes) => Object.values(Recipes).filter((r) => r.type === t))
 
@@ -33,19 +48,41 @@ export const CraftingUi = memo(function CraftingUi() {
     )
 })
 const RecipeUi = memo(function RecipeUi() {
-    const recipeType = useGameStore((s) => s.ui.recipeType)
+    const recipeType = useGameStore(selectRecipeType)
     const params = useGameStore(selectRecipeParams)
 
     if (!recipeType) return <></>
     return (
         <MyCard>
-            <form className={classes.craftingForm}>
+            <div className={classes.craftingForm}>
                 <RecipeSelectUi />
                 {params.map((rp) => (
                     <RecipeParamUi recipeParam={rp} key={rp.id} />
                 ))}
-            </form>
+                <CraftingButtons />
+            </div>
         </MyCard>
+    )
+})
+
+const CraftingButtons = memo(function CraftingButtons() {
+    const { ft } = useNumberFormatter()
+    const time = useGameStore(selectCraftTime)
+
+    const isCrafting = useGameStore(selectCurrentCrafting)
+    const bntEnabled = useGameStore(canCraft)
+
+    return (
+        <>
+            <Badge className={classes.timeBadge} variant={bntEnabled ? 'default' : 'secondary'}>
+                <LuHourglass />
+                {time ? ft(time) : '-'}
+            </Badge>
+            <Button type="submit" className="w-min" onClick={addCrafting} disabled={!bntEnabled || isCrafting !== null}>
+                Craft
+            </Button>
+            <GameTimerProgress actionId={isCrafting} color="primary" />
+        </>
     )
 })
 
@@ -59,8 +96,8 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     const recipes = selectRecipes(recipeType)
 
     return (
-        <div>
-            <label id="recipe-label-Id">{t.Recipe}</label>
+        <FormItem>
+            <Label>{t.Recipe}</Label>
             <Select value={recipeId} onValueChange={handleRecipeChange}>
                 <SelectTrigger>
                     <SelectValue placeholder="select a recipe" />
@@ -74,7 +111,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
                     ))}
                 </SelectContent>
             </Select>
-        </div>
+        </FormItem>
     )
 })
 
@@ -95,8 +132,8 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
     const handleRecipeChange = (value: string) => setRecipeItemParam(recipeParam.id, value)
     const selectedValue = getRecipeParamId(selected)
     return (
-        <div>
-            <label id={`${recipeParam.id}-label`}>{t[recipeParam.nameId]}</label>
+        <FormItem>
+            <Label>{t[recipeParam.nameId]}</Label>
             <Select value={selectedValue} onValueChange={handleRecipeChange}>
                 <SelectTrigger>
                     <SelectValue placeholder="select a recipe" />
@@ -109,7 +146,7 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
                     })}
                 </SelectContent>
             </Select>
-        </div>
+        </FormItem>
     )
 })
 const ParamItem = memo(function ParamItem(props: { itemId: ItemId }) {
@@ -123,7 +160,7 @@ const ParamItem = memo(function ParamItem(props: { itemId: ItemId }) {
 
     return (
         <SelectItem value={value} icon={itemObj && IconsData[itemObj.icon]}>
-            {text} <span className="monospace">{f(qta)}</span>
+            {text} {f(qta)}
         </SelectItem>
     )
 })

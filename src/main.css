@@ -1,24 +1,10 @@
-html {
-    font-family: 'Inter', 'system-ui';
+.alert {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
 }
-
-@supports (font-variation-settings: normal) {
-    html {
-        font-family: 'Inter var', 'system-ui';
-    }
-}
-
-.monospace {
-    font-family: 'Roboto Mono Variable', monospace;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: 'Raleway Variable', 'system-ui';
+.alert svg {
+    font-size: 1.25rem;
 }
 
 .my-container {

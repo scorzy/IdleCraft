@@ -4,18 +4,20 @@ import { StdItems } from '../../items/stdItems'
 import { Item } from '../../items/Item'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
-import { RecipeItem, RecipeItemReq } from '../Recipe'
+import { RecipeItem, RecipeItemReq } from '../RecipeInterfaces'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useGameStore } from '../../game/state'
 import { selectItem, selectItemQta } from '../../storage/StorageSelectors'
 import { getItemId2 } from '../../storage/storageFunctions'
-import { MyCard } from '../../ui/myCard/myCard'
+import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { selectResultQta } from '../CraftingSelectors'
 
 export const CraftingResult = memo(function CraftingResult(props: { result: RecipeItem | undefined }) {
     const { result } = props
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
+    const have = useGameStore(selectResultQta(result))
 
     if (!result) return <></>
 
@@ -31,7 +33,8 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                Quantity <span className="monospace">{f(result.qta)}</span>
+                <MyCardLabel>Crafting Quantity {f(result.qta)}</MyCardLabel>
+                <MyCardLabel>You have {f(have)}</MyCardLabel>
             </CardContent>
         </Card>
     )
@@ -71,9 +74,9 @@ export const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeI
     if (!item) return <></>
     return (
         <TableRow>
-            <TableCell>{IconsData[item.icon]}</TableCell>
+            <TableCell className="text-lg">{IconsData[item.icon]}</TableCell>
             <TableCell width={'100%'}>{t[item.nameId]}</TableCell>
-            <TableCell className="monospace">
+            <TableCell>
                 {f(req.qta)}/{f(qtaStorage)}
             </TableCell>
         </TableRow>

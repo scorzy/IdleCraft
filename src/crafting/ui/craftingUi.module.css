@@ -1,5 +1,13 @@
 .craftingForm {
     display: grid;
-    grid-auto-flow: 1fr;
-    gap: 4px;
+    grid-auto-flow: auto;
+    gap: 0.75rem;
+}
+.timeBadge {
+    width: min-content;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    justify-content: baseline;
+    gap: 0.375rem;
 }

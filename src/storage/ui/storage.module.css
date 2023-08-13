@@ -1,10 +1,14 @@
 .item {
     display: grid;
     grid-template-columns: auto 1fr 2rem;
+    & svg {
+        font-size: 1.25rem;
+    }
 }
-.item:not(:last-child) {
+
+/* .item:not(:last-child) {
     border-bottom-width: 1px;
-}
+} */
 .container {
     overflow: hidden;
     transition-property: height, max-height;
@@ -15,4 +19,8 @@
 }
 .opened {
     max-height: 100vh;
+}
+.hr {
+    margin-right: calc(4px + var(--radius));
+    margin-left: calc(4px + var(--radius));
 }

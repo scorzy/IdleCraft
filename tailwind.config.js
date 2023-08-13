@@ -11,6 +11,15 @@ module.exports = {
             },
         },
         extend: {
+            fontFamily: {
+                sans: [
+                    'Inter var, sans-serif',
+                    {
+                        fontFeatureSettings: '"cv11", "ss01", "tnum", "calt", "case", "ccmp", "dlig", "ss02", "ss03"',
+                        fontVariationSettings: '"opsz" 32',
+                    },
+                ],
+            },
             colors: {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',

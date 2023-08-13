@@ -1,7 +1,8 @@
 import { useGameStore } from '../game/state'
 import { getItemId, getItemId2 } from '../storage/storageFunctions'
 import { ItemId } from '../storage/storageState'
-import { RecipeParameterValue } from './Recipe'
+import { CraftingActivityCreator } from './CraftingActivityCreator'
+import { RecipeParameterValue } from './RecipeInterfaces'
 import { Recipes } from './Recipes'
 
 export const changeRecipe = (recipeId: string) =>
@@ -59,4 +60,9 @@ export const setRecipeItemParam = (id: string, paramValue: string) =>
         }
 
         return state
+    })
+
+export const addCrafting = () =>
+    useGameStore.setState((state) => {
+        return new CraftingActivityCreator(state, null).createActivity()
     })

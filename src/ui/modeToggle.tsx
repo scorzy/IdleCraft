@@ -1,11 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { useTheme } from './themeProvider'
 import { LuSun, LuMoon } from 'react-icons/lu'
+import { setTheme } from './state/uiFunctions'
 
 export function ModeToggle() {
-    const { setTheme } = useTheme()
-
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

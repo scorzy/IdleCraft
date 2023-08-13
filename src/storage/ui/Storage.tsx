@@ -1,6 +1,6 @@
 import { useGameStore } from '../../game/state'
 import { GameLocations } from '../../gameLocations/GameLocations'
-import { selectItem, selectItemQta, selectLocationItems, selectStorageLocations } from '../StorageSelectors'
+import { selectItem, selectItemQta, selectLocationItems, selectStorageLocations, isSelected } from '../StorageSelectors'
 import { Page } from '../../ui/shell/AppShell'
 import { memo, useCallback, useState } from 'react'
 import { MyCard } from '../../ui/myCard/myCard'
@@ -12,11 +12,14 @@ import { SelectedItem } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
 import { Button, buttonVariants } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
-import { LuChevronsUpDown } from 'react-icons/lu'
+import { LuChevronsUpDown, LuInfo } from 'react-icons/lu'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Alert, AlertTitle } from '@/components/ui/alert'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
+
+    if (locations.length === 0) return <NoItems />
 
     return (
         <Page>
@@ -31,6 +34,21 @@ export function UiStorage() {
         </Page>
     )
 }
+
+const NoItems = memo(function NoItems() {
+    const { t } = useTranslations()
+    return (
+        <Page>
+            <div className="my-container">
+                <Alert variant="primary">
+                    <LuInfo />
+                    <AlertTitle>{t.NoItems}</AlertTitle>
+                </Alert>
+            </div>
+        </Page>
+    )
+})
+
 const LocationStorage = memo(function LocationStorage(props: { location: GameLocations }) {
     const { location } = props
     const items = useGameStore(selectLocationItems(location))
@@ -39,28 +57,26 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
     const len = items.length
 
     return (
-        <div>
-            <Collapsible onClick={handleClick} open={open}>
-                <CollapsibleTrigger>
-                    <Button variant="ghost" size="sm">
-                        {location}
-                        <LuChevronsUpDown className="h-4 w-4 ml-2" />
-                        <span className="sr-only">{location}</span>
-                    </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                    {items.map((i, index) => (
-                        <StorageItem
-                            key={getItemId2(i.stdItemId, i.craftItemId)}
-                            isLast={index >= len - 1}
-                            stdItemId={i.stdItemId}
-                            craftItemId={i.craftItemId}
-                            location={location}
-                        />
-                    ))}
-                </CollapsibleContent>
-            </Collapsible>
-        </div>
+        <Collapsible open={open}>
+            <CollapsibleTrigger>
+                <Button variant="ghost" size="sm" onClick={handleClick}>
+                    {location}
+                    <LuChevronsUpDown className="h-4 w-4 ml-2" />
+                    <span className="sr-only">{location}</span>
+                </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+                {items.map((i, index) => (
+                    <StorageItem
+                        key={getItemId2(i.stdItemId, i.craftItemId)}
+                        isLast={index >= len - 1}
+                        stdItemId={i.stdItemId}
+                        craftItemId={i.craftItemId}
+                        location={location}
+                    />
+                ))}
+            </CollapsibleContent>
+        </Collapsible>
     )
 })
 
@@ -70,11 +86,12 @@ const StorageItem = memo(function StorageItem(props: {
     stdItemId: string | null
     craftItemId: string | null
 }) {
-    const { location, stdItemId, craftItemId } = props
+    const { location, stdItemId, craftItemId, isLast } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const qta = useGameStore(selectItemQta(location, stdItemId, craftItemId))
     const item = useGameStore(selectItem(stdItemId, craftItemId))
+    const selected = useGameStore(isSelected(stdItemId, craftItemId))
 
     const onClick = useCallback(
         () => setSelectedItem(stdItemId, craftItemId, location),
@@ -90,13 +107,16 @@ const StorageItem = memo(function StorageItem(props: {
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     'w-full justify-start gap-4 font-normal',
+                    selected ? 'bg-muted' : '',
                     classes.item
                 )}
             >
                 {IconsData[item.icon]}
                 <span className="justify-self-start">{t[item.nameId]}</span>
-                <span className="monospace">{f(qta)}</span>
+                <span>{f(qta)}</span>
             </button>
+
+            {!isLast && <hr className={classes.hr} />}
         </>
     )
 })

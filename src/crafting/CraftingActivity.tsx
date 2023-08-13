@@ -3,15 +3,17 @@ import { AbstractActivity, ActivityStartResult } from '../activities/AbstractAct
 import { Translations } from '../msg/Msg'
 import { Crafting } from './CraftingIterfaces'
 import { CraftingAdapter } from './CraftingAdapter'
-import { Recipe, RecipeResult } from './Recipe'
+import { RecipeResult } from './RecipeInterfaces'
+import { Recipe } from './Recipe'
 import { Recipes } from './Recipes'
 import { GameState } from '../game/GameState'
 import { selectItemQta } from '../storage/StorageSelectors'
-import { startTimer } from '../timers/timerFunctions'
+import { startTimer } from '@/timers/startTimer'
 import { TimerTypes } from '../timers/Timer'
 import { addItem, saveCraftItem } from '../storage/storageFunctions'
 import { StdItems } from '../items/stdItems'
 import { GiCube } from 'react-icons/gi'
+import { IconsData } from '../icons/Icons'
 
 export class CraftingActivity extends AbstractActivity<Crafting> {
     recipe: Recipe
@@ -29,7 +31,7 @@ export class CraftingActivity extends AbstractActivity<Crafting> {
         return CraftingAdapter.selectEx(this.state.crafting, this.id)
     }
     onStart(): ActivityStartResult {
-        const craftResult = this.recipe.getResult(this.state, this.data.params)
+        const craftResult = this.recipe.getResult(this.state, this.data.paramsValue)
         if (craftResult === undefined) return ActivityStartResult.NotPossible
         if (!this.canCraft(craftResult)) return ActivityStartResult.NotPossible
 
@@ -46,6 +48,11 @@ export class CraftingActivity extends AbstractActivity<Crafting> {
         if (this.data.result === undefined) return ActivityStartResult.NotPossible
         const craftResult = this.data.result
         if (!this.canCraft(craftResult)) return ActivityStartResult.NotPossible
+
+        for (const req of craftResult.requirements) {
+            if (req.stdItemId) this.state = addItem(this.state, req.stdItemId, null, req.qta * -1)
+            if (req.craftedItemId) this.state = addItem(this.state, null, req.craftedItemId, req.qta * -1)
+        }
 
         if (craftResult.results.craftedItemId) {
             const { id, state: craftedItems } = saveCraftItem(
@@ -71,8 +78,8 @@ export class CraftingActivity extends AbstractActivity<Crafting> {
         else return t.t.CraftingUnknown
     }
     getIcon(): ReactNode {
-        if (this.data.result.results.stdItemId) return StdItems[this.data.result.results.stdItemId].icon
-        else if (this.data.result.results.craftedItemId) return this.data.result.results.craftedItemId.icon
+        if (this.data.result.results.stdItemId) return IconsData[StdItems[this.data.result.results.stdItemId].icon]
+        else if (this.data.result.results.craftedItemId) return IconsData[this.data.result.results.craftedItemId.icon]
         else return <GiCube />
     }
 }

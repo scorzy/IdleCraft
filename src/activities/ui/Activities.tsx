@@ -49,10 +49,7 @@ export const ActivityCard = memo(function ActivityCard(props: { id: string; isFi
             <div className={classes.title}>
                 <div>{title}</div>
                 <Badge variant={active ? 'default' : 'secondary'}>
-                    <span> {active ? 'Active' : 'In Queue'}</span>
-                    <span className="monospace ml-2">
-                        {f(cur)}/{f(act.max)}
-                    </span>
+                    {active ? 'Active' : 'In Queue'} {f(cur)}/{f(act.max)}
                 </Badge>
             </div>
             <div className={classes.actions}>

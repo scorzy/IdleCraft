@@ -1,7 +1,11 @@
 .item {
     width: 100%;
+
     transition-property: margin-left, border-radius, color, background-color, border-color, text-decoration-color, fill,
         stroke;
+}
+.item svg {
+    font-size: 1.25rem;
 }
 @media (min-width: 900px) {
     .itemCollapsed {

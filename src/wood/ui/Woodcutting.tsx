@@ -4,12 +4,17 @@ import { addWoodcutting } from '../WoodcuttingFunctions'
 import { GameTimerProgress, TimerProgressFromId } from '../../ui/progress/TimerProgress'
 import { WoodTypes } from '../WoodTypes'
 import { GameState } from '../../game/GameState'
-import { selectForest, selectForestQta, selectGrowingTrees, woodCuttingActId } from '../forest/forestSelectors'
+import {
+    selectDefaultForest,
+    selectForest,
+    selectForestQta,
+    selectGrowingTrees,
+    woodCuttingActId,
+} from '../forest/forestSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { RestartProgress } from '../../ui/progress/RestartProgress'
 import { getWoodcuttingTime } from '../WoodcuttingSelectors'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
-import { selectDefaultForest } from '../forest/forestFunctions'
 import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
 import { memo, useCallback } from 'react'
 import { removeActivity } from '../../activities/activityFunctions'
@@ -59,14 +64,11 @@ const Cutting = memo(function Cutting() {
     return (
         <MyCard title={t.Cutting} actions={<CuttingButton />} icon={<GiWoodAxe />}>
             <MyCardLabel>
-                {t.TreeHP}{' '}
-                <span className="monospace">
-                    {f(forest.hp)}/{f(def.hp)}
-                </span>
+                {t.TreeHP} {f(forest.hp)}/{f(def.hp)}
             </MyCardLabel>
             <RestartProgress value={hpPercent} color="error" />
             <MyCardLabel>
-                {t.Time} <span className="monospace">{ft(time)}</span>
+                {t.Time} {ft(time)}
             </MyCardLabel>
             <GameTimerProgress actionId={act} color="primary" />
         </MyCard>
@@ -113,10 +115,7 @@ const ForestQta = memo(function ForestQta() {
     return (
         <>
             <MyCardLabel>
-                {t.Trees}{' '}
-                <span className="monospace">
-                    {f(qta)}/{f(def.qta)}
-                </span>
+                {t.Trees} {f(qta)}/{f(def.qta)}
             </MyCardLabel>
             <ProgressBar value={treePercent} color="success" className="mb" />
         </>
@@ -131,7 +130,7 @@ const Trees = memo(function Trees() {
     return (
         <>
             <MyCardLabel>
-                {t.GrowingTrees} <span className="monospace">{f(trees.length)}</span>
+                {t.GrowingTrees} {f(trees.length)}
             </MyCardLabel>
 
             {trees.map((t) => (

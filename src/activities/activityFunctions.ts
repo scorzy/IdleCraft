@@ -1,15 +1,8 @@
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
-import { WoodcuttingActivity } from '../wood/WoodcuttingActivity'
-import { AbstractActivity, ActivityStartResult } from './AbstractActivity'
-import { ActivityAdapter, ActivityTypes } from './ActivityState'
-
-export function makeActivityFun(state: GameState, type: ActivityTypes, id: string): AbstractActivity<unknown> {
-    switch (type) {
-        case ActivityTypes.Woodcutting:
-            return new WoodcuttingActivity(state, id)
-    }
-}
+import { ActivityStartResult } from './AbstractActivity'
+import { ActivityAdapter } from './ActivityState'
+import { makeActivityFun } from './makeActivityFun'
 
 function removeActivityInt(state: GameState, id: string): GameState {
     const act = ActivityAdapter.select(state.activities, id)

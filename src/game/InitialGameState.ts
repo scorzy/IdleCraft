@@ -3,7 +3,7 @@ import { CraftingAdapter } from '../crafting/CraftingAdapter'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
-import { ItemAdapter } from '../storage/storageFunctions'
+import { ItemAdapter } from '../storage/ItemAdapter'
 import { TimerAdapter } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
 import { WoodTypes } from '../wood/WoodTypes'
@@ -22,7 +22,7 @@ const InitialVillageState: LocationState = {
 export const InitialGameState: GameState = {
     ui: {
         open: false,
-        dark: true,
+        theme: 'system',
         page: UiPages.Storage,
         comma: CommaTypes.AUTO,
         lang: 'eng',

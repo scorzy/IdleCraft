@@ -1,8 +1,8 @@
 import { AppShell } from './ui/shell/AppShell'
-import { useTheme } from './ui/useTheme'
+import { ThemeProvider } from './ui/themeProvider'
 
 function App() {
-    useTheme()
+    ThemeProvider()
     return <AppShell />
 }
 

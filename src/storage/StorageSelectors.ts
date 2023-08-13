@@ -4,10 +4,10 @@ import { StdItems } from '../items/stdItems'
 import { memoize } from '../utils/memoize'
 import { memoizeOne } from '../utils/memoizeOne'
 import { ItemId } from './storageState'
-import { ItemAdapter } from './storageFunctions'
 import { Entries } from '../utils/types'
 import { Item, ItemTypes } from '../items/Item'
 import { InitialState } from '../entityAdapter/entityAdapter'
+import { ItemAdapter } from './ItemAdapter'
 
 const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]: LocationState }) => {
     const res: GameLocations[] = []
@@ -60,6 +60,13 @@ export const selectItem =
         if (stdItemId) return StdItems[stdItemId]
         if (craftItemId) return ItemAdapter.select(state.craftedItems, craftItemId)
     }
+
+export const isSelected = (stdItemId: string | null, craftItemId?: string | null) => (state: GameState) => {
+    if (state.ui.selectedItemLocation === null) return false
+    if (state.ui.selectedStdItemId !== null && state.ui.selectedStdItemId === stdItemId) return true
+    if (state.ui.selectedCraftedItemId !== null && state.ui.selectedCraftedItemId === craftItemId) return true
+    return false
+}
 
 export const getSelectedItem = (state: GameState) => {
     if (state.ui.selectedItemLocation === null) return

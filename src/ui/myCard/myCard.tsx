@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 export const MyCardLabel = memo(function MyCardLabel(props: { children?: ReactNode }) {
     const { children } = props
 
-    return <>{children}</>
+    return <span className="block">{children}</span>
 })
 
 export const MyCard = memo(function MyCard(props: {

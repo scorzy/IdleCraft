@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { Msg } from '../../msg/Msg'
-import { RecipeTypes } from '../../crafting/Recipe'
+import { RecipeTypes } from '../../crafting/RecipeInterfaces'
 
 export enum UiPages {
     Activities = 'Activities',

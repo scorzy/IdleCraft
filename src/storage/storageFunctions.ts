@@ -1,18 +1,15 @@
-import { AbstractEntityAdapter, InitialState } from '../entityAdapter/entityAdapter'
+import { InitialState } from '../entityAdapter/entityAdapter'
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
 import { getUniqueId } from '../utils/getUniqueId'
+import { memoize } from '../utils/memoize'
+import { memoizeOne } from '../utils/memoizeOne'
 import { myCompare } from '../utils/myCompare'
+import { ItemAdapter } from './ItemAdapter'
 import { ItemId, StorageState } from './storageState'
 
-class ItemAdapterInt extends AbstractEntityAdapter<Item> {
-    getId(data: Item): string {
-        return data.id
-    }
-}
-export const ItemAdapter = new ItemAdapterInt()
 export const getItemId2 = (stdItemId: string | null | undefined, craftItemId: string | null | undefined) =>
     stdItemId ? `s${stdItemId}` : craftItemId ? `c${craftItemId}` : ''
 
@@ -105,30 +102,42 @@ export const setSelectedItem = (stdItemId: string | null, craftItemId: string | 
 
 const craftIdsByType = new Map<string, string[]>()
 
-export function saveCraftItem(state: InitialState<Item>, item: Item): { id: string; state: InitialState<Item> } {
-    const byType = craftIdsByType.get(item.type)
-    if (byType) {
-        for (const id of byType) {
-            const itemByType = ItemAdapter.select(state, id)
-            if (itemByType && myCompare(item, itemByType)) {
-                return {
-                    id: itemByType.id,
-                    state,
+const selectCraftItemMemo = memoizeOne((state: InitialState<Item>) => {
+    return memoize((item: Item) => {
+        const byType = craftIdsByType.get(item.type)
+        if (byType) {
+            for (const id of byType) {
+                const itemByType = ItemAdapter.select(state, id)
+                if (itemByType && myCompare(item, itemByType)) {
+                    return itemByType.id
                 }
             }
         }
-    }
 
-    const res = ItemAdapter.find(state, (i) => myCompare(i, item))
-    if (res) return { id: res.id, state }
+        const res = ItemAdapter.find(state, (i) => myCompare(i, item))
+        if (res) return res.id
+
+        return null
+    })
+})
+
+export function selectCraftItem(state: InitialState<Item>, item: Item): string | null {
+    return selectCraftItemMemo(state)(item)
+}
+
+export function saveCraftItem(state: InitialState<Item>, item: Item): { id: string; state: InitialState<Item> } {
+    const id = selectCraftItem(state, item)
+    if (id !== null) return { id, state }
 
     const newItem = { ...item, id: getUniqueId() }
     state = ItemAdapter.create(state, newItem)
 
+    const byType = craftIdsByType.get(item.type) ?? []
     craftIdsByType.set(newItem.type, [...(byType ?? []), newItem.id])
 
     return { id: newItem.id, state }
 }
+
 export function removeCraftItem(state: InitialState<Item>, id: string): InitialState<Item> {
     const item = ItemAdapter.select(state, id)
     const ret = ItemAdapter.remove(state, id)

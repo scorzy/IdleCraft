@@ -1,9 +1,8 @@
-import { RecipeParameter, RecipeResult } from './Recipe'
-import { Recipes } from './Recipes'
+import { RecipeParameterValue, RecipeResult } from './RecipeInterfaces'
 
 export interface Crafting {
     activityId: string
-    recipeId: keyof typeof Recipes
-    params: RecipeParameter[]
+    recipeId: string
+    paramsValue: RecipeParameterValue[]
     result: RecipeResult
 }

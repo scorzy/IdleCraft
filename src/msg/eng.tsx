@@ -29,6 +29,7 @@ export const engMsg: Msg = {
     Recipe: 'Recipe',
     Plank: 'Plank',
     Requirements: 'Requirements',
+    NoItems: "You don't possess anything!",
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

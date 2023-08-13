@@ -1,11 +1,11 @@
 import {
-    Recipe,
     RecipeParamType,
     RecipeParameter,
     RecipeParameterValue,
     RecipeResult,
     RecipeTypes,
-} from '../crafting/Recipe'
+} from '../crafting/RecipeInterfaces'
+import { Recipe } from '@/crafting/Recipe'
 import { GameState } from '../game/GameState'
 import { ItemTypes } from '../items/Item'
 import { WoodData } from './WoodData'
