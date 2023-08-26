@@ -32,6 +32,8 @@ export interface GameState {
         selectedCraftedItemId: string | null
         selectedItemLocation: GameLocations | null
         recipeType?: RecipeTypes
+        storageOrder: 'name' | 'quantity' | 'value'
+        storageAsc: boolean
     }
     timers: InitialState<Timer>
     loading: boolean

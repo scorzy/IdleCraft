@@ -9,11 +9,24 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { MyCard } from '../../ui/myCard/myCard'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { LuArrowDown, LuArrowUp, LuTrash2 } from 'react-icons/lu'
+import { LuArrowDown, LuArrowUp, LuInfo, LuTrash2 } from 'react-icons/lu'
+import { Alert, AlertTitle } from '../../components/ui/alert'
 
 export const Activities = memo(function Activities() {
     const ids = useGameStore(selectActivityId)
     const max = ids.length - 1
+    const { t } = useTranslations()
+
+    if (ids.length === 0)
+        return (
+            <Page>
+                <Alert variant="primary" className="max-w-md">
+                    <LuInfo />
+                    <AlertTitle>{t.NoActivities}</AlertTitle>
+                </Alert>
+            </Page>
+        )
+
     return (
         <Page>
             <div className="my-container">

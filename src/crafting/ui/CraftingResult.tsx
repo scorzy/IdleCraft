@@ -41,21 +41,13 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
 })
 export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq[] | undefined }) {
     const { req } = props
-    //   const { t } = useTranslations()
-    //  const { f } = useNumberFormatter()
+    const { t } = useTranslations()
 
     if (!req) return <></>
 
     return (
-        <MyCard title={'Require'}>
+        <MyCard title={t.Requirements}>
             <Table>
-                {/* <TableHead>
-                    <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell>Item</TableCell>
-                        <TableCell></TableCell>
-                    </TableRow>
-                </TableHead> */}
                 <TableBody>
                     {req.map((r) => (
                         <CraftingReqRow req={r} key={getItemId2(r.stdItemId, r.craftedItemId)} />

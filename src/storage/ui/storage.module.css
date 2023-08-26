@@ -6,9 +6,6 @@
     }
 }
 
-/* .item:not(:last-child) {
-    border-bottom-width: 1px;
-} */
 .container {
     overflow: hidden;
     transition-property: height, max-height;
@@ -23,4 +20,9 @@
 .hr {
     margin-right: calc(4px + var(--radius));
     margin-left: calc(4px + var(--radius));
+}
+.sort {
+    svg {
+        margin-left: 0.5rem;
+    }
 }

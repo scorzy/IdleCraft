@@ -15,6 +15,9 @@ import { cn } from '../../lib/utils'
 import { LuChevronsUpDown, LuInfo } from 'react-icons/lu'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Alert, AlertTitle } from '@/components/ui/alert'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { setStorageOrder } from '../../ui/state/uiFunctions'
+import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
@@ -25,6 +28,7 @@ export function UiStorage() {
         <Page>
             <div className="my-container">
                 <MyCard>
+                    <SortDropdown />
                     {locations.map((l) => (
                         <LocationStorage key={l} location={GameLocations.StartVillage} />
                     ))}
@@ -34,6 +38,34 @@ export function UiStorage() {
         </Page>
     )
 }
+const SortDropdown = memo(function SortDropdown() {
+    const { t } = useTranslations()
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger className={buttonVariants({ variant: 'secondary' })}>{t.Sort}</DropdownMenuTrigger>
+            <DropdownMenuContent className="sort">
+                <DropdownMenuItem onClick={setStorageOrder('name', true)}>
+                    {t.Name} <LuArrowDown />
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={setStorageOrder('quantity', true)}>
+                    {t.Quantity} <LuArrowDown />
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={setStorageOrder('value', true)}>
+                    {t.Value} <LuArrowDown />
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={setStorageOrder('name', false)}>
+                    {t.Name} <LuArrowUp />
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={setStorageOrder('quantity', false)}>
+                    {t.Quantity} <LuArrowUp />
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={setStorageOrder('value', false)}>
+                    {t.Value} <LuArrowUp />
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
+})
 
 const NoItems = memo(function NoItems() {
     const { t } = useTranslations()

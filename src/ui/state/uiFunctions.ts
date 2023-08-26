@@ -5,6 +5,7 @@ import { UiPagesData } from './UiPagesData'
 import { GameState } from '../../game/GameState'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
+export type StorageOrder = 'name' | 'quantity' | 'value'
 
 export const setTheme = (theme: string) => useGameStore.setState((s) => ({ ui: { ...s.ui, theme } }))
 export const toggle = () => useGameStore.setState((s) => ({ ui: { ...s.ui, open: !s.ui.open } }))
@@ -30,3 +31,6 @@ export const collapse = (id: string) =>
             }
         }
     })
+
+export const setStorageOrder = (order: StorageOrder, asc: boolean) => () =>
+    useGameStore.setState((s) => ({ ui: { ...s.ui, storageOrder: order, storageAsc: asc } }))

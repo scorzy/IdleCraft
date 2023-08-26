@@ -30,6 +30,12 @@ export const engMsg: Msg = {
     Plank: 'Plank',
     Requirements: 'Requirements',
     NoItems: "You don't possess anything!",
+    NoActivities: "There aren't any activity",
+    Craft: 'Craft',
+    Sort: 'Sort',
+    Name: 'Name',
+    Quantity: 'Quantity',
+    Value: 'Value',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

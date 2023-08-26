@@ -67,6 +67,7 @@ const RecipeUi = memo(function RecipeUi() {
 
 const CraftingButtons = memo(function CraftingButtons() {
     const { ft } = useNumberFormatter()
+    const { t } = useTranslations()
     const time = useGameStore(selectCraftTime)
 
     const isCrafting = useGameStore(selectCurrentCrafting)
@@ -79,7 +80,7 @@ const CraftingButtons = memo(function CraftingButtons() {
                 {time ? ft(time) : '-'}
             </Badge>
             <Button type="submit" className="w-min" onClick={addCrafting} disabled={!bntEnabled || isCrafting !== null}>
-                Craft
+                {t.Craft}
             </Button>
             <GameTimerProgress actionId={isCrafting} color="primary" />
         </>

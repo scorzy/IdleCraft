@@ -17,6 +17,12 @@ export interface Msg {
     Plank: string
     Requirements: string
     NoItems: string
+    NoActivities: string
+    Craft: string
+    Sort: string
+    Name: string
+    Quantity: string
+    Value: string
 
     //  Trees
     Cutting: string

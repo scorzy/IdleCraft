@@ -3,11 +3,13 @@ import { GameLocations } from '../gameLocations/GameLocations'
 import { StdItems } from '../items/stdItems'
 import { memoize } from '../utils/memoize'
 import { memoizeOne } from '../utils/memoizeOne'
-import { ItemId } from './storageState'
+import { ItemId, StorageState } from './storageState'
 import { Entries } from '../utils/types'
 import { Item, ItemTypes } from '../items/Item'
 import { InitialState } from '../entityAdapter/entityAdapter'
 import { ItemAdapter } from './ItemAdapter'
+import { selectTranslations } from '../msg/useTranslations'
+import { Translations } from '../msg/Msg'
 
 const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]: LocationState }) => {
     const res: GameLocations[] = []
@@ -18,9 +20,22 @@ const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]:
     }
     return res
 })
+export const selectItemInt = (
+    stdItemId: string | null | undefined,
+    craftItemId: string | null | undefined,
+    craftedItems: InitialState<Item>
+) => {
+    if (stdItemId) return StdItems[stdItemId]
+    if (craftItemId) return ItemAdapter.select(craftedItems, craftItemId)
+}
 
 export const selectStorageLocations = (state: GameState) => selectStorageLocationsInt(state.locations)
 
+type ItemOrdQta = ItemId & { qta: number }
+
+type ItemOrdName = ItemId & { name: string }
+
+type ItemOrdValue = ItemId & { value: number }
 export const selectLocationItems = memoize((location: GameLocations) => {
     const orderItems = memoizeOne((std: { [k in string]: number }, craft: { [k: string]: number }) => {
         const ret: ItemId[] = (Object.entries<number>(std) as Entries<{ [k in string]: number }>)
@@ -35,15 +50,60 @@ export const selectLocationItems = memoize((location: GameLocations) => {
                     return { stdItemId: null, craftItemId: e[0] }
                 })
             )
+
         return ret
     })
+
+    const reorderName = memoizeOne(function reorderName(
+        craftedItems: InitialState<Item>,
+        items: ItemId[],
+        t: Translations
+    ): ItemId[] {
+        const ord: ItemOrdName[] = []
+        items.forEach((e) => {
+            const item = selectItemInt(e.stdItemId, e.craftItemId, craftedItems)
+            let name = ''
+            if (item) name = t.t[item.nameId]
+            ord.push({ ...e, name })
+        })
+        return ord.sort((a, b) => a.name.localeCompare(b.name))
+    })
+    const reorderQta = memoizeOne(function reorderQta(items: ItemId[], storage: StorageState): ItemId[] {
+        const ord: ItemOrdQta[] = []
+        items.forEach((e) => {
+            let qta = 0
+            if (e.stdItemId) qta = storage.StdItems[e.stdItemId] ?? 0
+            else if (e.craftItemId) qta = storage.CraftedItems[e.craftItemId] ?? 0
+            ord.push({ ...e, qta })
+        })
+        return ord.sort((a, b) => a.qta - b.qta)
+    })
+    const reorderValue = memoizeOne(function reorderName(craftedItems: InitialState<Item>, items: ItemId[]): ItemId[] {
+        const ord: ItemOrdValue[] = []
+        items.forEach((e) => {
+            const item = selectItemInt(e.stdItemId, e.craftItemId, craftedItems)
+            ord.push({ ...e, value: item?.value ?? 0 })
+        })
+        return ord.sort((a, b) => a.value - b.value)
+    })
+
+    const sortDesc = memoizeOne((items: ItemId[]) => items.slice(0).reverse())
 
     return (state: GameState) => {
         const loc = state.locations[location]
         const stdItems = loc.storage.StdItems
         const craftedItems = loc.storage.CraftedItems
+        const order = state.ui.storageOrder
 
-        return orderItems(stdItems, craftedItems)
+        let items = orderItems(stdItems, craftedItems)
+        if (order === 'name') {
+            const t = selectTranslations(state)
+            items = reorderName(state.craftedItems, items, t)
+        } else if (order === 'quantity') items = reorderQta(items, loc.storage)
+        else if (order === 'value') items = reorderValue(state.craftedItems, items)
+
+        if (!state.ui.storageAsc) items = sortDesc(items)
+        return items
     }
 })
 
@@ -55,6 +115,7 @@ export const selectItemQta =
         if (craftItemId) return storage.CraftedItems[craftItemId] ?? 0
         return 0
     }
+
 export const selectItem =
     (stdItemId: string | null | undefined, craftItemId: string | null | undefined) => (state: GameState) => {
         if (stdItemId) return StdItems[stdItemId]

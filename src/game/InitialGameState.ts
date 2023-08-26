@@ -32,6 +32,8 @@ export const InitialGameState: GameState = {
         selectedStdItemId: null,
         selectedCraftedItemId: null,
         selectedItemLocation: null,
+        storageOrder: 'name',
+        storageAsc: true,
     },
     location: GameLocations.StartVillage,
     activities: ActivityAdapter.getInitialState(),

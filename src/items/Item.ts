@@ -9,4 +9,5 @@ export interface Item {
     nameId: keyof Msg
     icon: Icons
     type: ItemTypes
+    value: number
 }
