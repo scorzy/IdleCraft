@@ -16,6 +16,8 @@ export const WoodItems = {
         type: ItemTypes.Log,
         value: 6,
     },
+
+    // plank
     DeadTreePlank: {
         id: 'DeadTreePlank',
         icon: Icons.Plank,
@@ -29,5 +31,21 @@ export const WoodItems = {
         nameId: 'OakPlank',
         type: ItemTypes.Plank,
         value: 12,
+    },
+
+    //  handle
+    DeadTreeHandle: {
+        id: 'DeadTreeHandle',
+        icon: Icons.Handle,
+        nameId: 'DeadTreeHandle',
+        type: ItemTypes.Handle,
+        value: 15,
+    },
+    OakHandle: {
+        id: 'OakHandle',
+        icon: Icons.Handle,
+        nameId: 'OakHandle',
+        type: ItemTypes.Handle,
+        value: 20,
     },
 } satisfies { [k: string]: Item }

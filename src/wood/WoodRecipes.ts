@@ -13,6 +13,9 @@ import { WoodData } from './WoodData'
 const LogToPlank = new Map<string, string>()
 Object.values(WoodData).forEach((w) => LogToPlank.set(w.logId, w.plankId))
 
+const PlankToHandle = new Map<string, string>()
+Object.values(WoodData).forEach((w) => PlankToHandle.set(w.plankId, w.handleId))
+
 const plankParam: RecipeParameter[] = [
     {
         id: 'log',
@@ -49,4 +52,42 @@ export const PlankRecipe: Recipe = {
     },
 }
 
-export const WoodRecipes = { [PlankRecipe.id]: PlankRecipe } satisfies { [k: string]: Recipe }
+const handleParam: RecipeParameter[] = [
+    {
+        id: 'plank',
+        nameId: 'Plank',
+        type: RecipeParamType.ItemType,
+        itemType: ItemTypes.Plank,
+    },
+]
+export const HandleRecipe: Recipe = {
+    id: 'handleRecipe',
+    type: RecipeTypes.Woodworking,
+    nameId: 'Handle',
+    getParameters: function (_state: GameState): RecipeParameter[] {
+        return handleParam
+    },
+    getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
+        const plank = params.find((i) => i.id === 'plank')
+        if (plank === undefined) return
+        if (!plank.stdItemId) return
+
+        return {
+            time: 3e3,
+            requirements: [
+                {
+                    qta: 1,
+                    stdItemId: plank.stdItemId,
+                },
+            ],
+            results: {
+                qta: 1,
+                stdItemId: PlankToHandle.get(plank.stdItemId),
+            },
+        }
+    },
+}
+
+export const WoodRecipes = { [PlankRecipe.id]: PlankRecipe, [HandleRecipe.id]: HandleRecipe } satisfies {
+    [k: string]: Recipe
+}

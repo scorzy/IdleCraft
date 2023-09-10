@@ -10,6 +10,7 @@ export interface WoodDataType {
     nameId: keyof Msg
     logId: string
     plankId: string
+    handleId: string
 }
 export const WoodData: { [k in WoodTypes]: WoodDataType } = {
     [WoodTypes.DeadTree]: {
@@ -19,6 +20,7 @@ export const WoodData: { [k in WoodTypes]: WoodDataType } = {
         nameId: 'DeadTree',
         logId: 'DeadTreeLog',
         plankId: 'DeadTreePlank',
+        handleId: 'DeadTreeHandle',
     },
     [WoodTypes.Oak]: {
         maxHp: 200,
@@ -27,5 +29,6 @@ export const WoodData: { [k in WoodTypes]: WoodDataType } = {
         nameId: 'Oak',
         logId: 'OakLog',
         plankId: 'OakPlank',
+        handleId: 'OakTreeHandle',
     },
 }

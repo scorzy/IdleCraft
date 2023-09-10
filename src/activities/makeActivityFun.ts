@@ -10,5 +10,8 @@ export function makeActivityFun(state: GameState, type: ActivityTypes, id: strin
 
         case ActivityTypes.Crafting:
             return Provider.makeCraftingActivity!(state, id)
+
+        case ActivityTypes.Mining:
+            return Provider.makeMiningActivity!(state, id)
     }
 }

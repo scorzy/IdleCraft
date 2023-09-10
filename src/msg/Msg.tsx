@@ -23,6 +23,11 @@ export interface Msg {
     Name: string
     Quantity: string
     Value: string
+    Handle: string
+    DeadTreeHandle: string
+    OakHandle: string
+    CopperOre: string
+    TinOre: string
 
     //  Trees
     Cutting: string
@@ -59,5 +64,6 @@ export interface MsgFunctions {
     //
     cutting: (woodName: keyof Msg) => string
     crafting: (itemNameId: keyof Msg) => string
+    mining: (woodName: keyof Msg) => string
 }
 export type makeMsgFun = (msg: Msg) => MsgFunctions

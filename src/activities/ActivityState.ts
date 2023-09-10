@@ -3,6 +3,7 @@ import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 export enum ActivityTypes {
     Woodcutting = 'Woodcutting',
     Crafting = 'Crafting',
+    Mining = 'Mining',
 }
 export interface ActivityState {
     id: string

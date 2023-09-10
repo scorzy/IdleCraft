@@ -1,6 +1,6 @@
 import { AbstractActivity, ActivityStartResult } from '../activities/AbstractActivity'
 import { ActivityTypes } from '../activities/ActivityState'
-import { Woodcutting } from './WoodInterfaces'
+import { Woodcutting } from './Woodcutting'
 import { WoodcuttingAdapter } from './WoodcuttingAdapter'
 import { WoodTypes } from './WoodTypes'
 import { AbstractActivityCreator } from '../activities/AbstractActivityCreator'

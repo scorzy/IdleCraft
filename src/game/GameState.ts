@@ -6,17 +6,20 @@ import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
+import { OreType } from '../mining/OreState'
 import { StorageState } from '../storage/storageState'
 import { Timer } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
 import { ForestsType } from '../wood/ForestsState'
-import { Woodcutting } from '../wood/WoodInterfaces'
+import { Woodcutting } from '../wood/Woodcutting'
 import { WoodTypes } from '../wood/WoodTypes'
 import { TreeGrowth } from '../wood/forest/forestGrowth'
+import { Mining } from '../mining/Mining'
 
 export interface LocationState {
     storage: StorageState
     forests: ForestsType
+    ores: OreType
 }
 export interface GameState {
     ui: {
@@ -51,6 +54,7 @@ export interface GameState {
     treeGrowth: InitialState<TreeGrowth>
     crafting: InitialState<Crafting>
     recipeId: string
+    mining: InitialState<Mining>
     craftingForm: {
         params: RecipeParameter[]
         paramsValue: RecipeParameterValue[]

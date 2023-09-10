@@ -3,6 +3,7 @@ import { Msg } from '../msg/Msg'
 export enum ItemTypes {
     Log = 'Log',
     Plank = 'Plank',
+    Handle = 'Handle',
 }
 export interface Item {
     id: string

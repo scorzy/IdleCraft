@@ -11,8 +11,8 @@ function removeActivityInt(state: GameState, id: string): GameState {
     return startNextActivity(state)
 }
 
-export const removeActivity = (id: string | undefined) => {
-    if (id === undefined) return
+export const removeActivity = (id: string | undefined | null) => {
+    if (!id) return
     return useGameStore.setState((s) => removeActivityInt(s, id))
 }
 

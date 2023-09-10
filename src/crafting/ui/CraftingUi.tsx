@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { MyCard } from '../../ui/myCard/myCard'
 import { Page } from '../../ui/shell/AppShell'
 import { memoize } from '../../utils/memoize'
@@ -30,6 +30,7 @@ import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { LuHourglass } from 'react-icons/lu'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
+import { removeActivity } from '../../activities/activityFunctions'
 
 const selectRecipes = memoize((t: RecipeTypes) => Object.values(Recipes).filter((r) => r.type === t))
 
@@ -70,8 +71,9 @@ const CraftingButtons = memo(function CraftingButtons() {
     const { t } = useTranslations()
     const time = useGameStore(selectCraftTime)
 
-    const isCrafting = useGameStore(selectCurrentCrafting)
+    const id = useGameStore(selectCurrentCrafting)
     const bntEnabled = useGameStore(canCraft)
+    const onClickRemove = useCallback(() => removeActivity(id), [id])
 
     return (
         <>
@@ -79,10 +81,17 @@ const CraftingButtons = memo(function CraftingButtons() {
                 <LuHourglass />
                 {time ? ft(time) : '-'}
             </Badge>
-            <Button type="submit" className="w-min" onClick={addCrafting} disabled={!bntEnabled || isCrafting !== null}>
-                {t.Craft}
-            </Button>
-            <GameTimerProgress actionId={isCrafting} color="primary" />
+            {id === null && (
+                <Button type="submit" className="w-min" onClick={addCrafting} disabled={!bntEnabled}>
+                    {t.Craft}
+                </Button>
+            )}
+            {id !== null && (
+                <Button type="submit" className="w-min" variant="destructive" onClick={onClickRemove}>
+                    {t.Remove}
+                </Button>
+            )}
+            <GameTimerProgress actionId={id} color="primary" />
         </>
     )
 })

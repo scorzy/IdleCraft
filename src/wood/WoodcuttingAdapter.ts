@@ -1,5 +1,5 @@
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
-import { Woodcutting } from './WoodInterfaces'
+import { Woodcutting } from './Woodcutting'
 
 class WoodcuttingAdapterInt extends AbstractEntityAdapter<Woodcutting> {
     getId(data: Woodcutting): string {

@@ -36,6 +36,11 @@ export const engMsg: Msg = {
     Name: 'Name',
     Quantity: 'Quantity',
     Value: 'Value',
+    Handle: 'Handle',
+    DeadTreeHandle: 'Dead Tree Handle',
+    OakHandle: 'Oak Handle',
+    CopperOre: 'Copper Ore',
+    TinOre: 'Tin Ore',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,
@@ -46,4 +51,5 @@ export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     s: (_qta: number, formattedQta: string) => `${formattedQta}s`,
     cutting: (woodName: keyof Msg) => `Cutting ${msg[woodName]}`,
     crafting: (itemNameId: keyof Msg) => `Crafting ${msg[itemNameId]}`,
+    mining: (oreNameId: keyof Msg) => `Mining ${msg[oreNameId]}`,
 })
