@@ -51,6 +51,12 @@ export interface Msg {
     //  Forest
     DeadTreeForest: string
     OakForest: string
+
+    //  Mining
+    Mining: string
+    OreHp: string
+    Mine: string
+    OreQta: string
 }
 export interface MsgFunctions {
     // Time

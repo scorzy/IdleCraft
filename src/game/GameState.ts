@@ -15,6 +15,7 @@ import { Woodcutting } from '../wood/Woodcutting'
 import { WoodTypes } from '../wood/WoodTypes'
 import { TreeGrowth } from '../wood/forest/forestGrowth'
 import { Mining } from '../mining/Mining'
+import { OreTypes } from '../mining/OreTypes'
 
 export interface LocationState {
     storage: StorageState
@@ -31,6 +32,7 @@ export interface GameState {
         lang: string
         collapsed: { [k: string]: boolean }
         woodType: WoodTypes
+        oreType: OreTypes
         selectedStdItemId: string | null
         selectedCraftedItemId: string | null
         selectedItemLocation: GameLocations | null

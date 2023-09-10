@@ -3,6 +3,7 @@ import { UiPages } from './UiPages'
 import { WoodTypes } from '../../wood/WoodTypes'
 import { UiPagesData } from './UiPagesData'
 import { GameState } from '../../game/GameState'
+import { OreTypes } from '../../mining/OreTypes'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
 export type StorageOrder = 'name' | 'quantity' | 'value'
@@ -15,6 +16,7 @@ export const setPage = (page: UiPages) =>
         return { ui: { ...s.ui, page, open: false, recipeType: data.recipeType } }
     })
 export const setWood = (woodType: WoodTypes) => useGameStore.setState((s) => ({ ui: { ...s.ui, woodType } }))
+export const setOre = (oreType: OreTypes) => useGameStore.setState((s) => ({ ui: { ...s.ui, oreType } }))
 
 export const isCollapsed = (id: string) => (s: GameState) => {
     if (id in s.ui.collapsed) return s.ui.collapsed[id]

@@ -10,23 +10,33 @@ import { Mining } from './Mining'
 import { MiningAdapter } from './MiningAdapter'
 import { OreTypes } from './OreTypes'
 import { OreData } from './OreData'
-import { hasOre, mineOre } from './miningFunctions'
-import { getMiningTime, getMiningDamage } from './miningSelectors'
+import { hasOre, mineOre, resetOre } from './miningFunctions'
+import { getMiningTime, getMiningDamage, getSearchMineTime } from './miningSelectors'
 
 export class MiningActivityCreator extends AbstractActivityCreator<OreTypes> {
-    protected type = ActivityTypes.Woodcutting
+    protected type = ActivityTypes.Mining
     onAdd() {
         this.state = {
             ...this.state,
             mining: MiningAdapter.create(this.state.mining, {
                 activityId: this.id,
                 oreType: this.data,
+                isMining: true,
             }),
         }
     }
 }
 
 export class MiningActivity extends AbstractActivity<Mining> {
+    private StartMining() {
+        const time = getMiningTime()
+        this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
+        if (!this.data.isMining)
+            this.state = {
+                ...this.state,
+                mining: MiningAdapter.update(this.state.mining, this.id, { isMining: true }),
+            }
+    }
     getData(): Mining {
         return MiningAdapter.selectEx(this.state.mining, this.id)
     }
@@ -35,32 +45,42 @@ export class MiningActivity extends AbstractActivity<Mining> {
     }
     onStart(): ActivityStartResult {
         if (!hasOre(this.state, this.data.oreType)) {
-            // ToDo
-            return ActivityStartResult.Started
+            const time = getSearchMineTime()
+            this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
+            if (this.data.isMining)
+                this.state = {
+                    ...this.state,
+                    mining: MiningAdapter.update(this.state.mining, this.id, { isMining: false }),
+                }
+        } else {
+            this.StartMining()
         }
-
-        this.state = { ...this.state, waitingTrees: null }
-        const time = getMiningTime()
-        this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
-
         return ActivityStartResult.Started
     }
     onExec(): ActivityStartResult {
-        if (!hasOre(this.state, this.data.oreType)) return ActivityStartResult.NotPossible
+        let completed = false
+        if (!this.data.isMining) {
+            this.state = {
+                ...this.state,
+                mining: MiningAdapter.update(this.state.mining, this.id, { isMining: true }),
+            }
+            this.state = resetOre(this.state, this.data.oreType, this.state.location)
+        } else {
+            const damage = getMiningDamage()
+            const res = mineOre(this.state, this.data.oreType, damage, this.state.location)
+            this.state = res.state
+            completed = res.mined
+        }
 
-        const damage = getMiningDamage()
-        const res = mineOre(this.state, this.data.oreType, damage, this.state.location)
-        this.state = res.state
-        if (res.mined) {
+        if (completed) {
             //  Add Item
             //  Add exp
             this.state = addItem(this.state, `${this.data.oreType}Ore`, null, 1)
         } else {
-            const time = getMiningTime()
-            this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
+            this.StartMining()
         }
 
-        return res.mined ? ActivityStartResult.Ended : ActivityStartResult.Started
+        return completed ? ActivityStartResult.Ended : ActivityStartResult.Started
     }
     getTitleInt(t: Translations): string {
         return t.fun.cutting(OreData[this.data.oreType].nameId)

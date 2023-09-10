@@ -41,6 +41,10 @@ export const engMsg: Msg = {
     OakHandle: 'Oak Handle',
     CopperOre: 'Copper Ore',
     TinOre: 'Tin Ore',
+    Mining: 'Mining',
+    OreHp: 'Ore Hp',
+    Mine: 'Mine',
+    OreQta: 'Quantity',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

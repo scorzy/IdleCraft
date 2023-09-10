@@ -4,6 +4,7 @@ import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { MiningAdapter } from '../mining/MiningAdapter'
+import { OreTypes } from '../mining/OreTypes'
 import { ItemAdapter } from '../storage/ItemAdapter'
 import { TimerAdapter } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
@@ -36,6 +37,7 @@ export const InitialGameState: GameState = {
         selectedItemLocation: null,
         storageOrder: 'name',
         storageAsc: true,
+        oreType: OreTypes.Copper,
     },
     location: GameLocations.StartVillage,
     activities: ActivityAdapter.getInitialState(),

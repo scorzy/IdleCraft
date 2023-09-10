@@ -12,6 +12,7 @@ import { ModeToggle } from '../modeToggle'
 import { Button } from '../../components/ui/button'
 import { toggle } from '../state/uiFunctions'
 import { LuMenu } from 'react-icons/lu'
+import { Mining } from '../../mining/ui/Mining'
 
 export const AppShell = memo(function AppShell() {
     const open = useGameStore((s) => s.ui.open)
@@ -49,6 +50,8 @@ export const PageContent = memo(function PageContent() {
             return <Activities />
         case UiPages.Woodworking:
             return <CraftingUi />
+        case UiPages.Mining:
+            return <Mining />
     }
 })
 

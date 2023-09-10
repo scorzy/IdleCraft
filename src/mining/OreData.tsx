@@ -15,12 +15,12 @@ export const OreData: { [k in OreTypes]: OreDataType } = {
         qta: 10,
         icon: <GiOre />,
         nameId: 'CopperOre',
-        hp: 10,
+        hp: 100,
     },
     [OreTypes.Tin]: {
         qta: 20,
         icon: <GiOre />,
         nameId: 'TinOre',
-        hp: 20,
+        hp: 200,
     },
 }
