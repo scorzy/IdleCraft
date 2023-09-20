@@ -1,7 +1,7 @@
 export interface InitialState<T> {
     ids: string[]
     entries: {
-        [k: string]: T
+        [k in string]: T
     }
 }
 

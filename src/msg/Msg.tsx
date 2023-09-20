@@ -57,6 +57,7 @@ export interface Msg {
     OreHp: string
     Mine: string
     OreQta: string
+    OreVein: string
 }
 export interface MsgFunctions {
     // Time

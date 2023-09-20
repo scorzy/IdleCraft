@@ -16,6 +16,7 @@ import { WoodTypes } from '../wood/WoodTypes'
 import { TreeGrowth } from '../wood/forest/forestGrowth'
 import { Mining } from '../mining/Mining'
 import { OreTypes } from '../mining/OreTypes'
+import { ExpState } from '../experience/ExpState'
 
 export interface LocationState {
     storage: StorageState
@@ -57,6 +58,7 @@ export interface GameState {
     crafting: InitialState<Crafting>
     recipeId: string
     mining: InitialState<Mining>
+    exp: InitialState<ExpState>
     craftingForm: {
         params: RecipeParameter[]
         paramsValue: RecipeParameterValue[]

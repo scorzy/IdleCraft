@@ -12,6 +12,7 @@ import { WoodTypes } from '../wood/WoodTypes'
 import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { GameState, LocationState } from './GameState'
+import { ExpAdapter } from '../experience/ExpAdapter'
 
 const InitialVillageState: LocationState = {
     storage: {
@@ -39,6 +40,7 @@ export const InitialGameState: GameState = {
         storageAsc: true,
         oreType: OreTypes.Copper,
     },
+    exp: ExpAdapter.getInitialState(),
     location: GameLocations.StartVillage,
     activities: ActivityAdapter.getInitialState(),
     orderedActivities: [],

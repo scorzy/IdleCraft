@@ -83,7 +83,7 @@ export class MiningActivity extends AbstractActivity<Mining> {
         return completed ? ActivityStartResult.Ended : ActivityStartResult.Started
     }
     getTitleInt(t: Translations): string {
-        return t.fun.cutting(OreData[this.data.oreType].nameId)
+        return t.fun.mining(OreData[this.data.oreType].nameId)
     }
     getIcon(): ReactNode {
         return OreData[this.data.oreType].icon
