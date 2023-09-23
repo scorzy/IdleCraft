@@ -9,6 +9,8 @@ export interface Msg {
     MoveUp: string
     MoveDown: string
     Remove: string
+    Level: string
+    XP: string
     CraftingUnknown: string
     Woodworking: string
     Log: string
@@ -26,6 +28,8 @@ export interface Msg {
     Handle: string
     DeadTreeHandle: string
     OakHandle: string
+    Ore: string
+    Bar: string
     CopperOre: string
     TinOre: string
 
@@ -58,6 +62,19 @@ export interface Msg {
     Mine: string
     OreQta: string
     OreVein: string
+
+    //  Exp
+    MiningExp: string
+    WoodcuttingExp: string
+    WoodworkingExp: string
+    SmithingExp: string
+
+    // Bars
+    TinBar: string
+    CopperBar: string
+
+    Smithing: string
+    WoodAxe: string
 }
 export interface MsgFunctions {
     // Time

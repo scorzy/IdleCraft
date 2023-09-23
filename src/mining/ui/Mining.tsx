@@ -14,6 +14,9 @@ import { RestartProgress } from '../../ui/progress/RestartProgress'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { addMining } from '../addMining'
 import { OreData } from '../OreData'
+import { ExperienceCard } from '../../experience/ui/ExperienceCard'
+import { ExpEnum } from '../../experience/expEnum'
+import classes from './mining.module.css'
 
 export const Mining = memo(function Mining() {
     return (
@@ -25,9 +28,14 @@ export const Mining = memo(function Mining() {
 export const MiningContainer = memo(function MiningContainer() {
     const oreType = useGameStore(selectOreType)
     return (
-        <div className="my-container" key={oreType}>
-            <MiningOre />
-            <OreUi />
+        <div className="page-container">
+            <div className="my-container">
+                <ExperienceCard expType={ExpEnum.Mining} />
+            </div>
+            <div className="my-container" key={oreType}>
+                <MiningOre />
+                <OreUi />
+            </div>
         </div>
     )
 })
@@ -40,11 +48,15 @@ const MiningOre = memo(function MiningOre() {
     const def = selectDefaultMine(oreType)
     const hpPercent = Math.floor((100 * ore.hp) / def.hp)
     const time = getMiningTime()
+    const oreData = OreData[oreType]
 
     return (
         <MyCard title={t.Mining} actions={<MiningButton />} icon={<GiMining />}>
             <MyCardLabel>
-                {t.OreHp} {f(ore.hp)}/{f(def.hp)}
+                <span className={classes.oreHp}>
+                    {t.OreHp} {f(ore.hp)}/{f(def.hp)}
+                </span>
+                <span>Armour {f(oreData.armour)}</span>
             </MyCardLabel>
             <RestartProgress value={hpPercent} color="error" />
             <MyCardLabel>

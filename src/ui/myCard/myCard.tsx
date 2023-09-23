@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 export const MyCardLabel = memo(function MyCardLabel(props: { children?: ReactNode }) {
     const { children } = props
 
-    return <span className="block">{children}</span>
+    return <span className="my-card-label">{children}</span>
 })
 
 export const MyCard = memo(function MyCard(props: {
@@ -16,7 +16,7 @@ export const MyCard = memo(function MyCard(props: {
     const { children, title, actions, icon } = props
 
     return (
-        <Card className={title ? '' : 'pt-6'}>
+        <Card className={`my-card ${title ? '' : 'pt-4'}`}>
             {title && (
                 <CardHeader>
                     <CardTitle>

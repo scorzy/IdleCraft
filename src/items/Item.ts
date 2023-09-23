@@ -5,6 +5,8 @@ export enum ItemTypes {
     Plank = 'Plank',
     Handle = 'Handle',
     Ore = 'Ore',
+    Bar = 'Bar',
+    WoodAxe = 'WoodAxe',
 }
 export interface Item {
     id: string

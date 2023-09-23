@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { GiWoodAxe, GiLog, GiPlanks, GiBo, GiOre } from 'react-icons/gi'
+import { GiWoodAxe, GiLog, GiPlanks, GiBo, GiOre, GiMetalBar } from 'react-icons/gi'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export enum Icons {
@@ -8,6 +8,7 @@ export enum Icons {
     Plank = 'Plank',
     Handle = 'Handle',
     Ore = 'Ore',
+    Bar = 'Bar',
 }
 export const IconsData: { [k in Icons]: ReactNode } = {
     Axe: <GiWoodAxe />,
@@ -15,4 +16,5 @@ export const IconsData: { [k in Icons]: ReactNode } = {
     Plank: <GiPlanks />,
     Handle: <GiBo />,
     Ore: <GiOre />,
+    Bar: <GiMetalBar />,
 }

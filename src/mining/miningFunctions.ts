@@ -1,5 +1,6 @@
 import { GameState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { OreData } from './OreData'
 import { OreTypes } from './OreTypes'
 import { selectDefaultMine } from './miningSelectors'
 
@@ -50,7 +51,8 @@ export function mineOre(
         curHp = def.hp
     }
 
-    let hp = curHp - damage
+    const data = OreData[oreType]
+    let hp = curHp - Math.max(0, damage - data.armour)
     let mined = false
 
     if (hp <= 0) {

@@ -22,3 +22,6 @@ export function addExp(state: GameState, expType: ExpEnum, expQta: number) {
 export function getLevel(state: GameState, expType: ExpEnum): number {
     return ExpAdapter.select(state.exp, expType)?.level ?? 0
 }
+export function getLevelExp(level: number): number {
+    return Math.floor(EXP_BASE_PRICE * (EXP_GROW_RATE ** level - 1)) / (EXP_GROW_RATE - 1)
+}

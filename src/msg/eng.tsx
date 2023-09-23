@@ -46,6 +46,18 @@ export const engMsg: Msg = {
     Mine: 'Mine',
     OreQta: 'Quantity',
     OreVein: 'Ore Vein',
+    Level: 'Level',
+    XP: 'XP',
+    MiningExp: 'Mining Level',
+    WoodcuttingExp: 'Woodcutting Level',
+    WoodworkingExp: 'Woodworking Level',
+    SmithingExp: 'Smithing Level',
+    Ore: 'Ore',
+    Bar: 'Bar',
+    TinBar: 'Tin Bar',
+    CopperBar: 'Copper Bar',
+    Smithing: 'Smithing',
+    WoodAxe: 'Wood Axe',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

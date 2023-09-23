@@ -7,6 +7,12 @@
     font-size: 1.25rem;
 }
 
+.page-container {
+    display: grid;
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
+}
+
 .my-container {
     display: grid;
     column-gap: 0.5rem;
@@ -56,5 +62,20 @@
     }
     to {
         height: 0;
+    }
+}
+
+.my-card {
+    container-type: inline-size;
+}
+
+.my-card-label {
+    display: grid;
+    justify-content: start;
+}
+@container (min-width: 300px) {
+    .my-card-label {
+        gap: 1rem;
+        grid-auto-flow: column;
     }
 }

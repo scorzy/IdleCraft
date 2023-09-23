@@ -21,7 +21,7 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
 
     if (!result) return <></>
 
-    const item: Item | undefined = result.craftedItemId ?? StdItems[result.stdItemId ?? '']
+    const item: Item | undefined = result.craftedItem ?? StdItems[result.stdItemId ?? '']
     if (!item) return <></>
 
     return (

@@ -52,6 +52,8 @@ export const PageContent = memo(function PageContent() {
             return <CraftingUi />
         case UiPages.Mining:
             return <Mining />
+        case UiPages.Smithing:
+            return <CraftingUi />
     }
 })
 

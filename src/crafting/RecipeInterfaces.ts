@@ -3,6 +3,7 @@ import { Msg } from '../msg/Msg'
 
 export enum RecipeTypes {
     Woodworking = 'Woodworking',
+    Smithing = 'Smithing',
 }
 export enum RecipeParamType {
     ItemType = 'ItemType',
@@ -28,7 +29,7 @@ export interface RecipeItemReq {
 export interface RecipeItem {
     qta: number
     stdItemId?: string
-    craftedItemId?: Item
+    craftedItem?: Item
 }
 export interface RecipeResult {
     time: number

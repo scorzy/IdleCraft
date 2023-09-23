@@ -4,6 +4,7 @@ import { WoodTypes } from '../../wood/WoodTypes'
 import { UiPagesData } from './UiPagesData'
 import { GameState } from '../../game/GameState'
 import { OreTypes } from '../../mining/OreTypes'
+import { changeRecipeState } from '../../crafting/CraftingFunctions'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
 export type StorageOrder = 'name' | 'quantity' | 'value'
@@ -13,7 +14,10 @@ export const toggle = () => useGameStore.setState((s) => ({ ui: { ...s.ui, open:
 export const setPage = (page: UiPages) =>
     useGameStore.setState((s) => {
         const data = UiPagesData[page]
-        return { ui: { ...s.ui, page, open: false, recipeType: data.recipeType } }
+
+        if (s.ui.recipeType !== data.recipeType) s = changeRecipeState(s, '')
+
+        return { ...s, ui: { ...s.ui, page, open: false, recipeType: data.recipeType } }
     })
 export const setWood = (woodType: WoodTypes) => useGameStore.setState((s) => ({ ui: { ...s.ui, woodType } }))
 export const setOre = (oreType: OreTypes) => useGameStore.setState((s) => ({ ui: { ...s.ui, oreType } }))

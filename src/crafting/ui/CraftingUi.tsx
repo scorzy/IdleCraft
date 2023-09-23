@@ -31,19 +31,28 @@ import { Badge } from '../../components/ui/badge'
 import { LuHourglass } from 'react-icons/lu'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { removeActivity } from '../../activities/activityFunctions'
+import { ExperienceCard } from '../../experience/ui/ExperienceCard'
+import { RecipeData } from '../RecipeData'
 
 const selectRecipes = memoize((t: RecipeTypes) => Object.values(Recipes).filter((r) => r.type === t))
 
 export const CraftingUi = memo(function CraftingUi() {
     const result = useGameStore(selectRecipeResult)
     const req = useGameStore(selectRecipeReq)
+    const recipeType = useGameStore(selectRecipeType)
 
+    if (!recipeType) return <></>
     return (
         <Page>
-            <div className="my-container my-container-3">
-                <RecipeUi />
-                <CraftingResult result={result} />
-                <CraftingReq req={req} />
+            <div className="page-container" key={recipeType}>
+                <div className="my-container">
+                    <ExperienceCard expType={RecipeData[recipeType].expType} />
+                </div>
+                <div className="my-container my-container-3">
+                    <RecipeUi />
+                    <CraftingResult result={result} />
+                    <CraftingReq req={req} />
+                </div>
             </div>
         </Page>
     )

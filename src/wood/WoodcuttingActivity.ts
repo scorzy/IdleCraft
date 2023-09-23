@@ -12,6 +12,8 @@ import { hasTrees, cutTree } from './forest/forestFunctions'
 import { ReactNode } from 'react'
 import { WoodData } from './WoodData'
 import { Translations } from '../msg/Msg'
+import { addExp } from '../experience/expFunctions'
+import { ExpEnum } from '../experience/expEnum'
 
 export class WoodcuttingActivityCreator extends AbstractActivityCreator<WoodTypes> {
     protected type = ActivityTypes.Woodcutting
@@ -52,9 +54,8 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
         const damage = getWoodcuttingDamage()
         const res = cutTree(this.state, this.data.woodType, damage, this.state.location)
         this.state = res.state
+        this.state = addExp(this.state, ExpEnum.Woodcutting, damage * 0.1)
         if (res.cut) {
-            //  Add Item
-            //  Add exp
             this.state = addItem(this.state, `${this.data.woodType}Log`, null, 1)
         } else {
             const time = getWoodcuttingTime()

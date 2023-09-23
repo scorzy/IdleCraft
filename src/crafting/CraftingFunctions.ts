@@ -1,3 +1,4 @@
+import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { getItemId, getItemId2 } from '../storage/storageFunctions'
 import { ItemId } from '../storage/storageState'
@@ -5,36 +6,38 @@ import { CraftingActivityCreator } from './CraftingActivityCreator'
 import { RecipeParameterValue } from './RecipeInterfaces'
 import { Recipes } from './Recipes'
 
-export const changeRecipe = (recipeId: string) =>
-    useGameStore.setState((state) => {
-        if (state.recipeId === recipeId) return state
+export function changeRecipeState(state: GameState, recipeId: string) {
+    if (state.recipeId === recipeId) return state
 
-        state = {
-            ...state,
-            recipeId,
-            craftingForm: {
-                paramsValue: [],
-                params: [],
-                result: undefined,
-            },
-        }
+    state = {
+        ...state,
+        recipeId,
+        craftingForm: {
+            paramsValue: [],
+            params: [],
+            result: undefined,
+        },
+    }
 
-        const recipe = Recipes[state.recipeId]
-        if (!recipe) return state
-        const params = recipe.getParameters(state)
-        const result = recipe.getResult(state, [])
+    const recipe = Recipes[state.recipeId]
+    if (!recipe) return state
 
-        state = {
-            ...state,
-            craftingForm: {
-                paramsValue: [],
-                params,
-                result,
-            },
-        }
+    const params = recipe.getParameters(state)
+    const result = recipe.getResult(state, [])
 
-        return state
-    })
+    state = {
+        ...state,
+        craftingForm: {
+            paramsValue: [],
+            params,
+            result,
+        },
+    }
+
+    return state
+}
+
+export const changeRecipe = (recipeId: string) => useGameStore.setState((state) => changeRecipeState(state, recipeId))
 
 export const getRecipeParamId = (r: RecipeParameterValue | ItemId | undefined) =>
     r ? getItemId2(r.stdItemId, r.craftItemId) : ''

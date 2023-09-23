@@ -12,6 +12,8 @@ import { OreTypes } from './OreTypes'
 import { OreData } from './OreData'
 import { hasOre, mineOre, resetOre } from './miningFunctions'
 import { getMiningTime, getMiningDamage, getSearchMineTime } from './miningSelectors'
+import { addExp } from '../experience/expFunctions'
+import { ExpEnum } from '../experience/expEnum'
 
 export class MiningActivityCreator extends AbstractActivityCreator<OreTypes> {
     protected type = ActivityTypes.Mining
@@ -67,14 +69,13 @@ export class MiningActivity extends AbstractActivity<Mining> {
             this.state = resetOre(this.state, this.data.oreType, this.state.location)
         } else {
             const damage = getMiningDamage()
+            this.state = addExp(this.state, ExpEnum.Mining, damage * 0.1)
             const res = mineOre(this.state, this.data.oreType, damage, this.state.location)
             this.state = res.state
             completed = res.mined
         }
 
         if (completed) {
-            //  Add Item
-            //  Add exp
             this.state = addItem(this.state, `${this.data.oreType}Ore`, null, 1)
         } else {
             this.StartMining()

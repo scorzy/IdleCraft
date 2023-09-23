@@ -8,6 +8,7 @@ export enum UiPages {
     Woodcutting = 'Woodcutting',
     Woodworking = 'Woodworking',
     Mining = 'Mining',
+    Smithing = 'Smithing',
 }
 export interface UiPageData {
     nameId: keyof Msg

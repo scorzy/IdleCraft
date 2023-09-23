@@ -25,6 +25,8 @@ import { useTranslations } from '../../msg/useTranslations'
 import { WoodData } from '../WoodData'
 import { GiWoodAxe } from 'react-icons/gi'
 import { Button } from '@/components/ui/button'
+import { ExperienceCard } from '../../experience/ui/ExperienceCard'
+import { ExpEnum } from '../../experience/expEnum'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -44,9 +46,14 @@ export const Woodcutting = memo(function Woodcutting() {
 const WoodcuttingContainer = memo(function WoodcuttingContainer() {
     const woodType = useGameStore(selectWoodType)
     return (
-        <div className="my-container" key={woodType}>
-            <Cutting />
-            <Forest />
+        <div className="page-container">
+            <div className="my-container">
+                <ExperienceCard expType={ExpEnum.Woodcutting} />
+            </div>
+            <div className="my-container" key={woodType}>
+                <Cutting />
+                <Forest />
+            </div>
         </div>
     )
 })
