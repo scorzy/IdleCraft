@@ -1,0 +1,15 @@
+.container {
+    height: 100dvh;
+    width: 100dvw;
+    padding: 0;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    gap: 1rem;
+}
+.btnContainer {
+    display: grid;
+    gap: 0.5rem;
+    align-items: center;
+    grid-auto-flow: column;
+}

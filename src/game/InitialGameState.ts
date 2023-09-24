@@ -24,6 +24,7 @@ const InitialVillageState: LocationState = {
 }
 
 export const InitialGameState: GameState = {
+    gameId: '',
     ui: {
         open: false,
         theme: 'system',
@@ -53,9 +54,7 @@ export const InitialGameState: GameState = {
     craftedItems: ItemAdapter.getInitialState(),
     woodcutting: WoodcuttingAdapter.getInitialState(),
     waitingTrees: null,
-    locations: {
-        [GameLocations.StartVillage]: InitialVillageState,
-    },
+    locations: { [GameLocations.StartVillage]: InitialVillageState },
     treeGrowth: TreeGrowthAdapter.getInitialState(),
     crafting: CraftingAdapter.getInitialState(),
     recipeId: '',

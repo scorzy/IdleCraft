@@ -18,12 +18,14 @@ import { Mining } from '../mining/Mining'
 import { OreTypes } from '../mining/OreTypes'
 import { ExpState } from '../experience/ExpState'
 
+export const Globals = { loadTo: 0 }
 export interface LocationState {
     storage: StorageState
     forests: ForestsType
     ores: OreType
 }
 export interface GameState {
+    gameId: string
     ui: {
         open: boolean
         theme: string

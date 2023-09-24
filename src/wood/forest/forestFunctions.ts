@@ -1,11 +1,12 @@
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
-import { WoodTypes } from '../WoodTypes'
+import { WoodTypes, WoodTypesString } from '../WoodTypes'
 import { selectDefaultForest, selectTreeGrowthTime } from './forestSelectors'
 import { startTimer } from '@/timers/startTimer'
 import { TimerTypes } from '../../timers/Timer'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
+import { ForestsType, ForestsState } from '../ForestsState'
 
 export function addTree(state: GameState, woodType: WoodTypes, qta: number, location: GameLocations): GameState {
     const def = selectDefaultForest(woodType)
@@ -118,4 +119,29 @@ export function growTree(state: GameState, id: string): GameState {
     if (data === undefined) return state
 
     return addTree(state, data.woodType, 1, data.location)
+}
+export function loadForest(data: unknown): ForestsType {
+    const res: ForestsType = {}
+    if (!data) return res
+    if (typeof data !== 'object') return res
+    const dataFix = data as Record<string, unknown>
+    Object.entries(dataFix).forEach((e) => {
+        const woodType = e[0]
+        if (typeof woodType === 'string' && WoodTypesString.find((w) => w === woodType)) {
+            const forestDataState = e[1]
+            if (
+                forestDataState &&
+                typeof forestDataState === 'object' &&
+                'qta' in forestDataState &&
+                'hp' in forestDataState &&
+                typeof forestDataState.qta === 'number' &&
+                typeof forestDataState.hp === 'number'
+            ) {
+                const forestsState: ForestsState = { qta: forestDataState.qta, hp: forestDataState.hp }
+                res[woodType as WoodTypes] = forestsState
+            }
+        }
+    })
+
+    return res
 }

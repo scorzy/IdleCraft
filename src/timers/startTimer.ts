@@ -1,4 +1,4 @@
-import { GameState } from '../game/GameState'
+import { GameState, Globals } from '../game/GameState'
 import { getUniqueId } from '../utils/getUniqueId'
 import { Timer, TimerAdapter, TimerTypes } from './Timer'
 import { execTimer } from './timerFunctions'
@@ -17,7 +17,7 @@ export function startTimer(
     let intervalId = 0
     const id = getUniqueId()
 
-    if (!state.loading) {
+    if (!state.loading || Globals.loadTo > end) {
         state = { ...state, now: Date.now() }
         end = state.now + length
         const diff = Math.max(end - state.now, 0)

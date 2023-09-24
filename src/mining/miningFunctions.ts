@@ -1,7 +1,8 @@
 import { GameState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { OreData } from './OreData'
-import { OreTypes } from './OreTypes'
+import { OreState, OreType } from './OreState'
+import { OreTypes, OreTypesKeys } from './OreTypes'
 import { selectDefaultMine } from './miningSelectors'
 
 export function hasOre(state: GameState, oreType: OreTypes, location?: GameLocations): boolean {
@@ -83,4 +84,30 @@ export function mineOre(
         state,
         mined,
     }
+}
+
+export function loadOre(data: unknown): OreType {
+    const res: OreType = {}
+    if (!data) return res
+    if (typeof data !== 'object') return res
+    const dataFix = data as Record<string, unknown>
+    Object.entries(dataFix).forEach((e) => {
+        const oreType = e[0]
+        if (typeof oreType === 'string' && OreTypesKeys.find((w) => w === oreType)) {
+            const forestDataState = e[1]
+            if (
+                forestDataState &&
+                typeof forestDataState === 'object' &&
+                'qta' in forestDataState &&
+                'hp' in forestDataState &&
+                typeof forestDataState.qta === 'number' &&
+                typeof forestDataState.hp === 'number'
+            ) {
+                const oreState: OreState = { qta: forestDataState.qta, hp: forestDataState.hp }
+                res[oreType as OreTypes] = oreState
+            }
+        }
+    })
+
+    return res
 }
