@@ -30,7 +30,6 @@ export const load = (data: object) =>
         if ('activities' in data) state.activities = ActivityAdapter.load(data.activities)
         if ('timers' in data) state.timers = TimerAdapter.load(data.timers)
         if ('craftedItems' in data) state.craftedItems = ItemAdapter.load(data.craftedItems)
-        if ('craftedItems' in data) state.craftedItems = ItemAdapter.load(data.craftedItems)
         if ('woodcutting' in data) state.woodcutting = WoodcuttingAdapter.load(data.woodcutting)
         if ('treeGrowth' in data) state.treeGrowth = TreeGrowthAdapter.load(data.treeGrowth)
         if ('crafting' in data) state.crafting = CraftingAdapter.load(data.crafting)
