@@ -95,6 +95,7 @@ function loadGame(state: GameState): GameState {
 
     let timer = getFirstTimer(state.timers, now)
     while (timer) {
+        state = { ...state, now: timer.to }
         state = onTimer(state, timer.id)
 
         const timerEx = TimerAdapter.select(state.timers, timer.id)
