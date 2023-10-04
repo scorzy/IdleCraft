@@ -21,7 +21,7 @@ export function startTimer(
         if (!state.loading) state = { ...state, now: Date.now() }
         end = state.now + length
         const diff = Math.max(end - state.now, 0)
-        intervalId = setTimeout(() => execTimer(id), diff)
+        if (!state.loading) intervalId = setTimeout(() => execTimer(id), diff)
     }
 
     const timer: Timer = { id, from: state.now, to: end, intervalId, type, actId, data }

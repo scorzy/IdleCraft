@@ -117,7 +117,7 @@ export function hasTrees(state: GameState, woodType: WoodTypes, location?: GameL
 export function growTree(state: GameState, id: string): GameState {
     const data = TreeGrowthAdapter.select(state.treeGrowth, id)
     if (data === undefined) return state
-
+    state = { ...state, treeGrowth: TreeGrowthAdapter.remove(state.treeGrowth, id) }
     return addTree(state, data.woodType, 1, data.location)
 }
 export function loadForest(data: unknown): ForestsType {

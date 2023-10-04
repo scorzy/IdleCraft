@@ -8,7 +8,7 @@ import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
 import { OreType } from '../mining/OreState'
 import { StorageState } from '../storage/storageState'
-import { Timer } from '../timers/Timer'
+import { InitialTimerState } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
 import { ForestsType } from '../wood/ForestsState'
 import { Woodcutting } from '../wood/Woodcutting'
@@ -43,7 +43,7 @@ export interface GameState {
         storageOrder: 'name' | 'quantity' | 'value'
         storageAsc: boolean
     }
-    timers: InitialState<Timer>
+    timers: InitialTimerState
     loading: boolean
     now: number
     location: GameLocations
