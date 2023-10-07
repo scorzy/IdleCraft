@@ -10,7 +10,7 @@ import classes from './storage.module.css'
 import { getItemId2, setSelectedItem } from '../storageFunctions'
 import { SelectedItem } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
-import { Button, buttonVariants } from '../../components/ui/button'
+import { buttonVariants } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
 import { LuChevronsUpDown, LuInfo } from 'react-icons/lu'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -90,12 +90,10 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
 
     return (
         <Collapsible open={open}>
-            <CollapsibleTrigger>
-                <Button variant="ghost" size="sm" onClick={handleClick}>
-                    {location}
-                    <LuChevronsUpDown className="h-4 w-4 ml-2" />
-                    <span className="sr-only">{location}</span>
-                </Button>
+            <CollapsibleTrigger onClick={handleClick} className={buttonVariants({ variant: 'ghost', size: 'sm' })}>
+                {location}
+                <LuChevronsUpDown className="h-4 w-4 ml-2" />
+                <span className="sr-only">{location}</span>
             </CollapsibleTrigger>
             <CollapsibleContent>
                 {items.map((i, index) => (

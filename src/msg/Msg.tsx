@@ -11,6 +11,9 @@ export interface Msg {
     Remove: string
     Level: string
     XP: string
+    Crafting: string
+    Gathering: string
+
     CraftingUnknown: string
     Woodworking: string
     Log: string

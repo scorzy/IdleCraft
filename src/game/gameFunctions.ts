@@ -33,7 +33,21 @@ function loadData(data: object): GameState {
     const state = GetInitialGameState()
     copyValues(state, data)
 
-    if ('ui' in data && data.ui) copyValues(state.ui, data.ui)
+    if ('ui' in data && data.ui) {
+        copyValues(state.ui, data.ui)
+        if (
+            typeof data.ui === 'object' &&
+            'collapsed' in data.ui &&
+            typeof data.ui.collapsed === 'object' &&
+            data.ui.collapsed
+        ) {
+            Object.entries(data.ui.collapsed).forEach((e) => {
+                const key = e[0]
+
+                if (typeof key == 'string' && typeof e[1] === 'boolean' && e[1]) state.ui.collapsed[key] = true
+            })
+        }
+    }
 
     if ('activities' in data) state.activities = ActivityAdapter.load(data.activities)
     if ('timers' in data) state.timers = TimerAdapter.load(data.timers)

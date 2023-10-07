@@ -3,11 +3,15 @@ import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
 import { UiPages } from '../state/UiPages'
 import { UiPagesData } from '../state/UiPagesData'
-import { isCollapsed, setPage } from '../state/uiFunctions'
+import { collapse, isCollapsed, setPage } from '../state/uiFunctions'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import classes from './menuItem.module.css'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Collapsible, CollapsibleContent } from '../../components/ui/collapsible'
+import { Msg } from '../../msg/Msg'
+import clsx from 'clsx'
+import { TbChevronRight } from 'react-icons/tb'
 
 export const MenuItem = memo(function MenuItem(props: { page: UiPages }) {
     const { page } = props
@@ -24,12 +28,17 @@ export const MyListItem = memo(function MyListItem(props: {
     collapsed: boolean
     active: boolean
     text: string
-    onClick: () => void
-    icon?: ReactNode
+    onClick?: () => void
+    icon: ReactNode
+    arrowOpen?: boolean
 }) {
-    const { text, onClick, active, icon, collapsed } = props
+    const { text, onClick, active, icon, collapsed, arrowOpen } = props
 
-    if (!collapsed)
+    if (!collapsed) {
+        let arrow = <></>
+        if (arrowOpen !== undefined)
+            arrow = <TbChevronRight className={clsx({ [classes.arrow]: true, [classes.arrowDown]: arrowOpen })} />
+
         return (
             <button
                 onClick={onClick}
@@ -43,14 +52,17 @@ export const MyListItem = memo(function MyListItem(props: {
             >
                 {icon}
                 {text}
+                {arrow}
             </button>
         )
+    }
 
     return (
         <TooltipProvider delayDuration={150}>
             <Tooltip>
                 <TooltipTrigger
                     onClick={onClick}
+                    title={text}
                     className={cn(
                         buttonVariants({ variant: 'ghost' }),
                         active ? 'bg-muted hover:bg-muted' : 'hover:bg-muted ',
@@ -64,5 +76,32 @@ export const MyListItem = memo(function MyListItem(props: {
                 <TooltipContent side="right">{text}</TooltipContent>
             </Tooltip>
         </TooltipProvider>
+    )
+})
+
+export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
+    id: string
+    name: keyof Msg
+    icon: ReactNode
+    children: ReactNode
+}) {
+    const { id, children, name, icon } = props
+    const collapsed = useGameStore(isCollapsed(id))
+    const sideCollapsed = useGameStore(isCollapsed('sidebar'))
+    const { t } = useTranslations()
+    return (
+        <Collapsible open={collapsed}>
+            <MyListItem
+                collapsed={sideCollapsed}
+                active={false}
+                text={t[name]}
+                icon={icon}
+                arrowOpen={collapsed}
+                onClick={() => collapse(id)}
+            />
+            <CollapsibleContent className={clsx({ [classes.collapsibleContent]: true, 'pl-6': !sideCollapsed })}>
+                {children}
+            </CollapsibleContent>
+        </Collapsible>
     )
 })

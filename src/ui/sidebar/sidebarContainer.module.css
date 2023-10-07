@@ -23,7 +23,6 @@
     display: flex;
 }
 .icon {
-    /* font-size: 2rem; */
     transition-property: transform;
     transition-duration: 300ms;
 }
@@ -38,8 +37,8 @@
 }
 @media (min-width: 900px) {
     .collapseContainer {
-        width: 250px;
         transition-duration: 300ms;
+        width: 250px;
         transition-property: width, max-width;
     }
     .sidebarContainer {
@@ -53,5 +52,6 @@
     }
     .collapsed {
         margin-left: 0;
+        width: auto;
     }
 }
