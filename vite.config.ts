@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 import { test } from 'vitest'
 import path from 'path'
 
+process.env.BROWSER = 'microsoft-edge-stable'
+
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],

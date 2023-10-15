@@ -40,7 +40,9 @@ class TimerAdapterInt extends AbstractEntityAdapter<Timer> {
         return { ...state, minId }
     }
     completeState(state: InitialState<Timer>): InitialTimerState {
-        let minTimer: Timer = state.entries[state.ids[0]]
+        if (state.ids.length === 0) return this.getInitialState()
+        const id = state.ids[0]
+        let minTimer: Timer = state.entries[id]
         for (const timId of state.ids) {
             const tim = state.entries[timId]
             if (tim && tim.to < minTimer.to) minTimer = tim
@@ -74,8 +76,10 @@ class TimerAdapterInt extends AbstractEntityAdapter<Timer> {
         return this.completeState(ret)
     }
     load(data: unknown): InitialTimerState {
+        if (!data) return this.getInitialState()
+        if (typeof data !== 'object') return this.getInitialState()
+        if (!('ids' in data)) return this.getInitialState()
         const ret = super.load(data)
-
         return this.completeState(ret)
     }
 }
