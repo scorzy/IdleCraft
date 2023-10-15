@@ -13,6 +13,7 @@ import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { GameState, LocationState } from './GameState'
 import { ExpAdapter } from '../experience/ExpAdapter'
+import { PLAYER_ID } from '../characters/charactersConst'
 
 const InitialVillageState: LocationState = {
     storage: {
@@ -63,6 +64,11 @@ export const InitialGameState: GameState = {
         params: [],
         paramsValue: [],
         result: undefined,
+    },
+    characters: {
+        [PLAYER_ID]: {
+            inventory: {},
+        },
     },
 }
 

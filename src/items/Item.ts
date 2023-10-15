@@ -1,3 +1,4 @@
+import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 
@@ -25,6 +26,7 @@ export interface Item {
     icon: Icons
     type: ItemTypes
     value: number
+    equipSlot?: EquipSlotsEnum
     craftingData?: CraftingData
     handleData?: HandleData
     woodAxeData?: WoodAxeData

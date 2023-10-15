@@ -25,17 +25,21 @@
     padding-right: 0.5rem;
 }
 .side {
+    display: grid;
+    align-items: stretch;
     overflow: auto;
 }
 .page {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
+    overflow: auto;
 }
 .pageWithSide {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
+    overflow: auto;
 }
 .content {
     container-type: inline-size;
@@ -44,6 +48,8 @@
 }
 
 .side2 {
+    display: grid;
+    align-items: stretch;
     border-bottom-width: 1px;
 }
 :global(.contentOpen) .side,
@@ -79,12 +85,14 @@
         display: none;
     }
     :global(.contentOpen) .side {
-        display: block;
+        display: grid;
+        align-items: stretch;
     }
     :global(.sideOpen) .content {
         display: block;
     }
     :global(.sideOpen) .side2 {
-        display: block;
+        display: grid;
+        align-items: stretch;
     }
 }

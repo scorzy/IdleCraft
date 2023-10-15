@@ -129,6 +129,9 @@ export const isSelected = (stdItemId: string | null, craftItemId?: string | null
     return false
 }
 
+export const selectSelectedStdItemId = (state: GameState) => state.ui.selectedStdItemId
+export const selectSelectedCraftedItemId = (state: GameState) => state.ui.selectedCraftedItemId
+
 export const getSelectedItem = (state: GameState) => {
     if (state.ui.selectedItemLocation === null) return
     if (state.ui.selectedStdItemId === null && state.ui.selectedCraftedItemId === null) return

@@ -17,6 +17,7 @@ import { TreeGrowth } from '../wood/forest/forestGrowth'
 import { Mining } from '../mining/Mining'
 import { OreTypes } from '../mining/OreTypes'
 import { ExpState } from '../experience/ExpState'
+import { CharacterState } from '../characters/characterState'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -66,4 +67,5 @@ export interface GameState {
         paramsValue: RecipeParameterValue[]
         result: RecipeResult | undefined
     }
+    characters: { [k in string]: CharacterState }
 }

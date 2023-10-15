@@ -15,6 +15,7 @@ import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { GameState, Globals } from './GameState'
 import { GetInitialGameState } from './InitialGameState'
 import { useGameStore } from './state'
+import { CharacterState } from '../characters/characterState'
 
 const MAX_LOAD = 3600 * 1000 * 24 * 1
 // const TEST_DIF = 3600 * 1000 * 24 * 360
@@ -88,6 +89,10 @@ function loadData(data: object): GameState {
             if ('forests' in locationData) location.forests = loadForest(locationData.forests)
             if ('ores' in locationData) location.ores = loadOre(locationData.forests)
         })
+    }
+    if ('characters' in data) {
+        // ToDo
+        state.characters = data.characters as { [k in string]: CharacterState }
     }
     return state
 }

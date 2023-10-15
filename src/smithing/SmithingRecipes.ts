@@ -1,3 +1,4 @@
+import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../crafting/CraftingFunctions'
 import { Recipe } from '../crafting/Recipe'
 import {
@@ -98,6 +99,7 @@ export const AxeRecipe: Recipe = {
             nameId: 'WoodAxe',
             icon: Icons.Axe,
             type: ItemTypes.WoodAxe,
+            equipSlot: EquipSlotsEnum.WoodAxe,
             value: getItemValue(components, true),
             woodAxeData: {
                 woodcuttingDamage: barItem.craftingWoodAxeData.woodcuttingDamage,

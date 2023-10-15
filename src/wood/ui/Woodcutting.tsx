@@ -66,7 +66,7 @@ const Cutting = memo(function Cutting() {
     const { t } = useTranslations()
     const def = selectDefaultForest(woodType)
     const hpPercent = Math.floor((100 * forest.hp) / def.hp)
-    const time = getWoodcuttingTime()
+    const time = useGameStore(getWoodcuttingTime)
 
     return (
         <MyCard title={t.Cutting} actions={<CuttingButton />} icon={<GiWoodAxe />}>
