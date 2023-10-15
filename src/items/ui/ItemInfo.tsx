@@ -11,10 +11,10 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
     return (
         <ul>
             <li>
-                {t.Value} {f(item.value)}
+                {t.ItemType} {item.type}
             </li>
             <li>
-                {t.ItemType} {item.type}
+                {t.Value} {f(item.value)}
             </li>
             {item.craftingData && <CraftingDataUi craftingData={item.craftingData} />}
             {item.handleData && <HandleDataUi handleData={item.handleData} />}
