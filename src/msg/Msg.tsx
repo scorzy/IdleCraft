@@ -13,6 +13,7 @@ export interface Msg {
     XP: string
     Crafting: string
     Gathering: string
+    ItemType: string
 
     CraftingUnknown: string
     Woodworking: string
@@ -78,6 +79,9 @@ export interface Msg {
 
     Smithing: string
     WoodAxe: string
+
+    Damage: string
+    AttackSpeed: string
 }
 export interface MsgFunctions {
     // Time
@@ -92,5 +96,9 @@ export interface MsgFunctions {
     cutting: (woodName: keyof Msg) => string
     crafting: (itemNameId: keyof Msg) => string
     mining: (woodName: keyof Msg) => string
+
+    //
+    prestigePercent: (bonus: string) => string
+    speedBonusPercent: (bonus: string) => string
 }
 export type makeMsgFun = (msg: Msg) => MsgFunctions

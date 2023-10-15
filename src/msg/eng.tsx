@@ -60,6 +60,9 @@ export const engMsg: Msg = {
     WoodAxe: 'Wood Axe',
     Crafting: 'Crafting',
     Gathering: 'Gathering',
+    ItemType: 'Type',
+    Damage: 'Damage',
+    AttackSpeed: 'Attack Speed',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,
@@ -71,4 +74,6 @@ export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     cutting: (woodName: keyof Msg) => `Cutting ${msg[woodName]}`,
     crafting: (itemNameId: keyof Msg) => `Crafting ${msg[itemNameId]}`,
     mining: (oreNameId: keyof Msg) => `Mining ${msg[oreNameId]}`,
+    speedBonusPercent: (bonus: string) => `Speed bonus +${bonus}%`,
+    prestigePercent: (bonus: string) => `Value bonus +${bonus}%`,
 })

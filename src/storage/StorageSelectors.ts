@@ -20,7 +20,7 @@ const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]:
     }
     return res
 })
-export const selectItemInt = (
+const selectItemInt = (
     stdItemId: string | null | undefined,
     craftItemId: string | null | undefined,
     craftedItems: InitialState<Item>

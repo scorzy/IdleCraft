@@ -8,6 +8,13 @@ export const SmithingItems = {
         nameId: 'TinBar',
         type: ItemTypes.Bar,
         value: 10,
+        craftingData: {
+            prestige: 1.1,
+        },
+        craftingWoodAxeData: {
+            woodcuttingDamage: 50,
+            woodcuttingTime: 3e3,
+        },
     },
     CopperBar: {
         id: 'CopperBar',
@@ -15,5 +22,12 @@ export const SmithingItems = {
         nameId: 'CopperBar',
         type: ItemTypes.Bar,
         value: 20,
+        craftingData: {
+            prestige: 1.2,
+        },
+        craftingWoodAxeData: {
+            woodcuttingDamage: 60,
+            woodcuttingTime: 3e3,
+        },
     },
 } satisfies { [k: string]: Item }

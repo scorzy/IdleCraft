@@ -1,3 +1,4 @@
+import { getCraftingTime, getItemValue } from '../crafting/CraftingFunctions'
 import { Recipe } from '../crafting/Recipe'
 import {
     RecipeTypes,
@@ -10,6 +11,7 @@ import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
 import { OreData } from '../mining/OreData'
+import { selectItem } from '../storage/StorageSelectors'
 
 const barParam: RecipeParameter[] = [
     {
@@ -77,26 +79,44 @@ export const AxeRecipe: Recipe = {
     getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')
         if (bar === undefined) return
-        if (!bar.stdItemId) return
 
         const handle = params.find((i) => i.id === 'handle')
         if (handle === undefined) return
-        if (!handle.stdItemId) return
+
+        const barItem = selectItem(bar.stdItemId, bar.stdItemId)(_state)
+        if (!barItem) return
+        const handleItem = selectItem(handle.stdItemId, handle.stdItemId)(_state)
+        if (!handleItem) return
+
+        if (!barItem.craftingWoodAxeData) return
+        if (!handleItem.handleData) return
+
+        const components = [barItem, handleItem]
 
         const craftedAxe: Item = {
             id: '',
             nameId: 'WoodAxe',
             icon: Icons.Axe,
             type: ItemTypes.WoodAxe,
-            value: 10,
+            value: getItemValue(components, true),
+            woodAxeData: {
+                woodcuttingDamage: barItem.craftingWoodAxeData.woodcuttingDamage,
+                woodcuttingTime: barItem.craftingWoodAxeData.woodcuttingTime / handleItem.handleData.speedBonus,
+            },
         }
 
         return {
-            time: 3e3,
+            time: getCraftingTime(components),
             requirements: [
                 {
                     qta: 1,
                     stdItemId: bar.stdItemId,
+                    craftedItemId: bar.stdItemId,
+                },
+                {
+                    qta: 1,
+                    stdItemId: handle.stdItemId,
+                    craftedItemId: bar.stdItemId,
                 },
             ],
             results: {

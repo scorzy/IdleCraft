@@ -12,6 +12,7 @@ import { getItemId2 } from '../../storage/storageFunctions'
 import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { selectResultQta } from '../CraftingSelectors'
+import { ItemInfo } from '../../items/ui/ItemInfo'
 
 export const CraftingResult = memo(function CraftingResult(props: { result: RecipeItem | undefined }) {
     const { result } = props
@@ -35,6 +36,7 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
             <CardContent>
                 <MyCardLabel>Crafting Quantity {f(result.qta)}</MyCardLabel>
                 <MyCardLabel>You have {f(have)}</MyCardLabel>
+                <ItemInfo item={item} />
             </CardContent>
         </Card>
     )
