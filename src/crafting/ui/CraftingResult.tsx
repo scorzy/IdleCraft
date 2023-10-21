@@ -7,7 +7,7 @@ import { useTranslations } from '../../msg/useTranslations'
 import { RecipeItem, RecipeItemReq } from '../RecipeInterfaces'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useGameStore } from '../../game/state'
-import { selectItem, selectItemQta } from '../../storage/StorageSelectors'
+import { selectGameItem, selectItemQta } from '../../storage/StorageSelectors'
 import { getItemId2 } from '../../storage/storageFunctions'
 import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
@@ -63,7 +63,7 @@ export const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeI
     const { req } = props
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
-    const item = useGameStore(selectItem(req.stdItemId, req.craftedItemId))
+    const item = useGameStore(selectGameItem(req.stdItemId, req.craftedItemId))
     const qtaStorage = useGameStore(selectItemQta(null, req.stdItemId, req.craftedItemId))
     if (!item) return <></>
     return (

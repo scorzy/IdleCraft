@@ -13,6 +13,9 @@ import { Button } from '../../components/ui/button'
 import { toggle } from '../state/uiFunctions'
 import { LuMenu } from 'react-icons/lu'
 import { Mining } from '../../mining/ui/Mining'
+import { UiPagesData } from '../state/UiPagesData'
+import { useTranslations } from '../../msg/useTranslations'
+import { CardTitle } from '../../components/ui/card'
 
 export const AppShell = memo(function AppShell() {
     const open = useGameStore((s) => s.ui.open)
@@ -20,10 +23,11 @@ export const AppShell = memo(function AppShell() {
     return (
         <div className={clsx(classes.container, { sideOpen: open }, { contentOpen: !open })}>
             <header className={classes.header}>
-                <div>
+                <div className={classes.headerLeft}>
                     <Button onClick={() => toggle()} className={classes.menu} variant="outline">
                         <LuMenu />
                     </Button>
+                    <Header />
                 </div>
                 <div>
                     <ModeToggle />
@@ -36,6 +40,20 @@ export const AppShell = memo(function AppShell() {
 
             <PageContent />
         </div>
+    )
+})
+
+export const Header = memo(function Header() {
+    const page = useGameStore((s) => s.ui.page)
+    const { t } = useTranslations()
+
+    const uiPage = UiPagesData[page]
+    if (!uiPage) return <></>
+    return (
+        <CardTitle>
+            {uiPage.icon}
+            {t[uiPage.nameId]}
+        </CardTitle>
     )
 })
 

@@ -27,6 +27,8 @@ import { GiWoodAxe } from 'react-icons/gi'
 import { Button } from '@/components/ui/button'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { ExpEnum } from '../../experience/expEnum'
+import { EquipItemUi } from '../../items/ui/EquipSelect'
+import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -49,6 +51,7 @@ const WoodcuttingContainer = memo(function WoodcuttingContainer() {
         <div className="page-container">
             <div className="my-container">
                 <ExperienceCard expType={ExpEnum.Woodcutting} />
+                <EquipItemUi slot={EquipSlotsEnum.WoodAxe} />
             </div>
             <div className="my-container" key={woodType}>
                 <Cutting />

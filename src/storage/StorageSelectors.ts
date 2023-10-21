@@ -116,7 +116,7 @@ export const selectItemQta =
         return 0
     }
 
-export const selectItem =
+export const selectGameItem =
     (stdItemId: string | null | undefined, craftItemId: string | null | undefined) => (state: GameState) => {
         if (stdItemId) return StdItems[stdItemId]
         if (craftItemId) return ItemAdapter.select(state.craftedItems, craftItemId)
@@ -135,7 +135,7 @@ export const selectSelectedCraftedItemId = (state: GameState) => state.ui.select
 export const getSelectedItem = (state: GameState) => {
     if (state.ui.selectedItemLocation === null) return
     if (state.ui.selectedStdItemId === null && state.ui.selectedCraftedItemId === null) return
-    return selectItem(state.ui.selectedStdItemId, state.ui.selectedCraftedItemId)(state)
+    return selectGameItem(state.ui.selectedStdItemId, state.ui.selectedCraftedItemId)(state)
 }
 export const getSelectedItemQta = (state: GameState) => {
     if (state.ui.selectedItemLocation === null) return 0

@@ -17,6 +17,8 @@ import { OreData } from '../OreData'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { ExpEnum } from '../../experience/expEnum'
 import classes from './mining.module.css'
+import { EquipItemUi } from '../../items/ui/EquipSelect'
+import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 
 export const Mining = memo(function Mining() {
     return (
@@ -31,6 +33,7 @@ export const MiningContainer = memo(function MiningContainer() {
         <div className="page-container">
             <div className="my-container">
                 <ExperienceCard expType={ExpEnum.Mining} />
+                <EquipItemUi slot={EquipSlotsEnum.Pickaxe} />
             </div>
             <div className="my-container" key={oreType}>
                 <MiningOre />
@@ -47,7 +50,7 @@ const MiningOre = memo(function MiningOre() {
     const { t } = useTranslations()
     const def = selectDefaultMine(oreType)
     const hpPercent = Math.floor((100 * ore.hp) / def.hp)
-    const time = getMiningTime()
+    const time = useGameStore(getMiningTime)
     const oreData = OreData[oreType]
 
     return (

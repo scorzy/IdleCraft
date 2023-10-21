@@ -1,6 +1,5 @@
 import { memo } from 'react'
 import { ExpData, ExpEnum } from '../expEnum'
-import { Card } from '../../components/ui/card'
 import { useGameStore } from '../../game/state'
 import { selectExp, selectLevel, selectLevelExp, selectNextExp } from '../expSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -9,6 +8,7 @@ import { Badge } from '../../components/ui/badge'
 
 import styles from './ExperienceCard.module.css'
 import { useTranslations } from '../../msg/useTranslations'
+import { SmallCard } from '../../ui/myCard/myCard'
 
 export const ExperienceCard = memo(function ExperienceCard(props: { expType: ExpEnum }) {
     const { expType } = props
@@ -24,7 +24,7 @@ export const ExperienceCard = memo(function ExperienceCard(props: { expType: Exp
     const expData = ExpData[expType]
 
     return (
-        <Card className={`text-sm ${styles.info}`}>
+        <SmallCard>
             <div>
                 {t[expData.nameId]} <Badge>{f(level)}</Badge>
             </div>
@@ -35,6 +35,6 @@ export const ExperienceCard = memo(function ExperienceCard(props: { expType: Exp
                 </Badge>
             </div>
             <ProgressBar className={styles.progress} value={percent} color={'info'} />
-        </Card>
+        </SmallCard>
     )
 })

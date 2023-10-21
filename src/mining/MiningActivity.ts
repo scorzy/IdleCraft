@@ -31,7 +31,7 @@ export class MiningActivityCreator extends AbstractActivityCreator<OreTypes> {
 
 export class MiningActivity extends AbstractActivity<Mining> {
     private StartMining() {
-        const time = getMiningTime()
+        const time = getMiningTime(this.state)
         this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
         if (!this.data.isMining)
             this.state = {
@@ -68,7 +68,7 @@ export class MiningActivity extends AbstractActivity<Mining> {
             }
             this.state = resetOre(this.state, this.data.oreType, this.state.location)
         } else {
-            const damage = getMiningDamage()
+            const damage = getMiningDamage(this.state)
             this.state = addExp(this.state, ExpEnum.Mining, damage * 0.1)
             const res = mineOre(this.state, this.data.oreType, damage, this.state.location)
             this.state = res.state

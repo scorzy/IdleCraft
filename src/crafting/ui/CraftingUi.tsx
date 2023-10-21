@@ -22,7 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { addCrafting, changeRecipe, getRecipeParamId, setRecipeItemParam } from '../CraftingFunctions'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
-import { selectItemsByType, selectItem, selectItemQta } from '../../storage/StorageSelectors'
+import { selectItemsByType, selectGameItem, selectItemQta } from '../../storage/StorageSelectors'
 import { ItemId } from '../../storage/storageState'
 import { Label } from '@/components/ui/label'
 import { FormItem } from '@/components/ui/form'
@@ -171,7 +171,7 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
 const ParamItem = memo(function ParamItem(props: { itemId: ItemId }) {
     const { itemId } = props
     const value = getRecipeParamId(itemId)
-    const itemObj = useGameStore(selectItem(itemId?.stdItemId ?? null, itemId?.craftItemId ?? null))
+    const itemObj = useGameStore(selectGameItem(itemId?.stdItemId ?? null, itemId?.craftItemId ?? null))
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     const qta = useGameStore(selectItemQta(null, itemId?.stdItemId ?? null, itemId?.craftItemId ?? null))

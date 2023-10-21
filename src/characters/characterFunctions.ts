@@ -20,19 +20,33 @@ export function equipItem(
 
     char = state.characters[charId]
     if (!char) throw new Error(`Character with id not found ${charId}`)
-    const equippedSlot: Inventory = { quantity }
-    if (stdItemId) equippedSlot.stdItemId = stdItemId
-    if (craftItemId) equippedSlot.craftItemId = craftItemId
-    state = removeItem(state, stdItemId, craftItemId, quantity)
-    state = {
-        ...state,
-        characters: {
-            ...state.characters,
-            [charId]: {
-                ...state.characters[charId],
-                inventory: { ...char.inventory, [slot]: equippedSlot },
+    if (stdItemId || craftItemId) {
+        const equippedSlot: Inventory = { quantity }
+        if (stdItemId) equippedSlot.stdItemId = stdItemId
+        else if (craftItemId) equippedSlot.craftItemId = craftItemId
+        state = removeItem(state, stdItemId, craftItemId, quantity)
+        state = {
+            ...state,
+            characters: {
+                ...state.characters,
+                [charId]: {
+                    ...state.characters[charId],
+                    inventory: { ...char.inventory, [slot]: equippedSlot },
+                },
             },
-        },
+        }
+    } else {
+        const { [slot]: removed, ...inventory } = char.inventory
+        state = {
+            ...state,
+            characters: {
+                ...state.characters,
+                [charId]: {
+                    ...state.characters[charId],
+                    inventory,
+                },
+            },
+        }
     }
 
     return state

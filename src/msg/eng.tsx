@@ -63,6 +63,8 @@ export const engMsg: Msg = {
     ItemType: 'Type',
     Damage: 'Damage',
     AttackSpeed: 'Attack Speed',
+    Pickaxe: 'Pickaxe',
+    ArmourPen: 'ArmourPen',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

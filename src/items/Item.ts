@@ -9,6 +9,7 @@ export enum ItemTypes {
     Ore = 'Ore',
     Bar = 'Bar',
     WoodAxe = 'WoodAxe',
+    Pickaxe = 'Pickaxe',
 }
 export interface CraftingData {
     prestige: number
@@ -17,8 +18,13 @@ export interface HandleData {
     speedBonus: number
 }
 export interface WoodAxeData {
-    woodcuttingDamage: number
-    woodcuttingTime: number
+    damage: number
+    time: number
+}
+export interface PickaxeData {
+    damage: number
+    time: number
+    armourPen: number
 }
 export interface Item {
     id: string
@@ -31,4 +37,6 @@ export interface Item {
     handleData?: HandleData
     woodAxeData?: WoodAxeData
     craftingWoodAxeData?: WoodAxeData
+    craftingPickaxeData?: PickaxeData
+    pickaxeData?: PickaxeData
 }

@@ -1,6 +1,12 @@
 import { useGameStore } from '../../game/state'
 import { GameLocations } from '../../gameLocations/GameLocations'
-import { selectItem, selectItemQta, selectLocationItems, selectStorageLocations, isSelected } from '../StorageSelectors'
+import {
+    selectGameItem,
+    selectItemQta,
+    selectLocationItems,
+    selectStorageLocations,
+    isSelected,
+} from '../StorageSelectors'
 import { Page } from '../../ui/shell/AppShell'
 import { memo, useCallback, useState } from 'react'
 import { MyCard } from '../../ui/myCard/myCard'
@@ -120,7 +126,7 @@ const StorageItem = memo(function StorageItem(props: {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const qta = useGameStore(selectItemQta(location, stdItemId, craftItemId))
-    const item = useGameStore(selectItem(stdItemId, craftItemId))
+    const item = useGameStore(selectGameItem(stdItemId, craftItemId))
     const selected = useGameStore(isSelected(stdItemId, craftItemId))
 
     const onClick = useCallback(

@@ -12,8 +12,13 @@ export const SmithingItems = {
             prestige: 1.1,
         },
         craftingWoodAxeData: {
-            woodcuttingDamage: 50,
-            woodcuttingTime: 3e3,
+            damage: 50,
+            time: 3e3,
+        },
+        craftingPickaxeData: {
+            damage: 10,
+            armourPen: 0,
+            time: 3e3,
         },
     },
     CopperBar: {
@@ -26,8 +31,13 @@ export const SmithingItems = {
             prestige: 1.2,
         },
         craftingWoodAxeData: {
-            woodcuttingDamage: 60,
-            woodcuttingTime: 3e3,
+            damage: 60,
+            time: 3e3,
+        },
+        craftingPickaxeData: {
+            damage: 15,
+            armourPen: 1,
+            time: 3e3,
         },
     },
 } satisfies { [k: string]: Item }

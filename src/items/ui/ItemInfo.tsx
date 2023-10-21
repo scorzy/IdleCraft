@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { CraftingData, HandleData, Item, WoodAxeData } from '../Item'
+import { CraftingData, HandleData, Item, PickaxeData, WoodAxeData } from '../Item'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 
@@ -19,6 +19,7 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
             {item.craftingData && <CraftingDataUi craftingData={item.craftingData} />}
             {item.handleData && <HandleDataUi handleData={item.handleData} />}
             {item.woodAxeData && <WoodAxeDataUi woodAxeData={item.woodAxeData} />}
+            {item.pickaxeData && <PickaxeDataUi pickaxeData={item.pickaxeData} />}
         </ul>
     )
 })
@@ -48,10 +49,29 @@ export const WoodAxeDataUi = memo(function WoodAxeDataUi(props: { woodAxeData: W
     return (
         <>
             <li>
-                {t.Damage} {f(woodAxeData.woodcuttingDamage)}
+                {t.Damage} {f(woodAxeData.damage)}
             </li>
             <li>
-                {t.AttackSpeed} {ft(woodAxeData.woodcuttingTime)}
+                {t.AttackSpeed} {ft(woodAxeData.time)}
+            </li>
+        </>
+    )
+})
+export const PickaxeDataUi = memo(function PickaxeDataUi(props: { pickaxeData: PickaxeData }) {
+    const { pickaxeData } = props
+    const { f, ft } = useNumberFormatter()
+    const { t } = useTranslations()
+
+    return (
+        <>
+            <li>
+                {t.Damage} {f(pickaxeData.damage)}
+            </li>
+            <li>
+                {t.AttackSpeed} {ft(pickaxeData.time)}
+            </li>
+            <li>
+                {t.ArmourPen} {ft(pickaxeData.armourPen)}
             </li>
         </>
     )

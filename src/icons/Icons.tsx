@@ -9,6 +9,7 @@ export enum Icons {
     Handle = 'Handle',
     Ore = 'Ore',
     Bar = 'Bar',
+    Pickaxe = 'Pickaxe',
 }
 export const IconsData: { [k in Icons]: ReactNode } = {
     Axe: <GiWoodAxe />,
@@ -17,4 +18,5 @@ export const IconsData: { [k in Icons]: ReactNode } = {
     Handle: <GiBo />,
     Ore: <GiOre />,
     Bar: <GiMetalBar />,
+    Pickaxe: <GiWoodAxe />,
 }

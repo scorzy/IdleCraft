@@ -1,5 +1,6 @@
 import { ReactNode, memo } from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import classes from './myCard.module.css'
 
 export const MyCardLabel = memo(function MyCardLabel(props: { children?: ReactNode }) {
     const { children } = props
@@ -28,4 +29,8 @@ export const MyCard = memo(function MyCard(props: {
             {actions && <CardFooter>{actions}</CardFooter>}
         </Card>
     )
+})
+export const SmallCard = memo(function SmallCard(props: { children?: ReactNode }) {
+    const { children } = props
+    return <Card className={classes.smallCard}>{children}</Card>
 })

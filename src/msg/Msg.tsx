@@ -82,6 +82,9 @@ export interface Msg {
 
     Damage: string
     AttackSpeed: string
+
+    Pickaxe: string
+    ArmourPen: string
 }
 export interface MsgFunctions {
     // Time

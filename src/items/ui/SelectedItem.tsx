@@ -34,8 +34,8 @@ export const EquipItem = memo(function EquipItem() {
     const item = useGameStore(getSelectedItem)
 
     const onClick = useCallback(() => {
-        if (item && item.equipSlot)
-            equipClick(PLAYER_ID, item.equipSlot, selectedItemLocation, selectedCraftedItemId, 1)
+        if (!item) return
+        if (item.equipSlot) equipClick(PLAYER_ID, item.equipSlot, selectedItemLocation, selectedCraftedItemId, 1)
     }, [item, selectedItemLocation, selectedCraftedItemId])
     return (
         <>
