@@ -7,7 +7,7 @@ import { useTranslations } from '../../msg/useTranslations'
 import { selectItemsByType, selectGameItem } from '../../storage/StorageSelectors'
 import { getItemId2 } from '../../storage/storageFunctions'
 import { ItemId } from '../../storage/storageState'
-import { Item, ItemTypes } from '../Item'
+import { Item, SlotsData } from '../Item'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { selectEquipId, selectEquippedItem } from '../itemSelectors'
@@ -15,25 +15,21 @@ import { changeEquip } from '../itemFunctions'
 import { DEF_PICKAXE } from '../../mining/miningSelectors'
 import { DEF_WOOD_AXE } from '../../wood/WoodcuttingSelectors'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
-
-import classes from './equipSelect.module.css'
 import { GameState } from '../../game/GameState'
 import { Label } from '@radix-ui/react-label'
 
-const ItemsTypesPerSlot = {
-    [EquipSlotsEnum.WoodAxe]: ItemTypes.WoodAxe,
-    [EquipSlotsEnum.Pickaxe]: ItemTypes.Pickaxe,
-}
+import classes from './equipSelect.module.css'
 
 export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEnum }) {
     const { slot } = props
     const { t } = useTranslations()
+    const slotData = SlotsData[slot]
 
     const selectEquippedItemMemo = useCallback((state: GameState) => selectEquippedItem(slot)(state), [slot])
     const selectEquipIdMemo = useCallback((state: GameState) => selectEquipId(slot)(state), [slot])
     const selectItemsByTypeMemo = useCallback(
-        (state: GameState) => selectItemsByType(ItemsTypesPerSlot[slot])(state),
-        [slot]
+        (state: GameState) => selectItemsByType(slotData.ItemType)(state),
+        [slotData]
     )
 
     const equipped = useGameStore(selectEquippedItemMemo)
@@ -49,7 +45,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
 
     return (
         <div>
-            <Label>{t.Recipe}</Label>
+            <Label>{t[slotData.ItemType]}</Label>
             <Select value={axeId} onValueChange={handleEquipChange}>
                 <SelectTrigger>
                     <SelectValue>
