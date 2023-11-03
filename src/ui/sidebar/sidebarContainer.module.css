@@ -2,13 +2,16 @@
     margin-right: 0.75rem;
     margin-left: 0.75rem;
 
-    transition-property: margin-left, border-radius;
+    transition-property: margin-left, border-radius, width;
     transition-duration: 300ms;
     display: grid;
     grid-auto-rows: min-content;
     gap: 0.375rem;
 }
-
+.collapsed {
+    margin-right: 0;
+    margin-left: 0;
+}
 .collapseContainer {
     overflow: hidden;
     display: grid;

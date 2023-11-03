@@ -5,7 +5,10 @@
     align-items: center;
 
     transition-property: margin-left, border-radius, color, background-color, border-color, text-decoration-color, fill,
-        stroke;
+        stroke, width;
+}
+.itemCollapsed {
+    grid-template-columns: auto;
 }
 .item svg {
     font-size: 1.25rem;
@@ -24,4 +27,7 @@
 }
 .collapsibleContent {
     transition: all 300ms;
+}
+.notCollapsed {
+    padding-left: 1.5rem;
 }

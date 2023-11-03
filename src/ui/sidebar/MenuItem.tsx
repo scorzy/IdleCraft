@@ -55,28 +55,27 @@ export const MyListItem = memo(function MyListItem(props: {
                 {arrow}
             </button>
         )
-    }
-
-    return (
-        <TooltipProvider delayDuration={150}>
-            <Tooltip>
-                <TooltipTrigger
-                    onClick={onClick}
-                    title={text}
-                    className={cn(
-                        buttonVariants({ variant: 'ghost' }),
-                        active ? 'bg-muted hover:bg-muted' : 'hover:bg-muted ',
-                        'justify-start gap-4',
-                        classes.item,
-                        collapsed ? classes.itemCollapsed : ''
-                    )}
-                >
-                    {icon}
-                </TooltipTrigger>
-                <TooltipContent side="right">{text}</TooltipContent>
-            </Tooltip>
-        </TooltipProvider>
-    )
+    } else
+        return (
+            <TooltipProvider delayDuration={150}>
+                <Tooltip>
+                    <TooltipTrigger
+                        onClick={onClick}
+                        title={text}
+                        className={cn(
+                            buttonVariants({ variant: 'ghost' }),
+                            active ? 'bg-muted hover:bg-muted' : 'hover:bg-muted ',
+                            'justify-start gap-4',
+                            classes.item,
+                            collapsed ? classes.itemCollapsed : ''
+                        )}
+                    >
+                        {icon}
+                    </TooltipTrigger>
+                    <TooltipContent side="right">{text}</TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
+        )
 })
 
 export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
@@ -99,7 +98,9 @@ export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
                 arrowOpen={collapsed}
                 onClick={() => collapse(id)}
             />
-            <CollapsibleContent className={clsx({ [classes.collapsibleContent]: true, 'pl-6': !sideCollapsed })}>
+            <CollapsibleContent
+                className={clsx({ [classes.collapsibleContent]: true, [classes.notCollapsed]: !sideCollapsed })}
+            >
                 {children}
             </CollapsibleContent>
         </Collapsible>
