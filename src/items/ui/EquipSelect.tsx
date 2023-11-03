@@ -17,7 +17,7 @@ import { DEF_WOOD_AXE } from '../../wood/WoodcuttingSelectors'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
 import { GameState } from '../../game/GameState'
 import { Label } from '@radix-ui/react-label'
-
+import { SmallCard } from '../../ui/myCard/myCard'
 import classes from './equipSelect.module.css'
 
 export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEnum }) {
@@ -44,7 +44,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     }
 
     return (
-        <div>
+        <SmallCard className={classes.container}>
             <Label>{t[slotData.ItemType]}</Label>
             <Select value={axeId} onValueChange={handleEquipChange}>
                 <SelectTrigger>
@@ -57,7 +57,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
                 </SelectTrigger>
 
                 <SelectContent>
-                    <SelectItem value="">
+                    <SelectItem value="" icon={<GiCube />}>
                         <OptionItemInt name={t.None} slot={slot} />
                     </SelectItem>
                     {itemsId.map((t) => {
@@ -66,7 +66,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
                     })}
                 </SelectContent>
             </Select>
-        </div>
+        </SmallCard>
     )
 })
 const OptionItem = memo(function ParamItem(props: { itemId: ItemId; slot: EquipSlotsEnum }) {

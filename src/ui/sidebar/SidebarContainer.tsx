@@ -21,7 +21,7 @@ export const SidebarContainer = memo(function SidebarContainer(props: { children
                     onClick={collapseClick}
                     active={false}
                     icon={<LuChevronLeft className={clsx(classes.icon, { [classes.iconCollapsed]: collapsed })} />}
-                    text={' '}
+                    text={''}
                     collapsed={collapsed}
                 />
             </div>

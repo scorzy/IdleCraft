@@ -34,7 +34,7 @@ export const MyListItem = memo(function MyListItem(props: {
 }) {
     const { text, onClick, active, icon, collapsed, arrowOpen } = props
 
-    if (!collapsed) {
+    if (!collapsed || text === '') {
         let arrow = <></>
         if (arrowOpen !== undefined)
             arrow = <TbChevronRight className={clsx({ [classes.arrow]: true, [classes.arrowDown]: arrowOpen })} />

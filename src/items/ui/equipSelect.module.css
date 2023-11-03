@@ -4,3 +4,8 @@
     gap: 0.5rem;
     align-items: center;
 }
+.container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 0.3rem;
+}

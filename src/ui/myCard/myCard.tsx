@@ -30,7 +30,7 @@ export const MyCard = memo(function MyCard(props: {
         </Card>
     )
 })
-export const SmallCard = memo(function SmallCard(props: { children?: ReactNode }) {
-    const { children } = props
-    return <Card className={classes.smallCard}>{children}</Card>
+export const SmallCard = memo(function SmallCard(props: { children?: ReactNode; className?: string }) {
+    const { children, className } = props
+    return <Card className={classes.smallCard + (className ? ` ${className}` : '')}>{children}</Card>
 })
