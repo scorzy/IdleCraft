@@ -3,16 +3,16 @@ import { WoodTypes } from '../WoodTypes'
 import { WoodData } from '../WoodData'
 import { useGameStore } from '../../game/state'
 import { isWoodSelected } from '../../ui/state/uiSelectors'
-import { isCollapsed, setWood } from '../../ui/state/uiFunctions'
+import { setWood, toggleWood, woodCollapsed } from '../../ui/state/uiFunctions'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 
 const trees = Object.values(WoodTypes)
 
 export function WoodcuttingSidebar() {
-    const collapsed = useGameStore(isCollapsed('wood'))
+    const collapsed = useGameStore(woodCollapsed)
     return (
-        <SidebarContainer id="wood">
+        <SidebarContainer collapsed={collapsed} collapseClick={toggleWood}>
             {trees.map((t) => (
                 <TreeLink key={t} woodType={t} collapsed={collapsed} />
             ))}

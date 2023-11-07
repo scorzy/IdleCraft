@@ -22,21 +22,35 @@ export const setPage = (page: UiPages) =>
 export const setWood = (woodType: WoodTypes) => useGameStore.setState((s) => ({ ui: { ...s.ui, woodType } }))
 export const setOre = (oreType: OreTypes) => useGameStore.setState((s) => ({ ui: { ...s.ui, oreType } }))
 
-export const isCollapsed = (id: string) => (s: GameState) => {
-    if (id in s.ui.collapsed) return s.ui.collapsed[id]
-    return false
-}
-export const collapse = (id: string) =>
-    useGameStore.setState((s) => {
-        const col = isCollapsed(id)(s)
-        if (!col) return { ui: { ...s.ui, collapsed: { ...s.ui.collapsed, [id]: true } } }
-        else {
-            const { [id]: value, ...collapsed } = s.ui.collapsed
-            return {
-                ui: { ...s.ui, collapsed },
-            }
-        }
-    })
-
 export const setStorageOrder = (order: StorageOrder, asc: boolean) => () =>
     useGameStore.setState((s) => ({ ui: { ...s.ui, storageOrder: order, storageAsc: asc } }))
+
+export const sidebarCollapsed = (state: GameState) => state.ui.sidebarCollapsed
+export const toggleSidebar = () =>
+    useGameStore.setState((s) => ({
+        ui: { ...s.ui, sidebarCollapsed: !s.ui.sidebarCollapsed },
+    }))
+
+export const gatheringCollapsed = (state: GameState) => state.ui.gatheringCollapsed
+export const toggleGathering = () =>
+    useGameStore.setState((s) => ({
+        ui: { ...s.ui, gatheringCollapsed: !s.ui.gatheringCollapsed },
+    }))
+
+export const craftingCollapsed = (state: GameState) => state.ui.craftingCollapsed
+export const toggleCrafting = () =>
+    useGameStore.setState((s) => ({
+        ui: { ...s.ui, craftingCollapsed: !s.ui.craftingCollapsed },
+    }))
+
+export const woodCollapsed = (state: GameState) => state.ui.woodCollapsed
+export const toggleWood = () =>
+    useGameStore.setState((s) => ({
+        ui: { ...s.ui, woodCollapsed: !s.ui.woodCollapsed },
+    }))
+
+export const miningCollapsed = (state: GameState) => state.ui.miningCollapsed
+export const toggleMining = () =>
+    useGameStore.setState((s) => ({
+        ui: { ...s.ui, miningCollapsed: !s.ui.miningCollapsed },
+    }))

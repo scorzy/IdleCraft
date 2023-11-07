@@ -1,6 +1,6 @@
 import { useTranslations } from '../../msg/useTranslations'
 import { useGameStore } from '../../game/state'
-import { isCollapsed, setOre } from '../../ui/state/uiFunctions'
+import { miningCollapsed, setOre, toggleMining } from '../../ui/state/uiFunctions'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { OreTypes } from '../OreTypes'
@@ -10,9 +10,9 @@ import { isOreSelected } from '../miningSelectors'
 const ores = Object.values(OreTypes)
 
 export function MiningSidebar() {
-    const collapsed = useGameStore(isCollapsed('ore'))
+    const collapsed = useGameStore(miningCollapsed)
     return (
-        <SidebarContainer id="wood">
+        <SidebarContainer collapsed={collapsed} collapseClick={toggleMining}>
             {ores.map((t) => (
                 <MiningLink key={t} oreType={t} collapsed={collapsed} />
             ))}

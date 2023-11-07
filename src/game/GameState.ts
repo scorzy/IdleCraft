@@ -34,7 +34,6 @@ export interface GameState {
         comma: CommaTypes
         numberFormatNotation: NotationTypes
         lang: string
-        collapsed: { [k: string]: boolean }
         woodType: WoodTypes
         oreType: OreTypes
         selectedStdItemId: string | null
@@ -43,6 +42,11 @@ export interface GameState {
         recipeType?: RecipeTypes
         storageOrder: 'name' | 'quantity' | 'value'
         storageAsc: boolean
+        sidebarCollapsed: boolean
+        gatheringCollapsed: boolean
+        craftingCollapsed: boolean
+        woodCollapsed: boolean
+        miningCollapsed: boolean
     }
     timers: InitialTimerState
     loading: boolean
@@ -62,6 +66,8 @@ export interface GameState {
     recipeId: string
     mining: InitialState<Mining>
     exp: InitialState<ExpState>
+    playerExp: number
+    playerLevel: number
     craftingForm: {
         params: RecipeParameter[]
         paramsValue: RecipeParameterValue[]

@@ -3,7 +3,7 @@ import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
 import { UiPages } from '../state/UiPages'
 import { UiPagesData } from '../state/UiPagesData'
-import { collapse, isCollapsed, setPage } from '../state/uiFunctions'
+import { setPage } from '../state/uiFunctions'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import classes from './menuItem.module.css'
@@ -12,16 +12,24 @@ import { Collapsible, CollapsibleContent } from '../../components/ui/collapsible
 import { Msg } from '../../msg/Msg'
 import clsx from 'clsx'
 import { TbChevronRight } from 'react-icons/tb'
+import { useMediaQuery } from 'usehooks-ts'
 
-export const MenuItem = memo(function MenuItem(props: { page: UiPages }) {
-    const { page } = props
+export const MenuItem = memo(function MenuItem(props: { page: UiPages; parentCollapsed: boolean }) {
+    const { page, parentCollapsed } = props
     const { t } = useTranslations()
     const data = UiPagesData[page]
     const active = useGameStore((s) => s.ui.page === page)
-    const collapsed = useGameStore(isCollapsed('sidebar'))
     const onClick = useCallback(() => setPage(page), [page])
 
-    return <MyListItem onClick={onClick} text={t[data.nameId]} active={active} icon={data.icon} collapsed={collapsed} />
+    return (
+        <MyListItem
+            onClick={onClick}
+            text={t[data.nameId]}
+            active={active}
+            icon={data.icon}
+            collapsed={parentCollapsed}
+        />
+    )
 })
 
 export const MyListItem = memo(function MyListItem(props: {
@@ -32,9 +40,12 @@ export const MyListItem = memo(function MyListItem(props: {
     icon: ReactNode
     arrowOpen?: boolean
 }) {
-    const { text, onClick, active, icon, collapsed, arrowOpen } = props
+    const { text, onClick, active, icon, arrowOpen } = props
+    let { collapsed } = props
+    const matches = useMediaQuery('(min-width: 900px)')
 
-    if (!collapsed || text === '') {
+    if (!matches) collapsed = false
+    if (!collapsed || text === '' || !matches) {
         let arrow = <></>
         if (arrowOpen !== undefined)
             arrow = <TbChevronRight className={clsx({ [classes.arrow]: true, [classes.arrowDown]: arrowOpen })} />
@@ -79,30 +90,26 @@ export const MyListItem = memo(function MyListItem(props: {
 })
 
 export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
-    id: string
+    collapsed: boolean
+    parentCollapsed: boolean
     name: keyof Msg
     icon: ReactNode
     children: ReactNode
+    collapseClick: () => void
 }) {
-    const { id, children, name, icon } = props
-    const collapsed = useGameStore(isCollapsed(id))
-    const sideCollapsed = useGameStore(isCollapsed('sidebar'))
+    const { collapsed, children, name, icon, collapseClick, parentCollapsed } = props
     const { t } = useTranslations()
     return (
         <Collapsible open={collapsed}>
             <MyListItem
-                collapsed={sideCollapsed}
+                collapsed={parentCollapsed}
                 active={false}
                 text={t[name]}
                 icon={icon}
                 arrowOpen={collapsed}
-                onClick={() => collapse(id)}
+                onClick={collapseClick}
             />
-            <CollapsibleContent
-                className={clsx({ [classes.collapsibleContent]: true, [classes.notCollapsed]: !sideCollapsed })}
-            >
-                {children}
-            </CollapsibleContent>
+            <CollapsibleContent>{children}</CollapsibleContent>
         </Collapsible>
     )
 })
