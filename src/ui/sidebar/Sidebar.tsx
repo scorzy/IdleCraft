@@ -8,6 +8,7 @@ import {
     craftingCollapsed,
     gatheringCollapsed,
     sidebarCollapsed,
+    sidebarOpen,
     toggleCrafting,
     toggleGathering,
     toggleSidebar,
@@ -17,12 +18,14 @@ export const Sidebar = memo(function Sidebar() {
     const isSidebarCollapsed = useGameStore(sidebarCollapsed)
     const isGatheringCollapsed = useGameStore(gatheringCollapsed)
     const isCraftingCollapsed = useGameStore(craftingCollapsed)
+    const open = useGameStore(sidebarOpen)
 
     return (
         <SidebarContainer collapsed={isSidebarCollapsed} collapseClick={toggleSidebar}>
             <MenuItem page={UiPages.Activities} parentCollapsed={isSidebarCollapsed} />
             <MenuItem page={UiPages.Storage} parentCollapsed={isSidebarCollapsed} />
             <CollapsibleMenu
+                key={open ? '1' : '0'}
                 collapsed={isGatheringCollapsed}
                 collapseClick={toggleGathering}
                 parentCollapsed={isSidebarCollapsed}
@@ -33,6 +36,7 @@ export const Sidebar = memo(function Sidebar() {
                 <MenuItem page={UiPages.Mining} parentCollapsed={isSidebarCollapsed} />
             </CollapsibleMenu>
             <CollapsibleMenu
+                key={open ? '2' : '3'}
                 collapsed={isCraftingCollapsed}
                 collapseClick={toggleCrafting}
                 parentCollapsed={isSidebarCollapsed}

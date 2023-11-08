@@ -10,7 +10,7 @@ import { Activities } from '../../activities/ui/Activities'
 import { CraftingUi } from '../../crafting/ui/CraftingUi'
 import { ModeToggle } from '../modeToggle'
 import { Button } from '../../components/ui/button'
-import { toggle } from '../state/uiFunctions'
+import { sidebarOpen, toggle } from '../state/uiFunctions'
 import { LuMenu } from 'react-icons/lu'
 import { Mining } from '../../mining/ui/Mining'
 import { UiPagesData } from '../state/UiPagesData'
@@ -18,7 +18,7 @@ import { useTranslations } from '../../msg/useTranslations'
 import { CardTitle } from '../../components/ui/card'
 
 export const AppShell = memo(function AppShell() {
-    const open = useGameStore((s) => s.ui.open)
+    const open = useGameStore(sidebarOpen)
 
     return (
         <div className={clsx(classes.container, { sideOpen: open }, { contentOpen: !open })}>
