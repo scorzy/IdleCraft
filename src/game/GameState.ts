@@ -18,6 +18,7 @@ import { Mining } from '../mining/Mining'
 import { OreTypes } from '../mining/OreTypes'
 import { ExpState } from '../experience/ExpState'
 import { CharacterState } from '../characters/characterState'
+import { ExpEnum } from '../experience/expEnum'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -65,7 +66,7 @@ export interface GameState {
     crafting: InitialState<Crafting>
     recipeId: string
     mining: InitialState<Mining>
-    exp: InitialState<ExpState>
+    exp: { [k in ExpEnum]: ExpState }
     playerExp: number
     playerLevel: number
     craftingForm: {

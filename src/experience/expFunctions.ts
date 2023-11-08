@@ -1,12 +1,11 @@
 import { GameState } from '../game/GameState'
-import { ExpAdapter } from './ExpAdapter'
 import { EXP_BASE_PRICE, EXP_BASE_PRICE_MAIN, EXP_GROW_RATE, EXP_GROW_RATE_MAIN } from './expConst'
 import { ExpEnum } from './expEnum'
 
 export function addExp(state: GameState, expType: ExpEnum, expQta: number) {
     let current = 0
     let currentLevel = 0
-    const expState = ExpAdapter.select(state.exp, expType)
+    const expState = state.exp[expType]
     if (expState) {
         current = expState.exp
         currentLevel = expState.level
@@ -24,17 +23,17 @@ export function addExp(state: GameState, expType: ExpEnum, expQta: number) {
         ...state,
         playerExp,
         playerLevel,
-        exp: ExpAdapter.upsertMerge(state.exp, {
-            id: expType,
-            exp,
-            level,
-        }),
+        exp: {
+            ...state.exp,
+            [expType]: {
+                exp,
+                level,
+            },
+        },
     }
     return state
 }
-export function getLevel(state: GameState, expType: ExpEnum): number {
-    return ExpAdapter.select(state.exp, expType)?.level ?? 0
-}
-export function getLevelExp(level: number): number {
-    return Math.floor(EXP_BASE_PRICE * (EXP_GROW_RATE ** level - 1)) / (EXP_GROW_RATE - 1)
-}
+export const getLevel = (state: GameState, expType: ExpEnum) => state.exp[expType].level
+
+export const getLevelExp = (level: number) =>
+    Math.floor(EXP_BASE_PRICE * (EXP_GROW_RATE ** level - 1)) / (EXP_GROW_RATE - 1)
