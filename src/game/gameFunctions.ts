@@ -16,6 +16,7 @@ import { GameState, Globals } from './GameState'
 import { GetInitialGameState } from './InitialGameState'
 import { useGameStore } from './state'
 import { CharacterState } from '../characters/characterState'
+import { ExpEnum } from '../experience/expEnum'
 
 const MAX_LOAD = 3600 * 1000 * 24 * 1
 // const TEST_DIF = 3600 * 1000 * 24 * 360
@@ -45,6 +46,26 @@ function loadData(data: object): GameState {
     if ('treeGrowth' in data) state.treeGrowth = TreeGrowthAdapter.load(data.treeGrowth)
     if ('crafting' in data) state.crafting = CraftingAdapter.load(data.crafting)
     if ('mining' in data) state.mining = MiningAdapter.load(data.mining)
+    if ('exp' in data && data.exp && typeof data.exp === 'object')
+        Object.entries(data.exp).forEach((e) => {
+            const key = e[0] as ExpEnum
+            if (!state.exp[key]) return
+            const value: unknown = e[1]
+            if (
+                !(
+                    value &&
+                    typeof value === 'object' &&
+                    'exp' in value &&
+                    'level' in value &&
+                    typeof value.exp === 'number' &&
+                    typeof value.level === 'number'
+                )
+            )
+                return
+
+            state.exp[key] = { ...state.exp[key], exp: value.exp, level: value.level }
+        })
+
     if (
         'orderedActivities' in data &&
         data.orderedActivities &&
