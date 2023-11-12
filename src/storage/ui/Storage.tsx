@@ -12,7 +12,6 @@ import { memo, useCallback, useState } from 'react'
 import { MyCard } from '../../ui/myCard/myCard'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
-import classes from './storage.module.css'
 import { getItemId2, setSelectedItem } from '../storageFunctions'
 import { SelectedItem } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
@@ -24,6 +23,7 @@ import { Alert, AlertTitle } from '@/components/ui/alert'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { setStorageOrder } from '../../ui/state/uiFunctions'
 import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
+import classes from './storage.module.css'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
@@ -33,7 +33,7 @@ export function UiStorage() {
     return (
         <Page>
             <div className="my-container">
-                <MyCard>
+                <MyCard className="fixed-height-2">
                     <SortDropdown />
                     {locations.map((l) => (
                         <LocationStorage key={l} location={GameLocations.StartVillage} />

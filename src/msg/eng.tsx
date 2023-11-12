@@ -1,3 +1,4 @@
+import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
 import { Msg, MsgFunctions } from './Msg'
 
 export const engMsg: Msg = {
@@ -65,6 +66,10 @@ export const engMsg: Msg = {
     AttackSpeed: 'Attack Speed',
     Pickaxe: 'Pickaxe',
     ArmourPen: 'ArmourPen',
+    // Perks
+    Perks: 'Perks',
+    FastWoodcuttingPerk: 'Fast Woodcutting',
+    FastWoodcuttingPerkDesc: `Increase woodcutting speed by ${FAST_WOODCUTTING_PERK} %`,
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

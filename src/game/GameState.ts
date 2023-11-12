@@ -19,6 +19,8 @@ import { OreTypes } from '../mining/OreTypes'
 import { ExpState } from '../experience/ExpState'
 import { CharacterState } from '../characters/characterState'
 import { ExpEnum } from '../experience/expEnum'
+import { PerksEnum } from '../perks/perksEnum'
+import { PerkState } from '../perks/PerkState'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -48,6 +50,7 @@ export interface GameState {
         craftingCollapsed: boolean
         woodCollapsed: boolean
         miningCollapsed: boolean
+        perk: PerksEnum
     }
     timers: InitialTimerState
     loading: boolean
@@ -67,6 +70,7 @@ export interface GameState {
     recipeId: string
     mining: InitialState<Mining>
     exp: { [k in ExpEnum]: ExpState }
+    perks: PerkState
     playerExp: number
     playerLevel: number
     craftingForm: {

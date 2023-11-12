@@ -79,3 +79,10 @@
         grid-auto-flow: column;
     }
 }
+
+@container (min-width: 768px) {
+    .fixed-height-2 {
+        overflow-y: auto;
+        max-height: calc(100vh - 50px - 1rem);
+    }
+}

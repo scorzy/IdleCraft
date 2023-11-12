@@ -24,6 +24,7 @@ export const Sidebar = memo(function Sidebar() {
         <SidebarContainer collapsed={isSidebarCollapsed} collapseClick={toggleSidebar}>
             <MenuItem page={UiPages.Activities} parentCollapsed={isSidebarCollapsed} />
             <MenuItem page={UiPages.Storage} parentCollapsed={isSidebarCollapsed} />
+            <MenuItem page={UiPages.Perks} parentCollapsed={isSidebarCollapsed} />
             <CollapsibleMenu
                 key={open ? '1' : '0'}
                 collapsed={isGatheringCollapsed}

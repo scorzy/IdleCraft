@@ -35,9 +35,7 @@ function loadData(data: object): GameState {
     const state = GetInitialGameState()
     copyValues(state, data)
 
-    if ('ui' in data && data.ui) {
-        copyValues(state.ui, data.ui)
-    }
+    if ('ui' in data && data.ui) copyValues(state.ui, data.ui)
 
     if ('activities' in data) state.activities = ActivityAdapter.load(data.activities)
     if ('timers' in data) state.timers = TimerAdapter.load(data.timers)

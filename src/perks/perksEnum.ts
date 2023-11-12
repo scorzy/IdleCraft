@@ -1,0 +1,4 @@
+export enum PerksEnum {
+    FAST_WOODCUTTING = 'FAST_WOODCUTTING',
+    FAST_MINING = 'FAST_MINING',
+}

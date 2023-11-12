@@ -85,6 +85,11 @@ export interface Msg {
 
     Pickaxe: string
     ArmourPen: string
+
+    // Perks
+    Perks: string
+    FastWoodcuttingPerk: string
+    FastWoodcuttingPerkDesc: string
 }
 export interface MsgFunctions {
     // Time

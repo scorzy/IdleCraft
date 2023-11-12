@@ -13,11 +13,12 @@ export const MyCard = memo(function MyCard(props: {
     title?: string
     actions?: ReactNode
     icon?: ReactNode
+    className?: string
 }) {
-    const { children, title, actions, icon } = props
+    const { children, title, actions, icon, className } = props
 
     return (
-        <Card className={`my-card ${title ? '' : 'pt-4'}`}>
+        <Card className={`my-card ${title ? '' : 'pt-4'}${className ? ` ${className}` : ''}`}>
             {title && (
                 <CardHeader>
                     <CardTitle>

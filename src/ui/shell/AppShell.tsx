@@ -16,6 +16,7 @@ import { Mining } from '../../mining/ui/Mining'
 import { UiPagesData } from '../state/UiPagesData'
 import { useTranslations } from '../../msg/useTranslations'
 import { CardTitle } from '../../components/ui/card'
+import { PerksPage } from '../../perks/ui/PerksUi'
 
 export const AppShell = memo(function AppShell() {
     const open = useGameStore(sidebarOpen)
@@ -72,6 +73,8 @@ export const PageContent = memo(function PageContent() {
             return <Mining />
         case UiPages.Smithing:
             return <CraftingUi />
+        case UiPages.Perks:
+            return <PerksPage />
     }
 })
 

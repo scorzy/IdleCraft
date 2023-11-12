@@ -1,0 +1,1 @@
+export const FAST_WOODCUTTING_PERK = 20

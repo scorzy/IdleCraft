@@ -6,7 +6,9 @@
         font-size: 1.25rem;
     }
 }
-
+.itemDisabled {
+    color: hsl(var(--muted-foreground));
+}
 .hr {
     margin-right: calc(4px + var(--radius));
     margin-left: calc(4px + var(--radius));
