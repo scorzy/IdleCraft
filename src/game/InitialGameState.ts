@@ -13,7 +13,6 @@ import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { GameState, LocationState } from './GameState'
 import { PLAYER_ID } from '../characters/charactersConst'
-import { EMPTY_EXP } from '../experience/expConst'
 import { PerksEnum } from '../perks/perksEnum'
 
 const InitialVillageState: LocationState = {
@@ -47,6 +46,9 @@ export const InitialGameState: GameState = {
         woodCollapsed: false,
         miningCollapsed: false,
         perk: PerksEnum.FAST_WOODCUTTING,
+        showAvailablePerks: true,
+        showOwnedPerks: true,
+        showUnavailablePerks: true,
     },
     location: GameLocations.StartVillage,
     activities: ActivityAdapter.getInitialState(),
@@ -67,12 +69,8 @@ export const InitialGameState: GameState = {
     mining: MiningAdapter.getInitialState(),
     playerExp: 0,
     playerLevel: 0,
-    exp: {
-        Mining: EMPTY_EXP,
-        Smithing: EMPTY_EXP,
-        Woodcutting: EMPTY_EXP,
-        Woodworking: EMPTY_EXP,
-    },
+    skillsExp: {},
+    skillsLevel: {},
     perks: {},
     craftingForm: {
         params: [],

@@ -14,3 +14,18 @@
     margin-left: calc(4px + var(--radius));
     margin-top: -1px;
 }
+.perkLi {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-content: start;
+    grid-gap: 0.375rem;
+}
+.topPanel {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}

@@ -90,6 +90,10 @@ export interface Msg {
     Perks: string
     FastWoodcuttingPerk: string
     FastWoodcuttingPerkDesc: string
+    Available: string
+    NotAvailable: string
+    Completed: string
+    Select: string
 }
 export interface MsgFunctions {
     // Time

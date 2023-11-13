@@ -1,4 +1,3 @@
-export interface ExpState {
-    exp: number
-    level: number
-}
+import { ExpEnum } from './expEnum'
+
+export type ExpState = { [k in ExpEnum]?: number }

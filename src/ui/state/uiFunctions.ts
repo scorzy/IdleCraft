@@ -4,7 +4,7 @@ import { WoodTypes } from '../../wood/WoodTypes'
 import { UiPagesData } from './UiPagesData'
 import { GameState } from '../../game/GameState'
 import { OreTypes } from '../../mining/OreTypes'
-import { changeRecipeState } from '../../crafting/CraftingFunctions'
+import { changeRecipeState } from '@/crafting/RecipeFunctions'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
 export type StorageOrder = 'name' | 'quantity' | 'value'
@@ -55,3 +55,10 @@ export const toggleMining = () =>
     useGameStore.setState((s) => ({
         ui: { ...s.ui, miningCollapsed: !s.ui.miningCollapsed },
     }))
+
+export const toggleShowAvailablePerks = () =>
+    useGameStore.setState((s) => ({ ui: { ...s.ui, showAvailablePerks: !s.ui.showAvailablePerks } }))
+export const toggleShowUnavailablePerks = () =>
+    useGameStore.setState((s) => ({ ui: { ...s.ui, showUnavailablePerks: !s.ui.showUnavailablePerks } }))
+export const toggleCompletedPerks = () =>
+    useGameStore.setState((s) => ({ ui: { ...s.ui, showOwnedPerks: !s.ui.showOwnedPerks } }))

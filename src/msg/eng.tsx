@@ -70,6 +70,10 @@ export const engMsg: Msg = {
     Perks: 'Perks',
     FastWoodcuttingPerk: 'Fast Woodcutting',
     FastWoodcuttingPerkDesc: `Increase woodcutting speed by ${FAST_WOODCUTTING_PERK} %`,
+    Available: 'Available',
+    NotAvailable: 'Not Available',
+    Completed: 'Owned',
+    Select: 'Select',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

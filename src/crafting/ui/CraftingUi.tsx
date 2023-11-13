@@ -19,7 +19,7 @@ import { useTranslations } from '../../msg/useTranslations'
 import classes from './craftingUi.module.css'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { addCrafting, changeRecipe, getRecipeParamId, setRecipeItemParam } from '../CraftingFunctions'
+import { addCrafting } from '../CraftingFunctions'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
 import { selectItemsByType, selectGameItem, selectItemQta } from '../../storage/StorageSelectors'
@@ -33,6 +33,7 @@ import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { removeActivity } from '../../activities/activityFunctions'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { RecipeData } from '../RecipeData'
+import { changeRecipe, setRecipeItemParam, getRecipeParamId } from '../RecipeFunctions'
 
 const selectRecipes = memoize((t: RecipeTypes) => Object.values(Recipes).filter((r) => r.type === t))
 

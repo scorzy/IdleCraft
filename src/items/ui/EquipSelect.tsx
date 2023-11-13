@@ -1,6 +1,5 @@
 import { memo, ReactNode, useCallback } from 'react'
 import { GiCube } from 'react-icons/gi'
-import { getRecipeParamId } from '../../crafting/CraftingFunctions'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
@@ -19,6 +18,7 @@ import { GameState } from '../../game/GameState'
 import { Label } from '@radix-ui/react-label'
 import { SmallCard } from '../../ui/myCard/myCard'
 import classes from './equipSelect.module.css'
+import { getRecipeParamId } from '../../crafting/RecipeFunctions'
 
 export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEnum }) {
     const { slot } = props

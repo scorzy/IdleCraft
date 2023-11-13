@@ -16,11 +16,10 @@ import { WoodTypes } from '../wood/WoodTypes'
 import { TreeGrowth } from '../wood/forest/forestGrowth'
 import { Mining } from '../mining/Mining'
 import { OreTypes } from '../mining/OreTypes'
-import { ExpState } from '../experience/ExpState'
 import { CharacterState } from '../characters/characterState'
-import { ExpEnum } from '../experience/expEnum'
 import { PerksEnum } from '../perks/perksEnum'
 import { PerkState } from '../perks/PerkState'
+import { ExpState } from '../experience/expState'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -51,6 +50,9 @@ export interface GameState {
         woodCollapsed: boolean
         miningCollapsed: boolean
         perk: PerksEnum
+        showAvailablePerks: boolean
+        showUnavailablePerks: boolean
+        showOwnedPerks: boolean
     }
     timers: InitialTimerState
     loading: boolean
@@ -69,7 +71,8 @@ export interface GameState {
     crafting: InitialState<Crafting>
     recipeId: string
     mining: InitialState<Mining>
-    exp: { [k in ExpEnum]: ExpState }
+    skillsExp: ExpState
+    skillsLevel: ExpState
     perks: PerkState
     playerExp: number
     playerLevel: number

@@ -3,14 +3,10 @@ import { EXP_BASE_PRICE, EXP_BASE_PRICE_MAIN, EXP_GROW_RATE, EXP_GROW_RATE_MAIN 
 import { ExpEnum } from './expEnum'
 
 export function addExp(state: GameState, expType: ExpEnum, expQta: number) {
-    let current = 0
-    let currentLevel = 0
-    const expState = state.exp[expType]
-    if (expState) {
-        current = expState.exp
-        currentLevel = expState.level
-    }
-    const exp = Math.floor(current + expQta)
+    const currentExp = state.skillsExp[expType] ?? 0
+    const currentLevel = state.skillsLevel[expType] ?? 0
+
+    const exp = Math.floor(currentExp + expQta)
     const level = Math.floor(Math.log10((exp * (EXP_GROW_RATE - 1)) / EXP_BASE_PRICE + 1) / Math.log10(EXP_GROW_RATE))
 
     const newLevels = Math.max(Math.floor(level - currentLevel), 0)
@@ -23,17 +19,14 @@ export function addExp(state: GameState, expType: ExpEnum, expQta: number) {
         ...state,
         playerExp,
         playerLevel,
-        exp: {
-            ...state.exp,
-            [expType]: {
-                exp,
-                level,
-            },
-        },
+        skillsExp: { ...state.skillsExp, [expType]: exp },
+        ...(level !== currentLevel && {
+            skillsLevel: { ...state.skillsLevel, [expType]: level },
+        }),
     }
     return state
 }
-export const getLevel = (state: GameState, expType: ExpEnum) => state.exp[expType].level
+export const getLevel = (state: GameState, expType: ExpEnum) => state.skillsLevel[expType] ?? 0
 
 export const getLevelExp = (level: number) =>
     Math.floor(EXP_BASE_PRICE * (EXP_GROW_RATE ** level - 1)) / (EXP_GROW_RATE - 1)

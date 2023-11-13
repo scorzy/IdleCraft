@@ -49,7 +49,7 @@ const SortDropdown = memo(function SortDropdown() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className={buttonVariants({ variant: 'secondary' })}>{t.Sort}</DropdownMenuTrigger>
-            <DropdownMenuContent className="sort">
+            <DropdownMenuContent className={`sort ${classes.dropDown}`}>
                 <DropdownMenuItem onClick={setStorageOrder('name', true)}>
                     {t.Name} <LuArrowDown />
                 </DropdownMenuItem>
