@@ -129,4 +129,23 @@ describe('memoize', () => {
         expect(res2).toBe(memoized(null, '_a'))
         expect(res3).toBe(memoized(null, null))
     })
+    test('memoize undefined', () => {
+        const fn = (a: number | undefined, b: string | undefined) => ({
+            res: (a?.toString() ?? 'null') + (b ?? '_null'),
+        })
+
+        const memoized = memoize<typeof fn>(fn)
+
+        const res1 = memoized(1, 'a')
+        const res2 = memoized(undefined, '_a')
+        const res3 = memoized(undefined, undefined)
+
+        expect(memoized(1, 'a')).toEqual({ res: '1a' })
+        expect(memoized(undefined, '_a')).toEqual({ res: 'null_a' })
+        expect(memoized(undefined, undefined)).toEqual({ res: 'null_null' })
+
+        expect(res1).toBe(memoized(1, 'a'))
+        expect(res2).toBe(memoized(undefined, '_a'))
+        expect(res3).toBe(memoized(undefined, undefined))
+    })
 })

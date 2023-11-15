@@ -2,13 +2,13 @@ import equal from 'react-fast-compare'
 
 export function memoizeOne<T>(fn: T) {
     let lastVal: unknown
-    let params: unknown[] = []
+    let params: unknown[] | null
 
     const ret = (...args: unknown[]) => {
         const len = args.length
-        let equalParams = len === params.length
+        let equalParams = len === params?.length
 
-        if (equalParams) {
+        if (params && equalParams) {
             for (let i = 0; i < len; i++) {
                 if (args[i] !== params[i]) {
                     equalParams = false
