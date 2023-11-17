@@ -6,7 +6,7 @@ import { useTranslations } from '../../msg/useTranslations'
 import { ExpReq, PerksData } from '../Perk'
 import { SetPerk, acquirePerkClick } from '../PerksFunctions'
 import {
-    HasPerk,
+    hasPerk,
     IsPerkEnabled,
     IsPerkSelected,
     SelectCanSpendPerks,
@@ -101,7 +101,7 @@ function PerkLink(props: { perk: PerksEnum; isLast: boolean }) {
     const { t } = useTranslations()
     const selected = useGameStore(IsPerkSelected(perk))
     const enabled = useGameStore(IsPerkEnabled(perk))
-    const hasPerk = useGameStore(HasPerk(perk))
+    const hasPerk = useGameStore(hasPerk(perk))
     return (
         <>
             <button
@@ -131,6 +131,7 @@ const PerkPage = () => {
     const requirements = data.requiredExp || data.requiredPerks
     return (
         <MyCard title={t[data.nameId]} icon={data.icon} actions={<PerkButton />}>
+            {t[data.descId]}
             {requirements && <span>Requirements</span>}
             {requirements && (
                 <ul>
@@ -157,7 +158,7 @@ const PerkExpReq = memo(function PerkExpReq(props: { req: ExpReq }) {
 const PerkPerkReq = memo(function PerkPerkReq(props: { perk: PerksEnum }) {
     const { perk } = props
     const { t } = useTranslations()
-    const hasPerk = useGameStore(HasPerk(perk))
+    const hasPerk = useGameStore(hasPerk(perk))
     const perkData = PerksData[perk]
 
     return (

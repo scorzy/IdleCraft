@@ -27,9 +27,7 @@ export const PerksData: { [k in PerksEnum]: Perk } = {
     [PerksEnum.FAST_MINING]: {
         id: PerksEnum.FAST_MINING,
         icon: <GiMining />,
-        nameId: 'FastWoodcuttingPerk',
-        descId: 'FastWoodcuttingPerkDesc',
-        requiredExp: [{ level: 60, skill: ExpEnum.Mining }],
-        requiredPerks: [PerksEnum.FAST_WOODCUTTING],
+        nameId: 'FastMiningPerk',
+        descId: 'FastMiningPerkDesc',
     },
 }

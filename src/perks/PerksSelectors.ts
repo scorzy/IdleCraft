@@ -1,5 +1,6 @@
 import { ExpState } from '../experience/expState'
 import { GameState } from '../game/GameState'
+import { memoize } from '../utils/memoize'
 import { memoizeOne } from '../utils/memoizeOne'
 import { PerksData } from './Perk'
 import { PerkState } from './PerkState'
@@ -9,14 +10,14 @@ export const SelectPerk = (s: GameState) => s.ui.perk
 export const IsPerkSelected = (perk: PerksEnum) => (s: GameState) => s.ui.perk === perk
 export const SelectPerkLevel = (perk: PerksEnum) => (s: GameState) => s.perks[perk] ?? 0
 
-const HasPerkInt = (perk: PerksEnum, perks: PerkState) => (perks[perk] ?? 0) > 0
-export const HasPerk = (perk: PerksEnum) => (s: GameState) => (s.perks[perk] ?? 0) > 0
+const hasPerkInt = (perk: PerksEnum, perks: PerkState) => (perks[perk] ?? 0) > 0
+export const hasPerk = (perk: PerksEnum) => (s: GameState) => (s.perks[perk] ?? 0) > 0
 
-const IsPerkEnabledInt = memoizeOne((perkEnum: PerksEnum) =>
+const IsPerkEnabledInt = memoize((perkEnum: PerksEnum) =>
     memoizeOne((perks: PerkState, skills: ExpState) => {
         const perkData = PerksData[perkEnum]
         if (perkData.requiredExp?.some((r) => r.level > (skills[r.skill] ?? 0))) return false
-        if (perkData.requiredPerks?.some((r) => !HasPerkInt(r, perks))) return false
+        if (perkData.requiredPerks?.some((r) => !hasPerkInt(r, perks))) return false
         return true
     })
 )

@@ -7,7 +7,7 @@ import { AbstractActivityCreator } from '../activities/AbstractActivityCreator'
 import { startTimer } from '@/timers/startTimer'
 import { TimerTypes } from '../timers/Timer'
 import { addItem } from '../storage/storageFunctions'
-import { getWoodcuttingDamage, getWoodcuttingTime } from './WoodcuttingSelectors'
+import { selectWoodcuttingDamage, selectWoodcuttingTime } from './WoodcuttingSelectors'
 import { hasTrees, cutTree } from './forest/forestFunctions'
 import { ReactNode } from 'react'
 import { WoodData } from './WoodData'
@@ -43,7 +43,7 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
         }
 
         this.state = { ...this.state, waitingTrees: null }
-        const time = getWoodcuttingTime(this.state)
+        const time = selectWoodcuttingTime(this.state)
         this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
 
         return ActivityStartResult.Started
@@ -51,14 +51,14 @@ export class WoodcuttingActivity extends AbstractActivity<Woodcutting> {
     onExec(): ActivityStartResult {
         if (!hasTrees(this.state, this.data.woodType)) return ActivityStartResult.NotPossible
 
-        const damage = getWoodcuttingDamage(this.state)
+        const damage = selectWoodcuttingDamage(this.state)
         const res = cutTree(this.state, this.data.woodType, damage, this.state.location)
         this.state = res.state
         this.state = addExp(this.state, ExpEnum.Woodcutting, damage * 0.1)
         if (res.cut) {
             this.state = addItem(this.state, `${this.data.woodType}Log`, null, 1)
         } else {
-            const time = getWoodcuttingTime(this.state)
+            const time = selectWoodcuttingTime(this.state)
             this.state = startTimer(this.state, time, TimerTypes.Activity, this.id)
         }
 

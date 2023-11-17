@@ -13,7 +13,7 @@ import {
 } from '../forest/forestSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { RestartProgress } from '../../ui/progress/RestartProgress'
-import { getWoodcuttingTime } from '../WoodcuttingSelectors'
+import { selectWoodcuttingDamage, selectWoodcuttingTime } from '../WoodcuttingSelectors'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
 import { memo, useCallback } from 'react'
@@ -69,12 +69,18 @@ const Cutting = memo(function Cutting() {
     const { t } = useTranslations()
     const def = selectDefaultForest(woodType)
     const hpPercent = Math.floor((100 * forest.hp) / def.hp)
-    const time = useGameStore(getWoodcuttingTime)
+    const time = useGameStore(selectWoodcuttingTime)
+    const damage = useGameStore(selectWoodcuttingDamage)
 
     return (
         <MyCard title={t.Cutting} actions={<CuttingButton />} icon={<GiWoodAxe />}>
             <MyCardLabel>
-                {t.TreeHP} {f(forest.hp)}/{f(def.hp)}
+                <span>
+                    {t.TreeHP} {f(forest.hp)}/{f(def.hp)}
+                </span>
+                <span>
+                    {t.Damage} {f(damage)}
+                </span>
             </MyCardLabel>
             <RestartProgress value={hpPercent} color="error" />
             <MyCardLabel>
