@@ -80,7 +80,7 @@ const PerkFilter = memo(function PerkFilter() {
             <DropdownMenuTrigger asChild>
                 <Button variant="secondary">Filter</Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className={`sort ${classes.dropDown}`}>
+            <DropdownMenuContent className={`sort ${classes.dropDown!}`}>
                 <DropdownMenuCheckboxItem checked={available} onCheckedChange={toggleShowAvailablePerks}>
                     {t.Available}
                 </DropdownMenuCheckboxItem>
@@ -101,7 +101,7 @@ function PerkLink(props: { perk: PerksEnum; isLast: boolean }) {
     const { t } = useTranslations()
     const selected = useGameStore(IsPerkSelected(perk))
     const enabled = useGameStore(IsPerkEnabled(perk))
-    const hasPerk = useGameStore(hasPerk(perk))
+    const ownPerk = useGameStore(hasPerk(perk))
     return (
         <>
             <button
@@ -110,13 +110,13 @@ function PerkLink(props: { perk: PerksEnum; isLast: boolean }) {
                     buttonVariants({ variant: 'ghost' }),
                     'w-full justify-start gap-4 font-normal',
                     { 'bg-muted': selected },
-                    { [classes.itemDisabled]: !enabled },
+                    { [classes.itemDisabled!]: !enabled },
                     classes.item
                 )}
             >
                 {enabled ? data.icon : <TbLock />}
                 <span className="justify-self-start">{t[data.nameId]}</span>
-                {hasPerk ? <TbCheck /> : <></>}
+                {ownPerk ? <TbCheck /> : <></>}
             </button>
 
             {!isLast && <hr className={classes.hr} />}
@@ -128,15 +128,15 @@ const PerkPage = () => {
     const perk = useGameStore(SelectPerk)
     const data = PerksData[perk]
     const { t } = useTranslations()
-    const requirements = data.requiredExp || data.requiredPerks
+    const requirements = data.requiredExp ?? data.requiredPerks
     return (
         <MyCard title={t[data.nameId]} icon={data.icon} actions={<PerkButton />}>
             {t[data.descId]}
             {requirements && <span>Requirements</span>}
             {requirements && (
                 <ul>
-                    {data.requiredExp && data.requiredExp.map((r) => <PerkExpReq req={r} key={r.skill} />)}
-                    {data.requiredPerks && data.requiredPerks.map((r) => <PerkPerkReq perk={r} key={r} />)}
+                    {data.requiredExp?.map((r) => <PerkExpReq req={r} key={r.skill} />)}
+                    {data.requiredPerks?.map((r) => <PerkPerkReq perk={r} key={r} />)}
                 </ul>
             )}
         </MyCard>
@@ -158,12 +158,12 @@ const PerkExpReq = memo(function PerkExpReq(props: { req: ExpReq }) {
 const PerkPerkReq = memo(function PerkPerkReq(props: { perk: PerksEnum }) {
     const { perk } = props
     const { t } = useTranslations()
-    const hasPerk = useGameStore(hasPerk(perk))
+    const ownPerk = useGameStore(hasPerk(perk))
     const perkData = PerksData[perk]
 
     return (
         <li className={classes.perkLi}>
-            {hasPerk ? <TbCheck /> : <TbX />}
+            {ownPerk ? <TbCheck /> : <TbX />}
             {t[perkData.nameId]}
         </li>
     )

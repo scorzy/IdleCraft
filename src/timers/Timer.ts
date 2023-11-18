@@ -30,7 +30,7 @@ class TimerAdapterInt extends AbstractEntityAdapter<Timer> {
             entries: {},
         }
     }
-    checkMin(state: InitialState<Timer>, lastMinId: string | undefined, data: Timer): InitialTimerState {
+    private checkMin(state: InitialState<Timer>, lastMinId: string | undefined, data: Timer): InitialTimerState {
         let minId = data.id
         if (lastMinId) {
             const lastMin = state.entries[lastMinId]
@@ -42,7 +42,10 @@ class TimerAdapterInt extends AbstractEntityAdapter<Timer> {
     completeState(state: InitialState<Timer>): InitialTimerState {
         if (state.ids.length === 0) return this.getInitialState()
         const id = state.ids[0]
-        let minTimer: Timer = state.entries[id]
+        if (!id) throw new Error(`Timer state.ids[0] not found`)
+        let minTimer = state.entries[id]
+        if (!minTimer) throw new Error('Timer state.entries[id] not found')
+
         for (const timId of state.ids) {
             const tim = state.entries[timId]
             if (tim && tim.to < minTimer.to) minTimer = tim
@@ -57,11 +60,15 @@ class TimerAdapterInt extends AbstractEntityAdapter<Timer> {
     }
     update(state: InitialTimerState, id: string, data: Partial<Timer>) {
         const ret = super.update(state, id, data)
-        return this.checkMin(ret, state.minId, ret.entries[id])
+        const timerData = ret.entries[id]
+        if (!timerData) throw new Error('timerData is undefined')
+        return this.checkMin(ret, state.minId, timerData)
     }
     replace(state: InitialTimerState, id: string, data: Timer) {
         const ret = super.replace(state, id, data)
-        return this.checkMin(ret, state.minId, ret.entries[id])
+        const timerData = ret.entries[id]
+        if (!timerData) throw new Error('timerData is undefined')
+        return this.checkMin(ret, state.minId, timerData)
     }
     upsertMerge(state: InitialTimerState, data: Timer) {
         const ret = super.upsertMerge(state, data)

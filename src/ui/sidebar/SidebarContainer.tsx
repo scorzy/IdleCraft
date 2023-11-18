@@ -12,14 +12,14 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
     const { children, collapsed, collapseClick } = props
 
     return (
-        <div className={clsx(classes.collapseContainer, { [classes.collapsedContainer]: collapsed })}>
-            <div className={clsx(classes.sidebarContainer, { [classes.collapsed]: collapsed })}>{children}</div>
+        <div className={clsx(classes.collapseContainer, { [classes.collapsedContainer!]: collapsed })}>
+            <div className={clsx(classes.sidebarContainer, { [classes.collapsed!]: collapsed })}>{children}</div>
 
-            <div className={clsx(classes.sidebarContainer, classes.btnExpand, { [classes.collapsed]: collapsed })}>
+            <div className={clsx(classes.sidebarContainer, classes.btnExpand, { [classes.collapsed!]: collapsed })}>
                 <MyListItem
                     onClick={collapseClick}
                     active={false}
-                    icon={<LuChevronLeft className={clsx(classes.icon, { [classes.iconCollapsed]: collapsed })} />}
+                    icon={<LuChevronLeft className={clsx(classes.icon, { [classes.iconCollapsed!]: collapsed })} />}
                     text={''}
                     collapsed={collapsed}
                 />

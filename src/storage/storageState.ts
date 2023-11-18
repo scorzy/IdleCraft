@@ -4,9 +4,9 @@ export interface ItemId {
 }
 export interface StorageState {
     StdItems: {
-        [k: string]: number
+        [k in string]?: number
     }
     CraftedItems: {
-        [k: string]: number
+        [k in string]?: number
     }
 }

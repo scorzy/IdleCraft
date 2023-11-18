@@ -14,6 +14,8 @@ import { WoodData } from './WoodData'
 import { Translations } from '../msg/Msg'
 import { addExp } from '../experience/expFunctions'
 import { ExpEnum } from '../experience/expEnum'
+import { activities } from '../activities/makeActivityFun'
+import { GameState } from '../game/GameState'
 
 export class WoodcuttingActivityCreator extends AbstractActivityCreator<WoodTypes> {
     protected type = ActivityTypes.Woodcutting

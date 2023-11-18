@@ -6,9 +6,7 @@ import { WoodTypes } from './WoodTypes'
 import { WoodcuttingActivityCreator } from './WoodcuttingActivity'
 
 export const addWoodcutting = (woodType: WoodTypes) =>
-    useGameStore.setState((s) => {
-        return new WoodcuttingActivityCreator(s, woodType).createActivity()
-    })
+    useGameStore.setState((s) => new WoodcuttingActivityCreator(s, woodType).createActivity())
 
 export const changeAxe = (axeId: string) =>
     useGameStore.setState((s) => {

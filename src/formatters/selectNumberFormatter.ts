@@ -10,6 +10,7 @@ import { memoizeOne } from '../utils/memoizeOne'
 const makeFormatter = memoizeOne((comma: CommaTypes, lang: string, notation: NotationTypes) => {
     const formatter = getFormatter(notation, comma)
     const t = messages[lang]
+    if (!t) throw new Error(`Language ${lang} not found`)
     return {
         f: formatter[0],
         p: formatter[1],

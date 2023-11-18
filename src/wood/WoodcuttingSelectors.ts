@@ -20,12 +20,12 @@ const Base: BaseBonus = {
     iconId: Icons.Axe,
 }
 export function selectAxeId(state: GameState) {
-    const axe = state.characters[PLAYER_ID].inventory[EquipSlotsEnum.WoodAxe]
+    const axe = state.characters[PLAYER_ID]!.inventory[EquipSlotsEnum.WoodAxe]
     if (!axe) return
     return getItemId2(axe.stdItemId, axe.craftItemId)
 }
 export function selectAxe(state: GameState) {
-    const axe = state.characters[PLAYER_ID].inventory[EquipSlotsEnum.WoodAxe]
+    const axe = state.characters[PLAYER_ID]!.inventory[EquipSlotsEnum.WoodAxe]
     if (!axe) return
     return selectGameItem(axe.stdItemId, axe.craftItemId)(state)
 }

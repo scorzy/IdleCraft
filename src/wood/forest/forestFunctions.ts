@@ -126,7 +126,7 @@ export function loadForest(data: unknown): ForestsType {
     if (typeof data !== 'object') return res
     const dataFix = data as Record<string, unknown>
     Object.entries(dataFix).forEach((e) => {
-        const woodType = e[0]
+        const woodType = e[0] as WoodTypes
         if (typeof woodType === 'string' && WoodTypesString.find((w) => w === woodType)) {
             const forestDataState = e[1]
             if (
@@ -138,7 +138,7 @@ export function loadForest(data: unknown): ForestsType {
                 typeof forestDataState.hp === 'number'
             ) {
                 const forestsState: ForestsState = { qta: forestDataState.qta, hp: forestDataState.hp }
-                res[woodType as WoodTypes] = forestsState
+                res[woodType] = forestsState
             }
         }
     })

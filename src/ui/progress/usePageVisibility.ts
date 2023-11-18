@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 function getIsDocumentHidden() {
-    return !document['hidden']
+    return !document.hidden
 }
 
 export function usePageVisibility() {

@@ -21,8 +21,8 @@ export function getFormatter(
     notation: NotationTypes,
     comma: CommaTypes
 ): [(value: number) => string, (formatted: string) => number] {
-    let commaParam: 'it-IT' | 'en-US' | undefined
-    if (comma === 'it-IT' || comma === 'en-US') commaParam = comma
+    let commaParam: CommaTypes.IT | CommaTypes.US | undefined
+    if (comma === CommaTypes.IT || comma === CommaTypes.US) commaParam = comma
 
     const engineeringFormatter = new Intl.NumberFormat(commaParam, {
         maximumSignificantDigits: DIGITS,
@@ -45,17 +45,21 @@ export function getFormatter(
     const parseIntl = (str: string) => {
         str = str.replace(groupSep, '').toUpperCase()
         let i = n - 1
-        for (; i >= 0; i--) if (str.endsWith(suffixesUpper[i])) break
+        for (; i >= 0; i--) {
+            const suffix = suffixesUpper[i]
+            if (suffix && str.endsWith(suffix)) break
+        }
         let multi = 1
-        if (i < n) {
+        if (i < n && i > -1) {
             multi = 10 ** (i * 3)
-            str = str.replace(suffixesUpper[i], '')
+            const suffix = suffixesUpper[i]
+            if (suffix) str = str.replace(suffix, '')
         } else {
             const splitE = str.split('E')
             if (splitE.length > 1) {
                 const exp = Number(splitE[1])
                 if (isFinite(exp)) multi = 10 ** exp
-                ;[str] = splitE
+                str = splitE[0] ?? str
             }
         }
         const numStr = decimalSep === 'A' ? str : str.replace(decimalSep, '.')
@@ -79,9 +83,9 @@ export function getFormatter(
 
                 if (index > suffixes.length) return scientificFormatter.format(value)
 
-                const suffix = suffixes[index] !== '' ? suffixes[index] : ''
+                const suffix = (suffixes[index] !== '' ? suffixes[index] : '') ?? ''
                 const split = val.split('E')
-                const prefix: string = split[0]
+                const prefix: string = split[0] ?? ''
                 return `${prefix}${suffix}`
             }
             break

@@ -1,4 +1,4 @@
-type Cache = {
+interface Cache {
     m?: Map<unknown, Cache>
     v?: unknown
 }

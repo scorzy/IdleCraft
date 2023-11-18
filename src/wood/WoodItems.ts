@@ -52,4 +52,4 @@ export const WoodItems = {
         value: 20,
         handleData: WoodData[WoodTypes.Oak].handleData,
     },
-} satisfies { [k: string]: Item }
+} satisfies Record<string, Item>

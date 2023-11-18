@@ -1,6 +1,6 @@
 export interface InitialState<T> {
     ids: string[]
-    entries: { [k in string]: T }
+    entries: Record<string, T>
 }
 
 export abstract class AbstractEntityAdapter<T> {
@@ -22,8 +22,9 @@ export abstract class AbstractEntityAdapter<T> {
     }
     update(state: InitialState<T>, id: string, data: Partial<T>) {
         const existing = state.entries[id]
-        if (existing === undefined) throw new Error(`${id} doesn't exists`)
-        state = { ...state, entries: { ...state.entries, [id]: { ...state.entries[id], ...data } } }
+        if (!existing) throw new Error(`${id} doesn't exists`)
+        const complete: T = { ...existing, ...data }
+        state = { ...state, entries: { ...state.entries, [id]: complete } }
         return state
     }
     replace(state: InitialState<T>, id: string, data: T) {
@@ -43,9 +44,9 @@ export abstract class AbstractEntityAdapter<T> {
         return state
     }
     remove(state: InitialState<T>, id: string) {
-        if (id === undefined) throw new Error('id undefined')
+        if (!id) throw new Error('id undefined')
         const existing = state.entries[id]
-        if (existing === undefined) throw new Error(`${id} doesn't exists`)
+        if (!existing) throw new Error(`${id} doesn't exists`)
         const { [id]: value, ...newEntries } = state.entries
         state = { entries: newEntries, ids: state.ids.filter((e) => e !== id) }
         return state

@@ -34,8 +34,15 @@ import { removeActivity } from '../../activities/activityFunctions'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { RecipeData } from '../RecipeData'
 import { changeRecipe, setRecipeItemParam, getRecipeParamId } from '../RecipeFunctions'
+import { Recipe } from '../Recipe'
 
-const selectRecipes = memoize((t: RecipeTypes) => Object.values(Recipes).filter((r) => r.type === t))
+const recipeValues = Object.values(Recipes)
+const selectRecipes: (t: RecipeTypes) => Recipe[] = memoize((t: RecipeTypes) => {
+    const ret: Recipe[] = []
+    for (const recipe of recipeValues) if (recipe && recipe.type === t) ret.push(recipe)
+
+    return ret
+})
 
 export const CraftingUi = memo(function CraftingUi() {
     const result = useGameStore(selectRecipeResult)
@@ -172,10 +179,10 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
 const ParamItem = memo(function ParamItem(props: { itemId: ItemId }) {
     const { itemId } = props
     const value = getRecipeParamId(itemId)
-    const itemObj = useGameStore(selectGameItem(itemId?.stdItemId ?? null, itemId?.craftItemId ?? null))
+    const itemObj = useGameStore(selectGameItem(itemId.stdItemId ?? null, itemId.craftItemId ?? null))
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
-    const qta = useGameStore(selectItemQta(null, itemId?.stdItemId ?? null, itemId?.craftItemId ?? null))
+    const qta = useGameStore(selectItemQta(null, itemId.stdItemId ?? null, itemId.craftItemId ?? null))
     const text = itemObj ? t[itemObj.nameId] : t.None
 
     return (

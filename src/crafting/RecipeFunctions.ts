@@ -42,13 +42,14 @@ export const getRecipeParamId = (r: RecipeParameterValue | ItemId | undefined) =
 
 export const setRecipeItemParam = (id: string, paramValue: string) =>
     useGameStore.setState((state) => {
-        const paramsValue: RecipeParameterValue[] = (state.craftingForm?.paramsValue ?? []).filter((p) => p.id !== id)
+        const paramsValue: RecipeParameterValue[] = state.craftingForm.paramsValue.filter((p) => p.id !== id)
 
         const value: RecipeParameterValue = { ...getItemId(paramValue), id }
 
         if (value.craftItemId || value.stdItemId) paramsValue.push(value)
 
         const recipe = Recipes[state.recipeId]
+        if (!recipe) throw new Error(`Recipe with id ${state.recipeId} not found`)
         const result = recipe.getResult(state, paramsValue)
 
         state = {

@@ -8,7 +8,7 @@
     "preview": "vite preview --open",
     "build": "tsc && vite build",
     "analyze": "tsc && vite build -c vite.config.analyze.ts && start dist\\stats.html",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0 && prettier --write .",
+    "lint": "eslint src --ext ts --fix,tsx --report-unused-disable-directives --max-warnings 0 && prettier --write .",
     "test": "vitest --watch",
     "coverage": "vitest run --coverage",
     "circular": "madge --circular --extensions ts ./"

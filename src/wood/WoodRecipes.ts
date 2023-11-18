@@ -89,5 +89,5 @@ export const HandleRecipe: Recipe = {
 }
 
 export const WoodRecipes = { [PlankRecipe.id]: PlankRecipe, [HandleRecipe.id]: HandleRecipe } satisfies {
-    [k: string]: Recipe
+    [k in string]?: Recipe
 }

@@ -14,8 +14,16 @@ export interface StartResult {
     gameState: GameState
     result: ActivityStartResult
 }
-
-export abstract class AbstractActivity<T> {
+export interface Activity<T> {
+    getData(): T
+    start(): StartResult
+    onStart(): ActivityStartResult
+    exec(): StartResult
+    remove(): GameState
+    getTitle(): string
+    getIcon(): ReactNode
+}
+export abstract class AbstractActivity<T> implements Activity<T> {
     protected state: GameState
     protected id: string
     protected data: T

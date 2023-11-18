@@ -1,14 +1,13 @@
 import './global.css'
 import './main.css'
-
 import 'inter-ui/inter-latin.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-import { populateProvider } from './game/populateProvider.ts'
+import { initialize } from './game/initialize.ts'
 
-populateProvider()
+initialize()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

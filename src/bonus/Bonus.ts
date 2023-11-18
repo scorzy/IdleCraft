@@ -15,5 +15,5 @@ export interface Bonus {
 }
 export interface BonusResult {
     total: number
-    bonuses: Array<Bonus>
+    bonuses: Bonus[]
 }

@@ -192,6 +192,4 @@ export const SmithingRecipes = {
     [BarRecipe.id]: BarRecipe,
     [AxeRecipe.id]: AxeRecipe,
     [PickaxeRecipe.id]: PickaxeRecipe,
-} satisfies {
-    [k: string]: Recipe
-}
+} satisfies { [k in string]?: Recipe }

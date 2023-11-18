@@ -1,5 +1,5 @@
 import { ActivityState } from './ActivityState'
 
 export interface Activities {
-    activities: { [k: string]: ActivityState }
+    activities: { [k in string]?: ActivityState }
 }

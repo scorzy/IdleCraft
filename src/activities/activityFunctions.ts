@@ -6,7 +6,7 @@ import { makeActivityFun } from './makeActivityFun'
 
 function removeActivityInt(state: GameState, id: string): GameState {
     const act = ActivityAdapter.select(state.activities, id)
-    if (act === undefined) return state
+    if (!act) return state
     state = makeActivityFun(state, act.type, id).remove()
     return startNextActivity(state)
 }
@@ -18,7 +18,7 @@ export const removeActivity = (id: string | undefined | null) => {
 
 export function execActivityOnTimer(state: GameState, activityId: string): GameState {
     const activity = ActivityAdapter.select(state.activities, activityId)
-    if (activity === undefined) return state
+    if (!activity) return state
     const res = makeActivityFun(state, activity.type, activityId).exec()
     state = res.gameState
     if (res.result !== ActivityStartResult.Started) state = startNextActivity(state)
@@ -46,10 +46,10 @@ export function startNextActivity(state: GameState): GameState {
 
     function tryStart(): boolean {
         const activityId = state.orderedActivities[i]
-        if (activityId === undefined) return false
+        if (!activityId) return false
 
         const activity = ActivityAdapter.select(state.activities, activityId)
-        if (activity === undefined) return false
+        if (!activity) return false
 
         const { gameState, result } = makeActivityFun(state, activity.type, activityId).start()
         state = gameState
@@ -72,6 +72,7 @@ export const moveActivityNext = (id: string) =>
         if (index >= s.activities.ids.length - 1) return s
         const ids = [...s.activities.ids]
         const tmp = ids[index + 1]
+        if (!tmp) return s
         ids[index + 1] = id
         ids[index] = tmp
         s = { ...s, activities: { ...s.activities, ids } }
@@ -84,6 +85,7 @@ export const moveActivityPrev = (id: string) =>
         if (index < 1) return s
         const ids = [...s.activities.ids]
         const tmp = ids[index - 1]
+        if (!tmp) return s
         ids[index - 1] = id
         ids[index] = tmp
         s = { ...s, activities: { ...s.activities, ids } }

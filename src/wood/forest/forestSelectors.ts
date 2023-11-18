@@ -36,7 +36,7 @@ const selectGrowingTreesInt = (
     const ret: string[] = []
     for (const timerId of timers.ids) {
         const timer = timers.entries[timerId]
-        if (timer.type === TimerTypes.Tree && timer.actId) {
+        if (timer && timer.type === TimerTypes.Tree && timer.actId) {
             const tree = TreeGrowthAdapter.select(treeGrowth, timer.actId)
             if (tree && tree.location === location && tree.woodType === woodType) ret.push(timer.id)
         }

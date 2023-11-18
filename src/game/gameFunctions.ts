@@ -23,8 +23,8 @@ const MAX_LOAD = 3600 * 1000 * 24 * 1
 // const TEST_DIF = 3600 * 1000 * 24 * 360
 const TEST_DIF = 0
 
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export declare function setTimeout(this: Window | void, handler: (...args: unknown[]) => void, timeout: number): number
-export declare function setTimeout(this: Window | void, handler: unknown, timeout?: unknown, ...args: unknown[]): number
 
 export const load = (data: object) => {
     let state = loadData(data)

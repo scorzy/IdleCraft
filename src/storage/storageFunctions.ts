@@ -25,7 +25,7 @@ function subAddItem(
     craftItemId: string | null,
     qta: number
 ): StorageState {
-    let subState: { [k: string]: number } = state.StdItems
+    let subState: { [k in string]?: number } = state.StdItems
     let id = ''
 
     if (craftItemId !== null) {
@@ -35,7 +35,7 @@ function subAddItem(
     else throw new Error('[addItem] stdItemId and craftItemId null')
 
     const old = subState[id]
-    const newQta = Math.max(qta + (old || 0), 0)
+    const newQta = Math.max(qta + (old ?? 0), 0)
 
     if (Math.abs(newQta) < Number.EPSILON) {
         const { [id]: value, ...newSubState } = subState
@@ -61,7 +61,7 @@ export function addItem(
     qta: number,
     location?: GameLocations
 ): GameState {
-    location = location || state.location
+    location = location ?? state.location
     let storage = state.locations[location].storage
     storage = subAddItem(storage, stdItemId, craftItemId, qta)
     state = { ...state, locations: { ...state.locations, [location]: { ...state.locations[location], storage } } }
@@ -85,7 +85,7 @@ export function hasItem(
     qta: number,
     location?: GameLocations
 ): boolean {
-    location = location || state.location
+    location = location ?? state.location
     const storage = state.locations[location].storage
     return subHasItem(storage, stdItemId, craftItemId, qta)
 }
@@ -96,7 +96,7 @@ export const setSelectedItem = (stdItemId: string | null, craftItemId: string | 
             ...s.ui,
             selectedStdItemId: stdItemId ?? null,
             selectedCraftedItemId: craftItemId ?? null,
-            selectedItemLocation: location ?? null,
+            selectedItemLocation: location,
         },
     }))
 
@@ -133,7 +133,7 @@ export function saveCraftItem(state: InitialState<Item>, item: Item): { id: stri
     state = ItemAdapter.create(state, newItem)
 
     const byType = craftIdsByType.get(item.type) ?? []
-    craftIdsByType.set(newItem.type, [...(byType ?? []), newItem.id])
+    craftIdsByType.set(newItem.type, [...byType, newItem.id])
 
     return { id: newItem.id, state }
 }

@@ -40,4 +40,4 @@ export const SmithingItems = {
             time: 3e3,
         },
     },
-} satisfies { [k: string]: Item }
+} satisfies { [k in string]?: Item }

@@ -37,8 +37,8 @@ type ItemOrdName = ItemId & { name: string }
 
 type ItemOrdValue = ItemId & { value: number }
 export const selectLocationItems = memoize((location: GameLocations) => {
-    const orderItems = memoizeOne((std: { [k in string]: number }, craft: { [k: string]: number }) => {
-        const ret: ItemId[] = (Object.entries<number>(std) as Entries<{ [k in string]: number }>)
+    const orderItems = memoizeOne((std: { [k in string]?: number }, craft: { [k in string]?: number }) => {
+        const ret: ItemId[] = (Object.entries<number | undefined>(std) as Entries<{ [k in string]: number }>)
             .map<ItemId>((e) => {
                 return {
                     stdItemId: e[0],
@@ -100,7 +100,7 @@ export const selectLocationItems = memoize((location: GameLocations) => {
             const t = selectTranslations(state)
             items = reorderName(state.craftedItems, items, t)
         } else if (order === 'quantity') items = reorderQta(items, loc.storage)
-        else if (order === 'value') items = reorderValue(state.craftedItems, items)
+        else items = reorderValue(state.craftedItems, items)
 
         if (!state.ui.storageAsc) items = sortDesc(items)
         return items
@@ -157,7 +157,7 @@ export const selectItemsByType = memoize(function (itemType: ItemTypes | undefin
         }
         return ret
     })
-    const getCraftItems = memoizeOne((craft: { [k: string]: number }, crafted: InitialState<Item>) => {
+    const getCraftItems = memoizeOne((craft: { [k in string]?: number }, crafted: InitialState<Item>) => {
         const ret: ItemId[] = []
         for (const craftItemId of Object.keys(craft)) {
             const item = ItemAdapter.select(crafted, craftItemId)
