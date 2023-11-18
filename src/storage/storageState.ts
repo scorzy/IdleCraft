@@ -3,10 +3,6 @@ export interface ItemId {
     craftItemId: string | null
 }
 export interface StorageState {
-    StdItems: {
-        [k in string]?: number
-    }
-    CraftedItems: {
-        [k in string]?: number
-    }
+    StdItems: Record<string, number>
+    CraftedItems: Record<string, number>
 }

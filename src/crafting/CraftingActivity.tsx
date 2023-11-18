@@ -16,8 +16,6 @@ import { GiCube } from 'react-icons/gi'
 import { IconsData } from '../icons/Icons'
 import { addExp } from '../experience/expFunctions'
 import { RecipeData } from './RecipeData'
-import { ActivityTypes } from '../activities/ActivityState'
-import { activities } from '../activities/makeActivityFun'
 
 export class CraftingActivity extends AbstractActivity<Crafting> {
     recipe: Recipe

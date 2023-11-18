@@ -81,5 +81,5 @@ export interface GameState {
         paramsValue: RecipeParameterValue[]
         result: RecipeResult | undefined
     }
-    characters: { [k in string]?: CharacterState }
+    characters: Record<string, CharacterState>
 }

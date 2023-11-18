@@ -11,7 +11,7 @@
     "lint": "eslint src --ext ts --fix,tsx --report-unused-disable-directives --max-warnings 0 && prettier --write .",
     "test": "vitest --watch",
     "coverage": "vitest run --coverage",
-    "circular": "madge --circular --extensions ts ./"
+    "circular": "madge --circular --warning --extensions ts ./"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",

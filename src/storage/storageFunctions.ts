@@ -25,7 +25,7 @@ function subAddItem(
     craftItemId: string | null,
     qta: number
 ): StorageState {
-    let subState: { [k in string]?: number } = state.StdItems
+    let subState: Record<string, number> = state.StdItems
     let id = ''
 
     if (craftItemId !== null) {

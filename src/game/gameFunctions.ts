@@ -95,7 +95,7 @@ function loadData(data: object): GameState {
     }
     if ('characters' in data) {
         // ToDo
-        state.characters = data.characters as { [k in string]: CharacterState }
+        state.characters = data.characters as Record<string, CharacterState>
     }
 
     if ('perks' in data && data.perks && typeof data.perks === 'object')

@@ -14,8 +14,6 @@ import { hasOre, mineOre, resetOre } from './miningFunctions'
 import { getMiningTime, getMiningDamage, getSearchMineTime } from './miningSelectors'
 import { addExp } from '../experience/expFunctions'
 import { ExpEnum } from '../experience/expEnum'
-import { activities } from '../activities/makeActivityFun'
-import { GameState } from '../game/GameState'
 
 export class MiningActivityCreator extends AbstractActivityCreator<OreTypes> {
     protected type = ActivityTypes.Mining

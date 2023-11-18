@@ -4,7 +4,7 @@ export enum CraftingTypes {
     Woodworking = 'Woodworking',
     Smithing = 'Smithing',
 }
-export const CraftingData: { [k in CraftingTypes]: { expType: ExpEnum } } = {
+export const CraftingData: Record<CraftingTypes, { expType: ExpEnum }> = {
     [CraftingTypes.Woodworking]: {
         expType: ExpEnum.Woodworking,
     },
