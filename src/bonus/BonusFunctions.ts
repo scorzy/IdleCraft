@@ -1,6 +1,6 @@
-import { Bonus } from './Bonus'
+import { Bonus } from './bonus'
 
-export function GetTotal(bonuses: Bonus[]): number {
+export function getTotal(bonuses: Bonus[]): number {
     let ret = 0
     for (const bonus of bonuses) ret += bonus.add ?? 0
     for (const bonus of bonuses) {

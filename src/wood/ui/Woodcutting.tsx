@@ -13,7 +13,12 @@ import {
 } from '../forest/forestSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { RestartProgress } from '../../ui/progress/RestartProgress'
-import { selectWoodcuttingDamage, selectWoodcuttingTime } from '../WoodcuttingSelectors'
+import {
+    selectWoodcuttingDamage,
+    selectWoodcuttingDamageAll,
+    selectWoodcuttingTime,
+    selectWoodcuttingTimeAll,
+} from '../WoodcuttingSelectors'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
 import { memo, useCallback } from 'react'
@@ -29,6 +34,15 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { ExpEnum } from '../../experience/expEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog'
+import { BonusDialog, BonusListUi } from '../../bonus/ui/BonusUi'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -71,6 +85,8 @@ const Cutting = memo(function Cutting() {
     const hpPercent = Math.floor((100 * forest.hp) / def.hp)
     const time = useGameStore(selectWoodcuttingTime)
     const damage = useGameStore(selectWoodcuttingDamage)
+    const damageBonusRes = useGameStore(selectWoodcuttingDamageAll)
+    const timeBonusRes = useGameStore(selectWoodcuttingTimeAll)
 
     return (
         <MyCard title={t.Cutting} actions={<CuttingButton />} icon={<GiWoodAxe />}>
@@ -78,14 +94,12 @@ const Cutting = memo(function Cutting() {
                 <span>
                     {t.TreeHP} {f(forest.hp)}/{f(def.hp)}
                 </span>
-                <span>
-                    {t.Damage} {f(damage)}
-                </span>
             </MyCardLabel>
+            {t.Damage} {f(damage)}
+            <BonusDialog title={t.WoodcuttingDamage} bonusResult={damageBonusRes} />
             <RestartProgress value={hpPercent} color="error" />
-            <MyCardLabel>
-                {t.Time} {ft(time)}
-            </MyCardLabel>
+            {`${t.Time} ${ft(time)}`}
+            <BonusDialog title={t.WoodcuttingTime} bonusResult={timeBonusRes} isTime={true} />
             <GameTimerProgress actionId={act} color="primary" />
         </MyCard>
     )

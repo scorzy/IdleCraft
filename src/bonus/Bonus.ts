@@ -6,6 +6,7 @@ export interface BaseBonus {
     iconId: Icons
 }
 export interface Bonus {
+    id: string
     baseBonus?: BaseBonus
     stdItem?: string
     craftItem?: string

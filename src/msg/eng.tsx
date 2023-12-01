@@ -67,6 +67,8 @@ export const engMsg: Msg = {
     AttackSpeed: 'Attack Speed',
     Pickaxe: 'Pickaxe',
     ArmourPen: 'ArmourPen',
+    WoodcuttingDamage: 'Woodcutting Damage',
+    WoodcuttingTime: 'Woodcutting  Time',
     // Perks
     Perks: 'Perks',
     Available: 'Available',

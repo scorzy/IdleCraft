@@ -1,4 +1,7 @@
-export type Translations = { t: Msg; fun: MsgFunctions }
+export interface Translations {
+    t: Msg
+    fun: MsgFunctions
+}
 
 export interface Msg {
     Activities: string
@@ -43,6 +46,8 @@ export interface Msg {
     Cut: string
     Trees: string
     GrowingTrees: string
+    WoodcuttingDamage: string
+    WoodcuttingTime: string
 
     //  Wood
     DeadTree: string
