@@ -34,7 +34,7 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { ExpEnum } from '../../experience/expEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { BonusDialog } from '../../bonus/ui/BonusUi'
+import { BonusDialog, BonusSpan } from '../../bonus/ui/BonusUi'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -72,7 +72,7 @@ const Cutting = memo(function Cutting() {
     const forest = useGameStore(selectForest(woodType))
     const act = useGameStore(selectWoodcutting(woodType))
     const { f, ft } = useNumberFormatter()
-    const { t } = useTranslations()
+    const { t, fun } = useTranslations()
     const def = selectDefaultForest(woodType)
     const hpPercent = Math.floor((100 * forest.hp) / def.hp)
     const time = useGameStore(selectWoodcuttingTime)
@@ -81,17 +81,21 @@ const Cutting = memo(function Cutting() {
     const timeBonusRes = useGameStore(selectWoodcuttingTimeAll)
 
     return (
-        <MyCard title={t.Cutting} actions={<CuttingButton />} icon={<GiWoodAxe />}>
+        <MyCard title={fun.cutting(woodType)} actions={<CuttingButton />} icon={<GiWoodAxe />}>
             <MyCardLabel>
                 <span>
                     {t.TreeHP} {f(forest.hp)}/{f(def.hp)}
                 </span>
             </MyCardLabel>
-            {t.Damage} {f(damage)}
-            <BonusDialog title={t.WoodcuttingDamage} bonusResult={damageBonusRes} />
+            <BonusSpan>
+                {t.Damage} {f(damage)}
+                <BonusDialog title={t.WoodcuttingDamage} bonusResult={damageBonusRes} />
+            </BonusSpan>
             <RestartProgress value={hpPercent} color="error" />
-            {`${t.Time} ${ft(time)}`}
-            <BonusDialog title={t.WoodcuttingTime} bonusResult={timeBonusRes} isTime={true} />
+            <BonusSpan>
+                {t.Time} {ft(time)}
+                <BonusDialog title={t.WoodcuttingTime} bonusResult={timeBonusRes} isTime={true} />
+            </BonusSpan>
             <GameTimerProgress actionId={act} color="primary" />
         </MyCard>
     )

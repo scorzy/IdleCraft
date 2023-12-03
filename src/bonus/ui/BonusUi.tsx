@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { Bonus, BonusResult } from '../bonus'
 import { IconsData } from '../../icons/Icons'
 import { PerksData } from '../../perks/Perk'
-import { memo } from 'react'
+import { ReactNode, memo } from 'react'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 import { Msg } from '../../msg/Msg'
@@ -15,8 +15,11 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog'
 import { TbInfoCircle } from 'react-icons/tb'
-import { Button } from '@/components/ui/button'
 
+export const BonusSpan = memo(function BonusSpan(props: { children: ReactNode }) {
+    const { children } = props
+    return <span className="grid grid-flow-col justify-start gap-2">{children}</span>
+})
 export const BonusListUi = memo(function BonusListUi(props: { bonusResult: BonusResult; isTime?: boolean }) {
     const { bonusResult, isTime } = props
     const { f, ft } = useNumberFormatter()
@@ -79,9 +82,9 @@ export const BonusDialog = memo(function BonusDialog(props: {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" title="info">
-                    <TbInfoCircle size={20} />
-                </Button>
+                <button>
+                    <TbInfoCircle size={18} />
+                </button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
