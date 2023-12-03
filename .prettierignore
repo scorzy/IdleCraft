@@ -6,3 +6,4 @@ package.json
 yarn.lock
 *.svg 
 src/components
+pnpm-lock.yaml

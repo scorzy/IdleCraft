@@ -35,6 +35,7 @@ import { ExpEnum } from '../../experience/expEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BonusDialog, BonusSpan } from '../../bonus/ui/BonusUi'
+import { ContentPage } from '../../ui/pages/ContentPage'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -54,16 +55,19 @@ export const Woodcutting = memo(function Woodcutting() {
 const WoodcuttingContainer = memo(function WoodcuttingContainer() {
     const woodType = useGameStore(selectWoodType)
     return (
-        <div className="page-container">
+        <ContentPage
+            infoPanel={
+                <>
+                    <ExperienceCard expType={ExpEnum.Woodcutting} />
+                    <EquipItemUi slot={EquipSlotsEnum.WoodAxe} />
+                </>
+            }
+        >
             <div className="my-container">
-                <ExperienceCard expType={ExpEnum.Woodcutting} />
-                <EquipItemUi slot={EquipSlotsEnum.WoodAxe} />
+                <Cutting key={`${woodType}C`} />
+                <Forest key={`${woodType}F`} />
             </div>
-            <div className="my-container" key={woodType}>
-                <Cutting />
-                <Forest />
-            </div>
-        </div>
+        </ContentPage>
     )
 })
 

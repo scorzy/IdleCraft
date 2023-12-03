@@ -1,6 +1,7 @@
 import { ReactNode, memo } from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import classes from './myCard.module.css'
+import clsx from 'clsx'
 
 export const MyCardLabel = memo(function MyCardLabel(props: { children?: ReactNode }) {
     const { children } = props
@@ -33,5 +34,5 @@ export const MyCard = memo(function MyCard(props: {
 })
 export const SmallCard = memo(function SmallCard(props: { children?: ReactNode; className?: string }) {
     const { children, className } = props
-    return <Card className={classes.smallCard + (className ? ` ${className}` : '')}>{children}</Card>
+    return <Card className={clsx(classes.smallCard, className)}>{children}</Card>
 })

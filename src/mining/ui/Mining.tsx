@@ -19,6 +19,7 @@ import { ExpEnum } from '../../experience/expEnum'
 import classes from './mining.module.css'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import { ContentPage } from '../../ui/pages/ContentPage'
 
 export const Mining = memo(function Mining() {
     return (
@@ -30,16 +31,19 @@ export const Mining = memo(function Mining() {
 export const MiningContainer = memo(function MiningContainer() {
     const oreType = useGameStore(selectOreType)
     return (
-        <div className="page-container">
+        <ContentPage
+            infoPanel={
+                <>
+                    <ExperienceCard expType={ExpEnum.Mining} />
+                    <EquipItemUi slot={EquipSlotsEnum.Pickaxe} />
+                </>
+            }
+        >
             <div className="my-container">
-                <ExperienceCard expType={ExpEnum.Mining} />
-                <EquipItemUi slot={EquipSlotsEnum.Pickaxe} />
+                <MiningOre key={`${oreType}M`} />
+                <OreUi key={`${oreType}O`} />
             </div>
-            <div className="my-container" key={oreType}>
-                <MiningOre />
-                <OreUi />
-            </div>
-        </div>
+        </ContentPage>
     )
 })
 const MiningOre = memo(function MiningOre() {

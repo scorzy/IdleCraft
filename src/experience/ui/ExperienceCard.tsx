@@ -24,7 +24,7 @@ export const ExperienceCard = memo(function ExperienceCard(props: { expType: Exp
     const expData = ExpData[expType]
 
     return (
-        <SmallCard>
+        <SmallCard className={styles.container}>
             <div>
                 {t[expData.nameId]} <Badge>{f(level)}</Badge>
             </div>

@@ -11,3 +11,12 @@
     justify-content: baseline;
     gap: 0.375rem;
 }
+.side {
+    display: grid;
+    container-type: inline-size;
+    display: grid;
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
+    grid-template-columns: 1fr;
+    align-items: start;
+}

@@ -14,27 +14,26 @@
 }
 
 .my-container {
+    container-type: inline-size;
     display: grid;
     column-gap: 0.5rem;
     row-gap: 0.5rem;
     grid-template-columns: 1fr;
     align-items: start;
 }
+.grid-span-2 {
+    container-type: inline-size;
+}
 @container (min-width: 600px) {
-    .my-container-3 {
+    .grid-span-2 {
+        grid-column: 1 / span 2;
+    }
+    .my-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
 }
 @container (min-width: 768px) {
-    .my-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-    .my-container-3 {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
 }
 
 .CollapsibleContent {

@@ -1,0 +1,20 @@
+.page {
+    display: grid;
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
+    grid-template-columns: 1fr;
+}
+@container (min-width: 768px) {
+    .page {
+        display: grid;
+        grid-template-columns: 1fr 1fr 350px;
+    }
+}
+.infoPanel {
+    container-type: inline-size;
+    display: grid;
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
+    grid-template-columns: 1fr;
+    height: fit-content;
+}

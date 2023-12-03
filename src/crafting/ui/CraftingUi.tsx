@@ -35,11 +35,12 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { RecipeData } from '../RecipeData'
 import { changeRecipe, setRecipeItemParam, getRecipeParamId } from '../RecipeFunctions'
 import { Recipe } from '../Recipe'
+import { ContentPage } from '../../ui/pages/ContentPage'
 
 const recipeValues = Object.values(Recipes)
 const selectRecipes: (t: RecipeTypes) => Recipe[] = memoize((t: RecipeTypes) => {
     const ret: Recipe[] = []
-    for (const recipe of recipeValues) if (recipe && recipe.type === t) ret.push(recipe)
+    for (const recipe of recipeValues) if (recipe.type === t) ret.push(recipe)
 
     return ret
 })
@@ -52,16 +53,15 @@ export const CraftingUi = memo(function CraftingUi() {
     if (!recipeType) return <></>
     return (
         <Page>
-            <div className="page-container" key={recipeType}>
-                <div className="my-container">
-                    <ExperienceCard expType={RecipeData[recipeType].expType} />
-                </div>
-                <div className="my-container my-container-3">
+            <ContentPage infoPanel={<ExperienceCard expType={RecipeData[recipeType].expType} />}>
+                <div className="my-container" key={recipeType}>
                     <RecipeUi />
-                    <CraftingResult result={result} />
-                    <CraftingReq req={req} />
+                    <div className={classes.side}>
+                        <CraftingResult result={result} />
+                        <CraftingReq req={req} />
+                    </div>
                 </div>
-            </div>
+            </ContentPage>
         </Page>
     )
 })
