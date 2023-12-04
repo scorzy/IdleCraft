@@ -49,7 +49,7 @@ const SortDropdown = memo(function SortDropdown() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className={buttonVariants({ variant: 'secondary' })}>{t.Sort}</DropdownMenuTrigger>
-            <DropdownMenuContent className={`sort ${classes.dropDown}`}>
+            <DropdownMenuContent className={`sort ${classes.dropDown!}`}>
                 <DropdownMenuItem onClick={setStorageOrder('name', true)}>
                     {t.Name} <LuArrowDown />
                 </DropdownMenuItem>
@@ -150,6 +150,7 @@ const StorageItem = memo(function StorageItem(props: {
                 {IconsData[item.icon]}
                 <span className="justify-self-start">{t[item.nameId]}</span>
                 <span>{f(qta)}</span>
+                <span>{f(item.value)}</span>
             </button>
 
             {!isLast && <hr className={classes.hr} />}

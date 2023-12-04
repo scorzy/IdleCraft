@@ -1,6 +1,6 @@
 .item {
     display: grid;
-    grid-template-columns: auto 1fr 2rem;
+    grid-template-columns: auto 1fr 2rem 2rem;
     margin-top: -1px;
     & svg {
         font-size: 1.25rem;
