@@ -48,6 +48,7 @@ export const PerksPage = memo(function PerksPage() {
 
 const PerksSidebar = memo(function PerksSidebar() {
     const { f } = useNumberFormatter()
+    const { t } = useTranslations()
     const maxPerks = useGameStore(SelectMaxPerks)
     const usedPerks = useGameStore(SelectUsedPerks)
     const perks = useGameStore(selectPerks)
@@ -57,7 +58,7 @@ const PerksSidebar = memo(function PerksSidebar() {
         <div>
             <div className={classes.topPanel}>
                 <span>
-                    Used {f(usedPerks)}/{f(maxPerks)}
+                    {t.Used} {f(usedPerks)}/{f(maxPerks)}
                 </span>
                 <PerkFilter />
             </div>
@@ -78,7 +79,7 @@ const PerkFilter = memo(function PerkFilter() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="secondary">Filter</Button>
+                <Button variant="secondary">{t.Filter}</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className={`sort ${classes.dropDown!}`}>
                 <DropdownMenuCheckboxItem checked={available} onCheckedChange={toggleShowAvailablePerks}>
@@ -110,6 +111,7 @@ function PerkLink(props: { perk: PerksEnum; isLast: boolean }) {
                     buttonVariants({ variant: 'ghost' }),
                     'w-full justify-start gap-4 font-normal',
                     { 'bg-muted': selected },
+                    { 'text-muted-foreground': ownPerk },
                     { [classes.itemDisabled!]: !enabled },
                     classes.item
                 )}
@@ -132,7 +134,7 @@ const PerkPage = () => {
     return (
         <MyCard title={t[data.nameId]} icon={data.icon} actions={<PerkButton />}>
             {t[data.descId]}
-            {requirements && <span>Requirements</span>}
+            {requirements && <span>{t.Requirements}</span>}
             {requirements && (
                 <ul>
                     {data.requiredExp?.map((r) => <PerkExpReq req={r} key={r.skill} />)}

@@ -76,6 +76,9 @@ export const engMsg: Msg = {
     Completed: 'Owned',
     Select: 'Select',
     Base: 'Base',
+    Total: 'Total',
+    Used: 'Used',
+    Filter: 'Filter',
 
     FastWoodcuttingPerk: 'Fast Woodcutting',
     FastWoodcuttingPerkDesc: `Increase woodcutting speed by ${FAST_WOODCUTTING_PERK} %`,

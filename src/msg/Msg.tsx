@@ -103,6 +103,9 @@ export interface Msg {
     FastMiningPerk: string
     FastMiningPerkDesc: string
     Base: string
+    Total: string
+    Used: string
+    Filter: string
 }
 export interface MsgFunctions {
     // Time

@@ -7,9 +7,9 @@ export interface BaseBonus {
 }
 export interface Bonus {
     id: string
-    baseBonus?: BaseBonus
-    stdItem?: string
-    craftItem?: string
+    baseBonus?: BaseBonus | null
+    stdItemId?: string | null
+    craftItemId?: string | null
     perk?: PerksEnum
     add?: number
     multi?: number

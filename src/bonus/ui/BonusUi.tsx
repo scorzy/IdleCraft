@@ -6,15 +6,10 @@ import { ReactNode, memo } from 'react'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 import { Msg } from '../../msg/Msg'
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { TbInfoCircle } from 'react-icons/tb'
+import { useGameStore } from '../../game/state'
+import { selectGameItem } from '../../storage/StorageSelectors'
 
 export const BonusSpan = memo(function BonusSpan(props: { children: ReactNode }) {
     const { children } = props
@@ -23,6 +18,7 @@ export const BonusSpan = memo(function BonusSpan(props: { children: ReactNode })
 export const BonusListUi = memo(function BonusListUi(props: { bonusResult: BonusResult; isTime?: boolean }) {
     const { bonusResult, isTime } = props
     const { f, ft } = useNumberFormatter()
+    const { t } = useTranslations()
     const format = isTime ? ft : f
 
     return (
@@ -34,7 +30,7 @@ export const BonusListUi = memo(function BonusListUi(props: { bonusResult: Bonus
 
                 <TableRow>
                     <TableCell colSpan={2} className="w-[100px]">
-                        Total
+                        {t.Total}
                     </TableCell>
                     <TableCell className="text-right">{format(bonusResult.total)}</TableCell>
                 </TableRow>
@@ -51,7 +47,12 @@ export const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boo
     let icon: React.ReactNode = <></>
     let name: keyof Msg
 
-    if (bonus.baseBonus) {
+    const item = useGameStore(selectGameItem(bonus.stdItemId, bonus.craftItemId))
+
+    if (item) {
+        icon = IconsData[item.icon]
+        name = item.nameId
+    } else if (bonus.baseBonus) {
         icon = IconsData[bonus.baseBonus.iconId]
         name = bonus.baseBonus.nameId
     } else if (bonus.perk) {
@@ -89,10 +90,8 @@ export const BonusDialog = memo(function BonusDialog(props: {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
-                    <DialogDescription>
-                        <BonusListUi bonusResult={bonusResult} isTime={isTime} />
-                    </DialogDescription>
                 </DialogHeader>
+                <BonusListUi bonusResult={bonusResult} isTime={isTime} />
             </DialogContent>
         </Dialog>
     )
