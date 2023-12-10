@@ -1,5 +1,6 @@
 import { GiAnvil, GiMining, GiUpgrade, GiWoodAxe } from 'react-icons/gi'
 import { LuBox, LuLayoutList } from 'react-icons/lu'
+import { TbCirclePlus } from 'react-icons/tb'
 import { RecipeTypes } from '../../crafting/RecipeInterfaces'
 import { UiPages, UiPageData } from './UiPages'
 
@@ -36,6 +37,6 @@ export const UiPagesData: { [k in UiPages]: UiPageData } = {
     },
     [UiPages.Points]: {
         nameId: 'Attributes',
-        icon: <GiUpgrade />,
+        icon: <TbCirclePlus />,
     },
 }
