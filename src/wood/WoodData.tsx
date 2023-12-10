@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
-import { WoodTypes } from './WoodTypes'
 import { GiDeadWood, GiOak } from 'react-icons/gi'
 import { Msg } from '../msg/Msg'
 import { HandleData } from '../items/Item'
+import { WoodTypes } from './WoodTypes'
 
 export interface WoodDataType {
     maxHp: number

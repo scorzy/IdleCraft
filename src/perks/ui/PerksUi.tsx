@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Page } from '../../ui/shell/AppShell'
+import { TbCheck, TbLock, TbX } from 'react-icons/tb'
 import { PerksEnum } from '../perksEnum'
 import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
@@ -19,19 +19,19 @@ import {
 import { MyCard } from '../../ui/myCard/myCard'
 import { Button, buttonVariants } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
-import { TbCheck, TbLock, TbX } from 'react-icons/tb'
 import { ExpData } from '../../experience/expEnum'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { selectLevel } from '../../experience/expSelectors'
+import { toggleShowAvailablePerks, toggleCompletedPerks, toggleShowUnavailablePerks } from '../../ui/state/uiFunctions'
+import { selectShowAvailablePerks, selectCompletedPerks, selectShowUnavailablePerks } from '../../ui/state/uiSelectors'
+import classes from './perkUi.module.css'
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { toggleShowAvailablePerks, toggleCompletedPerks, toggleShowUnavailablePerks } from '../../ui/state/uiFunctions'
-import { selectShowAvailablePerks, selectCompletedPerks, selectShowUnavailablePerks } from '../../ui/state/uiSelectors'
-import classes from './perkUi.module.css'
+import { Page } from '@/ui/shell/Page'
 
 export const PerksPage = memo(function PerksPage() {
     return (

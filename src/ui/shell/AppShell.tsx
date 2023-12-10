@@ -1,8 +1,8 @@
-import classes from './appShell.module.css'
-import { useGameStore } from '../../game/state'
 import { clsx } from 'clsx'
+import { memo } from 'react'
+import { LuMenu } from 'react-icons/lu'
+import { useGameStore } from '../../game/state'
 import { UiPages } from '../state/UiPages'
-import { ReactNode, memo } from 'react'
 import { Woodcutting } from '../../wood/ui/Woodcutting'
 import { Sidebar } from '../sidebar/Sidebar'
 import { UiStorage } from '../../storage/ui/Storage'
@@ -11,12 +11,12 @@ import { CraftingUi } from '../../crafting/ui/CraftingUi'
 import { ModeToggle } from '../modeToggle'
 import { Button } from '../../components/ui/button'
 import { sidebarOpen, toggle } from '../state/uiFunctions'
-import { LuMenu } from 'react-icons/lu'
 import { Mining } from '../../mining/ui/Mining'
 import { UiPagesData } from '../state/UiPagesData'
 import { useTranslations } from '../../msg/useTranslations'
 import { CardTitle } from '../../components/ui/card'
 import { PerksPage } from '../../perks/ui/PerksUi'
+import classes from './appShell.module.css'
 
 export const AppShell = memo(function AppShell() {
     const open = useGameStore(sidebarOpen)
@@ -76,22 +76,4 @@ export const PageContent = memo(function PageContent() {
         case UiPages.Perks:
             return <PerksPage />
     }
-})
-
-export const Page = memo(function PageWithSidebar(props: { children?: ReactNode }) {
-    const { children } = props
-    return (
-        <div className={classes.page}>
-            <div className={classes.content}>{children}</div>
-        </div>
-    )
-})
-export const PageWithSidebar = memo(function PageWithSidebar(props: { children?: ReactNode; sidebar: ReactNode }) {
-    const { children, sidebar } = props
-    return (
-        <div className={classes.pageWithSide}>
-            <div className={classes.side2}>{sidebar}</div>
-            <div className={classes.content}>{children}</div>
-        </div>
-    )
 })

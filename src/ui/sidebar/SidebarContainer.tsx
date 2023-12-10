@@ -1,8 +1,8 @@
-import classes from './sidebarContainer.module.css'
 import { memo, ReactNode } from 'react'
 import { clsx } from 'clsx'
-import { MyListItem } from './MenuItem'
 import { LuChevronLeft } from 'react-icons/lu'
+import { MyListItem } from './MenuItem'
+import classes from './sidebarContainer.module.css'
 
 export const SidebarContainer = memo(function SidebarContainer(props: {
     children?: ReactNode

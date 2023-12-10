@@ -1,16 +1,16 @@
 import { memo, useCallback } from 'react'
+import { LuArrowDown, LuArrowUp, LuInfo, LuTrash2 } from 'react-icons/lu'
 import { useGameStore } from '../../game/state'
 import { selectActivityIcon, selectActivityId, selectActivityTitle } from '../ActivitySelectors'
-import { Page } from '../../ui/shell/AppShell'
 import { moveActivityNext, moveActivityPrev, removeActivity } from '../activityFunctions'
-import classes from './activities.module.css'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { MyCard } from '../../ui/myCard/myCard'
+import { Alert, AlertTitle } from '../../components/ui/alert'
+import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { LuArrowDown, LuArrowUp, LuInfo, LuTrash2 } from 'react-icons/lu'
-import { Alert, AlertTitle } from '../../components/ui/alert'
+import { Page } from '@/ui/shell/Page'
 
 export const Activities = memo(function Activities() {
     const ids = useGameStore(selectActivityId)

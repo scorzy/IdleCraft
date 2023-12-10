@@ -1,3 +1,7 @@
+import { memo, useCallback, useState } from 'react'
+import { LuChevronsUpDown, LuInfo, LuArrowDown, LuArrowUp } from 'react-icons/lu'
+import { clsx } from 'clsx'
+import { useContainerQueries, QueryBreakpoints } from 'use-container-queries'
 import { useGameStore } from '../../game/state'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import {
@@ -7,8 +11,6 @@ import {
     selectStorageLocations,
     isSelected,
 } from '../StorageSelectors'
-import { Page } from '../../ui/shell/AppShell'
-import { memo, useCallback, useState } from 'react'
 import { MyCard } from '../../ui/myCard/myCard'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
@@ -17,16 +19,14 @@ import { SelectedItem } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
 import { buttonVariants } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
-import { LuChevronsUpDown, LuInfo } from 'react-icons/lu'
+import { setStorageOrder } from '../../ui/state/uiFunctions'
+import classes from './storage.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { setStorageOrder } from '../../ui/state/uiFunctions'
-import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import clsx from 'clsx'
-import { useContainerQueries, QueryBreakpoints } from 'use-container-queries'
-import classes from './storage.module.css'
+import { Page } from '@/ui/shell/Page'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)

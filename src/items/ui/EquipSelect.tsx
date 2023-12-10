@@ -1,5 +1,6 @@
 import { memo, ReactNode, useCallback } from 'react'
 import { GiCube } from 'react-icons/gi'
+import { Label } from '@radix-ui/react-label'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
@@ -7,7 +8,6 @@ import { selectItemsByType, selectGameItem } from '../../storage/StorageSelector
 import { getItemId2 } from '../../storage/storageFunctions'
 import { ItemId } from '../../storage/storageState'
 import { Item, SlotsData } from '../Item'
-import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { selectEquipId, selectEquippedItem } from '../itemSelectors'
 import { changeEquip } from '../itemFunctions'
@@ -15,10 +15,10 @@ import { DEF_PICKAXE } from '../../mining/miningSelectors'
 import { DEF_WOOD_AXE } from '../../wood/WoodcuttingSelectors'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
 import { GameState } from '../../game/GameState'
-import { Label } from '@radix-ui/react-label'
 import { SmallCard } from '../../ui/myCard/myCard'
-import classes from './equipSelect.module.css'
 import { getRecipeParamId } from '../../crafting/RecipeFunctions'
+import classes from './equipSelect.module.css'
+import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
 export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEnum }) {
     const { slot } = props
@@ -57,7 +57,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
                 </SelectTrigger>
 
                 <SelectContent>
-                    <SelectItem value="" icon={<GiCube />}>
+                    <SelectItem value="none" icon={<GiCube />}>
                         <OptionItemInt name={t.None} slot={slot} />
                     </SelectItem>
                     {itemsId.map((t) => {

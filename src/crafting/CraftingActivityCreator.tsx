@@ -1,7 +1,7 @@
-import { Crafting } from './CraftingIterfaces'
-import { CraftingAdapter } from './CraftingAdapter'
 import { AbstractActivityCreator } from '../activities/AbstractActivityCreator'
 import { ActivityTypes } from '../activities/ActivityState'
+import { Crafting } from './CraftingIterfaces'
+import { CraftingAdapter } from './CraftingAdapter'
 
 export class CraftingActivityCreator extends AbstractActivityCreator<null> {
     protected type = ActivityTypes.Crafting

@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
+import { GiMining, GiWoodAxe } from 'react-icons/gi'
 import { ExpEnum } from '../experience/expEnum'
 import { Msg } from '../msg/Msg'
 import { PerksEnum } from './perksEnum'
-import { GiMining, GiWoodAxe } from 'react-icons/gi'
 
 export interface ExpReq {
     skill: ExpEnum

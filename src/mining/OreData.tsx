@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
+import { GiOre } from 'react-icons/gi'
 import { Msg } from '../msg/Msg'
 import { OreTypes } from './OreTypes'
-import { GiOre } from 'react-icons/gi'
 
 export interface OreDataType {
     id: OreTypes

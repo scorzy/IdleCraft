@@ -1,8 +1,6 @@
-import { UiPages } from '../state/UiPages'
-import { CollapsibleMenu, MenuItem } from './MenuItem'
 import { memo } from 'react'
-import { SidebarContainer } from './SidebarContainer'
 import { GiAnvilImpact, GiThreeLeaves } from 'react-icons/gi'
+import { UiPages } from '../state/UiPages'
 import { useGameStore } from '../../game/state'
 import {
     craftingCollapsed,
@@ -13,6 +11,8 @@ import {
     toggleGathering,
     toggleSidebar,
 } from '../state/uiFunctions'
+import { SidebarContainer } from './SidebarContainer'
+import { CollapsibleMenu, MenuItem } from './MenuItem'
 
 export const Sidebar = memo(function Sidebar() {
     const isSidebarCollapsed = useGameStore(sidebarCollapsed)

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
-import { ProgressBar } from './ProgressBar'
 import { Colors } from '../state/uiFunctions'
+import { ProgressBar } from './ProgressBar'
 
 export function RestartProgress(props: { value: number; className?: string; color: Colors }) {
     const { value: hpPercent, className, color } = props

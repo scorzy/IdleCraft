@@ -1,7 +1,7 @@
 import { ReactNode, memo } from 'react'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { clsx } from 'clsx'
 import classes from './myCard.module.css'
-import clsx from 'clsx'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const MyCardLabel = memo(function MyCardLabel(props: { children?: ReactNode }) {
     const { children } = props

@@ -8,7 +8,7 @@
     "preview": "vite preview --open",
     "build": "tsc && vite build",
     "analyze": "vite-bundle-visualizer -c vite.config.ts",
-    "lint": "eslint src --ext ts --fix,tsx --report-unused-disable-directives --max-warnings 0 && prettier --write --log-level warn .",
+    "lint": "eslint src --fix && prettier --write --log-level warn .",
     "test": "vitest --watch",
     "coverage": "vitest run --coverage"
   },

@@ -1,10 +1,10 @@
 import './progress.css'
-import styles from './timerProgress.module.css'
 
 import { memo, useEffect, useRef } from 'react'
-import { usePageVisibility } from './usePageVisibility'
 import { useGameStore } from '../../game/state'
 import { Colors } from '../state/uiFunctions'
+import { usePageVisibility } from './usePageVisibility'
+import styles from './timerProgress.module.css'
 
 const TimerProgress = memo(
     (props: { className?: string; start: number | undefined; end: number | undefined; color: Colors }) => {

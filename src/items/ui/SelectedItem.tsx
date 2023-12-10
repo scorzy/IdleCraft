@@ -9,10 +9,11 @@ import {
     selectSelectedStdItemId,
 } from '../../storage/StorageSelectors'
 import { MyCard } from '../../ui/myCard/myCard'
-import { ItemInfo } from './ItemInfo'
 import { Button } from '../../components/ui/button'
 import { equipClick } from '../../characters/characterFunctions'
 import { PLAYER_ID } from '../../characters/charactersConst'
+import { ItemInfo } from './ItemInfo'
+
 export const SelectedItem = memo(function SelectedItem() {
     const qta = useGameStore(getSelectedItemQta)
     const item = useGameStore(getSelectedItem)

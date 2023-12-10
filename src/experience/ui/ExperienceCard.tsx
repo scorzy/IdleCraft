@@ -6,9 +6,9 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { Badge } from '../../components/ui/badge'
 
-import styles from './ExperienceCard.module.css'
 import { useTranslations } from '../../msg/useTranslations'
 import { SmallCard } from '../../ui/myCard/myCard'
+import styles from './ExperienceCard.module.css'
 
 export const ExperienceCard = memo(function ExperienceCard(props: { expType: ExpEnum }) {
     const { expType } = props
