@@ -17,13 +17,14 @@ import {
     selectPerks,
 } from '../PerksSelectors'
 import { MyCard } from '../../ui/myCard/myCard'
-import { Button, buttonVariants } from '../../components/ui/button'
+import { Button } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
 import { ExpData } from '../../experience/expEnum'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { selectLevel } from '../../experience/expSelectors'
 import { toggleShowAvailablePerks, toggleCompletedPerks, toggleShowUnavailablePerks } from '../../ui/state/uiFunctions'
 import { selectShowAvailablePerks, selectCompletedPerks, selectShowUnavailablePerks } from '../../ui/state/uiSelectors'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table'
 import classes from './perkUi.module.css'
 import {
     DropdownMenu,
@@ -61,9 +62,21 @@ const PerksSidebar = memo(function PerksSidebar() {
                 </span>
                 <PerkFilter />
             </div>
-            {perks.map((t) => (
-                <PerkLink key={t} perk={t} />
-            ))}
+
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="w-7"></TableHead>
+                        <TableHead>Name</TableHead>
+                        <TableHead className="w-20 text-right">Owned</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {perks.map((t) => (
+                        <PerkLink key={t} perk={t} />
+                    ))}
+                </TableBody>
+            </Table>
         </div>
     )
 })
@@ -103,21 +116,11 @@ function PerkLink(props: { perk: PerksEnum }) {
     const enabled = useGameStore(IsPerkEnabled(perk))
     const ownPerk = useGameStore(hasPerk(perk))
     return (
-        <button
-            onClick={SetPerk(perk)}
-            className={cn(
-                buttonVariants({ variant: 'ghost' }),
-                'w-full justify-start gap-4 font-normal',
-                { 'bg-muted': selected },
-                { 'text-muted-foreground': ownPerk },
-                { [classes.itemDisabled!]: !enabled },
-                classes.item
-            )}
-        >
-            {enabled ? data.icon : <TbLock />}
-            <span className="justify-self-start">{t[data.nameId]}</span>
-            {ownPerk ? <TbCheck /> : <></>}
-        </button>
+        <TableRow onClick={SetPerk(perk)} className={cn(classes.row, { 'bg-muted': selected })}>
+            <TableCell>{enabled ? data.icon : <TbLock />}</TableCell>
+            <TableCell>{t[data.nameId]}</TableCell>
+            <TableCell>{ownPerk ? <TbCheck /> : <></>}</TableCell>
+        </TableRow>
     )
 }
 
