@@ -130,9 +130,6 @@ devDependencies:
   prettier:
     specifier: 3.1.1
     version: 3.1.1
-  rollup-plugin-visualizer:
-    specifier: ^5.11.0
-    version: 5.11.0
   tailwindcss:
     specifier: ^3.3.6
     version: 3.3.6
@@ -145,6 +142,9 @@ devDependencies:
   vite:
     specifier: ^5.0.7
     version: 5.0.7(@types/node@20.10.4)
+  vite-bundle-visualizer:
+    specifier: ^0.11.0
+    version: 0.11.0
   vitest:
     specifier: ^1.0.4
     version: 1.0.4(@types/node@20.10.4)(@vitest/ui@1.0.4)(jsdom@23.0.1)
@@ -5236,6 +5236,13 @@ packages:
     engines: {node: '>=14.0.0'}
     dev: true
 
+  /tmp@0.2.1:
+    resolution: {integrity: sha512-76SUhtfqR2Ijn+xllcI5P1oyannHNHByD80W1q447gU3mp9G9PSpGdWmjUOHRDPiHYacIk66W7ubDTuPF3BEtQ==}
+    engines: {node: '>=8.17.0'}
+    dependencies:
+      rimraf: 3.0.2
+    dev: true
+
   /to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
     engines: {node: '>=4'}
@@ -5471,6 +5478,17 @@ packages:
       '@jridgewell/trace-mapping': 0.3.20
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
+    dev: true
+
+  /vite-bundle-visualizer@0.11.0:
+    resolution: {integrity: sha512-YKp4AYO/jfCPihL0FPC/kL6lARk+Mi8ohHCYab9cmx5eOmtW8tG6SXOxjaPPjPrf8EwWKi/QcN5xNsLZVlLzUQ==}
+    hasBin: true
+    dependencies:
+      cac: 6.7.14
+      rollup-plugin-visualizer: 5.11.0
+      tmp: 0.2.1
+    transitivePeerDependencies:
+      - rollup
     dev: true
 
   /vite-node@1.0.4(@types/node@20.10.4):

@@ -1,15 +1,15 @@
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { Bonus, BonusResult } from '../bonus'
+import { ReactNode, memo } from 'react'
+import { TbInfoCircle } from 'react-icons/tb'
+import { Bonus, BonusResult } from '../Bonus'
 import { IconsData } from '../../icons/Icons'
 import { PerksData } from '../../perks/Perk'
-import { ReactNode, memo } from 'react'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 import { Msg } from '../../msg/Msg'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { TbInfoCircle } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
 import { selectGameItem } from '../../storage/StorageSelectors'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
 export const BonusSpan = memo(function BonusSpan(props: { children: ReactNode }) {
     const { children } = props
