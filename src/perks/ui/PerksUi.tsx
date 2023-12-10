@@ -52,7 +52,6 @@ const PerksSidebar = memo(function PerksSidebar() {
     const maxPerks = useGameStore(SelectMaxPerks)
     const usedPerks = useGameStore(SelectUsedPerks)
     const perks = useGameStore(selectPerks)
-    const len = perks.length
 
     return (
         <div>
@@ -62,8 +61,8 @@ const PerksSidebar = memo(function PerksSidebar() {
                 </span>
                 <PerkFilter />
             </div>
-            {perks.map((t, index) => (
-                <PerkLink key={t} perk={t} isLast={index >= len - 1} />
+            {perks.map((t) => (
+                <PerkLink key={t} perk={t} />
             ))}
         </div>
     )
@@ -96,33 +95,29 @@ const PerkFilter = memo(function PerkFilter() {
     )
 })
 
-function PerkLink(props: { perk: PerksEnum; isLast: boolean }) {
-    const { perk, isLast } = props
+function PerkLink(props: { perk: PerksEnum }) {
+    const { perk } = props
     const data = PerksData[perk]
     const { t } = useTranslations()
     const selected = useGameStore(IsPerkSelected(perk))
     const enabled = useGameStore(IsPerkEnabled(perk))
     const ownPerk = useGameStore(hasPerk(perk))
     return (
-        <>
-            <button
-                onClick={SetPerk(perk)}
-                className={cn(
-                    buttonVariants({ variant: 'ghost' }),
-                    'w-full justify-start gap-4 font-normal',
-                    { 'bg-muted': selected },
-                    { 'text-muted-foreground': ownPerk },
-                    { [classes.itemDisabled!]: !enabled },
-                    classes.item
-                )}
-            >
-                {enabled ? data.icon : <TbLock />}
-                <span className="justify-self-start">{t[data.nameId]}</span>
-                {ownPerk ? <TbCheck /> : <></>}
-            </button>
-
-            {!isLast && <hr className={classes.hr} />}
-        </>
+        <button
+            onClick={SetPerk(perk)}
+            className={cn(
+                buttonVariants({ variant: 'ghost' }),
+                'w-full justify-start gap-4 font-normal',
+                { 'bg-muted': selected },
+                { 'text-muted-foreground': ownPerk },
+                { [classes.itemDisabled!]: !enabled },
+                classes.item
+            )}
+        >
+            {enabled ? data.icon : <TbLock />}
+            <span className="justify-self-start">{t[data.nameId]}</span>
+            {ownPerk ? <TbCheck /> : <></>}
+        </button>
     )
 }
 
