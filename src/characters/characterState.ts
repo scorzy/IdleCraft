@@ -7,4 +7,8 @@ export interface CharacterState {
     skillsLevel: ExpState
     exp: number
     level: number
+
+    healthPoints: number
+    staminaPoints: number
+    manaPoints: number
 }

@@ -14,6 +14,7 @@ export interface Bonus {
     perk?: PerksEnum
     add?: number
     multi?: number
+    showQta?: number
 }
 export interface BonusResult {
     total: number

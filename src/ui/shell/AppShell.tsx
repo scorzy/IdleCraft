@@ -16,6 +16,7 @@ import { UiPagesData } from '../state/UiPagesData'
 import { useTranslations } from '../../msg/useTranslations'
 import { CardTitle } from '../../components/ui/card'
 import { PerksPage } from '../../perks/ui/PerksUi'
+import { PointsUi } from '../../characters/ui/PointsUi'
 import classes from './appShell.module.css'
 
 export const AppShell = memo(function AppShell() {
@@ -75,5 +76,7 @@ export const PageContent = memo(function PageContent() {
             return <CraftingUi />
         case UiPages.Perks:
             return <PerksPage />
+        case UiPages.Points:
+            return <PointsUi />
     }
 })

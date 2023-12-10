@@ -10,6 +10,7 @@ export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' |
 export type StorageOrder = 'name' | 'quantity' | 'value'
 
 export const setTheme = (theme: string) => useGameStore.setState((s) => ({ ui: { ...s.ui, theme } }))
+export const setThemeColor = (themeColor: string) => useGameStore.setState((s) => ({ ui: { ...s.ui, themeColor } }))
 export const sidebarOpen = (s: GameState) => s.ui.open
 export const toggle = () => useGameStore.setState((s) => ({ ui: { ...s.ui, open: !s.ui.open } }))
 export const setPage = (page: UiPages) =>

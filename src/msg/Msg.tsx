@@ -97,6 +97,13 @@ export interface Msg {
     NotAvailable: string
     Completed: string
     Select: string
+    Attributes: string
+    healthPoints: string
+    StaminaPoints: string
+    ManaPoints: string
+    Health: string
+    Stamina: string
+    Mana: string
 
     FastWoodcuttingPerk: string
     FastWoodcuttingPerkDesc: string

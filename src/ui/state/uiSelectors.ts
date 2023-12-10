@@ -2,6 +2,7 @@ import { GameState } from '../../game/GameState'
 import { WoodTypes } from '../../wood/WoodTypes'
 
 export const selectTheme = (state: GameState) => state.ui.theme
+export const selectThemeColor = (state: GameState) => state.ui.themeColor
 export const selectNotation = (state: GameState) => state.ui.numberFormatNotation
 export const selectComma = (state: GameState) => state.ui.comma
 export const selectLang = (state: GameState) => state.ui.lang

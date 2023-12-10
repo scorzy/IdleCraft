@@ -63,8 +63,11 @@ export const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boo
 
     return (
         <TableRow>
-            <TableCell className="font-medium w-[30px]">{icon}</TableCell>
-            <TableCell className="text-left">{t[name]}</TableCell>
+            <TableCell className="text-lg w-[30px]">{icon}</TableCell>
+            <TableCell className="text-left">
+                {t[name]}
+                {bonus.showQta && ` X ${f(bonus.showQta)}`}
+            </TableCell>
             <TableCell className="text-right">
                 {bonus.add && `${format(bonus.add)}`}
                 {bonus.multi && bonus.multi > 0 && '+'}
@@ -83,7 +86,7 @@ export const BonusDialog = memo(function BonusDialog(props: {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <button>
+                <button className="text-muted-foreground">
                     <TbInfoCircle size={18} />
                 </button>
             </DialogTrigger>

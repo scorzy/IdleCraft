@@ -58,6 +58,18 @@ module.exports = {
                     DEFAULT: 'hsl(var(--card))',
                     foreground: 'hsl(var(--card-foreground))',
                 },
+                health: {
+                    DEFAULT: 'hsl(var(--health))',
+                    foreground: 'hsl(var(--health-foreground))',
+                },
+                stamina: {
+                    DEFAULT: 'hsl(var(--stamina))',
+                    foreground: 'hsl(var(--stamina-foreground))',
+                },
+                mana: {
+                    DEFAULT: 'hsl(var(--mana))',
+                    foreground: 'hsl(var(--mana-foreground))',
+                },
             },
             borderRadius: {
                 lg: 'var(--radius)',

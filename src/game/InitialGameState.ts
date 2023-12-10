@@ -29,6 +29,7 @@ export const InitialGameState: GameState = {
     ui: {
         open: false,
         theme: 'system',
+        themeColor: '',
         page: UiPages.Storage,
         comma: CommaTypes.AUTO,
         lang: 'eng',
@@ -78,6 +79,9 @@ export const InitialGameState: GameState = {
             inventory: {},
             exp: 0,
             level: 0,
+            healthPoints: 0,
+            manaPoints: 0,
+            staminaPoints: 0,
             skillsExp: {},
             skillsLevel: {},
         },

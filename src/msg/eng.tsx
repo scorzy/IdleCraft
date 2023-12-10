@@ -79,6 +79,13 @@ export const engMsg: Msg = {
     Total: 'Total',
     Used: 'Used',
     Filter: 'Filter',
+    Attributes: 'Attributes',
+    healthPoints: 'Health Points',
+    StaminaPoints: 'Stamina Points',
+    ManaPoints: 'Mana Points',
+    Health: 'Health',
+    Stamina: 'Stamina',
+    Mana: 'Mana',
 
     FastWoodcuttingPerk: 'Fast Woodcutting',
     FastWoodcuttingPerkDesc: `Increase woodcutting speed by ${FAST_WOODCUTTING_PERK} %`,

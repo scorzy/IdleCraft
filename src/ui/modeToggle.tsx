@@ -1,9 +1,16 @@
 import { LuSun, LuMoon } from 'react-icons/lu'
-import { setTheme } from './state/uiFunctions'
+import { memo } from 'react'
+import { setTheme, setThemeColor } from './state/uiFunctions'
 import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
-export function ModeToggle() {
+export const ModeToggle = memo(function ModeToggle() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -17,7 +24,11 @@ export function ModeToggle() {
                 <DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme('dark')}>Dark</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setThemeColor('')}>Zinc</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setThemeColor('blue')}>Blue</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setThemeColor('green')}>Green</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )
-}
+})

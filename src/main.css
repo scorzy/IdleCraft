@@ -84,3 +84,7 @@
         max-height: calc(100vh - 50px - 1rem);
     }
 }
+
+.svg-success {
+    fill: hsl(var(--success-foreground));
+}

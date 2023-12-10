@@ -34,4 +34,8 @@ export const UiPagesData: { [k in UiPages]: UiPageData } = {
         nameId: 'Perks',
         icon: <GiUpgrade />,
     },
+    [UiPages.Points]: {
+        nameId: 'Attributes',
+        icon: <GiUpgrade />,
+    },
 }

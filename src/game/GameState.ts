@@ -31,6 +31,7 @@ export interface GameState {
     ui: {
         open: boolean
         theme: string
+        themeColor: string
         page: UiPages
         comma: CommaTypes
         numberFormatNotation: NotationTypes
