@@ -12,12 +12,12 @@ import { copyValues } from '../utils/copyValues'
 import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { loadForest } from '../wood/forest/forestFunctions'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
-import { GameState, Globals } from './GameState'
-import { GetInitialGameState } from './InitialGameState'
-import { useGameStore } from './state'
 import { CharacterState } from '../characters/characterState'
 import { ExpEnum, ExpEnumKeys } from '../experience/expEnum'
 import { PerksEnum, PerksEnumKeys } from '../perks/perksEnum'
+import { GameState, Globals } from './GameState'
+import { GetInitialGameState } from './InitialGameState'
+import { useGameStore } from './state'
 
 const MAX_LOAD = 3600 * 1000 * 24 * 1
 // const TEST_DIF = 3600 * 1000 * 24 * 360

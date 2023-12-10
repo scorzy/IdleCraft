@@ -5,11 +5,11 @@ import { selectGameItem } from '../storage/StorageSelectors'
 import { WoodAxeData } from '../items/Item'
 import { hasPerk } from '../perks/PerksSelectors'
 import { PerksEnum } from '../perks/perksEnum'
-import { FAST_WOODCUTTING_PERK } from './WoodConst'
 import { memoizeOne } from '../utils/memoizeOne'
 import { Icons } from '../icons/Icons'
-import { BaseBonus, Bonus, BonusResult } from '../bonus/bonus'
-import { getTotal } from '../bonus/bonusFunctions'
+import { BaseBonus, Bonus, BonusResult } from '../bonus/Bonus'
+import { getTotal } from '../bonus/BonusFunctions'
+import { FAST_WOODCUTTING_PERK } from './WoodConst'
 
 export const DEF_WOOD_AXE: WoodAxeData = {
     damage: 25,

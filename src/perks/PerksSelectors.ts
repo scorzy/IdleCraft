@@ -1,4 +1,4 @@
-import { ExpState } from '../experience/expState'
+import { ExpState } from '../experience/ExpState'
 import { GameState } from '../game/GameState'
 import { memoize } from '../utils/memoize'
 import { memoizeOne } from '../utils/memoizeOne'

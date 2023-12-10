@@ -30,10 +30,10 @@ export const BarRecipe: Recipe = {
     id: 'BarRecipe',
     type: RecipeTypes.Smithing,
     nameId: 'Bar',
-    getParameters: function (_state: GameState): RecipeParameter[] {
+    getParameters: function (): RecipeParameter[] {
         return barParam
     },
-    getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
+    getResult: function (_: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const ore = params.find((i) => i.id === 'ore')
         if (ore === undefined) return
         if (!ore.stdItemId) return
@@ -74,7 +74,7 @@ export const AxeRecipe: Recipe = {
     id: 'AxeRecipe',
     type: RecipeTypes.Smithing,
     nameId: 'WoodAxe',
-    getParameters: function (_state: GameState): RecipeParameter[] {
+    getParameters: function (): RecipeParameter[] {
         return woodAxeParam
     },
     getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
@@ -133,7 +133,7 @@ export const PickaxeRecipe: Recipe = {
     id: 'Pickaxe',
     type: RecipeTypes.Smithing,
     nameId: 'Pickaxe',
-    getParameters: function (_state: GameState): RecipeParameter[] {
+    getParameters: function (): RecipeParameter[] {
         return woodAxeParam
     },
     getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {

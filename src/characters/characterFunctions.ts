@@ -36,7 +36,7 @@ export function equipItem(
             },
         }
     } else {
-        const { [slot]: removed, ...inventory } = char.inventory
+        const { [slot]: _, ...inventory } = char.inventory
         state = {
             ...state,
             characters: {

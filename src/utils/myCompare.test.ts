@@ -1,5 +1,5 @@
-import { myCompare } from './myCompare'
 import { describe, test, expect } from 'vitest'
+import { myCompare } from './myCompare'
 
 describe('myCompare', () => {
     test('myCompare', () => {

@@ -1,7 +1,7 @@
 import { execActivityOnTimer, startNextActivity } from '../activities/activityFunctions'
 import { GameState } from '../game/GameState'
-import { growTree } from '../wood/forest/forestFunctions'
 import { TimerAdapter, TimerTypes } from './Timer'
+import { growTree } from '@/wood/forest/growTree'
 
 export function onTimer(state: GameState, timerId: string) {
     const timer = state.timers.entries[timerId]

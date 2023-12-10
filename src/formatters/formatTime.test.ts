@@ -1,6 +1,6 @@
-import { formatTime } from './formatTime'
 import { describe, test, expect } from 'vitest'
 import { messages } from '../msg/allMsg'
+import { formatTime } from './formatTime'
 
 const t = messages.eng!.fun
 const f = (num: number) => `${num}`

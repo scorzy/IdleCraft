@@ -47,7 +47,7 @@ export abstract class AbstractEntityAdapter<T> {
         if (!id) throw new Error('id undefined')
         const existing = state.entries[id]
         if (!existing) throw new Error(`${id} doesn't exists`)
-        const { [id]: value, ...newEntries } = state.entries
+        const { [id]: _, ...newEntries } = state.entries
         state = { entries: newEntries, ids: state.ids.filter((e) => e !== id) }
         return state
     }

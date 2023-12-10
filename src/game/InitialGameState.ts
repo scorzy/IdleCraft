@@ -11,9 +11,9 @@ import { UiPages } from '../ui/state/UiPages'
 import { WoodTypes } from '../wood/WoodTypes'
 import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
-import { GameState, LocationState } from './GameState'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { PerksEnum } from '../perks/perksEnum'
+import { GameState, LocationState } from './GameState'
 
 const InitialVillageState: LocationState = {
     storage: {

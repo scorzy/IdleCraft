@@ -6,14 +6,14 @@ import { Translations } from '../msg/Msg'
 import { addItem } from '../storage/storageFunctions'
 import { TimerTypes } from '../timers/Timer'
 import { startTimer } from '../timers/startTimer'
+import { addExp } from '../experience/expFunctions'
+import { ExpEnum } from '../experience/expEnum'
 import { Mining } from './Mining'
 import { MiningAdapter } from './MiningAdapter'
 import { OreTypes } from './OreTypes'
 import { OreData } from './OreData'
 import { hasOre, mineOre, resetOre } from './miningFunctions'
 import { getMiningTime, getMiningDamage, getSearchMineTime } from './miningSelectors'
-import { addExp } from '../experience/expFunctions'
-import { ExpEnum } from '../experience/expEnum'
 
 export class MiningActivityCreator extends AbstractActivityCreator<OreTypes> {
     protected type = ActivityTypes.Mining

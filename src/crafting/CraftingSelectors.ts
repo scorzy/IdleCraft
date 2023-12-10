@@ -1,13 +1,13 @@
+import equal from 'react-fast-compare'
 import { GameState } from '../game/GameState'
 import { memoizeOne } from '../utils/memoizeOne'
-import { CraftingAdapter } from './CraftingAdapter'
-import { Crafting } from './CraftingIterfaces'
-import { RecipeItem, RecipeParameterValue } from './RecipeInterfaces'
-import equal from 'react-fast-compare'
 import { InitialState } from '../entityAdapter/entityAdapter'
 import { memoize } from '../utils/memoize'
 import { selectCraftItem } from '../storage/storageFunctions'
 import { selectItemQta } from '../storage/StorageSelectors'
+import { RecipeItem, RecipeParameterValue } from './RecipeInterfaces'
+import { Crafting } from './CraftingIterfaces'
+import { CraftingAdapter } from './CraftingAdapter'
 
 export const selectRecipeParams = (state: GameState) => state.craftingForm.params
 export const selectRecipeItemValue = (recipeParamId: string) => (state: GameState) =>

@@ -1,12 +1,8 @@
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { WoodTypes, WoodTypesString } from '../WoodTypes'
-import { selectDefaultForest, selectTreeGrowthTime } from './forestSelectors'
-import { startTimer } from '@/timers/startTimer'
-import { TimerTypes } from '../../timers/Timer'
-import { getUniqueId } from '../../utils/getUniqueId'
-import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
 import { ForestsType, ForestsState } from '../ForestsState'
+import { selectDefaultForest } from './forestSelectors'
 
 export function addTree(state: GameState, woodType: WoodTypes, qta: number, location: GameLocations): GameState {
     const def = selectDefaultForest(woodType)
@@ -17,7 +13,7 @@ export function addTree(state: GameState, woodType: WoodTypes, qta: number, loca
     qta = Math.max(0, Math.min(cur.qta + qta, def.qta))
 
     if (qta >= def.qta) {
-        const { [woodType]: value, ...newForests } = state.locations[location].forests
+        const { [woodType]: _, ...newForests } = state.locations[location].forests
         state = {
             ...state,
             locations: {
@@ -47,79 +43,10 @@ export function addTree(state: GameState, woodType: WoodTypes, qta: number, loca
 
     return state
 }
-export function cutTree(
-    state: GameState,
-    woodType: WoodTypes,
-    damage: number,
-    location: GameLocations
-): {
-    state: GameState
-    cut: boolean
-} {
-    const forest = state.locations[location].forests[woodType]
-
-    let qta: number
-    let curHp: number
-
-    const def = selectDefaultForest(woodType)
-    if (forest) {
-        qta = forest.qta
-        curHp = forest.hp
-    } else {
-        qta = def.qta
-        curHp = def.hp
-    }
-
-    let hp = curHp - damage
-    let cut = false
-
-    if (hp <= 0) {
-        hp = def.hp
-        qta = Math.max(0, qta - 1)
-        cut = true
-
-        const growthTime = selectTreeGrowthTime()
-        const treeData: TreeGrowth = {
-            id: getUniqueId(),
-            location,
-            woodType,
-        }
-        state = { ...state, treeGrowth: TreeGrowthAdapter.create(state.treeGrowth, treeData) }
-        state = startTimer(state, growthTime, TimerTypes.Tree, treeData.id)
-    }
-
-    state = {
-        ...state,
-        locations: {
-            ...state.locations,
-            [location]: {
-                ...state.locations[location],
-                forests: {
-                    ...state.locations[location].forests,
-                    [woodType]: {
-                        hp,
-                        qta,
-                    },
-                },
-            },
-        },
-    }
-
-    return {
-        state,
-        cut,
-    }
-}
 export function hasTrees(state: GameState, woodType: WoodTypes, location?: GameLocations): boolean {
     return (state.locations[location ?? state.location].forests[woodType]?.qta ?? 1) > 0
 }
 
-export function growTree(state: GameState, id: string): GameState {
-    const data = TreeGrowthAdapter.select(state.treeGrowth, id)
-    if (data === undefined) return state
-    state = { ...state, treeGrowth: TreeGrowthAdapter.remove(state.treeGrowth, id) }
-    return addTree(state, data.woodType, 1, data.location)
-}
 export function loadForest(data: unknown): ForestsType {
     const res: ForestsType = {}
     if (!data) return res

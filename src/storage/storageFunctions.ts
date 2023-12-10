@@ -38,7 +38,7 @@ function subAddItem(
     const newQta = Math.max(qta + (old ?? 0), 0)
 
     if (Math.abs(newQta) < Number.EPSILON) {
-        const { [id]: value, ...newSubState } = subState
+        const { [id]: _, ...newSubState } = subState
         subState = newSubState
     } else subState = { ...subState, [id]: newQta }
 

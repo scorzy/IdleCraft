@@ -1,7 +1,7 @@
+import { describe, test, expect } from 'vitest'
 import { getFormatter } from './formatNumber'
 import { NotationTypes } from './NotationTypes'
 import { CommaTypes } from './CommaTypes'
-import { describe, test, expect } from 'vitest'
 
 describe('number formatting', () => {
     test('format standard', () => {

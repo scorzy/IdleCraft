@@ -1,9 +1,9 @@
 import { useGameStore } from '../../game/state'
-import { UiPages } from './UiPages'
 import { WoodTypes } from '../../wood/WoodTypes'
-import { UiPagesData } from './UiPagesData'
 import { GameState } from '../../game/GameState'
 import { OreTypes } from '../../mining/OreTypes'
+import { UiPagesData } from './UiPagesData'
+import { UiPages } from './UiPages'
 import { changeRecipeState } from '@/crafting/RecipeFunctions'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'

@@ -3,13 +3,13 @@ import { GameLocations } from '../gameLocations/GameLocations'
 import { StdItems } from '../items/stdItems'
 import { memoize } from '../utils/memoize'
 import { memoizeOne } from '../utils/memoizeOne'
-import { ItemId, StorageState } from './storageState'
 import { Entries } from '../utils/types'
 import { Item, ItemTypes } from '../items/Item'
 import { InitialState } from '../entityAdapter/entityAdapter'
-import { ItemAdapter } from './ItemAdapter'
 import { selectTranslations } from '../msg/useTranslations'
 import { Translations } from '../msg/Msg'
+import { ItemAdapter } from './ItemAdapter'
+import { ItemId, StorageState } from './storageState'
 
 const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]: LocationState }) => {
     const res: GameLocations[] = []

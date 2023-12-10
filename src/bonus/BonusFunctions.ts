@@ -1,4 +1,4 @@
-import { Bonus } from './bonus'
+import { Bonus } from './Bonus'
 
 export function getTotal(bonuses: Bonus[]): number {
     let ret = 0

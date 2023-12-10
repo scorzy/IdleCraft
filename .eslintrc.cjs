@@ -8,7 +8,8 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'plugin:@typescript-eslint/strict',
-        'react-app',
+        'plugin:import/recommended',
+        'plugin:import/typescript',
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
         'plugin:react/jsx-runtime',
@@ -21,10 +22,27 @@ module.exports = {
         project: true,
         tsconfigRootDir: __dirname,
     },
-    plugins: ['react-refresh'],
+    plugins: ['react-refresh', 'import'],
+    settings: {
+        react: {
+            version: 'detect',
+        },
+        'import/parsers': {
+            '@typescript-eslint/parser': ['.ts', '.tsx'],
+        },
+        'import/resolver': {
+            typescript: {
+                alwaysTryTypes: true,
+            },
+        },
+    },
     rules: {
         'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
         '@typescript-eslint/no-non-null-assertion': 'off',
         'prefer-template': 'error',
+        'import/no-cycle': 'error',
+        'import/no-unresolved': 'error',
+        '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
+        'import/order': 'error',
     },
 }

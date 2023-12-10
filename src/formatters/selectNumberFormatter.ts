@@ -1,11 +1,11 @@
-import { getFormatter } from './formatNumber'
-import { getTimeFormatter } from './formatTime'
 import { messages } from '../msg/allMsg'
 import { useGameStore } from '../game/state'
 import { selectNotation, selectComma, selectLang } from '../ui/state/uiSelectors'
+import { memoizeOne } from '../utils/memoizeOne'
+import { getFormatter } from './formatNumber'
+import { getTimeFormatter } from './formatTime'
 import { NotationTypes } from './NotationTypes'
 import { CommaTypes } from './CommaTypes'
-import { memoizeOne } from '../utils/memoizeOne'
 
 const makeFormatter = memoizeOne((comma: CommaTypes, lang: string, notation: NotationTypes) => {
     const formatter = getFormatter(notation, comma)
