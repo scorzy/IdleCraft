@@ -33,8 +33,6 @@
         grid-template-columns: 1fr 1fr;
     }
 }
-@container (min-width: 768px) {
-}
 
 .CollapsibleContent {
     overflow: hidden;
@@ -80,7 +78,7 @@
     }
 }
 
-@container (min-width: 768px) {
+@container (min-width: 600px) {
     .fixed-height-2 {
         overflow-y: auto;
         max-height: calc(100vh - 50px - 1rem);

@@ -23,6 +23,9 @@ import { Alert, AlertTitle } from '@/components/ui/alert'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { setStorageOrder } from '../../ui/state/uiFunctions'
 import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import clsx from 'clsx'
+import { useContainerQueries, QueryBreakpoints } from 'use-container-queries'
 import classes from './storage.module.css'
 
 export function UiStorage() {
@@ -44,6 +47,7 @@ export function UiStorage() {
         </Page>
     )
 }
+
 const SortDropdown = memo(function SortDropdown() {
     const { t } = useTranslations()
     return (
@@ -87,30 +91,54 @@ const NoItems = memo(function NoItems() {
     )
 })
 
+const breakpoints: QueryBreakpoints = {
+    small: [0, 400],
+    med: [401],
+}
+
 const LocationStorage = memo(function LocationStorage(props: { location: GameLocations }) {
     const { location } = props
     const items = useGameStore(selectLocationItems(location))
     const [open, setOpen] = useState(true)
     const handleClick = () => setOpen(!open)
     const len = items.length
+    const { ref, active } = useContainerQueries({ breakpoints })
 
     return (
-        <Collapsible open={open}>
-            <CollapsibleTrigger onClick={handleClick} className={buttonVariants({ variant: 'ghost', size: 'sm' })}>
+        <Collapsible open={open} ref={ref}>
+            <CollapsibleTrigger
+                onClick={handleClick}
+                className={clsx('w-full', buttonVariants({ variant: 'ghost', size: 'sm' }))}
+            >
                 {location}
-                <LuChevronsUpDown className="h-4 w-4 ml-2" />
+                <LuChevronsUpDown className="h-4 ml-2" />
                 <span className="sr-only">{location}</span>
             </CollapsibleTrigger>
             <CollapsibleContent>
-                {items.map((i, index) => (
-                    <StorageItem
-                        key={getItemId2(i.stdItemId, i.craftItemId)}
-                        isLast={index >= len - 1}
-                        stdItemId={i.stdItemId}
-                        craftItemId={i.craftItemId}
-                        location={location}
-                    />
-                ))}
+                <Table>
+                    {active === 'med' && (
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-7"></TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead className="w-20 text-right">Quantity</TableHead>
+                                <TableHead className="w-20 text-right">Value</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                    )}
+                    <TableBody>
+                        {items.map((i, index) => (
+                            <StorageItem
+                                small={active === 'small'}
+                                key={getItemId2(i.stdItemId, i.craftItemId)}
+                                isLast={index >= len - 1}
+                                stdItemId={i.stdItemId}
+                                craftItemId={i.craftItemId}
+                                location={location}
+                            />
+                        ))}
+                    </TableBody>
+                </Table>
             </CollapsibleContent>
         </Collapsible>
     )
@@ -118,11 +146,12 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
 
 const StorageItem = memo(function StorageItem(props: {
     isLast: boolean
+    small: boolean
     location: GameLocations
     stdItemId: string | null
     craftItemId: string | null
 }) {
-    const { location, stdItemId, craftItemId, isLast } = props
+    const { location, stdItemId, craftItemId, small } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const qta = useGameStore(selectItemQta(location, stdItemId, craftItemId))
@@ -136,24 +165,32 @@ const StorageItem = memo(function StorageItem(props: {
 
     if (!item) return <></>
 
-    return (
-        <>
-            <button
-                onClick={onClick}
-                className={cn(
-                    buttonVariants({ variant: 'ghost' }),
-                    'w-full justify-start gap-4 font-normal',
-                    selected ? 'bg-muted' : '',
-                    classes.item
-                )}
-            >
-                {IconsData[item.icon]}
-                <span className="justify-self-start">{t[item.nameId]}</span>
-                <span>{f(qta)}</span>
-                <span>{f(item.value)}</span>
-            </button>
-
-            {!isLast && <hr className={classes.hr} />}
-        </>
-    )
+    if (small)
+        return (
+            <TableRow onClick={onClick} className={cn(classes.row, { 'bg-muted': selected })}>
+                <TableCell>
+                    <span className={classes.smallRow}>
+                        {IconsData[item.icon]}
+                        <span>{t[item.nameId]}</span>
+                    </span>
+                    <span className={classes.smallRow}>
+                        <span className="text-left align-middle font-medium text-muted-foreground">Quantity</span>
+                        {f(qta)}
+                    </span>
+                    <span className={classes.smallRow}>
+                        <span className="text-left align-middle font-medium text-muted-foreground">Value</span>
+                        {f(item.value)}
+                    </span>
+                </TableCell>
+            </TableRow>
+        )
+    else
+        return (
+            <TableRow onClick={onClick} className={cn(classes.row, { 'bg-muted': selected })}>
+                <TableCell>{IconsData[item.icon]}</TableCell>
+                <TableCell>{t[item.nameId]}</TableCell>
+                <TableCell className="text-right">{f(qta)}</TableCell>
+                <TableCell className="text-right">{f(item.value)}</TableCell>
+            </TableRow>
+        )
 })
