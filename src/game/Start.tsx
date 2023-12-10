@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
+import { LuTrash2 } from 'react-icons/lu'
 import { Button } from '../components/ui/button'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { useGameStore } from './state'
 import { GetInitialGameState } from './InitialGameState'
 import classes from './start.module.css'
-import { LuTrash2 } from 'react-icons/lu'
 import { load } from './gameFunctions'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 
 const startGame = (gameId: string) => () => {
     if (gameId !== '')
@@ -105,29 +105,33 @@ export function Start() {
         <div className={classes.container}>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="default">New Game</Button>
+                    <Button variant="secondary">New Game</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                     <Label htmlFor="name">Name</Label>
                     <Input id="name" maxLength={10} className="col-span-3" value={name} onChange={onChange} />
                     <div>
-                        <Button type="submit" onClick={startGame(name)} disabled={name.length < 1}>
+                        <Button onClick={startGame(name)} disabled={name.length < 1}>
                             Start
                         </Button>
                     </div>
                 </DialogContent>
             </Dialog>
-            Saved games:
-            {loadName.map((item) => (
-                <div key={item.name} className={classes.btnContainer}>
-                    <Button type="submit" onClick={loadGame(item.name)}>
-                        {item.name}
-                    </Button>
-                    <Button onClick={deleteGame(item.name)} variant="ghost">
-                        <LuTrash2 className="text-lg" />
-                    </Button>
-                </div>
-            ))}
+            {loadName.length > 0 && (
+                <>
+                    <span className="text-center">Saved games:</span>
+                    <div className={classes.btnContainer}>
+                        {loadName.map((item) => (
+                            <Fragment key={item.name}>
+                                <Button onClick={loadGame(item.name)}>{item.name}</Button>
+                                <Button onClick={deleteGame(item.name)} variant="ghost" title="delete">
+                                    <LuTrash2 className="text-lg" />
+                                </Button>
+                            </Fragment>
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     )
 }

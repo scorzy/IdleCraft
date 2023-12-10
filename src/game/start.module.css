@@ -11,5 +11,5 @@
     display: grid;
     gap: 0.5rem;
     align-items: center;
-    grid-auto-flow: column;
+    grid-template-columns: 1fr auto;
 }
