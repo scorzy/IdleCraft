@@ -1,4 +1,5 @@
 import { MsgFunctions } from '../msg/Msg'
+
 const SEC_IN_HOUR = 3600
 const SEC_IN_DAY = 3600 * 24
 const SEC_IN_MONTH = 3600 * 24 * 30

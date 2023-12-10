@@ -44,5 +44,6 @@ module.exports = {
         'import/no-unresolved': 'error',
         '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
         'import/order': 'error',
+        'import/newline-after-import': 'error',
     },
 }

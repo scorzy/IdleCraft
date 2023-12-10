@@ -1,6 +1,7 @@
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 import { PerksEnum } from '../perks/perksEnum'
+
 export interface BaseBonus {
     nameId: keyof Msg
     iconId: Icons
