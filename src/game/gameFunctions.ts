@@ -13,14 +13,13 @@ import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { loadForest } from '../wood/forest/forestFunctions'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { CharacterState } from '../characters/characterState'
-import { ExpEnum, ExpEnumKeys } from '../experience/expEnum'
 import { PerksEnum, PerksEnumKeys } from '../perks/perksEnum'
 import { GameState, Globals } from './GameState'
 import { GetInitialGameState } from './InitialGameState'
 import { useGameStore } from './state'
 
 const MAX_LOAD = 3600 * 1000 * 24 * 1
-// const TEST_DIF = 3600 * 1000 * 24 * 360
+//const TEST_DIF = 3600 * 1000 * 24 * 360
 const TEST_DIF = 0
 
 // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
@@ -45,20 +44,6 @@ function loadData(data: object): GameState {
     if ('treeGrowth' in data) state.treeGrowth = TreeGrowthAdapter.load(data.treeGrowth)
     if ('crafting' in data) state.crafting = CraftingAdapter.load(data.crafting)
     if ('mining' in data) state.mining = MiningAdapter.load(data.mining)
-
-    if ('skillsExp' in data && data.skillsExp && typeof data.skillsExp === 'object')
-        Object.entries(data.skillsExp).forEach((kv) => {
-            const key = kv[0]
-            if (typeof key === 'string' && typeof kv[1] === 'number' && ExpEnumKeys.includes(key))
-                state.skillsExp[key as ExpEnum] = kv[1]
-        })
-
-    if ('skillsLevel' in data && data.skillsLevel && typeof data.skillsLevel === 'object')
-        Object.entries(data.skillsLevel).forEach((kv) => {
-            const key = kv[0]
-            if (typeof key === 'string' && typeof kv[1] === 'number' && ExpEnumKeys.includes(key))
-                state.skillsLevel[key as ExpEnum] = kv[1]
-        })
 
     if (
         'orderedActivities' in data &&

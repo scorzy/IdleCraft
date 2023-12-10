@@ -1,4 +1,5 @@
 import { ExpState } from '../experience/ExpState'
+import { selectPlayerExp, selectPlayerLevel } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
 import { memoize } from '../utils/memoize'
 import { memoizeOne } from '../utils/memoizeOne'
@@ -23,9 +24,9 @@ const IsPerkEnabledInt = memoize((perkEnum: PerksEnum) =>
 )
 
 export const IsPerkEnabled = (perkEnum: PerksEnum) => (state: GameState) =>
-    IsPerkEnabledInt(perkEnum)(state.perks, state.skillsLevel)
+    IsPerkEnabledInt(perkEnum)(state.perks, selectPlayerExp(state))
 
-export const SelectMaxPerks = (s: GameState) => s.playerLevel
+export const SelectMaxPerks = (s: GameState) => selectPlayerLevel(s)
 export const SelectUsedPerks = (s: GameState) => Object.values(s.perks).reduce((a, b) => a + b, 0)
 export const SelectCanSpendPerks = (s: GameState) => SelectMaxPerks(s) - SelectUsedPerks(s) > 0
 export const SelectPerkCompleted = (perkEnum: PerksEnum) => (state: GameState) => {
@@ -61,7 +62,7 @@ const selectPerksInt = memoizeOne(function selectPerksInt(
 export const selectPerks = (state: GameState) =>
     selectPerksInt(
         state.perks,
-        state.skillsLevel,
+        selectPlayerExp(state),
         state.ui.showAvailablePerks,
         state.ui.showUnavailablePerks,
         state.ui.showOwnedPerks

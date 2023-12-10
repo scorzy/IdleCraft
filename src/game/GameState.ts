@@ -19,7 +19,6 @@ import { OreTypes } from '../mining/OreTypes'
 import { CharacterState } from '../characters/characterState'
 import { PerksEnum } from '../perks/perksEnum'
 import { PerkState } from '../perks/PerkState'
-import { ExpState } from '../experience/ExpState'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -71,11 +70,7 @@ export interface GameState {
     crafting: InitialState<Crafting>
     recipeId: string
     mining: InitialState<Mining>
-    skillsExp: ExpState
-    skillsLevel: ExpState
     perks: PerkState
-    playerExp: number
-    playerLevel: number
     craftingForm: {
         params: RecipeParameter[]
         paramsValue: RecipeParameterValue[]

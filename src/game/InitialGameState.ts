@@ -67,10 +67,6 @@ export const InitialGameState: GameState = {
     crafting: CraftingAdapter.getInitialState(),
     recipeId: '',
     mining: MiningAdapter.getInitialState(),
-    playerExp: 0,
-    playerLevel: 0,
-    skillsExp: {},
-    skillsLevel: {},
     perks: {},
     craftingForm: {
         params: [],
@@ -80,6 +76,10 @@ export const InitialGameState: GameState = {
     characters: {
         [PLAYER_ID]: {
             inventory: {},
+            exp: 0,
+            level: 0,
+            skillsExp: {},
+            skillsLevel: {},
         },
     },
 }

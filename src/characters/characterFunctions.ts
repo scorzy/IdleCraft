@@ -30,7 +30,7 @@ export function equipItem(
             characters: {
                 ...state.characters,
                 [charId]: {
-                    ...state.characters[charId],
+                    ...char,
                     inventory: { ...char.inventory, [slot]: equippedSlot },
                 },
             },
@@ -42,7 +42,7 @@ export function equipItem(
             characters: {
                 ...state.characters,
                 [charId]: {
-                    ...state.characters[charId],
+                    ...char,
                     inventory,
                 },
             },
