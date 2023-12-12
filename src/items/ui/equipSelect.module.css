@@ -9,3 +9,7 @@
     grid-template-rows: 1fr;
     gap: 0.3rem;
 }
+.selectCont {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}

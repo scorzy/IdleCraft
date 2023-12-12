@@ -71,7 +71,7 @@ export const PickaxeDataUi = memo(function PickaxeDataUi(props: { pickaxeData: P
                 {t.AttackSpeed} {ft(pickaxeData.time)}
             </li>
             <li>
-                {t.ArmourPen} {ft(pickaxeData.armourPen)}
+                {t.ArmourPen} {f(pickaxeData.armourPen)}
             </li>
         </>
     )

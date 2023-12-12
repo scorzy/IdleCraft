@@ -1,6 +1,6 @@
-import { memo, ReactNode, useCallback } from 'react'
-import { GiCube } from 'react-icons/gi'
+import { Fragment, memo, ReactNode, useCallback } from 'react'
 import { Label } from '@radix-ui/react-label'
+import { TbX } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
@@ -12,11 +12,19 @@ import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { selectEquipId, selectEquippedItem } from '../itemSelectors'
 import { changeEquip } from '../itemFunctions'
 import { DEF_PICKAXE } from '../../mining/miningSelectors'
-import { DEF_WOOD_AXE } from '../../wood/WoodcuttingSelectors'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
+import { DEF_WOOD_AXE } from '../../wood/selectors/WoodcuttingSelectors'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectSeparator,
+    SelectTrigger,
+    SelectValue,
+} from '../../components/ui/select'
 import { GameState } from '../../game/GameState'
 import { SmallCard } from '../../ui/myCard/myCard'
 import { getRecipeParamId } from '../../crafting/RecipeFunctions'
+import { Button } from '../../components/ui/button'
 import classes from './equipSelect.module.css'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
@@ -35,37 +43,44 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     const equipped = useGameStore(selectEquippedItemMemo)
     const axeId = useGameStore(selectEquipIdMemo)
     const itemsId = useGameStore(selectItemsByTypeMemo)
-    const handleEquipChange = (value: string) => changeEquip(slot, value)
+    const handleEquipChange = useCallback((value: string) => changeEquip(slot, value), [slot])
+    const clear = useCallback(() => changeEquip(slot, ''), [slot])
+
     let name = t.None
-    let icon: ReactNode = <GiCube />
+    let icon: ReactNode | undefined
     if (equipped) {
         name = t[equipped.nameId]
         icon = IconsData[equipped.icon]
     }
+    const count = itemsId.length - 1
 
     return (
         <SmallCard className={classes.container}>
             <Label>{t[slotData.ItemType]}</Label>
-            <Select value={axeId} onValueChange={handleEquipChange}>
-                <SelectTrigger>
-                    <SelectValue>
-                        <span className={classes.title}>
-                            {icon}
-                            {name}
-                        </span>
-                    </SelectValue>
-                </SelectTrigger>
+            <div className={classes.selectCont}>
+                <Select value={axeId} onValueChange={handleEquipChange}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="None">
+                            <span className={classes.title}>
+                                {icon}
+                                {name}
+                            </span>
+                        </SelectValue>
+                    </SelectTrigger>
 
-                <SelectContent>
-                    <SelectItem value="none" icon={<GiCube />}>
-                        <OptionItemInt name={t.None} slot={slot} />
-                    </SelectItem>
-                    {itemsId.map((t) => {
-                        const value = getItemId2(t.stdItemId, t.craftItemId)
-                        return <OptionItem itemId={t} key={value} slot={slot} />
-                    })}
-                </SelectContent>
-            </Select>
+                    <SelectContent>
+                        {itemsId.map((t, index) => (
+                            <Fragment key={getItemId2(t.stdItemId, t.craftItemId)}>
+                                <OptionItem itemId={t} slot={slot} />
+                                {count !== index && <SelectSeparator />}
+                            </Fragment>
+                        ))}
+                    </SelectContent>
+                </Select>
+                <Button variant="outline" onClick={clear}>
+                    <TbX />
+                </Button>
+            </div>
         </SmallCard>
     )
 })
@@ -76,8 +91,8 @@ const OptionItem = memo(function ParamItem(props: { itemId: ItemId; slot: EquipS
     const { t } = useTranslations()
     const text = itemObj ? t[itemObj.nameId] : t.None
 
-    let icon: ReactNode = <GiCube />
-    if (itemObj) icon = IconsData[itemObj.icon] ?? <GiCube />
+    let icon: ReactNode | undefined
+    if (itemObj) icon = <span className="text-2xl">{IconsData[itemObj.icon]}</span>
 
     return (
         <SelectItem value={value} icon={icon}>
@@ -91,7 +106,7 @@ const OptionItemInt = memo(function AxeItemInt(props: { name: string; slot: Equi
     return (
         <span>
             {name}
-            <ul>
+            <ul className="text-muted-foreground">
                 {slot === EquipSlotsEnum.WoodAxe && <WoodAxeDataUi woodAxeData={item?.woodAxeData ?? DEF_WOOD_AXE} />}
                 {slot === EquipSlotsEnum.Pickaxe && <PickaxeDataUi pickaxeData={item?.pickaxeData ?? DEF_PICKAXE} />}
             </ul>

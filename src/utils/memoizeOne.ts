@@ -8,14 +8,12 @@ export function memoizeOne<T>(fn: T) {
         const len = args.length
         let equalParams = len === params?.length
 
-        if (params && equalParams) {
-            for (let i = 0; i < len; i++) {
+        if (params && equalParams)
+            for (let i = 0; i < len; i++)
                 if (args[i] !== params[i]) {
                     equalParams = false
                     break
                 }
-            }
-        }
 
         if (equalParams) return lastVal
 

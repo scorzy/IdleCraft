@@ -20,7 +20,7 @@ import {
     selectWoodcuttingDamageAll,
     selectWoodcuttingTime,
     selectWoodcuttingTimeAll,
-} from '../WoodcuttingSelectors'
+} from '../selectors/WoodcuttingSelectors'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
 import { removeActivity } from '../../activities/activityFunctions'

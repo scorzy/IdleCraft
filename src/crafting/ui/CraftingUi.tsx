@@ -53,7 +53,7 @@ export const CraftingUi = memo(function CraftingUi() {
     if (!recipeType) return <></>
     return (
         <Page>
-            <ContentPage infoPanel={<ExperienceCard expType={RecipeData[recipeType].expType} />}>
+            <ContentPage key={recipeType} infoPanel={<ExperienceCard expType={RecipeData[recipeType].expType} />}>
                 <div className="my-container" key={recipeType}>
                     <RecipeUi />
                     <div className={classes.side}>

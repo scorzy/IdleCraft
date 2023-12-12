@@ -2,12 +2,8 @@ import { ReactNode, memo } from 'react'
 import { TbInfoCircle } from 'react-icons/tb'
 import { Bonus, BonusResult } from '../Bonus'
 import { IconsData } from '../../icons/Icons'
-import { PerksData } from '../../perks/Perk'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
-import { Msg } from '../../msg/Msg'
-import { useGameStore } from '../../game/state'
-import { selectGameItem } from '../../storage/StorageSelectors'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
@@ -44,28 +40,11 @@ export const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boo
     const { f, ft } = useNumberFormatter()
     const format = isTime ? ft : f
 
-    let icon: React.ReactNode = <></>
-    let name: keyof Msg
-
-    const item = useGameStore(selectGameItem(bonus.stdItemId, bonus.craftItemId))
-
-    if (item) {
-        icon = IconsData[item.icon]
-        name = item.nameId
-    } else if (bonus.baseBonus) {
-        icon = IconsData[bonus.baseBonus.iconId]
-        name = bonus.baseBonus.nameId
-    } else if (bonus.perk) {
-        const perk = PerksData[bonus.perk]
-        icon = perk.icon
-        name = perk.nameId
-    } else throw new Error('[BonusUi] bonus data not found')
-
     return (
         <TableRow>
-            <TableCell className="text-lg w-[30px]">{icon}</TableCell>
+            <TableCell className="text-lg w-[30px]">{IconsData[bonus.iconId]}</TableCell>
             <TableCell className="text-left">
-                {t[name]}
+                {t[bonus.nameId]}
                 {bonus.showQta && ` X ${f(bonus.showQta)}`}
             </TableCell>
             <TableCell className="text-right">

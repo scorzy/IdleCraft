@@ -10,20 +10,17 @@ const selectStaminaBonusList = memoize((points: number) => {
     bonuses.push({
         id: 'baseStamina',
         add: 100,
-        baseBonus: {
-            iconId: Icons.Strong,
-            nameId: 'Base',
-        },
+        iconId: Icons.Strong,
+        nameId: 'Base',
     })
     if (points > 0)
         bonuses.push({
             id: 'basePoints',
             add: 10 * points,
             showQta: points,
-            baseBonus: {
-                iconId: Icons.Strong,
-                nameId: 'ManaPoints',
-            },
+
+            iconId: Icons.Strong,
+            nameId: 'ManaPoints',
         })
 
     const bonusList: BonusResult = {

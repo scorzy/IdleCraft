@@ -10,20 +10,17 @@ const selectManaBonusList = memoize((points: number) => {
     bonuses.push({
         id: 'baseMana',
         add: 100,
-        baseBonus: {
-            iconId: Icons.MagicPalm,
-            nameId: 'Base',
-        },
+
+        iconId: Icons.MagicPalm,
+        nameId: 'Base',
     })
     if (points > 0)
         bonuses.push({
             id: 'basePoints',
             add: 10 * points,
             showQta: points,
-            baseBonus: {
-                iconId: Icons.MagicPalm,
-                nameId: 'ManaPoints',
-            },
+            iconId: Icons.MagicPalm,
+            nameId: 'ManaPoints',
         })
 
     const bonusList: BonusResult = {

@@ -10,20 +10,16 @@ const selectHealthBonusList = memoize((points: number) => {
     bonuses.push({
         id: 'baseHealth',
         add: 100,
-        baseBonus: {
-            iconId: Icons.Heart,
-            nameId: 'Base',
-        },
+        iconId: Icons.Heart,
+        nameId: 'Base',
     })
     if (points > 0)
         bonuses.push({
             id: 'basePoints',
             add: 10 * points,
             showQta: points,
-            baseBonus: {
-                iconId: Icons.HeartPlus,
-                nameId: 'healthPoints',
-            },
+            iconId: Icons.HeartPlus,
+            nameId: 'healthPoints',
         })
 
     const bonusList: BonusResult = {

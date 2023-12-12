@@ -33,6 +33,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Page } from '@/ui/shell/Page'
+import { IconsData } from '../../icons/Icons'
 
 export const PerksPage = memo(function PerksPage() {
     return (
@@ -117,7 +118,7 @@ function PerkLink(props: { perk: PerksEnum }) {
     const ownPerk = useGameStore(hasPerk(perk))
     return (
         <TableRow onClick={SetPerk(perk)} className={cn(classes.row, { 'bg-muted': selected })}>
-            <TableCell>{enabled ? data.icon : <TbLock />}</TableCell>
+            <TableCell>{enabled ? IconsData[data.iconId] : <TbLock />}</TableCell>
             <TableCell>{t[data.nameId]}</TableCell>
             <TableCell>{ownPerk ? <TbCheck /> : <></>}</TableCell>
         </TableRow>
@@ -130,7 +131,7 @@ const PerkPage = () => {
     const { t } = useTranslations()
     const requirements = data.requiredExp ?? data.requiredPerks
     return (
-        <MyCard title={t[data.nameId]} icon={data.icon} actions={<PerkButton />}>
+        <MyCard title={t[data.nameId]} icon={IconsData[data.iconId]} actions={<PerkButton />}>
             {t[data.descId]}
             {requirements && <span>{t.Requirements}</span>}
             {requirements && (

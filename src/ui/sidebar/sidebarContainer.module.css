@@ -6,7 +6,6 @@
     transition-duration: 300ms;
     display: grid;
     grid-auto-rows: min-content;
-    gap: 0.375rem;
 }
 .collapsed {
     margin-right: 0;
@@ -16,7 +15,6 @@
     overflow: hidden;
     display: grid;
     grid-template-rows: 1fr auto;
-    gap: 0.375rem;
     display: grid;
     overflow-y: auto;
 }
