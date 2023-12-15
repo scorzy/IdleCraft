@@ -29,7 +29,7 @@ export const SelectedItem = memo(function SelectedItem() {
         </MyCard>
     )
 })
-export const EquipItem = memo(function EquipItem() {
+const EquipItem = memo(function EquipItem() {
     const selectedItemLocation = useGameStore(selectSelectedStdItemId)
     const selectedCraftedItemId = useGameStore(selectSelectedCraftedItemId)
     const item = useGameStore(getSelectedItem)

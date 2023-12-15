@@ -11,7 +11,7 @@ export const BonusSpan = memo(function BonusSpan(props: { children: ReactNode })
     const { children } = props
     return <span className="grid grid-flow-col justify-start gap-2">{children}</span>
 })
-export const BonusListUi = memo(function BonusListUi(props: { bonusResult: BonusResult; isTime?: boolean }) {
+const BonusListUi = memo(function BonusListUi(props: { bonusResult: BonusResult; isTime?: boolean }) {
     const { bonusResult, isTime } = props
     const { f, ft } = useNumberFormatter()
     const { t } = useTranslations()
@@ -34,7 +34,7 @@ export const BonusListUi = memo(function BonusListUi(props: { bonusResult: Bonus
         </Table>
     )
 })
-export const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boolean }) {
+const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boolean }) {
     const { bonus, isTime } = props
     const { t } = useTranslations()
     const { f, ft } = useNumberFormatter()

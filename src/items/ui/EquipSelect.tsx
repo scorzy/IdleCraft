@@ -1,6 +1,5 @@
 import { Fragment, memo, ReactNode, useCallback } from 'react'
-import { Label } from '@radix-ui/react-label'
-import { TbX } from 'react-icons/tb'
+import { GiRock } from 'react-icons/gi'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
@@ -22,9 +21,8 @@ import {
     SelectValue,
 } from '../../components/ui/select'
 import { GameState } from '../../game/GameState'
-import { SmallCard } from '../../ui/myCard/myCard'
 import { getRecipeParamId } from '../../crafting/RecipeFunctions'
-import { Button } from '../../components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import classes from './equipSelect.module.css'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
@@ -44,23 +42,24 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     const axeId = useGameStore(selectEquipIdMemo)
     const itemsId = useGameStore(selectItemsByTypeMemo)
     const handleEquipChange = useCallback((value: string) => changeEquip(slot, value), [slot])
-    const clear = useCallback(() => changeEquip(slot, ''), [slot])
 
     let name = t.None
-    let icon: ReactNode | undefined
+    let icon: ReactNode = <GiRock />
     if (equipped) {
         name = t[equipped.nameId]
         icon = IconsData[equipped.icon]
     }
-    const count = itemsId.length - 1
 
     return (
-        <SmallCard className={classes.container}>
-            <Label>{t[slotData.ItemType]}</Label>
-            <div className={classes.selectCont}>
-                <Select value={axeId} onValueChange={handleEquipChange}>
+        <Card className={classes.container}>
+            <CardHeader>
+                <CardTitle>{t[slotData.ItemType]}</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+                <Select value={axeId ?? '-'} onValueChange={handleEquipChange}>
                     <SelectTrigger>
-                        <SelectValue placeholder="None">
+                        <SelectValue>
                             <span className={classes.title}>
                                 {icon}
                                 {name}
@@ -69,19 +68,20 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
                     </SelectTrigger>
 
                     <SelectContent>
+                        <SelectItem value="-" icon={<GiRock className="text-2xl" />}>
+                            <OptionItemInt name={'None'} slot={slot} />
+                        </SelectItem>
+                        {itemsId.length > 0 && <SelectSeparator />}
                         {itemsId.map((t, index) => (
                             <Fragment key={getItemId2(t.stdItemId, t.craftItemId)}>
+                                {index !== 0 && <SelectSeparator />}
                                 <OptionItem itemId={t} slot={slot} />
-                                {count !== index && <SelectSeparator />}
                             </Fragment>
                         ))}
                     </SelectContent>
                 </Select>
-                <Button variant="outline" onClick={clear}>
-                    <TbX />
-                </Button>
-            </div>
-        </SmallCard>
+            </CardContent>
+        </Card>
     )
 })
 const OptionItem = memo(function ParamItem(props: { itemId: ItemId; slot: EquipSlotsEnum }) {

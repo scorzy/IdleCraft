@@ -3,7 +3,7 @@ import { GiOre } from 'react-icons/gi'
 import { Msg } from '../msg/Msg'
 import { OreTypes } from './OreTypes'
 
-export interface OreDataType {
+interface OreDataType {
     id: OreTypes
     qta: number
     icon: ReactNode

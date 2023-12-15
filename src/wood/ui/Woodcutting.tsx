@@ -32,10 +32,9 @@ import { ExpEnum } from '../../experience/expEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BonusDialog, BonusSpan } from '../../bonus/ui/BonusUi'
-import { ContentPage } from '../../ui/pages/ContentPage'
+import { MyPage } from '../../ui/pages/MyPage'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { Button } from '@/components/ui/button'
-import { PageWithSidebar } from '@/ui/shell/PageWithSidebar'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
@@ -45,29 +44,21 @@ const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
 })
 
 export const Woodcutting = memo(function Woodcutting() {
-    return (
-        <PageWithSidebar sidebar={<WoodcuttingSidebar />}>
-            <WoodcuttingContainer />
-        </PageWithSidebar>
-    )
-})
-
-const WoodcuttingContainer = memo(function WoodcuttingContainer() {
     const woodType = useGameStore(selectWoodType)
     return (
-        <ContentPage
-            infoPanel={
-                <>
-                    <ExperienceCard expType={ExpEnum.Woodcutting} />
-                    <EquipItemUi slot={EquipSlotsEnum.WoodAxe} />
-                </>
-            }
-        >
-            <div className="my-container">
-                <Cutting key={`${woodType}C`} />
-                <Forest key={`${woodType}F`} />
+        <MyPage>
+            <div className="page__info">
+                <ExperienceCard expType={ExpEnum.Woodcutting} />
+                <EquipItemUi slot={EquipSlotsEnum.WoodAxe} />
             </div>
-        </ContentPage>
+            <div className="page__main" key={woodType}>
+                <MyCard title="Forests">
+                    <WoodcuttingSidebar />
+                </MyCard>
+                <Cutting />
+                <Forest />
+            </div>
+        </MyPage>
     )
 })
 
@@ -95,7 +86,7 @@ const Cutting = memo(function Cutting() {
                 {t.Damage} {f(damage)}
                 <BonusDialog title={t.WoodcuttingDamage} bonusResult={damageBonusRes} />
             </BonusSpan>
-            <RestartProgress value={hpPercent} color="error" />
+            <RestartProgress value={hpPercent} color="error" className="mb-2" />
             <BonusSpan>
                 {t.Time} {ft(time)}
                 <BonusDialog title={t.WoodcuttingTime} bonusResult={timeBonusRes} isTime={true} />
@@ -147,7 +138,7 @@ const ForestQta = memo(function ForestQta() {
             <MyCardLabel>
                 {t.Trees} {f(qta)}/{f(def.qta)}
             </MyCardLabel>
-            <ProgressBar value={treePercent} color="success" className="mb" />
+            <ProgressBar value={treePercent} color="success" className="mb-2" />
         </>
     )
 })
@@ -172,6 +163,5 @@ const Trees = memo(function Trees() {
 
 const Tree = memo(function Tree(props: { id: string }) {
     const { id } = props
-
-    return <TimerProgressFromId timerId={id} color="success" />
+    return <TimerProgressFromId timerId={id} color="success" className="mb-2" />
 })

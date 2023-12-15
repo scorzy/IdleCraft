@@ -20,13 +20,12 @@ import { useTranslations } from '../../msg/useTranslations'
 import { buttonVariants } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
 import { setStorageOrder } from '../../ui/state/uiFunctions'
+import { MyPage } from '../../ui/pages/MyPage'
 import classes from './storage.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Page } from '@/ui/shell/Page'
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
@@ -34,9 +33,9 @@ export function UiStorage() {
     if (locations.length === 0) return <NoItems />
 
     return (
-        <Page>
-            <div className="my-container">
-                <MyCard className="fixed-height-2">
+        <MyPage>
+            <div className={classes.cardList}>
+                <MyCard>
                     <SortDropdown />
                     {locations.map((l) => (
                         <LocationStorage key={l} location={GameLocations.StartVillage} />
@@ -44,7 +43,7 @@ export function UiStorage() {
                 </MyCard>
                 <SelectedItem />
             </div>
-        </Page>
+        </MyPage>
     )
 }
 
@@ -80,14 +79,14 @@ const SortDropdown = memo(function SortDropdown() {
 const NoItems = memo(function NoItems() {
     const { t } = useTranslations()
     return (
-        <Page>
+        <MyPage>
             <div className="my-container">
                 <Alert variant="primary">
                     <LuInfo />
                     <AlertTitle>{t.NoItems}</AlertTitle>
                 </Alert>
             </div>
-        </Page>
+        </MyPage>
     )
 })
 

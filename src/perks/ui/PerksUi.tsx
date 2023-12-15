@@ -25,6 +25,8 @@ import { selectLevel } from '../../experience/expSelectors'
 import { toggleShowAvailablePerks, toggleCompletedPerks, toggleShowUnavailablePerks } from '../../ui/state/uiFunctions'
 import { selectShowAvailablePerks, selectCompletedPerks, selectShowUnavailablePerks } from '../../ui/state/uiSelectors'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table'
+import { IconsData } from '../../icons/Icons'
+import { MyPage } from '../../ui/pages/MyPage'
 import classes from './perkUi.module.css'
 import {
     DropdownMenu,
@@ -32,19 +34,15 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Page } from '@/ui/shell/Page'
-import { IconsData } from '../../icons/Icons'
 
 export const PerksPage = memo(function PerksPage() {
     return (
-        <Page>
-            <div className="my-container">
-                <MyCard className="fixed-height-2">
-                    <PerksSidebar />
-                </MyCard>
+        <MyPage>
+            <div className={classes.mainPage}>
+                <PerksSidebar />
                 <PerkPage />
             </div>
-        </Page>
+        </MyPage>
     )
 })
 
@@ -56,7 +54,7 @@ const PerksSidebar = memo(function PerksSidebar() {
     const perks = useGameStore(selectPerks)
 
     return (
-        <div>
+        <MyCard>
             <div className={classes.topPanel}>
                 <span>
                     {t.Used} {f(usedPerks)}/{f(maxPerks)}
@@ -78,7 +76,7 @@ const PerksSidebar = memo(function PerksSidebar() {
                     ))}
                 </TableBody>
             </Table>
-        </div>
+        </MyCard>
     )
 })
 

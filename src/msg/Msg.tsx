@@ -132,4 +132,3 @@ export interface MsgFunctions {
     prestigePercent: (bonus: string) => string
     speedBonusPercent: (bonus: string) => string
 }
-export type makeMsgFun = (msg: Msg) => MsgFunctions

@@ -32,7 +32,7 @@ const TimerProgress = memo(
 )
 TimerProgress.displayName = 'TimerProgress'
 
-export const TimerProgressFix = (props: {
+const TimerProgressFix = (props: {
     className?: string
     start: number | undefined
     end: number | undefined

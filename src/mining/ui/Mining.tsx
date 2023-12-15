@@ -16,36 +16,27 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { ExpEnum } from '../../experience/expEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { ContentPage } from '../../ui/pages/ContentPage'
-import { MiningSidebar } from './MiningSidebar'
+import { MyPage } from '../../ui/pages/MyPage'
 import classes from './mining.module.css'
-import { PageWithSidebar } from '@/ui/shell/PageWithSidebar'
+import { MiningSidebar } from './MiningSidebar'
 
 export const Mining = memo(function Mining() {
-    return (
-        <PageWithSidebar sidebar={<MiningSidebar />}>
-            <MiningContainer />
-        </PageWithSidebar>
-    )
-})
-export const MiningContainer = memo(function MiningContainer() {
     const oreType = useGameStore(selectOreType)
     return (
-        <ContentPage
-            infoPanel={
-                <>
-                    <ExperienceCard expType={ExpEnum.Mining} />
-                    <EquipItemUi slot={EquipSlotsEnum.Pickaxe} />
-                </>
-            }
-        >
-            <div className="my-container">
-                <MiningOre key={`${oreType}M`} />
-                <OreUi key={`${oreType}O`} />
+        <MyPage>
+            <div className="page__info">
+                <ExperienceCard expType={ExpEnum.Mining} />
+                <EquipItemUi slot={EquipSlotsEnum.Pickaxe} />
             </div>
-        </ContentPage>
+            <div className="page__main" key={oreType}>
+                <MiningSidebar />
+                <MiningOre />
+                <OreUi />
+            </div>
+        </MyPage>
     )
 })
+
 const MiningOre = memo(function MiningOre() {
     const oreType = useGameStore(selectOreType)
     const ore = useGameStore(selectOre(oreType))

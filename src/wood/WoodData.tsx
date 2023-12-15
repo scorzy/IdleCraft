@@ -4,7 +4,7 @@ import { Msg } from '../msg/Msg'
 import { HandleData } from '../items/Item'
 import { WoodTypes } from './WoodTypes'
 
-export interface WoodDataType {
+interface WoodDataType {
     maxHp: number
     maxQta: number
     icon: ReactNode

@@ -14,7 +14,7 @@ export const DEF_PICKAXE: PickaxeData = {
     armourPen: 0,
 }
 
-export function selectPickaxe(state: GameState) {
+function selectPickaxe(state: GameState) {
     const axe = state.characters[PLAYER_ID]!.inventory[EquipSlotsEnum.Pickaxe]
     if (!axe) return
     return selectGameItem(axe.stdItemId, axe.craftItemId)(state)

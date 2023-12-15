@@ -23,7 +23,7 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
         </ul>
     )
 })
-export const HandleDataUi = memo(function HandleDataUi(props: { handleData: HandleData }) {
+const HandleDataUi = memo(function HandleDataUi(props: { handleData: HandleData }) {
     const { handleData } = props
     const { f } = useNumberFormatter()
     const { fun } = useTranslations()
@@ -32,7 +32,7 @@ export const HandleDataUi = memo(function HandleDataUi(props: { handleData: Hand
 
     return <li>{fun.speedBonusPercent(f(speedBonusPercent))}</li>
 })
-export const CraftingDataUi = memo(function CraftingDataUi(props: { craftingData: CraftingData }) {
+const CraftingDataUi = memo(function CraftingDataUi(props: { craftingData: CraftingData }) {
     const { craftingData } = props
     const { f } = useNumberFormatter()
     const { fun } = useTranslations()

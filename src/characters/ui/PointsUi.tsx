@@ -1,5 +1,4 @@
 import { memo } from 'react'
-import { Page } from '../../ui/shell/Page'
 import { MyCard } from '../../ui/myCard/myCard'
 import { useGameStore } from '../../game/state'
 import {
@@ -19,16 +18,17 @@ import { useTranslations } from '../../msg/useTranslations'
 import { selectCharacterMaxHealth, selectCharacterMaxHealthList } from '../healthSelectors'
 import { selectCharacterMaxStamina, selectCharacterMaxStaminaList } from '../staminaSelectors'
 import { selectCharacterMaxMana, selectCharacterMaxManaList } from '../manaSelectors'
+import { MyPage } from '../../ui/pages/MyPage'
 import classes from './PointsUi.module.css'
 
 export const PointsUi = memo(function PointsUi() {
     return (
-        <Page>
-            <div className={classes.container}>
+        <MyPage>
+            <div className="page__main">
                 <SetAttributes />
                 <CharInfo />
             </div>
-        </Page>
+        </MyPage>
     )
 })
 const SetAttributes = memo(function SetAttributes() {
@@ -42,7 +42,7 @@ const SetAttributes = memo(function SetAttributes() {
     const disabled = av < 1
 
     return (
-        <MyCard className="w-64 block">
+        <MyCard>
             <ul>
                 <li>Attributes: {f(total)}</li>
                 <li>Used: {f(used)}</li>
@@ -74,7 +74,7 @@ const CharInfo = memo(function CharInfo() {
     const maxM = useGameStore(selectCharacterMaxMana(PLAYER_ID))
     const maxMB = useGameStore(selectCharacterMaxManaList(PLAYER_ID))
     return (
-        <MyCard className="w-64 block" title="Stats">
+        <MyCard title="Stats">
             <BonusSpan>
                 Health {f(maxH)} <BonusDialog title={t.Health} bonusResult={maxHB} />
             </BonusSpan>

@@ -24,7 +24,7 @@ const plankParam: RecipeParameter[] = [
         itemType: ItemTypes.Log,
     },
 ]
-export const PlankRecipe: Recipe = {
+const PlankRecipe: Recipe = {
     id: 'PlankRecipe',
     type: RecipeTypes.Woodworking,
     nameId: 'Plank',
@@ -60,7 +60,7 @@ const handleParam: RecipeParameter[] = [
         itemType: ItemTypes.Plank,
     },
 ]
-export const HandleRecipe: Recipe = {
+const HandleRecipe: Recipe = {
     id: 'handleRecipe',
     type: RecipeTypes.Woodworking,
     nameId: 'Handle',

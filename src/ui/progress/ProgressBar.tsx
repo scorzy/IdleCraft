@@ -1,17 +1,15 @@
+import { memo } from 'react'
+import { clsx } from 'clsx'
+import { Colors } from '../state/uiFunctions'
 import './progress.css'
 
-import { memo } from 'react'
-import { Colors } from '../state/uiFunctions'
-
-export const ProgressBar = memo((props: { value: number; className?: string; color: Colors }) => {
+export const ProgressBar = memo(function ProgressBar(props: { value: number; className?: string; color: Colors }) {
     const { value, className, color } = props
-    const classes = className === undefined ? '' : className
     const progress = -100 + value
 
     return (
-        <div className={`theme progress__root ${classes} ${color}`}>
+        <div className={clsx('theme progress__root', className, color)}>
             <div className="progress__bar" style={{ transform: `translateX(${progress}%)` }} />
         </div>
     )
 })
-ProgressBar.displayName = 'ProgressBar'

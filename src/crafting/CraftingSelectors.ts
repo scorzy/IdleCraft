@@ -20,7 +20,7 @@ export const canCraft = (s: GameState) => s.craftingForm.result !== undefined &&
 
 export const selectCraftTime = (s: GameState) => s.craftingForm.result?.time
 
-export const compareCrafting = memoizeOne((crafting: InitialState<Crafting>, recipeId: string) => {
+const compareCrafting = memoizeOne((crafting: InitialState<Crafting>, recipeId: string) => {
     const compare = memoize((values: RecipeParameterValue[]) => {
         const len = values.length
 

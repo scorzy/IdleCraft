@@ -29,10 +29,9 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { RecipeData } from '../RecipeData'
 import { changeRecipe, setRecipeItemParam, getRecipeParamId } from '../RecipeFunctions'
 import { Recipe } from '../Recipe'
-import { ContentPage } from '../../ui/pages/ContentPage'
+import { MyPage } from '../../ui/pages/MyPage'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
-import { Page } from '@/ui/shell/Page'
 import { FormItem } from '@/components/ui/form'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -52,17 +51,16 @@ export const CraftingUi = memo(function CraftingUi() {
 
     if (!recipeType) return <></>
     return (
-        <Page>
-            <ContentPage key={recipeType} infoPanel={<ExperienceCard expType={RecipeData[recipeType].expType} />}>
-                <div className="my-container" key={recipeType}>
-                    <RecipeUi />
-                    <div className={classes.side}>
-                        <CraftingResult result={result} />
-                        <CraftingReq req={req} />
-                    </div>
-                </div>
-            </ContentPage>
-        </Page>
+        <MyPage>
+            <div className="page__info">
+                <ExperienceCard expType={RecipeData[recipeType].expType} />
+            </div>
+            <div className="page__main" key={recipeType}>
+                <RecipeUi />
+                <CraftingResult result={result} />
+                <CraftingReq req={req} />
+            </div>
+        </MyPage>
     )
 })
 const RecipeUi = memo(function RecipeUi() {

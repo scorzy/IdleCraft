@@ -7,7 +7,7 @@ import { UiPages } from './UiPages'
 import { changeRecipeState } from '@/crafting/RecipeFunctions'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
-export type StorageOrder = 'name' | 'quantity' | 'value'
+type StorageOrder = 'name' | 'quantity' | 'value'
 
 export const setTheme = (theme: string) => useGameStore.setState((s) => ({ ui: { ...s.ui, theme } }))
 export const setThemeColor = (themeColor: string) => useGameStore.setState((s) => ({ ui: { ...s.ui, themeColor } }))
@@ -43,18 +43,6 @@ export const craftingCollapsed = (state: GameState) => state.ui.craftingCollapse
 export const toggleCrafting = () =>
     useGameStore.setState((s) => ({
         ui: { ...s.ui, craftingCollapsed: !s.ui.craftingCollapsed },
-    }))
-
-export const woodCollapsed = (state: GameState) => state.ui.woodCollapsed
-export const toggleWood = () =>
-    useGameStore.setState((s) => ({
-        ui: { ...s.ui, woodCollapsed: !s.ui.woodCollapsed },
-    }))
-
-export const miningCollapsed = (state: GameState) => state.ui.miningCollapsed
-export const toggleMining = () =>
-    useGameStore.setState((s) => ({
-        ui: { ...s.ui, miningCollapsed: !s.ui.miningCollapsed },
     }))
 
 export const toggleShowAvailablePerks = () =>

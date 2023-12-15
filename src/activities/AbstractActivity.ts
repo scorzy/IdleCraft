@@ -10,7 +10,7 @@ export enum ActivityStartResult {
     NotPossible,
     Ended,
 }
-export interface StartResult {
+interface StartResult {
     gameState: GameState
     result: ActivityStartResult
 }

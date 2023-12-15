@@ -9,7 +9,6 @@ import { PerksEnum } from './perksEnum'
 
 export const SelectPerk = (s: GameState) => s.ui.perk
 export const IsPerkSelected = (perk: PerksEnum) => (s: GameState) => s.ui.perk === perk
-export const SelectPerkLevel = (perk: PerksEnum) => (s: GameState) => s.perks[perk] ?? 0
 
 const hasPerkInt = (perk: PerksEnum, perks: PerkState) => (perks[perk] ?? 0) > 0
 export const hasPerk = (perk: PerksEnum) => (s: GameState) => (s.perks[perk] ?? 0) > 0

@@ -26,7 +26,7 @@ const barParam: RecipeParameter[] = [
 const OreToBar = new Map<string, string>()
 Object.values(OreData).forEach((w) => OreToBar.set(w.oreId, w.barId))
 
-export const BarRecipe: Recipe = {
+const BarRecipe: Recipe = {
     id: 'BarRecipe',
     type: RecipeTypes.Smithing,
     nameId: 'Bar',
@@ -70,7 +70,7 @@ const woodAxeParam: RecipeParameter[] = [
     },
 ]
 
-export const AxeRecipe: Recipe = {
+const AxeRecipe: Recipe = {
     id: 'AxeRecipe',
     type: RecipeTypes.Smithing,
     nameId: 'WoodAxe',
@@ -129,7 +129,7 @@ export const AxeRecipe: Recipe = {
     },
 }
 
-export const PickaxeRecipe: Recipe = {
+const PickaxeRecipe: Recipe = {
     id: 'Pickaxe',
     type: RecipeTypes.Smithing,
     nameId: 'Pickaxe',

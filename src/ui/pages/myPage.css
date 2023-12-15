@@ -1,0 +1,16 @@
+.page__container {
+    padding: 1rem;
+    container-type: inline-size;
+}
+.page__info {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+.page__main {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}

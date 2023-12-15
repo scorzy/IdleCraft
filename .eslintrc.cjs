@@ -11,8 +11,8 @@ module.exports = {
         'plugin:import/recommended',
         'plugin:import/typescript',
         'plugin:react/recommended',
-        'plugin:react-hooks/recommended',
         'plugin:react/jsx-runtime',
+        'plugin:react-hooks/recommended',
         'prettier',
     ],
     parser: '@typescript-eslint/parser',
@@ -45,5 +45,6 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
         'import/order': 'error',
         'import/newline-after-import': 'error',
+        'import/no-unused-modules': [1, { unusedExports: true }],
     },
 }

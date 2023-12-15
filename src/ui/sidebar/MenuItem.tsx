@@ -55,7 +55,8 @@ export const MyListItem = memo(function MyListItem(props: {
                 onClick={onClick}
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
-                    active ? 'bg-muted hover:bg-muted' : 'hover:bg-muted ',
+                    { 'bg-muted hover:bg-muted': active },
+                    { 'hover:bg-muted text-muted-foreground': !active },
                     'justify-start gap-4 mt-1',
                     classes.item,
                     collapsed ? classes.itemCollapsed : ''

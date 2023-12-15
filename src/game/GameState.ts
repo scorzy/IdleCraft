@@ -47,8 +47,6 @@ export interface GameState {
         sidebarCollapsed: boolean
         gatheringCollapsed: boolean
         craftingCollapsed: boolean
-        woodCollapsed: boolean
-        miningCollapsed: boolean
         perk: PerksEnum
         showAvailablePerks: boolean
         showUnavailablePerks: boolean

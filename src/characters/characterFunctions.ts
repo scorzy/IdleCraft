@@ -61,7 +61,7 @@ export const equipClick = (
     quantity = 1
 ) => useGameStore.setState((s) => equipItem(s, charId, slot, stdItemId, craftItemId, quantity))
 
-export const addHealthPoints = (state: GameState) => {
+const addHealthPoints = (state: GameState) => {
     const av = selectPlayerAvAttr(state)
     if (av < 1) return state
     const char = selectCharacter(state, PLAYER_ID)
@@ -80,7 +80,7 @@ export const addHealthPoints = (state: GameState) => {
 }
 export const addHealthPointsClick = () => useGameStore.setState((s) => addHealthPoints(s))
 
-export const addStaminaPoint = (state: GameState) => {
+const addStaminaPoint = (state: GameState) => {
     const av = selectPlayerAvAttr(state)
     if (av < 1) return state
     const char = selectCharacter(state, PLAYER_ID)
@@ -99,7 +99,7 @@ export const addStaminaPoint = (state: GameState) => {
 }
 export const addStaminaPointClick = () => useGameStore.setState((s) => addStaminaPoint(s))
 
-export const addManaPoint = (state: GameState) => {
+const addManaPoint = (state: GameState) => {
     const av = selectPlayerAvAttr(state)
     if (av < 1) return state
     const char = selectCharacter(state, PLAYER_ID)

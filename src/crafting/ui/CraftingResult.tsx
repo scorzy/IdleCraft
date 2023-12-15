@@ -59,7 +59,7 @@ export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq
         </MyCard>
     )
 })
-export const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeItemReq }) {
+const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeItemReq }) {
     const { req } = props
     const { t } = useTranslations()
     const { f } = useNumberFormatter()

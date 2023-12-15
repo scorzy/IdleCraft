@@ -75,7 +75,18 @@ export function removeItem(
     qta: number,
     location?: GameLocations
 ): GameState {
-    return addItem(state, stdItemId, craftItemId, qta * -1, location)
+    state = addItem(state, stdItemId, craftItemId, qta * -1, location)
+
+    if (craftItemId && !isCraftItemUsed(state, craftItemId))
+        state = { ...state, craftedItems: removeCraftItem(state.craftedItems, craftItemId) }
+
+    return state
+}
+
+function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
+    const locations = Object.values(state.locations)
+    for (const loc of locations) if (loc.storage.CraftedItems[craftItemId]) return true
+    return false
 }
 
 export function hasItem(
@@ -138,12 +149,11 @@ export function saveCraftItem(state: InitialState<Item>, item: Item): { id: stri
     return { id: newItem.id, state }
 }
 
-export function removeCraftItem(state: InitialState<Item>, id: string): InitialState<Item> {
+function removeCraftItem(state: InitialState<Item>, id: string): InitialState<Item> {
     const item = ItemAdapter.select(state, id)
+    if (!item) return state
+
     const ret = ItemAdapter.remove(state, id)
-
-    if (!item) return ret
-
     const arr = craftIdsByType.get(item.type)
     if (!arr) return ret
 

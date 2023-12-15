@@ -7,10 +7,10 @@ import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { MyCard } from '../../ui/myCard/myCard'
 import { Alert, AlertTitle } from '../../components/ui/alert'
+import { MyPage } from '../../ui/pages/MyPage'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Page } from '@/ui/shell/Page'
 
 export const Activities = memo(function Activities() {
     const ids = useGameStore(selectActivityId)
@@ -19,28 +19,26 @@ export const Activities = memo(function Activities() {
 
     if (ids.length === 0)
         return (
-            <Page>
+            <MyPage>
                 <Alert variant="primary" className="max-w-md">
                     <LuInfo />
                     <AlertTitle>{t.NoActivities}</AlertTitle>
                 </Alert>
-            </Page>
+            </MyPage>
         )
 
     return (
-        <Page>
-            <div className="my-container">
-                <MyCard>
-                    {ids.map((i, index) => (
-                        <ActivityCard id={i} key={i} isFirst={index === 0} isLast={index >= max} />
-                    ))}
-                </MyCard>
-            </div>
-        </Page>
+        <MyPage>
+            <MyCard className="max-w-lg">
+                {ids.map((i, index) => (
+                    <ActivityCard id={i} key={i} isFirst={index === 0} isLast={index >= max} />
+                ))}
+            </MyCard>
+        </MyPage>
     )
 })
 
-export const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: boolean; isLast: boolean }) {
+const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: boolean; isLast: boolean }) {
     const { id, isFirst, isLast } = props
     const act = useGameStore((s) => s.activities.entries[id])
     const title = useGameStore(selectActivityTitle(id))

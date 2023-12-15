@@ -7,7 +7,7 @@ export interface ExpReq {
     skill: ExpEnum
     level: number
 }
-export interface Perk {
+interface Perk {
     id: PerksEnum
     iconId: Icons
     nameId: keyof Msg

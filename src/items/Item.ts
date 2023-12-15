@@ -40,7 +40,7 @@ export interface Item {
     craftingPickaxeData?: PickaxeData
     pickaxeData?: PickaxeData
 }
-export interface SlotData {
+interface SlotData {
     ItemType: ItemTypes
 }
 export const SlotsData: { [k in EquipSlotsEnum]: SlotData } = {
@@ -48,6 +48,6 @@ export const SlotsData: { [k in EquipSlotsEnum]: SlotData } = {
         ItemType: ItemTypes.WoodAxe,
     },
     [EquipSlotsEnum.Pickaxe]: {
-        ItemType: ItemTypes.WoodAxe,
+        ItemType: ItemTypes.Pickaxe,
     },
 }

@@ -36,7 +36,7 @@ export class CraftingActivity extends AbstractActivity<Crafting> {
     }
     onStart(): ActivityStartResult {
         const craftResult = this.recipe.getResult(this.state, this.data.paramsValue)
-        if (craftResult === undefined) return ActivityStartResult.NotPossible
+        if (!craftResult) return ActivityStartResult.NotPossible
         if (!this.canCraft(craftResult)) return ActivityStartResult.NotPossible
 
         this.state = {

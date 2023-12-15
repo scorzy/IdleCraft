@@ -45,7 +45,7 @@ export const AppShell = memo(function AppShell() {
     )
 })
 
-export const Header = memo(function Header() {
+const Header = memo(function Header() {
     const page = useGameStore((s) => s.ui.page)
     const { t } = useTranslations()
 
@@ -59,7 +59,7 @@ export const Header = memo(function Header() {
     )
 })
 
-export const PageContent = memo(function PageContent() {
+const PageContent = memo(function PageContent() {
     const page = useGameStore((s) => s.ui.page)
     switch (page) {
         case UiPages.Woodcutting:
