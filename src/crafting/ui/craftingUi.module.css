@@ -20,3 +20,21 @@
     grid-template-columns: 1fr;
     align-items: start;
 }
+.item {
+    display: grid;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+    grid-auto-flow: column;
+    width: 100%;
+    text-align: start;
+}
+
+.seleBtn {
+    container-type: inline-size;
+}
+@container (min-width: 300px) {
+    .text {
+        min-width: 10em;
+    }
+}

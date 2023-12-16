@@ -184,8 +184,11 @@ const ParamItem = memo(function ParamItem(props: { itemId: ItemId }) {
     const text = itemObj ? t[itemObj.nameId] : t.None
 
     return (
-        <SelectItem value={value} icon={itemObj && IconsData[itemObj.icon]}>
-            {text} {f(qta)}
+        <SelectItem value={value} icon={itemObj && IconsData[itemObj.icon]} className={classes.seleBtn}>
+            <span className={classes.item}>
+                <span className={classes.text}>{text}</span>
+                <span className="text-muted-foreground">{f(qta)}</span>
+            </span>
         </SelectItem>
     )
 })
