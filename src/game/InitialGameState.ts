@@ -44,8 +44,6 @@ export const InitialGameState: GameState = {
         sidebarCollapsed: false,
         gatheringCollapsed: false,
         craftingCollapsed: false,
-        woodCollapsed: false,
-        miningCollapsed: false,
         perk: PerksEnum.FAST_WOODCUTTING,
         showAvailablePerks: true,
         showOwnedPerks: true,
