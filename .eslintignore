@@ -6,3 +6,4 @@ coverage
 serviceWorker.ts
 coverage
 src/components
+public
