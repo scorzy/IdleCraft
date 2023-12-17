@@ -113,6 +113,8 @@ export interface Msg {
     Total: string
     Used: string
     Filter: string
+
+    ActivityAdded: string
 }
 export interface MsgFunctions {
     // Time

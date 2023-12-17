@@ -19,7 +19,7 @@ import { OreTypes } from '../mining/OreTypes'
 import { CharacterState } from '../characters/characterState'
 import { PerksEnum } from '../perks/perksEnum'
 import { PerkState } from '../perks/PerkState'
-import { MyToast } from '../notification/MyToast'
+import { ToastState } from '../notification/toastState'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -53,7 +53,7 @@ export interface GameState {
         showUnavailablePerks: boolean
         showOwnedPerks: boolean
     }
-    notifications: MyToast[]
+    notifications: ToastState
     timers: InitialTimerState
     loading: boolean
     now: number

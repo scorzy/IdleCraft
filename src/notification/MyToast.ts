@@ -1,7 +1,8 @@
 import { Icons } from '../icons/Icons'
+import { Msg } from '../msg/Msg'
 
 export interface MyToast {
-    title?: string
-    description?: string
+    titleId?: keyof Msg
+    descriptionId?: keyof Msg
     iconId?: Icons
 }

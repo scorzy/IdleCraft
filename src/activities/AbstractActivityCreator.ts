@@ -1,5 +1,4 @@
 import { GameState } from '../game/GameState'
-import { Icons } from '../icons/Icons'
 import { addNotification } from '../notification/addNotification'
 import { getUniqueId } from '../utils/getUniqueId'
 import { ActivityAdapter, ActivityState, ActivityTypes } from './ActivityState'
@@ -29,10 +28,7 @@ export abstract class AbstractActivityCreator<T> {
 
         this.onAdd()
 
-        this.state = addNotification(this.state, {
-            title: 'Activity added',
-            iconId: Icons.Axe,
-        })
+        this.state.notifications = addNotification(this.state.notifications, { titleId: 'ActivityAdded' })
 
         if (this.state.orderedActivities.length === 1) {
             const { gameState } = makeActivityFun(this.state, this.type, this.id).start()

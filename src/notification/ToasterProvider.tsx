@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { useGameStore } from '../game/state'
 import { GameState } from '../game/GameState'
-import { useToast } from '@/components/ui/use-toast'
+import { useTranslations } from '../msg/useTranslations'
+import { ToastType, useToast } from '@/components/ui/use-toast'
 
 const selectNotifications = (s: GameState) => s.notifications
 const removeNotifications = () =>
@@ -12,11 +13,20 @@ const removeNotifications = () =>
 
 export function ToasterProvider() {
     const notifications = useGameStore(selectNotifications)
+    const { t } = useTranslations()
     const { toast } = useToast()
 
     useEffect(() => {
         if (notifications.length < 1) return
-        for (const notification of notifications) toast({ ...notification })
+
+        for (const n of notifications) {
+            const myToast: ToastType = {}
+            if (n.titleId) myToast.title = t[n.titleId]
+            if (n.descriptionId) myToast.title = t[n.descriptionId]
+            if (n.iconId) myToast.iconId = n.iconId
+
+            toast(myToast)
+        }
         removeNotifications()
-    }, [notifications, toast])
+    }, [notifications, toast, t])
 }

@@ -1,6 +1,6 @@
-import { GameState } from '../game/GameState'
 import { MyToast } from './MyToast'
+import { ToastState } from './toastState'
 
-export function addNotification(state: GameState, notification: MyToast): GameState {
-    return { ...state, notifications: [...state.notifications, notification] }
+export function addNotification(state: ToastState, notification: MyToast): ToastState {
+    return [...state, notification]
 }
