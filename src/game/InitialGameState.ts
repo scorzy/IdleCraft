@@ -49,6 +49,7 @@ export const InitialGameState: GameState = {
         showOwnedPerks: true,
         showUnavailablePerks: true,
     },
+    notifications: [],
     location: GameLocations.StartVillage,
     activities: ActivityAdapter.getInitialState(),
     orderedActivities: [],
