@@ -3,7 +3,7 @@ import { LuHourglass } from 'react-icons/lu'
 import { MyCard } from '../../ui/myCard/myCard'
 import { memoize } from '../../utils/memoize'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
-import { Recipes } from '../Recipes'
+import { recipes } from '../Recipes'
 import { useGameStore } from '../../game/state'
 import {
     canCraft,
@@ -36,7 +36,7 @@ import { FormItem } from '@/components/ui/form'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-const recipeValues = Object.values(Recipes)
+const recipeValues = recipes.values()
 const selectRecipes: (t: RecipeTypes) => Recipe[] = memoize((t: RecipeTypes) => {
     const ret: Recipe[] = []
     for (const recipe of recipeValues) if (recipe.type === t) ret.push(recipe)

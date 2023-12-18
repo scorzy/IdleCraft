@@ -4,6 +4,7 @@ export enum ActivityTypes {
     Woodcutting = 'Woodcutting',
     Crafting = 'Crafting',
     Mining = 'Mining',
+    Battle = 'Battle',
 }
 export interface ActivityState {
     id: string

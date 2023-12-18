@@ -93,6 +93,8 @@ export const engMsg: Msg = {
     FastMiningPerkDesc: `Increase mining speed by ${FAST_MINING_PERK} %`,
 
     ActivityAdded: 'Activity added',
+    NormalAttack: 'Normal Attack',
+    NormalAttackDesc: 'Normal Attack',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

@@ -3,7 +3,7 @@ import { useGameStore } from '../game/state'
 import { getItemId2, getItemId } from '../storage/storageFunctions'
 import { ItemId } from '../storage/storageState'
 import { RecipeParameterValue } from './RecipeInterfaces'
-import { Recipes } from './Recipes'
+import { recipes } from './Recipes'
 
 export function changeRecipeState(state: GameState, recipeId: string) {
     if (state.recipeId === recipeId) return state
@@ -18,7 +18,7 @@ export function changeRecipeState(state: GameState, recipeId: string) {
         },
     }
 
-    const recipe = Recipes[state.recipeId]
+    const recipe = recipes.get(state.recipeId)
     if (!recipe) return state
 
     const params = recipe.getParameters(state)
@@ -48,7 +48,7 @@ export const setRecipeItemParam = (id: string, paramValue: string) =>
 
         if (value.craftItemId || value.stdItemId) paramsValue.push(value)
 
-        const recipe = Recipes[state.recipeId]
+        const recipe = recipes.get(state.recipeId)
         if (!recipe) throw new Error(`Recipe with id ${state.recipeId} not found`)
         const result = recipe.getResult(state, paramsValue)
 

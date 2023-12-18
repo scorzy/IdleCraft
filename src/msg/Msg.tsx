@@ -115,6 +115,8 @@ export interface Msg {
     Filter: string
 
     ActivityAdded: string
+    NormalAttack: string
+    NormalAttackDesc: string
 }
 export interface MsgFunctions {
     // Time

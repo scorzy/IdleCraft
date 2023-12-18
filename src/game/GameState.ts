@@ -20,6 +20,7 @@ import { CharacterState } from '../characters/characterState'
 import { PerksEnum } from '../perks/perksEnum'
 import { PerkState } from '../perks/PerkState'
 import { ToastState } from '../notification/toastState'
+import { BattleState } from '../battle/BattleTypes'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -78,4 +79,5 @@ export interface GameState {
         result: RecipeResult | undefined
     }
     characters: Record<string, CharacterState>
+    battle: InitialState<BattleState>
 }

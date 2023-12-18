@@ -11,7 +11,7 @@ import { IconsData } from '../icons/Icons'
 import { addExp } from '../experience/expFunctions'
 import { startTimer } from '../timers/startTimer'
 import { RecipeData } from './RecipeData'
-import { Recipes } from './Recipes'
+import { recipes } from './Recipes'
 import { Recipe } from './Recipe'
 import { RecipeResult } from './RecipeInterfaces'
 import { CraftingAdapter } from './CraftingAdapter'
@@ -21,7 +21,7 @@ export class CraftingActivity extends AbstractActivity<Crafting> {
     recipe: Recipe
     constructor(state: GameState, id: string) {
         super(state, id)
-        const recipe = Recipes[this.data.recipeId]
+        const recipe = recipes.get(this.data.recipeId)
         if (!recipe) throw new Error(`Recipe ${this.data.recipeId} not found`)
         this.recipe = recipe
     }

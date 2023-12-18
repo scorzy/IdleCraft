@@ -13,6 +13,7 @@ import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { PerksEnum } from '../perks/perksEnum'
+import { BattleAdapter } from '../battle/BattleAdapter'
 import { GameState, LocationState } from './GameState'
 
 const InitialVillageState: LocationState = {
@@ -81,10 +82,13 @@ export const InitialGameState: GameState = {
             healthPoints: 0,
             manaPoints: 0,
             staminaPoints: 0,
+            enemy: false,
             skillsExp: {},
             skillsLevel: {},
+            combatAbilities: [],
         },
     },
+    battle: BattleAdapter.getInitialState(),
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
