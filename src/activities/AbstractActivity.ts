@@ -2,8 +2,8 @@ import { ReactNode } from 'react'
 import { GameState } from '../game/GameState'
 import { Translations } from '../msg/Msg'
 import { selectTranslations } from '../msg/useTranslations'
+import { removeActivityTimers } from '../timers/removeActivityTimers'
 import { ActivityAdapter } from './ActivityState'
-import { removeActivityTimers } from '@/timers/removeActivityTimers'
 
 export enum ActivityStartResult {
     Started,

@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 module.exports = {
     root: true,
     env: { browser: true, es2020: true },
@@ -15,6 +13,7 @@ module.exports = {
         'plugin:react-hooks/recommended',
         'prettier',
     ],
+    ignorePatterns: ['dist', '.eslintrc.cjs'],
     parser: '@typescript-eslint/parser',
     parserOptions: {
         ecmaVersion: 'latest',
@@ -45,6 +44,6 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
         'import/order': 'error',
         'import/newline-after-import': 'error',
-        'import/no-unused-modules': [1, { unusedExports: true }],
+        // 'import/no-unused-modules': [1, { unusedExports: true }],
     },
 }

@@ -28,10 +28,10 @@ function subAddItem(
     let subState: Record<string, number> = state.StdItems
     let id = ''
 
-    if (craftItemId !== null) {
+    if (craftItemId) {
         subState = state.CraftedItems
         id = craftItemId
-    } else if (stdItemId !== null) id = stdItemId
+    } else if (stdItemId) id = stdItemId
     else throw new Error('[addItem] stdItemId and craftItemId null')
 
     const old = subState[id]
@@ -42,15 +42,15 @@ function subAddItem(
         subState = newSubState
     } else subState = { ...subState, [id]: newQta }
 
-    if (stdItemId !== null) state = { ...state, StdItems: subState }
+    if (stdItemId) state = { ...state, StdItems: subState }
     else state = { ...state, CraftedItems: subState }
 
     return state
 }
 
 function subHasItem(state: StorageState, stdItemId: string | null, craftItemId: string | null, qta: number): boolean {
-    if (stdItemId !== null) return (state.StdItems[stdItemId] ?? 0) >= qta
-    else if (craftItemId !== null) return (state.CraftedItems[craftItemId] ?? 0) >= qta
+    if (stdItemId) return (state.StdItems[stdItemId] ?? 0) >= qta
+    else if (craftItemId) return (state.CraftedItems[craftItemId] ?? 0) >= qta
     else throw new Error('[hasItem] stdItemId and craftItemId null')
 }
 
@@ -85,7 +85,12 @@ export function removeItem(
 
 function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
     const locations = Object.values(state.locations)
-    for (const loc of locations) if (loc.storage.CraftedItems[craftItemId]) return true
+    for (const loc of locations) {
+        if (loc.storage.CraftedItems[craftItemId] ?? 0 > 0) {
+            return true
+        }
+    }
+
     return false
 }
 

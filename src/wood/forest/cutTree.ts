@@ -3,9 +3,9 @@ import { GameLocations } from '../../gameLocations/GameLocations'
 import { WoodTypes } from '../WoodTypes'
 import { TimerTypes } from '../../timers/Timer'
 import { getUniqueId } from '../../utils/getUniqueId'
+import { startTimer } from '../../timers/startTimer'
 import { selectDefaultForest, selectTreeGrowthTime } from './forestSelectors'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
-import { startTimer } from '@/timers/startTimer'
 
 export function cutTree(
     state: GameState,

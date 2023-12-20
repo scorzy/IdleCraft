@@ -4,13 +4,13 @@ import { BattleActivity } from '../battle/BattleActivity'
 import { CraftingActivity } from '../crafting/CraftingActivity'
 import { recipes } from '../crafting/Recipes'
 import { MiningActivity } from '../mining/MiningActivity'
+import { AxeRecipe } from '../smithing/recipes/AxeRecipe'
+import { BarRecipe } from '../smithing/recipes/BarRecipe'
+import { PickaxeRecipe } from '../smithing/recipes/PickaxeRecipe'
 import { WoodcuttingActivity } from '../wood/WoodcuttingActivity'
 import { HandleRecipe } from '../wood/recipes/HandleRecipe'
 import { PlankRecipe } from '../wood/recipes/PlankRecipe'
 import { GameState } from './GameState'
-import { BarRecipe } from '@/smithing/recipes/BarRecipe'
-import { AxeRecipe } from '@/smithing/recipes/AxeRecipe'
-import { PickaxeRecipe } from '@/smithing/recipes/PickaxeRecipe'
 
 export function initialize() {
     initActivities()

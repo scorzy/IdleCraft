@@ -1,3 +1,4 @@
+import { CharAbilityAdapter } from '../../activeAbilities/CharAbilityAdapter'
 import { CharacterState } from '../characterState'
 import { CharTemplate } from './charTemplates'
 
@@ -9,11 +10,15 @@ export function generateCharacter(template: CharTemplate): CharacterState {
         skillsLevel: template.skillsLevel,
         exp: 0,
         level: template.level,
-        enemy: false,
+        isEnemy: false,
         healthPoints: template.healthPoints,
         staminaPoints: template.staminaPoints,
         manaPoints: template.manaPoints,
+        health: 100,
+        mana: 100,
+        stamina: 100,
         combatAbilities: [],
+        allCombatAbilities: CharAbilityAdapter.getInitialState(),
     })
 
     return char

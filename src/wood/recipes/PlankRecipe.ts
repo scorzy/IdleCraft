@@ -1,3 +1,4 @@
+import { Recipe } from '../../crafting/Recipe'
 import {
     RecipeParamType,
     RecipeParameter,
@@ -8,7 +9,6 @@ import {
 import { GameState } from '../../game/GameState'
 import { ItemTypes } from '../../items/Item'
 import { WoodData } from '../WoodData'
-import { Recipe } from '@/crafting/Recipe'
 
 export const LogToPlank = new Map<string, string>()
 Object.values(WoodData).forEach((w) => LogToPlank.set(w.logId, w.plankId))

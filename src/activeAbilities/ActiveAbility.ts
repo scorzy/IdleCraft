@@ -5,11 +5,11 @@ import { Msg } from '../msg/Msg'
 
 // eslint-disable-next-line import/no-unused-modules
 export interface AbilityParams {
-    gameState: GameState
-    charSource: string
+    state: GameState
+    characterId: string
 }
 export interface AbilityResult {
-    gameState: GameState
+    state: GameState
 }
 export interface ActiveAbility {
     id: string

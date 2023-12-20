@@ -1,9 +1,9 @@
-import { Bonus, BonusResult } from '../bonus/Bonus'
-import { getTotal } from '../bonus/BonusFunctions'
-import { GameState } from '../game/GameState'
-import { Icons } from '../icons/Icons'
-import { memoize } from '../utils/memoize'
-import { selectCharacter } from './characterSelectors'
+import { Bonus, BonusResult } from '../../bonus/Bonus'
+import { getTotal } from '../../bonus/BonusFunctions'
+import { GameState } from '../../game/GameState'
+import { Icons } from '../../icons/Icons'
+import { memoize } from '../../utils/memoize'
+import { selectCharacter } from '../characterSelectors'
 
 const selectStaminaBonusList = memoize((points: number) => {
     const bonuses: Bonus[] = []
@@ -33,7 +33,6 @@ const selectStaminaBonusList = memoize((points: number) => {
 
 export const selectCharacterMaxStaminaList = memoize((charId: string) => (state: GameState) => {
     const char = selectCharacter(state, charId)
-
     const list = selectStaminaBonusList(char.staminaPoints)
     return list
 })

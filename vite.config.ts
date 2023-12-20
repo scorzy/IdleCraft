@@ -1,9 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { test } from 'vitest'
 import path from 'path'
-
-process.env.BROWSER = 'microsoft-edge-stable'
+import { test } from 'vitest'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,10 +12,9 @@ export default defineConfig({
         },
     },
     test: {
-        environment: 'jsdom',
+        environment: 'happy-dom',
         coverage: {
             provider: 'v8',
-            // reporter: ['html', 'text', 'lcov'],
         },
     },
 })

@@ -6,7 +6,8 @@ import { useTranslations } from '../../msg/useTranslations'
 import { selectItemsByType, selectGameItem } from '../../storage/StorageSelectors'
 import { getItemId2 } from '../../storage/storageFunctions'
 import { ItemId } from '../../storage/storageState'
-import { Item, SlotsData } from '../Item'
+import { Item } from '../Item'
+import { SlotsData } from '../SlotsData'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { selectEquipId, selectEquippedItem } from '../itemSelectors'
 import { changeEquip } from '../itemFunctions'
@@ -23,6 +24,7 @@ import {
 import { GameState } from '../../game/GameState'
 import { getRecipeParamId } from '../../crafting/RecipeFunctions'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
+import { Msg } from '../../msg/Msg'
 import classes from './equipSelect.module.css'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
@@ -53,7 +55,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     return (
         <Card className={classes.container}>
             <CardHeader>
-                <CardTitle>{t[slotData.ItemType]}</CardTitle>
+                <CardTitle>{t[slotData.ItemType as keyof Msg]}</CardTitle>
             </CardHeader>
 
             <CardContent>

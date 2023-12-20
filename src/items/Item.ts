@@ -10,6 +10,7 @@ export enum ItemTypes {
     Bar = 'Bar',
     WoodAxe = 'WoodAxe',
     Pickaxe = 'Pickaxe',
+    Weapon = 'Weapon',
 }
 export enum DamageTypes {
     Slashing = 'Slashing',
@@ -49,15 +50,4 @@ export interface Item {
     craftingPickaxeData?: PickaxeData
     pickaxeData?: PickaxeData
     weaponData?: WeaponData
-}
-interface SlotData {
-    ItemType: ItemTypes
-}
-export const SlotsData: { [k in EquipSlotsEnum]: SlotData } = {
-    [EquipSlotsEnum.WoodAxe]: {
-        ItemType: ItemTypes.WoodAxe,
-    },
-    [EquipSlotsEnum.Pickaxe]: {
-        ItemType: ItemTypes.Pickaxe,
-    },
 }

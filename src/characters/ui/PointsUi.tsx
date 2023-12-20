@@ -15,9 +15,9 @@ import { addHealthPointsClick, addManaPointClick, addStaminaPointClick } from '.
 import { PLAYER_ID } from '../charactersConst'
 import { BonusDialog, BonusSpan } from '../../bonus/ui/BonusUi'
 import { useTranslations } from '../../msg/useTranslations'
-import { selectCharacterMaxHealth, selectCharacterMaxHealthList } from '../healthSelectors'
-import { selectCharacterMaxStamina, selectCharacterMaxStaminaList } from '../staminaSelectors'
-import { selectCharacterMaxMana, selectCharacterMaxManaList } from '../manaSelectors'
+import { selectCharacterMaxHealth, selectCharacterMaxHealthList } from '../selectors/healthSelectors'
+import { selectCharacterMaxStamina, selectCharacterMaxStaminaList } from '../selectors/staminaSelectors'
+import { selectCharacterMaxMana, selectCharacterMaxManaList } from '../selectors/manaSelectors'
 import { MyPage } from '../../ui/pages/MyPage'
 import classes from './PointsUi.module.css'
 

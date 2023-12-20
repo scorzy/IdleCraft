@@ -14,16 +14,18 @@ import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { PerksEnum } from '../perks/perksEnum'
 import { BattleAdapter } from '../battle/BattleAdapter'
+import { CharAbilityAdapter } from '../activeAbilities/CharAbilityAdapter'
 import { GameState, LocationState } from './GameState'
 
-const InitialVillageState: LocationState = {
-    storage: {
-        StdItems: {},
-        CraftedItems: {},
-    },
-    forests: {},
-    ores: {},
-}
+const InitialVillageState: () => LocationState = () =>
+    structuredClone({
+        storage: {
+            StdItems: {},
+            CraftedItems: {},
+        },
+        forests: {},
+        ores: {},
+    })
 
 export const InitialGameState: GameState = {
     gameId: '',
@@ -63,7 +65,7 @@ export const InitialGameState: GameState = {
     craftedItems: ItemAdapter.getInitialState(),
     woodcutting: WoodcuttingAdapter.getInitialState(),
     waitingTrees: null,
-    locations: { [GameLocations.StartVillage]: InitialVillageState, [GameLocations.Test]: InitialVillageState },
+    locations: { [GameLocations.StartVillage]: InitialVillageState(), [GameLocations.Test]: InitialVillageState() },
     treeGrowth: TreeGrowthAdapter.getInitialState(),
     crafting: CraftingAdapter.getInitialState(),
     recipeId: '',
@@ -82,14 +84,17 @@ export const InitialGameState: GameState = {
             healthPoints: 0,
             manaPoints: 0,
             staminaPoints: 0,
-            enemy: false,
+            isEnemy: false,
             skillsExp: {},
             skillsLevel: {},
             combatAbilities: [],
+            allCombatAbilities: CharAbilityAdapter.getInitialState(),
+            health: 100,
+            mana: 100,
+            stamina: 100,
         },
     },
     battle: BattleAdapter.getInitialState(),
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-export const GetInitialGameState: () => GameState = () => JSON.parse(JSON.stringify(InitialGameState))
+export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)

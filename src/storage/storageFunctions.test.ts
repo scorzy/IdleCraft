@@ -2,6 +2,7 @@ import { test, describe, expect } from 'vitest'
 import { GetInitialGameState } from '../game/InitialGameState'
 import { Icons } from '../icons/Icons'
 import { ItemTypes } from '../items/Item'
+import { GameLocations } from '../gameLocations/GameLocations'
 import { addItem, hasItem, removeItem } from './storageFunctions'
 
 describe('Storage Functions', () => {
@@ -51,13 +52,17 @@ describe('Storage Functions', () => {
     })
     test('Remove Item 1 craft', () => {
         let state = GetInitialGameState()
-        state.locations.StartVillage.storage.CraftedItems = { craft: 1 }
+        state.locations.StartVillage.storage.CraftedItems = { craft2: 1 }
         state.craftedItems = {
-            ids: ['craft'],
-            entries: { craft: { id: 'craft', icon: Icons.Axe, nameId: 'Craft', type: ItemTypes.Bar, value: 1 } },
+            ids: ['craft2'],
+            entries: { craft2: { id: 'craft2', icon: Icons.Axe, nameId: 'Craft', type: ItemTypes.Bar, value: 1 } },
         }
-        state = removeItem(state, null, 'craft', 1)
+        state = removeItem(state, null, 'craft2', 1, GameLocations.StartVillage)
         expect(state.locations.StartVillage.storage).toEqual({
+            StdItems: {},
+            CraftedItems: {},
+        })
+        expect(state.locations.Test.storage).toEqual({
             StdItems: {},
             CraftedItems: {},
         })
