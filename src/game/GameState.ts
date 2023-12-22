@@ -78,6 +78,6 @@ export interface GameState {
         paramsValue: RecipeParameterValue[]
         result: RecipeResult | undefined
     }
-    characters: Record<string, CharacterState>
+    characters: InitialState<CharacterState>
     battle: InitialState<BattleState>
 }

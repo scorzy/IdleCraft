@@ -1,16 +1,11 @@
 import { GameState } from '../game/GameState'
-import { CharacterState } from './characterState'
+import { CharacterStateAdapter } from './characterAdapter'
 import { PLAYER_ID } from './charactersConst'
 
-export function selectCharacter(state: GameState, charId: string): CharacterState {
-    const char = state.characters[charId]
-    if (!char) throw new Error(`character ${charId} not found`)
-    return char
-}
-
-const selectMaxAttributes = (state: GameState, characterId: string) => selectCharacter(state, characterId).level
+const selectMaxAttributes = (state: GameState, characterId: string) =>
+    CharacterStateAdapter.selectEx(state.characters, characterId).level
 const selectUsedAttributes = (state: GameState, characterId: string) => {
-    const char = selectCharacter(state, characterId)
+    const char = CharacterStateAdapter.selectEx(state.characters, characterId)
     return char.healthPoints + char.staminaPoints + char.manaPoints
 }
 
@@ -19,9 +14,12 @@ export const selectPlayerUsedAttr = (state: GameState) => selectUsedAttributes(s
 export const selectPlayerAvAttr = (state: GameState) =>
     selectMaxAttributes(state, PLAYER_ID) - selectUsedAttributes(state, PLAYER_ID)
 
-const selectHealthPoints = (state: GameState, characterId: string) => selectCharacter(state, characterId).healthPoints
-const selectStaminaPoint = (state: GameState, characterId: string) => selectCharacter(state, characterId).staminaPoints
-const selectManaPoints = (state: GameState, characterId: string) => selectCharacter(state, characterId).manaPoints
+const selectHealthPoints = (state: GameState, characterId: string) =>
+    CharacterStateAdapter.selectEx(state.characters, characterId).healthPoints
+const selectStaminaPoint = (state: GameState, characterId: string) =>
+    CharacterStateAdapter.selectEx(state.characters, characterId).staminaPoints
+const selectManaPoints = (state: GameState, characterId: string) =>
+    CharacterStateAdapter.selectEx(state.characters, characterId).manaPoints
 
 export const selectPlayerHealthPoints = (state: GameState) => selectHealthPoints(state, PLAYER_ID)
 export const selectPlayerStaminaPoints = (state: GameState) => selectStaminaPoint(state, PLAYER_ID)

@@ -1,9 +1,8 @@
 import { GameState } from '../../game/GameState'
-import { selectCharacter } from '../characterSelectors'
+import { CharacterStateAdapter } from '../characterAdapter'
 import { selectCharacterMaxMana } from '../selectors/manaSelectors'
 
 export function resetMana(state: GameState, charId: string): GameState {
     const mana = selectCharacterMaxMana(charId)(state)
-    const char = selectCharacter(state, charId)
-    return { ...state, characters: { ...state.characters, [charId]: { ...char, mana } } }
+    return { ...state, characters: CharacterStateAdapter.update(state.characters, charId, { mana }) }
 }

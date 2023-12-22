@@ -10,6 +10,7 @@ import { Icons } from '../../icons/Icons'
 import { BaseBonus, Bonus, BonusResult } from '../../bonus/Bonus'
 import { bonusFromItem, bonusFromPerk, getTotal } from '../../bonus/BonusFunctions'
 import { FAST_WOODCUTTING_PERK } from '../WoodConst'
+import { CharacterStateAdapter } from '../../characters/characterAdapter'
 
 export const DEF_WOOD_AXE: WoodAxeData = {
     damage: 25,
@@ -21,7 +22,7 @@ const Base: BaseBonus = {
 }
 
 function selectAxe(state: GameState): Item | undefined {
-    const axe = state.characters[PLAYER_ID]!.inventory[EquipSlotsEnum.WoodAxe]
+    const axe = CharacterStateAdapter.selectEx(state.characters, PLAYER_ID).inventory[EquipSlotsEnum.WoodAxe]
     if (!axe) return
     return selectGameItem(axe.stdItemId, axe.craftItemId)(state)
 }

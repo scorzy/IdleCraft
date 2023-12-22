@@ -5,6 +5,7 @@ import { CharTemplate } from './charTemplates'
 // eslint-disable-next-line import/no-unused-modules
 export function generateCharacter(template: CharTemplate): CharacterState {
     const char: CharacterState = structuredClone({
+        id: '',
         inventory: template.inventory,
         skillsExp: template.skillsExp,
         skillsLevel: template.skillsLevel,

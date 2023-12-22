@@ -1,4 +1,4 @@
-import { selectCharacter } from '../../characters/characterSelectors'
+import { CharacterStateAdapter } from '../../characters/characterAdapter'
 import { GameState } from '../../game/GameState'
 import { ActiveAbilityData } from '../ActiveAbilityData'
 
@@ -6,7 +6,7 @@ export function tryCast(state: GameState, characterId: string, abilityId: string
     const ability = ActiveAbilityData.get(abilityId)
     if (!ability) throw new Error(`[execAbility] ability ${abilityId} not found`)
 
-    const character = selectCharacter(state, characterId)
+    const character = CharacterStateAdapter.selectEx(state.characters, characterId)
 
     const hCost = ability.getHealthCost({ state, characterId })
     if (hCost > character.health + 1)
@@ -29,17 +29,14 @@ export function tryCast(state: GameState, characterId: string, abilityId: string
             state,
         }
 
-    let char = selectCharacter(state, characterId)
-    char = { ...char, health: char.health - hCost, stamina: char.stamina - sCost, mana: char.mana - mCost }
+    const char = CharacterStateAdapter.selectEx(state.characters, characterId)
+    const charUp = { health: char.health - hCost, stamina: char.stamina - sCost, mana: char.mana - mCost }
 
     return {
         cast: true,
         state: {
             ...state,
-            characters: {
-                ...state.characters,
-                [characterId]: char,
-            },
+            characters: CharacterStateAdapter.update(state.characters, characterId, charUp),
         },
     }
 }

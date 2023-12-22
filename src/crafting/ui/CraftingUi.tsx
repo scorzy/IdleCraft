@@ -36,10 +36,9 @@ import { FormItem } from '@/components/ui/form'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-const recipeValues = recipes.values()
 const selectRecipes: (t: RecipeTypes) => Recipe[] = memoize((t: RecipeTypes) => {
     const ret: Recipe[] = []
-    for (const recipe of recipeValues) if (recipe.type === t) ret.push(recipe)
+    for (const recipe of recipes.values()) if (recipe.type === t) ret.push(recipe)
 
     return ret
 })

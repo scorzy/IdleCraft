@@ -14,6 +14,7 @@ import { loadForest } from '../wood/forest/forestFunctions'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { CharacterState } from '../characters/characterState'
 import { PerksEnum, PerksEnumKeys } from '../perks/perksEnum'
+import { InitialState } from '../entityAdapter/entityAdapter'
 import { GameState, Globals } from './GameState'
 import { GetInitialGameState } from './InitialGameState'
 import { useGameStore } from './state'
@@ -80,7 +81,7 @@ function loadData(data: object): GameState {
     }
     if ('characters' in data) {
         // ToDo
-        state.characters = data.characters as Record<string, CharacterState>
+        state.characters = data.characters as InitialState<CharacterState>
     }
 
     if ('perks' in data && data.perks && typeof data.perks === 'object')

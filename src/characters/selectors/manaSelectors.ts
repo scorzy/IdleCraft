@@ -3,7 +3,7 @@ import { getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { memoize } from '../../utils/memoize'
-import { selectCharacter } from '../characterSelectors'
+import { CharacterStateAdapter } from '../characterAdapter'
 
 const selectManaBonusList = memoize((points: number) => {
     const bonuses: Bonus[] = []
@@ -31,7 +31,7 @@ const selectManaBonusList = memoize((points: number) => {
 })
 
 export const selectCharacterMaxManaList = memoize((charId: string) => (state: GameState) => {
-    const char = selectCharacter(state, charId)
+    const char = CharacterStateAdapter.selectEx(state.characters, charId)
     const list = selectManaBonusList(char.manaPoints)
     return list
 })

@@ -1,3 +1,4 @@
+import { CharacterStateAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { GameState } from '../game/GameState'
@@ -15,7 +16,7 @@ export const DEF_PICKAXE: PickaxeData = {
 }
 
 function selectPickaxe(state: GameState) {
-    const axe = state.characters[PLAYER_ID]!.inventory[EquipSlotsEnum.Pickaxe]
+    const axe = CharacterStateAdapter.selectEx(state.characters, PLAYER_ID).inventory[EquipSlotsEnum.Pickaxe]
     if (!axe) return
     return selectGameItem(axe.stdItemId, axe.craftItemId)(state)
 }

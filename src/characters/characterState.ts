@@ -4,6 +4,7 @@ import { ExpState } from '../experience/ExpState'
 import { CharInventory } from './inventory'
 
 export interface CharacterState {
+    id: string
     inventory: CharInventory
     skillsExp: ExpState
     skillsLevel: ExpState

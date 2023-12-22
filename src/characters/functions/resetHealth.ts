@@ -1,9 +1,8 @@
 import { GameState } from '../../game/GameState'
-import { selectCharacter } from '../characterSelectors'
+import { CharacterStateAdapter } from '../characterAdapter'
 import { selectCharacterMaxHealth } from '../selectors/healthSelectors'
 
 export function resetHealth(state: GameState, charId: string): GameState {
     const health = selectCharacterMaxHealth(charId)(state)
-    const char = selectCharacter(state, charId)
-    return { ...state, characters: { ...state.characters, [charId]: { ...char, health } } }
+    return { ...state, characters: CharacterStateAdapter.update(state.characters, charId, { health }) }
 }
