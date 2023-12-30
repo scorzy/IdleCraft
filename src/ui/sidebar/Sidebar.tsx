@@ -23,6 +23,7 @@ export const Sidebar = memo(function Sidebar() {
             <MenuItem page={UiPages.Storage} parentCollapsed={isSidebarCollapsed} />
             <MenuItem page={UiPages.Points} parentCollapsed={isSidebarCollapsed} />
             <MenuItem page={UiPages.Perks} parentCollapsed={isSidebarCollapsed} />
+            <MenuItem page={UiPages.CombatZones} parentCollapsed={isSidebarCollapsed} />
 
             <SidebarGathering />
             <SidebarCraft />

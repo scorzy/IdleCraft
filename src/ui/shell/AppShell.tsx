@@ -17,6 +17,7 @@ import { useTranslations } from '../../msg/useTranslations'
 import { CardTitle } from '../../components/ui/card'
 import { PerksPage } from '../../perks/ui/PerksUi'
 import { PointsUi } from '../../characters/ui/PointsUi'
+import { CombatPage } from '../../battle/ui/CombatUi'
 import classes from './appShell.module.css'
 
 export const AppShell = memo(function AppShell() {
@@ -78,5 +79,7 @@ const PageContent = memo(function PageContent() {
             return <PerksPage />
         case UiPages.Points:
             return <PointsUi />
+        case UiPages.CombatZones:
+            return <CombatPage />
     }
 })

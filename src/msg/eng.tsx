@@ -95,6 +95,11 @@ export const engMsg: Msg = {
     ActivityAdded: 'Activity added',
     NormalAttack: 'Normal Attack',
     NormalAttackDesc: 'Normal Attack',
+
+    CombatZones: 'Combat',
+
+    // battle
+    Forest: 'Forest',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

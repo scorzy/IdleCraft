@@ -117,6 +117,11 @@ export interface Msg {
     ActivityAdded: string
     NormalAttack: string
     NormalAttackDesc: string
+
+    CombatZones: string
+
+    // battle
+    Forest: string
 }
 export interface MsgFunctions {
     // Time

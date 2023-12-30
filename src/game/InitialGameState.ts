@@ -95,6 +95,8 @@ export const InitialGameState: GameState = {
                 health: 100,
                 mana: 100,
                 stamina: 100,
+                lastCombatAbilityNum: 0,
+                lastCombatAbilityId: null,
             },
         },
     },

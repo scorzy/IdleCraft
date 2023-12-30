@@ -1,4 +1,4 @@
-import { GiAnvil, GiMining, GiUpgrade, GiWoodAxe } from 'react-icons/gi'
+import { GiAnvil, GiCrossedSwords, GiMining, GiUpgrade, GiWoodAxe } from 'react-icons/gi'
 import { LuBox, LuLayoutList } from 'react-icons/lu'
 import { TbCirclePlus } from 'react-icons/tb'
 import { RecipeTypes } from '../../crafting/RecipeInterfaces'
@@ -38,5 +38,9 @@ export const UiPagesData: { [k in UiPages]: UiPageData } = {
     [UiPages.Points]: {
         nameId: 'Attributes',
         icon: <TbCirclePlus />,
+    },
+    [UiPages.CombatZones]: {
+        nameId: 'CombatZones',
+        icon: <GiCrossedSwords />,
     },
 }

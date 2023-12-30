@@ -21,4 +21,6 @@ export interface CharacterState {
 
     combatAbilities: string[]
     allCombatAbilities: InitialState<CharAbility>
+    lastCombatAbilityNum: number
+    lastCombatAbilityId: string | null
 }

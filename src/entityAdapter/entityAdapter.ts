@@ -94,4 +94,7 @@ export abstract class AbstractEntityAdapter<T> {
     complete(data: unknown): T | null {
         return data as T
     }
+    findIds(data: InitialState<T>): string[] {
+        return data.ids
+    }
 }
