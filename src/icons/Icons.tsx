@@ -10,6 +10,8 @@ import {
     GiHeartPlus,
     GiStrong,
     GiMagicPalm,
+    GiBoar,
+    GiForest,
 } from 'react-icons/gi'
 
 export enum Icons {
@@ -24,6 +26,8 @@ export enum Icons {
     HeartPlus = 'HeartPlus',
     Strong = 'Strong',
     MagicPalm = 'MagicPalm',
+    Boar = 'Boar',
+    Forest = 'Forest',
 }
 export const IconsData: { [k in Icons]: ReactNode } = {
     Axe: <GiWoodAxe />,
@@ -37,4 +41,6 @@ export const IconsData: { [k in Icons]: ReactNode } = {
     HeartPlus: <GiHeartPlus />,
     Strong: <GiStrong />,
     MagicPalm: <GiMagicPalm />,
+    Boar: <GiBoar />,
+    Forest: <GiForest />,
 }

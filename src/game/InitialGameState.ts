@@ -51,6 +51,7 @@ export const InitialGameState: GameState = {
         showAvailablePerks: true,
         showOwnedPerks: true,
         showUnavailablePerks: true,
+        battleZone: null,
     },
     notifications: [],
     location: GameLocations.StartVillage,

@@ -20,6 +20,8 @@ export function generateCharacter(template: CharTemplate): CharacterState {
         stamina: 100,
         combatAbilities: [],
         allCombatAbilities: CharAbilityAdapter.getInitialState(),
+        lastCombatAbilityId: null,
+        lastCombatAbilityNum: 0,
     })
 
     return char

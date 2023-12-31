@@ -122,6 +122,7 @@ export interface Msg {
 
     // battle
     Forest: string
+    Boar: string
 }
 export interface MsgFunctions {
     // Time

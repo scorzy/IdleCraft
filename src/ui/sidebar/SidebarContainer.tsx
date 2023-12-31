@@ -8,11 +8,12 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
     children?: ReactNode
     collapsed: boolean
     collapseClick: () => void
+    className?: string
 }) {
-    const { children, collapsed, collapseClick } = props
+    const { children, collapsed, collapseClick, className } = props
 
     return (
-        <div className={clsx(classes.collapseContainer, { [classes.collapsedContainer!]: collapsed })}>
+        <div className={(clsx(classes.collapseContainer, { [classes.collapsedContainer!]: collapsed }), className)}>
             <div className={clsx(classes.sidebarContainer, { [classes.collapsed!]: collapsed })}>{children}</div>
 
             <div className={clsx(classes.sidebarContainer, classes.btnExpand, { [classes.collapsed!]: collapsed })}>

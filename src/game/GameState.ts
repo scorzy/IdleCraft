@@ -21,6 +21,7 @@ import { PerksEnum } from '../perks/perksEnum'
 import { PerkState } from '../perks/PerkState'
 import { ToastState } from '../notification/toastState'
 import { BattleState } from '../battle/BattleTypes'
+import { BattleZoneEnum } from '../battle/BattleZoneEnum'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -53,6 +54,7 @@ export interface GameState {
         showAvailablePerks: boolean
         showUnavailablePerks: boolean
         showOwnedPerks: boolean
+        battleZone: BattleZoneEnum | null
     }
     notifications: ToastState
     timers: InitialTimerState

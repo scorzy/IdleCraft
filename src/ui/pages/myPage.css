@@ -1,6 +1,9 @@
 .page__container {
     padding: 1rem;
     container-type: inline-size;
+    container-type: inline-size;
+    max-height: calc(100dvh - 50px);
+    overflow: auto;
 }
 .page__info {
     display: grid;
