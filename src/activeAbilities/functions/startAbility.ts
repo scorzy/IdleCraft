@@ -1,8 +1,8 @@
 import { GameState } from '../../game/GameState'
 import { ActiveAbilityData } from '../ActiveAbilityData'
-import { tryCast } from './canCast'
+import { tryCast } from './tryCast'
 
-export function execAbility(
+export function startAbility(
     state: GameState,
     characterId: string,
     abilityId: string

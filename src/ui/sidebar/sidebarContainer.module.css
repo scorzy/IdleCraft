@@ -17,6 +17,8 @@
     grid-template-rows: 1fr auto;
     display: grid;
     overflow-y: auto;
+    heigth: 100%;
+    padding-bottom: 0.5rem;
 }
 
 .muiCollapse {

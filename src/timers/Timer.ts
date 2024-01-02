@@ -3,6 +3,7 @@ import { AbstractEntityAdapter, InitialState } from '../entityAdapter/entityAdap
 export enum TimerTypes {
     Activity = 'Activity',
     Tree = 'Tree',
+    Ability = 'Ability',
 }
 
 export interface Timer {

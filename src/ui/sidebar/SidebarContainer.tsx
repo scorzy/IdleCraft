@@ -13,7 +13,7 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
     const { children, collapsed, collapseClick, className } = props
 
     return (
-        <div className={(clsx(classes.collapseContainer, { [classes.collapsedContainer!]: collapsed }), className)}>
+        <nav className={clsx(classes.collapseContainer, { [classes.collapsedContainer!]: collapsed }, className)}>
             <div className={clsx(classes.sidebarContainer, { [classes.collapsed!]: collapsed })}>{children}</div>
 
             <div className={clsx(classes.sidebarContainer, classes.btnExpand, { [classes.collapsed!]: collapsed })}>
@@ -25,6 +25,6 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
                     collapsed={collapsed}
                 />
             </div>
-        </div>
+        </nav>
     )
 })

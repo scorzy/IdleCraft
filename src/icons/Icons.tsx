@@ -12,6 +12,7 @@ import {
     GiMagicPalm,
     GiBoar,
     GiForest,
+    GiWolfHead,
 } from 'react-icons/gi'
 
 export enum Icons {
@@ -28,6 +29,7 @@ export enum Icons {
     MagicPalm = 'MagicPalm',
     Boar = 'Boar',
     Forest = 'Forest',
+    WolfHead = 'WolfHead',
 }
 export const IconsData: { [k in Icons]: ReactNode } = {
     Axe: <GiWoodAxe />,
@@ -43,4 +45,5 @@ export const IconsData: { [k in Icons]: ReactNode } = {
     MagicPalm: <GiMagicPalm />,
     Boar: <GiBoar />,
     Forest: <GiForest />,
+    WolfHead: <GiWolfHead />,
 }

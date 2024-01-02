@@ -4,6 +4,7 @@ import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { memoize } from '../../utils/memoize'
 import { CharacterStateAdapter } from '../characterAdapter'
+import { CharacterState } from '../characterState'
 
 const selectHealthBonusList = memoize((points: number) => {
     const bonuses: Bonus[] = []
@@ -29,11 +30,12 @@ const selectHealthBonusList = memoize((points: number) => {
 
     return bonusList
 })
-
+export function selectMaxHealthFromChar(char: CharacterState): BonusResult {
+    return selectHealthBonusList(char.healthPoints)
+}
 export const selectCharacterMaxHealthList = memoize((charId: string) => (state: GameState) => {
     const char = CharacterStateAdapter.selectEx(state.characters, charId)
-    const list = selectHealthBonusList(char.healthPoints)
-    return list
+    return selectMaxHealthFromChar(char)
 })
 export const selectCharacterMaxHealth = memoize(
     (charId: string) => (state: GameState) => selectCharacterMaxHealthList(charId)(state).total

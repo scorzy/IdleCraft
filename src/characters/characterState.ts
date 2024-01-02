@@ -1,10 +1,14 @@
 import { CharAbility } from '../activeAbilities/types/CharAbility'
 import { InitialState } from '../entityAdapter/entityAdapter'
 import { ExpState } from '../experience/ExpState'
+import { Icons } from '../icons/Icons'
+import { Msg } from '../msg/Msg'
 import { CharInventory } from './inventory'
 
 export interface CharacterState {
     id: string
+    iconId: Icons
+    nameId: keyof Msg
     inventory: CharInventory
     skillsExp: ExpState
     skillsLevel: ExpState

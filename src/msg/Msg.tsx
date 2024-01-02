@@ -123,6 +123,7 @@ export interface Msg {
     // battle
     Forest: string
     Boar: string
+    Wolves: string
 }
 export interface MsgFunctions {
     // Time
@@ -141,4 +142,6 @@ export interface MsgFunctions {
     //
     prestigePercent: (bonus: string) => string
     speedBonusPercent: (bonus: string) => string
+
+    fighting: (enemy: keyof Msg) => string
 }

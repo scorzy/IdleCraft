@@ -1,4 +1,5 @@
 import { memo, useCallback, useState } from 'react'
+import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { MyPage } from '../../ui/pages/MyPage'
 import { MyCard } from '../../ui/myCard/myCard'
 import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
@@ -13,6 +14,11 @@ import { isBattleZoneSelected } from '../selectors/isBattleZoneSelected'
 import { selectBattleZone } from '../selectors/selectBattleZone'
 import { Button } from '../../components/ui/button'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
+import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
+import { generateCharacter } from '../../characters/templates/generateCharacter'
+import { CharTemplatesData } from '../../characters/templates/charTemplateData'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { addBattle } from '../functions/addBattle'
 import classes from './combat.module.css'
 
 export const CombatPage = memo(function CombatPage() {
@@ -82,8 +88,12 @@ const BattleZoneUi = memo(function BattleZoneUi(props: { battleZoneEnum: BattleZ
 const BattleZoneInfoUi = memo(function BattleZoneInfoUi() {
     const battleZoneEnum = useGameStore(selectBattleZone)
 
-    if (!battleZoneEnum) return <></>
+    const onAddClick = useCallback(() => {
+        console.log(battleZoneEnum)
+        if (battleZoneEnum) addBattle({ battleZoneEnum })
+    }, [battleZoneEnum])
 
+    if (!battleZoneEnum) return <></>
     const battleZone = BattleZones[battleZoneEnum]
     return (
         <MyCard
@@ -91,9 +101,47 @@ const BattleZoneInfoUi = memo(function BattleZoneInfoUi() {
             icon={IconsData[battleZone.iconId]}
             actions={
                 <>
-                    <Button>Fight</Button>
+                    <Button onClick={onAddClick}>Fight</Button>
                 </>
             }
-        ></MyCard>
+        >
+            {battleZone.enemies.map((e, index) => (
+                <EnemyInfoUi key={e.template + index} quantity={e.quantity} templateEnum={e.template} />
+            ))}
+        </MyCard>
+    )
+})
+const EnemyInfoUi = memo(function EnemyInfoUi(props: { quantity: number; templateEnum: CharTemplateEnum }) {
+    const { quantity, templateEnum } = props
+    const template = CharTemplatesData[templateEnum]
+    const enemy = generateCharacter(template)
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    return (
+        <div className="flex items-center">
+            <span className="relative flex shrink-0 overflow-hidden h-9 w-9 text-4xl">
+                <span className="aspect-square h-full w-full">{IconsData[enemy.iconId]}</span>
+            </span>
+            <div className="ml-4 space-y-1">
+                <p className="text-sm font-medium leading-none">
+                    {t[enemy.nameId]} X {f(quantity)}
+                </p>
+                <p className="text-sm text-muted-foreground grid grid-flow-col gap-2">
+                    <span>Lv. {f(enemy.level)}</span>
+                    <span className="text-health">
+                        <GiHearts className="inline" />
+                        {f(enemy.health)}
+                    </span>
+                    <span className="text-stamina">
+                        <GiStrong className="inline" />
+                        {f(enemy.stamina)}
+                    </span>
+                    <span className="text-mana">
+                        <GiMagicPalm className="inline" />
+                        {f(enemy.mana)}
+                    </span>
+                </p>
+            </div>
+        </div>
     )
 })

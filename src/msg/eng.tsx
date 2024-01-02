@@ -101,6 +101,7 @@ export const engMsg: Msg = {
     // battle
     Forest: 'Forest',
     Boar: 'Boar',
+    Wolves: 'Wolves',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,
@@ -114,4 +115,5 @@ export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     mining: (oreNameId: keyof Msg) => `Mining ${msg[oreNameId]}`,
     speedBonusPercent: (bonus: string) => `Speed bonus +${bonus}%`,
     prestigePercent: (bonus: string) => `Value bonus +${bonus}%`,
+    fighting: (enemy: keyof Msg) => `Fighting ${msg[enemy]}`,
 })

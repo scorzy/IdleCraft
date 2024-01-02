@@ -3,13 +3,16 @@ import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 
-// eslint-disable-next-line import/no-unused-modules
 export interface AbilityParams {
     state: GameState
     characterId: string
 }
 export interface AbilityResult {
     state: GameState
+}
+export interface AbilityStartResult {
+    state: GameState
+    started: boolean
 }
 export interface ActiveAbility {
     id: string
@@ -20,5 +23,7 @@ export interface ActiveAbility {
     getHealthCost(params: AbilityParams): number
     getStaminaCost(params: AbilityParams): number
     getManaCost(params: AbilityParams): number
+    canStart(params: AbilityParams): boolean
+    start(params: AbilityParams): AbilityStartResult
     exec(params: AbilityParams): AbilityResult
 }

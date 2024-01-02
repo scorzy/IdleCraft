@@ -9,7 +9,6 @@
 }
 .allPage {
     display: grid;
-
     align-items: start;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -18,14 +17,12 @@
     overflow: auto;
 }
 .side {
-    padding-bottom: 1rem;
     border-bottom: 1px solid hsl(var(--border));
 }
 @container (min-width: 900px) {
     .allPage {
         grid-template-columns: auto 1fr;
         height: 100%;
-        gap: 1rem;
     }
     .side {
         border-right: 1px solid hsl(var(--border));

@@ -15,6 +15,7 @@ import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { CharacterState } from '../characters/characterState'
 import { PerksEnum, PerksEnumKeys } from '../perks/perksEnum'
 import { InitialState } from '../entityAdapter/entityAdapter'
+import { BattleAdapter } from '../battle/BattleAdapter'
 import { GameState, Globals } from './GameState'
 import { GetInitialGameState } from './InitialGameState'
 import { useGameStore } from './state'
@@ -45,6 +46,7 @@ function loadData(data: object): GameState {
     if ('treeGrowth' in data) state.treeGrowth = TreeGrowthAdapter.load(data.treeGrowth)
     if ('crafting' in data) state.crafting = CraftingAdapter.load(data.crafting)
     if ('mining' in data) state.mining = MiningAdapter.load(data.mining)
+    if ('battle' in data) state.battle = BattleAdapter.load(data.battle)
 
     if (
         'orderedActivities' in data &&

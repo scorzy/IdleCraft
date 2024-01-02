@@ -15,8 +15,8 @@ export const BattleZones: { [k in BattleZoneEnum]: BattleZone } = {
         ],
     },
     [BattleZoneEnum.Wolf]: {
-        nameId: 'Boar',
-        iconId: Icons.Boar,
+        nameId: 'Wolves',
+        iconId: Icons.WolfHead,
         enemies: [
             {
                 quantity: 1,

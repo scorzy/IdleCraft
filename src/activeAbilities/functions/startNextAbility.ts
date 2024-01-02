@@ -1,15 +1,16 @@
 import { CharacterStateAdapter } from '../../characters/characterAdapter'
 import { GameState } from '../../game/GameState'
-import { execAbility } from './execAbility'
+import { startAbility } from './startAbility'
 
-export function execNextAbility(state: GameState, charId: string): GameState {
+export function startNextAbility(state: GameState, charId: string): GameState {
     const done = false
     const char = CharacterStateAdapter.selectEx(state.characters, charId)
 
     const start = (i: number) => {
         const abilityId = char.combatAbilities[i]
         if (!abilityId) return
-        const res = execAbility(state, charId, abilityId)
+
+        const res = startAbility(state, charId, abilityId)
         state = res.state
         if (res.done) {
             state = {

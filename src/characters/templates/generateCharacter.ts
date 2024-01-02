@@ -1,11 +1,17 @@
 import { CharAbilityAdapter } from '../../activeAbilities/CharAbilityAdapter'
+import { getUniqueId } from '../../utils/getUniqueId'
+import { memoize } from '../../utils/memoize'
 import { CharacterState } from '../characterState'
+import { selectMaxHealthFromChar } from '../selectors/healthSelectors'
+import { selectMaxManaFromChar } from '../selectors/manaSelectors'
+import { selectMaxStaminaFromChar } from '../selectors/staminaSelectors'
 import { CharTemplate } from './charTemplates'
 
-// eslint-disable-next-line import/no-unused-modules
-export function generateCharacter(template: CharTemplate): CharacterState {
+export const generateCharacter = memoize(function (template: CharTemplate): CharacterState {
     const char: CharacterState = structuredClone({
-        id: '',
+        id: getUniqueId(),
+        nameId: template.nameId,
+        iconId: template.iconId,
         inventory: template.inventory,
         skillsExp: template.skillsExp,
         skillsLevel: template.skillsLevel,
@@ -24,5 +30,9 @@ export function generateCharacter(template: CharTemplate): CharacterState {
         lastCombatAbilityNum: 0,
     })
 
+    char.health = selectMaxHealthFromChar(char).total
+    char.mana = selectMaxManaFromChar(char).total
+    char.stamina = selectMaxStaminaFromChar(char).total
+
     return char
-}
+})

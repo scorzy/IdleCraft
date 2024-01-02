@@ -1,8 +1,11 @@
+import { Icons } from '../../icons/Icons'
 import { CharTemplate } from './charTemplates'
 import { CharTemplateEnum } from './characterTemplateEnum'
 
 export const CharTemplatesData: { [k in CharTemplateEnum]: CharTemplate } = {
     [CharTemplateEnum.Boar]: {
+        nameId: 'Boar',
+        iconId: Icons.Boar,
         inventory: {},
         skillsExp: {},
         skillsLevel: {},
