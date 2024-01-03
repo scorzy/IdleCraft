@@ -1,29 +1,8 @@
 import { GameState } from '../game/GameState'
+import { activityStarters } from '../game/globals'
 import { useGameStore } from '../game/state'
-import { ActivityStartResult } from './AbstractActivity'
 import { ActivityAdapter } from './ActivityState'
-import { makeActivityFun } from './makeActivityFun'
-
-function removeActivityInt(state: GameState, id: string): GameState {
-    const act = ActivityAdapter.select(state.activities, id)
-    if (!act) return state
-    state = makeActivityFun(state, act.type, id).remove()
-    return startNextActivity(state)
-}
-
-export const removeActivity = (id: string | undefined | null) => {
-    if (!id) return
-    return useGameStore.setState((s) => removeActivityInt(s, id))
-}
-
-export function execActivityOnTimer(state: GameState, activityId: string): GameState {
-    const activity = ActivityAdapter.select(state.activities, activityId)
-    if (!activity) return state
-    const res = makeActivityFun(state, activity.type, activityId).exec()
-    state = res.gameState
-    if (res.result !== ActivityStartResult.Started) state = startNextActivity(state)
-    return state
-}
+import { ActivityStartResult } from './activityInterfaces'
 
 export function startNextActivity(state: GameState): GameState {
     if (state.orderedActivities.length < 1) return state
@@ -33,7 +12,8 @@ export function startNextActivity(state: GameState): GameState {
         if (currentAct === undefined) {
             state = { ...state, activityId: null }
         } else if (currentAct.max > state.activityDone) {
-            const { gameState, result } = makeActivityFun(state, currentAct.type, state.activityId).start()
+            const start = activityStarters.getEx(currentAct.type)
+            const { state: gameState, result } = start(state, state.activityId)
             state = gameState
             if (result === ActivityStartResult.Started) return state
         }
@@ -50,8 +30,8 @@ export function startNextActivity(state: GameState): GameState {
 
         const activity = ActivityAdapter.select(state.activities, activityId)
         if (!activity) return false
-
-        const { gameState, result } = makeActivityFun(state, activity.type, activityId).start()
+        const start = activityStarters.getEx(activity.type)
+        const { state: gameState, result } = start(state, activityId)
         state = gameState
 
         return result === ActivityStartResult.Started

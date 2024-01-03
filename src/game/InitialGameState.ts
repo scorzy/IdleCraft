@@ -15,6 +15,7 @@ import { PLAYER_ID } from '../characters/charactersConst'
 import { PerksEnum } from '../perks/perksEnum'
 import { BattleAdapter } from '../battle/BattleAdapter'
 import { CharAbilityAdapter } from '../activeAbilities/CharAbilityAdapter'
+import { Icons } from '../icons/Icons'
 import { GameState, LocationState } from './GameState'
 
 const InitialVillageState: () => LocationState = () =>
@@ -81,6 +82,8 @@ export const InitialGameState: GameState = {
         ids: [PLAYER_ID],
         entries: {
             [PLAYER_ID]: {
+                iconId: Icons.Axe,
+                nameId: 'Activities',
                 id: PLAYER_ID,
                 inventory: {},
                 exp: 0,

@@ -1,7 +1,8 @@
+import { ActivityTypes } from '../../activities/ActivityState'
 import { InitialState } from '../../entityAdapter/entityAdapter'
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
-import { Timer, TimerTypes } from '../../timers/Timer'
+import { Timer } from '../../timers/Timer'
 import { memoize } from '../../utils/memoize'
 import { memoizeOne } from '../../utils/memoizeOne'
 import { ForestsState } from '../ForestsState'
@@ -36,7 +37,7 @@ const selectGrowingTreesInt = (
     const ret: string[] = []
     for (const timerId of timers.ids) {
         const timer = timers.entries[timerId]
-        if (timer && timer.type === TimerTypes.Tree && timer.actId) {
+        if (timer && timer.type === ActivityTypes.Tree && timer.actId) {
             const tree = TreeGrowthAdapter.select(treeGrowth, timer.actId)
             if (tree && tree.location === location && tree.woodType === woodType) ret.push(timer.id)
         }

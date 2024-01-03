@@ -1,25 +1,19 @@
-import { execActivityOnTimer, startNextActivity } from '../activities/activityFunctions'
 import { GameState } from '../game/GameState'
-import { TimerAdapter, TimerTypes } from './Timer'
-import { growTree } from '@/wood/forest/growTree'
+import { activityExecutors } from '../game/globals'
+import { TimerAdapter } from './Timer'
 
 export function onTimer(state: GameState, timerId: string) {
     const timer = state.timers.entries[timerId]
-    if (timer === undefined) return state
+    if (!timer) return state
 
     state = { ...state, timers: TimerAdapter.remove(state.timers, timerId) }
 
     const actId = timer.actId
-    if (actId) {
-        if (timer.type === TimerTypes.Tree) {
-            state = growTree(state, actId)
-            if (state.waitingTrees === state.activityId) state = startNextActivity(state)
+    if (!actId) return state
 
-            return state
-        }
-
-        state = execActivityOnTimer(state, actId)
-    }
+    const exec = activityExecutors.get(timer.type)
+    if (!exec) throw new Error(`[onTimer] timer type not found ${timer.type}`)
+    state = exec(state, timer)
 
     return state
 }

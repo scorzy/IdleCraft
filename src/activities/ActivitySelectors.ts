@@ -1,16 +1,17 @@
 import { GameState } from '../game/GameState'
-import { makeActivityFun } from './makeActivityFun'
+import { activityIcons, activityTitles } from '../game/globals'
 
 export const selectActivityId = (state: GameState) => state.activities.ids
 export const selectActivityTitle = (id: string) => (state: GameState) => {
     const act = state.activities.entries[id]
     if (!act) return ''
-    const actFun = makeActivityFun(state, act.type, id)
-    return actFun.getTitle()
+
+    const actFun = activityTitles.getEx(act.type)
+    return actFun(state, id)
 }
 export const selectActivityIcon = (id: string) => (state: GameState) => {
     const act = state.activities.entries[id]
     if (!act) return ''
-    const actFun = makeActivityFun(state, act.type, id)
-    return actFun.getIcon()
+    const actFun = activityIcons.getEx(act.type)
+    return actFun(state, id)
 }

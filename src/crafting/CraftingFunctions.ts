@@ -1,11 +1,4 @@
-import { useGameStore } from '../game/state'
 import { Item } from '../items/Item'
-import { CraftingActivityCreator } from './CraftingActivityCreator'
-
-export const addCrafting = () =>
-    useGameStore.setState((state) => {
-        return new CraftingActivityCreator(state, null).createActivity()
-    })
 
 export function getItemValue(components: Item[], isFinalItem: boolean): number {
     let value = 0

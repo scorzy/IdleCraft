@@ -1,16 +1,27 @@
 import { ActivityTypes } from '../activities/ActivityState'
-import { activities } from '../activities/makeActivityFun'
-import { BattleActivity } from '../battle/BattleActivity'
-import { CraftingActivity } from '../crafting/CraftingActivity'
 import { recipes } from '../crafting/Recipes'
-import { MiningActivity } from '../mining/MiningActivity'
+import { execCrafting } from '../crafting/functions/execCrafting'
+import { getCraftingIcon } from '../crafting/functions/getCraftingIcon'
+import { getCraftingTitle } from '../crafting/functions/getCraftingTitle'
+import { removeCrafting } from '../crafting/functions/removeCrafting'
+import { startCrafting } from '../crafting/functions/startCrafting'
+import { execMining } from '../mining/functions/execMining'
+import { getMiningIcon } from '../mining/functions/getMiningIcon'
+import { getMiningTitle } from '../mining/functions/getMiningTitle'
+import { removeMining } from '../mining/functions/removeMining'
+import { startMining } from '../mining/functions/startMining'
 import { AxeRecipe } from '../smithing/recipes/AxeRecipe'
 import { BarRecipe } from '../smithing/recipes/BarRecipe'
 import { PickaxeRecipe } from '../smithing/recipes/PickaxeRecipe'
-import { WoodcuttingActivity } from '../wood/WoodcuttingActivity'
+import { execTreeGrow } from '../wood/forest/execTreeGrow'
+import { execWoodcutting } from '../wood/functions/execWoodcutting'
+import { getWoodcuttingIcon } from '../wood/functions/getWoodcuttingIcon'
+import { getWoodcuttingTitle } from '../wood/functions/getWoodcuttingTitle'
+import { removeWoodcutting } from '../wood/functions/removeWoodcutting'
+import { startWoodcutting } from '../wood/functions/startWoodcutting'
 import { HandleRecipe } from '../wood/recipes/HandleRecipe'
 import { PlankRecipe } from '../wood/recipes/PlankRecipe'
-import { GameState } from './GameState'
+import { activityIcons, activityRemovers, activityStarters, activityTitles, activityExecutors } from './globals'
 
 export function initialize() {
     initActivities()
@@ -18,10 +29,25 @@ export function initialize() {
 }
 
 function initActivities() {
-    activities.set(ActivityTypes.Crafting, (state: GameState, id: string) => new CraftingActivity(state, id))
-    activities.set(ActivityTypes.Mining, (state: GameState, id: string) => new MiningActivity(state, id))
-    activities.set(ActivityTypes.Woodcutting, (state: GameState, id: string) => new WoodcuttingActivity(state, id))
-    activities.set(ActivityTypes.Battle, (state: GameState, id: string) => new BattleActivity(state, id))
+    activityExecutors.set(ActivityTypes.Woodcutting, execWoodcutting)
+    activityRemovers.set(ActivityTypes.Woodcutting, removeWoodcutting)
+    activityStarters.set(ActivityTypes.Woodcutting, startWoodcutting)
+    activityTitles.set(ActivityTypes.Woodcutting, getWoodcuttingTitle)
+    activityIcons.set(ActivityTypes.Woodcutting, getWoodcuttingIcon)
+
+    activityExecutors.set(ActivityTypes.Mining, execMining)
+    activityRemovers.set(ActivityTypes.Mining, removeMining)
+    activityStarters.set(ActivityTypes.Mining, startMining)
+    activityTitles.set(ActivityTypes.Mining, getMiningTitle)
+    activityIcons.set(ActivityTypes.Mining, getMiningIcon)
+
+    activityExecutors.set(ActivityTypes.Crafting, execCrafting)
+    activityRemovers.set(ActivityTypes.Crafting, removeCrafting)
+    activityStarters.set(ActivityTypes.Crafting, startCrafting)
+    activityTitles.set(ActivityTypes.Crafting, getCraftingTitle)
+    activityIcons.set(ActivityTypes.Crafting, getCraftingIcon)
+
+    activityExecutors.set(ActivityTypes.Tree, execTreeGrow)
 }
 
 function initRecipes() {

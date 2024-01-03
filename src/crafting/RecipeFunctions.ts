@@ -48,8 +48,7 @@ export const setRecipeItemParam = (id: string, paramValue: string) =>
 
         if (value.craftItemId || value.stdItemId) paramsValue.push(value)
 
-        const recipe = recipes.get(state.recipeId)
-        if (!recipe) throw new Error(`Recipe with id ${state.recipeId} not found`)
+        const recipe = recipes.getEx(state.recipeId)
         const result = recipe.getResult(state, paramsValue)
 
         state = {

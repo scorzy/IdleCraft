@@ -2,12 +2,13 @@ import { memo, useCallback } from 'react'
 import { LuArrowDown, LuArrowUp, LuInfo, LuTrash2 } from 'react-icons/lu'
 import { useGameStore } from '../../game/state'
 import { selectActivityIcon, selectActivityId, selectActivityTitle } from '../ActivitySelectors'
-import { moveActivityNext, moveActivityPrev, removeActivity } from '../activityFunctions'
+import { moveActivityNext, moveActivityPrev } from '../activityFunctions'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { MyCard } from '../../ui/myCard/myCard'
 import { Alert, AlertTitle } from '../../components/ui/alert'
 import { MyPage } from '../../ui/pages/MyPage'
+import { removeActivity } from '../functions/removeActivity'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -40,13 +41,14 @@ export const Activities = memo(function Activities() {
 
 const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: boolean; isLast: boolean }) {
     const { id, isFirst, isLast } = props
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+
     const act = useGameStore((s) => s.activities.entries[id])
     const title = useGameStore(selectActivityTitle(id))
     const icon = useGameStore(selectActivityIcon(id))
     const active = useGameStore((s) => s.activityId === id)
-    const { t } = useTranslations()
     const cur = useGameStore((s) => (active ? s.activityDone + 1 : 0))
-    const { f } = useNumberFormatter()
 
     const onClickPrev = useCallback(() => moveActivityPrev(id), [id])
     const onClickNext = useCallback(() => moveActivityNext(id), [id])
