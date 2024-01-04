@@ -15,7 +15,7 @@ const TOAST_REMOVE_DELAY = 1000000
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
-  iconId?: Icons
+  iconId?: Icons 
 }
 
 const actionTypes = {

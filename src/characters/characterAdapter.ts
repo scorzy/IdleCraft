@@ -1,9 +1,9 @@
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 import { CharacterState } from './characterState'
 
-class CharacterStateAdapterInt extends AbstractEntityAdapter<CharacterState> {
+class CharacterAdapterInt extends AbstractEntityAdapter<CharacterState> {
     getId(data: CharacterState): string {
         return data.id
     }
 }
-export const CharacterStateAdapter = new CharacterStateAdapterInt()
+export const CharacterAdapter = new CharacterAdapterInt()

@@ -1,11 +1,11 @@
 import { GameState } from '../game/GameState'
-import { CharacterStateAdapter } from './characterAdapter'
+import { CharacterAdapter } from './characterAdapter'
 import { PLAYER_ID } from './charactersConst'
 
 const selectMaxAttributes = (state: GameState, characterId: string) =>
-    CharacterStateAdapter.selectEx(state.characters, characterId).level
+    CharacterAdapter.selectEx(state.characters, characterId).level
 const selectUsedAttributes = (state: GameState, characterId: string) => {
-    const char = CharacterStateAdapter.selectEx(state.characters, characterId)
+    const char = CharacterAdapter.selectEx(state.characters, characterId)
     return char.healthPoints + char.staminaPoints + char.manaPoints
 }
 
@@ -15,11 +15,11 @@ export const selectPlayerAvAttr = (state: GameState) =>
     selectMaxAttributes(state, PLAYER_ID) - selectUsedAttributes(state, PLAYER_ID)
 
 const selectHealthPoints = (state: GameState, characterId: string) =>
-    CharacterStateAdapter.selectEx(state.characters, characterId).healthPoints
+    CharacterAdapter.selectEx(state.characters, characterId).healthPoints
 const selectStaminaPoint = (state: GameState, characterId: string) =>
-    CharacterStateAdapter.selectEx(state.characters, characterId).staminaPoints
+    CharacterAdapter.selectEx(state.characters, characterId).staminaPoints
 const selectManaPoints = (state: GameState, characterId: string) =>
-    CharacterStateAdapter.selectEx(state.characters, characterId).manaPoints
+    CharacterAdapter.selectEx(state.characters, characterId).manaPoints
 
 export const selectPlayerHealthPoints = (state: GameState) => selectHealthPoints(state, PLAYER_ID)
 export const selectPlayerStaminaPoints = (state: GameState) => selectStaminaPoint(state, PLAYER_ID)

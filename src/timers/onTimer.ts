@@ -11,9 +11,7 @@ export function onTimer(state: GameState, timerId: string) {
     const actId = timer.actId
     if (!actId) return state
 
-    const exec = activityExecutors.get(timer.type)
-    if (!exec) throw new Error(`[onTimer] timer type not found ${timer.type}`)
-    state = exec(state, timer)
+    state = activityExecutors.getEx(timer.type)(state, timer)
 
     return state
 }

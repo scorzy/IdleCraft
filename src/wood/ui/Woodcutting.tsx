@@ -118,7 +118,7 @@ const Forest = memo(function Forest() {
     const data = WoodData[woodType]
 
     return (
-        <MyCard title={t[`${woodType}Forest`]} icon={data.icon}>
+        <MyCard title={t[`${woodType}Forest`]} icon={data.iconId}>
             <ForestQta />
             <Trees />
         </MyCard>

@@ -19,6 +19,7 @@ import { generateCharacter } from '../../characters/templates/generateCharacter'
 import { CharTemplatesData } from '../../characters/templates/charTemplateData'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 
+import { addBattle } from '../functions/addbattle'
 import classes from './combat.module.css'
 
 export const CombatPage = memo(function CombatPage() {
@@ -90,7 +91,7 @@ const BattleZoneInfoUi = memo(function BattleZoneInfoUi() {
 
     const onAddClick = useCallback(() => {
         console.log(battleZoneEnum)
-        //     if (battleZoneEnum) addBattle({ battleZoneEnum })
+        if (battleZoneEnum) addBattle(battleZoneEnum)
     }, [battleZoneEnum])
 
     if (!battleZoneEnum) return <></>

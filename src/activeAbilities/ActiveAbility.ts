@@ -7,9 +7,7 @@ export interface AbilityParams {
     state: GameState
     characterId: string
 }
-export interface AbilityResult {
-    state: GameState
-}
+
 export interface AbilityStartResult {
     state: GameState
     started: boolean
@@ -23,7 +21,6 @@ export interface ActiveAbility {
     getHealthCost(params: AbilityParams): number
     getStaminaCost(params: AbilityParams): number
     getManaCost(params: AbilityParams): number
-    canStart(params: AbilityParams): boolean
-    start(params: AbilityParams): AbilityStartResult
-    exec(params: AbilityParams): AbilityResult
+
+    exec(params: AbilityParams): GameState
 }

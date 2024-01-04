@@ -19,7 +19,7 @@ export const BattleZones: { [k in BattleZoneEnum]: BattleZone } = {
         iconId: Icons.WolfHead,
         enemies: [
             {
-                quantity: 1,
+                quantity: 2,
                 template: CharTemplateEnum.Boar,
             },
         ],

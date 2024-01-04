@@ -1,6 +1,5 @@
-import { GiCube } from 'react-icons/gi'
 import { GameState } from '../../game/GameState'
-import { IconsData } from '../../icons/Icons'
+import { Icons } from '../../icons/Icons'
 import { StdItems } from '../../items/stdItems'
 import { CraftingAdapter } from '../CraftingAdapter'
 
@@ -9,7 +8,7 @@ export function getCraftingIcon(state: GameState, id: string) {
     if (data.result.results.stdItemId) {
         const stdItem = StdItems[data.result.results.stdItemId]
         if (!stdItem) throw new Error(`StdItem not found ${data.result.results.stdItemId}`)
-        return IconsData[stdItem.icon]
-    } else if (data.result.results.craftedItem) return IconsData[data.result.results.craftedItem.icon]
-    else return <GiCube />
+        return stdItem.icon
+    } else if (data.result.results.craftedItem) return data.result.results.craftedItem.icon
+    else return Icons.Axe
 }

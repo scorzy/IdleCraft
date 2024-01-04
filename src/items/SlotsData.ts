@@ -12,4 +12,10 @@ export const SlotsData: { [k in EquipSlotsEnum]: SlotData } = {
     [EquipSlotsEnum.Pickaxe]: {
         ItemType: ItemTypes.Pickaxe,
     },
+    [EquipSlotsEnum.MainHand]: {
+        ItemType: ItemTypes.MainHand,
+    },
+    [EquipSlotsEnum.TwoHand]: {
+        ItemType: ItemTypes.TwoHand,
+    },
 }

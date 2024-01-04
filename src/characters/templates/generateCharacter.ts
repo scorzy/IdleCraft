@@ -1,4 +1,4 @@
-import { CharAbilityAdapter } from '../../activeAbilities/CharAbilityAdapter'
+import { CharAbilityAdapter } from '../../activeAbilities/abilityAdapters'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { memoize } from '../../utils/memoize'
 import { CharacterState } from '../characterState'

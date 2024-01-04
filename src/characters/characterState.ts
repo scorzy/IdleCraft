@@ -1,4 +1,4 @@
-import { CharAbility } from '../activeAbilities/types/CharAbility'
+import { CharAbility } from '../activeAbilities/abilityInterfaces'
 import { InitialState } from '../entityAdapter/entityAdapter'
 import { ExpState } from '../experience/ExpState'
 import { Icons } from '../icons/Icons'

@@ -1,4 +1,5 @@
 import { GameState } from '../../game/GameState'
+import { activityIcons, activityTitles } from '../../game/globals'
 import { addNotification } from '../../notification/addNotification'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { ActivityState, ActivityAdapter, ActivityTypes } from '../ActivityState'
@@ -22,7 +23,9 @@ export const makeAddActivity =
 
         state = add(state, id)
 
-        state.notifications = addNotification(state.notifications, { titleId: 'ActivityAdded' })
+        const title = activityTitles.getEx(type)(state, id)
+        const iconId = activityIcons.getEx(type)(state, id)
+        state.notifications = addNotification(state.notifications, { title, iconId })
 
         if (state.orderedActivities.length === 1) state = startNextActivity(state)
 

@@ -97,4 +97,11 @@ export abstract class AbstractEntityAdapter<T> {
     findIds(data: InitialState<T>): string[] {
         return data.ids
     }
+    forEach(state: InitialState<T>, fun: (el: T) => void) {
+        const ids = state.ids
+        ids.forEach((id: string) => {
+            const element = state.entries[id]
+            if (element) fun(element)
+        })
+    }
 }

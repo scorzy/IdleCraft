@@ -6,6 +6,7 @@ export enum ActivityTypes {
     Mining = 'Mining',
     Battle = 'Battle',
     Tree = 'Tree',
+    Ability = 'Ability',
 }
 export interface ActivityState {
     id: string

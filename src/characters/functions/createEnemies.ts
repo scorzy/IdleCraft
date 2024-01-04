@@ -1,6 +1,6 @@
 import { GameState } from '../../game/GameState'
 import { getUniqueId } from '../../utils/getUniqueId'
-import { CharacterStateAdapter } from '../characterAdapter'
+import { CharacterAdapter } from '../characterAdapter'
 import { CharTemplatesData } from '../templates/charTemplateData'
 import { CharTemplateEnum } from '../templates/characterTemplateEnum'
 import { generateCharacter } from '../templates/generateCharacter'
@@ -20,13 +20,18 @@ export function createEnemies(
         enemy.isEnemy = true
         for (let i = 0; i < enemyData.quantity; i++) {
             const enemyToAdd = structuredClone(enemy)
-            const id = getUniqueId()
-            enemyToAdd.id = id
-            state = { ...state, characters: CharacterStateAdapter.create(state.characters, enemyToAdd) }
-            state = resetHealth(state, id)
-            state = resetMana(state, id)
-            state = resetStamina(state, id)
+            enemyToAdd.id = getUniqueId()
+            state = { ...state, characters: CharacterAdapter.create(state.characters, enemyToAdd) }
         }
+    })
+
+    const ids = CharacterAdapter.getIds(state.characters)
+    ids.forEach((id) => {
+        const char = CharacterAdapter.selectEx(state.characters, id)
+        if (!char.isEnemy) return
+        state = resetHealth(state, id)
+        state = resetMana(state, id)
+        state = resetStamina(state, id)
     })
 
     return state

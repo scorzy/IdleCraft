@@ -10,7 +10,8 @@ export enum ItemTypes {
     Bar = 'Bar',
     WoodAxe = 'WoodAxe',
     Pickaxe = 'Pickaxe',
-    Weapon = 'Weapon',
+    MainHand = 'MainHand',
+    TwoHand = 'TwoHand',
 }
 export enum DamageTypes {
     Slashing = 'Slashing',
@@ -35,6 +36,7 @@ export interface PickaxeData {
 export interface WeaponData {
     damage: number
     damageType: DamageTypes
+    attackSpeed: number
 }
 export interface Item {
     id: string

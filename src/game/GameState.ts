@@ -22,6 +22,7 @@ import { PerkState } from '../perks/PerkState'
 import { ToastState } from '../notification/toastState'
 import { BattleState } from '../battle/BattleTypes'
 import { BattleZoneEnum } from '../battle/BattleZoneEnum'
+import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -82,4 +83,5 @@ export interface GameState {
     }
     characters: InitialState<CharacterState>
     battle: InitialState<BattleState>
+    castCharAbility: InitialState<CastCharAbility>
 }

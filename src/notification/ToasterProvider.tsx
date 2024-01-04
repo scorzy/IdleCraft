@@ -21,6 +21,7 @@ export function ToasterProvider() {
 
         for (const n of notifications) {
             const myToast: ToastType = {}
+            if (n.title) myToast.title = n.title
             if (n.titleId) myToast.title = t[n.titleId]
             if (n.descriptionId) myToast.title = t[n.descriptionId]
             if (n.iconId) myToast.iconId = n.iconId

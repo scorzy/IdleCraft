@@ -115,7 +115,6 @@ export interface Msg {
     Filter: string
 
     ActivityAdded: string
-    NormalAttack: string
     NormalAttackDesc: string
 
     CombatZones: string
@@ -124,6 +123,11 @@ export interface Msg {
     Forest: string
     Boar: string
     Wolves: string
+
+    // Abilities
+    NormalAttack: string
+
+    Unharmed: string
 }
 export interface MsgFunctions {
     // Time

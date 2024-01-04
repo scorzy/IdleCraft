@@ -90,7 +90,7 @@ const OreUi = memo(function MiningOre() {
     const hpPercent = Math.floor((100 * ore.qta) / def.qta)
 
     return (
-        <MyCard title={t.OreVein} icon={oreData.icon}>
+        <MyCard title={t.OreVein} icon={oreData.iconId}>
             <MyCardLabel>
                 {t.OreQta} {f(ore.qta)}/{f(def.qta)}
             </MyCardLabel>

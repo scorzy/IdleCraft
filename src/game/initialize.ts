@@ -1,4 +1,11 @@
+import { ActiveAbilityData } from '../activeAbilities/ActiveAbilityData'
+import { NormalAttack } from '../activeAbilities/abilities/NormalAttack'
+import { NORMAL_ATTACK_ID } from '../activeAbilities/abilityConst'
+import { execAbilityTimer } from '../activeAbilities/functions/execAbilityTimer'
 import { ActivityTypes } from '../activities/ActivityState'
+import { getBattleIcon } from '../battle/functions/getBattleIcon'
+import { getBattleTitle } from '../battle/functions/getBattleTitle'
+import { startBattle } from '../battle/functions/startBattle'
 import { recipes } from '../crafting/Recipes'
 import { execCrafting } from '../crafting/functions/execCrafting'
 import { getCraftingIcon } from '../crafting/functions/getCraftingIcon'
@@ -26,6 +33,7 @@ import { activityIcons, activityRemovers, activityStarters, activityTitles, acti
 export function initialize() {
     initActivities()
     initRecipes()
+    initAbilities()
 }
 
 function initActivities() {
@@ -47,7 +55,15 @@ function initActivities() {
     activityTitles.set(ActivityTypes.Crafting, getCraftingTitle)
     activityIcons.set(ActivityTypes.Crafting, getCraftingIcon)
 
+    // activityExecutors.set(ActivityTypes.Battle, execBattle)
+    // activityRemovers.set(ActivityTypes.Battle, removeBattle)
+    activityStarters.set(ActivityTypes.Battle, startBattle)
+    activityTitles.set(ActivityTypes.Battle, getBattleTitle)
+    activityIcons.set(ActivityTypes.Battle, getBattleIcon)
+
     activityExecutors.set(ActivityTypes.Tree, execTreeGrow)
+
+    activityExecutors.set(ActivityTypes.Ability, execAbilityTimer)
 }
 
 function initRecipes() {
@@ -56,4 +72,7 @@ function initRecipes() {
     recipes.set(BarRecipe.id, BarRecipe)
     recipes.set(AxeRecipe.id, AxeRecipe)
     recipes.set(PickaxeRecipe.id, PickaxeRecipe)
+}
+function initAbilities() {
+    ActiveAbilityData.set(NORMAL_ATTACK_ID, new NormalAttack())
 }

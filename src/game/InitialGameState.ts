@@ -14,7 +14,7 @@ import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { PerksEnum } from '../perks/perksEnum'
 import { BattleAdapter } from '../battle/BattleAdapter'
-import { CharAbilityAdapter } from '../activeAbilities/CharAbilityAdapter'
+import { CastCharAbilityAdapter, CharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { Icons } from '../icons/Icons'
 import { GameState, LocationState } from './GameState'
 
@@ -88,9 +88,9 @@ export const InitialGameState: GameState = {
                 inventory: {},
                 exp: 0,
                 level: 0,
-                healthPoints: 0,
-                manaPoints: 0,
-                staminaPoints: 0,
+                healthPoints: 100,
+                manaPoints: 100,
+                staminaPoints: 100,
                 isEnemy: false,
                 skillsExp: {},
                 skillsLevel: {},
@@ -105,6 +105,7 @@ export const InitialGameState: GameState = {
         },
     },
     battle: BattleAdapter.getInitialState(),
+    castCharAbility: CastCharAbilityAdapter.getInitialState(),
 }
 
 export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)

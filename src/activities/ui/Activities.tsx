@@ -9,6 +9,7 @@ import { MyCard } from '../../ui/myCard/myCard'
 import { Alert, AlertTitle } from '../../components/ui/alert'
 import { MyPage } from '../../ui/pages/MyPage'
 import { removeActivity } from '../functions/removeActivity'
+import { IconsData } from '../../icons/Icons'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -58,7 +59,7 @@ const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: bo
 
     return (
         <div className={classes.container}>
-            <div className={classes.icon}>{icon}</div>
+            <div className={classes.icon}>{IconsData[icon]}</div>
             <div className={classes.title}>
                 <div>{title}</div>
                 <Badge variant={active ? 'default' : 'secondary'}>

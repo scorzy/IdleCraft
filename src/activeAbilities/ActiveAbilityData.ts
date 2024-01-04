@@ -1,3 +1,4 @@
+import { MapEx } from '../utils/MapEx'
 import { ActiveAbility } from './ActiveAbility'
 
-export const ActiveAbilityData: Map<string, ActiveAbility> = new Map()
+export const ActiveAbilityData: MapEx<string, ActiveAbility> = new MapEx()
