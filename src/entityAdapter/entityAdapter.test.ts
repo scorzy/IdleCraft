@@ -33,10 +33,6 @@ describe('EntityAdapter', () => {
             ids: ['first', 'second'],
         })
     })
-    it('re create first', () => {
-        const state = { entries: { first: { name: 'first' } }, ids: ['first'] }
-        expect(() => adapter.create(state, { name: 'first' })).toThrowError('first already exists')
-    })
     it('update', () => {
         const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }
         const newState = adapter2.update(state, 'first', { name: 'second' })

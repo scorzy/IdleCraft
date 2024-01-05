@@ -1,10 +1,17 @@
-import { InitialTimerState, Timer, TimerAdapter } from './Timer'
+import { InitialTimerState, Timer } from './Timer'
 
 export function getFirstTimer(timers: InitialTimerState, max: number): Timer | null {
-    const timerId = timers.minId
-    if (!timerId) return null
-    const timer = TimerAdapter.select(timers, timerId)
-    if (!timer) return null
-    if (timer.to > max) return null
-    return timer
+    let min = Number.POSITIVE_INFINITY
+    let ret: Timer | null = null
+    const ids = timers.ids
+    ids.forEach((id) => {
+        const timer = timers.entries[id]
+        if (!timer) return
+        if (timer.to > max) return
+        if (timer.to < min) {
+            min = timer.to
+            ret = timer
+        }
+    })
+    return ret
 }

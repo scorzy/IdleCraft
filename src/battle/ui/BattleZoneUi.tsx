@@ -89,7 +89,6 @@ const BattleZoneInfoUi = memo(function BattleZoneInfoUi() {
     const battleZoneEnum = useGameStore(selectBattleZone)
 
     const onAddClick = useCallback(() => {
-        console.log(battleZoneEnum)
         if (battleZoneEnum) addBattle(battleZoneEnum)
     }, [battleZoneEnum])
 

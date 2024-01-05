@@ -14,24 +14,18 @@ export abstract class AbstractEntityAdapter<T> {
     }
     create(state: InitialState<T>, data: T) {
         const id = this.getId(data)
-        const existing = state.entries[id]
-        if (existing !== undefined) throw new Error(`${id} already exists`)
-        const ids = [...state.ids, id]
-        state = { ...state, entries: { ...state.entries, [id]: data }, ids }
-        return state
+        return { ...state, entries: { ...state.entries, [id]: data }, ids: [...state.ids, id] }
     }
     update(state: InitialState<T>, id: string, data: Partial<T>) {
         const existing = state.entries[id]
         if (!existing) throw new Error(`${id} doesn't exists`)
         const complete: T = { ...existing, ...data }
-        state = { ...state, entries: { ...state.entries, [id]: complete } }
-        return state
+        return { ...state, entries: { ...state.entries, [id]: complete } }
     }
     replace(state: InitialState<T>, id: string, data: T) {
         const existing = state.entries[id]
         if (existing === undefined) throw new Error(`${id} doesn't exists`)
-        state = { ...state, entries: { ...state.entries, [id]: data } }
-        return state
+        return { ...state, entries: { ...state.entries, [id]: data } }
     }
     upsertMerge(state: InitialState<T>, data: T) {
         const id = this.getId(data)
@@ -44,12 +38,10 @@ export abstract class AbstractEntityAdapter<T> {
         return state
     }
     remove(state: InitialState<T>, id: string) {
-        if (!id) throw new Error('id undefined')
         const existing = state.entries[id]
         if (!existing) throw new Error(`${id} doesn't exists`)
         const { [id]: _, ...newEntries } = state.entries
-        state = { entries: newEntries, ids: state.ids.filter((e) => e !== id) }
-        return state
+        return { entries: newEntries, ids: state.ids.filter((e) => e !== id) }
     }
     getIds(state: InitialState<T>): string[] {
         return state.ids
