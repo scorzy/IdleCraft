@@ -70,6 +70,15 @@ export abstract class AbstractEntityAdapter<T> {
             if (data && fun(data)) return data
         }
     }
+    findMany(state: InitialState<T>, fun: (entity: T) => boolean): T[] | undefined {
+        const ret: T[] = []
+        const ids = state.ids
+        for (const id of ids) {
+            const data = state.entries[id]
+            if (data && fun(data)) ret.push(data)
+        }
+        return ret
+    }
     load(data: unknown): InitialState<T> {
         let state = this.getInitialState()
         if (

@@ -36,12 +36,12 @@ const CombatChars = memo(function CombatChars() {
     const ids = useGameStore(selectTeams)
     return (
         <div className={classes.container}>
-            <div>
+            <div className={classes.team}>
                 {ids.allies.map((id) => (
                     <CharCard charId={id} key={id} />
                 ))}
             </div>
-            <div>
+            <div className={classes.team}>
                 {ids.enemies.map((id) => (
                     <CharCard charId={id} key={id} />
                 ))}

@@ -1,12 +1,6 @@
 import { ActivityTypes } from '../activities/ActivityState'
 import { AbstractEntityAdapter, InitialState } from '../entityAdapter/entityAdapter'
 
-export enum TimerTypes {
-    Activity = 'Activity',
-    Tree = 'Tree',
-    Ability = 'Ability',
-}
-
 export interface Timer {
     id: string
     from: number
