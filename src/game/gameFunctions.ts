@@ -1,23 +1,8 @@
-import { ActivityAdapter } from '../activities/ActivityState'
-import { CraftingAdapter } from '../crafting/CraftingAdapter'
-import { GameLocations } from '../gameLocations/GameLocations'
-import { StdItemsEntries } from '../items/stdItems'
-import { MiningAdapter } from '../mining/MiningAdapter'
-import { loadOre } from '../mining/miningFunctions'
-import { ItemAdapter } from '../storage/ItemAdapter'
-import { InitialTimerState, Timer, TimerAdapter } from '../timers/Timer'
 import { onTimer } from '../timers/onTimer'
 import { execTimer } from '../timers/timerFunctions'
-import { copyValues } from '../utils/copyValues'
-import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
-import { loadForest } from '../wood/forest/forestFunctions'
-import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
-import { CharacterState } from '../characters/characterState'
-import { PerksEnum, PerksEnumKeys } from '../perks/perksEnum'
-import { InitialState } from '../entityAdapter/entityAdapter'
-import { BattleAdapter } from '../battle/BattleAdapter'
+import { getFirstTimer } from '../timers/getFirstTimer'
 import { GameState, Globals } from './GameState'
-import { GetInitialGameState } from './InitialGameState'
+import { loadData } from './loadData'
 import { useGameStore } from './state'
 
 const MAX_LOAD = 3600 * 1000 * 24 * 1
@@ -31,78 +16,6 @@ export const load = (data: object) => {
     let state = loadData(data)
     state = loadGame(state)
     useGameStore.setState(state)
-}
-
-function loadData(data: object): GameState {
-    const state = GetInitialGameState()
-    copyValues(state, data)
-
-    if ('ui' in data && data.ui) copyValues(state.ui, data.ui)
-
-    if ('activities' in data) state.activities = ActivityAdapter.load(data.activities)
-    if ('timers' in data) state.timers = TimerAdapter.load(data.timers)
-    if ('craftedItems' in data) state.craftedItems = ItemAdapter.load(data.craftedItems)
-    if ('woodcutting' in data) state.woodcutting = WoodcuttingAdapter.load(data.woodcutting)
-    if ('treeGrowth' in data) state.treeGrowth = TreeGrowthAdapter.load(data.treeGrowth)
-    if ('crafting' in data) state.crafting = CraftingAdapter.load(data.crafting)
-    if ('mining' in data) state.mining = MiningAdapter.load(data.mining)
-    if ('battle' in data) state.battle = BattleAdapter.load(data.battle)
-
-    if (
-        'orderedActivities' in data &&
-        data.orderedActivities &&
-        Array.isArray(data.orderedActivities) &&
-        data.orderedActivities.every((e) => typeof e === 'string')
-    )
-        state.orderedActivities = data.orderedActivities as string[]
-
-    if ('locations' in data && data.locations && typeof data.locations === 'object') {
-        const dataLoc = data.locations as Record<string, unknown>
-        Object.keys(GameLocations).forEach((loc) => {
-            if (!(loc in dataLoc)) return
-            const locationData = dataLoc[loc] as Record<string, unknown>
-
-            const location = state.locations[loc as GameLocations]
-
-            if ('storage' in locationData) {
-                const storage = locationData.storage as Record<string, unknown>
-                if ('StdItems' in storage)
-                    for (const entryStd of Object.entries(storage.StdItems as Record<string, unknown>))
-                        if (typeof entryStd[1] === 'number' && StdItemsEntries.find((i) => i.id === entryStd[0]))
-                            location.storage.StdItems[entryStd[0]] = entryStd[1]
-
-                if ('CraftedItems' in storage)
-                    for (const entryCraft of Object.entries(storage.CraftedItems as Record<string, unknown>))
-                        if (typeof entryCraft[0] === 'string' && typeof entryCraft[1] === 'number')
-                            location.storage.CraftedItems[entryCraft[0]] = entryCraft[1]
-            }
-
-            if ('forests' in locationData) location.forests = loadForest(locationData.forests)
-            if ('ores' in locationData) location.ores = loadOre(locationData.forests)
-        })
-    }
-    if ('characters' in data) {
-        // ToDo
-        state.characters = data.characters as InitialState<CharacterState>
-    }
-
-    if ('perks' in data && data.perks && typeof data.perks === 'object')
-        Object.entries(data.perks).forEach((kv) => {
-            const key = kv[0]
-            if (typeof key === 'string' && typeof kv[1] === 'number' && PerksEnumKeys.includes(key))
-                state.perks[key as PerksEnum] = kv[1]
-        })
-
-    return state
-}
-
-function getFirstTimer(timers: InitialTimerState, max: number): Timer | null {
-    const timerId = timers.minId
-    if (!timerId) return null
-    const timer = TimerAdapter.select(timers, timerId)
-    if (!timer) return null
-    if (timer.to > max) return null
-    return timer
 }
 
 function loadGame(state: GameState): GameState {
@@ -130,10 +43,6 @@ function loadGame(state: GameState): GameState {
     while (timer) {
         state.now = timer.to
         state = onTimer(state, timer.id)
-
-        const timerEx = TimerAdapter.select(state.timers, timer.id)
-        if (timerEx) state.timers = TimerAdapter.remove(state.timers, timerEx.id)
-
         timer = getFirstTimer(state.timers, now)
     }
     if (state.now < now) state.now = now
