@@ -36,7 +36,7 @@ export const ExperienceCard = memo(function ExperienceCard(props: { expType: Exp
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <ProgressBar value={percent} key={expType} color={'info'} />
+                <ProgressBar value={percent} key={expType} color="primary" />
             </CardContent>
         </Card>
     )

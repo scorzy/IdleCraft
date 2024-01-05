@@ -94,7 +94,7 @@ const OreUi = memo(function MiningOre() {
             <MyCardLabel>
                 {t.OreQta} {f(ore.qta)}/{f(def.qta)}
             </MyCardLabel>
-            <RestartProgress value={hpPercent} color="info" />
+            <RestartProgress value={hpPercent} color="health" />
         </MyCard>
     )
 })
