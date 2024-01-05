@@ -37,6 +37,5 @@ export const selectCharacterMaxManaList = memoize((charId: string) => (state: Ga
     const char = CharacterAdapter.selectEx(state.characters, charId)
     return selectMaxManaFromChar(char)
 })
-export const selectCharacterMaxMana = memoize(
-    (charId: string) => (state: GameState) => selectCharacterMaxManaList(charId)(state).total
-)
+export const selectCharacterMaxMana = (charId: string) => (state: GameState) =>
+    selectCharacterMaxManaList(charId)(state).total

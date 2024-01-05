@@ -123,6 +123,7 @@ export interface Msg {
     Forest: string
     Boar: string
     Wolves: string
+    Combat: string
 
     // Abilities
     NormalAttack: string

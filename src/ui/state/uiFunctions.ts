@@ -6,7 +6,7 @@ import { changeRecipeState } from '../../crafting/RecipeFunctions'
 import { UiPagesData } from './UiPagesData'
 import { UiPages } from './UiPages'
 
-export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
+export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'health' | 'stamina' | 'mana'
 type StorageOrder = 'name' | 'quantity' | 'value'
 
 export const setTheme = (theme: string) => useGameStore.setState((s) => ({ ui: { ...s.ui, theme } }))

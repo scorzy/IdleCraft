@@ -1,31 +1,22 @@
-.areaCards {
+.container {
     display: grid;
     gap: 1rem;
-    align-items: start;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
-.container {
-    container-type: inline-size;
-}
-.allPage {
+
+.label {
     display: grid;
-    align-items: start;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    align-items: stretch;
-    max-height: calc(100dvh - 50px);
-    overflow: auto;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 7em;
+    font-size: 0.875rem;
 }
-.side {
-    border-bottom: 1px solid hsl(var(--border));
-}
-@container (min-width: 900px) {
-    .allPage {
-        grid-template-columns: auto 1fr;
-        height: 100%;
-    }
-    .side {
-        border-right: 1px solid hsl(var(--border));
-        border-bottom: none;
-    }
+.attackLabel {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
 }

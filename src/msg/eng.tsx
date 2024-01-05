@@ -102,6 +102,7 @@ export const engMsg: Msg = {
     Forest: 'Forest',
     Boar: 'Boar',
     Wolves: 'Wolves',
+    Combat: 'Combat',
 
     Unharmed: 'Unharmed',
 }

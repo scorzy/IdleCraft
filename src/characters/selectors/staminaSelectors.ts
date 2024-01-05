@@ -38,6 +38,5 @@ export const selectCharacterMaxStaminaList = memoize((charId: string) => (state:
     const char = CharacterAdapter.selectEx(state.characters, charId)
     return selectStaminaBonusList(char.staminaPoints)
 })
-export const selectCharacterMaxStamina = memoize(
-    (charId: string) => (state: GameState) => selectCharacterMaxStaminaList(charId)(state).total
-)
+export const selectCharacterMaxStamina = (charId: string) => (state: GameState) =>
+    selectCharacterMaxStaminaList(charId)(state).total

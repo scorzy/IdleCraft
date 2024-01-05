@@ -5,6 +5,7 @@ import { execAbilityTimer } from '../activeAbilities/functions/execAbilityTimer'
 import { ActivityTypes } from '../activities/ActivityState'
 import { getBattleIcon } from '../battle/functions/getBattleIcon'
 import { getBattleTitle } from '../battle/functions/getBattleTitle'
+import { removeBattle } from '../battle/functions/removeBattle'
 import { startBattle } from '../battle/functions/startBattle'
 import { recipes } from '../crafting/Recipes'
 import { execCrafting } from '../crafting/functions/execCrafting'
@@ -56,7 +57,7 @@ function initActivities() {
     activityIcons.set(ActivityTypes.Crafting, getCraftingIcon)
 
     // activityExecutors.set(ActivityTypes.Battle, execBattle)
-    // activityRemovers.set(ActivityTypes.Battle, removeBattle)
+    activityRemovers.set(ActivityTypes.Battle, removeBattle)
     activityStarters.set(ActivityTypes.Battle, startBattle)
     activityTitles.set(ActivityTypes.Battle, getBattleTitle)
     activityIcons.set(ActivityTypes.Battle, getBattleIcon)

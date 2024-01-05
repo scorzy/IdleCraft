@@ -37,6 +37,5 @@ export const selectCharacterMaxHealthList = memoize((charId: string) => (state: 
     const char = CharacterAdapter.selectEx(state.characters, charId)
     return selectMaxHealthFromChar(char)
 })
-export const selectCharacterMaxHealth = memoize(
-    (charId: string) => (state: GameState) => selectCharacterMaxHealthList(charId)(state).total
-)
+export const selectCharacterMaxHealth = (charId: string) => (state: GameState) =>
+    selectCharacterMaxHealthList(charId)(state).total

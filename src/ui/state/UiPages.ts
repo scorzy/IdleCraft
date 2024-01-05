@@ -12,6 +12,7 @@ export enum UiPages {
     Perks = 'Perks',
     Points = 'Points',
     CombatZones = 'CombatZones',
+    Combat = 'Combat',
 }
 export interface UiPageData {
     nameId: keyof Msg

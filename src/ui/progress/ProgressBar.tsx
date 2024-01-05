@@ -8,7 +8,7 @@ export const ProgressBar = memo(function ProgressBar(props: { value: number; cla
     const progress = -100 + value
 
     return (
-        <div className={clsx('theme progress__root', className, color)}>
+        <div className={clsx('progress__root', className, color)}>
             <div className="progress__bar" style={{ transform: `translateX(${progress}%)` }} />
         </div>
     )

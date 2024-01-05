@@ -43,4 +43,8 @@ export const UiPagesData: { [k in UiPages]: UiPageData } = {
         nameId: 'CombatZones',
         icon: <GiCrossedSwords />,
     },
+    [UiPages.Combat]: {
+        nameId: 'Combat',
+        icon: <GiCrossedSwords />,
+    },
 }
