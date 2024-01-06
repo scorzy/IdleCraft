@@ -13,7 +13,7 @@ export function startTimer(state: GameState, length: number, type: ActivityTypes
     const id = getUniqueId()
 
     if (!state.loading || Globals.loadTo > end) {
-        if (!state.loading) state = { ...state, now: Date.now() }
+        if (!state.loading && !state.isTimer) state = { ...state, now: Date.now() }
         end = state.now + length
         const diff = Math.max(end - state.now, 0)
         if (!state.loading) intervalId = setTimeout(() => execTimer(id), diff)

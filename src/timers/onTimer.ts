@@ -6,7 +6,7 @@ export function onTimer(state: GameState, timerId: string) {
     const timer = state.timers.entries[timerId]
     if (!timer) return state
 
-    state = { ...state, timers: TimerAdapter.remove(state.timers, timerId) }
+    state = { ...state, now: Math.max(state.now, timer.to), timers: TimerAdapter.remove(state.timers, timerId) }
 
     const actId = timer.actId
     if (!actId) return state

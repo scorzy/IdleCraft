@@ -9,6 +9,7 @@ function onTimerAndCheck(state: GameState, timerId: string): GameState {
     if (!toDo) return state
     const now = toDo.to
 
+    state = { ...state, isTimer: true }
     let timer = getFirstTimer(state.timers, now)
     while (timer) {
         state.now = timer.to
@@ -19,6 +20,7 @@ function onTimerAndCheck(state: GameState, timerId: string): GameState {
     const toDo2 = TimerAdapter.select(state.timers, timerId)
     if (toDo2) state = onTimer(state, toDo2.id)
 
+    state = { ...state, isTimer: false }
     return state
 }
 
