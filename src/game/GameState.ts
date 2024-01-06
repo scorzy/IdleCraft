@@ -33,6 +33,7 @@ export interface LocationState {
 export interface GameState {
     gameId: string
     isTimer: boolean
+    lastRegen: number
     ui: {
         open: boolean
         theme: string

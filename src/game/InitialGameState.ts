@@ -31,6 +31,7 @@ const InitialVillageState: () => LocationState = () =>
 export const InitialGameState: GameState = {
     gameId: '',
     isTimer: false,
+    lastRegen: 0,
     ui: {
         open: false,
         theme: 'system',

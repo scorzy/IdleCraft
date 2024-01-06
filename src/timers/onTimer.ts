@@ -1,5 +1,6 @@
 import { GameState } from '../game/GameState'
 import { activityExecutors } from '../game/globals'
+import { regenerate } from '../game/regenerate'
 import { TimerAdapter } from './Timer'
 
 export function onTimer(state: GameState, timerId: string) {
@@ -11,6 +12,7 @@ export function onTimer(state: GameState, timerId: string) {
     const actId = timer.actId
     if (!actId) return state
 
+    state = regenerate(state, state.now)
     state = activityExecutors.getEx(timer.type)(state, timer)
 
     return state
