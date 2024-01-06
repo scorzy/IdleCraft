@@ -7,7 +7,7 @@ export function regenerate(state: GameState, now: number): GameState {
     const diff = now - state.lastRegen
     if (diff < 0) return state
 
-    const toRegen = Math.floor((diff + 500) / 1e3)
+    const toRegen = Math.floor((diff + 300) / 1e3)
     if (toRegen < 1) return state
 
     state = { ...state, lastRegen: state.lastRegen + toRegen * 1e3 }

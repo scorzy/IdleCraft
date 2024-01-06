@@ -51,45 +51,75 @@ const CombatChars = memo(function CombatChars() {
 })
 const CharCard = memo(function CharCard(props: { charId: string }) {
     const { charId } = props
-    const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const name = useGameStore(selectCharName(charId))
     const icon = useGameStore(selectCharIcon(charId))
 
-    const health = useGameStore(selectCharHealth(charId))
-    const stamina = useGameStore(selectCharStamina(charId))
-    const mana = useGameStore(selectCharMana(charId))
-
-    const maxHealth = useGameStore(selectCharacterMaxHealth(charId))
-    const maxStamina = useGameStore(selectCharacterMaxStamina(charId))
-    const maxMana = useGameStore(selectCharacterMaxMana(charId))
-
-    const hPercent = Math.floor((100 * health) / maxHealth)
-    const sPercent = Math.floor((100 * stamina) / maxStamina)
-    const mPercent = Math.floor((100 * mana) / maxMana)
-
     return (
         <MyCard title={t[name]} icon={IconsData[icon]}>
-            <span className={classes.label}>
-                <GiHearts />
-                {f(health)}/{f(maxHealth)}
-            </span>
-            <ProgressBar color="health" value={hPercent} className="mb-2" />
-            <span className={classes.label}>
-                <GiStrong />
-                {f(stamina)}/{f(maxStamina)}
-            </span>
-            <ProgressBar color="stamina" value={sPercent} className="mb-2" />
-            <span className={classes.label}>
-                <GiMagicPalm />
-                {f(mana)}/{f(maxMana)}
-            </span>
-            <ProgressBar color="mana" value={mPercent} className="mb-2" />
+            <CharHealth charId={charId} />
+            <CharStamina charId={charId} />
+            <CharMana charId={charId} />
 
             <MainAttack charId={charId} />
         </MyCard>
     )
 })
+
+const CharHealth = memo(function CharHealth(props: { charId: string }) {
+    const { charId } = props
+    const { f } = useNumberFormatter()
+    const health = useGameStore(selectCharHealth(charId))
+    const maxHealth = useGameStore(selectCharacterMaxHealth(charId))
+    const hPercent = Math.floor((100 * health) / maxHealth)
+
+    return (
+        <>
+            <span className={classes.label}>
+                <GiHearts />
+                {f(health)}/{f(maxHealth)}
+            </span>
+            <ProgressBar color="health" value={hPercent} className="mb-2" />
+        </>
+    )
+})
+
+const CharStamina = memo(function CharStamina(props: { charId: string }) {
+    const { charId } = props
+    const { f } = useNumberFormatter()
+    const stamina = useGameStore(selectCharStamina(charId))
+    const maxStamina = useGameStore(selectCharacterMaxStamina(charId))
+    const sPercent = Math.floor((100 * stamina) / maxStamina)
+
+    return (
+        <>
+            <span className={classes.label}>
+                <GiStrong />
+                {f(stamina)}/{f(maxStamina)}
+            </span>
+            <ProgressBar color="stamina" value={sPercent} className="mb-2" />
+        </>
+    )
+})
+
+const CharMana = memo(function CharMana(props: { charId: string }) {
+    const { charId } = props
+    const { f } = useNumberFormatter()
+    const mana = useGameStore(selectCharMana(charId))
+    const maxMana = useGameStore(selectCharacterMaxMana(charId))
+    const mPercent = Math.floor((100 * mana) / maxMana)
+
+    return (
+        <>
+            <span className={classes.label}>
+                <GiMagicPalm />
+                {f(mana)}/{f(maxMana)}
+            </span>
+            <ProgressBar color="mana" value={mPercent} className="mb-2" />
+        </>
+    )
+})
+
 const MainAttack = memo(function MainAttack(props: { charId: string }) {
     const { charId } = props
     const { t } = useTranslations()
