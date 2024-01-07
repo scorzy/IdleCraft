@@ -31,8 +31,9 @@ import { ExpEnum } from '../../experience/expEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BonusDialog, BonusSpan } from '../../bonus/ui/BonusUi'
-import { MyPage } from '../../ui/pages/MyPage'
+import { MyPageAll } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
+import { IconsData } from '../../icons/Icons'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { Button } from '@/components/ui/button'
 
@@ -46,19 +47,21 @@ const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
 export const Woodcutting = memo(function Woodcutting() {
     const woodType = useGameStore(selectWoodType)
     return (
-        <MyPage>
-            <div className="page__info">
-                <ExperienceCard expType={ExpEnum.Woodcutting} />
-                <EquipItemUi slot={EquipSlotsEnum.WoodAxe} />
-            </div>
-            <div className="page__main" key={woodType}>
-                <MyCard title="Forests">
-                    <WoodcuttingSidebar />
-                </MyCard>
+        <MyPageAll
+            key={woodType}
+            sidebar={<WoodcuttingSidebar />}
+            header={
+                <div className="page__info">
+                    <ExperienceCard expType={ExpEnum.Woodcutting} />
+                    <EquipItemUi slot={EquipSlotsEnum.WoodAxe} />
+                </div>
+            }
+        >
+            <div className="page__main">
                 <Cutting />
                 <Forest />
             </div>
-        </MyPage>
+        </MyPageAll>
     )
 })
 
@@ -118,7 +121,7 @@ const Forest = memo(function Forest() {
     const data = WoodData[woodType]
 
     return (
-        <MyCard title={t[`${woodType}Forest`]} icon={data.iconId}>
+        <MyCard title={t[`${woodType}Forest`]} icon={IconsData[data.iconId]}>
             <ForestQta />
             <Trees />
         </MyCard>

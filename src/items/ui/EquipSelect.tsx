@@ -23,7 +23,7 @@ import {
 } from '../../components/ui/select'
 import { GameState } from '../../game/GameState'
 import { getRecipeParamId } from '../../crafting/RecipeFunctions'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
+import { Card, CardContent } from '../../components/ui/card'
 import { Msg } from '../../msg/Msg'
 import classes from './equipSelect.module.css'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
@@ -54,11 +54,8 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
 
     return (
         <Card className={classes.container}>
-            <CardHeader>
-                <CardTitle>{t[slotData.ItemType as keyof Msg]}</CardTitle>
-            </CardHeader>
-
             <CardContent>
+                <span className="font-medium text-sm">{t[slotData.ItemType as keyof Msg]}</span>
                 <Select value={axeId ?? '-'} onValueChange={handleEquipChange}>
                     <SelectTrigger>
                         <SelectValue>

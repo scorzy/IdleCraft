@@ -17,9 +17,9 @@ function regenerateChar(state: GameState, charId: string, seconds: number): Game
     const maxStamina = selectCharacterMaxStamina(charId)(state)
     const maxMana = selectCharacterMaxMana(charId)(state)
 
-    const health = Math.min(char.health + seconds, maxHealth)
-    const stamina = Math.min(char.stamina + seconds, maxStamina)
-    const mana = Math.min(char.mana + seconds, maxMana)
+    const health = Math.min(char.health + seconds / 2, maxHealth)
+    const stamina = Math.min(char.stamina + seconds / 2, maxStamina)
+    const mana = Math.min(char.mana + seconds / 2, maxMana)
 
     state = {
         ...state,

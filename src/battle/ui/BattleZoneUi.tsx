@@ -1,6 +1,6 @@
 import { memo, useCallback, useState } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
-import { MyPage } from '../../ui/pages/MyPage'
+import { MyPageAll } from '../../ui/pages/MyPage'
 import { MyCard } from '../../ui/myCard/myCard'
 import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
 import { BattleAreas, BattleAreasList } from '../battleAreas'
@@ -25,28 +25,26 @@ export const CombatPage = memo(function CombatPage() {
     return <CombatAreas />
 })
 const CombatAreas = memo(function CombatAreas() {
-    const [collapsed, setCollapsed] = useState(false)
     return (
-        <div className={classes.container}>
-            <div className={classes.allPage}>
-                <SidebarContainer
-                    className={classes.side}
-                    collapsed={collapsed}
-                    collapseClick={() => setCollapsed((c) => !c)}
-                >
-                    {BattleAreasList.map((bt) => (
-                        <BattleAreasListUi bt={bt} key={bt.nameId} parentCollapsed={collapsed} />
-                    ))}
-                </SidebarContainer>
-                <MyPage>
-                    <div className={classes.areaCards}>
-                        <BattleZoneInfoUi />
-                    </div>
-                </MyPage>
+        <MyPageAll sidebar={<CombatSidebar />}>
+            <div className={classes.areaCards}>
+                <BattleZoneInfoUi />
             </div>
-        </div>
+        </MyPageAll>
     )
 })
+
+const CombatSidebar = memo(function CombatSidebar() {
+    const [collapsed, setCollapsed] = useState(false)
+    return (
+        <SidebarContainer collapsed={collapsed} collapseClick={() => setCollapsed((c) => !c)}>
+            {BattleAreasList.map((bt) => (
+                <BattleAreasListUi bt={bt} key={bt.nameId} parentCollapsed={collapsed} />
+            ))}
+        </SidebarContainer>
+    )
+})
+
 const BattleAreasListUi = memo(function BattleAreasList(props: { bt: BattleAreas; parentCollapsed: boolean }) {
     const { bt, parentCollapsed } = props
     const [collapsed, setCollapsed] = useState(false)

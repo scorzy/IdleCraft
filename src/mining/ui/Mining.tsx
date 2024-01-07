@@ -14,7 +14,7 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { ExpEnum } from '../../experience/expEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { MyPage } from '../../ui/pages/MyPage'
+import { MyPageAll } from '../../ui/pages/MyPage'
 import { addMining } from '../functions/addMining'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import classes from './mining.module.css'
@@ -23,17 +23,20 @@ import { MiningSidebar } from './MiningSidebar'
 export const Mining = memo(function Mining() {
     const oreType = useGameStore(selectOreType)
     return (
-        <MyPage>
-            <div className="page__info">
-                <ExperienceCard expType={ExpEnum.Mining} />
-                <EquipItemUi slot={EquipSlotsEnum.Pickaxe} />
-            </div>
+        <MyPageAll
+            sidebar={<MiningSidebar />}
+            header={
+                <div className="page__info">
+                    <ExperienceCard expType={ExpEnum.Mining} />
+                    <EquipItemUi slot={EquipSlotsEnum.Pickaxe} />
+                </div>
+            }
+        >
             <div className="page__main" key={oreType}>
-                <MiningSidebar />
                 <MiningOre />
                 <OreUi />
             </div>
-        </MyPage>
+        </MyPageAll>
     )
 })
 
