@@ -94,8 +94,7 @@ const BattleZoneInfoUi = memo(function BattleZoneInfoUi() {
     const battleZone = BattleZones[battleZoneEnum]
     return (
         <MyCard
-            title={battleZone.nameId}
-            icon={IconsData[battleZone.iconId]}
+            title="Enemies"
             actions={
                 <>
                     <Button onClick={onAddClick}>Fight</Button>
