@@ -7,6 +7,7 @@ import { OreTypes } from '../OreTypes'
 import { OreData } from '../OreData'
 import { isOreSelected } from '../miningSelectors'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
+import { IconsData } from '../../icons/Icons'
 
 const ores = Object.values(OreTypes)
 
@@ -31,7 +32,7 @@ const MiningLink = memo(function MiningLink(props: { oreType: OreTypes; collapse
         <MyListItem
             text={t[data.nameId]}
             collapsed={collapsed}
-            icon={data.iconId}
+            icon={IconsData[data.iconId]}
             active={selected}
             onClick={() => setOre(oreType)}
         />

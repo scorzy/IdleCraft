@@ -27,12 +27,11 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { RecipeData } from '../RecipeData'
 import { changeRecipe, setRecipeItemParam, getRecipeParamId } from '../RecipeFunctions'
 import { Recipe } from '../Recipe'
-import { MyPage } from '../../ui/pages/MyPage'
+import { MyPageAll } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { addCrafting } from '../functions/addCrafting'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
-import { FormItem } from '@/components/ui/form'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
@@ -50,16 +49,19 @@ export const CraftingUi = memo(function CraftingUi() {
 
     if (!recipeType) return <></>
     return (
-        <MyPage>
-            <div className="page__info">
-                <ExperienceCard expType={RecipeData[recipeType].expType} />
-            </div>
+        <MyPageAll
+            header={
+                <div className="page__info">
+                    <ExperienceCard expType={RecipeData[recipeType].expType} />
+                </div>
+            }
+        >
             <div className="page__main" key={recipeType}>
                 <RecipeUi />
                 <CraftingResult result={result} />
                 <CraftingReq req={req} />
             </div>
-        </MyPage>
+        </MyPageAll>
     )
 })
 const RecipeUi = memo(function RecipeUi() {
@@ -91,7 +93,7 @@ const CraftingButtons = memo(function CraftingButtons() {
 
     return (
         <>
-            <Badge className={classes.timeBadge} variant={bntEnabled ? 'default' : 'secondary'}>
+            <Badge className={classes.timeBadge} variant="secondary">
                 <LuHourglass />
                 {time ? ft(time) : '-'}
             </Badge>
@@ -120,14 +122,13 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     const recipes = selectRecipes(recipeType)
 
     return (
-        <FormItem>
+        <div>
             <Label>{t.Recipe}</Label>
             <Select value={recipeId} onValueChange={handleRecipeChange}>
                 <SelectTrigger>
                     <SelectValue placeholder="select a recipe" />
                 </SelectTrigger>
                 <SelectContent>
-                    {/* <SelectItem value="">{t.None}</SelectItem> */}
                     {recipes.map((r) => (
                         <SelectItem key={r.id} value={r.id}>
                             {t[r.nameId]}
@@ -135,7 +136,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
                     ))}
                 </SelectContent>
             </Select>
-        </FormItem>
+        </div>
     )
 })
 
@@ -156,21 +157,20 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
     const handleRecipeChange = (value: string) => setRecipeItemParam(recipeParam.id, value)
     const selectedValue = getRecipeParamId(selected)
     return (
-        <FormItem>
+        <div>
             <Label>{t[recipeParam.nameId]}</Label>
             <Select value={selectedValue} onValueChange={handleRecipeChange}>
                 <SelectTrigger>
                     <SelectValue placeholder={`-- ${t[recipeParam.nameId]} --`} />
                 </SelectTrigger>
                 <SelectContent>
-                    {/* <SelectItem value="">{t.None}</SelectItem> */}
                     {itemsId.map((t) => {
                         const value = getRecipeParamId(t)
                         return <ParamItem itemId={t} key={value} />
                     })}
                 </SelectContent>
             </Select>
-        </FormItem>
+        </div>
     )
 })
 const ParamItem = memo(function ParamItem(props: { itemId: ItemId }) {

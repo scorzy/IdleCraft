@@ -9,7 +9,7 @@ export const MyPage = memo(function MyPage(props: { children: ReactNode; classNa
 
 export const MyPageAll = memo(function MyPageAll(props: {
     children: ReactNode
-    sidebar: ReactNode
+    sidebar?: ReactNode
     header?: ReactNode
 }) {
     const { children, sidebar, header } = props
@@ -17,7 +17,7 @@ export const MyPageAll = memo(function MyPageAll(props: {
         <div className="page__container-sidebar">
             <div className="page__all">
                 {header && <div className="page__header">{header}</div>}
-                <div className="page__sidebar">{sidebar}</div>
+                {sidebar && <div className="page__sidebar">{sidebar}</div>}
                 <MyPage className="page__main2">{children}</MyPage>
             </div>
         </div>

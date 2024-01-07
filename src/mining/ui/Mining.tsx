@@ -17,6 +17,7 @@ import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { MyPageAll } from '../../ui/pages/MyPage'
 import { addMining } from '../functions/addMining'
 import { removeActivity } from '../../activities/functions/removeActivity'
+import { IconsData } from '../../icons/Icons'
 import classes from './mining.module.css'
 import { MiningSidebar } from './MiningSidebar'
 
@@ -93,7 +94,7 @@ const OreUi = memo(function MiningOre() {
     const hpPercent = Math.floor((100 * ore.qta) / def.qta)
 
     return (
-        <MyCard title={t.OreVein} icon={oreData.iconId}>
+        <MyCard title={t.OreVein} icon={IconsData[oreData.iconId]}>
             <MyCardLabel>
                 {t.OreQta} {f(ore.qta)}/{f(def.qta)}
             </MyCardLabel>
