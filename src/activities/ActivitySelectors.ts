@@ -14,3 +14,6 @@ export const selectActivityIcon = (id: string) => (state: GameState) => {
 export const selectActivityNum = (state: GameState) => {
     return ActivityAdapter.getIds(state.activities).length
 }
+export const selectActivityMax = (id: string) => (state: GameState) => {
+    return ActivityAdapter.selectEx(state.activities, id).max
+}

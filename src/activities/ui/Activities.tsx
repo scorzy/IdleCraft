@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 import { LuArrowDown, LuArrowUp, LuInfo, LuTrash2 } from 'react-icons/lu'
 import { useGameStore } from '../../game/state'
-import { selectActivityIcon, selectActivityId, selectActivityTitle } from '../ActivitySelectors'
+import { selectActivityIcon, selectActivityId, selectActivityMax, selectActivityTitle } from '../ActivitySelectors'
 import { moveActivityNext, moveActivityPrev } from '../activityFunctions'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -10,6 +10,8 @@ import { Alert, AlertTitle } from '../../components/ui/alert'
 import { MyPage } from '../../ui/pages/MyPage'
 import { removeActivity } from '../functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
+import { Input } from '../../components/ui/input'
+import { setActivityNum } from '../functions/setActivityNum'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -45,9 +47,9 @@ const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: bo
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
 
-    const act = useGameStore((s) => s.activities.entries[id])
     const title = useGameStore(selectActivityTitle(id))
     const icon = useGameStore(selectActivityIcon(id))
+    const max = useGameStore(selectActivityMax(id))
     const active = useGameStore((s) => s.activityId === id)
     const cur = useGameStore((s) => (active ? s.activityDone + 1 : 0))
 
@@ -55,7 +57,13 @@ const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: bo
     const onClickNext = useCallback(() => moveActivityNext(id), [id])
     const onClickRemove = useCallback(() => removeActivity(id), [id])
 
-    if (act === undefined) return <></>
+    const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+        (event) => {
+            const val = parseInt(event.target.value)
+            if (val && !isNaN(val) && val > 0 && val < 100) setActivityNum(id, val)
+        },
+        [id]
+    )
 
     return (
         <div className={classes.container}>
@@ -63,25 +71,33 @@ const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: bo
             <div className={classes.title}>
                 <div>{title}</div>
                 <Badge variant={active ? 'default' : 'secondary'}>
-                    {active ? 'Active' : 'In Queue'} {f(cur)}/{f(act.max)}
+                    {active ? 'Active' : 'In Queue'} {f(cur)}/{f(max)}
                 </Badge>
             </div>
+
             <div className={classes.actions}>
-                <>
-                    {!isFirst && (
-                        <Button onClick={onClickPrev} variant="ghost">
-                            <LuArrowUp className="text-lg" />
-                        </Button>
-                    )}
-                    {!isLast && (
-                        <Button aria-label={t.MoveDown} onClick={onClickNext} variant="ghost">
-                            <LuArrowDown className="text-lg" />
-                        </Button>
-                    )}
-                    <Button aria-label={t.Remove} color="error" onClick={onClickRemove} variant="ghost">
-                        <LuTrash2 className="text-lg" />
+                {!isFirst && (
+                    <Button onClick={onClickPrev} variant="ghost">
+                        <LuArrowUp className="text-lg" />
                     </Button>
-                </>
+                )}
+                {!isLast && (
+                    <Button aria-label={t.MoveDown} onClick={onClickNext} variant="ghost">
+                        <LuArrowDown className="text-lg" />
+                    </Button>
+                )}
+                <Input
+                    type="number"
+                    value={max}
+                    className={classes.num}
+                    onChange={onChange}
+                    max={99}
+                    min={1}
+                    step={1}
+                />
+                <Button aria-label={t.Remove} color="error" onClick={onClickRemove} variant="ghost">
+                    <LuTrash2 className="text-lg" />
+                </Button>
             </div>
         </div>
     )

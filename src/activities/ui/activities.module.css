@@ -27,10 +27,16 @@
 .actions {
     grid-row: 2;
     grid-column: 1 / span 2;
-    justify-self: center;
+    justify-self: end;
     align-self: center;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.1rem;
 }
-@container (min-width: 300px) {
+.num {
+    max-width: 4rem;
+}
+@container (min-width: 400px) {
     .actions {
         grid-column: 3;
         grid-row: 1;
