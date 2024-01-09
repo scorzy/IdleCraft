@@ -14,3 +14,12 @@
         grid-column: 1 / span 2;
     }
 }
+.title {
+    display: grid;
+    justify-items: start;
+    grid-gap: 0.5rem;
+    gap: 0.5rem;
+    grid-auto-flow: column;
+    justify-content: start;
+    align-items: center;
+}

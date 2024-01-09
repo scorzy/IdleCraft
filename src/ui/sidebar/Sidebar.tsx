@@ -11,6 +11,9 @@ import {
     toggleGathering,
     toggleSidebar,
 } from '../state/uiFunctions'
+import { Badge } from '../../components/ui/badge'
+import { selectActivityNum } from '../../activities/ActivitySelectors'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { SidebarContainer } from './SidebarContainer'
 import { CollapsibleMenu, MenuItem } from './MenuItem'
 
@@ -19,7 +22,7 @@ export const Sidebar = memo(function Sidebar() {
 
     return (
         <SidebarContainer collapsed={isSidebarCollapsed} collapseClick={toggleSidebar}>
-            <MenuItem page={UiPages.Activities} parentCollapsed={isSidebarCollapsed} />
+            <MenuItem page={UiPages.Activities} parentCollapsed={isSidebarCollapsed} right={<ActivitiesLinkBadge />} />
             <MenuItem page={UiPages.Storage} parentCollapsed={isSidebarCollapsed} />
             <MenuItem page={UiPages.Points} parentCollapsed={isSidebarCollapsed} />
             <MenuItem page={UiPages.Perks} parentCollapsed={isSidebarCollapsed} />
@@ -31,6 +34,14 @@ export const Sidebar = memo(function Sidebar() {
         </SidebarContainer>
     )
 })
+
+const ActivitiesLinkBadge = memo(function ActivitiesLinkBadge() {
+    const actNum = useGameStore(selectActivityNum)
+    const { f } = useNumberFormatter()
+    if (actNum === 0) return
+    return <Badge variant="secondary">{f(actNum)}</Badge>
+})
+
 const SidebarGathering = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
     const isGatheringCollapsed = useGameStore(gatheringCollapsed)

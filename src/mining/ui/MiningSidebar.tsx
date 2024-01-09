@@ -16,7 +16,7 @@ export const MiningSidebar = memo(function MiningSidebar() {
     return (
         <SidebarContainer collapsed={collapsed} collapseClick={() => setCollapsed((c) => !c)}>
             {ores.map((t) => (
-                <MiningLink key={t} oreType={t} collapsed={false} />
+                <MiningLink key={t} oreType={t} collapsed={collapsed} />
             ))}
         </SidebarContainer>
     )

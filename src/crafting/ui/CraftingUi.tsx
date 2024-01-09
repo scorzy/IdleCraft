@@ -38,7 +38,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 const selectRecipes: (t: RecipeTypes) => Recipe[] = memoize((t: RecipeTypes) => {
     const ret: Recipe[] = []
     for (const recipe of recipes.values()) if (recipe.type === t) ret.push(recipe)
-
     return ret
 })
 
@@ -47,7 +46,7 @@ export const CraftingUi = memo(function CraftingUi() {
     const req = useGameStore(selectRecipeReq)
     const recipeType = useGameStore(selectRecipeType)
 
-    if (!recipeType) return <></>
+    if (!recipeType) return
     return (
         <MyPageAll
             header={

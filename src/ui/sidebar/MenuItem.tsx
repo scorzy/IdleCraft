@@ -14,8 +14,8 @@ import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
-export const MenuItem = memo(function MenuItem(props: { page: UiPages; parentCollapsed: boolean }) {
-    const { page, parentCollapsed } = props
+export const MenuItem = memo(function MenuItem(props: { page: UiPages; parentCollapsed: boolean; right?: ReactNode }) {
+    const { page, parentCollapsed, right } = props
     const { t } = useTranslations()
     const data = UiPagesData[page]
     const active = useGameStore((s) => s.ui.page === page)
@@ -28,6 +28,7 @@ export const MenuItem = memo(function MenuItem(props: { page: UiPages; parentCol
             active={active}
             icon={data.icon}
             collapsed={parentCollapsed}
+            right={right}
         />
     )
 })
@@ -39,8 +40,9 @@ export const MyListItem = memo(function MyListItem(props: {
     onClick?: () => void
     icon: ReactNode
     arrowOpen?: boolean
+    right?: ReactNode
 }) {
-    const { text, onClick, active, icon, arrowOpen } = props
+    const { text, onClick, active, icon, arrowOpen, right } = props
     let { collapsed } = props
     const matches = useMediaQuery('(min-width: 900px)')
 
@@ -48,7 +50,7 @@ export const MyListItem = memo(function MyListItem(props: {
     if (!collapsed || text === '' || !matches) {
         let arrow = <></>
         if (arrowOpen !== undefined)
-            arrow = <TbChevronRight className={clsx({ [classes.arrow!]: true, [classes.arrowDown!]: arrowOpen })} />
+            arrow = <TbChevronRight className={clsx(classes.arrow, { [classes.arrowDown!]: arrowOpen })} />
 
         return (
             <button
@@ -64,6 +66,7 @@ export const MyListItem = memo(function MyListItem(props: {
             >
                 {icon}
                 {text}
+                {right}
                 {arrow}
             </button>
         )

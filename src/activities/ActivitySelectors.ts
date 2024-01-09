@@ -11,3 +11,6 @@ export const selectActivityIcon = (id: string) => (state: GameState) => {
     const act = ActivityAdapter.selectEx(state.activities, id)
     return activityIcons.getEx(act.type)(state, id)
 }
+export const selectActivityNum = (state: GameState) => {
+    return ActivityAdapter.getIds(state.activities).length
+}

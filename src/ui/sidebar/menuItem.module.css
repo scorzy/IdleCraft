@@ -4,6 +4,7 @@
     grid-template-columns: auto 1fr auto;
     align-items: center;
     text-align: start;
+    align-content: center;
 
     transition-property: margin-left, border-radius, color, background-color, border-color, text-decoration-color, fill,
         stroke, width;
