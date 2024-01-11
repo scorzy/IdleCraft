@@ -17,12 +17,13 @@ const buttonVariants = cva(
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
                 link: 'text-primary',
 
-                health: 'bg-health text-primary-foreground hover:bg-health/90',
+                health: 'bg-health text-health-foreground hover:bg-health/90',
                 stamina: 'bg-stamina text-stamina-foreground hover:bg-stamina/90',
                 mana: 'bg-mana text-mana-foreground hover:bg-mana/90',
             },
             size: {
                 default: 'h-10 px-4 py-2',
+                xs: 'h-7 rounded-md px-2',
                 sm: 'h-9 rounded-md px-3',
                 lg: 'h-11 rounded-md px-8',
                 icon: 'h-10 w-10',

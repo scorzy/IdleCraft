@@ -58,6 +58,7 @@ export interface GameState {
         showUnavailablePerks: boolean
         showOwnedPerks: boolean
         battleZone: BattleZoneEnum | null
+        selectedCharId: string
     }
     notifications: ToastState
     timers: InitialTimerState

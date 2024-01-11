@@ -4,13 +4,15 @@ import { PLAYER_ID } from './charactersConst'
 
 const selectMaxAttributes = (state: GameState, characterId: string) =>
     CharacterAdapter.selectEx(state.characters, characterId).level
+
 const selectUsedAttributes = (state: GameState, characterId: string) => {
     const char = CharacterAdapter.selectEx(state.characters, characterId)
-    return char.healthPoints + char.staminaPoints + char.manaPoints
+    return Math.floor(char.healthPoints + char.staminaPoints + char.manaPoints)
 }
 
-export const selectPlayerMaxAttr = (state: GameState) => selectMaxAttributes(state, PLAYER_ID)
-export const selectPlayerUsedAttr = (state: GameState) => selectUsedAttributes(state, PLAYER_ID)
+export const selectCharacterMaxAttr = (charId: string) => (state: GameState) => selectMaxAttributes(state, charId)
+export const selectCharacterUsedAttr = (charId: string) => (state: GameState) => selectUsedAttributes(state, charId)
+
 export const selectPlayerAvAttr = (state: GameState) =>
     selectMaxAttributes(state, PLAYER_ID) - selectUsedAttributes(state, PLAYER_ID)
 

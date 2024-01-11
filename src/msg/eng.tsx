@@ -9,6 +9,8 @@ export const engMsg: Msg = {
     Woodworking: 'Woodworking',
     Time: 'Time',
     Stop: 'Stop',
+    Info: 'Info',
+
     CraftingUnknown: 'Crafting ??',
     DeadTree: 'Dead Tree',
     Oak: 'Oak',
@@ -97,6 +99,7 @@ export const engMsg: Msg = {
     NormalAttackDesc: 'Normal Attack',
 
     CombatZones: 'Combat',
+    Characters: 'Characters',
 
     // battle
     Forest: 'Forest',

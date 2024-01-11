@@ -1,0 +1,141 @@
+import { memo, useCallback, useState } from 'react'
+import { TbInfoCircle, TbPlus } from 'react-icons/tb'
+import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
+import { MyPageAll } from '../../ui/pages/MyPage'
+import { useGameStore } from '../../game/state'
+import { IconsData } from '../../icons/Icons'
+import { useTranslations } from '../../msg/useTranslations'
+import { MyListItem } from '../../ui/sidebar/MenuItem'
+import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
+import {
+    selectCharHealth,
+    selectCharIcon,
+    selectCharMana,
+    selectCharName,
+    selectCharStamina,
+    selectCharactersTeamIds,
+} from '../selectors/characterSelectors'
+import { setSelectedChar } from '../../ui/state/uiFunctions'
+import { isCharSelected, selectSelectedCharId } from '../../ui/state/uiSelectors'
+import { MyCard } from '../../ui/myCard/myCard'
+import { selectCharacterMaxHealth, selectCharacterMaxHealthList } from '../selectors/healthSelectors'
+import { selectCharacterMaxMana, selectCharacterMaxManaList } from '../selectors/manaSelectors'
+import { selectCharacterMaxStamina, selectCharacterMaxStaminaList } from '../selectors/staminaSelectors'
+import { BonusDialog } from '../../bonus/ui/BonusUi'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { Button } from '../../components/ui/button'
+import { selectCharacterMaxAttr, selectCharacterUsedAttr } from '../characterSelectors'
+import { addHealthPointClick, addManaPointClick, addStaminaPointClick } from '../characterFunctions'
+import classes from './charactersUi.module.css'
+
+export const CharactersUi = memo(function CharactersUi() {
+    return (
+        <MyPageAll sidebar={<CharactersSidebar />}>
+            <div className="page__main">
+                <CharInfo />
+            </div>
+        </MyPageAll>
+    )
+})
+const CharactersSidebar = memo(function CharactersSidebar() {
+    const [collapsed, setCollapsed] = useState(false)
+    const charIds = useGameStore(selectCharactersTeamIds)
+    return (
+        <SidebarContainer collapsed={collapsed} collapseClick={() => setCollapsed((c) => !c)}>
+            {charIds.map((t) => (
+                <CharacterLink key={t} charId={t} collapsed={collapsed} />
+            ))}
+        </SidebarContainer>
+    )
+})
+const CharacterLink = memo(function CharacterLink(props: { charId: string; collapsed: boolean }) {
+    const { charId, collapsed } = props
+    const { t } = useTranslations()
+
+    const nameId = useGameStore(selectCharName(charId))
+    const iconId = useGameStore(selectCharIcon(charId))
+    const active = useGameStore(isCharSelected(charId))
+
+    const onClick = useCallback(() => setSelectedChar(charId), [charId])
+
+    return (
+        <MyListItem text={t[nameId]} collapsed={collapsed} icon={IconsData[iconId]} active={active} onClick={onClick} />
+    )
+})
+
+const CharInfo = memo(function CharInfo() {
+    const { f } = useNumberFormatter()
+    const { t } = useTranslations()
+
+    const charId = useGameStore(selectSelectedCharId)
+
+    const maxPoints = useGameStore(selectCharacterMaxAttr(charId))
+    const usedPoints = useGameStore(selectCharacterUsedAttr(charId))
+
+    const health = useGameStore(selectCharHealth(charId))
+    const maxH = useGameStore(selectCharacterMaxHealth(charId))
+    const maxHB = selectCharacterMaxHealthList(charId)
+
+    const stamina = useGameStore(selectCharStamina(charId))
+    const maxS = useGameStore(selectCharacterMaxStamina(charId))
+    const maxSB = selectCharacterMaxStaminaList(charId)
+
+    const mana = useGameStore(selectCharMana(charId))
+    const maxM = useGameStore(selectCharacterMaxMana(charId))
+    const maxMB = selectCharacterMaxManaList(charId)
+
+    const healthClick = useCallback(() => addHealthPointClick(charId), [charId])
+    const staminaClick = useCallback(() => addStaminaPointClick(charId), [charId])
+    const manaClick = useCallback(() => addManaPointClick(charId), [charId])
+
+    const hasUnused = maxPoints - usedPoints > 0
+
+    return (
+        <MyCard icon={<TbInfoCircle />} title={t.Info}>
+            <div className={classes.stats}>
+                <span className="text-muted-foreground">
+                    Points {f(usedPoints)}/{f(maxPoints)}
+                </span>
+                <div className={classes.line}>
+                    <GiHearts />
+                    <span className={classes.stat}>
+                        Health{' '}
+                        <span className={classes.max}>
+                            {f(health)}/{f(maxH)}
+                        </span>
+                    </span>
+                    <BonusDialog title={t.Health} selectBonusResult={maxHB} />
+                    <Button variant="health" size="xs" disabled={!hasUnused} onClick={healthClick}>
+                        <TbPlus />
+                    </Button>
+                </div>
+                <div className={classes.line}>
+                    <GiStrong />
+                    <span className={classes.stat}>
+                        Stamina{' '}
+                        <span className={classes.max}>
+                            {f(stamina)}/{f(maxS)}
+                        </span>
+                    </span>
+                    <BonusDialog title={t.Stamina} selectBonusResult={maxSB} />
+                    <Button variant="stamina" size="xs" disabled={!hasUnused} onClick={staminaClick}>
+                        <TbPlus />
+                    </Button>
+                </div>
+                <div className={classes.line}>
+                    <GiMagicPalm />
+                    <span className={classes.stat}>
+                        Mana{' '}
+                        <span className={classes.max}>
+                            {f(mana)}/{f(maxM)}
+                        </span>
+                    </span>
+                    <BonusDialog title={t.Mana} selectBonusResult={maxMB} />
+                    <Button variant="mana" size="xs" disabled={!hasUnused} onClick={manaClick}>
+                        <TbPlus />
+                    </Button>
+                </div>
+            </div>
+        </MyCard>
+    )
+})

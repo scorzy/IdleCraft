@@ -75,8 +75,6 @@ const Cutting = memo(function Cutting() {
     const hpPercent = Math.floor((100 * forest.hp) / def.hp)
     const time = useGameStore(selectWoodcuttingTime)
     const damage = useGameStore(selectWoodcuttingDamage)
-    const damageBonusRes = useGameStore(selectWoodcuttingDamageAll)
-    const timeBonusRes = useGameStore(selectWoodcuttingTimeAll)
 
     return (
         <MyCard title={fun.cutting(woodType)} actions={<CuttingButton />} icon={<GiWoodAxe />}>
@@ -87,12 +85,12 @@ const Cutting = memo(function Cutting() {
             </MyCardLabel>
             <BonusSpan>
                 {t.Damage} {f(damage)}
-                <BonusDialog title={t.WoodcuttingDamage} bonusResult={damageBonusRes} />
+                <BonusDialog title={t.WoodcuttingDamage} selectBonusResult={selectWoodcuttingDamageAll} />
             </BonusSpan>
             <RestartProgress value={hpPercent} color="error" className="mb-2" />
             <BonusSpan>
                 {t.Time} {ft(time)}
-                <BonusDialog title={t.WoodcuttingTime} bonusResult={timeBonusRes} isTime={true} />
+                <BonusDialog title={t.WoodcuttingTime} selectBonusResult={selectWoodcuttingTimeAll} isTime={true} />
             </BonusSpan>
             <GameTimerProgress actionId={act} color="primary" />
         </MyCard>

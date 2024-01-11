@@ -51,3 +51,6 @@ export const toggleShowUnavailablePerks = () =>
     useGameStore.setState((s) => ({ ui: { ...s.ui, showUnavailablePerks: !s.ui.showUnavailablePerks } }))
 export const toggleCompletedPerks = () =>
     useGameStore.setState((s) => ({ ui: { ...s.ui, showOwnedPerks: !s.ui.showOwnedPerks } }))
+
+export const setSelectedChar = (selectedCharId: string) =>
+    useGameStore.setState((s) => ({ ui: { ...s.ui, selectedCharId } }))

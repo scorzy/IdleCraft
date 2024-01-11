@@ -4,12 +4,14 @@ import { Bonus, BonusResult } from '../Bonus'
 import { IconsData } from '../../icons/Icons'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
+import { GameState } from '../../game/GameState'
+import { useGameStore } from '../../game/state'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
 export const BonusSpan = memo(function BonusSpan(props: { children: ReactNode }) {
     const { children } = props
-    return <span className="grid grid-flow-col justify-start gap-2">{children}</span>
+    return <span className="grid grid-flow-col justify-start gap-2 items-center">{children}</span>
 })
 const BonusListUi = memo(function BonusListUi(props: { bonusResult: BonusResult; isTime?: boolean }) {
     const { bonusResult, isTime } = props
@@ -58,14 +60,17 @@ const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boolean })
 
 export const BonusDialog = memo(function BonusDialog(props: {
     title: string
-    bonusResult: BonusResult
+    selectBonusResult: (state: GameState) => BonusResult
     isTime?: boolean
 }) {
-    const { bonusResult, title, isTime } = props
+    const { selectBonusResult, title, isTime } = props
+    const { t } = useTranslations()
+    const bonusResult = useGameStore(selectBonusResult)
+
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <button className="text-muted-foreground">
+                <button title={t.Info} className="text-muted-foreground">
                     <TbInfoCircle size={18} />
                 </button>
             </DialogTrigger>

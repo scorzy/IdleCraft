@@ -17,6 +17,7 @@ export interface Msg {
     Crafting: string
     Gathering: string
     ItemType: string
+    Info: string
 
     CraftingUnknown: string
     Woodworking: string
@@ -124,6 +125,7 @@ export interface Msg {
     Boar: string
     Wolves: string
     Combat: string
+    Characters: string
 
     // Abilities
     NormalAttack: string

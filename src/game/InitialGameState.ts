@@ -55,6 +55,7 @@ export const InitialGameState: GameState = {
         showOwnedPerks: true,
         showUnavailablePerks: true,
         battleZone: null,
+        selectedCharId: PLAYER_ID,
     },
     notifications: [],
     location: GameLocations.StartVillage,

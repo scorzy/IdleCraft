@@ -24,7 +24,7 @@ export const Sidebar = memo(function Sidebar() {
         <SidebarContainer collapsed={isSidebarCollapsed} collapseClick={toggleSidebar}>
             <MenuItem page={UiPages.Activities} parentCollapsed={isSidebarCollapsed} right={<ActivitiesLinkBadge />} />
             <MenuItem page={UiPages.Storage} parentCollapsed={isSidebarCollapsed} />
-            <MenuItem page={UiPages.Points} parentCollapsed={isSidebarCollapsed} />
+            <MenuItem page={UiPages.Characters} parentCollapsed={isSidebarCollapsed} />
             <MenuItem page={UiPages.Perks} parentCollapsed={isSidebarCollapsed} />
             <MenuItem page={UiPages.CombatZones} parentCollapsed={isSidebarCollapsed} />
             <MenuItem page={UiPages.Combat} parentCollapsed={isSidebarCollapsed} />

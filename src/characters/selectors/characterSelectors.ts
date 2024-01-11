@@ -1,8 +1,11 @@
 import { ActiveAbilityData } from '../../activeAbilities/ActiveAbilityData'
 import { CastCharAbilityAdapter } from '../../activeAbilities/abilityAdapters'
+import { InitialState } from '../../entityAdapter/entityAdapter'
 import { GameState } from '../../game/GameState'
 import { TimerAdapter } from '../../timers/Timer'
+import { memoizeOne } from '../../utils/memoizeOne'
 import { CharacterAdapter } from '../characterAdapter'
+import { CharacterState } from '../characterState'
 
 export const selectCharName = (charId: string) => (state: GameState) =>
     CharacterAdapter.selectEx(state.characters, charId).nameId
@@ -28,3 +31,9 @@ export const selectCharMainAttackIcon = (characterId: string) => (state: GameSta
     const ability = ActiveAbilityData.getEx(cast.abilityId)
     return ability.getIconId({ state, characterId })
 }
+
+const selectCharactersTeamIdsInt = memoizeOne(
+    (characters: InitialState<CharacterState>) =>
+        CharacterAdapter.findMany(characters, (c) => !c.isEnemy)?.map((c) => c.id) ?? []
+)
+export const selectCharactersTeamIds = (state: GameState) => selectCharactersTeamIdsInt(state.characters)

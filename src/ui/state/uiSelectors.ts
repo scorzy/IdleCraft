@@ -13,3 +13,5 @@ export const selectOreType = (state: GameState) => state.ui.oreType
 export const selectShowAvailablePerks = (state: GameState) => state.ui.showAvailablePerks
 export const selectShowUnavailablePerks = (state: GameState) => state.ui.showUnavailablePerks
 export const selectCompletedPerks = (state: GameState) => state.ui.showOwnedPerks
+export const selectSelectedCharId = (state: GameState) => state.ui.selectedCharId
+export const isCharSelected = (charId: string) => (state: GameState) => state.ui.selectedCharId === charId

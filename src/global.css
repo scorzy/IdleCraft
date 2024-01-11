@@ -59,12 +59,12 @@
 
         --success: 142.1 70.6% 45.3%;
         --success-foreground: 144.9 80.4% 10%;
-        --health: 0 72.2% 50.6%;
+        --health: 0 72.2% 42.6%;
         --health-foreground: 0 85.7% 97.3%;
-        --stamina: 142.1 70.6% 45.3%;
-        --stamina-foreground: 144.9 80.4% 10%;
-        --mana: 217.2 91.2% 59.8%;
-        --mana-foreground: 222.2 47.4% 11.2%;
+        --stamina: 142.1 70.6% 36.3%;
+        --stamina-foreground: 355.7 100% 97.3%;
+        --mana: 217.2 91.2% 53.8%;
+        --mana-foreground: 210 40% 98%;
         color-scheme: dark;
     }
 }

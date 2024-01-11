@@ -1,15 +1,15 @@
 .sidebarContainer {
-    margin-right: 0.75rem;
-    margin-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
 
-    transition-property: margin-left, border-radius, width;
+    transition-property: padding-left, margin-left, border-radius, width;
     transition-duration: 300ms;
     display: grid;
     grid-auto-rows: min-content;
 }
 .collapsed {
-    margin-right: 0;
-    margin-left: 0;
+    padding-right: 0;
+    padding-left: 0;
 }
 .collapseContainer {
     overflow: hidden;
@@ -43,9 +43,6 @@
         transition-duration: 300ms;
         width: 250px;
         transition-property: width, max-width;
-    }
-    .sidebarContainer {
-        width: 220px;
     }
     .btnExpand {
         display: block;

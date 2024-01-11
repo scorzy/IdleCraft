@@ -1,0 +1,20 @@
+.line {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: auto 18ch auto auto;
+    align-items: center;
+    justify-content: start;
+}
+.stats {
+    display: grid;
+    gap: 0.375rem;
+}
+.stat {
+    color: hsl(var(--muted-foreground));
+    min-width: 10ch;
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+.max {
+    text-align: right;
+}

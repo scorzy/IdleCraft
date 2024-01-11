@@ -10,9 +10,9 @@ export enum UiPages {
     Mining = 'Mining',
     Smithing = 'Smithing',
     Perks = 'Perks',
-    Points = 'Points',
     CombatZones = 'CombatZones',
     Combat = 'Combat',
+    Characters = 'Characters',
 }
 export interface UiPageData {
     nameId: keyof Msg

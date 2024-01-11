@@ -13,7 +13,7 @@
     grid-auto-flow: column;
     justify-content: space-between;
     align-items: center;
-    max-width: 7em;
+    max-width: 9em;
     font-size: 0.875rem;
 }
 .attackLabel {
