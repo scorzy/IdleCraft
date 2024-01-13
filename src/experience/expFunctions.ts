@@ -18,7 +18,7 @@ export function addExp(state: GameState, expType: ExpEnum, expQta: number, chara
     const newLevels = Math.max(Math.floor(skillLevel - currentLevel), 0)
     const exp = char.exp + newLevels
     const level = Math.floor(
-        Math.log10((skillExp * (EXP_GROW_RATE_MAIN - 1)) / EXP_BASE_PRICE_MAIN + 1) / Math.log10(EXP_GROW_RATE_MAIN)
+        Math.log10((exp * (EXP_GROW_RATE_MAIN - 1)) / EXP_BASE_PRICE_MAIN + 1) / Math.log10(EXP_GROW_RATE_MAIN)
     )
 
     state = {
