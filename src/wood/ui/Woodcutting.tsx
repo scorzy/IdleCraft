@@ -31,7 +31,7 @@ import { ExpEnum } from '../../experience/expEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BonusDialog, BonusSpan } from '../../bonus/ui/BonusUi'
-import { MyPageAll } from '../../ui/pages/MyPage'
+import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
@@ -57,10 +57,10 @@ export const Woodcutting = memo(function Woodcutting() {
                 </div>
             }
         >
-            <div className="page__main">
+            <MyPage className="page__main">
                 <Cutting />
                 <Forest />
-            </div>
+            </MyPage>
         </MyPageAll>
     )
 })

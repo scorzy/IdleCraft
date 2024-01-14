@@ -1,8 +1,6 @@
 .page__container {
     padding: 1rem;
     container-type: inline-size;
-    container-type: inline-size;
-    max-height: calc(100dvh - 50px);
     overflow: auto;
 }
 .page__info {
@@ -19,14 +17,15 @@
 }
 
 .page__container-sidebar {
+    overflow: auto;
     container-type: inline-size;
 }
 .page__all {
+    height: 100%;
     display: grid;
     align-items: start;
     grid-template-rows: auto;
     align-items: stretch;
-    max-height: calc(100dvh - 50px);
     overflow: auto;
     align-items: stretch;
     justify-content: start;
@@ -43,26 +42,31 @@
 }
 .page__sidebar {
     grid-area: side;
-    overflow: auto;
     border-bottom: 1px solid hsl(var(--border));
 }
 .page__main2 {
     grid-area: main;
-    overflow: auto;
 }
 
 @container (min-width: 900px) {
+    .page__main2 {
+        overflow: auto;
+    }
     .page__all {
+        max-height: calc(100dvh - 50px);
+        overflow: auto;
         grid-template-columns: auto 1fr;
-        overflow: initial;
-        height: 100%;
         grid-template-rows: auto 1fr;
         grid-template-areas:
             'head head'
             'side main';
     }
     .page__sidebar {
+        overflow: auto;
         border-right: 1px solid hsl(var(--border));
         border-bottom: none;
+    }
+    .page__container-sidebar {
+        height: 100%;
     }
 }

@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 import { TbInfoCircle, TbPlus } from 'react-icons/tb'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
-import { MyPageAll } from '../../ui/pages/MyPage'
+import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
@@ -32,9 +32,19 @@ import classes from './charactersUi.module.css'
 export const CharactersUi = memo(function CharactersUi() {
     return (
         <MyPageAll sidebar={<CharactersSidebar />}>
-            <div className="page__main">
-                <CharInfo />
-            </div>
+            <MyPageAll
+                sidebar={<CharactersSidebar />}
+                header={
+                    <>
+                        Header <br />
+                        Header <br />
+                    </>
+                }
+            >
+                <MyPage className="page__main">
+                    <CharInfo />
+                </MyPage>
+            </MyPageAll>
         </MyPageAll>
     )
 })

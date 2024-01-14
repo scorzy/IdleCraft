@@ -18,7 +18,7 @@ export const MyPageAll = memo(function MyPageAll(props: {
             <div className="page__all">
                 {header && <div className="page__header">{header}</div>}
                 {sidebar && <div className="page__sidebar">{sidebar}</div>}
-                <MyPage className="page__main2">{children}</MyPage>
+                <div className="page__main2">{children}</div>
             </div>
         </div>
     )
