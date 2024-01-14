@@ -74,13 +74,6 @@
     }
 }
 
-@container (min-width: 600px) {
-    .fixed-height-2 {
-        overflow-y: auto;
-        max-height: calc(100vh - 50px - 1rem);
-    }
-}
-
 .svg-success {
     fill: hsl(var(--success-foreground));
 }
