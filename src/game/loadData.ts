@@ -14,6 +14,7 @@ import { PerksEnum, PerksEnumKeys } from '../perks/perksEnum'
 import { BattleAdapter } from '../battle/BattleAdapter'
 import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { CharacterAdapter } from '../characters/characterAdapter'
+import { CollapsedEnum } from '../ui/sidebar/CollapsedEnum'
 import { GameState } from './GameState'
 import { GetInitialGameState } from './InitialGameState'
 
@@ -21,7 +22,21 @@ export function loadData(data: object): GameState {
     const state = GetInitialGameState()
     copyValues(state, data)
 
-    if ('ui' in data && data.ui) copyValues(state.ui, data.ui)
+    if ('ui' in data && data.ui) {
+        copyValues(state.ui, data.ui)
+        if (
+            typeof data.ui === 'object' &&
+            'collapsed' in data.ui &&
+            typeof data.ui.collapsed === 'object' &&
+            data.ui.collapsed
+        ) {
+            Object.entries(data.ui.collapsed).forEach((kv) => {
+                const key = kv[0]
+                if (key in CollapsedEnum) state.ui.collapsed[key as CollapsedEnum] = !!kv[1]
+            })
+        }
+    }
+
     if ('activities' in data) state.activities = ActivityAdapter.load(data.activities)
     if ('timers' in data) state.timers = TimerAdapter.load(data.timers)
     if ('craftedItems' in data) state.craftedItems = ItemAdapter.load(data.craftedItems)
