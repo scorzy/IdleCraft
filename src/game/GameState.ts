@@ -23,6 +23,7 @@ import { ToastState } from '../notification/toastState'
 import { BattleState } from '../battle/BattleTypes'
 import { BattleZoneEnum } from '../battle/BattleZoneEnum'
 import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
+import { CollapsedEnum } from '../ui/sidebar/CollapsedEnum'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -50,15 +51,13 @@ export interface GameState {
         recipeType?: RecipeTypes
         storageOrder: 'name' | 'quantity' | 'value'
         storageAsc: boolean
-        sidebarCollapsed: boolean
-        gatheringCollapsed: boolean
-        craftingCollapsed: boolean
         perk: PerksEnum
         showAvailablePerks: boolean
         showUnavailablePerks: boolean
         showOwnedPerks: boolean
         battleZone: BattleZoneEnum | null
         selectedCharId: string
+        collapsed: { [K in CollapsedEnum]?: boolean }
     }
     notifications: ToastState
     timers: InitialTimerState

@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { MyPageAll } from '../../ui/pages/MyPage'
 import { MyCard } from '../../ui/myCard/myCard'
@@ -19,6 +19,8 @@ import { generateCharacter } from '../../characters/templates/generateCharacter'
 import { CharTemplatesData } from '../../characters/templates/charTemplateData'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { addBattle } from '../functions/addBattle'
+import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
+import { isCollapsed } from '../../ui/state/uiSelectors'
 import classes from './battleZone.module.css'
 
 export const CombatPage = memo(function CombatPage() {
@@ -35,9 +37,9 @@ const CombatAreas = memo(function CombatAreas() {
 })
 
 const CombatSidebar = memo(function CombatSidebar() {
-    const [collapsed, setCollapsed] = useState(false)
+    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Combat))
     return (
-        <SidebarContainer collapsed={collapsed} collapseClick={() => setCollapsed((c) => !c)}>
+        <SidebarContainer collapsedId={CollapsedEnum.Combat}>
             {BattleAreasList.map((bt) => (
                 <BattleAreasListUi bt={bt} key={bt.nameId} parentCollapsed={collapsed} />
             ))}
@@ -47,14 +49,11 @@ const CombatSidebar = memo(function CombatSidebar() {
 
 const BattleAreasListUi = memo(function BattleAreasList(props: { bt: BattleAreas; parentCollapsed: boolean }) {
     const { bt, parentCollapsed } = props
-    const [collapsed, setCollapsed] = useState(false)
-    const toggleCollapsed = () => setCollapsed((v) => !v)
 
     return (
         <CollapsibleMenu
             key={bt.id}
-            collapsed={collapsed}
-            collapseClick={toggleCollapsed}
+            collapsedId={CollapsedEnum.BattleArea}
             parentCollapsed={parentCollapsed}
             name={bt.nameId}
             icon={IconsData[bt.iconId]}
@@ -111,7 +110,7 @@ const EnemyInfoUi = memo(function EnemyInfoUi(props: { quantity: number; templat
     const { quantity, templateEnum } = props
     const template = CharTemplatesData[templateEnum]
     const enemy = generateCharacter(template)
-    const { t } = useTranslations()
+
     const { f } = useNumberFormatter()
     return (
         <div className="flex items-center">
@@ -120,7 +119,7 @@ const EnemyInfoUi = memo(function EnemyInfoUi(props: { quantity: number; templat
             </span>
             <div className="ml-4 space-y-1">
                 <p className="text-sm font-medium leading-none">
-                    {t[enemy.nameId]} X {f(quantity)}
+                    {enemy.nameId} X {f(quantity)}
                 </p>
                 <p className="text-sm text-muted-foreground grid grid-flow-col gap-2">
                     <span>Lv. {f(enemy.level)}</span>

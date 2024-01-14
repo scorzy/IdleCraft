@@ -8,7 +8,8 @@ import { CharInventory } from './inventory'
 export interface CharacterState {
     id: string
     iconId: Icons
-    nameId: keyof Msg
+    name?: string
+    nameId?: keyof Msg
     inventory: CharInventory
     skillsExp: ExpState
     skillsLevel: ExpState

@@ -1,16 +1,22 @@
-import { memo, ReactNode } from 'react'
+import { memo, ReactNode, useCallback } from 'react'
 import { clsx } from 'clsx'
 import { LuChevronLeft } from 'react-icons/lu'
+import { collapse } from '../state/uiFunctions'
+import { useGameStore } from '../../game/state'
+import { isCollapsed } from '../state/uiSelectors'
 import { MyListItem } from './MenuItem'
 import classes from './sidebarContainer.module.css'
+import { CollapsedEnum } from './CollapsedEnum'
 
 export const SidebarContainer = memo(function SidebarContainer(props: {
     children?: ReactNode
-    collapsed: boolean
-    collapseClick: () => void
     className?: string
+    collapsedId: CollapsedEnum
 }) {
-    const { children, collapsed, collapseClick, className } = props
+    const { children, className, collapsedId } = props
+
+    const collapseClick = useCallback(() => collapse(collapsedId), [collapsedId])
+    const collapsed = useGameStore(isCollapsed(collapsedId))
 
     return (
         <nav className={clsx(classes.collapseContainer, { [classes.collapsedContainer!]: collapsed }, className)}>

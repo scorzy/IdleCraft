@@ -3,6 +3,7 @@ import { WoodTypes } from '../../wood/WoodTypes'
 import { GameState } from '../../game/GameState'
 import { OreTypes } from '../../mining/OreTypes'
 import { changeRecipeState } from '../../crafting/RecipeFunctions'
+import { CollapsedEnum } from '../sidebar/CollapsedEnum'
 import { UiPagesData } from './UiPagesData'
 import { UiPages } from './UiPages'
 
@@ -27,24 +28,6 @@ export const setOre = (oreType: OreTypes) => useGameStore.setState((s) => ({ ui:
 export const setStorageOrder = (order: StorageOrder, asc: boolean) => () =>
     useGameStore.setState((s) => ({ ui: { ...s.ui, storageOrder: order, storageAsc: asc } }))
 
-export const sidebarCollapsed = (state: GameState) => state.ui.sidebarCollapsed
-export const toggleSidebar = () =>
-    useGameStore.setState((s) => ({
-        ui: { ...s.ui, sidebarCollapsed: !s.ui.sidebarCollapsed },
-    }))
-
-export const gatheringCollapsed = (state: GameState) => state.ui.gatheringCollapsed
-export const toggleGathering = () =>
-    useGameStore.setState((s) => ({
-        ui: { ...s.ui, gatheringCollapsed: !s.ui.gatheringCollapsed },
-    }))
-
-export const craftingCollapsed = (state: GameState) => state.ui.craftingCollapsed
-export const toggleCrafting = () =>
-    useGameStore.setState((s) => ({
-        ui: { ...s.ui, craftingCollapsed: !s.ui.craftingCollapsed },
-    }))
-
 export const toggleShowAvailablePerks = () =>
     useGameStore.setState((s) => ({ ui: { ...s.ui, showAvailablePerks: !s.ui.showAvailablePerks } }))
 export const toggleShowUnavailablePerks = () =>
@@ -54,3 +37,13 @@ export const toggleCompletedPerks = () =>
 
 export const setSelectedChar = (selectedCharId: string) =>
     useGameStore.setState((s) => ({ ui: { ...s.ui, selectedCharId } }))
+
+export const collapse = (id: CollapsedEnum) =>
+    useGameStore.setState((s) => {
+        if (id in s.ui.collapsed) {
+            const { [id]: _, ...collapsed } = s.ui.collapsed
+            s = { ...s, ui: { ...s.ui, collapsed } }
+        } else s = { ...s, ui: { ...s.ui, collapsed: { ...s.ui.collapsed, [id]: true } } }
+
+        return s
+    })

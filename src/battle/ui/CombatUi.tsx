@@ -51,12 +51,11 @@ const CombatChars = memo(function CombatChars() {
 })
 const CharCard = memo(function CharCard(props: { charId: string }) {
     const { charId } = props
-    const { t } = useTranslations()
     const name = useGameStore(selectCharName(charId))
     const icon = useGameStore(selectCharIcon(charId))
 
     return (
-        <MyCard title={t[name]} icon={IconsData[icon]}>
+        <MyCard title={name} icon={IconsData[icon]}>
             <CharHealth charId={charId} />
             <CharStamina charId={charId} />
             <CharMana charId={charId} />

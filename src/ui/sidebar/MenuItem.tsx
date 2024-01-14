@@ -6,10 +6,12 @@ import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
 import { UiPages } from '../state/UiPages'
 import { UiPagesData } from '../state/UiPagesData'
-import { setPage } from '../state/uiFunctions'
+import { collapse, setPage } from '../state/uiFunctions'
 import { Collapsible, CollapsibleContent } from '../../components/ui/collapsible'
 import { Msg } from '../../msg/Msg'
+import { isCollapsed } from '../state/uiSelectors'
 import classes from './menuItem.module.css'
+import { CollapsedEnum } from './CollapsedEnum'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -54,12 +56,14 @@ export const MyListItem = memo(function MyListItem(props: {
 
         return (
             <button
+                title={text}
+                type="button"
                 onClick={onClick}
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     { 'bg-muted hover:bg-muted': active },
                     { 'hover:bg-muted text-muted-foreground': !active },
-                    'justify-start gap-4 mt-1',
+                    'justify-start gap-4 mt-1 text-nowrap',
                     classes.item,
                     collapsed ? classes.itemCollapsed : ''
                 )}
@@ -95,17 +99,20 @@ export const MyListItem = memo(function MyListItem(props: {
 })
 
 export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
-    collapsed: boolean
     parentCollapsed: boolean
     name: keyof Msg
     icon: ReactNode
     children: ReactNode
-    collapseClick: () => void
+    collapsedId: CollapsedEnum
 }) {
-    const { collapsed, children, name, icon, collapseClick, parentCollapsed } = props
+    const { children, name, icon, parentCollapsed, collapsedId } = props
     const { t } = useTranslations()
+
+    const collapsed = useGameStore(isCollapsed(collapsedId))
+    const collapseClick = useCallback(() => collapse(collapsedId), [collapsedId])
+
     return (
-        <Collapsible open={collapsed}>
+        <Collapsible open={!collapsed}>
             <MyListItem
                 collapsed={parentCollapsed}
                 active={false}

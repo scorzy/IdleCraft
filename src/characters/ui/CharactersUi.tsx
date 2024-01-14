@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback } from 'react'
 import { TbInfoCircle, TbPlus } from 'react-icons/tb'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { MyPageAll } from '../../ui/pages/MyPage'
@@ -16,7 +16,7 @@ import {
     selectCharactersTeamIds,
 } from '../selectors/characterSelectors'
 import { setSelectedChar } from '../../ui/state/uiFunctions'
-import { isCharSelected, selectSelectedCharId } from '../../ui/state/uiSelectors'
+import { isCharSelected, isCollapsed, selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { MyCard } from '../../ui/myCard/myCard'
 import { selectCharacterMaxHealth, selectCharacterMaxHealthList } from '../selectors/healthSelectors'
 import { selectCharacterMaxMana, selectCharacterMaxManaList } from '../selectors/manaSelectors'
@@ -26,6 +26,7 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { Button } from '../../components/ui/button'
 import { selectCharacterMaxAttr, selectCharacterUsedAttr } from '../characterSelectors'
 import { addHealthPointClick, addManaPointClick, addStaminaPointClick } from '../characterFunctions'
+import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import classes from './charactersUi.module.css'
 
 export const CharactersUi = memo(function CharactersUi() {
@@ -38,10 +39,10 @@ export const CharactersUi = memo(function CharactersUi() {
     )
 })
 const CharactersSidebar = memo(function CharactersSidebar() {
-    const [collapsed, setCollapsed] = useState(false)
     const charIds = useGameStore(selectCharactersTeamIds)
+    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Characters))
     return (
-        <SidebarContainer collapsed={collapsed} collapseClick={() => setCollapsed((c) => !c)}>
+        <SidebarContainer collapsedId={CollapsedEnum.Characters}>
             {charIds.map((t) => (
                 <CharacterLink key={t} charId={t} collapsed={collapsed} />
             ))}
@@ -50,7 +51,6 @@ const CharactersSidebar = memo(function CharactersSidebar() {
 })
 const CharacterLink = memo(function CharacterLink(props: { charId: string; collapsed: boolean }) {
     const { charId, collapsed } = props
-    const { t } = useTranslations()
 
     const nameId = useGameStore(selectCharName(charId))
     const iconId = useGameStore(selectCharIcon(charId))
@@ -58,9 +58,7 @@ const CharacterLink = memo(function CharacterLink(props: { charId: string; colla
 
     const onClick = useCallback(() => setSelectedChar(charId), [charId])
 
-    return (
-        <MyListItem text={t[nameId]} collapsed={collapsed} icon={IconsData[iconId]} active={active} onClick={onClick} />
-    )
+    return <MyListItem text={nameId} collapsed={collapsed} icon={IconsData[iconId]} active={active} onClick={onClick} />
 })
 
 const CharInfo = memo(function CharInfo() {

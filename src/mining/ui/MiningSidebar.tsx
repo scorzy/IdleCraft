@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo } from 'react'
 import { useTranslations } from '../../msg/useTranslations'
 import { useGameStore } from '../../game/state'
 import { setOre } from '../../ui/state/uiFunctions'
@@ -8,13 +8,15 @@ import { OreData } from '../OreData'
 import { isOreSelected } from '../miningSelectors'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { IconsData } from '../../icons/Icons'
+import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
+import { isCollapsed } from '../../ui/state/uiSelectors'
 
 const ores = Object.values(OreTypes)
 
 export const MiningSidebar = memo(function MiningSidebar() {
-    const [collapsed, setCollapsed] = useState(false)
+    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Mining))
     return (
-        <SidebarContainer collapsed={collapsed} collapseClick={() => setCollapsed((c) => !c)}>
+        <SidebarContainer collapsedId={CollapsedEnum.Mining}>
             {ores.map((t) => (
                 <MiningLink key={t} oreType={t} collapsed={collapsed} />
             ))}

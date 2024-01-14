@@ -1,20 +1,21 @@
-import { memo, useState } from 'react'
+import { memo } from 'react'
 import { useTranslations } from '../../msg/useTranslations'
 import { WoodTypes } from '../WoodTypes'
 import { WoodData } from '../WoodData'
 import { useGameStore } from '../../game/state'
-import { isWoodSelected } from '../../ui/state/uiSelectors'
+import { isCollapsed, isWoodSelected } from '../../ui/state/uiSelectors'
 import { setWood } from '../../ui/state/uiFunctions'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { IconsData } from '../../icons/Icons'
+import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 
 const trees = Object.values(WoodTypes)
 
 export const WoodcuttingSidebar = memo(function WoodcuttingSidebar() {
-    const [collapsed, setCollapsed] = useState(false)
+    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Woodcutting))
     return (
-        <SidebarContainer collapsed={collapsed} collapseClick={() => setCollapsed((c) => !c)}>
+        <SidebarContainer collapsedId={CollapsedEnum.Woodcutting}>
             {trees.map((t) => (
                 <TreeLink key={t} woodType={t} collapsed={collapsed} />
             ))}

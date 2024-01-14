@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { LuTrash2 } from 'react-icons/lu'
 import { Button } from '../components/ui/button'
+import { PLAYER_ID } from '../characters/charactersConst'
 import { useGameStore } from './state'
 import { GetInitialGameState } from './InitialGameState'
 import classes from './start.module.css'
@@ -14,6 +15,8 @@ const startGame = (gameId: string) => () => {
         useGameStore.setState((s) => {
             s = GetInitialGameState()
             s.gameId = gameId
+            const player = s.characters.entries[PLAYER_ID]
+            if (player) player.name = gameId
             return s
         })
 }
