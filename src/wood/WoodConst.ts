@@ -1,1 +1,1 @@
-export const FAST_WOODCUTTING_PERK = -20
+export const FAST_WOODCUTTING_PERK = 20

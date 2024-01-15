@@ -14,7 +14,7 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { ExpEnum } from '../../experience/expEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { MyPageAll } from '../../ui/pages/MyPage'
+import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { addMining } from '../functions/addMining'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
@@ -33,10 +33,10 @@ export const Mining = memo(function Mining() {
                 </div>
             }
         >
-            <div className="page__main" key={oreType}>
+            <MyPage className="page__main" key={oreType}>
                 <MiningOre />
                 <OreUi />
-            </div>
+            </MyPage>
         </MyPageAll>
     )
 })

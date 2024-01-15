@@ -27,7 +27,7 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { RecipeData } from '../RecipeData'
 import { changeRecipe, setRecipeItemParam, getRecipeParamId } from '../RecipeFunctions'
 import { Recipe } from '../Recipe'
-import { MyPageAll } from '../../ui/pages/MyPage'
+import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { addCrafting } from '../functions/addCrafting'
 import { CraftingReq, CraftingResult } from './CraftingResult'
@@ -55,11 +55,11 @@ export const CraftingUi = memo(function CraftingUi() {
                 </div>
             }
         >
-            <div className="page__main" key={recipeType}>
+            <MyPage className="page__main" key={recipeType}>
                 <RecipeUi />
                 <CraftingResult result={result} />
                 <CraftingReq req={req} />
-            </div>
+            </MyPage>
         </MyPageAll>
     )
 })

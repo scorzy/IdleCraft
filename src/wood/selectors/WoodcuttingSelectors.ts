@@ -38,7 +38,7 @@ const TIME_BASE: Bonus = {
     add: DEF_WOOD_AXE.time,
     ...Base,
 }
-const PERK_FAST: Bonus = bonusFromPerk(PerksEnum.FAST_WOODCUTTING, { multi: FAST_WOODCUTTING_PERK })
+const PERK_FAST: Bonus = bonusFromPerk(PerksEnum.FAST_WOODCUTTING, { multi: -1 * FAST_WOODCUTTING_PERK })
 
 const selectWoodcuttingTimeInt = memoizeOne((axe: Item | undefined, fastWoodPerk: boolean) => {
     const ret: BonusResult = { total: DEF_WOOD_AXE.time, bonuses: [] }

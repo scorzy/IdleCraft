@@ -16,6 +16,7 @@ import {
     GiDeadWood,
     GiOak,
     GiPunch,
+    GiMining,
 } from 'react-icons/gi'
 
 export enum Icons {
@@ -44,7 +45,7 @@ export const IconsData: { [k in Icons]: ReactNode } = {
     Handle: <GiBo />,
     Ore: <GiOre />,
     Bar: <GiMetalBar />,
-    Pickaxe: <GiWoodAxe />,
+    Pickaxe: <GiMining />,
     Heart: <GiHearts />,
     HeartPlus: <GiHeartPlus />,
     Strong: <GiStrong />,

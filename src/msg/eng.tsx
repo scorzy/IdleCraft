@@ -89,10 +89,10 @@ export const engMsg: Msg = {
     Stamina: 'Stamina',
     Mana: 'Mana',
 
-    FastWoodcuttingPerk: 'Fast Woodcutting',
-    FastWoodcuttingPerkDesc: `Increase woodcutting speed by ${FAST_WOODCUTTING_PERK} %`,
-    FastMiningPerk: 'Fast Mining',
-    FastMiningPerkDesc: `Increase mining speed by ${FAST_MINING_PERK} %`,
+    FastWoodcuttingPerk: 'Faster Woodcutting',
+    FastWoodcuttingPerkDesc: `Increase woodcutting speed by ${FAST_WOODCUTTING_PERK}%`,
+    FastMiningPerk: 'Faster Mining',
+    FastMiningPerkDesc: `Increase mining speed by ${FAST_MINING_PERK}%`,
 
     ActivityAdded: 'Activity added',
     NormalAttack: 'Normal Attack',
