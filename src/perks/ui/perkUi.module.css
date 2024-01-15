@@ -26,3 +26,17 @@
     align-items: start;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 }
+.perksTab {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-auto-flow: column;
+}
+.dialog {
+    display: block;
+}
+@media (min-width: 900px) {
+    .dialog {
+        display: none;
+    }
+}

@@ -54,6 +54,7 @@ export const InitialGameState: GameState = {
         battleZone: null,
         selectedCharId: PLAYER_ID,
         collapsed: {},
+        defaultClosed: {},
     },
     notifications: [],
     location: GameLocations.StartVillage,
@@ -73,7 +74,6 @@ export const InitialGameState: GameState = {
     crafting: CraftingAdapter.getInitialState(),
     recipeId: '',
     mining: MiningAdapter.getInitialState(),
-    perks: {},
     craftingForm: {
         params: [],
         paramsValue: [],
@@ -93,6 +93,7 @@ export const InitialGameState: GameState = {
                 manaPoints: 0,
                 staminaPoints: 0,
                 isEnemy: false,
+                perks: {},
                 skillsExp: {},
                 skillsLevel: {},
                 combatAbilities: [],

@@ -18,7 +18,6 @@ import { Mining } from '../mining/Mining'
 import { OreTypes } from '../mining/OreTypes'
 import { CharacterState } from '../characters/characterState'
 import { PerksEnum } from '../perks/perksEnum'
-import { PerkState } from '../perks/PerkState'
 import { ToastState } from '../notification/toastState'
 import { BattleState } from '../battle/BattleTypes'
 import { BattleZoneEnum } from '../battle/BattleZoneEnum'
@@ -58,6 +57,7 @@ export interface GameState {
         battleZone: BattleZoneEnum | null
         selectedCharId: string
         collapsed: { [K in CollapsedEnum]?: boolean }
+        defaultClosed: { [k in string]: boolean }
     }
     notifications: ToastState
     timers: InitialTimerState
@@ -77,7 +77,6 @@ export interface GameState {
     crafting: InitialState<Crafting>
     recipeId: string
     mining: InitialState<Mining>
-    perks: PerkState
     craftingForm: {
         params: RecipeParameter[]
         paramsValue: RecipeParameterValue[]

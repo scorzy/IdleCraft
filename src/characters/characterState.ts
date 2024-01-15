@@ -3,6 +3,7 @@ import { InitialState } from '../entityAdapter/entityAdapter'
 import { ExpState } from '../experience/ExpState'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
+import { PerkState } from '../perks/PerkState'
 import { CharInventory } from './inventory'
 
 export interface CharacterState {
@@ -15,6 +16,7 @@ export interface CharacterState {
     skillsLevel: ExpState
     exp: number
     level: number
+    perks: PerkState
     isEnemy: boolean
     healthPoints: number
     staminaPoints: number

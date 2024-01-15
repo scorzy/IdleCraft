@@ -38,12 +38,23 @@ export const toggleCompletedPerks = () =>
 export const setSelectedChar = (selectedCharId: string) =>
     useGameStore.setState((s) => ({ ui: { ...s.ui, selectedCharId } }))
 
-export const collapse = (id: CollapsedEnum) =>
-    useGameStore.setState((s) => {
-        if (id in s.ui.collapsed) {
-            const { [id]: _, ...collapsed } = s.ui.collapsed
-            s = { ...s, ui: { ...s.ui, collapsed } }
-        } else s = { ...s, ui: { ...s.ui, collapsed: { ...s.ui.collapsed, [id]: true } } }
+export const collapse = (id: CollapsedEnum) => useGameStore.setState(collapseInt(id))
 
-        return s
-    })
+export const collapseInt = (id: CollapsedEnum) => (s: GameState) => {
+    if (id in s.ui.collapsed) {
+        const { [id]: _, ...collapsed } = s.ui.collapsed
+        s = { ...s, ui: { ...s.ui, collapsed } }
+    } else s = { ...s, ui: { ...s.ui, collapsed: { ...s.ui.collapsed, [id]: true } } }
+
+    return s
+}
+export const setCollapseInt = (id: CollapsedEnum, open: boolean) => (s: GameState) => {
+    if (open === (s.ui.collapsed[id] ?? false)) return s
+
+    if (id in s.ui.collapsed) {
+        const { [id]: _, ...collapsed } = s.ui.collapsed
+        s = { ...s, ui: { ...s.ui, collapsed } }
+    } else s = { ...s, ui: { ...s.ui, collapsed: { ...s.ui.collapsed, [id]: true } } }
+
+    return s
+}

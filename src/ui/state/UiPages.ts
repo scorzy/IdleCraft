@@ -9,7 +9,6 @@ export enum UiPages {
     Woodworking = 'Woodworking',
     Mining = 'Mining',
     Smithing = 'Smithing',
-    Perks = 'Perks',
     CombatZones = 'CombatZones',
     Combat = 'Combat',
     Characters = 'Characters',

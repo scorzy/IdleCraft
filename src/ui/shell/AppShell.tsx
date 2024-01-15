@@ -15,7 +15,6 @@ import { Mining } from '../../mining/ui/Mining'
 import { UiPagesData } from '../state/UiPagesData'
 import { useTranslations } from '../../msg/useTranslations'
 import { CardTitle } from '../../components/ui/card'
-import { PerksPage } from '../../perks/ui/PerksUi'
 import { CombatPage } from '../../battle/ui/BattleZoneUi'
 import { CombatUi } from '../../battle/ui/CombatUi'
 import { CharactersUi } from '../../characters/ui/CharactersUi'
@@ -76,8 +75,6 @@ const PageContent = memo(function PageContent() {
             return <Mining />
         case UiPages.Smithing:
             return <CraftingUi />
-        case UiPages.Perks:
-            return <PerksPage />
         case UiPages.CombatZones:
             return <CombatPage />
         case UiPages.Combat:

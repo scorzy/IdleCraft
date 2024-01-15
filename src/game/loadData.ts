@@ -10,7 +10,6 @@ import { copyValues } from '../utils/copyValues'
 import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { loadForest } from '../wood/forest/forestFunctions'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
-import { PerksEnum, PerksEnumKeys } from '../perks/perksEnum'
 import { BattleAdapter } from '../battle/BattleAdapter'
 import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { CharacterAdapter } from '../characters/characterAdapter'
@@ -83,12 +82,12 @@ export function loadData(data: object): GameState {
     // ToDo
     if ('characters' in data) state.characters = CharacterAdapter.load(data.characters)
 
-    if ('perks' in data && data.perks && typeof data.perks === 'object')
-        Object.entries(data.perks).forEach((kv) => {
-            const key = kv[0]
-            if (typeof key === 'string' && typeof kv[1] === 'number' && PerksEnumKeys.includes(key))
-                state.perks[key as PerksEnum] = kv[1]
-        })
+    // if ('perks' in data && data.perks && typeof data.perks === 'object')
+    //     Object.entries(data.perks).forEach((kv) => {
+    //         const key = kv[0]
+    //         if (typeof key === 'string' && typeof kv[1] === 'number' && PerksEnumKeys.includes(key))
+    //             state.perks[key as PerksEnum] = kv[1]
+    //     })
 
     return state
 }

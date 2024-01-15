@@ -1,4 +1,4 @@
-import { GiAnvil, GiCrossedSwords, GiMining, GiUpgrade, GiWoodAxe } from 'react-icons/gi'
+import { GiAnvil, GiCrossedSwords, GiMining, GiWoodAxe } from 'react-icons/gi'
 import { LuBox, LuLayoutList } from 'react-icons/lu'
 import { TbUsers } from 'react-icons/tb'
 import { RecipeTypes } from '../../crafting/RecipeInterfaces'
@@ -30,10 +30,6 @@ export const UiPagesData: { [k in UiPages]: UiPageData } = {
         nameId: 'Smithing',
         icon: <GiAnvil />,
         recipeType: RecipeTypes.Smithing,
-    },
-    [UiPages.Perks]: {
-        nameId: 'Perks',
-        icon: <GiUpgrade />,
     },
     [UiPages.CombatZones]: {
         nameId: 'CombatZones',

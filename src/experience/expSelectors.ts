@@ -21,8 +21,8 @@ export const selectPlayerExp = (state: GameState) => {
     if (!player) throw new Error('Player not found')
     return player.skillsExp
 }
-export const selectPlayerLevel = (state: GameState) => {
-    const player = CharacterAdapter.selectEx(state.characters, PLAYER_ID)
+export const selectPlayerLevel = (state: GameState, charId: string = PLAYER_ID) => {
+    const player = CharacterAdapter.selectEx(state.characters, charId)
     if (!player) throw new Error('Player not found')
     return player.level
 }

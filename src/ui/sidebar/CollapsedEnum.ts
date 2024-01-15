@@ -8,4 +8,6 @@ export enum CollapsedEnum {
     BattleArea = 'BattleArea',
     GatheringSide = 'GatheringSide',
     CraftingSide = 'CraftingSide',
+    Perk = 'Perk',
+    PerkS = 'PerkS',
 }

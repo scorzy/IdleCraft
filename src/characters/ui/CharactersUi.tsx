@@ -28,6 +28,7 @@ import { selectCharacterMaxAttr, selectCharacterUsedAttr } from '../characterSel
 import { addHealthPointClick, addManaPointClick, addStaminaPointClick } from '../characterFunctions'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
+import { PerkPage, PerksSidebar, PerksTab } from '../../perks/ui/PerksUi'
 import classes from './charactersUi.module.css'
 
 export const CharactersUi = memo(function CharactersUi() {
@@ -36,18 +37,24 @@ export const CharactersUi = memo(function CharactersUi() {
         <Tabs value={tab} onValueChange={(value) => setTab(value)} className="overflow-auto">
             <MyPageAll sidebar={<CharactersSidebar />}>
                 <MyPageAll
-                    sidebar={tab === 'password' && <CharactersSidebar />}
+                    sidebar={tab === 'password' && <PerksSidebar />}
                     header={
-                        <TabsList className="mt-3 ml-3">
-                            <TabsTrigger value="account">Account</TabsTrigger>
-                            <TabsTrigger value="password">Password</TabsTrigger>
+                        <TabsList className="m-3">
+                            <TabsTrigger value="account">Stats</TabsTrigger>
+                            <TabsTrigger value="password">
+                                <PerksTab />
+                            </TabsTrigger>
                         </TabsList>
                     }
                 >
-                    <TabsContent value="account">Make changes to your account here.</TabsContent>
-                    <TabsContent value="password">
+                    <TabsContent value="account">
                         <MyPage className="page__main">
                             <CharInfo />
+                        </MyPage>
+                    </TabsContent>
+                    <TabsContent value="password">
+                        <MyPage className="page__main">
+                            <PerkPage />
                         </MyPage>
                     </TabsContent>
                 </MyPageAll>
@@ -55,6 +62,7 @@ export const CharactersUi = memo(function CharactersUi() {
         </Tabs>
     )
 })
+
 const CharactersSidebar = memo(function CharactersSidebar() {
     const charIds = useGameStore(selectCharactersTeamIds)
     const collapsed = useGameStore(isCollapsed(CollapsedEnum.Characters))
