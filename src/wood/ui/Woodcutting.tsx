@@ -15,12 +15,6 @@ import {
 } from '../forest/forestSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { RestartProgress } from '../../ui/progress/RestartProgress'
-import {
-    selectWoodcuttingDamage,
-    selectWoodcuttingDamageAll,
-    selectWoodcuttingTime,
-    selectWoodcuttingTimeAll,
-} from '../selectors/WoodcuttingSelectors'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
 import { memoize } from '../../utils/memoize'
@@ -34,6 +28,8 @@ import { BonusDialog, BonusSpan } from '../../bonus/ui/BonusUi'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
+import { selectWoodcuttingDamage, selectWoodcuttingDamageAll } from '../selectors/woodcuttingDamage'
+import { selectWoodcuttingTime, selectWoodcuttingTimeAll } from '../selectors/woodcuttingTime'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { Button } from '@/components/ui/button'
 

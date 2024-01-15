@@ -10,7 +10,8 @@ import { startTimer } from '../../timers/startTimer'
 import { WoodcuttingAdapter } from '../WoodcuttingAdapter'
 import { cutTree } from '../forest/cutTree'
 import { hasTrees } from '../forest/forestFunctions'
-import { selectWoodcuttingDamage, selectWoodcuttingTime } from '../selectors/WoodcuttingSelectors'
+import { selectWoodcuttingDamage } from '../selectors/woodcuttingDamage'
+import { selectWoodcuttingTime } from '../selectors/woodcuttingTime'
 
 export const execWoodcutting = makeExecActivity((state: GameState, timer: Timer) => {
     const id = timer.actId

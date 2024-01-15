@@ -5,7 +5,7 @@ import { GameState } from '../../game/GameState'
 import { startTimer } from '../../timers/startTimer'
 import { WoodcuttingAdapter } from '../WoodcuttingAdapter'
 import { hasTrees } from '../forest/forestFunctions'
-import { selectWoodcuttingTime } from '../selectors/WoodcuttingSelectors'
+import { selectWoodcuttingTime } from '../selectors/woodcuttingTime'
 
 export const startWoodcutting = makeStartActivity((state: GameState, id: string) => {
     const data = WoodcuttingAdapter.selectEx(state.woodcutting, id)

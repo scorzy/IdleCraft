@@ -3,74 +3,21 @@ import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { GameState } from '../../game/GameState'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { Item, WoodAxeData } from '../../items/Item'
-import { hasPerk } from '../../perks/PerksSelectors'
-import { PerksEnum } from '../../perks/perksEnum'
-import { memoizeOne } from '../../utils/memoizeOne'
 import { Icons } from '../../icons/Icons'
-import { BaseBonus, Bonus, BonusResult } from '../../bonus/Bonus'
-import { bonusFromItem, bonusFromPerk, getTotal } from '../../bonus/BonusFunctions'
-import { FAST_WOODCUTTING_PERK } from '../WoodConst'
+import { BaseBonus } from '../../bonus/Bonus'
 import { CharacterAdapter } from '../../characters/characterAdapter'
 
 export const DEF_WOOD_AXE: WoodAxeData = {
     damage: 25,
     time: 3e3,
 }
-const Base: BaseBonus = {
+export const WoodBase: BaseBonus = {
     nameId: 'Base',
     iconId: Icons.Axe,
 }
 
-function selectAxe(state: GameState): Item | undefined {
+export function selectAxe(state: GameState): Item | undefined {
     const axe = CharacterAdapter.selectEx(state.characters, PLAYER_ID).inventory[EquipSlotsEnum.WoodAxe]
     if (!axe) return
     return selectGameItem(axe.stdItemId, axe.craftItemId)(state)
 }
-
-export const selectWoodcuttingTimeAll = (state: GameState) => {
-    return selectWoodcuttingTimeInt(selectAxe(state), hasPerk(PerksEnum.FAST_WOODCUTTING)(state))
-}
-
-//  Time
-
-const TIME_BASE: Bonus = {
-    id: 'base',
-    add: DEF_WOOD_AXE.time,
-    ...Base,
-}
-const PERK_FAST: Bonus = bonusFromPerk(PerksEnum.FAST_WOODCUTTING, { multi: -1 * FAST_WOODCUTTING_PERK })
-
-const selectWoodcuttingTimeInt = memoizeOne((axe: Item | undefined, fastWoodPerk: boolean) => {
-    const ret: BonusResult = { total: DEF_WOOD_AXE.time, bonuses: [] }
-
-    if (axe && axe.woodAxeData) ret.bonuses.push(bonusFromItem(axe, { add: axe.woodAxeData.time }))
-    else ret.bonuses.push(TIME_BASE)
-
-    if (fastWoodPerk) ret.bonuses.push(PERK_FAST)
-
-    ret.total = getTotal(ret.bonuses)
-    return ret
-})
-export const selectWoodcuttingTime = (state: GameState) => selectWoodcuttingTimeAll(state).total
-
-//  Damage
-const DAMAGE_BASE: Bonus = {
-    id: 'base',
-    add: DEF_WOOD_AXE.damage,
-    ...Base,
-}
-const selectWoodcuttingDamageInt = memoizeOne((axe: Item | undefined) => {
-    const ret: BonusResult = { total: DEF_WOOD_AXE.damage, bonuses: [] }
-
-    if (axe && axe.woodAxeData) ret.bonuses.push(bonusFromItem(axe, { add: axe.woodAxeData.damage }))
-    else ret.bonuses.push(DAMAGE_BASE)
-
-    ret.total = getTotal(ret.bonuses)
-
-    return ret
-})
-export const selectWoodcuttingDamageAll = (state: GameState) => {
-    return selectWoodcuttingDamageInt(selectAxe(state))
-}
-
-export const selectWoodcuttingDamage = (state: GameState) => selectWoodcuttingDamageAll(state).total
