@@ -2,8 +2,8 @@ import { memo, useCallback } from 'react'
 import { GiMining } from 'react-icons/gi'
 import { useGameStore } from '../../game/state'
 import { selectOreType } from '../../ui/state/uiSelectors'
-import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
-import { getMiningTime, selectDefaultMine, selectMining, selectOre } from '../miningSelectors'
+import { MyCard } from '../../ui/myCard/myCard'
+import { selectDefaultMine, selectMining, selectOre } from '../miningSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 import { Button } from '../../components/ui/button'
@@ -18,8 +18,12 @@ import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { addMining } from '../functions/addMining'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
+import { selectMiningTime, selectMiningTimeAll } from '../selectors/miningTime'
+import { BonusDialog } from '../../bonus/ui/BonusUi'
+import { selectMiningDamage, selectMiningDamageAll } from '../selectors/miningDamage'
 import classes from './mining.module.css'
 import { MiningSidebar } from './MiningSidebar'
+import { MyLabel } from '@/ui/myCard/MyLabel'
 
 export const Mining = memo(function Mining() {
     const oreType = useGameStore(selectOreType)
@@ -45,26 +49,36 @@ const MiningOre = memo(function MiningOre() {
     const oreType = useGameStore(selectOreType)
     const ore = useGameStore(selectOre(oreType))
     const act = useGameStore(selectMining(oreType))
+    const damage = useGameStore(selectMiningDamage)
     const { f, ft } = useNumberFormatter()
     const { t } = useTranslations()
     const def = selectDefaultMine(oreType)
     const hpPercent = Math.floor((100 * ore.hp) / def.hp)
-    const time = useGameStore(getMiningTime)
+    const time = useGameStore(selectMiningTime)
     const oreData = OreData[oreType]
 
     return (
         <MyCard title={t.Mining} actions={<MiningButton />} icon={<GiMining />}>
-            <MyCardLabel>
+            <MyLabel className="text-muted-foreground">
                 <span className={classes.oreHp}>
                     {t.OreHp} {f(ore.hp)}/{f(def.hp)}
                 </span>
-                <span>Armour {f(oreData.armour)}</span>
-            </MyCardLabel>
-            <RestartProgress value={hpPercent} color="error" />
-            <MyCardLabel>
+                <span>
+                    {t.Armour} {f(oreData.armour)}
+                </span>
+            </MyLabel>
+            <MyLabel className="text-muted-foreground">
+                <span>
+                    {t.Damage} {f(damage)}
+                </span>
+                <BonusDialog title={t.MiningDamage} selectBonusResult={selectMiningDamageAll} />
+            </MyLabel>
+            <RestartProgress value={hpPercent} color="health" className="mb-2" />
+            <MyLabel className="text-muted-foreground">
                 {t.Time} {ft(time)}
-            </MyCardLabel>
-            <GameTimerProgress actionId={act} color="primary" />
+                <BonusDialog title={t.MiningTime} selectBonusResult={selectMiningTimeAll} isTime={true} />
+            </MyLabel>
+            <GameTimerProgress actionId={act} color="primary" className="mb-2" />
         </MyCard>
     )
 })
@@ -95,9 +109,9 @@ const OreUi = memo(function MiningOre() {
 
     return (
         <MyCard title={t.OreVein} icon={IconsData[oreData.iconId]}>
-            <MyCardLabel>
+            <MyLabel className="text-muted-foreground">
                 {t.OreQta} {f(ore.qta)}/{f(def.qta)}
-            </MyCardLabel>
+            </MyLabel>
             <RestartProgress value={hpPercent} color="health" />
         </MyCard>
     )

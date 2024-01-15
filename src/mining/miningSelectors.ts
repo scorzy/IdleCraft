@@ -1,9 +1,5 @@
-import { CharacterAdapter } from '../characters/characterAdapter'
-import { PLAYER_ID } from '../characters/charactersConst'
-import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { GameState } from '../game/GameState'
 import { PickaxeData } from '../items/Item'
-import { selectGameItem } from '../storage/StorageSelectors'
 import { memoize } from '../utils/memoize'
 import { OreData } from './OreData'
 import { OreState } from './OreState'
@@ -15,21 +11,6 @@ export const DEF_PICKAXE: PickaxeData = {
     armourPen: 0,
 }
 
-function selectPickaxe(state: GameState) {
-    const axe = CharacterAdapter.selectEx(state.characters, PLAYER_ID).inventory[EquipSlotsEnum.Pickaxe]
-    if (!axe) return
-    return selectGameItem(axe.stdItemId, axe.craftItemId)(state)
-}
-
-export const getMiningTime = (state: GameState) => {
-    const pickaxe = selectPickaxe(state)
-    return pickaxe?.pickaxeData?.time ?? DEF_PICKAXE.time
-}
-export const getSearchMineTime = (): number => 5e3
-export const getMiningDamage = (state: GameState) => {
-    const pickaxe = selectPickaxe(state)
-    return pickaxe?.pickaxeData?.damage ?? DEF_PICKAXE.damage
-}
 export const isOreSelected = (oreType: OreTypes) => (state: GameState) => state.ui.oreType === oreType
 
 export const selectDefaultMine = memoize(function selectDefaultMine(oreType: OreTypes): OreState {

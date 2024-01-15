@@ -72,6 +72,8 @@ export interface Msg {
     Mine: string
     OreQta: string
     OreVein: string
+    MiningTime: string
+    MiningDamage: string
 
     //  Exp
     MiningExp: string
@@ -87,6 +89,7 @@ export interface Msg {
     WoodAxe: string
 
     Damage: string
+    Armour: string
     AttackSpeed: string
 
     Pickaxe: string

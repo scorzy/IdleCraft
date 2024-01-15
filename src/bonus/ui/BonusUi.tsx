@@ -1,4 +1,4 @@
-import { ReactNode, memo } from 'react'
+import { memo } from 'react'
 import { TbInfoCircle } from 'react-icons/tb'
 import { Bonus, BonusResult } from '../Bonus'
 import { IconsData } from '../../icons/Icons'
@@ -9,10 +9,6 @@ import { useGameStore } from '../../game/state'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
-export const BonusSpan = memo(function BonusSpan(props: { children: ReactNode }) {
-    const { children } = props
-    return <span className="grid grid-flow-col justify-start gap-2 items-center">{children}</span>
-})
 const BonusListUi = memo(function BonusListUi(props: { bonusResult: BonusResult; isTime?: boolean }) {
     const { bonusResult, isTime } = props
     const { f, ft } = useNumberFormatter()

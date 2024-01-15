@@ -8,9 +8,10 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useGameStore } from '../../game/state'
 import { selectGameItem, selectItemQta } from '../../storage/StorageSelectors'
 import { getItemId2 } from '../../storage/storageFunctions'
-import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
+import { MyCard } from '../../ui/myCard/myCard'
 import { selectResultQta } from '../CraftingSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
+import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -34,8 +35,8 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <MyCardLabel>Crafting Quantity {f(result.qta)}</MyCardLabel>
-                <MyCardLabel>You have {f(have)}</MyCardLabel>
+                <MyLabel>Crafting Quantity {f(result.qta)}</MyLabel>
+                <MyLabel>You have {f(have)}</MyLabel>
                 <ItemInfo item={item} />
             </CardContent>
         </Card>

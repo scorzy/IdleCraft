@@ -71,6 +71,8 @@ export const engMsg: Msg = {
     ArmourPen: 'Armour Pen.',
     WoodcuttingDamage: 'Woodcutting Damage',
     WoodcuttingTime: 'Woodcutting  Time',
+    MiningTime: 'Mining Time',
+    MiningDamage: 'Mining Damage',
     // Perks
     Perks: 'Perks',
     Available: 'Available',
@@ -108,6 +110,7 @@ export const engMsg: Msg = {
     Combat: 'Combat',
 
     Unharmed: 'Unharmed',
+    Armour: 'Armour',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

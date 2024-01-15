@@ -62,18 +62,6 @@
     }
 }
 
-.my-card-label {
-    display: grid;
-    justify-content: start;
-    align-content: center;
-}
-@container (min-width: 300px) {
-    .my-card-label {
-        gap: 1rem;
-        grid-auto-flow: column;
-    }
-}
-
 .svg-success {
     fill: hsl(var(--success-foreground));
 }

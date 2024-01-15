@@ -7,7 +7,7 @@ import { addItem } from '../../storage/storageFunctions'
 import { Timer } from '../../timers/Timer'
 import { MiningAdapter } from '../MiningAdapter'
 import { resetOre, mineOre } from '../miningFunctions'
-import { getMiningDamage } from '../miningSelectors'
+import { selectMiningDamage } from '../selectors/miningDamage'
 import { startMiningOre } from './startMiningOre'
 
 export const execMining = makeExecActivity((state: GameState, timer: Timer) => {
@@ -22,7 +22,7 @@ export const execMining = makeExecActivity((state: GameState, timer: Timer) => {
         }
         state = resetOre(state, data.oreType, state.location)
     } else {
-        const damage = getMiningDamage(state)
+        const damage = selectMiningDamage(state)
         state = addExp(state, ExpEnum.Mining, damage * 0.1)
         const res = mineOre(state, data.oreType, damage, state.location)
         state = res.state

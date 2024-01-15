@@ -5,14 +5,14 @@ import { GameState } from '../../game/GameState'
 import { startTimer } from '../../timers/startTimer'
 import { MiningAdapter } from '../MiningAdapter'
 import { hasOre } from '../miningFunctions'
-import { getSearchMineTime } from '../miningSelectors'
+import { selectMiningTime } from '../selectors/miningTime'
 import { startMiningOre } from './startMiningOre'
 
 export const startMining = makeStartActivity((state: GameState, id: string) => {
     const data = MiningAdapter.selectEx(state.mining, id)
     if (hasOre(state, data.oreType)) state = startMiningOre(state, id)
     else {
-        const time = getSearchMineTime()
+        const time = selectMiningTime(state)
         state = startTimer(state, time, ActivityTypes.Mining, id)
         if (data.isMining)
             state = {

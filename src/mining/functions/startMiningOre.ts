@@ -2,11 +2,11 @@ import { ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
 import { startTimer } from '../../timers/startTimer'
 import { MiningAdapter } from '../MiningAdapter'
-import { getMiningTime } from '../miningSelectors'
+import { selectMiningTime } from '../selectors/miningTime'
 
 export function startMiningOre(state: GameState, id: string): GameState {
     const data = MiningAdapter.selectEx(state.mining, id)
-    const time = getMiningTime(state)
+    const time = selectMiningTime(state)
     state = startTimer(state, time, ActivityTypes.Mining, id)
     if (!data.isMining)
         state = {

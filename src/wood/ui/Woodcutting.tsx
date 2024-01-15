@@ -16,7 +16,7 @@ import {
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { RestartProgress } from '../../ui/progress/RestartProgress'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
-import { MyCard, MyCardLabel } from '../../ui/myCard/myCard'
+import { MyCard } from '../../ui/myCard/myCard'
 import { memoize } from '../../utils/memoize'
 import { useTranslations } from '../../msg/useTranslations'
 import { WoodData } from '../WoodData'
@@ -24,13 +24,14 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { ExpEnum } from '../../experience/expEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { BonusDialog, BonusSpan } from '../../bonus/ui/BonusUi'
+import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
 import { selectWoodcuttingDamage, selectWoodcuttingDamageAll } from '../selectors/woodcuttingDamage'
 import { selectWoodcuttingTime, selectWoodcuttingTimeAll } from '../selectors/woodcuttingTime'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
+import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Button } from '@/components/ui/button'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
@@ -74,21 +75,21 @@ const Cutting = memo(function Cutting() {
 
     return (
         <MyCard title={fun.cutting(woodType)} actions={<CuttingButton />} icon={<GiWoodAxe />}>
-            <MyCardLabel>
+            <MyLabel className="text-muted-foreground">
                 <span>
                     {t.TreeHP} {f(forest.hp)}/{f(def.hp)}
                 </span>
-            </MyCardLabel>
-            <BonusSpan>
+            </MyLabel>
+            <MyLabel className="text-muted-foreground">
                 {t.Damage} {f(damage)}
                 <BonusDialog title={t.WoodcuttingDamage} selectBonusResult={selectWoodcuttingDamageAll} />
-            </BonusSpan>
-            <RestartProgress value={hpPercent} color="error" className="mb-2" />
-            <BonusSpan>
+            </MyLabel>
+            <RestartProgress value={hpPercent} color="health" className="mb-2" />
+            <MyLabel className="text-muted-foreground">
                 {t.Time} {ft(time)}
                 <BonusDialog title={t.WoodcuttingTime} selectBonusResult={selectWoodcuttingTimeAll} isTime={true} />
-            </BonusSpan>
-            <GameTimerProgress actionId={act} color="primary" />
+            </MyLabel>
+            <GameTimerProgress actionId={act} color="primary" className="mb-2" />
         </MyCard>
     )
 })
@@ -132,9 +133,9 @@ const ForestQta = memo(function ForestQta() {
 
     return (
         <>
-            <MyCardLabel>
+            <MyLabel className="text-muted-foreground">
                 {t.Trees} {f(qta)}/{f(def.qta)}
-            </MyCardLabel>
+            </MyLabel>
             <ProgressBar value={treePercent} color="success" className="mb-2" />
         </>
     )
@@ -147,9 +148,9 @@ const Trees = memo(function Trees() {
     const { t } = useTranslations()
     return (
         <>
-            <MyCardLabel>
+            <MyLabel>
                 {t.GrowingTrees} {f(trees.length)}
-            </MyCardLabel>
+            </MyLabel>
 
             {trees.map((t) => (
                 <Tree id={t} key={t} />
