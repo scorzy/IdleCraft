@@ -17,7 +17,7 @@ import {
 } from '../selectors/characterSelectors'
 import { setSelectedChar } from '../../ui/state/uiFunctions'
 import { isCharSelected, isCollapsed, selectSelectedCharId } from '../../ui/state/uiSelectors'
-import { MyCard } from '../../ui/myCard/myCard'
+import { MyCard } from '../../ui/myCard/MyCard'
 import { selectCharacterMaxHealth, selectCharacterMaxHealthList } from '../selectors/healthSelectors'
 import { selectCharacterMaxMana, selectCharacterMaxManaList } from '../selectors/manaSelectors'
 import { selectCharacterMaxStamina, selectCharacterMaxStaminaList } from '../selectors/staminaSelectors'
@@ -29,30 +29,33 @@ import { addHealthPointClick, addManaPointClick, addStaminaPointClick } from '..
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
 import { PerkPage, PerksSidebar, PerksTab } from '../../perks/ui/PerksUi'
+import { MyTabNum } from '../../ui/myCard/MyTabNum'
 import classes from './charactersUi.module.css'
 
 export const CharactersUi = memo(function CharactersUi() {
-    const [tab, setTab] = useState('account')
+    const [tab, setTab] = useState('info')
     return (
         <Tabs value={tab} onValueChange={(value) => setTab(value)} className="overflow-auto">
             <MyPageAll sidebar={<CharactersSidebar />}>
                 <MyPageAll
-                    sidebar={tab === 'password' && <PerksSidebar />}
+                    sidebar={tab === 'perks' && <PerksSidebar />}
                     header={
                         <TabsList className="m-3">
-                            <TabsTrigger value="account">Stats</TabsTrigger>
-                            <TabsTrigger value="password">
+                            <TabsTrigger value="info">
+                                <StatsTab />
+                            </TabsTrigger>
+                            <TabsTrigger value="perks">
                                 <PerksTab />
                             </TabsTrigger>
                         </TabsList>
                     }
                 >
-                    <TabsContent value="account">
+                    <TabsContent value="info">
                         <MyPage className="page__main">
                             <CharInfo />
                         </MyPage>
                     </TabsContent>
-                    <TabsContent value="password">
+                    <TabsContent value="perks">
                         <MyPage className="page__main">
                             <PerkPage />
                         </MyPage>
@@ -61,6 +64,16 @@ export const CharactersUi = memo(function CharactersUi() {
             </MyPageAll>
         </Tabs>
     )
+})
+
+export const StatsTab = memo(function StatsTab() {
+    const { t } = useTranslations()
+    const charId = useGameStore(selectSelectedCharId)
+    const used = useGameStore(selectCharacterUsedAttr(charId))
+    const max = useGameStore(selectCharacterMaxAttr(charId))
+    const diff = Math.floor(max - used)
+
+    return <MyTabNum text={t.Stats} num={diff} />
 })
 
 const CharactersSidebar = memo(function CharactersSidebar() {

@@ -18,6 +18,7 @@ export interface Msg {
     Gathering: string
     ItemType: string
     Info: string
+    Stats: string
 
     CraftingUnknown: string
     Woodworking: string

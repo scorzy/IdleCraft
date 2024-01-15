@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react'
 import { LuHourglass } from 'react-icons/lu'
-import { MyCard } from '../../ui/myCard/myCard'
+import { MyCard } from '../../ui/myCard/MyCard'
 import { memoize } from '../../utils/memoize'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
 import { recipes } from '../Recipes'

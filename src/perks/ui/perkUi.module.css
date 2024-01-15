@@ -12,6 +12,7 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1rem;
+    margin-right: 1rem;
 }
 .row {
     cursor: pointer;
@@ -25,12 +26,6 @@
     gap: 1rem;
     align-items: start;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-}
-.perksTab {
-    display: grid;
-    align-items: center;
-    justify-content: center;
-    grid-auto-flow: column;
 }
 .dialog {
     display: block;

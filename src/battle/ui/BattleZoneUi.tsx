@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { MyPageAll } from '../../ui/pages/MyPage'
-import { MyCard } from '../../ui/myCard/myCard'
+import { MyCard } from '../../ui/myCard/MyCard'
 import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
 import { BattleAreas, BattleAreasList } from '../battleAreas'
 import { useTranslations } from '../../msg/useTranslations'

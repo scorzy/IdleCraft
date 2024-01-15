@@ -5,7 +5,7 @@ import { selectActivityIcon, selectActivityId, selectActivityMax, selectActivity
 import { moveActivityNext, moveActivityPrev } from '../activityFunctions'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { MyCard } from '../../ui/myCard/myCard'
+import { MyCard } from '../../ui/myCard/MyCard'
 import { Alert, AlertTitle } from '../../components/ui/alert'
 import { MyPage } from '../../ui/pages/MyPage'
 import { removeActivity } from '../functions/removeActivity'

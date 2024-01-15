@@ -17,7 +17,7 @@ import {
     SelectUsedPerks,
     selectPerks,
 } from '../PerksSelectors'
-import { MyCard } from '../../ui/myCard/myCard'
+import { MyCard } from '../../ui/myCard/MyCard'
 import { Button } from '../../components/ui/button'
 import { ExpData } from '../../experience/expEnum'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -34,9 +34,9 @@ import { IconsData } from '../../icons/Icons'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
-import { Badge } from '../../components/ui/badge'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../components/ui/dialog'
 import { CardTitle } from '../../components/ui/card'
+import { MyTabNum } from '../../ui/myCard/MyTabNum'
 import classes from './perkUi.module.css'
 import {
     DropdownMenu,
@@ -44,26 +44,6 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-
-export const PerksTab = memo(function PerksTab() {
-    const { f } = useNumberFormatter()
-    const { t } = useTranslations()
-    const charId = useGameStore(selectSelectedCharId)
-    const maxPerks = useGameStore(SelectMaxPerks(charId))
-    const usedPerks = useGameStore(SelectUsedPerks(charId))
-    const diff = Math.floor(maxPerks - usedPerks)
-
-    return (
-        <div className={classes.perksTab}>
-            {t.Perks}{' '}
-            {diff > 0 && (
-                <Badge size="xs" className="ml-2">
-                    {f(diff)}
-                </Badge>
-            )}
-        </div>
-    )
-})
 
 export const PerksSidebar = memo(function PerksSidebar() {
     const { f } = useNumberFormatter()
@@ -89,7 +69,15 @@ export const PerksSidebar = memo(function PerksSidebar() {
         </SidebarContainer>
     )
 })
+export const PerksTab = memo(function PerksTab() {
+    const { t } = useTranslations()
+    const charId = useGameStore(selectSelectedCharId)
+    const maxPerks = useGameStore(SelectMaxPerks(charId))
+    const usedPerks = useGameStore(SelectUsedPerks(charId))
+    const diff = Math.floor(maxPerks - usedPerks)
 
+    return <MyTabNum text={t.Perks} num={diff} />
+})
 const PerkFilter = memo(function PerkFilter() {
     const { t } = useTranslations()
 

@@ -8,7 +8,7 @@ import {
     selectSelectedCraftedItemId,
     selectSelectedStdItemId,
 } from '../../storage/StorageSelectors'
-import { MyCard } from '../../ui/myCard/myCard'
+import { MyCard } from '../../ui/myCard/MyCard'
 import { Button } from '../../components/ui/button'
 import { equipClick } from '../../characters/characterFunctions'
 import { PLAYER_ID } from '../../characters/charactersConst'

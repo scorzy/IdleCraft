@@ -11,7 +11,7 @@ import {
     selectStorageLocations,
     isSelected,
 } from '../StorageSelectors'
-import { MyCard } from '../../ui/myCard/myCard'
+import { MyCard } from '../../ui/myCard/MyCard'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
 import { getItemId2, setSelectedItem } from '../storageFunctions'

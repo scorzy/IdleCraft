@@ -15,7 +15,7 @@ import {
 } from '../../characters/selectors/characterSelectors'
 import { useTranslations } from '../../msg/useTranslations'
 import { IconsData } from '../../icons/Icons'
-import { MyCard } from '../../ui/myCard/myCard'
+import { MyCard } from '../../ui/myCard/MyCard'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { selectCharacterMaxHealth } from '../../characters/selectors/healthSelectors'
 import { selectCharacterMaxMana } from '../../characters/selectors/manaSelectors'
