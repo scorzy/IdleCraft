@@ -1,5 +1,7 @@
 import { Item } from '../items/Item'
+import { changeRecipe } from './RecipeFunctions'
 
+export const handleRecipeChange = (value: string) => changeRecipe(value)
 export function getItemValue(components: Item[], isFinalItem: boolean): number {
     let value = 0
     for (const comp of components) value += comp.value

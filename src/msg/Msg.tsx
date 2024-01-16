@@ -19,6 +19,7 @@ export interface Msg {
     ItemType: string
     Info: string
     Stats: string
+    SelectARecipe: string
 
     CraftingUnknown: string
     Woodworking: string

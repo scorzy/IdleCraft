@@ -9,6 +9,7 @@ import { RecipeItem, RecipeParameterValue } from './RecipeInterfaces'
 import { Crafting } from './CraftingIterfaces'
 import { CraftingAdapter } from './CraftingAdapter'
 
+export const selectRecipeId = (s: GameState) => s.recipeId
 export const selectRecipeParams = (state: GameState) => state.craftingForm.params
 export const selectRecipeItemValue = (recipeParamId: string) => (state: GameState) =>
     state.craftingForm.paramsValue.find((p) => p.id === recipeParamId)

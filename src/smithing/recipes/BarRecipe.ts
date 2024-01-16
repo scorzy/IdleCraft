@@ -7,6 +7,7 @@ import {
     RecipeParamType,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
+import { Icons } from '../../icons/Icons'
 import { ItemTypes } from '../../items/Item'
 import { OreData } from '../../mining/OreData'
 
@@ -26,6 +27,7 @@ export const BarRecipe: Recipe = {
     id: 'BarRecipe',
     type: RecipeTypes.Smithing,
     nameId: 'Bar',
+    iconId: Icons.Bar,
     getParameters: function (): RecipeParameter[] {
         return barParam
     },

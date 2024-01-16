@@ -73,6 +73,7 @@ export const engMsg: Msg = {
     WoodcuttingTime: 'Woodcutting  Time',
     MiningTime: 'Mining Time',
     MiningDamage: 'Mining Damage',
+    SelectARecipe: 'Select a recipe',
     // Perks
     Perks: 'Perks',
     Available: 'Available',

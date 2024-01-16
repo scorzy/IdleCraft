@@ -7,6 +7,7 @@ import {
     RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
+import { Icons } from '../../icons/Icons'
 import { ItemTypes } from '../../items/Item'
 import { WoodData } from '../WoodData'
 
@@ -26,6 +27,7 @@ export const PlankRecipe: Recipe = {
     id: 'PlankRecipe',
     type: RecipeTypes.Woodworking,
     nameId: 'Plank',
+    iconId: Icons.Plank,
     getParameters: function (): RecipeParameter[] {
         return plankParam
     },

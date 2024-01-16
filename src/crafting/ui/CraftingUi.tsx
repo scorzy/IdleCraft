@@ -9,6 +9,7 @@ import {
     canCraft,
     selectCraftTime,
     selectCurrentCrafting,
+    selectRecipeId,
     selectRecipeItemValue,
     selectRecipeParams,
     selectRecipeReq,
@@ -25,11 +26,12 @@ import { Badge } from '../../components/ui/badge'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { RecipeData } from '../RecipeData'
-import { changeRecipe, setRecipeItemParam, getRecipeParamId } from '../RecipeFunctions'
+import { setRecipeItemParam, getRecipeParamId } from '../RecipeFunctions'
 import { Recipe } from '../Recipe'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { addCrafting } from '../functions/addCrafting'
+import { handleRecipeChange } from '../CraftingFunctions'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
@@ -81,6 +83,41 @@ const RecipeUi = memo(function RecipeUi() {
     )
 })
 
+const RecipeSelectUi = memo(function RecipeSelectUi() {
+    const recipeType = useGameStore(selectRecipeType)
+    const recipeId = useGameStore(selectRecipeId)
+    const { t } = useTranslations()
+
+    if (!recipeType) return
+    const recipesByType = selectRecipes(recipeType)
+    const selected = recipes.get(recipeId)
+    const icon = selected && IconsData[selected.iconId]
+
+    return (
+        <div>
+            <Label>{t.Recipe}</Label>
+            <Select value={recipeId} onValueChange={handleRecipeChange}>
+                <SelectTrigger>
+                    <SelectValue placeholder={t.SelectARecipe}>
+                        {selected && (
+                            <span className={classes.selectTrigger}>
+                                {icon} {t[selected.nameId]}
+                            </span>
+                        )}
+                    </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                    {recipesByType.map((r) => (
+                        <SelectItem key={r.id} value={r.id} icon={IconsData[r.iconId]}>
+                            {t[r.nameId]}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+        </div>
+    )
+})
+
 const CraftingButtons = memo(function CraftingButtons() {
     const { ft } = useNumberFormatter()
     const { t } = useTranslations()
@@ -111,34 +148,6 @@ const CraftingButtons = memo(function CraftingButtons() {
     )
 })
 
-const RecipeSelectUi = memo(function RecipeSelectUi() {
-    const recipeType = useGameStore((s) => s.ui.recipeType)
-    const recipeId = useGameStore((s) => s.recipeId)
-    const { t } = useTranslations()
-    const handleRecipeChange = (value: string) => changeRecipe(value)
-
-    if (!recipeType) return <></>
-    const recipes = selectRecipes(recipeType)
-
-    return (
-        <div>
-            <Label>{t.Recipe}</Label>
-            <Select value={recipeId} onValueChange={handleRecipeChange}>
-                <SelectTrigger>
-                    <SelectValue placeholder="select a recipe" />
-                </SelectTrigger>
-                <SelectContent>
-                    {recipes.map((r) => (
-                        <SelectItem key={r.id} value={r.id}>
-                            {t[r.nameId]}
-                        </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
-        </div>
-    )
-})
-
 const RecipeParamUi = memo(function RecipeParamUi(props: { recipeParam: RecipeParameter }) {
     const { recipeParam } = props
 
@@ -153,14 +162,26 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
     const { t } = useTranslations()
     const itemsId = useGameStore(selectItemsByType(recipeParam.itemType))
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
-    const handleRecipeChange = (value: string) => setRecipeItemParam(recipeParam.id, value)
     const selectedValue = getRecipeParamId(selected)
+    const selectedItem = useGameStore(selectGameItem(selected?.stdItemId, selected?.craftItemId))
+
+    const handleRecipeChange = useCallback(
+        (value: string) => setRecipeItemParam(recipeParam.id, value),
+        [recipeParam.id]
+    )
+
     return (
         <div>
             <Label>{t[recipeParam.nameId]}</Label>
             <Select value={selectedValue} onValueChange={handleRecipeChange}>
                 <SelectTrigger>
-                    <SelectValue placeholder={`-- ${t[recipeParam.nameId]} --`} />
+                    <SelectValue placeholder={`-- ${t[recipeParam.nameId]} --`}>
+                        {selectedItem && (
+                            <span className={classes.selectTrigger}>
+                                {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
+                            </span>
+                        )}
+                    </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                     {itemsId.map((t) => {

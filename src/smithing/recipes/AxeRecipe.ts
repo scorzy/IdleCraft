@@ -32,6 +32,7 @@ const woodAxeParam: RecipeParameter[] = [
 class AxeRecipeInt implements Recipe {
     id = 'AxeRecipe'
     type = RecipeTypes.Smithing
+    iconId = Icons.Axe
     nameId = 'WoodAxe' as keyof Msg
     getParameters(): RecipeParameter[] {
         return woodAxeParam

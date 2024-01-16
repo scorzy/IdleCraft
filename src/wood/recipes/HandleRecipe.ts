@@ -7,6 +7,7 @@ import {
     RecipeResult,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
+import { Icons } from '../../icons/Icons'
 import { ItemTypes } from '../../items/Item'
 import { WoodData } from '../WoodData'
 
@@ -26,6 +27,7 @@ export const HandleRecipe: Recipe = {
     id: 'handleRecipe',
     type: RecipeTypes.Woodworking,
     nameId: 'Handle',
+    iconId: Icons.Handle,
     getParameters: function (): RecipeParameter[] {
         return handleParam
     },

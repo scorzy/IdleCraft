@@ -32,6 +32,7 @@ export const PickaxeRecipe: Recipe = {
     id: 'Pickaxe',
     type: RecipeTypes.Smithing,
     nameId: 'Pickaxe',
+    iconId: Icons.Pickaxe,
     getParameters: function (): RecipeParameter[] {
         return pickaxeParam
     },

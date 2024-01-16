@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
-import { MyPageAll } from '../../ui/pages/MyPage'
+import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { MyCard } from '../../ui/myCard/MyCard'
 import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
 import { BattleAreas, BattleAreasList } from '../battleAreas'
@@ -24,14 +24,11 @@ import { isCollapsed } from '../../ui/state/uiSelectors'
 import classes from './battleZone.module.css'
 
 export const CombatPage = memo(function CombatPage() {
-    return <CombatAreas />
-})
-const CombatAreas = memo(function CombatAreas() {
     return (
         <MyPageAll sidebar={<CombatSidebar />}>
-            <div className={classes.areaCards}>
+            <MyPage className={classes.areaCards}>
                 <BattleZoneInfoUi />
-            </div>
+            </MyPage>
         </MyPageAll>
     )
 })
