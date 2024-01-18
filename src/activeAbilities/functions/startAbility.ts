@@ -3,13 +3,14 @@ import { GameState } from '../../game/GameState'
 import { startTimer } from '../../timers/startTimer'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { ActiveAbilityData } from '../ActiveAbilityData'
+import { AbilitiesEnum } from '../abilitiesEnum'
 import { CastCharAbilityAdapter } from '../abilityAdapters'
 import { tryCast } from './tryCast'
 
 export function startAbility(
     state: GameState,
     characterId: string,
-    abilityId: string
+    abilityId: AbilitiesEnum
 ): { state: GameState; done: boolean } {
     const ability = ActiveAbilityData.getEx(abilityId)
 

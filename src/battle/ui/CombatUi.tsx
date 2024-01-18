@@ -23,6 +23,11 @@ import { selectCharacterMaxStamina } from '../../characters/selectors/staminaSel
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { TimerProgressFromId } from '../../ui/progress/TimerProgress'
 import { ActiveAbilityData } from '../../activeAbilities/ActiveAbilityData'
+import { selectCombatAbilityById } from '../../activeAbilities/selectors/selectCombatAbilityById'
+import { GameState } from '../../game/GameState'
+import { Badge } from '../../components/ui/badge'
+import { MyHoverCard } from '../../ui/MyHoverCard'
+import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
 import classes from './Combat.module.css'
 
 export const CombatUi = memo(function CombatUi() {
@@ -56,11 +61,14 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
 
     return (
         <MyCard title={name} icon={IconsData[icon]}>
-            <CharHealth charId={charId} />
-            <CharStamina charId={charId} />
-            <CharMana charId={charId} />
+            <div className={classes.charCard}>
+                <CharHealth charId={charId} />
+                <CharStamina charId={charId} />
+                <CharMana charId={charId} />
 
-            <MainAttack charId={charId} />
+                <MainAttack charId={charId} />
+                <CombatAbilitiesList charId={charId} />
+            </div>
         </MyCard>
     )
 })
@@ -73,13 +81,13 @@ const CharHealth = memo(function CharHealth(props: { charId: string }) {
     const hPercent = Math.floor((100 * health) / maxHealth)
 
     return (
-        <>
+        <div>
             <span className={classes.label}>
                 <GiHearts />
                 {f(health)}/{f(maxHealth)}
             </span>
-            <ProgressBar color="health" value={hPercent} className="mb-2" />
-        </>
+            <ProgressBar color="health" value={hPercent} />
+        </div>
     )
 })
 
@@ -91,13 +99,13 @@ const CharStamina = memo(function CharStamina(props: { charId: string }) {
     const sPercent = Math.floor((100 * stamina) / maxStamina)
 
     return (
-        <>
+        <div>
             <span className={classes.label}>
                 <GiStrong />
                 {f(stamina)}/{f(maxStamina)}
             </span>
-            <ProgressBar color="stamina" value={sPercent} className="mb-2" />
-        </>
+            <ProgressBar color="stamina" value={sPercent} />
+        </div>
     )
 })
 
@@ -109,13 +117,13 @@ const CharMana = memo(function CharMana(props: { charId: string }) {
     const mPercent = Math.floor((100 * mana) / maxMana)
 
     return (
-        <>
+        <div>
             <span className={classes.label}>
                 <GiMagicPalm />
                 {f(mana)}/{f(maxMana)}
             </span>
-            <ProgressBar color="mana" value={mPercent} className="mb-2" />
-        </>
+            <ProgressBar color="mana" value={mPercent} />
+        </div>
     )
 })
 
@@ -125,16 +133,58 @@ const MainAttack = memo(function MainAttack(props: { charId: string }) {
     const timer = useGameStore(selectCharMainAttackTimer(charId))
     const attack = useGameStore(selectCharMainAttack(charId))
     const icon = useGameStore(selectCharMainAttackIcon(charId))
-    if (!timer || !attack) return <></>
+    if (!timer || !attack) return
     const ability = ActiveAbilityData.getEx(attack.abilityId)
     return (
-        <>
+        <div>
             <span className={classes.attackLabel}>
                 {icon && IconsData[icon]}
                 {t[ability.nameId]}
             </span>
 
             <TimerProgressFromId timerId={timer.id} color="primary" />
-        </>
+        </div>
+    )
+})
+const CombatAbilitiesList = memo(function CombatAbilitiesList(props: { charId: string }) {
+    const { charId } = props
+    const allAbilities = useGameStore(selectCombatAbilitiesChar(charId))
+
+    return (
+        <div className={classes.abilitiesList}>
+            {allAbilities.map((id, index) => (
+                <CombatAbilityBadge characterId={charId} abilityId={id} key={id + charId + index} index={index} />
+            ))}
+        </div>
+    )
+})
+const CombatAbilityBadge = memo(function CombatAbilitiesList(props: {
+    characterId: string
+    abilityId: string
+    index: number
+}) {
+    const { characterId, abilityId, index } = props
+    const { t } = useTranslations()
+    const charAbility = useGameStore(selectCombatAbilityById(abilityId, characterId))
+    const ability = ActiveAbilityData.getEx(charAbility.abilityId)
+    const iconId = useGameStore((state: GameState) => ability.getIconId({ state, characterId }))
+    const desc = useGameStore((state: GameState) => ability.getDesc({ state, characterId }))
+    const active = useGameStore(
+        (state: GameState) => state.characters.entries[characterId]?.lastCombatAbilityNum === index
+    )
+    const icon = IconsData[iconId]
+    return (
+        <MyHoverCard
+            trigger={
+                <Badge variant={active ? 'default' : 'secondary'} className="text-xl">
+                    {icon}
+                </Badge>
+            }
+        >
+            <span className="text-lg font-semibold leading-none tracking-tight grid grid-cols-[auto_1fr] gap-1.5 items-center mb-2">
+                {icon} {t[ability.nameId]}
+            </span>
+            <div>{desc}</div>
+        </MyHoverCard>
     )
 })

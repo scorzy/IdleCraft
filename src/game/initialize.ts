@@ -1,6 +1,7 @@
 import { ActiveAbilityData } from '../activeAbilities/ActiveAbilityData'
+import { ChargedAttack } from '../activeAbilities/abilities/ChargedAttack'
 import { NormalAttack } from '../activeAbilities/abilities/NormalAttack'
-import { NORMAL_ATTACK_ID } from '../activeAbilities/abilityConst'
+import { AbilitiesEnum } from '../activeAbilities/abilitiesEnum'
 import { execAbilityTimer } from '../activeAbilities/functions/execAbilityTimer'
 import { ActivityTypes } from '../activities/ActivityState'
 import { getBattleIcon } from '../battle/functions/getBattleIcon'
@@ -75,5 +76,6 @@ function initRecipes() {
     recipes.set(PickaxeRecipe.id, PickaxeRecipe)
 }
 function initAbilities() {
-    ActiveAbilityData.set(NORMAL_ATTACK_ID, new NormalAttack())
+    ActiveAbilityData.set(AbilitiesEnum.NormalAttack, new NormalAttack())
+    ActiveAbilityData.set(AbilitiesEnum.ChargedAttack, new ChargedAttack())
 }

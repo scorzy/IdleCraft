@@ -4,10 +4,11 @@ import { getFirstTimer } from '../timers/getFirstTimer'
 import { GameState, Globals } from './GameState'
 import { loadData } from './loadData'
 import { useGameStore } from './state'
+import { regenerate } from './regenerate'
 
 const MAX_LOAD = 3600 * 1000 * 24 * 1
-const TEST_DIF = -3600 * 1000 * 24 * 360
-//const TEST_DIF = 0
+//const TEST_DIF = -3600 * 1000 * 24 * 360
+const TEST_DIF: number = 0
 
 // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export declare function setTimeout(this: Window | void, handler: (...args: unknown[]) => void, timeout: number): number
@@ -31,7 +32,10 @@ function advanceTimers(state: GameState, diff: number): GameState {
 }
 
 function loadGame(state: GameState): GameState {
-    if (TEST_DIF !== 0) state = advanceTimers(state, TEST_DIF)
+    if (TEST_DIF !== 0) {
+        state = advanceTimers(state, TEST_DIF)
+        state.lastRegen += TEST_DIF
+    }
 
     state.loading = true
     let diff = Date.now() - state.now - MAX_LOAD
@@ -63,6 +67,8 @@ function loadGame(state: GameState): GameState {
 
     diff = Date.now() - state.now
     if (diff > 0) state = advanceTimers(state, diff)
+
+    state = regenerate(state, state.now)
 
     state.loading = false
     return state

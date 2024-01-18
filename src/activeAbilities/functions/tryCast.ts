@@ -1,8 +1,13 @@
 import { CharacterAdapter } from '../../characters/characterAdapter'
 import { GameState } from '../../game/GameState'
 import { ActiveAbilityData } from '../ActiveAbilityData'
+import { AbilitiesEnum } from '../abilitiesEnum'
 
-export function tryCast(state: GameState, characterId: string, abilityId: string): { cast: boolean; state: GameState } {
+export function tryCast(
+    state: GameState,
+    characterId: string,
+    abilityId: AbilitiesEnum
+): { cast: boolean; state: GameState } {
     const ability = ActiveAbilityData.get(abilityId)
     if (!ability) throw new Error(`[execAbility] ability ${abilityId} not found`)
 

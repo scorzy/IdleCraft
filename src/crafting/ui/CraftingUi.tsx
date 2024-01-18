@@ -100,7 +100,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
                 <SelectTrigger>
                     <SelectValue placeholder={t.SelectARecipe}>
                         {selected && (
-                            <span className={classes.selectTrigger}>
+                            <span className="select-trigger">
                                 {icon} {t[selected.nameId]}
                             </span>
                         )}

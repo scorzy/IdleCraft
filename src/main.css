@@ -65,3 +65,10 @@
 .svg-success {
     fill: hsl(var(--success-foreground));
 }
+
+.select-trigger {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    gap: 0.5rem;
+}

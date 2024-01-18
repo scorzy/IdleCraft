@@ -4,9 +4,10 @@ import { endActivity } from '../../activities/functions/endActivity'
 import { isBattleEnded } from '../../battle/functions/isBattleEnded'
 import { GameState } from '../../game/GameState'
 import { ActiveAbilityData } from '../ActiveAbilityData'
+import { AbilitiesEnum } from '../abilitiesEnum'
 import { endBattle } from './endBattle'
 
-export function execAbility(state: GameState, abilityId: string, characterId: string): GameState {
+export function execAbility(state: GameState, abilityId: AbilitiesEnum, characterId: string): GameState {
     const abilityClass = ActiveAbilityData.getEx(abilityId)
     state = abilityClass.exec({ state, characterId })
 

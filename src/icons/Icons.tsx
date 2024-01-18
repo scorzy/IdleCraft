@@ -17,6 +17,7 @@ import {
     GiOak,
     GiPunch,
     GiMining,
+    GiSaberSlash,
 } from 'react-icons/gi'
 
 export enum Icons {
@@ -37,6 +38,7 @@ export enum Icons {
     DeadWood = 'DeadWood',
     Oak = 'Oak',
     Punch = 'Punch',
+    SaberSlash = 'SaberSlash',
 }
 export const IconsData: { [k in Icons]: ReactNode } = {
     Axe: <GiWoodAxe />,
@@ -56,4 +58,5 @@ export const IconsData: { [k in Icons]: ReactNode } = {
     DeadWood: <GiDeadWood />,
     Oak: <GiOak />,
     Punch: <GiPunch />,
+    SaberSlash: <GiSaberSlash />,
 }

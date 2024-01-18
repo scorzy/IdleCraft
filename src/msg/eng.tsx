@@ -10,6 +10,7 @@ export const engMsg: Msg = {
     Time: 'Time',
     Stop: 'Stop',
     Info: 'Info',
+    Add: 'Add',
 
     CraftingUnknown: 'Crafting ??',
     DeadTree: 'Dead Tree',
@@ -96,10 +97,15 @@ export const engMsg: Msg = {
     FastWoodcuttingPerkDesc: `Increase woodcutting speed by ${FAST_WOODCUTTING_PERK}%`,
     FastMiningPerk: 'Faster Mining',
     FastMiningPerkDesc: `Increase mining speed by ${FAST_MINING_PERK}%`,
+    ChargedAttackPerk: 'Charged Attack',
+    ChargedAttackPerkDesc: 'Unlock Charged Attack',
 
     ActivityAdded: 'Activity added',
     NormalAttack: 'Normal Attack',
     NormalAttackDesc: 'Normal Attack',
+
+    ChargedAttack: 'Charged Attack',
+    ChargedAttackDesc: 'Charged Attack',
 
     CombatZones: 'Combat',
     Characters: 'Characters',

@@ -30,6 +30,7 @@ import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
 import { PerkPage, PerksSidebar, PerksTab } from '../../perks/ui/PerksUi'
 import { MyTabNum } from '../../ui/myCard/MyTabNum'
+import { CombatAbilities } from '../../activeAbilities/ui/CombatAbilities'
 import classes from './charactersUi.module.css'
 
 export const CharactersUi = memo(function CharactersUi() {
@@ -53,6 +54,7 @@ export const CharactersUi = memo(function CharactersUi() {
                     <TabsContent value="info">
                         <MyPage className="page__main">
                             <CharInfo />
+                            <CombatAbilities />
                         </MyPage>
                     </TabsContent>
                     <TabsContent value="perks">

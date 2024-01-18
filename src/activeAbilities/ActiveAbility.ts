@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
+import { AbilitiesEnum } from './abilitiesEnum'
 
 export interface AbilityParams {
     state: GameState
@@ -13,7 +14,7 @@ export interface AbilityStartResult {
     started: boolean
 }
 export interface ActiveAbility {
-    id: string
+    id: AbilitiesEnum
     nameId: keyof Msg
     getDesc(params: AbilityParams): ReactNode
     getIconId(params: AbilityParams): Icons

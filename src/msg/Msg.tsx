@@ -20,6 +20,7 @@ export interface Msg {
     Info: string
     Stats: string
     SelectARecipe: string
+    Add: string
 
     CraftingUnknown: string
     Woodworking: string
@@ -115,14 +116,14 @@ export interface Msg {
     FastWoodcuttingPerkDesc: string
     FastMiningPerk: string
     FastMiningPerkDesc: string
+    ChargedAttackPerk: string
+    ChargedAttackPerkDesc: string
+
     Base: string
     Total: string
     Used: string
     Filter: string
-
     ActivityAdded: string
-    NormalAttackDesc: string
-
     CombatZones: string
 
     // battle
@@ -134,6 +135,10 @@ export interface Msg {
 
     // Abilities
     NormalAttack: string
+    NormalAttackDesc: string
+
+    ChargedAttack: string
+    ChargedAttackDesc: string
 
     Unharmed: string
 }

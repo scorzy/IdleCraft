@@ -1,1 +1,3 @@
-export const NORMAL_ATTACK_ID = 'NormalAttack'
+export const CHARGED_ATTACK_DAMAGE_BONUS = 2.5
+export const CHARGED_ATTACK_TIME = 1.5
+export const CHARGED_ATTACK_STAMINA = 2

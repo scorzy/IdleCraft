@@ -1,6 +1,7 @@
 import { ExpEnum } from '../experience/expEnum'
 import { Msg } from '../msg/Msg'
 import { Icons } from '../icons/Icons'
+import { AbilitiesEnum } from '../activeAbilities/abilitiesEnum'
 import { PerksEnum } from './perksEnum'
 
 export interface ExpReq {
@@ -15,6 +16,7 @@ interface Perk {
     requiredExp?: Array<ExpReq>
     requiredPerks?: PerksEnum[]
     max?: number
+    abilityUnlock?: AbilitiesEnum
 }
 export const PerksData: { [k in PerksEnum]: Perk } = {
     [PerksEnum.FAST_WOODCUTTING]: {
@@ -28,5 +30,12 @@ export const PerksData: { [k in PerksEnum]: Perk } = {
         iconId: Icons.Pickaxe,
         nameId: 'FastMiningPerk',
         descId: 'FastMiningPerkDesc',
+    },
+    [PerksEnum.CHARGED_ATTACK]: {
+        id: PerksEnum.CHARGED_ATTACK,
+        iconId: Icons.SaberSlash,
+        nameId: 'ChargedAttackPerk',
+        descId: 'ChargedAttackPerkDesc',
+        abilityUnlock: AbilitiesEnum.ChargedAttack,
     },
 }
