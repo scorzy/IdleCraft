@@ -12,7 +12,6 @@ import { WoodTypes } from '../wood/WoodTypes'
 import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { PLAYER_ID } from '../characters/charactersConst'
-import { PerksEnum } from '../perks/perksEnum'
 import { BattleAdapter } from '../battle/BattleAdapter'
 import { CastCharAbilityAdapter, CharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { Icons } from '../icons/Icons'
@@ -47,7 +46,6 @@ export const InitialGameState: GameState = {
         storageOrder: 'name',
         storageAsc: true,
         oreType: OreTypes.Copper,
-        perk: PerksEnum.FAST_WOODCUTTING,
         showAvailablePerks: true,
         showOwnedPerks: true,
         showUnavailablePerks: true,

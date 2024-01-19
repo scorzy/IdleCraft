@@ -17,7 +17,6 @@ import { TreeGrowth } from '../wood/forest/forestGrowth'
 import { Mining } from '../mining/Mining'
 import { OreTypes } from '../mining/OreTypes'
 import { CharacterState } from '../characters/characterState'
-import { PerksEnum } from '../perks/perksEnum'
 import { ToastState } from '../notification/toastState'
 import { BattleState } from '../battle/BattleTypes'
 import { BattleZoneEnum } from '../battle/BattleZoneEnum'
@@ -50,7 +49,6 @@ export interface GameState {
         recipeType?: RecipeTypes
         storageOrder: 'name' | 'quantity' | 'value'
         storageAsc: boolean
-        perk: PerksEnum
         showAvailablePerks: boolean
         showUnavailablePerks: boolean
         showOwnedPerks: boolean
