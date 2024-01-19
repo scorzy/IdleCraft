@@ -177,7 +177,7 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
                 <SelectTrigger>
                     <SelectValue placeholder={`-- ${t[recipeParam.nameId]} --`}>
                         {selectedItem && (
-                            <span className={classes.selectTrigger}>
+                            <span className="select-trigger">
                                 {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
                             </span>
                         )}
