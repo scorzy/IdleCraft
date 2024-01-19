@@ -5,6 +5,7 @@ export interface Translations {
 
 export interface Msg {
     Activities: string
+    Abilities: string
     Storage: string
     Woodcutting: string
     Time: string
@@ -21,6 +22,7 @@ export interface Msg {
     Stats: string
     SelectARecipe: string
     Add: string
+    Points: string
 
     CraftingUnknown: string
     Woodworking: string

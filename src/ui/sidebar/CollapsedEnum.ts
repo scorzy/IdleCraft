@@ -10,4 +10,5 @@ export enum CollapsedEnum {
     CraftingSide = 'CraftingSide',
     Perk = 'Perk',
     PerkS = 'PerkS',
+    AbilityList = 'AbilityList',
 }

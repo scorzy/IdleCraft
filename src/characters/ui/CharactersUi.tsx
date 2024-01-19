@@ -31,15 +31,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/ta
 import { PerkPage, PerksSidebar, PerksTab } from '../../perks/ui/PerksUi'
 import { MyTabNum } from '../../ui/myCard/MyTabNum'
 import { CombatAbilities } from '../../activeAbilities/ui/CombatAbilities'
+import { AbilitySidebar, AbilityUi } from '../../activeAbilities/ui/CharAbilities'
 import classes from './charactersUi.module.css'
 
 export const CharactersUi = memo(function CharactersUi() {
+    const { t } = useTranslations()
     const [tab, setTab] = useState('info')
+
+    let sidebar = <></>
+    if (tab === 'perks') sidebar = <PerksSidebar />
+    else if (tab === 'abilities') sidebar = <AbilitySidebar />
+
     return (
         <Tabs value={tab} onValueChange={(value) => setTab(value)} className="overflow-auto">
             <MyPageAll sidebar={<CharactersSidebar />}>
                 <MyPageAll
-                    sidebar={tab === 'perks' && <PerksSidebar />}
+                    sidebar={sidebar}
                     header={
                         <TabsList className="m-3">
                             <TabsTrigger value="info">
@@ -48,6 +55,7 @@ export const CharactersUi = memo(function CharactersUi() {
                             <TabsTrigger value="perks">
                                 <PerksTab />
                             </TabsTrigger>
+                            <TabsTrigger value="abilities">{t.Abilities}</TabsTrigger>
                         </TabsList>
                     }
                 >
@@ -57,9 +65,16 @@ export const CharactersUi = memo(function CharactersUi() {
                             <CombatAbilities />
                         </MyPage>
                     </TabsContent>
+
                     <TabsContent value="perks">
                         <MyPage className="page__main">
                             <PerkPage />
+                        </MyPage>
+                    </TabsContent>
+
+                    <TabsContent value="abilities">
+                        <MyPage className="page__main">
+                            <AbilityUi />
                         </MyPage>
                     </TabsContent>
                 </MyPageAll>
@@ -132,12 +147,12 @@ const CharInfo = memo(function CharInfo() {
         <MyCard icon={<TbInfoCircle />} title={t.Info}>
             <div className={classes.stats}>
                 <span className="text-muted-foreground">
-                    Points {f(usedPoints)}/{f(maxPoints)}
+                    {t.Points} {f(usedPoints)}/{f(maxPoints)}
                 </span>
                 <div className={classes.line}>
                     <GiHearts />
                     <span className={classes.stat}>
-                        Health{' '}
+                        {t.Health}{' '}
                         <span className={classes.max}>
                             {f(health)}/{f(maxH)}
                         </span>
@@ -150,7 +165,7 @@ const CharInfo = memo(function CharInfo() {
                 <div className={classes.line}>
                     <GiStrong />
                     <span className={classes.stat}>
-                        Stamina{' '}
+                        {t.Stamina}{' '}
                         <span className={classes.max}>
                             {f(stamina)}/{f(maxS)}
                         </span>
@@ -163,7 +178,7 @@ const CharInfo = memo(function CharInfo() {
                 <div className={classes.line}>
                     <GiMagicPalm />
                     <span className={classes.stat}>
-                        Mana{' '}
+                        {t.Mana}{' '}
                         <span className={classes.max}>
                             {f(mana)}/{f(maxM)}
                         </span>

@@ -30,4 +30,5 @@ export interface CharacterState {
     allCombatAbilities: InitialState<CharAbility>
     lastCombatAbilityNum: number
     lastCombatAbilityId: string | null
+    selectedAbilityId?: string
 }

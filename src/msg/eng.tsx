@@ -4,6 +4,7 @@ import { Msg, MsgFunctions } from './Msg'
 
 export const engMsg: Msg = {
     Activities: 'Activities',
+    Abilities: 'Abilities',
     Storage: 'Storage',
     Woodcutting: 'Woodcutting',
     Woodworking: 'Woodworking',
@@ -11,7 +12,7 @@ export const engMsg: Msg = {
     Stop: 'Stop',
     Info: 'Info',
     Add: 'Add',
-
+    Points: 'Points',
     CraftingUnknown: 'Crafting ??',
     DeadTree: 'Dead Tree',
     Oak: 'Oak',
