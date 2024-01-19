@@ -9,9 +9,10 @@ import { collapseInt, setCollapseInt } from '../ui/state/uiFunctions'
 import { PerksData } from './Perk'
 import { PerksEnum } from './perksEnum'
 
-export const SetPerk = (perk: PerksEnum) => () =>
+export const setPerk = (perk: PerksEnum) => () =>
     useGameStore.setState((s: GameState) => {
         s = { ...s, ui: { ...s.ui, perk } }
+        s = { ...s, characters: CharacterAdapter.update(s.characters, s.ui.selectedCharId, { selectedPerk: perk }) }
         s = collapseInt(CollapsedEnum.PerkS)(s)
         return s
     })

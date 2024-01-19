@@ -31,7 +31,7 @@ export interface BadgeProps
 
 function Badge({ className, variant, size, ...props }: BadgeProps) {
   return (
-    <div className={cn(badgeVariants({ variant, size }), className)} {...props} />
+    <span className={cn(badgeVariants({ variant, size }), className)} {...props} />
   )
 }
 

@@ -32,6 +32,7 @@ const BonusListUi = memo(function BonusListUi(props: { bonusResult: BonusResult;
         </Table>
     )
 })
+
 const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boolean }) {
     const { bonus, isTime } = props
     const { t } = useTranslations()
@@ -66,7 +67,7 @@ export const BonusDialog = memo(function BonusDialog(props: {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <button title={t.Info} className="text-muted-foreground">
+                <button title={t.Info} className="text-muted-foreground" type="button">
                     <TbInfoCircle size={18} />
                 </button>
             </DialogTrigger>

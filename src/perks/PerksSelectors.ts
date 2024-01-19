@@ -9,8 +9,8 @@ import { PerksData } from './Perk'
 import { PerkState } from './PerkState'
 import { PerksEnum } from './perksEnum'
 
-export const SelectPerk = (s: GameState) => s.ui.perk
-export const IsPerkSelected = (perk: PerksEnum) => (s: GameState) => s.ui.perk === perk
+export const selectPerk = (s: GameState) => s.characters.entries[s.ui.selectedCharId]?.selectedPerk
+export const isPerkSelected = (perk: PerksEnum) => (s: GameState) => selectPerk(s) === perk
 
 const hasPerkInt = (perk: PerksEnum, perks: PerkState) => (perks[perk] ?? 0) > 0
 export const hasPerk =
@@ -18,7 +18,7 @@ export const hasPerk =
     (s: GameState) =>
         (s.characters.entries[charId]?.perks[perk] ?? 0) > 0
 
-const IsPerkEnabledInt = memoize((perkEnum: PerksEnum) =>
+const isPerkEnabledInt = memoize((perkEnum: PerksEnum) =>
     memoizeOne((perks: PerkState, skills: ExpState) => {
         const perkData = PerksData[perkEnum]
         if (perkData.requiredExp?.some((r) => r.level > (skills[r.skill] ?? 0))) return false
@@ -27,24 +27,24 @@ const IsPerkEnabledInt = memoize((perkEnum: PerksEnum) =>
     })
 )
 
-export const IsPerkEnabled =
+export const isPerkEnabled =
     (perkEnum: PerksEnum, charId: string = PLAYER_ID) =>
     (state: GameState) =>
-        IsPerkEnabledInt(perkEnum)(CharacterAdapter.selectEx(state.characters, charId).perks, selectPlayerExp(state))
+        isPerkEnabledInt(perkEnum)(CharacterAdapter.selectEx(state.characters, charId).perks, selectPlayerExp(state))
 
-export const SelectMaxPerks =
+export const selectMaxPerks =
     (charId: string = PLAYER_ID) =>
     (s: GameState) =>
         selectPlayerLevel(s, charId)
-export const SelectUsedPerks =
+export const selectUsedPerks =
     (charId: string = PLAYER_ID) =>
     (s: GameState) =>
         Object.values(CharacterAdapter.selectEx(s.characters, charId).perks).reduce((a, b) => a + b, 0)
-export const SelectCanSpendPerks =
+export const selectCanSpendPerks =
     (charId: string = PLAYER_ID) =>
     (s: GameState) =>
-        SelectMaxPerks(charId)(s) - SelectUsedPerks(charId)(s) > 0
-export const SelectPerkCompleted =
+        selectMaxPerks(charId)(s) - selectUsedPerks(charId)(s) > 0
+export const selectPerkCompleted =
     (perkEnum: PerksEnum, charId: string = PLAYER_ID) =>
     (state: GameState) => {
         const data = PerksData[perkEnum]
@@ -68,7 +68,7 @@ const selectPerksInt = memoizeOne(function selectPerksInt(
         const isOwned = (perks[perk] ?? 0) >= (data.max ?? 1)
         if (owned && isOwned) return true
 
-        const isAvailable = IsPerkEnabledInt(perk)(perks, skills)
+        const isAvailable = isPerkEnabledInt(perk)(perks, skills)
         if (available && isAvailable && !isOwned) return true
         if (unavailable && !isAvailable) return true
 

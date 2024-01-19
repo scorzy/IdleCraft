@@ -5,16 +5,16 @@ import { PerksEnum } from '../perksEnum'
 import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
 import { ExpReq, PerksData } from '../Perk'
-import { SetPerk, acquirePerkClick, setPerksOpen } from '../PerksFunctions'
+import { setPerk, acquirePerkClick, setPerksOpen } from '../PerksFunctions'
 import {
     hasPerk,
-    IsPerkEnabled,
-    IsPerkSelected,
-    SelectCanSpendPerks,
-    SelectMaxPerks,
-    SelectPerk,
-    SelectPerkCompleted,
-    SelectUsedPerks,
+    isPerkEnabled,
+    isPerkSelected,
+    selectCanSpendPerks,
+    selectMaxPerks,
+    selectPerk,
+    selectPerkCompleted,
+    selectUsedPerks,
     selectPerks,
 } from '../PerksSelectors'
 import { MyCard } from '../../ui/myCard/MyCard'
@@ -34,7 +34,7 @@ import { IconsData } from '../../icons/Icons'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../components/ui/dialog'
 import { CardTitle } from '../../components/ui/card'
 import { MyTabNum } from '../../ui/myCard/MyTabNum'
 import classes from './perkUi.module.css'
@@ -49,8 +49,8 @@ export const PerksSidebar = memo(function PerksSidebar() {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const charId = useGameStore(selectSelectedCharId)
-    const maxPerks = useGameStore(SelectMaxPerks(charId))
-    const usedPerks = useGameStore(SelectUsedPerks(charId))
+    const maxPerks = useGameStore(selectMaxPerks(charId))
+    const usedPerks = useGameStore(selectUsedPerks(charId))
     const perks = useGameStore(selectPerks(charId))
     const collapsed = useGameStore(isCollapsed(CollapsedEnum.Perk))
     return (
@@ -72,8 +72,8 @@ export const PerksSidebar = memo(function PerksSidebar() {
 export const PerksTab = memo(function PerksTab() {
     const { t } = useTranslations()
     const charId = useGameStore(selectSelectedCharId)
-    const maxPerks = useGameStore(SelectMaxPerks(charId))
-    const usedPerks = useGameStore(SelectUsedPerks(charId))
+    const maxPerks = useGameStore(selectMaxPerks(charId))
+    const usedPerks = useGameStore(selectUsedPerks(charId))
     const diff = Math.floor(maxPerks - usedPerks)
 
     return <MyTabNum text={t.Perks} num={diff} />
@@ -108,8 +108,8 @@ const PerkFilter = memo(function PerkFilter() {
 export const PerkLink = memo(function PerkLink(props: { perk: PerksEnum }) {
     const { perk } = props
     const { t } = useTranslations()
-    const selected = useGameStore(IsPerkSelected(perk))
-    const enabled = useGameStore(IsPerkEnabled(perk))
+    const selected = useGameStore(isPerkSelected(perk))
+    const enabled = useGameStore(isPerkEnabled(perk))
     const ownPerk = useGameStore(hasPerk(perk))
     const collapsed = useGameStore(isCollapsed(CollapsedEnum.Perk))
 
@@ -120,19 +120,20 @@ export const PerkLink = memo(function PerkLink(props: { perk: PerksEnum }) {
             active={selected}
             text={t[data.nameId]}
             icon={enabled ? IconsData[data.iconId] : <TbLock />}
-            onClick={SetPerk(perk)}
+            onClick={setPerk(perk)}
             right={ownPerk ? <TbCheck /> : null}
         />
     )
 })
 
 export const PerkPage = () => {
-    const perk = useGameStore(SelectPerk)
-    const data = PerksData[perk]
     const { t } = useTranslations()
-    const requirements = data.requiredExp ?? data.requiredPerks
     const open = useGameStore(isCollapsed(CollapsedEnum.PerkS))
     const matches = useMediaQuery('(min-width: 900px)')
+    const perk = useGameStore(selectPerk)
+    if (!perk) return
+    const data = PerksData[perk]
+    const requirements = data.requiredExp ?? data.requiredPerks
 
     const content = (
         <>
@@ -148,7 +149,7 @@ export const PerkPage = () => {
     )
     return (
         <>
-            <MyCard title={t[data.nameId]} icon={IconsData[data.iconId]} actions={<PerkButton />}>
+            <MyCard title={t[data.nameId]} icon={IconsData[data.iconId]} actions={<PerkButton perk={perk} />}>
                 {content}
             </MyCard>
             <Dialog open={open && !matches} onOpenChange={setPerksOpen}>
@@ -161,9 +162,6 @@ export const PerkPage = () => {
                         </DialogTitle>
                     </DialogHeader>
                     {content}
-                    <DialogFooter>
-                        <PerkButton />
-                    </DialogFooter>
                 </DialogContent>
             </Dialog>
         </>
@@ -196,13 +194,14 @@ const PerkPerkReq = memo(function PerkPerkReq(props: { perk: PerksEnum }) {
     )
 })
 
-const PerkButton = memo(function PerkButton() {
-    const perk = useGameStore(SelectPerk)
+const PerkButton = memo(function PerkButton(props: { perk: PerksEnum }) {
+    const { perk } = props
     const { t } = useTranslations()
     const charId = useGameStore(selectSelectedCharId)
-    const enabled = useGameStore(IsPerkEnabled(perk))
-    const completed = useGameStore(SelectPerkCompleted(perk))
-    const canSpend = useGameStore(SelectCanSpendPerks(charId))
+
+    const enabled = useGameStore(isPerkEnabled(perk))
+    const completed = useGameStore(selectPerkCompleted(perk))
+    const canSpend = useGameStore(selectCanSpendPerks(charId))
     return (
         <Button disabled={!enabled || completed || !canSpend} onClick={acquirePerkClick(perk)}>
             {t.Select}

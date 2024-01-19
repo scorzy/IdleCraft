@@ -4,6 +4,7 @@ import { ExpState } from '../experience/ExpState'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 import { PerkState } from '../perks/PerkState'
+import { PerksEnum } from '../perks/perksEnum'
 import { CharInventory } from './inventory'
 
 export interface CharacterState {
@@ -31,4 +32,5 @@ export interface CharacterState {
     lastCombatAbilityNum: number
     lastCombatAbilityId: string | null
     selectedAbilityId?: string
+    selectedPerk?: PerksEnum
 }
