@@ -28,12 +28,10 @@ export const PlankRecipe: Recipe = {
     type: RecipeTypes.Woodworking,
     nameId: 'Plank',
     iconId: Icons.Plank,
-    getParameters: function (): RecipeParameter[] {
-        return plankParam
-    },
+    getParameters: () => plankParam,
     getResult: function (_: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const log = params.find((i) => i.id === 'log')
-        if (log === undefined) return
+        if (!log) return
         if (!log.stdItemId) return
 
         return {

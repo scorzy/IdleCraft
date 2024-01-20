@@ -46,7 +46,7 @@ export class LongSwordRecipe implements Recipe {
             nameId: 'LongSword',
             icon: Icons.Sword,
             type: ItemTypes.OneHand,
-            equipSlot: EquipSlotsEnum.Pickaxe,
+            equipSlot: EquipSlotsEnum.MainHand,
             value: getItemValue(components, true),
             weaponData: {
                 attackSpeed: BASE_SWORD_SPEED / (barItem.craftingData.speedBonus ?? 1),

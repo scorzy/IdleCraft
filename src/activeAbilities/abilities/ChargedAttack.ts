@@ -41,7 +41,7 @@ export class ChargedAttack implements ActiveAbility {
         const { characterId } = params
         let { state } = params
 
-        const caster = CharacterAdapter.selectEx(state.characters, params.characterId)
+        const caster = CharacterAdapter.selectEx(state.characters, characterId)
         const enemyId = selectRandomEnemy(state, caster.isEnemy)
         if (!enemyId) return state
 

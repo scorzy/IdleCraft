@@ -65,7 +65,6 @@ function initActivities() {
     activityIcons.set(ActivityTypes.Battle, getBattleIcon)
 
     activityExecutors.set(ActivityTypes.Tree, execTreeGrow)
-
     activityExecutors.set(ActivityTypes.Ability, execAbilityTimer)
 }
 

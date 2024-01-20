@@ -28,9 +28,7 @@ export const HandleRecipe: Recipe = {
     type: RecipeTypes.Woodworking,
     nameId: 'Handle',
     iconId: Icons.Handle,
-    getParameters: function (): RecipeParameter[] {
-        return handleParam
-    },
+    getParameters: () => handleParam,
     getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const plank = params.find((i) => i.id === 'plank')
         if (plank === undefined) return

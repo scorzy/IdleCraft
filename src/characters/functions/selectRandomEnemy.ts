@@ -5,7 +5,7 @@ import { CharacterAdapter } from '../characterAdapter'
 export function selectRandomEnemy(state: GameState, enemyTeam: boolean) {
     const toSelect: string[] = []
     CharacterAdapter.forEach(state.characters, (c) => {
-        if (c.isEnemy === enemyTeam) toSelect.push(c.id)
+        if (c.isEnemy !== enemyTeam) toSelect.push(c.id)
     })
     return arraySample(toSelect)
 }

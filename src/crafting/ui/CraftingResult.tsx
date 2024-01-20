@@ -13,7 +13,6 @@ import { selectResultQta } from '../CraftingSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const CraftingResult = memo(function CraftingResult(props: { result: RecipeItem | undefined }) {
     const { result } = props
@@ -27,19 +26,13 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
     if (!item) return <></>
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>
-                    {IconsData[item.icon]}
-                    {t[item.nameId]}
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <MyLabel>Crafting Quantity {f(result.qta)}</MyLabel>
+        <MyCard title={t[item.nameId]} icon={IconsData[item.icon]}>
+            <div className="text-muted-foreground">
+                <MyLabel>Quantity {f(result.qta)}</MyLabel>
                 <MyLabel>You have {f(have)}</MyLabel>
                 <ItemInfo item={item} />
-            </CardContent>
-        </Card>
+            </div>
+        </MyCard>
     )
 })
 export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq[] | undefined }) {

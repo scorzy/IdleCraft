@@ -30,13 +30,13 @@ export function equipItem(
         const equippedSlot: Inventory = { quantity }
         if (stdItemId) equippedSlot.stdItemId = stdItemId
         else if (craftItemId) equippedSlot.craftItemId = craftItemId
-        state = removeItem(state, stdItemId, craftItemId, quantity)
         state = {
             ...state,
             characters: CharacterAdapter.update(state.characters, charId, {
                 inventory: { ...char.inventory, [slot]: equippedSlot },
             }),
         }
+        state = removeItem(state, stdItemId, craftItemId, quantity)
     } else {
         const { [slot]: _, ...inventory } = char.inventory
         state = {

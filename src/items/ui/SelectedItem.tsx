@@ -30,14 +30,14 @@ export const SelectedItem = memo(function SelectedItem() {
     )
 })
 const EquipItem = memo(function EquipItem() {
-    const selectedItemLocation = useGameStore(selectSelectedStdItemId)
+    const selectedStdItem = useGameStore(selectSelectedStdItemId)
     const selectedCraftedItemId = useGameStore(selectSelectedCraftedItemId)
     const item = useGameStore(getSelectedItem)
 
     const onClick = useCallback(() => {
         if (!item) return
-        if (item.equipSlot) equipClick(PLAYER_ID, item.equipSlot, selectedItemLocation, selectedCraftedItemId, 1)
-    }, [item, selectedItemLocation, selectedCraftedItemId])
+        if (item.equipSlot) equipClick(PLAYER_ID, item.equipSlot, selectedStdItem, selectedCraftedItemId, 1)
+    }, [item, selectedStdItem, selectedCraftedItemId])
     return (
         <>
             <Button onClick={onClick}>Equip</Button>
