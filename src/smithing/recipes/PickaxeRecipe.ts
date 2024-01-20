@@ -36,20 +36,20 @@ export const PickaxeRecipe: Recipe = {
     getParameters: function (): RecipeParameter[] {
         return pickaxeParam
     },
-    getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
+    getResult: function (state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')
         if (bar === undefined) return
 
         const handle = params.find((i) => i.id === 'handle')
         if (handle === undefined) return
 
-        const barItem = selectGameItem(bar.stdItemId, bar.stdItemId)(_state)
+        const barItem = selectGameItem(bar.stdItemId, bar.stdItemId)(state)
         if (!barItem) return
-        const handleItem = selectGameItem(handle.stdItemId, handle.stdItemId)(_state)
+        const handleItem = selectGameItem(handle.stdItemId, handle.stdItemId)(state)
         if (!handleItem) return
 
         if (!barItem.craftingPickaxeData) return
-        if (!handleItem.handleData) return
+        if (!handleItem.craftingData) return
 
         const components = [barItem, handleItem]
 
@@ -62,7 +62,7 @@ export const PickaxeRecipe: Recipe = {
             value: getItemValue(components, true),
             pickaxeData: {
                 damage: barItem.craftingPickaxeData.damage,
-                time: barItem.craftingPickaxeData.time / handleItem.handleData.speedBonus,
+                time: barItem.craftingPickaxeData.time / (handleItem.craftingData.speedBonus ?? 1),
                 armourPen: barItem.craftingPickaxeData.armourPen,
             },
         }

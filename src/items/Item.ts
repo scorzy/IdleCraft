@@ -10,7 +10,7 @@ export enum ItemTypes {
     Bar = 'Bar',
     WoodAxe = 'WoodAxe',
     Pickaxe = 'Pickaxe',
-    MainHand = 'MainHand',
+    OneHand = 'OneHand',
     TwoHand = 'TwoHand',
 }
 export enum DamageTypes {
@@ -20,9 +20,8 @@ export enum DamageTypes {
 }
 export interface CraftingData {
     prestige: number
-}
-export interface HandleData {
-    speedBonus: number
+    slashingDamage?: number
+    speedBonus?: number
 }
 export interface WoodAxeData {
     damage: number
@@ -46,7 +45,6 @@ export interface Item {
     value: number
     equipSlot?: EquipSlotsEnum
     craftingData?: CraftingData
-    handleData?: HandleData
     woodAxeData?: WoodAxeData
     craftingWoodAxeData?: WoodAxeData
     craftingPickaxeData?: PickaxeData

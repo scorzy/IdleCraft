@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { CraftingData, HandleData, Item, PickaxeData, WoodAxeData } from '../Item'
+import { CraftingData, Item, PickaxeData, WeaponData, WoodAxeData } from '../Item'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 
@@ -16,21 +16,12 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
             <li>
                 {t.Value} {f(item.value)}
             </li>
+            {item.weaponData && <WeaponDataUi weaponData={item.weaponData} />}
             {item.craftingData && <CraftingDataUi craftingData={item.craftingData} />}
-            {item.handleData && <HandleDataUi handleData={item.handleData} />}
             {item.woodAxeData && <WoodAxeDataUi woodAxeData={item.woodAxeData} />}
             {item.pickaxeData && <PickaxeDataUi pickaxeData={item.pickaxeData} />}
         </ul>
     )
-})
-const HandleDataUi = memo(function HandleDataUi(props: { handleData: HandleData }) {
-    const { handleData } = props
-    const { f } = useNumberFormatter()
-    const { fun } = useTranslations()
-
-    const speedBonusPercent = 100 * (handleData.speedBonus - 1)
-
-    return <li>{fun.speedBonusPercent(f(speedBonusPercent))}</li>
 })
 const CraftingDataUi = memo(function CraftingDataUi(props: { craftingData: CraftingData }) {
     const { craftingData } = props
@@ -73,6 +64,23 @@ export const PickaxeDataUi = memo(function PickaxeDataUi(props: { pickaxeData: P
             <li>
                 {t.ArmourPen} {f(pickaxeData.armourPen)}
             </li>
+        </>
+    )
+})
+export const WeaponDataUi = memo(function WeaponDataUi(props: { weaponData: WeaponData }) {
+    const { weaponData } = props
+    const { f, ft } = useNumberFormatter()
+    const { t } = useTranslations()
+
+    return (
+        <>
+            <li>
+                {t.Damage} {f(weaponData.damage)}
+            </li>
+            <li>
+                {t.AttackSpeed} {ft(weaponData.attackSpeed)}
+            </li>
+            <li>Damage Type {weaponData.damageType}</li>
         </>
     )
 })

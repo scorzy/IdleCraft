@@ -1,7 +1,7 @@
 import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
 
-export const SmithingItems = {
+export const SmithingItems: Record<string, Item> = {
     TinBar: {
         id: 'TinBar',
         icon: Icons.Bar,
@@ -10,6 +10,8 @@ export const SmithingItems = {
         value: 10,
         craftingData: {
             prestige: 1.1,
+            slashingDamage: 1,
+            speedBonus: 1,
         },
         craftingWoodAxeData: {
             damage: 50,
@@ -29,6 +31,8 @@ export const SmithingItems = {
         value: 20,
         craftingData: {
             prestige: 1.2,
+            slashingDamage: 1.1,
+            speedBonus: 1.1,
         },
         craftingWoodAxeData: {
             damage: 60,
@@ -40,4 +44,4 @@ export const SmithingItems = {
             time: 3e3,
         },
     },
-} satisfies Record<string, Item>
+}

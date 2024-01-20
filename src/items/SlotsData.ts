@@ -13,7 +13,7 @@ export const SlotsData: { [k in EquipSlotsEnum]: SlotData } = {
         ItemType: ItemTypes.Pickaxe,
     },
     [EquipSlotsEnum.MainHand]: {
-        ItemType: ItemTypes.MainHand,
+        ItemType: ItemTypes.OneHand,
     },
     [EquipSlotsEnum.TwoHand]: {
         ItemType: ItemTypes.TwoHand,

@@ -1,7 +1,5 @@
 import { Item, ItemTypes } from '../items/Item'
 import { Icons } from '../icons/Icons'
-import { WoodData } from './WoodData'
-import { WoodTypes } from './WoodTypes'
 
 export const WoodItems = {
     DeadTreeLog: {
@@ -42,7 +40,10 @@ export const WoodItems = {
         nameId: 'DeadTreeHandle',
         type: ItemTypes.Handle,
         value: 15,
-        handleData: WoodData[WoodTypes.DeadTree].handleData,
+        craftingData: {
+            prestige: 1,
+            speedBonus: 1,
+        },
     },
     OakHandle: {
         id: 'OakHandle',
@@ -50,6 +51,9 @@ export const WoodItems = {
         nameId: 'OakHandle',
         type: ItemTypes.Handle,
         value: 20,
-        handleData: WoodData[WoodTypes.Oak].handleData,
+        craftingData: {
+            prestige: 1,
+            speedBonus: 1.1,
+        },
     },
 } satisfies Record<string, Item>

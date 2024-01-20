@@ -10,58 +10,48 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { Item, ItemTypes } from '../../items/Item'
+import { DamageTypes, Item, ItemTypes } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
-const woodAxeParam: RecipeParameter[] = [
+const BASE_SWORD_DAMAGE = 40
+const BASE_SWORD_SPEED = 2e3
+
+const longSwordParams: RecipeParameter[] = [
     {
         id: 'bar',
         nameId: 'Bar',
         type: RecipeParamType.ItemType,
         itemType: ItemTypes.Bar,
     },
-    {
-        id: 'handle',
-        nameId: 'Handle',
-        type: RecipeParamType.ItemType,
-        itemType: ItemTypes.Handle,
-    },
 ]
 
-class AxeRecipeInt implements Recipe {
-    id = 'AxeRecipe'
+export class LongSwordRecipe implements Recipe {
+    id = 'LongSwordRecipe'
+    nameId = 'LongSword' as keyof Msg
+    iconId = Icons.Sword
     type = RecipeTypes.Smithing
-    iconId = Icons.Axe
-    nameId = 'WoodAxe' as keyof Msg
-    getParameters = () => woodAxeParam
+    getParameters = () => longSwordParams
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')
         if (bar === undefined) return
-
-        const handle = params.find((i) => i.id === 'handle')
-        if (handle === undefined) return
-
         const barItem = selectGameItem(bar.stdItemId, bar.stdItemId)(state)
         if (!barItem) return
-        const handleItem = selectGameItem(handle.stdItemId, handle.stdItemId)(state)
-        if (!handleItem) return
+        if (!barItem.craftingData) return
 
-        if (!barItem.craftingWoodAxeData) return
-        if (!handleItem.craftingData) return
+        const components = [barItem, barItem]
 
-        const components = [barItem, handleItem]
-
-        const craftedAxe: Item = {
+        const craftedSword: Item = {
             id: '',
-            nameId: 'WoodAxe',
-            icon: Icons.Axe,
-            type: ItemTypes.WoodAxe,
-            equipSlot: EquipSlotsEnum.WoodAxe,
+            nameId: 'LongSword',
+            icon: Icons.Sword,
+            type: ItemTypes.OneHand,
+            equipSlot: EquipSlotsEnum.Pickaxe,
             value: getItemValue(components, true),
-            woodAxeData: {
-                damage: barItem.craftingWoodAxeData.damage,
-                time: barItem.craftingWoodAxeData.time / (handleItem.craftingData.speedBonus ?? 1),
+            weaponData: {
+                attackSpeed: BASE_SWORD_SPEED / (barItem.craftingData.speedBonus ?? 1),
+                damage: BASE_SWORD_DAMAGE * (barItem.craftingData.slashingDamage ?? 1),
+                damageType: DamageTypes.Slashing,
             },
         }
 
@@ -69,21 +59,16 @@ class AxeRecipeInt implements Recipe {
             time: getCraftingTime(components),
             requirements: [
                 {
-                    qta: 1,
+                    qta: 2,
                     stdItemId: bar.stdItemId,
-                    craftedItemId: bar.stdItemId,
-                },
-                {
-                    qta: 1,
-                    stdItemId: handle.stdItemId,
                     craftedItemId: bar.stdItemId,
                 },
             ],
             results: {
                 qta: 1,
-                craftedItem: craftedAxe,
+                craftedItem: craftedSword,
             },
         }
     }
 }
-export const AxeRecipe = new AxeRecipeInt()
+export const longSwordRecipe = new LongSwordRecipe()

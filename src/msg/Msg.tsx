@@ -143,6 +143,8 @@ export interface Msg {
     ChargedAttackDesc: string
 
     Unharmed: string
+
+    LongSword: string
 }
 export interface MsgFunctions {
     // Time

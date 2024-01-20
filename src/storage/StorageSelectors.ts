@@ -146,29 +146,28 @@ export const getSelectedItemQta = (state: GameState) => {
         state.ui.selectedCraftedItemId
     )(state)
 }
-
-const getSortId = (i: ItemId) => (i.stdItemId ? `1${i.stdItemId}` : '') + (i.craftItemId ? `2${i.craftItemId}` : '')
+type ItemIdValue = ItemId & { value: number }
 export const selectItemsByType = memoize(function (itemType: ItemTypes | undefined): (state: GameState) => ItemId[] {
     const getStdItems = memoizeOne((std: Record<string, number>) => {
-        const ret: ItemId[] = []
+        const ret: ItemIdValue[] = []
         for (const stdItemId of Object.keys(std)) {
             const item = StdItems[stdItemId]
-            if (item?.type === itemType) ret.push({ stdItemId, craftItemId: null })
+            if (item && item.type === itemType) ret.push({ stdItemId, craftItemId: null, value: item.value })
         }
         return ret
     })
     const getCraftItems = memoizeOne((craft: Record<string, number>, crafted: InitialState<Item>) => {
-        const ret: ItemId[] = []
+        const ret: ItemIdValue[] = []
         for (const craftItemId of Object.keys(craft)) {
             const item = ItemAdapter.select(crafted, craftItemId)
-            if (item?.type === itemType) ret.push({ stdItemId: null, craftItemId })
+            if (item && item.type === itemType) ret.push({ stdItemId: null, craftItemId, value: item.value })
         }
         return ret
     })
 
-    const combine = memoizeOne((std: ItemId[], craft: ItemId[]) => {
-        return std.concat(craft).sort((a, b) => getSortId(a).localeCompare(getSortId(b)))
-    })
+    const combine = memoizeOne((std: ItemIdValue[], craft: ItemIdValue[]) =>
+        std.concat(craft).sort((a, b) => a.value - b.value)
+    )
 
     return (state: GameState) => {
         if (!itemType) return []

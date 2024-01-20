@@ -1,5 +1,4 @@
 import { Msg } from '../msg/Msg'
-import { HandleData } from '../items/Item'
 import { Icons } from '../icons/Icons'
 import { WoodTypes } from './WoodTypes'
 
@@ -11,7 +10,6 @@ interface WoodDataType {
     logId: string
     plankId: string
     handleId: string
-    handleData: HandleData
 }
 export const WoodData: { [k in WoodTypes]: WoodDataType } = {
     [WoodTypes.DeadTree]: {
@@ -22,9 +20,6 @@ export const WoodData: { [k in WoodTypes]: WoodDataType } = {
         logId: 'DeadTreeLog',
         plankId: 'DeadTreePlank',
         handleId: 'DeadTreeHandle',
-        handleData: {
-            speedBonus: 1,
-        },
     },
     [WoodTypes.Oak]: {
         maxHp: 200,
@@ -34,8 +29,5 @@ export const WoodData: { [k in WoodTypes]: WoodDataType } = {
         logId: 'OakLog',
         plankId: 'OakPlank',
         handleId: 'OakHandle',
-        handleData: {
-            speedBonus: 1.1,
-        },
     },
 }

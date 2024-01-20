@@ -28,12 +28,10 @@ export const BarRecipe: Recipe = {
     type: RecipeTypes.Smithing,
     nameId: 'Bar',
     iconId: Icons.Bar,
-    getParameters: function (): RecipeParameter[] {
-        return barParam
-    },
+    getParameters: () => barParam,
     getResult: function (_: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const ore = params.find((i) => i.id === 'ore')
-        if (ore === undefined) return
+        if (!ore) return
         if (!ore.stdItemId) return
         const res = OreToBar.get(ore.stdItemId)
 
