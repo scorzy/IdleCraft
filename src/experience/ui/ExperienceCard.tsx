@@ -6,7 +6,6 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { Badge } from '../../components/ui/badge'
 import { useTranslations } from '../../msg/useTranslations'
-import { Card, CardContent, CardDescription } from '../../components/ui/card'
 import styles from './ExperienceCard.module.css'
 
 export const ExperienceCard = memo(function ExperienceCard(props: { expType: ExpEnum }) {
@@ -23,20 +22,27 @@ export const ExperienceCard = memo(function ExperienceCard(props: { expType: Exp
     const expData = ExpData[expType]
 
     return (
-        <Card className={styles.container}>
-            <CardContent>
-                <div className={`font-medium text-sm ${styles.title}`}>
-                    {t[expData.nameId]}
-                    <Badge className="w-min font-medium text-sm">{f(level)}</Badge>
-                </div>
-                <CardDescription className={`text-sm ${styles.title}`}>
-                    {t.XP}
-                    <Badge variant="secondary" className="text-sm">
-                        {f(xp)}/{f(nextLevelXp)}
-                    </Badge>
-                </CardDescription>
-                <ProgressBar value={percent} key={expType} color="primary" />
-            </CardContent>
-        </Card>
+        <div>
+            <div className={`font-medium text-sm ${styles.title}`}>
+                {t[expData.nameId]}
+                <Badge className="w-min font-medium text-sm">{f(level)}</Badge>
+            </div>
+            <div>
+                {t.XP} {f(xp)}/{f(nextLevelXp)}
+            </div>
+            <ProgressBar value={percent} key={expType} color="primary" />
+        </div>
+        // <Card className={styles.container}>
+        //     <CardContent>
+        //         <div className={`font-medium text-sm ${styles.title}`}>
+        //             {t[expData.nameId]}
+        //             <Badge className="w-min font-medium text-sm">{f(level)}</Badge>
+        //         </div>
+        //         <CardDescription className={`text-sm ${styles.title}`}>
+        //             {t.XP} {f(xp)}/{f(nextLevelXp)}
+        //         </CardDescription>
+        //         <ProgressBar value={percent} key={expType} color="primary" />
+        //     </CardContent>
+        // </Card>
     )
 })

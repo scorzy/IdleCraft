@@ -23,7 +23,6 @@ import {
 } from '../../components/ui/select'
 import { GameState } from '../../game/GameState'
 import { getRecipeParamId } from '../../crafting/RecipeFunctions'
-import { Card, CardContent } from '../../components/ui/card'
 import { Msg } from '../../msg/Msg'
 import classes from './equipSelect.module.css'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
@@ -53,34 +52,32 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     }
 
     return (
-        <Card className={classes.container}>
-            <CardContent>
-                <span className="font-medium text-sm">{t[slotData.ItemType as keyof Msg]}</span>
-                <Select value={axeId ?? '-'} onValueChange={handleEquipChange}>
-                    <SelectTrigger>
-                        <SelectValue>
-                            <span className={classes.title}>
-                                {icon}
-                                {name}
-                            </span>
-                        </SelectValue>
-                    </SelectTrigger>
+        <div>
+            <span className="font-medium text-sm">{t[slotData.ItemType as keyof Msg]}</span>
+            <Select value={axeId ?? '-'} onValueChange={handleEquipChange}>
+                <SelectTrigger>
+                    <SelectValue>
+                        <span className={classes.title}>
+                            {icon}
+                            {name}
+                        </span>
+                    </SelectValue>
+                </SelectTrigger>
 
-                    <SelectContent>
-                        <SelectItem value="-" icon={<GiRock className="text-2xl" />}>
-                            <OptionItemInt name={'None'} slot={slot} />
-                        </SelectItem>
-                        {itemsId.length > 0 && <SelectSeparator />}
-                        {itemsId.map((t, index) => (
-                            <Fragment key={getItemId2(t.stdItemId, t.craftItemId)}>
-                                {index !== 0 && <SelectSeparator />}
-                                <OptionItem itemId={t} slot={slot} />
-                            </Fragment>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </CardContent>
-        </Card>
+                <SelectContent>
+                    <SelectItem value="-" icon={<GiRock className="text-2xl" />}>
+                        <OptionItemInt name={'None'} slot={slot} />
+                    </SelectItem>
+                    {itemsId.length > 0 && <SelectSeparator />}
+                    {itemsId.map((t, index) => (
+                        <Fragment key={getItemId2(t.stdItemId, t.craftItemId)}>
+                            {index !== 0 && <SelectSeparator />}
+                            <OptionItem itemId={t} slot={slot} />
+                        </Fragment>
+                    ))}
+                </SelectContent>
+            </Select>
+        </div>
     )
 })
 const OptionItem = memo(function ParamItem(props: { itemId: ItemId; slot: EquipSlotsEnum }) {
