@@ -1,7 +1,9 @@
 import { Fragment, useEffect, useState } from 'react'
 import { LuTrash2 } from 'react-icons/lu'
+import { TbAlertTriangle } from 'react-icons/tb'
 import { Button } from '../components/ui/button'
 import { PLAYER_ID } from '../characters/charactersConst'
+import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert'
 import { useGameStore } from './state'
 import { GetInitialGameState } from './InitialGameState'
 import classes from './start.module.css'
@@ -28,22 +30,23 @@ interface NameId {
 const loadGame = (name: string) => () => {
     if (!('indexedDB' in window)) {
         console.log("This browser doesn't support IndexedDB")
-    } else {
-        const open = window.indexedDB.open('IdleCraft', 1)
-        open.onsuccess = () => {
-            const db = open.result
-            if (!db.objectStoreNames.contains('save')) return
-            const transaction = db.transaction('save', 'readonly')
-            const objectStore = transaction.objectStore('save')
-            const req = objectStore.get(name)
+        return
+    }
 
-            req.onsuccess = () => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                const res = req.result
+    const open = window.indexedDB.open('IdleCraft', 1)
+    open.onsuccess = () => {
+        const db = open.result
+        if (!db.objectStoreNames.contains('save')) return
+        const transaction = db.transaction('save', 'readonly')
+        const objectStore = transaction.objectStore('save')
+        const req = objectStore.get(name)
 
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                load(res)
-            }
+        req.onsuccess = () => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            const res = req.result
+
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            load(res)
         }
     }
 }
@@ -60,29 +63,30 @@ export function Start() {
     useEffect(() => {
         if (!('indexedDB' in window)) {
             console.log("This browser doesn't support IndexedDB")
-        } else {
-            const open = window.indexedDB.open('IdleCraft', 1)
-            open.onsuccess = () => {
-                const db = open.result
-                if (!db.objectStoreNames.contains('save')) return
-                const transaction = db.transaction('save', 'readonly')
-                const objectStore = transaction.objectStore('save')
+            return
+        }
 
-                const nameIds: NameId[] = []
-                transaction.oncomplete = () => setLoadName([...nameIds])
+        const open = window.indexedDB.open('IdleCraft', 1)
+        open.onsuccess = () => {
+            const db = open.result
+            if (!db.objectStoreNames.contains('save')) return
+            const transaction = db.transaction('save', 'readonly')
+            const objectStore = transaction.objectStore('save')
 
-                const req = objectStore.getAll()
-                req.onsuccess = () => {
-                    const res = req.result
-                    res.forEach((value) => {
-                        if ('gameId' in value) {
-                            nameIds.push({
-                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                                name: value.gameId,
-                            })
-                        }
-                    })
-                }
+            const nameIds: NameId[] = []
+            transaction.oncomplete = () => setLoadName([...nameIds])
+
+            const req = objectStore.getAll()
+            req.onsuccess = () => {
+                const res = req.result
+                res.forEach((value) => {
+                    if ('gameId' in value) {
+                        nameIds.push({
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                            name: value.gameId,
+                        })
+                    }
+                })
             }
         }
     }, [])
@@ -90,19 +94,30 @@ export function Start() {
     const deleteGame = (name: string) => () => {
         if (!('indexedDB' in window)) {
             console.log("This browser doesn't support IndexedDB")
-        } else {
-            const open = window.indexedDB.open('IdleCraft', 1)
-            open.onsuccess = () => {
-                const db = open.result
-                if (!db.objectStoreNames.contains('save')) return
-                const transaction = db.transaction('save', 'readwrite')
-                const objectStore = transaction.objectStore('save')
-                const req = objectStore.delete(name)
+            return
+        }
+        const open = window.indexedDB.open('IdleCraft', 1)
+        open.onsuccess = () => {
+            const db = open.result
+            if (!db.objectStoreNames.contains('save')) return
+            const transaction = db.transaction('save', 'readwrite')
+            const objectStore = transaction.objectStore('save')
+            const req = objectStore.delete(name)
 
-                req.onsuccess = () => setLoadName(loadName.filter((e) => e.name !== name))
-            }
+            req.onsuccess = () => setLoadName(loadName.filter((e) => e.name !== name))
         }
     }
+
+    if (!('indexedDB' in window))
+        return (
+            <div className={classes.container}>
+                <Alert variant="destructive">
+                    <TbAlertTriangle className="h-4 w-4" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>indexedDB not found, please check your browser permission</AlertDescription>
+                </Alert>
+            </div>
+        )
 
     return (
         <div className={classes.container}>

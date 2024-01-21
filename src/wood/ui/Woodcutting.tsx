@@ -148,7 +148,7 @@ const Trees = memo(function Trees() {
     const { t } = useTranslations()
     return (
         <>
-            <MyLabel>
+            <MyLabel className="text-muted-foreground">
                 {t.GrowingTrees} {f(trees.length)}
             </MyLabel>
 

@@ -9,26 +9,24 @@ export function startNextAbility(state: GameState, charId: string): GameState {
     let done = false
     const offset = char.lastCombatAbilityNum + 1
     const len = char.combatAbilities.length
-    for (let i = 0; i < len; i++) {
-        const pointer = (i + offset) % len
-        const combatAbilityId = char.combatAbilities[pointer]
-        if (!combatAbilityId) continue
+    const pointer = offset % len
+    const combatAbilityId = char.combatAbilities[pointer]
 
+    if (combatAbilityId) {
         const combatAbility = char.allCombatAbilities.entries[combatAbilityId]
-        if (!combatAbility) continue
-
-        const { state: gameState, done: doneRes } = startAbility(state, charId, combatAbility.abilityId)
-        state = gameState
-        if (doneRes) {
-            done = true
-            state = {
-                ...state,
-                characters: CharacterAdapter.update(state.characters, charId, {
-                    lastCombatAbilityNum: pointer,
-                    lastCombatAbilityId: combatAbilityId,
-                }),
+        if (combatAbility) {
+            const { state: gameState, done: doneRes } = startAbility(state, charId, combatAbility.abilityId)
+            state = gameState
+            if (doneRes) {
+                done = true
+                state = {
+                    ...state,
+                    characters: CharacterAdapter.update(state.characters, charId, {
+                        lastCombatAbilityNum: pointer,
+                        lastCombatAbilityId: combatAbilityId,
+                    }),
+                }
             }
-            break
         }
     }
 
