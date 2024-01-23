@@ -38,7 +38,7 @@ export const CharactersUi = memo(function CharactersUi() {
     const { t } = useTranslations()
     const [tab, setTab] = useState('info')
 
-    let sidebar = <></>
+    let sidebar = null
     if (tab === 'perks') sidebar = <PerksSidebar />
     else if (tab === 'abilities') sidebar = <AbilitySidebar />
 
