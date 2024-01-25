@@ -6,6 +6,10 @@ import { Item, WoodAxeData } from '../../items/Item'
 import { Icons } from '../../icons/Icons'
 import { BaseBonus } from '../../bonus/Bonus'
 import { CharacterAdapter } from '../../characters/characterAdapter'
+import { WoodTypes } from '../WoodTypes'
+import { selectLevelExp } from '../../experience/expSelectors'
+import { ExpEnum } from '../../experience/expEnum'
+import { WoodData } from '../WoodData'
 
 export const DEF_WOOD_AXE: WoodAxeData = {
     damage: 25,
@@ -20,4 +24,17 @@ export function selectAxe(state: GameState): Item | undefined {
     const axe = CharacterAdapter.selectEx(state.characters, PLAYER_ID).inventory[EquipSlotsEnum.WoodAxe]
     if (!axe) return
     return selectGameItem(axe.stdItemId, axe.craftItemId)(state)
+}
+
+export const isWoodEnabled = (woodType: WoodTypes) => (state: GameState) => {
+    const woodLevel = selectLevelExp(ExpEnum.Woodcutting)(state)
+    const data = WoodData[woodType]
+    return woodLevel >= data.requiredLevel
+}
+
+export const isSelectedWoodEnabled = (state: GameState) => {
+    const woodType = state.ui.woodType
+    const woodLevel = selectLevelExp(ExpEnum.Woodcutting)(state)
+    const data = WoodData[woodType]
+    return woodLevel >= data.requiredLevel
 }

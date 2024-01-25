@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react'
 import { GiWoodAxe } from 'react-icons/gi'
+import { TbAlertTriangle } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
 import { selectWoodType } from '../../ui/state/uiSelectors'
 import { addWoodcutting } from '../functions/addWoodcutting'
@@ -30,6 +31,8 @@ import { removeActivity } from '../../activities/functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
 import { selectWoodcuttingDamage, selectWoodcuttingDamageAll } from '../selectors/woodcuttingDamage'
 import { selectWoodcuttingTime, selectWoodcuttingTimeAll } from '../selectors/woodcuttingTime'
+import { Alert, AlertTitle, AlertDescription } from '../../components/ui/alert'
+import { isSelectedWoodEnabled } from '../selectors/WoodcuttingSelectors'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Button } from '@/components/ui/button'
@@ -55,10 +58,34 @@ export const Woodcutting = memo(function Woodcutting() {
             }
         >
             <MyPage className="page__main">
-                <Cutting />
-                <Forest />
+                <WoodPage />
             </MyPage>
         </MyPageAll>
+    )
+})
+
+const WoodPage = memo(function WoodPage() {
+    const { f } = useNumberFormatter()
+    const { t, fun } = useTranslations()
+    const woodType = useGameStore(selectWoodType)
+    const enabled = useGameStore(isSelectedWoodEnabled)
+
+    const data = WoodData[woodType]
+
+    if (!enabled)
+        return (
+            <Alert variant="destructive">
+                <TbAlertTriangle className="h-4 w-4" />
+                <AlertTitle>{t.LevelToLow}</AlertTitle>
+                <AlertDescription>{fun.requireWoodcuttingLevel(f(data.requiredLevel))}</AlertDescription>
+            </Alert>
+        )
+
+    return (
+        <>
+            <Cutting />
+            <Forest />
+        </>
     )
 })
 

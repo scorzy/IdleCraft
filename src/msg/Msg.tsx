@@ -4,6 +4,7 @@ export interface Translations {
 }
 
 export interface Msg {
+    LevelToLow: string
     Activities: string
     Abilities: string
     Storage: string
@@ -165,4 +166,6 @@ export interface MsgFunctions {
     speedBonusPercent: (bonus: string) => string
 
     fighting: (enemy: keyof Msg) => string
+
+    requireWoodcuttingLevel: (formattedQta: string) => string
 }

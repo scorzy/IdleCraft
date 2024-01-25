@@ -43,10 +43,14 @@ export const MyListItem = memo(function MyListItem(props: {
     icon: ReactNode
     arrowOpen?: boolean
     right?: ReactNode
+    enabled?: boolean
 }) {
     const { text, onClick, active, icon, arrowOpen, right } = props
+    let { enabled } = props
     let { collapsed } = props
     const matches = useMediaQuery('(min-width: 900px)')
+
+    if (enabled === undefined) enabled = true
 
     if (!matches) collapsed = false
     if (!collapsed || text === '' || !matches) {
@@ -59,6 +63,7 @@ export const MyListItem = memo(function MyListItem(props: {
                 title={text}
                 type="button"
                 onClick={onClick}
+                // disabled={!enabled}
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     { 'bg-muted hover:bg-muted': active },
@@ -80,6 +85,7 @@ export const MyListItem = memo(function MyListItem(props: {
                 <Tooltip>
                     <TooltipTrigger
                         onClick={onClick}
+                        // disabled={!enabled}
                         title={text}
                         className={cn(
                             buttonVariants({ variant: 'ghost' }),

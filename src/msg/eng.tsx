@@ -3,6 +3,7 @@ import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
 import { Msg, MsgFunctions } from './Msg'
 
 export const engMsg: Msg = {
+    LevelToLow: 'Level to low',
     Activities: 'Activities',
     Abilities: 'Abilities',
     Storage: 'Storage',
@@ -136,4 +137,5 @@ export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     speedBonusPercent: (bonus: string) => `Speed bonus +${bonus}%`,
     prestigePercent: (bonus: string) => `Value bonus +${bonus}%`,
     fighting: (enemy: keyof Msg) => `Fighting ${msg[enemy]}`,
+    requireWoodcuttingLevel: (formattedQta: string) => `Require woodcutting level ${formattedQta}`,
 })

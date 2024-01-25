@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+import { TbLock } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
 import { WoodTypes } from '../../wood/WoodTypes'
 import { GameState } from '../../game/GameState'
@@ -58,3 +60,4 @@ export const setCollapseInt = (id: CollapsedEnum, open: boolean) => (s: GameStat
 
     return s
 }
+export const lockedIcon = (icon: ReactNode, enabled: boolean) => (enabled ? icon : <TbLock />)
