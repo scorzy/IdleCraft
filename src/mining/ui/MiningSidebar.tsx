@@ -1,15 +1,16 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { useTranslations } from '../../msg/useTranslations'
 import { useGameStore } from '../../game/state'
-import { setOre } from '../../ui/state/uiFunctions'
+import { lockedIcon, setOre } from '../../ui/state/uiFunctions'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { OreTypes } from '../OreTypes'
 import { OreData } from '../OreData'
-import { isOreSelected } from '../miningSelectors'
+import { isOreEnabled, isOreSelected } from '../miningSelectors'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { IconsData } from '../../icons/Icons'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { isCollapsed } from '../../ui/state/uiSelectors'
+import { GameState } from '../../game/GameState'
 
 const ores = Object.values(OreTypes)
 
@@ -26,17 +27,23 @@ export const MiningSidebar = memo(function MiningSidebar() {
 
 const MiningLink = memo(function MiningLink(props: { oreType: OreTypes; collapsed: boolean }) {
     const { oreType, collapsed } = props
-    const data = OreData[oreType]
     const { t } = useTranslations()
-    const selected = useGameStore(isOreSelected(oreType))
+
+    const isSelected = useCallback((state: GameState) => isOreSelected(oreType)(state), [oreType])
+    const isEnabled = useCallback((state: GameState) => isOreEnabled(oreType)(state), [oreType])
+    const onClick = useCallback(() => setOre(oreType), [oreType])
+    const selected = useGameStore(isSelected)
+    const enabled = useGameStore(isEnabled)
+
+    const data = OreData[oreType]
 
     return (
         <MyListItem
             text={t[data.nameId]}
             collapsed={collapsed}
-            icon={IconsData[data.iconId]}
+            icon={lockedIcon(IconsData[data.iconId], enabled)}
             active={selected}
-            onClick={() => setOre(oreType)}
+            onClick={onClick}
         />
     )
 })

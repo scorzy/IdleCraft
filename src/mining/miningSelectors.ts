@@ -1,3 +1,5 @@
+import { ExpEnum } from '../experience/expEnum'
+import { selectLevelExp } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
 import { PickaxeData } from '../items/Item'
 import { memoize } from '../utils/memoize'
@@ -32,3 +34,5 @@ export const selectMining = memoize((oreType: OreTypes) => (s: GameState) => {
         if (act?.oreType === oreType) return act.activityId
     }
 })
+export const isOreEnabled = (oreType: OreTypes) => (state: GameState) =>
+    selectLevelExp(ExpEnum.Mining)(state) >= OreData[oreType].requiredLevel

@@ -24,3 +24,14 @@ export const MyCard = memo(function MyCard(props: {
         </Card>
     )
 })
+export const MyCardHeaderTitle = memo(function MyCardHeaderTitle(props: { title?: string; icon?: ReactNode }) {
+    const { title, icon } = props
+
+    return (
+        <CardHeader>
+            <CardTitle>
+                {icon} {title}
+            </CardTitle>
+        </CardHeader>
+    )
+})

@@ -11,6 +11,7 @@ interface OreDataType {
     armour: number
     oreId: string
     barId: string
+    requiredLevel: number
 }
 
 export const OreData: { [k in OreTypes]: OreDataType } = {
@@ -23,6 +24,7 @@ export const OreData: { [k in OreTypes]: OreDataType } = {
         armour: 1,
         oreId: 'CopperOre',
         barId: 'CopperBar',
+        requiredLevel: 0,
     },
     [OreTypes.Tin]: {
         id: OreTypes.Tin,
@@ -33,5 +35,6 @@ export const OreData: { [k in OreTypes]: OreDataType } = {
         armour: 2,
         oreId: 'TinOre',
         barId: 'TinBar',
+        requiredLevel: 10,
     },
 }

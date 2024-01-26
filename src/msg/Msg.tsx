@@ -168,4 +168,5 @@ export interface MsgFunctions {
     fighting: (enemy: keyof Msg) => string
 
     requireWoodcuttingLevel: (formattedQta: string) => string
+    requireMiningLevel: (formattedQta: string) => string
 }

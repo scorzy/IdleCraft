@@ -138,4 +138,5 @@ export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     prestigePercent: (bonus: string) => `Value bonus +${bonus}%`,
     fighting: (enemy: keyof Msg) => `Fighting ${msg[enemy]}`,
     requireWoodcuttingLevel: (formattedQta: string) => `Require woodcutting level ${formattedQta}`,
+    requireMiningLevel: (formattedQta: string) => `Require mining level ${formattedQta}`,
 })
