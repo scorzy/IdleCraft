@@ -1,5 +1,4 @@
 import { memo, useCallback } from 'react'
-import { LuTrash2 } from 'react-icons/lu'
 import { MyCard } from '../../ui/myCard/MyCard'
 import { useGameStore } from '../../game/state'
 import { selectCombatAbilities } from '../selectors/selectCombatAbilities'
@@ -15,6 +14,7 @@ import { changeCombatAbility } from '../functions/changeCombatAbility'
 import { Button } from '../../components/ui/button'
 import { addRotation } from '../functions/addRotation'
 import { removeRotation } from '../functions/removeRotation'
+import { TrashIcon } from '../../icons/IconsMemo'
 import classes from './combatAbilities.module.css'
 
 export const CombatAbilities = memo(function CombatAbilities() {
@@ -57,7 +57,7 @@ const CombatAbility = memo(function CombatAbility(props: { index: number }) {
                 </SelectContent>
             </Select>
             <Button variant="ghost" title={t.Remove} onClick={onClick}>
-                <LuTrash2 className="text-lg" />
+                {TrashIcon}
             </Button>
         </div>
     )

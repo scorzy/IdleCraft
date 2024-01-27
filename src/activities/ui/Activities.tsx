@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react'
-import { LuArrowDown, LuArrowUp, LuInfo, LuTrash2 } from 'react-icons/lu'
+import { LuArrowDown, LuArrowUp, LuInfo } from 'react-icons/lu'
 import { useGameStore } from '../../game/state'
 import { selectActivityIcon, selectActivityId, selectActivityMax, selectActivityTitle } from '../ActivitySelectors'
 import { moveActivityNext, moveActivityPrev } from '../activityFunctions'
@@ -12,10 +12,12 @@ import { removeActivity } from '../functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
 import { Input } from '../../components/ui/input'
 import { setActivityNum } from '../functions/setActivityNum'
+import { TrashIcon } from '../../icons/IconsMemo'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
+const Info = <LuInfo />
 export const Activities = memo(function Activities() {
     const ids = useGameStore(selectActivityId)
     const max = ids.length - 1
@@ -25,7 +27,7 @@ export const Activities = memo(function Activities() {
         return (
             <MyPage>
                 <Alert variant="primary" className="max-w-md">
-                    <LuInfo />
+                    {Info}
                     <AlertTitle>{t.NoActivities}</AlertTitle>
                 </Alert>
             </MyPage>
@@ -41,6 +43,9 @@ export const Activities = memo(function Activities() {
         </MyPage>
     )
 })
+
+const ArrowUp = <LuArrowUp className="text-lg" />
+const ArrowDown = <LuArrowDown className="text-lg" />
 
 const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: boolean; isLast: boolean }) {
     const { id, isFirst, isLast } = props
@@ -78,12 +83,12 @@ const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: bo
             <div className={classes.actions}>
                 {!isFirst && (
                     <Button onClick={onClickPrev} variant="ghost">
-                        <LuArrowUp className="text-lg" />
+                        {ArrowUp}
                     </Button>
                 )}
                 {!isLast && (
                     <Button aria-label={t.MoveDown} onClick={onClickNext} variant="ghost">
-                        <LuArrowDown className="text-lg" />
+                        {ArrowDown}
                     </Button>
                 )}
                 <Input
@@ -96,7 +101,7 @@ const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: bo
                     step={1}
                 />
                 <Button aria-label={t.Remove} color="error" onClick={onClickRemove} variant="ghost">
-                    <LuTrash2 className="text-lg" />
+                    {TrashIcon}
                 </Button>
             </div>
         </div>

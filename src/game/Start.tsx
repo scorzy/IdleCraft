@@ -1,9 +1,9 @@
 import { Fragment, useEffect, useState } from 'react'
-import { LuTrash2 } from 'react-icons/lu'
 import { TbAlertTriangle } from 'react-icons/tb'
 import { Button } from '../components/ui/button'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert'
+import { TrashIcon } from '../icons/IconsMemo'
 import { useGameStore } from './state'
 import { GetInitialGameState } from './InitialGameState'
 import classes from './start.module.css'
@@ -143,7 +143,7 @@ export function Start() {
                             <Fragment key={item.name}>
                                 <Button onClick={loadGame(item.name)}>{item.name}</Button>
                                 <Button onClick={deleteGame(item.name)} variant="ghost" title="delete">
-                                    <LuTrash2 className="text-lg" />
+                                    {TrashIcon}
                                 </Button>
                             </Fragment>
                         ))}
