@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react'
-import { LuArrowDown, LuArrowUp, LuInfo } from 'react-icons/lu'
+import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
 import { useGameStore } from '../../game/state'
 import { selectActivityIcon, selectActivityId, selectActivityMax, selectActivityTitle } from '../ActivitySelectors'
 import { moveActivityNext, moveActivityPrev } from '../activityFunctions'
@@ -12,12 +12,11 @@ import { removeActivity } from '../functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
 import { Input } from '../../components/ui/input'
 import { setActivityNum } from '../functions/setActivityNum'
-import { TrashIcon } from '../../icons/IconsMemo'
+import { InfoIcon, TrashIcon } from '../../icons/IconsMemo'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
-const Info = <LuInfo />
 export const Activities = memo(function Activities() {
     const ids = useGameStore(selectActivityId)
     const max = ids.length - 1
@@ -27,7 +26,7 @@ export const Activities = memo(function Activities() {
         return (
             <MyPage>
                 <Alert variant="primary" className="max-w-md">
-                    {Info}
+                    {InfoIcon}
                     <AlertTitle>{t.NoActivities}</AlertTitle>
                 </Alert>
             </MyPage>

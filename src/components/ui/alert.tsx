@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const alertVariants = cva(
-  "relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:text-foreground",
+  "relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:text-foreground grid gap-1 grid-flow-row items-center",
   {
     variants: {
       variant: {
@@ -20,7 +20,7 @@ const alertVariants = cva(
   }
 )
 
-const Alert = React.forwardRef<
+const Alert = React.memo(React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
 >(({ className, variant, ...props }, ref) => (
@@ -30,10 +30,10 @@ const Alert = React.forwardRef<
     className={cn(alertVariants({ variant }),'alert', className)}
     {...props}
   />
-))
+)))
 Alert.displayName = "Alert"
 
-const AlertTitle = React.forwardRef<
+const AlertTitle = React.memo(React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
@@ -42,10 +42,10 @@ const AlertTitle = React.forwardRef<
     className={cn("font-medium leading-none tracking-tight", className)}
     {...props}
   />
-))
+)))
 AlertTitle.displayName = "AlertTitle"
 
-const AlertDescription = React.forwardRef<
+const AlertDescription = React.memo(React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
@@ -54,7 +54,7 @@ const AlertDescription = React.forwardRef<
     className={cn("text-sm [&_p]:leading-relaxed mt-1", className)}
     {...props}
   />
-))
+)))
 AlertDescription.displayName = "AlertDescription"
 
 export { Alert, AlertTitle, AlertDescription }

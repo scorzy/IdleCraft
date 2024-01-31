@@ -1,5 +1,4 @@
 import { memo, useCallback, useState } from 'react'
-import { LuChevronsUpDown, LuInfo, LuArrowDown, LuArrowUp } from 'react-icons/lu'
 import { clsx } from 'clsx'
 import { useContainerQueries, QueryBreakpoints } from 'use-container-queries'
 import { useGameStore } from '../../game/state'
@@ -21,6 +20,7 @@ import { buttonVariants } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
 import { setStorageOrder } from '../../ui/state/uiFunctions'
 import { MyPage } from '../../ui/pages/MyPage'
+import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDownIcon, InfoIcon } from '../../icons/IconsMemo'
 import classes from './storage.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Alert, AlertTitle } from '@/components/ui/alert'
@@ -54,22 +54,22 @@ const SortDropdown = memo(function SortDropdown() {
             <DropdownMenuTrigger className={buttonVariants({ variant: 'secondary' })}>{t.Sort}</DropdownMenuTrigger>
             <DropdownMenuContent className={`sort ${classes.dropDown!}`}>
                 <DropdownMenuItem onClick={setStorageOrder('name', true)}>
-                    {t.Name} <LuArrowDown />
+                    {t.Name} {ArrowDownIcon}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={setStorageOrder('quantity', true)}>
-                    {t.Quantity} <LuArrowDown />
+                    {t.Quantity} {ArrowDownIcon}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={setStorageOrder('value', true)}>
-                    {t.Value} <LuArrowDown />
+                    {t.Value} {ArrowDownIcon}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={setStorageOrder('name', false)}>
-                    {t.Name} <LuArrowUp />
+                    {t.Name} {ArrowUpIcon}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={setStorageOrder('quantity', false)}>
-                    {t.Quantity} <LuArrowUp />
+                    {t.Quantity} {ArrowUpIcon}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={setStorageOrder('value', false)}>
-                    {t.Value} <LuArrowUp />
+                    {t.Value} {ArrowUpIcon}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
@@ -82,7 +82,7 @@ const NoItems = memo(function NoItems() {
         <MyPage>
             <div className="my-container">
                 <Alert variant="primary">
-                    <LuInfo />
+                    {InfoIcon}
                     <AlertTitle>{t.NoItems}</AlertTitle>
                 </Alert>
             </div>
@@ -110,7 +110,7 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
                 className={clsx('w-full', buttonVariants({ variant: 'ghost', size: 'sm' }))}
             >
                 {location}
-                <LuChevronsUpDown className="h-4 ml-2" />
+                {ChevronsUpDownIcon}
                 <span className="sr-only">{location}</span>
             </CollapsibleTrigger>
             <CollapsibleContent>
