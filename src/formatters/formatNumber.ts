@@ -1,3 +1,4 @@
+import { memoize } from '../utils/memoize'
 import { CommaTypes } from './CommaTypes'
 import { NotationTypes } from './NotationTypes'
 
@@ -74,7 +75,6 @@ export function getFormatter(
         case NotationTypes.STANDARD:
             formatter = (value: number) => {
                 if (isNaN(value)) return 'NaN'
-
                 if (value < 1e4) return compactFormatter.format(value)
 
                 value = floorSigfigs(value, 4)
@@ -106,6 +106,9 @@ export function getFormatter(
             }
             break
     }
+
+    formatter = memoize(formatter)
+
     return [formatter, parseIntl]
 }
 
@@ -116,6 +119,6 @@ export function getFormatter(
 function floorSigfigs(n: number, sig: number): number {
     if (!sig) return n
     if (n < 0) return -floorSigfigs(-n, sig)
-    const mult = 10 ** (sig - Math.floor(Math.log(n) / Math.LN10) - 1)
-    return Math.floor(n * mult) / mult
+    const multi = 10 ** (sig - Math.floor(Math.log(n) / Math.LN10) - 1)
+    return Math.floor(n * multi) / multi
 }

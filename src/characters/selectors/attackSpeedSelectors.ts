@@ -34,6 +34,7 @@ const selectAttackSpeedList = memoize((weapon: Item | undefined) => {
 
 export const selectCharacterAttackSpeedList = memoize((charId: string) => (state: GameState) => {
     const weapon = selectMainWeapon(charId)(state)
+
     return selectAttackSpeedList(weapon)
 })
 export const selectCharacterAttackSpeed = memoize(

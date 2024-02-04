@@ -19,6 +19,7 @@ import { getMiningIcon } from '../mining/functions/getMiningIcon'
 import { getMiningTitle } from '../mining/functions/getMiningTitle'
 import { removeMining } from '../mining/functions/removeMining'
 import { startMining } from '../mining/functions/startMining'
+import { armourRecipe } from '../smithing/recipes/ArmourRecipes'
 import { AxeRecipe } from '../smithing/recipes/AxeRecipe'
 import { BarRecipe } from '../smithing/recipes/BarRecipe'
 import { longSwordRecipe } from '../smithing/recipes/LongSwordRecipe'
@@ -75,6 +76,7 @@ function initRecipes() {
     recipes.set(AxeRecipe.id, AxeRecipe)
     recipes.set(PickaxeRecipe.id, PickaxeRecipe)
     recipes.set(longSwordRecipe.id, longSwordRecipe)
+    recipes.set(armourRecipe.id, armourRecipe)
 }
 function initAbilities() {
     ActiveAbilityData.set(AbilitiesEnum.NormalAttack, new NormalAttack())

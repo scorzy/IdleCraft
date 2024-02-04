@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { CraftingData, Item, PickaxeData, WeaponData, WoodAxeData } from '../Item'
+import { ArmourData, CraftingData, Item, PickaxeData, WeaponData, WoodAxeData } from '../Item'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 
@@ -17,13 +17,14 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
                 {t.Value} {f(item.value)}
             </li>
             {item.weaponData && <WeaponDataUi weaponData={item.weaponData} />}
+            {item.armourData && <ArmourDataUi armourData={item.armourData} />}
             {item.craftingData && <CraftingDataUi craftingData={item.craftingData} />}
             {item.woodAxeData && <WoodAxeDataUi woodAxeData={item.woodAxeData} />}
             {item.pickaxeData && <PickaxeDataUi pickaxeData={item.pickaxeData} />}
         </ul>
     )
 })
-const CraftingDataUi = memo(function CraftingDataUi(props: { craftingData: CraftingData }) {
+export const CraftingDataUi = memo(function CraftingDataUi(props: { craftingData: CraftingData }) {
     const { craftingData } = props
     const { f } = useNumberFormatter()
     const { fun } = useTranslations()
@@ -81,6 +82,25 @@ export const WeaponDataUi = memo(function WeaponDataUi(props: { weaponData: Weap
                 {t.AttackSpeed} {ft(weaponData.attackSpeed)}
             </li>
             <li>Damage Type {weaponData.damageType}</li>
+        </>
+    )
+})
+export const ArmourDataUi = memo(function ArmourDataUi(props: { armourData: ArmourData }) {
+    const { armourData } = props
+    const { f } = useNumberFormatter()
+    const { t } = useTranslations()
+
+    return (
+        <>
+            <li>
+                {t.Damage} {f(armourData.Bludgeoning)}
+            </li>
+            <li>
+                {t.Damage} {f(armourData.Piercing)}
+            </li>
+            <li>
+                {t.Damage} {f(armourData.Slashing)}
+            </li>
         </>
     )
 })

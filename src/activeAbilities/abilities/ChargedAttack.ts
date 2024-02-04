@@ -11,6 +11,7 @@ import { GameState } from '../../game/GameState'
 import { dealDamage } from '../../characters/functions/dealDamage'
 import { selectCharacterAttackDamage } from '../../characters/selectors/attackDamageSelectors'
 import { AbilitiesEnum } from '../abilitiesEnum'
+import { selectDamageType } from '../../characters/selectors/selectDamageType'
 
 export class ChargedAttack implements ActiveAbility {
     id = AbilitiesEnum.ChargedAttack
@@ -46,7 +47,8 @@ export class ChargedAttack implements ActiveAbility {
         if (!enemyId) return state
 
         const damage = selectCharacterAttackDamage(characterId)(state) * CHARGED_ATTACK_DAMAGE_BONUS
-        const { state: gameState } = dealDamage(state, enemyId, damage)
+        const damageType = selectDamageType(characterId)(state)
+        const { state: gameState } = dealDamage(state, enemyId, damage, damageType)
         state = gameState
 
         return state

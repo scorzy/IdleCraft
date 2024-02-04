@@ -12,6 +12,7 @@ export enum ItemTypes {
     Pickaxe = 'Pickaxe',
     OneHand = 'OneHand',
     TwoHand = 'TwoHand',
+    Body = 'Body',
 }
 export enum DamageTypes {
     Slashing = 'Slashing',
@@ -22,6 +23,7 @@ export interface CraftingData {
     prestige: number
     slashingDamage?: number
     speedBonus?: number
+    armour?: ArmourData
 }
 export interface WoodAxeData {
     damage: number
@@ -37,6 +39,8 @@ export interface WeaponData {
     damageType: DamageTypes
     attackSpeed: number
 }
+export type ArmourData = Record<DamageTypes, number>
+
 export interface Item {
     id: string
     nameId: keyof Msg
@@ -50,4 +54,5 @@ export interface Item {
     craftingPickaxeData?: PickaxeData
     pickaxeData?: PickaxeData
     weaponData?: WeaponData
+    armourData?: ArmourData
 }

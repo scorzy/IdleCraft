@@ -32,6 +32,9 @@ import { PerkPage, PerksSidebar, PerksTab } from '../../perks/ui/PerksUi'
 import { MyTabNum } from '../../ui/myCard/MyTabNum'
 import { CombatAbilities } from '../../activeAbilities/ui/CombatAbilities'
 import { AbilitySidebar, AbilityUi } from '../../activeAbilities/ui/CharAbilities'
+import { DamageTypes } from '../../items/Item'
+import { selectCharacterArmour, selectCharacterArmourList } from '../selectors/armourSelector'
+import { DamageTypesData } from '../../items/damageTypes'
 import classes from './charactersUi.module.css'
 
 export const CharactersUi = memo(function CharactersUi() {
@@ -188,7 +191,35 @@ const CharInfo = memo(function CharInfo() {
                         <TbPlus />
                     </Button>
                 </div>
+                <ArmourInfo />
             </div>
         </MyCard>
+    )
+})
+const armourTypes = Object.values(DamageTypes).sort()
+
+const ArmourInfo = memo(function ArmourInfo() {
+    return (
+        <div className="text-muted-foreground">
+            {armourTypes.map((type) => (
+                <ArmourTypeInfo key={type} type={type} />
+            ))}
+        </div>
+    )
+})
+const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes }) {
+    const { type } = props
+    const { f } = useNumberFormatter()
+    const { t } = useTranslations()
+    const charId = useGameStore(selectSelectedCharId)
+    const value = useGameStore(selectCharacterArmour(charId, type))
+    const list = selectCharacterArmourList(charId, type)
+    const data = DamageTypesData[type]
+    const name = t[data.ArmourName]
+    return (
+        <div className="grid grid-flow-col items-center justify-start gap-2">
+            {name} {f(value)}
+            <BonusDialog title={name} selectBonusResult={list} />
+        </div>
     )
 })

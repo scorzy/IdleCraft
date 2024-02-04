@@ -19,7 +19,7 @@ const selectAttackDamageList = memoize((weapon: Item | undefined) => {
     } else
         bonuses.push({
             id: 'unharmed',
-            add: 10,
+            add: 30,
             iconId: Icons.Punch,
             nameId: 'Unharmed',
         })

@@ -8,8 +8,10 @@ import { Item, ItemTypes } from '../items/Item'
 import { InitialState } from '../entityAdapter/entityAdapter'
 import { selectTranslations } from '../msg/useTranslations'
 import { Translations } from '../msg/Msg'
+import { CharacterAdapter } from '../characters/characterAdapter'
+import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ItemAdapter } from './ItemAdapter'
-import { ItemId, StorageState } from './storageState'
+import { InventoryNoQta, ItemId, StorageState } from './storageState'
 
 const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]: LocationState }) => {
     const res: GameLocations[] = []
@@ -117,10 +119,17 @@ export const selectItemQta =
     }
 
 export const selectGameItem =
-    (stdItemId: string | null | undefined, craftItemId: string | null | undefined) => (state: GameState) => {
-        if (stdItemId) return StdItems[stdItemId]
-        if (craftItemId) return ItemAdapter.select(state.craftedItems, craftItemId)
-    }
+    (stdItemId: string | null | undefined, craftItemId: string | null | undefined) => (state: GameState) =>
+        selectGameItemFromCraft(stdItemId, craftItemId, state.craftedItems)
+
+export const selectGameItemFromCraft = (
+    stdItemId: string | null | undefined,
+    craftItemId: string | null | undefined,
+    craftedItems: InitialState<Item>
+) => {
+    if (stdItemId) return StdItems[stdItemId]
+    if (craftItemId) return ItemAdapter.select(craftedItems, craftItemId)
+}
 
 export const isSelected = (stdItemId: string | null, craftItemId?: string | null) => (state: GameState) => {
     if (state.ui.selectedItemLocation === null) return false
@@ -178,4 +187,18 @@ export const selectItemsByType = memoize(function (itemType: ItemTypes | undefin
         const crafted = getCraftItems(loc.storage.CraftedItems, state.craftedItems)
         return combine(std, crafted)
     }
+})
+
+export const selectInventoryNoQta = memoize((charId: string) => (state: GameState) => {
+    const inventory = CharacterAdapter.selectEx(state.characters, charId).inventory
+    const ret: InventoryNoQta = {}
+    Object.entries(inventory).forEach((kv) => {
+        const slot = kv[0] as EquipSlotsEnum
+        const itemIds = kv[1]
+        ret[slot] = {
+            stdItemId: itemIds.stdItemId,
+            craftItemId: itemIds.craftItemId,
+        }
+    })
+    return ret
 })

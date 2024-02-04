@@ -146,6 +146,15 @@ export interface Msg {
     Unharmed: string
 
     LongSword: string
+
+    BludgeoningArmour: string
+    BludgeoningDamage: string
+
+    PiercingArmour: string
+    PiercingDamage: string
+
+    SlashingArmour: string
+    SlashingDamage: string
 }
 export interface MsgFunctions {
     // Time
