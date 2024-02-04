@@ -10,7 +10,6 @@ import {
     selectStorageLocations,
     isSelected,
 } from '../StorageSelectors'
-import { MyCard } from '../../ui/myCard/MyCard'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
 import { getItemId2, setSelectedItem } from '../storageFunctions'
@@ -21,6 +20,7 @@ import { cn } from '../../lib/utils'
 import { setStorageOrder } from '../../ui/state/uiFunctions'
 import { MyPage } from '../../ui/pages/MyPage'
 import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDownIcon, InfoIcon } from '../../icons/IconsMemo'
+import { Card, CardContent } from '../../components/ui/card'
 import classes from './storage.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Alert, AlertTitle } from '@/components/ui/alert'
@@ -29,23 +29,37 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
-
     if (locations.length === 0) return <NoItems />
-
     return (
         <MyPage>
             <div className={classes.cardList}>
-                <MyCard>
-                    <SortDropdown />
-                    {locations.map((l) => (
-                        <LocationStorage key={l} location={GameLocations.StartVillage} />
-                    ))}
-                </MyCard>
+                <Card>
+                    <CardContent>
+                        <SortDropdown />
+                        {locations.map((l) => (
+                            <LocationStorage key={l} location={GameLocations.StartVillage} />
+                        ))}
+                    </CardContent>
+                </Card>
                 <SelectedItem />
             </div>
         </MyPage>
     )
 }
+
+const NoItems = memo(function NoItems() {
+    const { t } = useTranslations()
+    return (
+        <MyPage>
+            <div className="my-container">
+                <Alert variant="primary">
+                    {InfoIcon}
+                    <AlertTitle>{t.NoItems}</AlertTitle>
+                </Alert>
+            </div>
+        </MyPage>
+    )
+})
 
 const SortDropdown = memo(function SortDropdown() {
     const { t } = useTranslations()
@@ -73,20 +87,6 @@ const SortDropdown = memo(function SortDropdown() {
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
-})
-
-const NoItems = memo(function NoItems() {
-    const { t } = useTranslations()
-    return (
-        <MyPage>
-            <div className="my-container">
-                <Alert variant="primary">
-                    {InfoIcon}
-                    <AlertTitle>{t.NoItems}</AlertTitle>
-                </Alert>
-            </div>
-        </MyPage>
     )
 })
 
@@ -162,8 +162,7 @@ const StorageItem = memo(function StorageItem(props: {
         [stdItemId, craftItemId, location]
     )
 
-    if (!item) return <></>
-
+    if (!item) return
     if (small)
         return (
             <TableRow onClick={onClick} className={cn(classes.row, { 'bg-muted': selected })}>

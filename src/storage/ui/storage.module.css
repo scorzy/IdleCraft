@@ -24,5 +24,10 @@
     display: grid;
     gap: 1rem;
     align-items: start;
-    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+    grid-template-columns: 1fr;
+}
+@container (min-width: 600px) {
+    .cardList {
+        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    }
 }

@@ -8,25 +8,30 @@ import {
     selectSelectedCraftedItemId,
     selectSelectedStdItemId,
 } from '../../storage/StorageSelectors'
-import { MyCard } from '../../ui/myCard/MyCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { Button } from '../../components/ui/button'
 import { equipClick } from '../../characters/characterFunctions'
 import { PLAYER_ID } from '../../characters/charactersConst'
+import { Card, CardContent } from '../../components/ui/card'
 import { ItemInfo } from './ItemInfo'
+import classes from './selectItem.module.css'
 
 export const SelectedItem = memo(function SelectedItem() {
     const qta = useGameStore(getSelectedItemQta)
     const item = useGameStore(getSelectedItem)
     const { t } = useTranslations()
 
-    if (qta <= 0) return <></>
+    if (qta <= 0) return
     if (item === undefined) return
 
     return (
-        <MyCard title={t[item.nameId]} icon={IconsData[item.icon]}>
-            <ItemInfo item={item} />
-            {item.equipSlot && <EquipItem />}
-        </MyCard>
+        <Card>
+            <MyCardHeaderTitle title={t[item.nameId]} icon={IconsData[item.icon]} />
+            <CardContent className={classes.container}>
+                <ItemInfo item={item} />
+                {item.equipSlot && <EquipItem />}
+            </CardContent>
+        </Card>
     )
 })
 const EquipItem = memo(function EquipItem() {
@@ -38,9 +43,5 @@ const EquipItem = memo(function EquipItem() {
         if (!item) return
         if (item.equipSlot) equipClick(PLAYER_ID, item.equipSlot, selectedStdItem, selectedCraftedItemId, 1)
     }, [item, selectedStdItem, selectedCraftedItemId])
-    return (
-        <>
-            <Button onClick={onClick}>Equip</Button>
-        </>
-    )
+    return <Button onClick={onClick}>Equip</Button>
 })

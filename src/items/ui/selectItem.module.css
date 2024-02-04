@@ -1,0 +1,7 @@
+.container {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr;
+    justify-items: start;
+    justify-content: start;
+}
