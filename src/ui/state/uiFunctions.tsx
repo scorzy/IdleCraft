@@ -30,6 +30,13 @@ export const setOre = (oreType: OreTypes) => useGameStore.setState((s) => ({ ui:
 export const setStorageOrder = (order: StorageOrder, asc: boolean) => () =>
     useGameStore.setState((s) => ({ ui: { ...s.ui, storageOrder: order, storageAsc: asc } }))
 
+export const clickStorageHeader = (order: StorageOrder) => () =>
+    useGameStore.setState((s: GameState) => {
+        let storageAsc = s.ui.storageAsc
+        if (s.ui.storageOrder === order) storageAsc = !s.ui.storageAsc
+        return { ...s, ui: { ...s.ui, storageOrder: order, storageAsc } }
+    })
+
 export const toggleShowAvailablePerks = () =>
     useGameStore.setState((s) => ({ ui: { ...s.ui, showAvailablePerks: !s.ui.showAvailablePerks } }))
 export const toggleShowUnavailablePerks = () =>

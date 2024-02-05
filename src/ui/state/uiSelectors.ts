@@ -17,3 +17,6 @@ export const selectCompletedPerks = (state: GameState) => state.ui.showOwnedPerk
 export const selectSelectedCharId = (state: GameState) => state.ui.selectedCharId
 export const isCharSelected = (charId: string) => (state: GameState) => state.ui.selectedCharId === charId
 export const isCollapsed = (id: CollapsedEnum) => (state: GameState) => state.ui.collapsed[id] ?? false
+
+export const selectStorageOrder = (s: GameState) => s.ui.storageOrder
+export const selectStorageAsc = (s: GameState) => s.ui.storageAsc

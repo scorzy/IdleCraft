@@ -15,12 +15,13 @@ import { IconsData } from '../../icons/Icons'
 import { getItemId2, setSelectedItem } from '../storageFunctions'
 import { SelectedItem } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
-import { buttonVariants } from '../../components/ui/button'
+import { Button, buttonVariants } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
-import { setStorageOrder } from '../../ui/state/uiFunctions'
+import { clickStorageHeader, setStorageOrder } from '../../ui/state/uiFunctions'
 import { MyPage } from '../../ui/pages/MyPage'
 import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDownIcon, InfoIcon } from '../../icons/IconsMemo'
 import { Card, CardContent } from '../../components/ui/card'
+import { selectStorageAsc, selectStorageOrder } from '../../ui/state/uiSelectors'
 import classes from './storage.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Alert, AlertTitle } from '@/components/ui/alert'
@@ -61,28 +62,37 @@ const NoItems = memo(function NoItems() {
     )
 })
 
+const clickNameAsc = setStorageOrder('name', true)
+const clickNameDesc = setStorageOrder('name', false)
+
+const clickValueAsc = setStorageOrder('value', true)
+const clickValueDesc = setStorageOrder('value', false)
+
+const clickQuantityAsc = setStorageOrder('quantity', true)
+const clickQuantityDesc = setStorageOrder('quantity', false)
+
 const SortDropdown = memo(function SortDropdown() {
     const { t } = useTranslations()
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className={buttonVariants({ variant: 'secondary' })}>{t.Sort}</DropdownMenuTrigger>
             <DropdownMenuContent className={`sort ${classes.dropDown!}`}>
-                <DropdownMenuItem onClick={setStorageOrder('name', true)}>
+                <DropdownMenuItem onClick={clickNameAsc}>
                     {t.Name} {ArrowDownIcon}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={setStorageOrder('quantity', true)}>
+                <DropdownMenuItem onClick={clickQuantityAsc}>
                     {t.Quantity} {ArrowDownIcon}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={setStorageOrder('value', true)}>
+                <DropdownMenuItem onClick={clickValueAsc}>
                     {t.Value} {ArrowDownIcon}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={setStorageOrder('name', false)}>
+                <DropdownMenuItem onClick={clickNameDesc}>
                     {t.Name} {ArrowUpIcon}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={setStorageOrder('quantity', false)}>
+                <DropdownMenuItem onClick={clickQuantityDesc}>
                     {t.Quantity} {ArrowUpIcon}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={setStorageOrder('value', false)}>
+                <DropdownMenuItem onClick={clickValueDesc}>
                     {t.Value} {ArrowUpIcon}
                 </DropdownMenuItem>
             </DropdownMenuContent>
@@ -115,16 +125,7 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
             </CollapsibleTrigger>
             <CollapsibleContent>
                 <Table>
-                    {active === 'med' && (
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="w-7"></TableHead>
-                                <TableHead>Name</TableHead>
-                                <TableHead className="w-20 text-right">Quantity</TableHead>
-                                <TableHead className="w-20 text-right">Value</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                    )}
+                    {active === 'med' && <StorageHeader />}
                     <TableBody>
                         {items.map((i, index) => (
                             <StorageItem
@@ -140,6 +141,40 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
                 </Table>
             </CollapsibleContent>
         </Collapsible>
+    )
+})
+
+const nameClick = clickStorageHeader('name')
+const quantityClick = clickStorageHeader('quantity')
+const valueClick = clickStorageHeader('value')
+
+const StorageHeader = memo(function StorageHeader() {
+    const order = useGameStore(selectStorageOrder)
+    const asc = useGameStore(selectStorageAsc)
+
+    const arrow = asc ? ArrowDownIcon : ArrowUpIcon
+
+    return (
+        <TableHeader>
+            <TableRow>
+                <TableHead className="w-7"></TableHead>
+                <TableHead>
+                    <Button variant="ghost" size="sm" className="gap-1" onClick={nameClick}>
+                        Name {order === 'name' && arrow}
+                    </Button>
+                </TableHead>
+                <TableHead className="w-28 text-right">
+                    <Button variant="ghost" size="sm" className="gap-1" onClick={quantityClick}>
+                        Quantity {order === 'quantity' && arrow}
+                    </Button>
+                </TableHead>
+                <TableHead className="w-28 text-right">
+                    <Button variant="ghost" size="sm" className="gap-1" onClick={valueClick}>
+                        Value {order === 'value' && arrow}
+                    </Button>
+                </TableHead>
+            </TableRow>
+        </TableHeader>
     )
 })
 
