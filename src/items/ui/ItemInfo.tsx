@@ -93,13 +93,13 @@ export const ArmourDataUi = memo(function ArmourDataUi(props: { armourData: Armo
     return (
         <>
             <li>
-                {t.Damage} {f(armourData.Bludgeoning)}
+                {t.BludgeoningArmour} {f(armourData.Bludgeoning)}
             </li>
             <li>
-                {t.Damage} {f(armourData.Piercing)}
+                {t.PiercingArmour} {f(armourData.Piercing)}
             </li>
             <li>
-                {t.Damage} {f(armourData.Slashing)}
+                {t.SlashingArmour} {f(armourData.Slashing)}
             </li>
         </>
     )

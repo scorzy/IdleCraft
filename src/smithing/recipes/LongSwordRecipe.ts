@@ -1,4 +1,5 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import { BASE_SWORD_SPEED, BASE_SWORD_DAMAGE } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
 import { Recipe } from '../../crafting/Recipe'
 import {
@@ -13,9 +14,6 @@ import { Icons } from '../../icons/Icons'
 import { DamageTypes, Item, ItemTypes } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
-
-const BASE_SWORD_DAMAGE = 40
-const BASE_SWORD_SPEED = 2e3
 
 const longSwordParams: RecipeParameter[] = [
     {

@@ -1,4 +1,5 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import { BASE_ARMOUR } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
 import { Recipe } from '../../crafting/Recipe'
 import {
@@ -13,8 +14,6 @@ import { Icons } from '../../icons/Icons'
 import { Item, ItemTypes } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
-
-const BASE_ARMOUR = 100
 
 const armourParams: RecipeParameter[] = [
     {
