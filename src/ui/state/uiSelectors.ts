@@ -20,3 +20,7 @@ export const isCollapsed = (id: CollapsedEnum) => (state: GameState) => state.ui
 
 export const selectStorageOrder = (s: GameState) => s.ui.storageOrder
 export const selectStorageAsc = (s: GameState) => s.ui.storageAsc
+
+export const selectIsStorageOrderName = (s: GameState) => s.ui.storageOrder === 'name'
+export const selectIsStorageOrderQuantity = (s: GameState) => s.ui.storageOrder === 'quantity'
+export const selectIsStorageOrderValue = (s: GameState) => s.ui.storageOrder === 'value'

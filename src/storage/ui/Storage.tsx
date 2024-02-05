@@ -21,7 +21,12 @@ import { clickStorageHeader, setStorageOrder } from '../../ui/state/uiFunctions'
 import { MyPage } from '../../ui/pages/MyPage'
 import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDownIcon, InfoIcon } from '../../icons/IconsMemo'
 import { Card, CardContent } from '../../components/ui/card'
-import { selectStorageAsc, selectStorageOrder } from '../../ui/state/uiSelectors'
+import {
+    selectIsStorageOrderName,
+    selectIsStorageOrderQuantity,
+    selectIsStorageOrderValue,
+    selectStorageAsc,
+} from '../../ui/state/uiSelectors'
 import classes from './storage.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Alert, AlertTitle } from '@/components/ui/alert'
@@ -110,7 +115,6 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
     const items = useGameStore(selectLocationItems(location))
     const [open, setOpen] = useState(true)
     const handleClick = () => setOpen(!open)
-    const len = items.length
     const { ref, active } = useContainerQueries({ breakpoints })
 
     return (
@@ -127,11 +131,10 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
                 <Table>
                     {active === 'med' && <StorageHeader />}
                     <TableBody>
-                        {items.map((i, index) => (
+                        {items.map((i) => (
                             <StorageItem
                                 small={active === 'small'}
                                 key={getItemId2(i.stdItemId, i.craftItemId)}
-                                isLast={index >= len - 1}
                                 stdItemId={i.stdItemId}
                                 craftItemId={i.craftItemId}
                                 location={location}
@@ -149,37 +152,57 @@ const quantityClick = clickStorageHeader('quantity')
 const valueClick = clickStorageHeader('value')
 
 const StorageHeader = memo(function StorageHeader() {
-    const order = useGameStore(selectStorageOrder)
-    const asc = useGameStore(selectStorageAsc)
-
-    const arrow = asc ? ArrowDownIcon : ArrowUpIcon
-
     return (
         <TableHeader>
             <TableRow>
                 <TableHead className="w-7"></TableHead>
-                <TableHead>
-                    <Button variant="ghost" size="sm" className="gap-1" onClick={nameClick}>
-                        Name {order === 'name' && arrow}
-                    </Button>
-                </TableHead>
-                <TableHead className="w-28 text-right">
-                    <Button variant="ghost" size="sm" className="gap-1" onClick={quantityClick}>
-                        Quantity {order === 'quantity' && arrow}
-                    </Button>
-                </TableHead>
-                <TableHead className="w-28 text-right">
-                    <Button variant="ghost" size="sm" className="gap-1" onClick={valueClick}>
-                        Value {order === 'value' && arrow}
-                    </Button>
-                </TableHead>
+                <StorageHeaderName />
+                <StorageHeaderQuantity />
+                <StorageHeaderValue />
             </TableRow>
         </TableHeader>
     )
 })
 
+const StorageHeaderName = memo(function StorageHeaderName() {
+    const order = useGameStore(selectIsStorageOrderName)
+    const { t } = useTranslations()
+    return (
+        <TableHead>
+            <Button variant="ghost" size="sm" className="gap-1" onClick={nameClick}>
+                {t.Name} {order && <StorageHeaderArrow />}
+            </Button>
+        </TableHead>
+    )
+})
+const StorageHeaderQuantity = memo(function StorageHeaderQuantity() {
+    const order = useGameStore(selectIsStorageOrderQuantity)
+    const { t } = useTranslations()
+    return (
+        <TableHead className="w-28 text-right">
+            <Button variant="ghost" size="sm" className="gap-1" onClick={valueClick}>
+                {t.Value} {order && <StorageHeaderArrow />}
+            </Button>
+        </TableHead>
+    )
+})
+const StorageHeaderValue = memo(function StorageHeaderValue() {
+    const order = useGameStore(selectIsStorageOrderValue)
+    const { t } = useTranslations()
+    return (
+        <TableHead className="w-28 text-right">
+            <Button variant="ghost" size="sm" className="gap-1" onClick={quantityClick}>
+                {t.Quantity} {order && <StorageHeaderArrow />}
+            </Button>
+        </TableHead>
+    )
+})
+const StorageHeaderArrow = memo(function StorageHeaderValue() {
+    const asc = useGameStore(selectStorageAsc)
+    return asc ? ArrowDownIcon : ArrowUpIcon
+})
+
 const StorageItem = memo(function StorageItem(props: {
-    isLast: boolean
     small: boolean
     location: GameLocations
     stdItemId: string | null
