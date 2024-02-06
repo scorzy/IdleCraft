@@ -155,6 +155,9 @@ export interface Msg {
 
     SlashingArmour: string
     SlashingDamage: string
+    OneHand: string
+    TwoHands: string
+    Body: string
 }
 export interface MsgFunctions {
     // Time

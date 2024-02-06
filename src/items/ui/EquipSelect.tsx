@@ -24,28 +24,35 @@ import {
 import { GameState } from '../../game/GameState'
 import { getRecipeParamId } from '../../crafting/RecipeFunctions'
 import { Msg } from '../../msg/Msg'
+import { PLAYER_ID } from '../../characters/charactersConst'
 import classes from './equipSelect.module.css'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
-export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEnum }) {
+const noIcon = <GiRock />
+
+export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEnum; charId?: string }) {
     const { slot } = props
+    const charId = props.charId ?? PLAYER_ID
     const { t } = useTranslations()
     const slotData = SlotsData[slot]
 
-    const selectEquippedItemMemo = useCallback((state: GameState) => selectEquippedItem(slot)(state), [slot])
-    const selectEquipIdMemo = useCallback((state: GameState) => selectEquipId(slot)(state), [slot])
+    const selectEquippedItemMemo = useCallback(
+        (state: GameState) => selectEquippedItem(slot, charId)(state),
+        [slot, charId]
+    )
+    const selectEquipIdMemo = useCallback((state: GameState) => selectEquipId(slot, charId)(state), [slot, charId])
     const selectItemsByTypeMemo = useCallback(
         (state: GameState) => selectItemsByType(slotData.ItemType)(state),
         [slotData]
     )
 
     const equipped = useGameStore(selectEquippedItemMemo)
-    const axeId = useGameStore(selectEquipIdMemo)
+    const itemId = useGameStore(selectEquipIdMemo)
     const itemsId = useGameStore(selectItemsByTypeMemo)
-    const handleEquipChange = useCallback((value: string) => changeEquip(slot, value), [slot])
+    const handleEquipChange = useCallback((value: string) => changeEquip(slot, value, charId), [slot, charId])
 
     let name = t.None
-    let icon: ReactNode = <GiRock />
+    let icon: ReactNode = noIcon
     if (equipped) {
         name = t[equipped.nameId]
         icon = IconsData[equipped.icon]
@@ -54,7 +61,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     return (
         <div>
             <span className="font-medium text-sm">{t[slotData.ItemType as keyof Msg]}</span>
-            <Select value={axeId ?? '-'} onValueChange={handleEquipChange}>
+            <Select value={itemId ?? '-'} onValueChange={handleEquipChange}>
                 <SelectTrigger>
                     <SelectValue>
                         <span className={classes.title}>

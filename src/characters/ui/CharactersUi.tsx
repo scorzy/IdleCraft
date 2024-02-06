@@ -36,6 +36,7 @@ import { DamageTypes } from '../../items/Item'
 import { selectCharacterArmour, selectCharacterArmourList } from '../selectors/armourSelector'
 import { DamageTypesData } from '../../items/damageTypes'
 import classes from './charactersUi.module.css'
+import { CharEquipments } from './CharEquipments'
 
 export const CharactersUi = memo(function CharactersUi() {
     const { t } = useTranslations()
@@ -59,6 +60,7 @@ export const CharactersUi = memo(function CharactersUi() {
                                 <PerksTab />
                             </TabsTrigger>
                             <TabsTrigger value="abilities">{t.Abilities}</TabsTrigger>
+                            <TabsTrigger value="equipments">Equipments</TabsTrigger>
                         </TabsList>
                     }
                 >
@@ -78,6 +80,12 @@ export const CharactersUi = memo(function CharactersUi() {
                     <TabsContent value="abilities">
                         <MyPage className="page__main">
                             <AbilityUi />
+                        </MyPage>
+                    </TabsContent>
+
+                    <TabsContent value="equipments">
+                        <MyPage className="page__main">
+                            <CharEquipments />
                         </MyPage>
                     </TabsContent>
                 </MyPageAll>

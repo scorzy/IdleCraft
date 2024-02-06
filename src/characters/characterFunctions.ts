@@ -25,7 +25,7 @@ export function equipItem(
         state = addItem(state, equipped.stdItemId ?? null, equipped.craftItemId ?? null, equipped.quantity ?? 1)
 
     char = CharacterAdapter.selectEx(state.characters, charId)
-    if (!char) throw new Error(`Character with id not found ${charId}`)
+
     if (stdItemId || craftItemId) {
         const equippedSlot: Inventory = { quantity }
         if (stdItemId) equippedSlot.stdItemId = stdItemId

@@ -130,6 +130,10 @@ export const engMsg: Msg = {
     PiercingDamage: 'Piercing Damage',
     SlashingArmour: 'Slashing Armour',
     SlashingDamage: 'Slashing Damage',
+
+    OneHand: 'Main Hand',
+    TwoHands: 'Two Hands',
+    Body: 'Body Armour',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

@@ -12,6 +12,12 @@ export const selectEquippedItem =
         if (!equipped) return
         return selectGameItem(equipped.stdItemId, equipped.craftItemId)(state)
     }
+export const selectSelectedCharEquippedItem = (slot: EquipSlotsEnum) => (state: GameState) => {
+    const equipped = CharacterAdapter.selectEx(state.characters, state.ui.selectedCharId).inventory[slot]
+    if (!equipped) return
+    return selectGameItem(equipped.stdItemId, equipped.craftItemId)(state)
+}
+
 export const selectEquipId =
     (slot: EquipSlotsEnum, characterId = PLAYER_ID) =>
     (state: GameState) => {

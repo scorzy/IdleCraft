@@ -42,17 +42,17 @@ export class ArmourRecipe implements Recipe {
         const armourData = barItem.craftingData.armour
         if (!armourData) return
 
-        const craftedSword: Item = {
+        const craftedItem: Item = {
             id: '',
             nameId: 'Armour',
             icon: Icons.Breastplate,
             type: ItemTypes.Body,
-            equipSlot: EquipSlotsEnum.MainHand,
+            equipSlot: EquipSlotsEnum.Body,
             value: getItemValue(components, true),
             armourData: {
-                Bludgeoning: BASE_ARMOUR * armourData.Bludgeoning,
-                Piercing: BASE_ARMOUR * armourData.Piercing,
-                Slashing: BASE_ARMOUR * armourData.Slashing,
+                Bludgeoning: Math.floor(BASE_ARMOUR * armourData.Bludgeoning),
+                Piercing: Math.floor(BASE_ARMOUR * armourData.Piercing),
+                Slashing: Math.floor(BASE_ARMOUR * armourData.Slashing),
             },
         }
 
@@ -60,14 +60,14 @@ export class ArmourRecipe implements Recipe {
             time: getCraftingTime(components),
             requirements: [
                 {
-                    qta: 2,
+                    qta: 4,
                     stdItemId: bar.stdItemId,
                     craftedItemId: bar.stdItemId,
                 },
             ],
             results: {
                 qta: 1,
-                craftedItem: craftedSword,
+                craftedItem,
             },
         }
     }

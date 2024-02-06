@@ -1,3 +1,4 @@
+import { CharacterAdapter } from '../characters/characterAdapter'
 import { InitialState } from '../entityAdapter/entityAdapter'
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
@@ -84,12 +85,15 @@ export function removeItem(
 }
 
 function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
+    const equipped = CharacterAdapter.find(
+        state.characters,
+        (char) => !!Object.values(char.inventory).find((inv) => inv.craftItemId === craftItemId)
+    )
+
+    if (equipped) return true
+
     const locations = Object.values(state.locations)
-    for (const loc of locations) {
-        if (loc.storage.CraftedItems[craftItemId] ?? 0 > 0) {
-            return true
-        }
-    }
+    for (const loc of locations) if (loc.storage.CraftedItems[craftItemId] ?? 0 > 0) return true
 
     return false
 }

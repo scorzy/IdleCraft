@@ -16,7 +16,7 @@ export const SlotsData: { [k in EquipSlotsEnum]: SlotData } = {
         ItemType: ItemTypes.OneHand,
     },
     [EquipSlotsEnum.TwoHand]: {
-        ItemType: ItemTypes.TwoHand,
+        ItemType: ItemTypes.TwoHands,
     },
     [EquipSlotsEnum.Body]: {
         ItemType: ItemTypes.Body,

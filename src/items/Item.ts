@@ -11,7 +11,7 @@ export enum ItemTypes {
     WoodAxe = 'WoodAxe',
     Pickaxe = 'Pickaxe',
     OneHand = 'OneHand',
-    TwoHand = 'TwoHand',
+    TwoHands = 'TwoHands',
     Body = 'Body',
 }
 export enum DamageTypes {
