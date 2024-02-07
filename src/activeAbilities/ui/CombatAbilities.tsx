@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react'
-import { MyCard } from '../../ui/myCard/MyCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { useGameStore } from '../../game/state'
 import { selectCombatAbilities } from '../selectors/selectCombatAbilities'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
@@ -15,6 +15,7 @@ import { Button } from '../../components/ui/button'
 import { addRotation } from '../functions/addRotation'
 import { removeRotation } from '../functions/removeRotation'
 import { TrashIcon } from '../../icons/IconsMemo'
+import { Card, CardContent } from '../../components/ui/card'
 import classes from './combatAbilities.module.css'
 
 export const CombatAbilities = memo(function CombatAbilities() {
@@ -22,14 +23,17 @@ export const CombatAbilities = memo(function CombatAbilities() {
     const selected = useGameStore(selectCombatAbilities)
 
     return (
-        <MyCard title="Skill Rotation">
-            {selected.map((c, index) => (
-                <CombatAbility index={index} key={c + index} />
-            ))}
-            <Button variant="secondary" onClick={addRotation}>
-                {t.Add}
-            </Button>
-        </MyCard>
+        <Card title="Skill Rotation">
+            <MyCardHeaderTitle title="Skill Rotation" />
+            <CardContent>
+                {selected.map((c, index) => (
+                    <CombatAbility index={index} key={c + index} />
+                ))}
+                <Button variant="secondary" onClick={addRotation}>
+                    {t.Add}
+                </Button>
+            </CardContent>
+        </Card>
     )
 })
 const CombatAbility = memo(function CombatAbility(props: { index: number }) {

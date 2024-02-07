@@ -13,7 +13,7 @@ import { selectCombatAbilityById } from '../selectors/selectCombatAbilityById'
 import { setAbilityUi } from '../functions/setAbilityUi'
 import { isAbilityUiSelected } from '../selectors/isAbilityUiSelected'
 import { selectAbilityUi } from '../selectors/selectAbilityUi'
-import { MyCard } from '../../ui/myCard/MyCard'
+import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card'
 
 export const AbilitySidebar = memo(function AbilitySidebar() {
     const allCombatAbilities = useGameStore(selectAllCombatAbilities)
@@ -57,8 +57,13 @@ export const AbilityUi = memo(function AbilityUi() {
     const desc = useGameStore((state: GameState) => ability.getDesc({ state, characterId }))
 
     return (
-        <MyCard title={t[ability.nameId]} icon={IconsData[iconId]}>
-            {desc}
-        </MyCard>
+        <Card>
+            <CardHeader>
+                <CardTitle>
+                    {IconsData[iconId]} {t[ability.nameId]}
+                </CardTitle>
+            </CardHeader>
+            <CardContent>{desc}</CardContent>
+        </Card>
     )
 })

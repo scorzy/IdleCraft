@@ -17,7 +17,7 @@ import {
 } from '../selectors/characterSelectors'
 import { setSelectedChar } from '../../ui/state/uiFunctions'
 import { isCharSelected, isCollapsed, selectSelectedCharId } from '../../ui/state/uiSelectors'
-import { MyCard } from '../../ui/myCard/MyCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { selectCharacterMaxHealth, selectCharacterMaxHealthList } from '../selectors/healthSelectors'
 import { selectCharacterMaxMana, selectCharacterMaxManaList } from '../selectors/manaSelectors'
 import { selectCharacterMaxStamina, selectCharacterMaxStaminaList } from '../selectors/staminaSelectors'
@@ -35,6 +35,7 @@ import { AbilitySidebar, AbilityUi } from '../../activeAbilities/ui/CharAbilitie
 import { DamageTypes } from '../../items/Item'
 import { selectCharacterArmour, selectCharacterArmourList } from '../selectors/armourSelector'
 import { DamageTypesData } from '../../items/damageTypes'
+import { Card, CardContent } from '../../components/ui/card'
 import classes from './charactersUi.module.css'
 import { CharEquipments } from './CharEquipments'
 
@@ -155,53 +156,56 @@ const CharInfo = memo(function CharInfo() {
     const hasUnused = maxPoints - usedPoints > 0
 
     return (
-        <MyCard icon={<TbInfoCircle />} title={t.Info}>
-            <div className={classes.stats}>
-                <span className="text-muted-foreground">
-                    {t.Points} {f(usedPoints)}/{f(maxPoints)}
-                </span>
-                <div className={classes.line}>
-                    <GiHearts />
-                    <span className={classes.stat}>
-                        {t.Health}{' '}
-                        <span className={classes.max}>
-                            {f(health)}/{f(maxH)}
-                        </span>
+        <Card>
+            <MyCardHeaderTitle icon={<TbInfoCircle />} title={t.Info} />
+            <CardContent>
+                <div className={classes.stats}>
+                    <span className="text-muted-foreground">
+                        {t.Points} {f(usedPoints)}/{f(maxPoints)}
                     </span>
-                    <BonusDialog title={t.Health} selectBonusResult={maxHB} />
-                    <Button variant="health" size="xs" disabled={!hasUnused} onClick={healthClick}>
-                        <TbPlus />
-                    </Button>
-                </div>
-                <div className={classes.line}>
-                    <GiStrong />
-                    <span className={classes.stat}>
-                        {t.Stamina}{' '}
-                        <span className={classes.max}>
-                            {f(stamina)}/{f(maxS)}
+                    <div className={classes.line}>
+                        <GiHearts />
+                        <span className={classes.stat}>
+                            {t.Health}{' '}
+                            <span className={classes.max}>
+                                {f(health)}/{f(maxH)}
+                            </span>
                         </span>
-                    </span>
-                    <BonusDialog title={t.Stamina} selectBonusResult={maxSB} />
-                    <Button variant="stamina" size="xs" disabled={!hasUnused} onClick={staminaClick}>
-                        <TbPlus />
-                    </Button>
-                </div>
-                <div className={classes.line}>
-                    <GiMagicPalm />
-                    <span className={classes.stat}>
-                        {t.Mana}{' '}
-                        <span className={classes.max}>
-                            {f(mana)}/{f(maxM)}
+                        <BonusDialog title={t.Health} selectBonusResult={maxHB} />
+                        <Button variant="health" size="xs" disabled={!hasUnused} onClick={healthClick}>
+                            <TbPlus />
+                        </Button>
+                    </div>
+                    <div className={classes.line}>
+                        <GiStrong />
+                        <span className={classes.stat}>
+                            {t.Stamina}{' '}
+                            <span className={classes.max}>
+                                {f(stamina)}/{f(maxS)}
+                            </span>
                         </span>
-                    </span>
-                    <BonusDialog title={t.Mana} selectBonusResult={maxMB} />
-                    <Button variant="mana" size="xs" disabled={!hasUnused} onClick={manaClick}>
-                        <TbPlus />
-                    </Button>
+                        <BonusDialog title={t.Stamina} selectBonusResult={maxSB} />
+                        <Button variant="stamina" size="xs" disabled={!hasUnused} onClick={staminaClick}>
+                            <TbPlus />
+                        </Button>
+                    </div>
+                    <div className={classes.line}>
+                        <GiMagicPalm />
+                        <span className={classes.stat}>
+                            {t.Mana}{' '}
+                            <span className={classes.max}>
+                                {f(mana)}/{f(maxM)}
+                            </span>
+                        </span>
+                        <BonusDialog title={t.Mana} selectBonusResult={maxMB} />
+                        <Button variant="mana" size="xs" disabled={!hasUnused} onClick={manaClick}>
+                            <TbPlus />
+                        </Button>
+                    </div>
+                    <ArmourInfo />
                 </div>
-                <ArmourInfo />
-            </div>
-        </MyCard>
+            </CardContent>
+        </Card>
     )
 })
 const armourTypes = Object.values(DamageTypes).sort()

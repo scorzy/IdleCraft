@@ -1,5 +1,4 @@
 import { memo, useCallback } from 'react'
-import { GiWoodAxe } from 'react-icons/gi'
 import { TbAlertTriangle } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
 import { selectWoodType } from '../../ui/state/uiSelectors'
@@ -17,7 +16,7 @@ import {
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { RestartProgress } from '../../ui/progress/RestartProgress'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
-import { MyCard } from '../../ui/myCard/MyCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { memoize } from '../../utils/memoize'
 import { useTranslations } from '../../msg/useTranslations'
 import { WoodData } from '../WoodData'
@@ -33,6 +32,7 @@ import { selectWoodcuttingDamage, selectWoodcuttingDamageAll } from '../selector
 import { selectWoodcuttingTime, selectWoodcuttingTimeAll } from '../selectors/woodcuttingTime'
 import { Alert, AlertTitle, AlertDescription } from '../../components/ui/alert'
 import { isSelectedWoodEnabled } from '../selectors/WoodcuttingSelectors'
+import { Card, CardContent } from '../../components/ui/card'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Button } from '@/components/ui/button'
@@ -101,23 +101,29 @@ const Cutting = memo(function Cutting() {
     const damage = useGameStore(selectWoodcuttingDamage)
 
     return (
-        <MyCard title={fun.cutting(woodType)} actions={<CuttingButton />} icon={<GiWoodAxe />}>
-            <MyLabel className="text-muted-foreground">
-                <span>
-                    {t.TreeHP} {f(forest.hp)}/{f(def.hp)}
-                </span>
-            </MyLabel>
-            <MyLabel className="text-muted-foreground">
-                {t.Damage} {f(damage)}
-                <BonusDialog title={t.WoodcuttingDamage} selectBonusResult={selectWoodcuttingDamageAll} />
-            </MyLabel>
-            <RestartProgress value={hpPercent} color="health" className="mb-2" />
-            <MyLabel className="text-muted-foreground">
-                {t.Time} {ft(time)}
-                <BonusDialog title={t.WoodcuttingTime} selectBonusResult={selectWoodcuttingTimeAll} isTime={true} />
-            </MyLabel>
-            <GameTimerProgress actionId={act} color="primary" className="mb-2" />
-        </MyCard>
+        <Card>
+            <MyCardHeaderTitle title={fun.cutting(woodType)} icon={IconsData.Axe} />
+            <CardContent>
+                <MyLabel className="text-muted-foreground">
+                    <span>
+                        {t.TreeHP} {f(forest.hp)}/{f(def.hp)}
+                    </span>
+                </MyLabel>
+                <MyLabel className="text-muted-foreground">
+                    {t.Damage} {f(damage)}
+                    <BonusDialog title={t.WoodcuttingDamage} selectBonusResult={selectWoodcuttingDamageAll} />
+                </MyLabel>
+                <RestartProgress value={hpPercent} color="health" className="mb-2" />
+                <MyLabel className="text-muted-foreground">
+                    {t.Time} {ft(time)}
+                    <BonusDialog title={t.WoodcuttingTime} selectBonusResult={selectWoodcuttingTimeAll} isTime={true} />
+                </MyLabel>
+                <GameTimerProgress actionId={act} color="primary" className="mb-2" />
+            </CardContent>
+            <CardContent>
+                <CuttingButton />
+            </CardContent>
+        </Card>
     )
 })
 
@@ -143,10 +149,13 @@ const Forest = memo(function Forest() {
     const data = WoodData[woodType]
 
     return (
-        <MyCard title={t[`${woodType}Forest`]} icon={IconsData[data.iconId]}>
-            <ForestQta />
-            <Trees />
-        </MyCard>
+        <Card>
+            <MyCardHeaderTitle title={t[`${woodType}Forest`]} icon={IconsData[data.iconId]} />
+            <CardContent>
+                <ForestQta />
+                <Trees />
+            </CardContent>
+        </Card>
     )
 })
 

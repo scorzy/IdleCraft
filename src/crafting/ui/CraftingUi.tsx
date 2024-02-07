@@ -1,6 +1,5 @@
 import { memo, useCallback } from 'react'
 import { LuHourglass } from 'react-icons/lu'
-import { MyCard } from '../../ui/myCard/MyCard'
 import { memoize } from '../../utils/memoize'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
 import { recipes } from '../Recipes'
@@ -32,6 +31,7 @@ import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { addCrafting } from '../functions/addCrafting'
 import { handleRecipeChange } from '../CraftingFunctions'
+import { Card, CardContent } from '../../components/ui/card'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
@@ -71,15 +71,17 @@ const RecipeUi = memo(function RecipeUi() {
 
     if (!recipeType) return <></>
     return (
-        <MyCard>
-            <div className={classes.craftingForm}>
-                <RecipeSelectUi />
-                {params.map((rp) => (
-                    <RecipeParamUi recipeParam={rp} key={rp.id} />
-                ))}
-                <CraftingButtons />
-            </div>
-        </MyCard>
+        <Card>
+            <CardContent>
+                <div className={classes.craftingForm}>
+                    <RecipeSelectUi />
+                    {params.map((rp) => (
+                        <RecipeParamUi recipeParam={rp} key={rp.id} />
+                    ))}
+                    <CraftingButtons />
+                </div>
+            </CardContent>
+        </Card>
     )
 })
 

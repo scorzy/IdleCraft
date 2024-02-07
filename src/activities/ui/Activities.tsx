@@ -5,7 +5,6 @@ import { selectActivityIcon, selectActivityId, selectActivityMax, selectActivity
 import { moveActivityNext, moveActivityPrev } from '../activityFunctions'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { MyCard } from '../../ui/myCard/MyCard'
 import { Alert, AlertTitle } from '../../components/ui/alert'
 import { MyPage } from '../../ui/pages/MyPage'
 import { removeActivity } from '../functions/removeActivity'
@@ -13,6 +12,7 @@ import { IconsData } from '../../icons/Icons'
 import { Input } from '../../components/ui/input'
 import { setActivityNum } from '../functions/setActivityNum'
 import { InfoIcon, TrashIcon } from '../../icons/IconsMemo'
+import { Card, CardContent } from '../../components/ui/card'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -34,11 +34,13 @@ export const Activities = memo(function Activities() {
 
     return (
         <MyPage>
-            <MyCard className="max-w-lg">
-                {ids.map((i, index) => (
-                    <ActivityCard id={i} key={i} isFirst={index === 0} isLast={index >= max} />
-                ))}
-            </MyCard>
+            <Card className="max-w-lg">
+                <CardContent>
+                    {ids.map((i, index) => (
+                        <ActivityCard id={i} key={i} isFirst={index === 0} isLast={index >= max} />
+                    ))}
+                </CardContent>
+            </Card>
         </MyPage>
     )
 })

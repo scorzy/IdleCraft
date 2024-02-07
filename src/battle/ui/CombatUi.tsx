@@ -15,7 +15,7 @@ import {
 } from '../../characters/selectors/characterSelectors'
 import { useTranslations } from '../../msg/useTranslations'
 import { IconsData } from '../../icons/Icons'
-import { MyCard } from '../../ui/myCard/MyCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { selectCharacterMaxHealth } from '../../characters/selectors/healthSelectors'
 import { selectCharacterMaxMana } from '../../characters/selectors/manaSelectors'
@@ -28,6 +28,7 @@ import { GameState } from '../../game/GameState'
 import { Badge } from '../../components/ui/badge'
 import { MyHoverCard } from '../../ui/MyHoverCard'
 import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
+import { Card, CardContent } from '../../components/ui/card'
 import classes from './Combat.module.css'
 
 export const CombatUi = memo(function CombatUi() {
@@ -60,16 +61,19 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
     const icon = useGameStore(selectCharIcon(charId))
 
     return (
-        <MyCard title={name} icon={IconsData[icon]}>
-            <div className={classes.charCard}>
-                <CharHealth charId={charId} />
-                <CharStamina charId={charId} />
-                <CharMana charId={charId} />
+        <Card>
+            <MyCardHeaderTitle title={name} icon={IconsData[icon]} />
+            <CardContent>
+                <div className={classes.charCard}>
+                    <CharHealth charId={charId} />
+                    <CharStamina charId={charId} />
+                    <CharMana charId={charId} />
 
-                <MainAttack charId={charId} />
-                <CombatAbilitiesList charId={charId} />
-            </div>
-        </MyCard>
+                    <MainAttack charId={charId} />
+                    <CombatAbilitiesList charId={charId} />
+                </div>
+            </CardContent>
+        </Card>
     )
 })
 

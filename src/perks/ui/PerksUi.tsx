@@ -17,7 +17,7 @@ import {
     selectUsedPerks,
     selectPerks,
 } from '../PerksSelectors'
-import { MyCard } from '../../ui/myCard/MyCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { Button } from '../../components/ui/button'
 import { ExpData } from '../../experience/expEnum'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -35,7 +35,7 @@ import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../components/ui/dialog'
-import { CardTitle } from '../../components/ui/card'
+import { Card, CardContent, CardFooter, CardTitle } from '../../components/ui/card'
 import { MyTabNum } from '../../ui/myCard/MyTabNum'
 import classes from './perkUi.module.css'
 import {
@@ -149,9 +149,13 @@ export const PerkPage = () => {
     )
     return (
         <>
-            <MyCard title={t[data.nameId]} icon={IconsData[data.iconId]} actions={<PerkButton perk={perk} />}>
-                {content}
-            </MyCard>
+            <Card>
+                <MyCardHeaderTitle title={t[data.nameId]} icon={IconsData[data.iconId]} />
+                <CardContent>{content}</CardContent>
+                <CardFooter>
+                    <PerkButton perk={perk} />
+                </CardFooter>
+            </Card>
             <Dialog open={open && !matches} onOpenChange={setPerksOpen}>
                 <DialogContent>
                     <DialogHeader>

@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
-import { MyCard } from '../../ui/myCard/MyCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
 import { BattleAreas, BattleAreasList } from '../battleAreas'
 import { useTranslations } from '../../msg/useTranslations'
@@ -21,6 +21,7 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { addBattle } from '../functions/addBattle'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { isCollapsed } from '../../ui/state/uiSelectors'
+import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import classes from './battleZone.module.css'
 
 export const CombatPage = memo(function CombatPage() {
@@ -89,18 +90,17 @@ const BattleZoneInfoUi = memo(function BattleZoneInfoUi() {
     if (!battleZoneEnum) return <></>
     const battleZone = BattleZones[battleZoneEnum]
     return (
-        <MyCard
-            title="Enemies"
-            actions={
-                <>
-                    <Button onClick={onAddClick}>Fight</Button>
-                </>
-            }
-        >
-            {battleZone.enemies.map((e, index) => (
-                <EnemyInfoUi key={e.template + index} quantity={e.quantity} templateEnum={e.template} />
-            ))}
-        </MyCard>
+        <Card>
+            <MyCardHeaderTitle title="Enemies" />
+            <CardContent>
+                {battleZone.enemies.map((e, index) => (
+                    <EnemyInfoUi key={e.template + index} quantity={e.quantity} templateEnum={e.template} />
+                ))}
+            </CardContent>
+            <CardFooter>
+                <Button onClick={onAddClick}>Fight</Button>
+            </CardFooter>
+        </Card>
     )
 })
 const EnemyInfoUi = memo(function EnemyInfoUi(props: { quantity: number; templateEnum: CharTemplateEnum }) {
