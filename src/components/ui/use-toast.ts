@@ -10,7 +10,7 @@ import { Icons } from "../../icons/Icons"
 const TOAST_LIMIT = 5
 const TOAST_REMOVE_DELAY = 1000000
 
-  type ToasterToast = ToastProps & {
+type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
@@ -140,9 +140,9 @@ function dispatch(action: Action) {
   })
 }
 
- type Toast = Omit<ToasterToast, "id">
- export type ToastType = Toast
- 
+type Toast = Omit<ToasterToast, "id">
+export type ToastType = Toast
+
 function toast({ ...props }: Toast) {
   const id = genId()
 

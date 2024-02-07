@@ -32,7 +32,7 @@ import { selectWoodcuttingDamage, selectWoodcuttingDamageAll } from '../selector
 import { selectWoodcuttingTime, selectWoodcuttingTimeAll } from '../selectors/woodcuttingTime'
 import { Alert, AlertTitle, AlertDescription } from '../../components/ui/alert'
 import { isSelectedWoodEnabled } from '../selectors/WoodcuttingSelectors'
-import { Card, CardContent } from '../../components/ui/card'
+import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Button } from '@/components/ui/button'
@@ -120,9 +120,9 @@ const Cutting = memo(function Cutting() {
                 </MyLabel>
                 <GameTimerProgress actionId={act} color="primary" className="mb-2" />
             </CardContent>
-            <CardContent>
+            <CardFooter>
                 <CuttingButton />
-            </CardContent>
+            </CardFooter>
         </Card>
     )
 })
