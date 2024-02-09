@@ -1,8 +1,8 @@
-import { InitialState } from '../../entityAdapter/entityAdapter'
 import { GameState } from '../../game/GameState'
 import { memoizeOne } from '../../utils/memoizeOne'
 import { CharacterAdapter } from '../characterAdapter'
 import { CharacterState } from '../characterState'
+import { InitialState } from '@/entityAdapter/InitialState'
 
 const selectTeamsInt = memoizeOne((state: InitialState<CharacterState>) => {
     const allies: string[] = []

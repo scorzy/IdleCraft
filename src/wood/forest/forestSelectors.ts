@@ -1,5 +1,4 @@
 import { ActivityTypes } from '../../activities/ActivityState'
-import { InitialState } from '../../entityAdapter/entityAdapter'
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Timer } from '../../timers/Timer'
@@ -10,6 +9,7 @@ import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
 import { WoodcuttingAdapter } from '../WoodcuttingAdapter'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
+import { InitialState } from '@/entityAdapter/InitialState'
 
 export const selectDefaultForest = memoize(function selectDefaultForest(woodType: WoodTypes): ForestsState {
     const data = WoodData[woodType]

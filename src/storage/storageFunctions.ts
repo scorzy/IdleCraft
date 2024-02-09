@@ -1,5 +1,4 @@
 import { CharacterAdapter } from '../characters/characterAdapter'
-import { InitialState } from '../entityAdapter/entityAdapter'
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { GameLocations } from '../gameLocations/GameLocations'
@@ -10,6 +9,7 @@ import { memoizeOne } from '../utils/memoizeOne'
 import { myCompare } from '../utils/myCompare'
 import { ItemAdapter } from './ItemAdapter'
 import { ItemId, StorageState } from './storageState'
+import { InitialState } from '@/entityAdapter/InitialState'
 
 export const getItemId2 = (stdItemId: string | null | undefined, craftItemId: string | null | undefined) =>
     stdItemId ? `s${stdItemId}` : craftItemId ? `c${craftItemId}` : ''

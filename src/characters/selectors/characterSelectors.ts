@@ -1,12 +1,12 @@
 import { ActiveAbilityData } from '../../activeAbilities/ActiveAbilityData'
 import { CastCharAbilityAdapter } from '../../activeAbilities/abilityAdapters'
-import { InitialState } from '../../entityAdapter/entityAdapter'
 import { GameState } from '../../game/GameState'
 import { selectTranslations } from '../../msg/useTranslations'
 import { TimerAdapter } from '../../timers/Timer'
 import { memoizeOne } from '../../utils/memoizeOne'
 import { CharacterAdapter } from '../characterAdapter'
 import { CharacterState } from '../characterState'
+import { InitialState } from '@/entityAdapter/InitialState'
 
 export const selectCharName = (charId: string) => (state: GameState) => {
     const char = CharacterAdapter.selectEx(state.characters, charId)

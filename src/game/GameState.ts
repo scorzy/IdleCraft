@@ -1,7 +1,6 @@
 import { ActivityState } from '../activities/ActivityState'
 import { Crafting } from '../crafting/CraftingIterfaces'
 import { RecipeParameter, RecipeParameterValue, RecipeResult, RecipeTypes } from '../crafting/RecipeInterfaces'
-import { InitialState } from '../entityAdapter/entityAdapter'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
@@ -23,6 +22,7 @@ import { BattleZoneEnum } from '../battle/BattleZoneEnum'
 import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
 import { CollapsedEnum } from '../ui/sidebar/CollapsedEnum'
 import { BattleLog } from '../battleLog/battleLogInterfaces'
+import { InitialState } from '@/entityAdapter/InitialState'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {

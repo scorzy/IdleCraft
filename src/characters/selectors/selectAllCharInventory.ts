@@ -1,10 +1,10 @@
-import { InitialState } from '../../entityAdapter/entityAdapter'
 import { GameState } from '../../game/GameState'
 import { Item } from '../../items/Item'
 import { selectGameItemFromCraft, selectInventoryNoQta } from '../../storage/StorageSelectors'
 import { InventoryNoQta } from '../../storage/storageState'
 import { memoize } from '../../utils/memoize'
 import { EquipSlotsEnum } from '../equipSlotsEnum'
+import { InitialState } from '@/entityAdapter/InitialState'
 
 export type InventoryItems = { [k in EquipSlotsEnum]?: Item }
 

@@ -5,13 +5,13 @@ import { memoize } from '../utils/memoize'
 import { memoizeOne } from '../utils/memoizeOne'
 import { Entries } from '../utils/types'
 import { Item, ItemTypes } from '../items/Item'
-import { InitialState } from '../entityAdapter/entityAdapter'
 import { selectTranslations } from '../msg/useTranslations'
 import { Translations } from '../msg/Msg'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ItemAdapter } from './ItemAdapter'
 import { InventoryNoQta, ItemId, StorageState } from './storageState'
+import { InitialState } from '@/entityAdapter/InitialState'
 
 const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]: LocationState }) => {
     const res: GameLocations[] = []

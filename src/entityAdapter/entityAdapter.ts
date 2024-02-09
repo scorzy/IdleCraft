@@ -1,7 +1,5 @@
-export interface InitialState<T> {
-    ids: string[]
-    entries: Record<string, T>
-}
+import { adapterFunctions } from './AdapterFunctions'
+import { InitialState } from './InitialState'
 
 export abstract class AbstractEntityAdapter<T> {
     abstract getId(data: T): string
@@ -13,35 +11,26 @@ export abstract class AbstractEntityAdapter<T> {
         }
     }
     create(state: InitialState<T>, data: T) {
-        const id = this.getId(data)
-        return { ...state, entries: { ...state.entries, [id]: data }, ids: [...state.ids, id] }
+        return adapterFunctions.create(state, this.getId(data), data)
     }
     update(state: InitialState<T>, id: string, data: Partial<T>) {
-        const existing = state.entries[id]
-        if (!existing) throw new Error(`${id} doesn't exists`)
-        const complete: T = { ...existing, ...data }
-        return { ...state, entries: { ...state.entries, [id]: complete } }
+        return adapterFunctions.update(state, id, data)
     }
     replace(state: InitialState<T>, id: string, data: T) {
-        const existing = state.entries[id]
-        if (existing === undefined) throw new Error(`${id} doesn't exists`)
-        return { ...state, entries: { ...state.entries, [id]: data } }
+        return adapterFunctions.replace(state, id, data)
     }
     upsertMerge(state: InitialState<T>, data: T) {
         const id = this.getId(data)
         const existing = state.entries[id]
-        state = { ...state, entries: { ...state.entries, [id]: data } }
-        if (existing === undefined) {
-            const ids = [...state.ids, id]
-            state = { ...state, ids }
-        }
-        return state
+
+        if (!existing) return this.create(state, data)
+        else return this.update(state, id, data)
     }
     remove(state: InitialState<T>, id: string) {
         const existing = state.entries[id]
         if (!existing) throw new Error(`${id} doesn't exists`)
-        const { [id]: _, ...newEntries } = state.entries
-        return { entries: newEntries, ids: state.ids.filter((e) => e !== id) }
+
+        return adapterFunctions.remove(state, id)
     }
     getIds(state: InitialState<T>): string[] {
         return state.ids

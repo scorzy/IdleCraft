@@ -1,11 +1,11 @@
 import { CharAbility } from '../activeAbilities/abilityInterfaces'
-import { InitialState } from '../entityAdapter/entityAdapter'
 import { ExpState } from '../experience/ExpState'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 import { PerkState } from '../perks/PerkState'
 import { PerksEnum } from '../perks/perksEnum'
 import { CharInventory } from './inventory'
+import { InitialState } from '@/entityAdapter/InitialState'
 
 export interface CharacterState {
     id: string
