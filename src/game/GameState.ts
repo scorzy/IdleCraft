@@ -22,6 +22,7 @@ import { BattleState } from '../battle/BattleTypes'
 import { BattleZoneEnum } from '../battle/BattleZoneEnum'
 import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
 import { CollapsedEnum } from '../ui/sidebar/CollapsedEnum'
+import { BattleLog } from '../battleLog/battleLogInterfaces'
 
 export const Globals = { loadTo: 0 }
 export interface LocationState {
@@ -83,4 +84,5 @@ export interface GameState {
     characters: InitialState<CharacterState>
     battle: InitialState<BattleState>
     castCharAbility: InitialState<CastCharAbility>
+    battleLogs: InitialState<BattleLog>
 }

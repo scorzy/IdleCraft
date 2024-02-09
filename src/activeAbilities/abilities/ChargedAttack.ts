@@ -12,6 +12,7 @@ import { dealDamage } from '../../characters/functions/dealDamage'
 import { selectCharacterAttackDamage } from '../../characters/selectors/attackDamageSelectors'
 import { AbilitiesEnum } from '../abilitiesEnum'
 import { selectDamageType } from '../../characters/selectors/selectDamageType'
+import { addBattleLog } from '../../battleLog/functions/addbattleLog'
 
 export class ChargedAttack implements ActiveAbility {
     id = AbilitiesEnum.ChargedAttack
@@ -50,6 +51,12 @@ export class ChargedAttack implements ActiveAbility {
         const damageType = selectDamageType(characterId)(state)
         const { state: gameState } = dealDamage(state, enemyId, damage, damageType)
         state = gameState
+
+        const t = selectTranslations(params.state)
+        state = addBattleLog(state, {
+            iconId: this.getIconId(),
+            text: t.t.ChargedAttack,
+        })
 
         return state
     }

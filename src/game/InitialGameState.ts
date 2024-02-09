@@ -15,6 +15,7 @@ import { PLAYER_ID } from '../characters/charactersConst'
 import { BattleAdapter } from '../battle/BattleAdapter'
 import { CastCharAbilityAdapter, CharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { Icons } from '../icons/Icons'
+import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
 import { GameState, LocationState } from './GameState'
 
 const InitialVillageState: () => LocationState = () =>
@@ -106,6 +107,7 @@ export const InitialGameState: GameState = {
     },
     battle: BattleAdapter.getInitialState(),
     castCharAbility: CastCharAbilityAdapter.getInitialState(),
+    battleLogs: BattleLogAdapter.getInitialState(),
 }
 
 export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)

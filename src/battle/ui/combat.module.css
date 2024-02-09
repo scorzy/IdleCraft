@@ -35,3 +35,15 @@
     grid-auto-flow: row;
     gap: 0.375rem;
 }
+.mainContainer {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+    grid-auto-flow: row;
+}
+
+@container (min-width: 600px) {
+    .mainContainer {
+        grid-auto-flow: column;
+    }
+}

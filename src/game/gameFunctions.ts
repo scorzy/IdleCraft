@@ -7,8 +7,8 @@ import { useGameStore } from './state'
 import { regenerate } from './regenerate'
 
 const MAX_LOAD = 3600 * 1000 * 24 * 1
-//const TEST_DIF = -3600 * 1000 * 24 * 360
-const TEST_DIF: number = 0
+const TEST_DIF = -3600 * 1000 * 24 * 360
+//const TEST_DIF: number = 0
 
 // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export declare function setTimeout(this: Window | void, handler: (...args: unknown[]) => void, timeout: number): number

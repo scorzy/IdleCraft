@@ -1,0 +1,44 @@
+import { memo } from 'react'
+import ScrollableFeed from 'react-scrollable-feed'
+import { Card, CardContent } from '../../components/ui/card'
+import { useGameStore } from '../../game/state'
+import { selectBattleLog, selectBattleLogsIds } from '../battleLogSelectors'
+import { IconsData } from '../../icons/Icons'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+
+export const BattleLogUi = memo(function BattleLogUi() {
+    return (
+        <Card>
+            <MyCardHeaderTitle title="Logs" />
+            <CardContent>
+                <BattleLogs />
+            </CardContent>
+        </Card>
+    )
+})
+const BattleLogs = memo(function BattleLogs() {
+    const ids = useGameStore(selectBattleLogsIds)
+
+    return (
+        <div className="max-h-60 overflow-auto">
+            <ScrollableFeed>
+                {ids.map((id) => (
+                    <LogUi id={id} key={id} />
+                ))}
+            </ScrollableFeed>
+        </div>
+    )
+})
+const LogUi = memo(function LogUi(props: { id: string }) {
+    const { id } = props
+    const log = useGameStore(selectBattleLog(id))
+
+    const date = new Date(log.date).toLocaleTimeString()
+
+    return (
+        <div className="grid grid-flow-col gap-2 justify-start items-center">
+            <span className="text-muted-foreground">{date}</span>
+            {IconsData[log.iconId]} {log.text}
+        </div>
+    )
+})

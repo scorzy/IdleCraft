@@ -29,12 +29,16 @@ import { Badge } from '../../components/ui/badge'
 import { MyHoverCard } from '../../ui/MyHoverCard'
 import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
 import { Card, CardContent } from '../../components/ui/card'
+import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
 import classes from './Combat.module.css'
 
 export const CombatUi = memo(function CombatUi() {
     return (
         <MyPage>
-            <CombatChars />
+            <div className={classes.mainContainer}>
+                <CombatChars />
+                <BattleLogUi />
+            </div>
         </MyPage>
     )
 })
