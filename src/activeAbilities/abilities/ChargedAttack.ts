@@ -56,6 +56,7 @@ export class ChargedAttack implements ActiveAbility {
         state = addBattleLog(state, {
             iconId: this.getIconId(),
             text: t.t.ChargedAttack,
+            abilityId: this.id,
         })
 
         return state
