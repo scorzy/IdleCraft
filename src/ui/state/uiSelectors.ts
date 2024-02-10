@@ -2,6 +2,7 @@ import { GameState } from '../../game/GameState'
 import { WoodTypes } from '../../wood/WoodTypes'
 import { CollapsedEnum } from '../sidebar/CollapsedEnum'
 
+export const selectUi = (state: GameState) => state.ui
 export const selectTheme = (state: GameState) => state.ui.theme
 export const selectThemeColor = (state: GameState) => state.ui.themeColor
 export const selectNotation = (state: GameState) => state.ui.numberFormatNotation

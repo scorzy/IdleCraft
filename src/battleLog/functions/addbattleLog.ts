@@ -6,11 +6,7 @@ import { AddBattleLog, BattleLog } from '../battleLogInterfaces'
 const MAX_LOGS = 100
 
 export function addBattleLog(state: GameState, addLog: AddBattleLog) {
-    const battleLog: BattleLog = {
-        ...addLog,
-        id: getUniqueId(),
-        date: state.now,
-    }
+    const battleLog: BattleLog = { ...addLog, id: getUniqueId(), date: state.now }
 
     let battleLogs = BattleLogAdapter.create(state.battleLogs, battleLog)
 

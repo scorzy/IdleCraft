@@ -1,7 +1,8 @@
 import { messages } from '../msg/allMsg'
 import { useGameStore } from '../game/state'
-import { selectNotation, selectComma, selectLang } from '../ui/state/uiSelectors'
+import { selectUi } from '../ui/state/uiSelectors'
 import { memoizeOne } from '../utils/memoizeOne'
+import { UiState } from '../game/GameState'
 import { getFormatter } from './formatNumber'
 import { getTimeFormatter } from './formatTime'
 import { NotationTypes } from './NotationTypes'
@@ -18,10 +19,15 @@ const makeFormatter = memoizeOne((comma: CommaTypes, lang: string, notation: Not
     }
 })
 
-export const useNumberFormatter = () => {
-    const comma = useGameStore(selectComma)
-    const lang = useGameStore(selectLang)
-    const notation = useGameStore(selectNotation)
+const makeFormatterFromUi = memoizeOne((ui: UiState) => {
+    const comma = ui.comma
+    const lang = ui.lang
+    const notation = ui.numberFormatNotation
 
     return makeFormatter(comma, lang, notation)
+})
+
+export const useNumberFormatter = () => {
+    const ui = useGameStore(selectUi)
+    return makeFormatterFromUi(ui)
 }

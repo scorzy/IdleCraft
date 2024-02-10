@@ -30,34 +30,35 @@ export interface LocationState {
     forests: ForestsType
     ores: OreType
 }
+export interface UiState {
+    open: boolean
+    theme: string
+    themeColor: string
+    page: UiPages
+    comma: CommaTypes
+    numberFormatNotation: NotationTypes
+    lang: string
+    woodType: WoodTypes
+    oreType: OreTypes
+    selectedStdItemId: string | null
+    selectedCraftedItemId: string | null
+    selectedItemLocation: GameLocations | null
+    recipeType?: RecipeTypes
+    storageOrder: 'name' | 'quantity' | 'value'
+    storageAsc: boolean
+    showAvailablePerks: boolean
+    showUnavailablePerks: boolean
+    showOwnedPerks: boolean
+    battleZone: BattleZoneEnum | null
+    selectedCharId: string
+    collapsed: { [K in CollapsedEnum]?: boolean }
+    defaultClosed: { [k in string]: boolean }
+}
 export interface GameState {
     gameId: string
     isTimer: boolean
     lastRegen: number
-    ui: {
-        open: boolean
-        theme: string
-        themeColor: string
-        page: UiPages
-        comma: CommaTypes
-        numberFormatNotation: NotationTypes
-        lang: string
-        woodType: WoodTypes
-        oreType: OreTypes
-        selectedStdItemId: string | null
-        selectedCraftedItemId: string | null
-        selectedItemLocation: GameLocations | null
-        recipeType?: RecipeTypes
-        storageOrder: 'name' | 'quantity' | 'value'
-        storageAsc: boolean
-        showAvailablePerks: boolean
-        showUnavailablePerks: boolean
-        showOwnedPerks: boolean
-        battleZone: BattleZoneEnum | null
-        selectedCharId: string
-        collapsed: { [K in CollapsedEnum]?: boolean }
-        defaultClosed: { [k in string]: boolean }
-    }
+    ui: UiState
     notifications: ToastState
     timers: InitialTimerState
     loading: boolean

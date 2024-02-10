@@ -5,6 +5,7 @@ import { useGameStore } from '../../game/state'
 import { selectBattleLog, selectBattleLogsIds } from '../battleLogSelectors'
 import { IconsData } from '../../icons/Icons'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+import { useTranslations } from '../../msg/useTranslations'
 
 export const BattleLogUi = memo(function BattleLogUi() {
     return (
@@ -20,7 +21,7 @@ const BattleLogs = memo(function BattleLogs() {
     const ids = useGameStore(selectBattleLogsIds)
 
     return (
-        <div className="max-h-60 overflow-auto">
+        <div className="max-h-60 overflow-auto text-sm">
             <ScrollableFeed>
                 {ids.map((id) => (
                     <LogUi id={id} key={id} />
@@ -32,13 +33,18 @@ const BattleLogs = memo(function BattleLogs() {
 const LogUi = memo(function LogUi(props: { id: string }) {
     const { id } = props
     const log = useGameStore(selectBattleLog(id))
+    const { t } = useTranslations()
 
     const date = new Date(log.date).toLocaleTimeString()
 
     return (
         <div className="grid grid-flow-col gap-2 justify-start items-center">
             <span className="text-muted-foreground">{date}</span>
-            {IconsData[log.iconId]} {log.text}
+            {log.source}
+            {IconsData[log.iconId]}
+            {t[log.abilityId]}
+            {' => '}
+            {log.targets}
         </div>
     )
 })
