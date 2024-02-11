@@ -12,7 +12,7 @@ import { dealDamage } from '../../characters/functions/dealDamage'
 import { selectCharacterAttackDamage } from '../../characters/selectors/attackDamageSelectors'
 import { AbilitiesEnum } from '../abilitiesEnum'
 import { selectDamageType } from '../../characters/selectors/selectDamageType'
-import { addBattleLog } from '../../battleLog/functions/addbattleLog'
+import { addBattleLog } from '../../battleLog/functions/addBattleLog'
 
 export class ChargedAttack implements ActiveAbility {
     id = AbilitiesEnum.ChargedAttack
@@ -56,6 +56,7 @@ export class ChargedAttack implements ActiveAbility {
         state = addBattleLog(state, {
             iconId: this.getIconId(),
             text: t.t.ChargedAttack,
+            abilityId: this.id,
         })
 
         return state

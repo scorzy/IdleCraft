@@ -1,11 +1,9 @@
-import { GameState } from './game/GameState'
 import { Start } from './game/Start'
 import { useGameStore } from './game/state'
 import { ToasterProvider } from './notification/ToasterProvider'
+import { selectGameId } from './game/gameSelectors'
 import { AppShell } from './ui/shell/AppShell'
 import { ThemeProvider } from './ui/themeProvider'
-
-const selectGameId = (s: GameState) => s.gameId
 
 function App() {
     ThemeProvider()

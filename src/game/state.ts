@@ -3,10 +3,15 @@ import { devtools } from 'zustand/middleware'
 import { GameState } from './GameState'
 import { InitialGameState } from './InitialGameState'
 import { regenerate } from './regenerate'
+import { selectGameId } from './gameSelectors'
 
 export const useGameStore = create<GameState>()(devtools(() => InitialGameState))
 
-setInterval(() => useGameStore.setState((s) => regenerate(s, Date.now())), 1e3)
+setInterval(() => {
+    const gameId = useGameStore(selectGameId)
+    if (gameId === '') return
+    useGameStore.setState((s) => regenerate(s, Date.now()))
+}, 1e3)
 
 if (!('indexedDB' in window)) {
     console.log("This browser doesn't support IndexedDB")

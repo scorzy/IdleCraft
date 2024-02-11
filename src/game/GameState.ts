@@ -24,7 +24,6 @@ import { CollapsedEnum } from '../ui/sidebar/CollapsedEnum'
 import { BattleLog } from '../battleLog/battleLogInterfaces'
 import { InitialState } from '@/entityAdapter/InitialState'
 
-export const Globals = { loadTo: 0 }
 export interface LocationState {
     storage: StorageState
     forests: ForestsType

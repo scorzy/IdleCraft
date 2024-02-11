@@ -12,7 +12,7 @@ import { dealDamage } from '../../characters/functions/dealDamage'
 import { selectCharacterAttackDamage } from '../../characters/selectors/attackDamageSelectors'
 import { AbilitiesEnum } from '../abilitiesEnum'
 import { selectDamageType } from '../../characters/selectors/selectDamageType'
-import { addBattleLog } from '../../battleLog/functions/addbattleLog'
+import { addBattleLog } from '../../battleLog/functions/addBattleLog'
 import { selectCharName } from '../../characters/selectors/characterSelectors'
 
 export class NormalAttack implements ActiveAbility {
