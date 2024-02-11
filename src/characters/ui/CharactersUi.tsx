@@ -16,7 +16,7 @@ import {
     selectCharactersTeamIds,
 } from '../selectors/characterSelectors'
 import { setSelectedChar } from '../../ui/state/uiFunctions'
-import { isCharSelected, isCollapsed, selectSelectedCharId } from '../../ui/state/uiSelectors'
+import { isCharReadonly, isCharSelected, isCollapsed, selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { selectCharacterMaxHealth, selectCharacterMaxHealthList } from '../selectors/healthSelectors'
 import { selectCharacterMaxMana, selectCharacterMaxManaList } from '../selectors/manaSelectors'
@@ -36,6 +36,9 @@ import { DamageTypes } from '../../items/Item'
 import { selectCharacterArmour, selectCharacterArmourList } from '../selectors/armourSelector'
 import { DamageTypesData } from '../../items/damageTypes'
 import { Card, CardContent } from '../../components/ui/card'
+import { selectCharacterAttackDamage, selectCharacterAttackDamageList } from '../selectors/attackDamageSelectors'
+import { selectCharacterAttackSpeed, selectCharacterAttackSpeedList } from '../selectors/attackSpeedSelectors'
+import { selectDamageType } from '../selectors/selectDamageType'
 import classes from './charactersUi.module.css'
 import { CharEquipments } from './CharEquipments'
 
@@ -61,7 +64,7 @@ export const CharactersUi = memo(function CharactersUi() {
                                 <PerksTab />
                             </TabsTrigger>
                             <TabsTrigger value="abilities">{t.Abilities}</TabsTrigger>
-                            <TabsTrigger value="equipments">Equipments</TabsTrigger>
+                            <TabsTrigger value="equipments">{t.Equipments}</TabsTrigger>
                         </TabsList>
                     }
                 >
@@ -129,6 +132,20 @@ const CharacterLink = memo(function CharacterLink(props: { charId: string; colla
 })
 
 const CharInfo = memo(function CharInfo() {
+    const { t } = useTranslations()
+    return (
+        <Card>
+            <MyCardHeaderTitle icon={<TbInfoCircle />} title={t.Info} />
+            <CardContent className="grid gap-2">
+                <StatsInfo />
+                <AttackInfo />
+                <ArmourInfo />
+            </CardContent>
+        </Card>
+    )
+})
+
+const StatsInfo = memo(function StatsInfo() {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
 
@@ -153,66 +170,71 @@ const CharInfo = memo(function CharInfo() {
     const staminaClick = useCallback(() => addStaminaPointClick(charId), [charId])
     const manaClick = useCallback(() => addManaPointClick(charId), [charId])
 
-    const hasUnused = maxPoints - usedPoints > 0
+    const readonly = useGameStore(isCharReadonly)
+
+    const hasUnused = usedPoints < maxPoints
 
     return (
-        <Card>
-            <MyCardHeaderTitle icon={<TbInfoCircle />} title={t.Info} />
-            <CardContent>
-                <div className={classes.stats}>
-                    <span className="text-muted-foreground">
-                        {t.Points} {f(usedPoints)}/{f(maxPoints)}
+        <div className={classes.stats}>
+            <span className="text-muted-foreground">
+                {t.Points} {f(usedPoints)}/{f(maxPoints)}
+            </span>
+            <div className={classes.line}>
+                <GiHearts />
+                <span className={classes.stat}>
+                    {t.Health}{' '}
+                    <span className={classes.max}>
+                        {f(health)}/{f(maxH)}
                     </span>
-                    <div className={classes.line}>
-                        <GiHearts />
-                        <span className={classes.stat}>
-                            {t.Health}{' '}
-                            <span className={classes.max}>
-                                {f(health)}/{f(maxH)}
-                            </span>
-                        </span>
-                        <BonusDialog title={t.Health} selectBonusResult={maxHB} />
-                        <Button variant="health" size="xs" disabled={!hasUnused} onClick={healthClick}>
-                            <TbPlus />
-                        </Button>
-                    </div>
-                    <div className={classes.line}>
-                        <GiStrong />
-                        <span className={classes.stat}>
-                            {t.Stamina}{' '}
-                            <span className={classes.max}>
-                                {f(stamina)}/{f(maxS)}
-                            </span>
-                        </span>
-                        <BonusDialog title={t.Stamina} selectBonusResult={maxSB} />
-                        <Button variant="stamina" size="xs" disabled={!hasUnused} onClick={staminaClick}>
-                            <TbPlus />
-                        </Button>
-                    </div>
-                    <div className={classes.line}>
-                        <GiMagicPalm />
-                        <span className={classes.stat}>
-                            {t.Mana}{' '}
-                            <span className={classes.max}>
-                                {f(mana)}/{f(maxM)}
-                            </span>
-                        </span>
-                        <BonusDialog title={t.Mana} selectBonusResult={maxMB} />
-                        <Button variant="mana" size="xs" disabled={!hasUnused} onClick={manaClick}>
-                            <TbPlus />
-                        </Button>
-                    </div>
-                    <ArmourInfo />
-                </div>
-            </CardContent>
-        </Card>
+                </span>
+                <BonusDialog title={t.Health} selectBonusResult={maxHB} />
+                {!readonly && (
+                    <Button variant="health" size="xs" disabled={!hasUnused} onClick={healthClick}>
+                        <TbPlus />
+                    </Button>
+                )}
+            </div>
+            <div className={classes.line}>
+                <GiStrong />
+                <span className={classes.stat}>
+                    {t.Stamina}{' '}
+                    <span className={classes.max}>
+                        {f(stamina)}/{f(maxS)}
+                    </span>
+                </span>
+                <BonusDialog title={t.Stamina} selectBonusResult={maxSB} />
+                {!readonly && (
+                    <Button variant="stamina" size="xs" disabled={!hasUnused} onClick={staminaClick}>
+                        <TbPlus />
+                    </Button>
+                )}
+            </div>
+            <div className={classes.line}>
+                <GiMagicPalm />
+                <span className={classes.stat}>
+                    {t.Mana}{' '}
+                    <span className={classes.max}>
+                        {f(mana)}/{f(maxM)}
+                    </span>
+                </span>
+                <BonusDialog title={t.Mana} selectBonusResult={maxMB} />
+                {!readonly && (
+                    <Button variant="mana" size="xs" disabled={!hasUnused} onClick={manaClick}>
+                        <TbPlus />
+                    </Button>
+                )}
+            </div>
+        </div>
     )
 })
+
 const armourTypes = Object.values(DamageTypes).sort()
 
 const ArmourInfo = memo(function ArmourInfo() {
+    const { t } = useTranslations()
     return (
-        <div className="text-muted-foreground">
+        <div>
+            {t.Defence}
             {armourTypes.map((type) => (
                 <ArmourTypeInfo key={type} type={type} />
             ))}
@@ -229,9 +251,39 @@ const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes }
     const data = DamageTypesData[type]
     const name = t[data.ArmourName]
     return (
-        <div className="grid grid-flow-col items-center justify-start gap-2">
+        <div className="text-muted-foreground grid grid-flow-col items-center justify-start gap-2">
             {name} {f(value)}
             <BonusDialog title={name} selectBonusResult={list} />
+        </div>
+    )
+})
+const AttackInfo = memo(function AttackInfo() {
+    const { f, ft } = useNumberFormatter()
+    const { t } = useTranslations()
+    const charId = useGameStore(selectSelectedCharId)
+
+    const damage = useGameStore(selectCharacterAttackDamage(charId))
+    const damageList = selectCharacterAttackDamageList(charId)
+
+    const speed = useGameStore(selectCharacterAttackSpeed(charId))
+    const speedList = selectCharacterAttackSpeedList(charId)
+
+    const damageType = useGameStore(selectDamageType(charId))
+
+    return (
+        <div>
+            {t.Attack}
+            <div className="text-muted-foreground grid grid-flow-col items-center justify-start gap-2">
+                {t.Damage} {f(damage)}
+                <BonusDialog title={t.NormalAttack} selectBonusResult={damageList} />
+            </div>
+            <div className="text-muted-foreground grid grid-flow-col items-center justify-start gap-2">
+                {t[DamageTypesData[damageType].DamageName]}
+            </div>
+            <div className="text-muted-foreground grid grid-flow-col items-center justify-start gap-2">
+                {t.NormalAttack} {ft(speed)}
+                <BonusDialog title={t.NormalAttack} selectBonusResult={speedList} isTime={true} />
+            </div>
         </div>
     )
 })

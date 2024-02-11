@@ -7,7 +7,7 @@ import { selectItemsByType, selectGameItem } from '../../storage/StorageSelector
 import { getItemId2 } from '../../storage/storageFunctions'
 import { ItemId } from '../../storage/storageState'
 import { Item } from '../Item'
-import { SlotsData } from '../SlotsData'
+import { SlotsData } from '../slotsData'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { selectEquipId, selectEquippedItem } from '../itemSelectors'
 import { changeEquip } from '../itemFunctions'

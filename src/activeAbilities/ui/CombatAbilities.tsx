@@ -16,26 +16,48 @@ import { addRotation } from '../functions/addRotation'
 import { removeRotation } from '../functions/removeRotation'
 import { TrashIcon } from '../../icons/IconsMemo'
 import { Card, CardContent } from '../../components/ui/card'
+import { isCharReadonly } from '../../ui/state/uiSelectors'
 import classes from './combatAbilities.module.css'
 
 export const CombatAbilities = memo(function CombatAbilities() {
     const { t } = useTranslations()
     const selected = useGameStore(selectCombatAbilities)
+    const readonly = useGameStore(isCharReadonly)
 
     return (
         <Card title="Skill Rotation">
             <MyCardHeaderTitle title="Skill Rotation" />
             <CardContent>
-                {selected.map((c, index) => (
-                    <CombatAbility index={index} key={c + index} />
-                ))}
-                <Button variant="secondary" onClick={addRotation}>
-                    {t.Add}
-                </Button>
+                {!readonly && (
+                    <>
+                        {selected.map((c, index) => (
+                            <CombatAbility index={index} key={c + index} />
+                        ))}
+                        <Button variant="secondary" onClick={addRotation}>
+                            {t.Add}
+                        </Button>
+                    </>
+                )}
+                {readonly && (
+                    <>
+                        {selected.map((c, index) => (
+                            <CombatAbilitiesReadOnly index={index} key={c + index} />
+                        ))}
+                    </>
+                )}
             </CardContent>
         </Card>
     )
 })
+
+export const CombatAbilitiesReadOnly = memo(function CombatAbilitiesReadOnly(props: { index: number }) {
+    const { index } = props
+    const selectedId = useGameStore(selectCombatAbilityId(index))
+    if (!selectedId) return
+
+    return <SelectedAbility selectedId={selectedId} />
+})
+
 const CombatAbility = memo(function CombatAbility(props: { index: number }) {
     const { index } = props
     const { t } = useTranslations()

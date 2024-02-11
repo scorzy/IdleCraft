@@ -1,3 +1,4 @@
+import { CharacterAdapter } from '../../characters/characterAdapter'
 import { GameState } from '../../game/GameState'
 import { WoodTypes } from '../../wood/WoodTypes'
 import { CollapsedEnum } from '../sidebar/CollapsedEnum'
@@ -16,6 +17,8 @@ export const selectShowAvailablePerks = (state: GameState) => state.ui.showAvail
 export const selectShowUnavailablePerks = (state: GameState) => state.ui.showUnavailablePerks
 export const selectCompletedPerks = (state: GameState) => state.ui.showOwnedPerks
 export const selectSelectedCharId = (state: GameState) => state.ui.selectedCharId
+export const isCharReadonly = (state: GameState) =>
+    CharacterAdapter.select(state.characters, state.ui.selectedCharId)?.isEnemy ?? true
 export const isCharSelected = (charId: string) => (state: GameState) => state.ui.selectedCharId === charId
 export const isCollapsed = (id: CollapsedEnum) => (state: GameState) => state.ui.collapsed[id] ?? false
 

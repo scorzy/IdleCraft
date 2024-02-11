@@ -134,6 +134,11 @@ export const engMsg: Msg = {
     OneHand: 'Main Hand',
     TwoHands: 'Two Hands',
     Body: 'Body Armour',
+
+    DamageType: 'Damage Type',
+    Defence: 'Defence',
+    Attack: 'Attack',
+    Equipments: 'Equipments',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

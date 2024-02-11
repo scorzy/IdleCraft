@@ -29,12 +29,13 @@ import {
     selectShowUnavailablePerks,
     isCollapsed,
     selectSelectedCharId,
+    isCharReadonly,
 } from '../../ui/state/uiSelectors'
 import { IconsData } from '../../icons/Icons'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../components/ui/dialog'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../components/ui/dialog'
 import { Card, CardContent, CardFooter, CardTitle } from '../../components/ui/card'
 import { MyTabNum } from '../../ui/myCard/MyTabNum'
 import classes from './perkUi.module.css'
@@ -53,9 +54,11 @@ export const PerksSidebar = memo(function PerksSidebar() {
     const usedPerks = useGameStore(selectUsedPerks(charId))
     const perks = useGameStore(selectPerks(charId))
     const collapsed = useGameStore(isCollapsed(CollapsedEnum.Perk))
+    const readonly = useGameStore(isCharReadonly)
+
     return (
         <SidebarContainer collapsedId={CollapsedEnum.Perk}>
-            {!collapsed && (
+            {!collapsed && !readonly && (
                 <div className={classes.topPanel}>
                     <span>
                         {t.Used} {f(usedPerks)}/{f(maxPerks)}
@@ -131,6 +134,7 @@ export const PerkPage = () => {
     const open = useGameStore(isCollapsed(CollapsedEnum.PerkS))
     const matches = useMediaQuery('(min-width: 900px)')
     const perk = useGameStore(selectPerk)
+    const readonly = useGameStore(isCharReadonly)
     if (!perk) return
     const data = PerksData[perk]
     const requirements = data.requiredExp ?? data.requiredPerks
@@ -148,27 +152,35 @@ export const PerkPage = () => {
         </>
     )
     return (
-        <>
-            <Card>
-                <MyCardHeaderTitle title={t[data.nameId]} icon={IconsData[data.iconId]} />
-                <CardContent>{content}</CardContent>
+        <Card>
+            <MyCardHeaderTitle title={t[data.nameId]} icon={IconsData[data.iconId]} />
+            <CardContent>{content}</CardContent>
+            {!readonly && (
                 <CardFooter>
                     <PerkButton perk={perk} />
                 </CardFooter>
-            </Card>
-            <Dialog open={open && !matches} onOpenChange={setPerksOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>
-                            <CardTitle>
-                                {IconsData[data.iconId]} {t[data.nameId]}
-                            </CardTitle>
-                        </DialogTitle>
-                    </DialogHeader>
-                    {content}
-                </DialogContent>
-            </Dialog>
-        </>
+            )}
+
+            {!matches && (
+                <Dialog open={open} onOpenChange={setPerksOpen}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>
+                                <CardTitle>
+                                    {IconsData[data.iconId]} {t[data.nameId]}
+                                </CardTitle>
+                            </DialogTitle>
+                        </DialogHeader>
+                        {content}
+                        {!readonly && (
+                            <DialogFooter>
+                                <PerkButton perk={perk} />
+                            </DialogFooter>
+                        )}
+                    </DialogContent>
+                </Dialog>
+            )}
+        </Card>
     )
 }
 const PerkExpReq = memo(function PerkExpReq(props: { req: ExpReq }) {

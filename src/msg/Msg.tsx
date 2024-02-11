@@ -158,6 +158,11 @@ export interface Msg {
     OneHand: string
     TwoHands: string
     Body: string
+    DamageType: string
+
+    Defence: string
+    Attack: string
+    Equipments: string
 }
 export interface MsgFunctions {
     // Time
