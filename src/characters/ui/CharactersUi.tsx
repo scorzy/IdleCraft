@@ -133,13 +133,14 @@ const CharacterLink = memo(function CharacterLink(props: { charId: string; colla
 
 const CharInfo = memo(function CharInfo() {
     const { t } = useTranslations()
+    const charId = useGameStore(selectSelectedCharId)
     return (
         <Card>
             <MyCardHeaderTitle icon={<TbInfoCircle />} title={t.Info} />
             <CardContent className="grid gap-2">
                 <StatsInfo />
-                <AttackInfo />
-                <ArmourInfo />
+                <AttackInfo charId={charId} />
+                <ArmourInfo charId={charId} />
             </CardContent>
         </Card>
     )
@@ -230,22 +231,22 @@ const StatsInfo = memo(function StatsInfo() {
 
 const armourTypes = Object.values(DamageTypes).sort()
 
-const ArmourInfo = memo(function ArmourInfo() {
+export const ArmourInfo = memo(function ArmourInfo(props: { charId: string }) {
+    const { charId } = props
     const { t } = useTranslations()
     return (
         <div>
             {t.Defence}
             {armourTypes.map((type) => (
-                <ArmourTypeInfo key={type} type={type} />
+                <ArmourTypeInfo key={type} type={type} charId={charId} />
             ))}
         </div>
     )
 })
-const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes }) {
-    const { type } = props
+const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; charId: string }) {
+    const { type, charId } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
-    const charId = useGameStore(selectSelectedCharId)
     const value = useGameStore(selectCharacterArmour(charId, type))
     const list = selectCharacterArmourList(charId, type)
     const data = DamageTypesData[type]
@@ -257,10 +258,10 @@ const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes }
         </div>
     )
 })
-const AttackInfo = memo(function AttackInfo() {
+export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
+    const { charId } = props
     const { f, ft } = useNumberFormatter()
     const { t } = useTranslations()
-    const charId = useGameStore(selectSelectedCharId)
 
     const damage = useGameStore(selectCharacterAttackDamage(charId))
     const damageList = selectCharacterAttackDamageList(charId)

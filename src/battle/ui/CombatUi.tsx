@@ -30,6 +30,7 @@ import { MyHoverCard } from '../../ui/MyHoverCard'
 import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
 import { Card, CardContent } from '../../components/ui/card'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
+import { AttackInfo, ArmourInfo } from '../../characters/ui/CharactersUi'
 import classes from './Combat.module.css'
 
 export const CombatUi = memo(function CombatUi() {
@@ -75,6 +76,9 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
 
                     <MainAttack charId={charId} />
                     <CombatAbilitiesList charId={charId} />
+
+                    <AttackInfo charId={charId} />
+                    <ArmourInfo charId={charId} />
                 </div>
             </CardContent>
         </Card>
