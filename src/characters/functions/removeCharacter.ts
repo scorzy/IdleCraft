@@ -1,4 +1,6 @@
 import { CastCharAbilityAdapter } from '../../activeAbilities/abilityAdapters'
+import { ActivityAdapter } from '../../activities/ActivityState'
+import { removeActivityInt } from '../../activities/functions/removeActivity'
 import { GameState } from '../../game/GameState'
 import { TimerAdapter } from '../../timers/Timer'
 import { removeTimer } from '../../timers/removeTimer'
@@ -9,7 +11,7 @@ export function removeCharacter(state: GameState, characterId: string): GameStat
     const character = CharacterAdapter.selectEx(state.characters, characterId)
 
     if (character.id === PLAYER_ID) {
-        // ToDo
+        return killPlayer(state)
     } else {
         state = { ...state, characters: CharacterAdapter.remove(state.characters, characterId) }
         const toRemove: string[] = []
@@ -27,6 +29,18 @@ export function removeCharacter(state: GameState, characterId: string): GameStat
             castCharAbility = CastCharAbilityAdapter.remove(castCharAbility, cca)
         })
         state = { ...state, castCharAbility }
+    }
+
+    return state
+}
+function killPlayer(state: GameState): GameState {
+    const activities = ActivityAdapter.getIds(state.activities)
+    for (const actId of activities) state = removeActivityInt(state, actId)
+
+    state = {
+        ...state,
+        ui: { ...state.ui, deadDialog: true },
+        characters: CharacterAdapter.update(state.characters, PLAYER_ID, { health: 1 }),
     }
 
     return state

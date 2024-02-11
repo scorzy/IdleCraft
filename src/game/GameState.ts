@@ -52,6 +52,7 @@ export interface UiState {
     selectedCharId: string
     collapsed: { [K in CollapsedEnum]?: boolean }
     defaultClosed: { [k in string]: boolean }
+    deadDialog: boolean
 }
 export interface GameState {
     gameId: string

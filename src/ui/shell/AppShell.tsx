@@ -18,6 +18,7 @@ import { CardTitle } from '../../components/ui/card'
 import { CombatPage } from '../../battle/ui/BattleZoneUi'
 import { CombatUi } from '../../battle/ui/CombatUi'
 import { CharactersUi } from '../../characters/ui/CharactersUi'
+import { DeadDialog } from '../../characters/ui/DeadDialog'
 import classes from './appShell.module.css'
 
 export const AppShell = memo(function AppShell() {
@@ -42,6 +43,8 @@ export const AppShell = memo(function AppShell() {
             </div>
 
             <PageContent />
+
+            <DeadDialog />
         </div>
     )
 })

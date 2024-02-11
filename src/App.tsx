@@ -8,7 +8,7 @@ import { GameState } from './game/GameState'
 import { regenerate } from './game/regenerate'
 
 setInterval(() => {
-    const gameId = useGameStore(selectGameId)
+    const gameId = useGameStore.getState().gameId
     if (gameId === '') return
     useGameStore.setState((s) => regenerate(s, Date.now()))
 }, 1e3)

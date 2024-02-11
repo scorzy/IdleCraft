@@ -45,3 +45,4 @@ const selectCharactersTeamIdsInt = memoizeOne(
         CharacterAdapter.findMany(characters, (c) => !c.isEnemy)?.map((c) => c.id) ?? []
 )
 export const selectCharactersTeamIds = (state: GameState) => selectCharactersTeamIdsInt(state.characters)
+export const selectDeadDialog = (state: GameState) => state.ui.deadDialog

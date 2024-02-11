@@ -5,6 +5,6 @@ coverage
 package.json
 yarn.lock
 *.svg 
-src/components
+#src/components
 pnpm-lock.yaml
 public

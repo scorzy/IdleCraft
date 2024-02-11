@@ -17,7 +17,7 @@ export function dealDamage(
     const multi = getDamageMulti(damage, armour)
     const damageTaken = damage * multi
 
-    const health = Math.floor(target.health - damageTaken)
+    const health = Math.max(0, Math.floor(target.health - damageTaken))
     if (health < 0.0001) {
         state = kill(state, targetId)
         killed = true

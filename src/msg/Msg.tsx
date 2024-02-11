@@ -163,6 +163,7 @@ export interface Msg {
     Defence: string
     Attack: string
     Equipments: string
+    YouDied: string
 }
 export interface MsgFunctions {
     // Time
