@@ -1,32 +1,15 @@
-.mainContainer {
-    height: 100dvh;
-    display: grid;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    justify-items: center;
-    grid-template-columns: 1fr;
-}
 .container {
-    max-width: 900px;
-    padding: auto;
+    height: 100dvh;
+    /* width: 100dvw; */
+    padding: 0;
     display: grid;
     justify-content: center;
     align-content: center;
-    align-items: center;
-    gap: 2rem;
-    grid-template-columns: 1fr;
-}
-@media (min-width: 900px) {
-    .container {
-        gap: 4rem;
-        grid-template-columns: 1fr 1fr;
-    }
+    gap: 1rem;
 }
 .btnContainer {
-    min-width: 200px;
     display: grid;
     gap: 0.5rem;
     align-items: center;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr auto;
 }
