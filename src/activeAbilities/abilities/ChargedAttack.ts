@@ -1,20 +1,16 @@
 import { ReactNode } from 'react'
 import { Icons } from '../../icons/Icons'
 import { Msg } from '../../msg/Msg'
-import { AbilityParams, ActiveAbility } from '../ActiveAbility'
+import { AbilityParams } from '../ActiveAbility'
 import { CHARGED_ATTACK_DAMAGE_BONUS, CHARGED_ATTACK_STAMINA, CHARGED_ATTACK_TIME } from '../abilityConst'
 import { selectTranslations } from '../../msg/useTranslations'
 import { selectCharacterAttackSpeed } from '../../characters/selectors/attackSpeedSelectors'
-import { selectRandomEnemy } from '../../characters/functions/selectRandomEnemy'
-import { CharacterAdapter } from '../../characters/characterAdapter'
 import { GameState } from '../../game/GameState'
-import { dealDamage } from '../../characters/functions/dealDamage'
 import { selectCharacterAttackDamage } from '../../characters/selectors/attackDamageSelectors'
 import { AbilitiesEnum } from '../abilitiesEnum'
-import { selectDamageType } from '../../characters/selectors/selectDamageType'
-import { addBattleLog } from '../../battleLog/functions/addBattleLog'
+import { NormalAttack } from './NormalAttack'
 
-export class ChargedAttack implements ActiveAbility {
+export class ChargedAttack extends NormalAttack {
     id = AbilitiesEnum.ChargedAttack
     nameId = 'ChargedAttack' as keyof Msg
     getDesc(params: AbilityParams): ReactNode {
@@ -38,27 +34,8 @@ export class ChargedAttack implements ActiveAbility {
     getManaCost(): number {
         return 0
     }
-
-    exec(params: AbilityParams): GameState {
-        const { characterId } = params
-        let { state } = params
-
-        const caster = CharacterAdapter.selectEx(state.characters, characterId)
-        const enemyId = selectRandomEnemy(state, caster.isEnemy)
-        if (!enemyId) return state
-
-        const damage = selectCharacterAttackDamage(characterId)(state) * CHARGED_ATTACK_DAMAGE_BONUS
-        const damageType = selectDamageType(characterId)(state)
-        const { state: gameState } = dealDamage(state, enemyId, damage, damageType)
-        state = gameState
-
-        const t = selectTranslations(params.state)
-        state = addBattleLog(state, {
-            iconId: this.getIconId(),
-            text: t.t.ChargedAttack,
-            abilityId: this.id,
-        })
-
-        return state
+    getDamage(characterId: string, state: GameState): number {
+        const damage = selectCharacterAttackDamage(characterId)(state)
+        return damage * CHARGED_ATTACK_DAMAGE_BONUS
     }
 }

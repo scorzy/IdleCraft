@@ -27,14 +27,14 @@ export function selectAxe(state: GameState): Item | undefined {
 }
 
 export const isWoodEnabled = (woodType: WoodTypes) => (state: GameState) => {
-    const woodLevel = selectLevelExp(ExpEnum.Woodcutting)(state)
+    const woodLevel = selectLevelExp(ExpEnum.Woodcutting, PLAYER_ID)(state)
     const data = WoodData[woodType]
     return woodLevel >= data.requiredLevel
 }
 
 export const isSelectedWoodEnabled = (state: GameState) => {
     const woodType = state.ui.woodType
-    const woodLevel = selectLevelExp(ExpEnum.Woodcutting)(state)
+    const woodLevel = selectLevelExp(ExpEnum.Woodcutting, PLAYER_ID)(state)
     const data = WoodData[woodType]
     return woodLevel >= data.requiredLevel
 }

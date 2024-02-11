@@ -39,6 +39,7 @@ import { Card, CardContent } from '../../components/ui/card'
 import { selectCharacterAttackDamage, selectCharacterAttackDamageList } from '../selectors/attackDamageSelectors'
 import { selectCharacterAttackSpeed, selectCharacterAttackSpeedList } from '../selectors/attackSpeedSelectors'
 import { selectDamageType } from '../selectors/selectDamageType'
+import { CharSkills } from '../../experience/ui/CharSkills'
 import classes from './charactersUi.module.css'
 import { CharEquipments } from './CharEquipments'
 
@@ -65,6 +66,7 @@ export const CharactersUi = memo(function CharactersUi() {
                             </TabsTrigger>
                             <TabsTrigger value="abilities">{t.Abilities}</TabsTrigger>
                             <TabsTrigger value="equipments">{t.Equipments}</TabsTrigger>
+                            <TabsTrigger value="skills">{t.Skills}</TabsTrigger>
                         </TabsList>
                     }
                 >
@@ -90,6 +92,12 @@ export const CharactersUi = memo(function CharactersUi() {
                     <TabsContent value="equipments">
                         <MyPage className="page__main">
                             <CharEquipments />
+                        </MyPage>
+                    </TabsContent>
+
+                    <TabsContent value="skills">
+                        <MyPage className="page__main">
+                            <CharSkills />
                         </MyPage>
                     </TabsContent>
                 </MyPageAll>

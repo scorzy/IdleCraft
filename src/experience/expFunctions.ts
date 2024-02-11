@@ -34,8 +34,3 @@ export function addExp(state: GameState, expType: ExpEnum, expQta: number, chara
     }
     return state
 }
-export const getLevel = (state: GameState, expType: ExpEnum) =>
-    CharacterAdapter.selectEx(state.characters, PLAYER_ID).skillsLevel[expType] ?? 0
-
-export const getLevelExp = (level: number) =>
-    Math.floor(EXP_BASE_PRICE * (EXP_GROW_RATE ** level - 1)) / (EXP_GROW_RATE - 1)

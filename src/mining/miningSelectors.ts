@@ -1,3 +1,4 @@
+import { PLAYER_ID } from '../characters/charactersConst'
 import { ExpEnum } from '../experience/expEnum'
 import { selectLevelExp } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
@@ -35,4 +36,4 @@ export const selectMining = memoize((oreType: OreTypes) => (s: GameState) => {
     }
 })
 export const isOreEnabled = (oreType: OreTypes) => (state: GameState) =>
-    selectLevelExp(ExpEnum.Mining)(state) >= OreData[oreType].requiredLevel
+    selectLevelExp(ExpEnum.Mining, PLAYER_ID)(state) >= OreData[oreType].requiredLevel

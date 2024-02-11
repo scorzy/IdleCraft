@@ -14,6 +14,8 @@ import { AbilitiesEnum } from '../abilitiesEnum'
 import { selectDamageType } from '../../characters/selectors/selectDamageType'
 import { addBattleLog } from '../../battleLog/functions/addBattleLog'
 import { selectCharName } from '../../characters/selectors/characterSelectors'
+import { addExp } from '../../experience/expFunctions'
+import { DAMAGE_EXP_MULTI } from '../../const'
 
 export class NormalAttack implements ActiveAbility {
     id = AbilitiesEnum.NormalAttack
@@ -32,11 +34,17 @@ export class NormalAttack implements ActiveAbility {
     getHealthCost(): number {
         return 0
     }
-    getStaminaCost(): number {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getStaminaCost(_params: AbilityParams): number {
         return 0
     }
     getManaCost(): number {
         return 0
+    }
+
+    getDamage(characterId: string, state: GameState): number {
+        const damage = selectCharacterAttackDamage(characterId)(state)
+        return damage
     }
 
     exec(params: AbilityParams): GameState {
@@ -47,7 +55,7 @@ export class NormalAttack implements ActiveAbility {
         const enemyId = selectRandomEnemy(state, caster.isEnemy)
         if (!enemyId) return state
 
-        const damage = selectCharacterAttackDamage(characterId)(state)
+        const damage = this.getDamage(characterId, state)
         const damageType = selectDamageType(characterId)(state)
 
         const source = selectCharName(params.characterId)(state)
@@ -59,6 +67,11 @@ export class NormalAttack implements ActiveAbility {
             source,
             targets,
         })
+
+        if (!caster.isEnemy) {
+            const weapon = selectMainWeapon(characterId)(state)
+            if (weapon && weapon.weaponData) state = addExp(state, weapon.weaponData.expType, damage * DAMAGE_EXP_MULTI)
+        }
 
         const { state: gameState } = dealDamage(state, enemyId, damage, damageType)
         state = gameState

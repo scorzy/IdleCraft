@@ -30,7 +30,10 @@ const isPerkEnabledInt = memoize((perkEnum: PerksEnum) =>
 export const isPerkEnabled =
     (perkEnum: PerksEnum, charId: string = PLAYER_ID) =>
     (state: GameState) =>
-        isPerkEnabledInt(perkEnum)(CharacterAdapter.selectEx(state.characters, charId).perks, selectPlayerExp(state))
+        isPerkEnabledInt(perkEnum)(
+            CharacterAdapter.selectEx(state.characters, charId).perks,
+            selectPlayerExp(state, PLAYER_ID)
+        )
 
 export const selectMaxPerks =
     (charId: string = PLAYER_ID) =>
@@ -81,7 +84,7 @@ export const selectPerks =
     (state: GameState) =>
         selectPerksInt(
             CharacterAdapter.selectEx(state.characters, charId).perks,
-            selectPlayerExp(state),
+            selectPlayerExp(state, charId),
             state.ui.showAvailablePerks,
             state.ui.showUnavailablePerks,
             state.ui.showOwnedPerks

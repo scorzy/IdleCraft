@@ -8,15 +8,15 @@ import { Badge } from '../../components/ui/badge'
 import { useTranslations } from '../../msg/useTranslations'
 import styles from './ExperienceCard.module.css'
 
-export const ExperienceCard = memo(function ExperienceCard(props: { expType: ExpEnum }) {
-    const { expType } = props
+export const ExperienceCard = memo(function ExperienceCard(props: { expType: ExpEnum; charId: string }) {
+    const { expType, charId } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
 
-    const level = useGameStore(selectLevel(expType))
-    const xp = useGameStore(selectExp(expType))
-    const levelXp = useGameStore(selectLevelExp(expType))
-    const nextLevelXp = useGameStore(selectNextExp(expType))
+    const level = useGameStore(selectLevel(expType, charId))
+    const xp = useGameStore(selectExp(expType, charId))
+    const levelXp = useGameStore(selectLevelExp(expType, charId))
+    const nextLevelXp = useGameStore(selectNextExp(expType, charId))
 
     const percent = Math.floor((100 * (xp - levelXp)) / (nextLevelXp - levelXp))
     const expData = ExpData[expType]
@@ -27,7 +27,7 @@ export const ExperienceCard = memo(function ExperienceCard(props: { expType: Exp
                 {t[expData.nameId]}
                 <Badge className="w-min font-medium text-sm">{f(level)}</Badge>
             </div>
-            <div>
+            <div className="text-muted-foreground text-sm">
                 {t.XP} {f(xp)}/{f(nextLevelXp)}
             </div>
             <ProgressBar value={percent} key={expType} color="primary" />

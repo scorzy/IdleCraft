@@ -32,6 +32,7 @@ import { removeActivity } from '../../activities/functions/removeActivity'
 import { addCrafting } from '../functions/addCrafting'
 import { handleRecipeChange } from '../CraftingFunctions'
 import { Card, CardContent } from '../../components/ui/card'
+import { PLAYER_ID } from '../../characters/charactersConst'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
@@ -53,7 +54,7 @@ export const CraftingUi = memo(function CraftingUi() {
         <MyPageAll
             header={
                 <div className="page__info">
-                    <ExperienceCard expType={RecipeData[recipeType].expType} />
+                    <ExperienceCard expType={RecipeData[recipeType].expType} charId={PLAYER_ID} />
                 </div>
             }
         >

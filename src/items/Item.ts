@@ -1,4 +1,5 @@
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
+import { ExpEnum } from '../experience/expEnum'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 
@@ -35,6 +36,7 @@ export interface PickaxeData {
     armourPen: number
 }
 export interface WeaponData {
+    expType: ExpEnum
     damage: number
     damageType: DamageTypes
     attackSpeed: number

@@ -164,6 +164,13 @@ export interface Msg {
     Attack: string
     Equipments: string
     YouDied: string
+
+    Archery: string
+    OneHanded: string
+    TwoHanded: string
+    Block: string
+
+    Skills: string
 }
 export interface MsgFunctions {
     // Time

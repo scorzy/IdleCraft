@@ -24,6 +24,7 @@ import { selectMiningDamage, selectMiningDamageAll } from '../selectors/miningDa
 import { GameState } from '../../game/GameState'
 import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
+import { PLAYER_ID } from '../../characters/charactersConst'
 import classes from './mining.module.css'
 import { MiningSidebar } from './MiningSidebar'
 import { MyLabel } from '@/ui/myCard/MyLabel'
@@ -35,7 +36,7 @@ export const Mining = memo(function Mining() {
             sidebar={<MiningSidebar />}
             header={
                 <div className="page__info">
-                    <ExperienceCard expType={ExpEnum.Mining} />
+                    <ExperienceCard expType={ExpEnum.Mining} charId={PLAYER_ID} />
                     <EquipItemUi slot={EquipSlotsEnum.Pickaxe} />
                 </div>
             }

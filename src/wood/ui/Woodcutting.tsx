@@ -33,6 +33,7 @@ import { selectWoodcuttingTime, selectWoodcuttingTimeAll } from '../selectors/wo
 import { Alert, AlertTitle, AlertDescription } from '../../components/ui/alert'
 import { isSelectedWoodEnabled } from '../selectors/WoodcuttingSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
+import { PLAYER_ID } from '../../characters/charactersConst'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Button } from '@/components/ui/button'
@@ -52,7 +53,7 @@ export const Woodcutting = memo(function Woodcutting() {
             sidebar={<WoodcuttingSidebar />}
             header={
                 <div className="page__info">
-                    <ExperienceCard expType={ExpEnum.Woodcutting} />
+                    <ExperienceCard expType={ExpEnum.Woodcutting} charId={PLAYER_ID} />
                     <EquipItemUi slot={EquipSlotsEnum.WoodAxe} />
                 </div>
             }

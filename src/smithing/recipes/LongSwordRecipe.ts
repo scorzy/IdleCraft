@@ -9,6 +9,7 @@ import {
     RecipeResult,
     RecipeParamType,
 } from '../../crafting/RecipeInterfaces'
+import { ExpEnum } from '../../experience/expEnum'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageTypes, Item, ItemTypes } from '../../items/Item'
@@ -47,6 +48,7 @@ export class LongSwordRecipe implements Recipe {
             equipSlot: EquipSlotsEnum.MainHand,
             value: getItemValue(components, true),
             weaponData: {
+                expType: ExpEnum.OneHanded,
                 attackSpeed: BASE_SWORD_SPEED / (barItem.craftingData.speedBonus ?? 1),
                 damage: BASE_SWORD_DAMAGE * (barItem.craftingData.slashingDamage ?? 1),
                 damageType: DamageTypes.Slashing,

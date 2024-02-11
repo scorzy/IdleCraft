@@ -54,6 +54,7 @@ export const InitialGameState: GameState = {
         selectedCharId: PLAYER_ID,
         collapsed: {},
         defaultClosed: {},
+        deadDialog: false,
     },
     notifications: [],
     location: GameLocations.StartVillage,

@@ -38,6 +38,7 @@ import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../components/ui/dialog'
 import { Card, CardContent, CardFooter, CardTitle } from '../../components/ui/card'
 import { MyTabNum } from '../../ui/myCard/MyTabNum'
+import { PLAYER_ID } from '../../characters/charactersConst'
 import classes from './perkUi.module.css'
 import {
     DropdownMenu,
@@ -187,7 +188,7 @@ const PerkExpReq = memo(function PerkExpReq(props: { req: ExpReq }) {
     const { req } = props
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
-    const level = useGameStore(selectLevel(req.skill))
+    const level = useGameStore(selectLevel(req.skill, PLAYER_ID))
     const skill = ExpData[req.skill]
 
     return (
