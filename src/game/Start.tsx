@@ -28,6 +28,7 @@ const startGame = (name: string) => () => {
 
 interface NameId {
     name: string
+    gameId: string
     state: GameState
 }
 
@@ -54,8 +55,10 @@ export const Start = memo(function Start() {
                     try {
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         const name: string = value.characters?.entries[PLAYER_ID]?.name
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                        const gameId: string = value.gameId
 
-                        if (name) nameIds.push({ name, state: value as GameState })
+                        if (name) nameIds.push({ gameId, name, state: value as GameState })
                     } catch (e) {
                         console.error(e)
                     }
@@ -118,7 +121,7 @@ const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Di
             if (!db.objectStoreNames.contains('save')) return
             const transaction = db.transaction('save', 'readwrite')
             const objectStore = transaction.objectStore('save')
-            const req = objectStore.delete(name)
+            const req = objectStore.delete(item.state.gameId)
 
             req.onsuccess = () => setLoadName((loadName: NameId[]) => loadName.filter((e) => e.name !== name))
         }
