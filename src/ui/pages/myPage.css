@@ -1,5 +1,4 @@
 .page__container {
-    padding: 1rem;
     container-type: inline-size;
     overflow: auto;
 }
