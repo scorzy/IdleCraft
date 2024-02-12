@@ -171,6 +171,10 @@ export interface Msg {
     Block: string
 
     Skills: string
+    Start: string
+    NewGame: string
+    Delete: string
+    SavedGames: string
 }
 export interface MsgFunctions {
     // Time

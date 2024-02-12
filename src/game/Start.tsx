@@ -1,71 +1,41 @@
-import { Fragment, useEffect, useState } from 'react'
-import { TbAlertTriangle } from 'react-icons/tb'
+import { SetStateAction, memo, useCallback, useEffect, useState } from 'react'
 import { Button } from '../components/ui/button'
 import { PLAYER_ID } from '../characters/charactersConst'
-import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert'
 import { TrashIcon } from '../icons/IconsMemo'
+import { useTranslations } from '../msg/useTranslations'
+import { getUniqueId } from '../utils/getUniqueId'
+import { useNumberFormatter } from '../formatters/selectNumberFormatter'
 import { useGameStore } from './state'
 import { GetInitialGameState } from './InitialGameState'
-import classes from './start.module.css'
 import { load } from './functions/gameFunctions'
+import { GameState } from './GameState'
+import classes from './start.module.css'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 
-const startGame = (gameId: string) => () => {
-    if (gameId !== '')
-        useGameStore.setState((s) => {
-            s = GetInitialGameState()
-            s.gameId = gameId
-            const player = s.characters.entries[PLAYER_ID]
-            if (player) player.name = gameId
-            return s
-        })
+const startGame = (name: string) => () => {
+    if (name === '') return
+
+    useGameStore.setState((s) => {
+        s = GetInitialGameState()
+        s.gameId = getUniqueId()
+        const player = s.characters.entries[PLAYER_ID]
+        if (player) player.name = name
+        return s
+    })
 }
 
 interface NameId {
     name: string
+    state: GameState
 }
 
-const loadGame = (name: string) => () => {
-    if (!('indexedDB' in window)) {
-        console.log("This browser doesn't support IndexedDB")
-        return
-    }
-
-    const open = window.indexedDB.open('IdleCraft', 1)
-    open.onsuccess = () => {
-        const db = open.result
-        if (!db.objectStoreNames.contains('save')) return
-        const transaction = db.transaction('save', 'readonly')
-        const objectStore = transaction.objectStore('save')
-        const req = objectStore.get(name)
-
-        req.onsuccess = () => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            const res = req.result
-
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            load(res)
-        }
-    }
-}
-
-export function Start() {
-    const [name, setName] = useState('')
+export const Start = memo(function Start() {
+    const { t } = useTranslations()
     const [loadName, setLoadName] = useState<NameId[]>([])
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value
-        setName(newValue)
-    }
-
     useEffect(() => {
-        if (!('indexedDB' in window)) {
-            console.log("This browser doesn't support IndexedDB")
-            return
-        }
-
         const open = window.indexedDB.open('IdleCraft', 1)
         open.onsuccess = () => {
             const db = open.result
@@ -74,28 +44,74 @@ export function Start() {
             const objectStore = transaction.objectStore('save')
 
             const nameIds: NameId[] = []
-            transaction.oncomplete = () => setLoadName([...nameIds])
+            transaction.oncomplete = () => setLoadName(nameIds)
 
             const req = objectStore.getAll()
             req.onsuccess = () => {
                 const res = req.result
                 res.forEach((value) => {
-                    if ('gameId' in value) {
-                        nameIds.push({
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                            name: value.gameId,
-                        })
+                    if (!('gameId' in value && 'characters' in value)) return
+                    try {
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                        const name: string = value.characters?.entries[PLAYER_ID]?.name
+
+                        if (name) nameIds.push({ name, state: value as GameState })
+                    } catch (e) {
+                        console.error(e)
                     }
                 })
             }
         }
     }, [])
 
-    const deleteGame = (name: string) => () => {
-        if (!('indexedDB' in window)) {
-            console.log("This browser doesn't support IndexedDB")
-            return
-        }
+    return (
+        <div className={classes.container}>
+            <NewGame />
+            {loadName.length > 0 && (
+                <>
+                    <span className="text-center">{t.SavedGames}</span>
+                    <div className={classes.btnContainer}>
+                        {loadName.map((item) => (
+                            <LoadUi item={item} key={item.name} setLoadName={setLoadName} />
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    )
+})
+
+const NewGame = memo(function NewGame() {
+    const { t } = useTranslations()
+    const [name, setName] = useState('')
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value
+        setName(newValue)
+    }
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="secondary">{t.NewGame}</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+                <Label htmlFor="name">{t.Name}</Label>
+                <Input id="name" maxLength={10} value={name} onChange={onChange} />
+                <div>
+                    <Button onClick={startGame(name)} disabled={name.length < 1}>
+                        {t.Start}
+                    </Button>
+                </div>
+            </DialogContent>
+        </Dialog>
+    )
+})
+
+const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Dispatch<SetStateAction<NameId[]>> }) {
+    const { item, setLoadName } = props
+    const { t } = useTranslations()
+    const name = item.name
+
+    const deleteGame = useCallback(() => {
         const open = window.indexedDB.open('IdleCraft', 1)
         open.onsuccess = () => {
             const db = open.result
@@ -104,52 +120,40 @@ export function Start() {
             const objectStore = transaction.objectStore('save')
             const req = objectStore.delete(name)
 
-            req.onsuccess = () => setLoadName(loadName.filter((e) => e.name !== name))
+            req.onsuccess = () => setLoadName((loadName: NameId[]) => loadName.filter((e) => e.name !== name))
         }
-    }
+    }, [name, setLoadName])
 
-    if (!('indexedDB' in window))
-        return (
-            <div className={classes.container}>
-                <Alert variant="destructive">
-                    <TbAlertTriangle className="h-4 w-4" />
-                    <AlertTitle>Error</AlertTitle>
-                    <AlertDescription>indexedDB not found, please check your browser permission</AlertDescription>
-                </Alert>
-            </div>
-        )
+    const state = item.state
+    const loadClick = useCallback(() => load(state), [state])
 
     return (
-        <div className={classes.container}>
-            <Dialog>
-                <DialogTrigger asChild>
-                    <Button variant="secondary">New Game</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                    <Label htmlFor="name">Name</Label>
-                    <Input id="name" maxLength={10} className="col-span-3" value={name} onChange={onChange} />
-                    <div>
-                        <Button onClick={startGame(name)} disabled={name.length < 1}>
-                            Start
-                        </Button>
-                    </div>
-                </DialogContent>
-            </Dialog>
-            {loadName.length > 0 && (
-                <>
-                    <span className="text-center">Saved games:</span>
-                    <div className={classes.btnContainer}>
-                        {loadName.map((item) => (
-                            <Fragment key={item.name}>
-                                <Button onClick={loadGame(item.name)}>{item.name}</Button>
-                                <Button onClick={deleteGame(item.name)} variant="ghost" title="delete">
-                                    {TrashIcon}
-                                </Button>
-                            </Fragment>
-                        ))}
-                    </div>
-                </>
-            )}
-        </div>
+        <>
+            <Button onClick={loadClick}>{item.name}</Button>
+            <span className="text-muted-foreground text-sm min-w-20 text-right">
+                <TimeAgo date={item.state.now} /> ago
+            </span>
+            <Button onClick={deleteGame} variant="ghost" title={t.Delete} className="text-muted-foreground">
+                {TrashIcon}
+            </Button>
+        </>
     )
-}
+})
+
+const TimeAgo = memo(function TimeAgo(props: { date: number }) {
+    const { date } = props
+    const { ft } = useNumberFormatter()
+
+    const [time, setTime] = useState(Date.now())
+
+    useEffect(() => {
+        const interval = setInterval(() => setTime(Date.now()), 1000)
+        return () => {
+            clearInterval(interval)
+        }
+    }, [])
+
+    const timeDiff = 1e3 * Math.floor((time - date) / 1e3)
+
+    return <>{ft(timeDiff)}</>
+})
