@@ -175,6 +175,9 @@ export interface Msg {
     NewGame: string
     Delete: string
     SavedGames: string
+
+    Dagger: string
+    TwoHSword: string
 }
 export interface MsgFunctions {
     // Time

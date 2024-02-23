@@ -19,9 +19,11 @@ import { getMiningIcon } from '../mining/functions/getMiningIcon'
 import { getMiningTitle } from '../mining/functions/getMiningTitle'
 import { removeMining } from '../mining/functions/removeMining'
 import { startMining } from '../mining/functions/startMining'
+import { twoHSwordRecipe } from '../smithing/recipes/2HSword'
 import { armourRecipe } from '../smithing/recipes/ArmourRecipes'
 import { AxeRecipe } from '../smithing/recipes/AxeRecipe'
 import { BarRecipe } from '../smithing/recipes/BarRecipe'
+import { daggerRecipe } from '../smithing/recipes/Dagger'
 import { longSwordRecipe } from '../smithing/recipes/LongSwordRecipe'
 import { PickaxeRecipe } from '../smithing/recipes/PickaxeRecipe'
 import { execTreeGrow } from '../wood/forest/execTreeGrow'
@@ -75,7 +77,9 @@ function initRecipes() {
     recipes.set(BarRecipe.id, BarRecipe)
     recipes.set(AxeRecipe.id, AxeRecipe)
     recipes.set(PickaxeRecipe.id, PickaxeRecipe)
+    recipes.set(daggerRecipe.id, daggerRecipe)
     recipes.set(longSwordRecipe.id, longSwordRecipe)
+    recipes.set(twoHSwordRecipe.id, twoHSwordRecipe)
     recipes.set(armourRecipe.id, armourRecipe)
 }
 function initAbilities() {

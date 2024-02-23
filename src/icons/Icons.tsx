@@ -20,6 +20,8 @@ import {
     GiSaberSlash,
     GiPiercingSword,
     GiBreastplate,
+    GiPlainDagger,
+    GiBroadsword,
 } from 'react-icons/gi'
 
 export enum Icons {
@@ -43,6 +45,8 @@ export enum Icons {
     SaberSlash = 'SaberSlash',
     Sword = 'Sword',
     Breastplate = 'Breastplate',
+    Dagger = 'Dagger',
+    Broadsword = 'Broadsword',
 }
 export const IconsData: { [k in Icons]: ReactNode } = {
     Axe: <GiWoodAxe />,
@@ -65,4 +69,6 @@ export const IconsData: { [k in Icons]: ReactNode } = {
     SaberSlash: <GiSaberSlash />,
     Sword: <GiPiercingSword />,
     Breastplate: <GiBreastplate />,
+    Dagger: <GiPlainDagger />,
+    Broadsword: <GiBroadsword />,
 }
