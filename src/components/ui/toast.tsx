@@ -93,7 +93,7 @@ const ToastTitle = React.memo(
         <ToastPrimitives.Title
             ref={ref}
             className={cn(
-                'text-sm font-semibold [&+div]:text-xs grid grid-flow-col items-center justify-start gap-2',
+                'grid grid-flow-col items-center justify-start gap-2 text-sm font-semibold [&+div]:text-xs',
                 className
             )}
             {...props}

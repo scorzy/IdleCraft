@@ -193,7 +193,7 @@ const CombatAbilityBadge = memo(function CombatAbilitiesList(props: {
                 </Badge>
             }
         >
-            <span className="text-lg font-semibold leading-none tracking-tight grid grid-cols-[auto_1fr] gap-1.5 items-center mb-2">
+            <span className="mb-2 grid grid-cols-[auto_1fr] items-center gap-1.5 text-lg font-semibold leading-none tracking-tight">
                 {icon} {t[ability.nameId]}
             </span>
             <div>{desc}</div>

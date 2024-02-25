@@ -38,7 +38,7 @@ const LogUi = memo(function LogUi(props: { id: string }) {
     const date = new Date(log.date).toLocaleTimeString()
 
     return (
-        <div className="grid grid-flow-col gap-2 justify-start items-center">
+        <div className="grid grid-flow-col items-center justify-start gap-2">
             <span className="text-muted-foreground">{date}</span>
             {log.source}
             {IconsData[log.iconId]}

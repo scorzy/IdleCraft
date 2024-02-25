@@ -23,11 +23,11 @@ export const ExperienceCard = memo(function ExperienceCard(props: { expType: Exp
 
     return (
         <div>
-            <div className={`font-medium text-sm ${styles.title}`}>
+            <div className={`text-sm font-medium ${styles.title}`}>
                 {t[expData.nameId]}
-                <Badge className="w-min font-medium text-sm">{f(level)}</Badge>
+                <Badge className="w-min text-sm font-medium">{f(level)}</Badge>
             </div>
-            <div className="text-muted-foreground text-sm">
+            <div className="text-sm text-muted-foreground">
                 {t.XP} {f(xp)}/{f(nextLevelXp)}
             </div>
             <ProgressBar value={percent} key={expType} color="primary" />

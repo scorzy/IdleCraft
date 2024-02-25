@@ -125,7 +125,7 @@ const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Di
 
             req.onsuccess = () => setLoadName((loadName: NameId[]) => loadName.filter((e) => e.name !== name))
         }
-    }, [name, setLoadName])
+    }, [name, setLoadName, item.state.gameId])
 
     const state = item.state
     const loadClick = useCallback(() => load(state), [state])
@@ -133,7 +133,7 @@ const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Di
     return (
         <>
             <Button onClick={loadClick}>{item.name}</Button>
-            <span className="text-muted-foreground text-sm min-w-20 text-right">
+            <span className="min-w-20 text-right text-sm text-muted-foreground">
                 <TimeAgo date={item.state.now} /> ago
             </span>
             <Button onClick={deleteGame} variant="ghost" title={t.Delete} className="text-muted-foreground">

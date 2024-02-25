@@ -60,7 +60,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
 
     return (
         <div>
-            <span className="font-medium text-sm">{t[slotData.ItemType as keyof Msg]}</span>
+            <span className="text-sm font-medium">{t[slotData.ItemType as keyof Msg]}</span>
             <Select value={itemId ?? '-'} onValueChange={handleEquipChange}>
                 <SelectTrigger>
                     <SelectValue>

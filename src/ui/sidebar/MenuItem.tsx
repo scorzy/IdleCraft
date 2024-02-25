@@ -67,8 +67,8 @@ export const MyListItem = memo(function MyListItem(props: {
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     { 'bg-muted hover:bg-muted': active },
-                    { 'hover:bg-muted text-muted-foreground': !active },
-                    'justify-start gap-4 mt-1 text-nowrap',
+                    { 'text-muted-foreground hover:bg-muted': !active },
+                    'mt-1 justify-start gap-4 text-nowrap',
                     classes.item,
                     collapsed ? classes.itemCollapsed : ''
                 )}
@@ -90,8 +90,8 @@ export const MyListItem = memo(function MyListItem(props: {
                         className={cn(
                             buttonVariants({ variant: 'ghost' }),
                             { 'bg-muted hover:bg-muted': active },
-                            { 'hover:bg-muted text-muted-foreground': !active },
-                            'justify-start gap-4 mt-1',
+                            { 'text-muted-foreground hover:bg-muted': !active },
+                            'mt-1 justify-start gap-4',
                             classes.item,
                             collapsed ? classes.itemCollapsed : ''
                         )}

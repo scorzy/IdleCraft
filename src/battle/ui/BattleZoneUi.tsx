@@ -111,14 +111,14 @@ const EnemyInfoUi = memo(function EnemyInfoUi(props: { quantity: number; templat
     const { f } = useNumberFormatter()
     return (
         <div className="flex items-center">
-            <span className="relative flex shrink-0 overflow-hidden h-9 w-9 text-4xl">
+            <span className="relative flex h-9 w-9 shrink-0 overflow-hidden text-4xl">
                 <span className="aspect-square h-full w-full">{IconsData[enemy.iconId]}</span>
             </span>
             <div className="ml-4 space-y-1">
                 <p className="text-sm font-medium leading-none">
                     {enemy.nameId} X {f(quantity)}
                 </p>
-                <p className="text-sm text-muted-foreground grid grid-flow-col gap-2">
+                <p className="grid grid-flow-col gap-2 text-sm text-muted-foreground">
                     <span>Lv. {f(enemy.level)}</span>
                     <span className="text-health">
                         <GiHearts className="inline" />

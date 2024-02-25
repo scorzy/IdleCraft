@@ -260,7 +260,7 @@ const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; 
     const data = DamageTypesData[type]
     const name = t[data.ArmourName]
     return (
-        <div className="text-muted-foreground grid grid-flow-col items-center justify-start gap-2">
+        <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
             {name} {f(value)}
             <BonusDialog title={name} selectBonusResult={list} />
         </div>
@@ -282,14 +282,14 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
     return (
         <div>
             {t.Attack}
-            <div className="text-muted-foreground grid grid-flow-col items-center justify-start gap-2">
+            <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
                 {t.Damage} {f(damage)}
                 <BonusDialog title={t.NormalAttack} selectBonusResult={damageList} />
             </div>
-            <div className="text-muted-foreground grid grid-flow-col items-center justify-start gap-2">
+            <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
                 {t[DamageTypesData[damageType].DamageName]}
             </div>
-            <div className="text-muted-foreground grid grid-flow-col items-center justify-start gap-2">
+            <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
                 {t.NormalAttack} {ft(speed)}
                 <BonusDialog title={t.NormalAttack} selectBonusResult={speedList} isTime={true} />
             </div>

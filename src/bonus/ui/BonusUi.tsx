@@ -41,7 +41,7 @@ const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boolean })
 
     return (
         <TableRow>
-            <TableCell className="text-lg w-[30px]">{IconsData[bonus.iconId]}</TableCell>
+            <TableCell className="w-[30px] text-lg">{IconsData[bonus.iconId]}</TableCell>
             <TableCell className="text-left">
                 {t[bonus.nameId]}
                 {bonus.showQta && ` X ${f(bonus.showQta)}`}

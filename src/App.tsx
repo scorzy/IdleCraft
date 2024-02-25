@@ -48,7 +48,7 @@ function App() {
 
     if (!ok)
         return (
-            <div className="grid h-dvh p-0 justify-center items-center">
+            <div className="grid h-dvh items-center justify-center p-0">
                 <Alert variant="destructive">
                     <TbAlertTriangle className="h-4 w-4" />
                     <AlertTitle>Error</AlertTitle>
