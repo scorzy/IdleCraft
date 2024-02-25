@@ -2,20 +2,22 @@ import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { Item } from '../../items/Item'
+import { DamageData, DamageTypes, Item, damageTypesValues } from '../../items/Item'
 import { memoize } from '../../utils/memoize'
 import { selectMainWeapon } from './selectMainWeapon'
 
-const selectAttackDamageList = memoize((weapon: Item | undefined) => {
+const selectAttackDamageList = memoize((weapon: Item | undefined, type: DamageTypes) => {
     const bonuses: Bonus[] = []
 
     if (weapon && weapon.weaponData) {
-        bonuses.push({
-            id: `w_${weapon.id}`,
-            add: weapon.weaponData.damage,
-            iconId: weapon.icon,
-            nameId: weapon.nameId,
-        })
+        const add = weapon.weaponData.damage[type]
+        if (add)
+            bonuses.push({
+                id: `w_${weapon.id}`,
+                add,
+                iconId: weapon.icon,
+                nameId: weapon.nameId,
+            })
     } else
         bonuses.push({
             id: 'unharmed',
@@ -32,10 +34,19 @@ const selectAttackDamageList = memoize((weapon: Item | undefined) => {
     return bonusList
 })
 
-export const selectCharacterAttackDamageList = memoize((charId: string) => (state: GameState) => {
+export const selectCharacterAttackDamageList = memoize((charId: string, type: DamageTypes) => (state: GameState) => {
     const weapon = selectMainWeapon(charId)(state)
-    return selectAttackDamageList(weapon)
+    return selectAttackDamageList(weapon, type)
 })
 export const selectCharacterAttackDamage = memoize(
-    (charId: string) => (state: GameState) => selectCharacterAttackDamageList(charId)(state).total
+    (charId: string, type: DamageTypes) => (state: GameState) =>
+        selectCharacterAttackDamageList(charId, type)(state).total
 )
+export const selectAllCharacterAttackDamage = memoize((charId: string) => (state: GameState) => {
+    const ret: DamageData = {}
+    damageTypesValues.forEach((type) => {
+        const damage = selectCharacterAttackDamageList(charId, type)(state).total
+        if (damage > 0) ret[type] = damage
+    })
+    return ret
+})

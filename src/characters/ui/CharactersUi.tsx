@@ -36,9 +36,8 @@ import { DamageTypes } from '../../items/Item'
 import { selectCharacterArmour, selectCharacterArmourList } from '../selectors/armourSelector'
 import { DamageTypesData } from '../../items/damageTypes'
 import { Card, CardContent } from '../../components/ui/card'
-import { selectCharacterAttackDamage, selectCharacterAttackDamageList } from '../selectors/attackDamageSelectors'
+import { selectAllCharacterAttackDamage, selectCharacterAttackDamageList } from '../selectors/attackDamageSelectors'
 import { selectCharacterAttackSpeed, selectCharacterAttackSpeedList } from '../selectors/attackSpeedSelectors'
-import { selectDamageType } from '../selectors/selectDamageType'
 import { CharSkills } from '../../experience/ui/CharSkills'
 import classes from './charactersUi.module.css'
 import { CharEquipments } from './CharEquipments'
@@ -268,31 +267,50 @@ const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; 
 })
 export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
     const { charId } = props
-    const { f, ft } = useNumberFormatter()
+    const { ft } = useNumberFormatter()
     const { t } = useTranslations()
 
-    const damage = useGameStore(selectCharacterAttackDamage(charId))
-    const damageList = selectCharacterAttackDamageList(charId)
+    const damage = useGameStore(selectAllCharacterAttackDamage(charId))
 
     const speed = useGameStore(selectCharacterAttackSpeed(charId))
     const speedList = selectCharacterAttackSpeedList(charId)
-
-    const damageType = useGameStore(selectDamageType(charId))
 
     return (
         <div>
             {t.Attack}
             <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
-                {t.Damage} {f(damage)}
-                <BonusDialog title={t.NormalAttack} selectBonusResult={damageList} />
-            </div>
-            <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
-                {t[DamageTypesData[damageType].DamageName]}
+                <ul>
+                    {Object.entries(damage).map((kv) => (
+                        <AttackTypeInfo
+                            key={kv[0]}
+                            charId={charId}
+                            damage={kv[1]}
+                            damageType={kv[0] as DamageTypes}
+                        ></AttackTypeInfo>
+                    ))}
+                </ul>
             </div>
             <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
                 {t.NormalAttack} {ft(speed)}
                 <BonusDialog title={t.NormalAttack} selectBonusResult={speedList} isTime={true} />
             </div>
         </div>
+    )
+})
+export const AttackTypeInfo = memo(function AttackTypeInfo(props: {
+    charId: string
+    damage: number
+    damageType: DamageTypes
+}) {
+    const { charId, damage, damageType } = props
+    const { f } = useNumberFormatter()
+    const { t } = useTranslations()
+
+    const damageList = selectCharacterAttackDamageList(charId, damageType)
+    return (
+        <li>
+            {t[DamageTypesData[damageType].DamageName]} {f(damage)}
+            <BonusDialog title={t.NormalAttack} selectBonusResult={damageList} />
+        </li>
     )
 })

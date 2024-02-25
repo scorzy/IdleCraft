@@ -50,8 +50,11 @@ export class DaggerRecipe implements Recipe {
             weaponData: {
                 expType: ExpEnum.OneHanded,
                 attackSpeed: Math.floor((0.65 * BASE_SWORD_SPEED) / (barItem.craftingData.speedBonus ?? 1)),
-                damage: Math.floor(0.65 * BASE_SWORD_DAMAGE * (barItem.craftingData.slashingDamage ?? 1)),
-                damageType: DamageTypes.Piercing,
+                damage: {
+                    [DamageTypes.Piercing]: Math.floor(
+                        0.65 * BASE_SWORD_DAMAGE * (barItem.craftingData.damage?.Piercing ?? 1)
+                    ),
+                },
             },
         }
 

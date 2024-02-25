@@ -50,8 +50,11 @@ export class TwoHSwordRecipe implements Recipe {
             weaponData: {
                 expType: ExpEnum.OneHanded,
                 attackSpeed: Math.floor((1.4 * BASE_SWORD_SPEED) / (barItem.craftingData.speedBonus ?? 1)),
-                damage: Math.floor(1.4 * BASE_SWORD_DAMAGE * (barItem.craftingData.slashingDamage ?? 1)),
-                damageType: DamageTypes.Slashing,
+                damage: {
+                    [DamageTypes.Slashing]: Math.floor(
+                        1.4 * BASE_SWORD_DAMAGE * (barItem.craftingData.damage?.Slashing ?? 1)
+                    ),
+                },
             },
         }
 

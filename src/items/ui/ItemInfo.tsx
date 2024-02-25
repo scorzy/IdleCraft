@@ -1,7 +1,8 @@
 import { memo } from 'react'
-import { ArmourData, CraftingData, Item, PickaxeData, WeaponData, WoodAxeData } from '../Item'
+import { DamageData, CraftingData, Item, PickaxeData, WeaponData, WoodAxeData, DamageTypes } from '../Item'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
+import { DamageTypesData } from '../damageTypes'
 
 export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
     const { item } = props
@@ -76,31 +77,28 @@ export const WeaponDataUi = memo(function WeaponDataUi(props: { weaponData: Weap
     return (
         <>
             <li>
-                {t.Damage} {f(weaponData.damage)}
-            </li>
-            <li>
                 {t.AttackSpeed} {ft(weaponData.attackSpeed)}
             </li>
-            <li>Damage Type {weaponData.damageType}</li>
+            {Object.entries(weaponData.damage).map((kv) => (
+                <li key={kv[0]}>
+                    {t[DamageTypesData[kv[0] as DamageTypes].DamageName]} {f(kv[1])}
+                </li>
+            ))}
         </>
     )
 })
-export const ArmourDataUi = memo(function ArmourDataUi(props: { armourData: ArmourData }) {
+export const ArmourDataUi = memo(function ArmourDataUi(props: { armourData: DamageData }) {
     const { armourData } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
 
     return (
         <>
-            <li>
-                {t.BludgeoningArmour} {f(armourData.Bludgeoning)}
-            </li>
-            <li>
-                {t.PiercingArmour} {f(armourData.Piercing)}
-            </li>
-            <li>
-                {t.SlashingArmour} {f(armourData.Slashing)}
-            </li>
+            {Object.entries(armourData).map((kv) => (
+                <li key={kv[0]}>
+                    {t[DamageTypesData[kv[0] as DamageTypes].DamageName]} {f(kv[1])}
+                </li>
+            ))}
         </>
     )
 })

@@ -1,5 +1,4 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { BASE_ARMOUR } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
 import { Recipe } from '../../crafting/Recipe'
 import {
@@ -11,7 +10,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { Item, ItemTypes } from '../../items/Item'
+import { DamageData, DamageTypes, Item, ItemTypes } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
@@ -39,8 +38,13 @@ export class ArmourRecipe implements Recipe {
 
         const components = [barItem, barItem, barItem, barItem]
 
-        const armourData = barItem.craftingData.armour
-        if (!armourData) return
+        const barArmourData = barItem.craftingData.armour
+        if (!barArmourData) return
+
+        const armourData: DamageData = {}
+        Object.entries(barArmourData).forEach((kv) => {
+            armourData[kv[0] as DamageTypes] = kv[1]
+        })
 
         const craftedItem: Item = {
             id: '',
@@ -49,11 +53,7 @@ export class ArmourRecipe implements Recipe {
             type: ItemTypes.Body,
             equipSlot: EquipSlotsEnum.Body,
             value: getItemValue(components, true),
-            armourData: {
-                Bludgeoning: Math.floor(BASE_ARMOUR * armourData.Bludgeoning),
-                Piercing: Math.floor(BASE_ARMOUR * armourData.Piercing),
-                Slashing: Math.floor(BASE_ARMOUR * armourData.Slashing),
-            },
+            armourData,
         }
 
         return {

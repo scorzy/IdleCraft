@@ -10,8 +10,12 @@ export const SmithingItems: Record<string, Item> = {
         value: 10,
         craftingData: {
             prestige: 1.1,
-            slashingDamage: 1,
             speedBonus: 1,
+            damage: {
+                Bludgeoning: 1,
+                Piercing: 1,
+                Slashing: 1,
+            },
             armour: {
                 Bludgeoning: 1,
                 Piercing: 1,
@@ -36,8 +40,12 @@ export const SmithingItems: Record<string, Item> = {
         value: 20,
         craftingData: {
             prestige: 1.2,
-            slashingDamage: 1.1,
             speedBonus: 1.1,
+            damage: {
+                Bludgeoning: 1.1,
+                Piercing: 1.1,
+                Slashing: 1.1,
+            },
             armour: {
                 Bludgeoning: 1.1,
                 Piercing: 1.1,

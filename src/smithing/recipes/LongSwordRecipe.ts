@@ -50,8 +50,11 @@ export class LongSwordRecipe implements Recipe {
             weaponData: {
                 expType: ExpEnum.OneHanded,
                 attackSpeed: BASE_SWORD_SPEED / (barItem.craftingData.speedBonus ?? 1),
-                damage: BASE_SWORD_DAMAGE * (barItem.craftingData.slashingDamage ?? 1),
-                damageType: DamageTypes.Slashing,
+                damage: {
+                    [DamageTypes.Slashing]: Math.floor(
+                        BASE_SWORD_DAMAGE * (barItem.craftingData.damage?.Slashing ?? 1)
+                    ),
+                },
             },
         }
 

@@ -20,11 +20,13 @@ export enum DamageTypes {
     Piercing = 'Piercing',
     Bludgeoning = 'Bludgeoning',
 }
+export const damageTypesValues: DamageTypes[] = Object.keys(DamageTypes) as DamageTypes[]
+export type DamageData = { [k in DamageTypes]?: number }
 export interface CraftingData {
     prestige: number
-    slashingDamage?: number
     speedBonus?: number
-    armour?: ArmourData
+    damage?: DamageData
+    armour?: DamageData
 }
 export interface WoodAxeData {
     damage: number
@@ -35,13 +37,12 @@ export interface PickaxeData {
     time: number
     armourPen: number
 }
+
 export interface WeaponData {
     expType: ExpEnum
-    damage: number
-    damageType: DamageTypes
+    damage: DamageData
     attackSpeed: number
 }
-export type ArmourData = Record<DamageTypes, number>
 
 export interface Item {
     id: string
@@ -56,5 +57,5 @@ export interface Item {
     craftingPickaxeData?: PickaxeData
     pickaxeData?: PickaxeData
     weaponData?: WeaponData
-    armourData?: ArmourData
+    armourData?: DamageData
 }
