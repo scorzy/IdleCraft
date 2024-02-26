@@ -154,6 +154,12 @@ export const engMsg: Msg = {
 
     Dagger: 'Dagger',
     TwoHSword: '2H Sword',
+
+    OffensiveInfo: 'Offensive Info',
+    DefensiveInfo: 'Defensive Info',
+
+    Allies: 'Allies',
+    Enemies: 'Enemies',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

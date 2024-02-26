@@ -8,9 +8,10 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { useTranslations } from '../../msg/useTranslations'
 
 export const BattleLogUi = memo(function BattleLogUi() {
+    const { t } = useTranslations()
     return (
         <Card>
-            <MyCardHeaderTitle title="Logs" />
+            <MyCardHeaderTitle title={t.Log} />
             <CardContent>
                 <BattleLogs />
             </CardContent>
@@ -21,7 +22,7 @@ const BattleLogs = memo(function BattleLogs() {
     const ids = useGameStore(selectBattleLogsIds)
 
     return (
-        <div className="max-h-60 overflow-auto text-sm">
+        <div className="h-60 overflow-auto text-sm">
             <ScrollableFeed>
                 {ids.map((id) => (
                     <LogUi id={id} key={id} />

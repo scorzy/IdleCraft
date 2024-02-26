@@ -1,5 +1,6 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
+import { CaretSortIcon } from '@radix-ui/react-icons'
 import { MyPage } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
 import { selectTeams } from '../../characters/selectors/selectTeams'
@@ -28,10 +29,12 @@ import { GameState } from '../../game/GameState'
 import { Badge } from '../../components/ui/badge'
 import { MyHoverCard } from '../../ui/MyHoverCard'
 import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
-import { Card, CardContent } from '../../components/ui/card'
+import { Card, CardContent, CardTitle } from '../../components/ui/card'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
 import { AttackInfo, ArmourInfo } from '../../characters/ui/CharactersUi'
+import { Button } from '../../components/ui/button'
 import classes from './Combat.module.css'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 export const CombatUi = memo(function CombatUi() {
     return (
@@ -45,14 +48,19 @@ export const CombatUi = memo(function CombatUi() {
 })
 const CombatChars = memo(function CombatChars() {
     const ids = useGameStore(selectTeams)
+    const { t } = useTranslations()
     return (
         <div className={classes.container}>
             <div className={classes.team}>
+                <CardTitle>{t.Allies}</CardTitle>
+
                 {ids.allies.map((id) => (
                     <CharCard charId={id} key={id} />
                 ))}
             </div>
             <div className={classes.team}>
+                <CardTitle>{t.Enemies}</CardTitle>
+
                 {ids.enemies.map((id) => (
                     <CharCard charId={id} key={id} />
                 ))}
@@ -62,8 +70,11 @@ const CombatChars = memo(function CombatChars() {
 })
 const CharCard = memo(function CharCard(props: { charId: string }) {
     const { charId } = props
+    const { t } = useTranslations()
     const name = useGameStore(selectCharName(charId))
     const icon = useGameStore(selectCharIcon(charId))
+    const [isAttOpen, setAttIsOpen] = useState(false)
+    const [isDefOpen, setIsDefOpen] = useState(false)
 
     return (
         <Card>
@@ -77,8 +88,31 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
                     <MainAttack charId={charId} />
                     <CombatAbilitiesList charId={charId} />
 
-                    <AttackInfo charId={charId} />
-                    <ArmourInfo charId={charId} />
+                    <Collapsible open={isAttOpen} onOpenChange={setAttIsOpen} className="text-sm">
+                        <CollapsibleTrigger asChild>
+                            <Button variant="ghost" className="w-full">
+                                {t.OffensiveInfo}
+                                <CaretSortIcon />
+                            </Button>
+                        </CollapsibleTrigger>
+
+                        <CollapsibleContent>
+                            <AttackInfo charId={charId} />
+                        </CollapsibleContent>
+                    </Collapsible>
+
+                    <Collapsible open={isDefOpen} onOpenChange={setIsDefOpen} className="text-sm">
+                        <CollapsibleTrigger asChild>
+                            <Button variant="ghost" className="w-full">
+                                {t.DefensiveInfo}
+                                <CaretSortIcon />
+                            </Button>
+                        </CollapsibleTrigger>
+
+                        <CollapsibleContent>
+                            <ArmourInfo charId={charId} />
+                        </CollapsibleContent>
+                    </Collapsible>
                 </div>
             </CardContent>
         </Card>

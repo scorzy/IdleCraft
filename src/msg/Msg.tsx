@@ -178,6 +178,11 @@ export interface Msg {
 
     Dagger: string
     TwoHSword: string
+
+    OffensiveInfo: string
+    DefensiveInfo: string
+    Allies: string
+    Enemies: string
 }
 export interface MsgFunctions {
     // Time

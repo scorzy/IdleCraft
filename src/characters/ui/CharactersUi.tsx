@@ -146,7 +146,9 @@ const CharInfo = memo(function CharInfo() {
             <MyCardHeaderTitle icon={<TbInfoCircle />} title={t.Info} />
             <CardContent className="grid gap-2">
                 <StatsInfo />
+                {t.Attack}
                 <AttackInfo charId={charId} />
+                {t.Defence}
                 <ArmourInfo charId={charId} />
             </CardContent>
         </Card>
@@ -240,14 +242,13 @@ const armourTypes = Object.values(DamageTypes).sort()
 
 export const ArmourInfo = memo(function ArmourInfo(props: { charId: string }) {
     const { charId } = props
-    const { t } = useTranslations()
+
     return (
-        <div>
-            {t.Defence}
+        <ul>
             {armourTypes.map((type) => (
                 <ArmourTypeInfo key={type} type={type} charId={charId} />
             ))}
-        </div>
+        </ul>
     )
 })
 const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; charId: string }) {
@@ -259,10 +260,10 @@ const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; 
     const data = DamageTypesData[type]
     const name = t[data.ArmourName]
     return (
-        <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
+        <li className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
             {name} {f(value)}
             <BonusDialog title={name} selectBonusResult={list} />
-        </div>
+        </li>
     )
 })
 export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
@@ -277,7 +278,6 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
 
     return (
         <div>
-            {t.Attack}
             <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
                 <ul>
                     {Object.entries(damage).map((kv) => (
@@ -308,7 +308,7 @@ export const AttackTypeInfo = memo(function AttackTypeInfo(props: {
 
     const damageList = selectCharacterAttackDamageList(charId, damageType)
     return (
-        <li>
+        <li className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
             {t[DamageTypesData[damageType].DamageName]} {f(damage)}
             <BonusDialog title={t.NormalAttack} selectBonusResult={damageList} />
         </li>
