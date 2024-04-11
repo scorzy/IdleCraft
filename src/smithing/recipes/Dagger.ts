@@ -12,7 +12,7 @@ import {
 import { ExpEnum } from '../../experience/expEnum'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { DamageTypes, Item, ItemTypes } from '../../items/Item'
+import { DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
@@ -30,6 +30,7 @@ export class DaggerRecipe implements Recipe {
     nameId = 'Dagger' as keyof Msg
     iconId = Icons.Sword
     type = RecipeTypes.Smithing
+    itemSubType = ItemSubType.Weapon
     getParameters = () => daggerParams
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')

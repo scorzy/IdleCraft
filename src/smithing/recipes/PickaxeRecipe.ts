@@ -10,7 +10,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { Item, ItemTypes } from '../../items/Item'
+import { Item, ItemSubType, ItemTypes } from '../../items/Item'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
 const pickaxeParam: RecipeParameter[] = [
@@ -33,6 +33,7 @@ export const PickaxeRecipe: Recipe = {
     type: RecipeTypes.Smithing,
     nameId: 'Pickaxe',
     iconId: Icons.Pickaxe,
+    itemSubType: ItemSubType.Tool,
     getParameters: function (): RecipeParameter[] {
         return pickaxeParam
     },

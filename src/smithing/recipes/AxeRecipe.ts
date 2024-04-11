@@ -10,7 +10,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { Item, ItemTypes } from '../../items/Item'
+import { Item, ItemSubType, ItemTypes } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
@@ -34,6 +34,7 @@ class AxeRecipeInt implements Recipe {
     type = RecipeTypes.Smithing
     iconId = Icons.Axe
     nameId = 'WoodAxe' as keyof Msg
+    itemSubType = ItemSubType.Tool
     getParameters = () => woodAxeParam
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')

@@ -15,6 +15,13 @@ export enum ItemTypes {
     TwoHands = 'TwoHands',
     Body = 'Body',
 }
+export enum ItemSubType {
+    Weapon = 'Weapon',
+    Armour = 'Armour',
+    Tool = 'Tool',
+    Crafting = 'Crafting',
+}
+
 export enum DamageTypes {
     Slashing = 'Slashing',
     Piercing = 'Piercing',

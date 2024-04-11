@@ -8,7 +8,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { ItemTypes } from '../../items/Item'
+import { ItemSubType, ItemTypes } from '../../items/Item'
 import { WoodData } from '../WoodData'
 
 export const PlankToHandle = new Map<string, string>()
@@ -28,6 +28,7 @@ export const HandleRecipe: Recipe = {
     type: RecipeTypes.Woodworking,
     nameId: 'Handle',
     iconId: Icons.Handle,
+    itemSubType: ItemSubType.Crafting,
     getParameters: () => handleParam,
     getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const plank = params.find((i) => i.id === 'plank')

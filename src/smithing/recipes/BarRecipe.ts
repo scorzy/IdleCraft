@@ -8,7 +8,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { ItemTypes } from '../../items/Item'
+import { ItemSubType, ItemTypes } from '../../items/Item'
 import { OreData } from '../../mining/OreData'
 
 export const OreToBar = new Map<string, string>()
@@ -28,6 +28,7 @@ export const BarRecipe: Recipe = {
     type: RecipeTypes.Smithing,
     nameId: 'Bar',
     iconId: Icons.Bar,
+    itemSubType: ItemSubType.Crafting,
     getParameters: () => barParam,
     getResult: function (_: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const ore = params.find((i) => i.id === 'ore')
