@@ -17,9 +17,7 @@ import {
 } from '../CraftingSelectors'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { IconsData } from '../../icons/Icons'
-import { selectItemsByType, selectGameItem, selectItemQta } from '../../storage/StorageSelectors'
-import { ItemId } from '../../storage/storageState'
+import { selectItemsByTypeCombo } from '../../storage/StorageSelectors'
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
@@ -39,7 +37,6 @@ import { Msg } from '../../msg/Msg'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const selectRecipes: (t: RecipeTypes) => { list: Recipe[]; itemSubType: ItemSubType }[] = memoize((t: RecipeTypes) => {
     const ret: { list: Recipe[]; itemSubType: ItemSubType }[] = []
@@ -119,7 +116,6 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
 
     const values = selectRecipesValues(t, recipesByType)
     const selectedRecipeId = selected ? recipeToCombo(t, selected) : null
-
     const onComboChange = (status: ComboBoxValue | null) => handleRecipeChange(status?.value ?? '')
 
     return (
@@ -172,54 +168,28 @@ const RecipeParamUi = memo(function RecipeParamUi(props: { recipeParam: RecipePa
 const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipeParam: RecipeParameter }) {
     const { recipeParam } = props
     const { t } = useTranslations()
-    const itemsId = useGameStore(selectItemsByType(recipeParam.itemType))
+    const itemsId = useGameStore(selectItemsByTypeCombo(recipeParam.itemType))
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
     const selectedValue = getRecipeParamId(selected)
-    const selectedItem = useGameStore(selectGameItem(selected?.stdItemId, selected?.craftItemId))
 
-    const handleRecipeChange = useCallback(
-        (value: string) => setRecipeItemParam(recipeParam.id, value),
+    const onComboChange = useCallback(
+        (status: ComboBoxValue | null) => setRecipeItemParam(recipeParam.id, status?.value ?? ''),
         [recipeParam.id]
     )
+
+    const values: ComboBoxList[] = [
+        {
+            title: '',
+            list: itemsId,
+        },
+    ]
+
+    const selectedRecipeId: ComboBoxValue | null = itemsId.find((v) => v.value === selectedValue) ?? null
 
     return (
         <div>
             <Label>{t[recipeParam.nameId]}</Label>
-            <Select value={selectedValue} onValueChange={handleRecipeChange}>
-                <SelectTrigger>
-                    <SelectValue placeholder={`-- ${t[recipeParam.nameId]} --`}>
-                        {selectedItem && (
-                            <span className="select-trigger">
-                                {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
-                            </span>
-                        )}
-                    </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                    {itemsId.map((t) => {
-                        const value = getRecipeParamId(t)
-                        return <ParamItem itemId={t} key={value} />
-                    })}
-                </SelectContent>
-            </Select>
+            <ComboBoxResponsive values={values} selectedValues={selectedRecipeId} setSelectedValue={onComboChange} />
         </div>
-    )
-})
-const ParamItem = memo(function ParamItem(props: { itemId: ItemId }) {
-    const { itemId } = props
-    const value = getRecipeParamId(itemId)
-    const itemObj = useGameStore(selectGameItem(itemId.stdItemId ?? null, itemId.craftItemId ?? null))
-    const { t } = useTranslations()
-    const { f } = useNumberFormatter()
-    const qta = useGameStore(selectItemQta(null, itemId.stdItemId ?? null, itemId.craftItemId ?? null))
-    const text = itemObj ? t[itemObj.nameId] : t.None
-
-    return (
-        <SelectItem value={value} icon={itemObj && IconsData[itemObj.icon]} className={classes.seleBtn}>
-            <span className={classes.item}>
-                <span className={classes.text}>{text}</span>
-                <span className="text-muted-foreground">{f(qta)}</span>
-            </span>
-        </SelectItem>
     )
 })

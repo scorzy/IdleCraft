@@ -87,6 +87,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
         </div>
     )
 })
+
 const OptionItem = memo(function ParamItem(props: { itemId: ItemId; slot: EquipSlotsEnum }) {
     const { itemId, slot } = props
     const value = getRecipeParamId(itemId)

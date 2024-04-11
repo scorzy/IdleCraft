@@ -6,9 +6,10 @@ import { memoizeOne } from '../utils/memoizeOne'
 import { Entries } from '../utils/types'
 import { Item, ItemTypes } from '../items/Item'
 import { selectTranslations } from '../msg/useTranslations'
-import { Translations } from '../msg/Msg'
+import { Msg, Translations } from '../msg/Msg'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
+import { ComboBoxValue } from '../components/ui/comboBox'
 import { ItemAdapter } from './ItemAdapter'
 import { InventoryNoQta, ItemId, StorageState } from './storageState'
 import { InitialState } from '@/entityAdapter/InitialState'
@@ -156,6 +157,8 @@ export const getSelectedItemQta = (state: GameState) => {
     )(state)
 }
 type ItemIdValue = ItemId & { value: number }
+type ItemIdValueCombo = ItemId & ComboBoxValue & { moneyValue: number }
+
 export const selectItemsByType = memoize(function (itemType: ItemTypes | undefined): (state: GameState) => ItemId[] {
     const getStdItems = memoizeOne((std: Record<string, number>) => {
         const ret: ItemIdValue[] = []
@@ -165,6 +168,7 @@ export const selectItemsByType = memoize(function (itemType: ItemTypes | undefin
         }
         return ret
     })
+
     const getCraftItems = memoizeOne((craft: Record<string, number>, crafted: InitialState<Item>) => {
         const ret: ItemIdValue[] = []
         for (const craftItemId of Object.keys(craft)) {
@@ -185,6 +189,59 @@ export const selectItemsByType = memoize(function (itemType: ItemTypes | undefin
 
         const std = getStdItems(loc.storage.StdItems)
         const crafted = getCraftItems(loc.storage.CraftedItems, state.craftedItems)
+        return combine(std, crafted)
+    }
+})
+
+export const selectItemsByTypeCombo = memoize(function (
+    itemType: ItemTypes | undefined
+): (state: GameState) => ComboBoxValue[] {
+    const getStdItems = memoizeOne((t: Msg, std: Record<string, number>) => {
+        const ret: ItemIdValueCombo[] = []
+        for (const stdItemId of Object.keys(std)) {
+            const item = StdItems[stdItemId]
+            if (item && item.type === itemType)
+                ret.push({
+                    stdItemId,
+                    value: `s${stdItemId}`,
+                    iconId: item.icon,
+                    label: t[item.nameId],
+                    craftItemId: null,
+                    moneyValue: item.value,
+                })
+        }
+        return ret
+    })
+
+    const getCraftItems = memoizeOne((t: Msg, craft: Record<string, number>, crafted: InitialState<Item>) => {
+        const ret: ItemIdValueCombo[] = []
+        for (const craftItemId of Object.keys(craft)) {
+            const item = ItemAdapter.select(crafted, craftItemId)
+            if (item && item.type === itemType)
+                ret.push({
+                    stdItemId: null,
+                    craftItemId,
+                    iconId: item.icon,
+                    value: `c${craftItemId}`,
+                    label: t[item.nameId],
+                    moneyValue: item.value,
+                })
+        }
+        return ret
+    })
+
+    const combine = memoizeOne((std: ItemIdValueCombo[], craft: ItemIdValueCombo[]) =>
+        std.concat(craft).sort((a, b) => a.moneyValue - b.moneyValue)
+    )
+
+    return (state: GameState) => {
+        if (!itemType) return []
+
+        const loc = state.locations[state.location]
+        const t = selectTranslations(state)
+
+        const std = getStdItems(t.t, loc.storage.StdItems)
+        const crafted = getCraftItems(t.t, loc.storage.CraftedItems, state.craftedItems)
         return combine(std, crafted)
     }
 })
