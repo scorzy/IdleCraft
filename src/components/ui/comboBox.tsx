@@ -1,10 +1,11 @@
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { Button } from '@/components/ui/button'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { useState } from 'react'
 import { Icons, IconsData } from '../../icons/Icons'
+import { useTranslations } from '../../msg/useTranslations'
 
 export type ComboBoxValue = {
     value: string
@@ -38,7 +39,7 @@ export function ComboBoxResponsive(props: {
                                 {selectedStatus.label}
                             </>
                         ) : (
-                            <>+ Set status</>
+                            <></>
                         )}
                     </Button>
                 </PopoverTrigger>
@@ -61,7 +62,7 @@ export function ComboBoxResponsive(props: {
                             {selectedStatus.label}
                         </>
                     ) : (
-                        <>+ Set status</>
+                        <></>
                     )}
                 </Button>
             </DrawerTrigger>
@@ -83,11 +84,19 @@ function StatusList({
     setSelectedStatus: (status: ComboBoxValue | null) => void
     values: ComboBoxList[]
 }) {
+    const { t } = useTranslations()
+    const tot = values.reduce((a, b) => a + b.list.length, 0)
+    if (tot === 0)
+        return (
+            <Command>
+                <CommandGroup heading={t.Empty}></CommandGroup>
+            </Command>
+        )
+
     return (
         <Command>
-            <CommandInput placeholder="Filter status..." />
+            <CommandInput placeholder={t.FilterDots} />
             <CommandList>
-                <CommandEmpty>No results found.</CommandEmpty>
                 {values.map((group) => (
                     <CommandGroup heading={group.title}>
                         {group.list.map((status) => (

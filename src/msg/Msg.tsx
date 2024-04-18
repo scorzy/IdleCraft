@@ -183,6 +183,9 @@ export interface Msg {
     DefensiveInfo: string
     Allies: string
     Enemies: string
+
+    Empty: string
+    FilterDots: string
 }
 export interface MsgFunctions {
     // Time
