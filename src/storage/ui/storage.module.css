@@ -22,7 +22,7 @@
 }
 .cardList {
     display: grid;
-    gap: 1rem;
+    gap: var(--gap);
     align-items: start;
     grid-template-columns: 1fr;
 }

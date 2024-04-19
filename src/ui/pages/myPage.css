@@ -5,14 +5,14 @@
 .page__info {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
+    gap: var(--gap);
+    padding: var(--gap);
 }
 .page__main {
     display: grid;
-    gap: 1rem;
+    gap: var(--gap);
     align-items: start;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .page__container-sidebar {
@@ -42,6 +42,12 @@
 }
 .page__main2 {
     grid-area: main;
+}
+
+@media (min-width: 768px) {
+    .page__main {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
 }
 
 @container (min-width: 900px) {

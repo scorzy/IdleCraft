@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
 import { selectItemsByTypeCombo } from '../../storage/StorageSelectors'
@@ -30,12 +30,15 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
         [slot, charId]
     )
 
-    const values: ComboBoxList[] = [
-        {
-            title: '',
-            list: itemsId,
-        },
-    ]
+    const values: ComboBoxList[] = useMemo(
+        () => [
+            {
+                title: '',
+                list: itemsId,
+            },
+        ],
+        [itemsId]
+    )
 
     const selectedRecipeId: ComboBoxValue | null = itemsId.find((v) => v.value === itemId) ?? null
 

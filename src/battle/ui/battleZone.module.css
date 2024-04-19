@@ -1,6 +1,6 @@
 .areaCards {
     display: grid;
-    gap: 1rem;
+    gap: var(--gap);
     align-items: start;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }

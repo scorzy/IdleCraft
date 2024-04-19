@@ -18,33 +18,34 @@ export type ComboBoxList = {
 }
 
 export function ComboBoxResponsive(props: {
-    selectedValues: ComboBoxValue | null
+    selectedValues: ComboBoxValue | null | undefined
     setSelectedValue: (status: ComboBoxValue | null) => void
     values: ComboBoxList[]
 }) {
-    const { selectedValues: selectedStatus, setSelectedValue: setSelectedStatus, values } = props
+    const { selectedValues, setSelectedValue, values } = props
     const [open, setOpen] = useState(false)
     const isDesktop = useMediaQuery('(min-width: 768px)')
+    const { t } = useTranslations()
 
     if (isDesktop) {
         return (
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button variant="outline" className="w-full justify-start">
-                        {selectedStatus ? (
+                        {selectedValues ? (
                             <>
-                                {selectedStatus.iconId && (
-                                    <span className="mr-2 h-4 w-4">{IconsData[selectedStatus.iconId]}</span>
+                                {selectedValues.iconId && (
+                                    <span className="mr-2 h-4 w-4">{IconsData[selectedValues.iconId]}</span>
                                 )}
-                                {selectedStatus.label}
+                                {selectedValues.label}
                             </>
                         ) : (
-                            <></>
+                            <>{t.Select}</>
                         )}
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[300px] p-0" align="start">
-                    <StatusList setOpen={setOpen} setSelectedStatus={setSelectedStatus} values={values} />
+                    <StatusList setOpen={setOpen} setSelectedStatus={setSelectedValue} values={values} />
                 </PopoverContent>
             </Popover>
         )
@@ -54,21 +55,21 @@ export function ComboBoxResponsive(props: {
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
                 <Button variant="outline" className="w-full justify-start">
-                    {selectedStatus ? (
+                    {selectedValues ? (
                         <>
-                            {selectedStatus.iconId && (
-                                <span className="mr-2 h-4 w-4">{IconsData[selectedStatus.iconId]}</span>
+                            {selectedValues.iconId && (
+                                <span className="mr-2 h-4 w-4">{IconsData[selectedValues.iconId]}</span>
                             )}
-                            {selectedStatus.label}
+                            {selectedValues.label}
                         </>
                     ) : (
-                        <></>
+                        <>{t.Select}</>
                     )}
                 </Button>
             </DrawerTrigger>
             <DrawerContent>
                 <div className="mt-4 border-t">
-                    <StatusList setOpen={setOpen} setSelectedStatus={setSelectedStatus} values={values} />
+                    <StatusList setOpen={setOpen} setSelectedStatus={setSelectedValue} values={values} />
                 </div>
             </DrawerContent>
         </Drawer>

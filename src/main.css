@@ -1,3 +1,12 @@
+:root {
+    --gap: 0.75rem;
+}
+@media (min-width: 768px) {
+    :root {
+        --gap: 1rem;
+    }
+}
+
 .alert svg {
     font-size: 1.25rem;
 }

@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import { LuHourglass } from 'react-icons/lu'
 import { memoize } from '../../utils/memoize'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
@@ -177,12 +177,15 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
         [recipeParam.id]
     )
 
-    const values: ComboBoxList[] = [
-        {
-            title: '',
-            list: itemsId,
-        },
-    ]
+    const values: ComboBoxList[] = useMemo(
+        () => [
+            {
+                title: '',
+                list: itemsId,
+            },
+        ],
+        [itemsId]
+    )
 
     const selectedRecipeId: ComboBoxValue | null = itemsId.find((v) => v.value === selectedValue) ?? null
 

@@ -4,7 +4,7 @@
     display: grid;
     justify-content: center;
     align-content: center;
-    gap: 1rem;
+    gap: var(--gap);
 }
 .btnContainer {
     display: grid;

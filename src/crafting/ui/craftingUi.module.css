@@ -23,7 +23,7 @@
 .item {
     display: grid;
     align-items: center;
-    gap: 1rem;
+    gap: var(--gap);
     justify-content: space-between;
     grid-auto-flow: column;
     width: 100%;

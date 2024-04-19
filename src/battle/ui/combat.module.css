@@ -1,11 +1,11 @@
 .container {
     display: grid;
-    gap: 1rem;
+    gap: var(--gap);
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 .team {
     display: grid;
-    gap: 1rem;
+    gap: var(--gap);
     align-items: start;
 }
 .label {
@@ -37,7 +37,7 @@
 }
 .mainContainer {
     display: grid;
-    gap: 1rem;
+    gap: var(--gap);
     align-items: start;
     grid-auto-flow: row;
 }
