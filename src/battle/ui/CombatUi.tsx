@@ -60,9 +60,7 @@ const CombatChars = memo(function CombatChars() {
             </div>
             <div className={classes.team}>
                 <CardTitle>{t.Enemies}</CardTitle>
-                {ids.allies.map((id) => (
-                    <CharCard charId={id} key={id} />
-                ))}
+
                 {ids.enemies.map((id) => (
                     <CharCard charId={id} key={id} />
                 ))}
