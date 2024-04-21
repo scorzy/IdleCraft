@@ -35,6 +35,7 @@
 .page__header {
     grid-area: head;
     border-bottom: 1px solid hsl(var(--border));
+    overflow-y: auto;
 }
 .page__sidebar {
     grid-area: side;

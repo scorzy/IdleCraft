@@ -6,7 +6,6 @@ import { execTimer } from './timerFunctions'
 
 // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export declare function setTimeout(this: Window | void, handler: (...args: unknown[]) => void, timeout: number): number
-
 export function startTimer(state: GameState, length: number, type: ActivityTypes, actId: string): GameState {
     let end = state.now + length
     let intervalId = 0

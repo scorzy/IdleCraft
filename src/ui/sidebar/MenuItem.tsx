@@ -127,7 +127,7 @@ export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
                 arrowOpen={collapsed}
                 onClick={collapseClick}
             />
-            <CollapsibleContent>
+            <CollapsibleContent className="CollapsibleContent">
                 <div className={clsx(classes.myList, { 'pl-4': !parentCollapsed })}>{children}</div>
             </CollapsibleContent>
         </Collapsible>

@@ -239,10 +239,11 @@ export const selectItemsByTypeCombo = memoize(function (
 
         const loc = state.locations[state.location]
         const t = selectTranslations(state)
-
         const std = getStdItems(t.t, loc.storage.StdItems)
         const crafted = getCraftItems(t.t, loc.storage.CraftedItems, state.craftedItems)
-        return combine(std, crafted)
+        const ret = combine(std, crafted)
+
+        return ret
     }
 })
 

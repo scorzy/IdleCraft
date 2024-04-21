@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import { clsx } from 'clsx'
 import { useContainerQueries, QueryBreakpoints } from 'use-container-queries'
 import { useGameStore } from '../../game/state'
@@ -117,8 +117,16 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
     const handleClick = () => setOpen(!open)
     const { ref, active } = useContainerQueries({ breakpoints })
 
+    const [show, setShow] = useState(false)
+    useEffect(() => {
+        const id = setTimeout(() => setShow(true), 0)
+        return () => {
+            if (id) clearInterval(id)
+        }
+    }, [])
+
     return (
-        <Collapsible open={open} ref={ref}>
+        <Collapsible open={open}>
             <CollapsibleTrigger
                 onClick={handleClick}
                 className={clsx('w-full', buttonVariants({ variant: 'ghost', size: 'sm' }))}
@@ -127,20 +135,22 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
                 {ChevronsUpDownIcon}
                 <span className="sr-only">{location}</span>
             </CollapsibleTrigger>
-            <CollapsibleContent>
-                <Table>
+            <CollapsibleContent className="CollapsibleContent">
+                <Table ref={ref}>
                     {active === 'med' && <StorageHeader />}
-                    <TableBody>
-                        {items.map((i) => (
-                            <StorageItem
-                                small={active === 'small'}
-                                key={getItemId2(i.stdItemId, i.craftItemId)}
-                                stdItemId={i.stdItemId}
-                                craftItemId={i.craftItemId}
-                                location={location}
-                            />
-                        ))}
-                    </TableBody>
+                    {show && (
+                        <TableBody>
+                            {items.map((i) => (
+                                <StorageItem
+                                    small={active === 'small'}
+                                    key={getItemId2(i.stdItemId, i.craftItemId)}
+                                    stdItemId={i.stdItemId}
+                                    craftItemId={i.craftItemId}
+                                    location={location}
+                                />
+                            ))}
+                        </TableBody>
+                    )}
                 </Table>
             </CollapsibleContent>
         </Collapsible>

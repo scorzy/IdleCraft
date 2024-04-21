@@ -51,7 +51,7 @@ export const CharactersUi = memo(function CharactersUi() {
     else if (tab === 'abilities') sidebar = <AbilitySidebar />
 
     return (
-        <Tabs value={tab} onValueChange={(value) => setTab(value)} className="overflow-auto">
+        <Tabs value={tab} onValueChange={(value) => setTab(value)} className="overflow-auto" orientation="vertical">
             <MyPageAll sidebar={<CharactersSidebar />}>
                 <MyPageAll
                     sidebar={sidebar}

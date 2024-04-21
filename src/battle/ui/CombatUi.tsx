@@ -96,7 +96,7 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
                             </Button>
                         </CollapsibleTrigger>
 
-                        <CollapsibleContent>
+                        <CollapsibleContent className="CollapsibleContent">
                             <AttackInfo charId={charId} />
                         </CollapsibleContent>
                     </Collapsible>
@@ -109,7 +109,7 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
                             </Button>
                         </CollapsibleTrigger>
 
-                        <CollapsibleContent>
+                        <CollapsibleContent className="CollapsibleContent">
                             <ArmourInfo charId={charId} />
                         </CollapsibleContent>
                     </Collapsible>
