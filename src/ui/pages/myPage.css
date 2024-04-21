@@ -1,6 +1,6 @@
 .page__container {
-    container-type: inline-size;
     overflow: auto;
+    container-type: inline-size;
 }
 .page__info {
     display: grid;

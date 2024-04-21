@@ -5,9 +5,9 @@ import './myPage.css'
 export const MyPage = memo(function MyPage(props: { children: ReactNode; className?: string }) {
     const { children, className } = props
     return (
-        <div className="p-4">
-            <main className={clsx('page__container', className)}>{children}</main>
-        </div>
+        <main className={clsx('page__container', className)}>
+            <div className="p-4">{children}</div>
+        </main>
     )
 })
 

@@ -33,17 +33,33 @@ import { Alert, AlertTitle } from '@/components/ui/alert'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
+const breakpoints: QueryBreakpoints = {
+    small: [0, 400],
+    med: [401],
+}
+
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocations)
+
+    const { ref, active } = useContainerQueries({ breakpoints })
+    const [show, setShow] = useState(false)
+    useEffect(() => {
+        const id = setTimeout(() => setShow(true), 0)
+        return () => {
+            if (id) clearInterval(id)
+        }
+    }, [])
+    const small = active === 'small'
+
     if (locations.length === 0) return <NoItems />
     return (
         <MyPage>
-            <div className={classes.cardList}>
-                <Card>
+            <div className={clsx(classes.cardList)}>
+                <Card ref={ref}>
                     <CardContent>
-                        <SortDropdown />
+                        {small && <SortDropdown />}
                         {locations.map((l) => (
-                            <LocationStorage key={l} location={GameLocations.StartVillage} />
+                            <LocationStorage key={l} small={small} show={show} location={GameLocations.StartVillage} />
                         ))}
                     </CardContent>
                 </Card>
@@ -105,25 +121,16 @@ const SortDropdown = memo(function SortDropdown() {
     )
 })
 
-const breakpoints: QueryBreakpoints = {
-    small: [0, 400],
-    med: [401],
-}
-
-const LocationStorage = memo(function LocationStorage(props: { location: GameLocations }) {
-    const { location } = props
+const LocationStorage = memo(function LocationStorage(props: {
+    small: boolean
+    show: boolean
+    location: GameLocations
+}) {
+    const { location, small, show } = props
     const items = useGameStore(selectLocationItems(location))
     const [open, setOpen] = useState(true)
     const handleClick = () => setOpen(!open)
     const { ref, active } = useContainerQueries({ breakpoints })
-
-    const [show, setShow] = useState(false)
-    useEffect(() => {
-        const id = setTimeout(() => setShow(true), 0)
-        return () => {
-            if (id) clearInterval(id)
-        }
-    }, [])
 
     return (
         <Collapsible open={open}>
@@ -142,7 +149,7 @@ const LocationStorage = memo(function LocationStorage(props: { location: GameLoc
                         <TableBody>
                             {items.map((i) => (
                                 <StorageItem
-                                    small={active === 'small'}
+                                    small={small}
                                     key={getItemId2(i.stdItemId, i.craftItemId)}
                                     stdItemId={i.stdItemId}
                                     craftItemId={i.craftItemId}
