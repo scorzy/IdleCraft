@@ -99,7 +99,7 @@ function StatusList({
             <CommandInput placeholder={t.FilterDots} />
             <CommandList>
                 {values.map((group) => (
-                    <CommandGroup heading={group.title}>
+                    <CommandGroup heading={group.title} key={group.title}>
                         {group.list.map((status) => (
                             <CommandItem
                                 key={status.value}

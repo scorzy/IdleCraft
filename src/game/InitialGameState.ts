@@ -11,11 +11,11 @@ import { UiPages } from '../ui/state/UiPages'
 import { WoodTypes } from '../wood/WoodTypes'
 import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
-import { PLAYER_ID } from '../characters/charactersConst'
+import { PLAYER_CHAR, PLAYER_ID } from '../characters/charactersConst'
 import { BattleAdapter } from '../battle/BattleAdapter'
-import { CastCharAbilityAdapter, CharAbilityAdapter } from '../activeAbilities/abilityAdapters'
-import { Icons } from '../icons/Icons'
+import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
+import { RecipeTypes } from '../crafting/RecipeInterfaces'
 import { GameState, LocationState } from './GameState'
 
 const InitialVillageState: () => LocationState = () =>
@@ -55,6 +55,7 @@ export const InitialGameState: GameState = {
         collapsed: {},
         defaultClosed: {},
         deadDialog: false,
+        recipeType: RecipeTypes.Smithing,
     },
     notifications: [],
     location: GameLocations.StartVillage,
@@ -82,28 +83,7 @@ export const InitialGameState: GameState = {
     characters: {
         ids: [PLAYER_ID],
         entries: {
-            [PLAYER_ID]: {
-                iconId: Icons.Axe,
-                nameId: 'Activities',
-                id: PLAYER_ID,
-                inventory: {},
-                exp: 0,
-                level: 0,
-                healthPoints: 0,
-                manaPoints: 0,
-                staminaPoints: 0,
-                isEnemy: false,
-                perks: {},
-                skillsExp: {},
-                skillsLevel: {},
-                combatAbilities: [],
-                allCombatAbilities: CharAbilityAdapter.getInitialState(),
-                health: 100,
-                mana: 100,
-                stamina: 100,
-                lastCombatAbilityNum: 0,
-                lastCombatAbilityId: null,
-            },
+            [PLAYER_ID]: PLAYER_CHAR,
         },
     },
     battle: BattleAdapter.getInitialState(),
