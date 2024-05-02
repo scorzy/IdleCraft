@@ -11,4 +11,5 @@ export enum CollapsedEnum {
     Perk = 'Perk',
     PerkS = 'PerkS',
     AbilityList = 'AbilityList',
+    CombatSide = 'CombatSide',
 }

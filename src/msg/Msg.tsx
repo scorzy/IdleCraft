@@ -186,6 +186,8 @@ export interface Msg {
 
     Empty: string
     FilterDots: string
+
+    Battle: string
 }
 export interface MsgFunctions {
     // Time

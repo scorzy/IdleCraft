@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { GiAnvilImpact, GiThreeLeaves } from 'react-icons/gi'
+import { GiAllForOne, GiAnvilImpact, GiThreeLeaves } from 'react-icons/gi'
 import { UiPages } from '../state/UiPages'
 import { useGameStore } from '../../game/state'
 import { sidebarOpen } from '../state/uiFunctions'
@@ -19,9 +19,8 @@ export const Sidebar = memo(function Sidebar() {
             <MenuItem page={UiPages.Activities} parentCollapsed={collapsed} right={<ActivitiesLinkBadge />} />
             <MenuItem page={UiPages.Storage} parentCollapsed={collapsed} />
             <MenuItem page={UiPages.Characters} parentCollapsed={collapsed} />
-            <MenuItem page={UiPages.CombatZones} parentCollapsed={collapsed} />
-            <MenuItem page={UiPages.Combat} parentCollapsed={collapsed} />
 
+            <SidebarBattle />
             <SidebarGathering />
             <SidebarCraft />
         </SidebarContainer>
@@ -34,7 +33,23 @@ const ActivitiesLinkBadge = memo(function ActivitiesLinkBadge() {
     if (actNum === 0) return
     return <Badge variant="secondary">{f(actNum)}</Badge>
 })
+const SidebarBattle = memo(function SidebarGathering() {
+    const open = useGameStore(sidebarOpen)
+    const isSidebarCollapsed = useGameStore(isCollapsed(CollapsedEnum.Sidebar))
 
+    return (
+        <CollapsibleMenu
+            key={open ? '1' : '0'}
+            collapsedId={CollapsedEnum.CombatSide}
+            parentCollapsed={isSidebarCollapsed}
+            name="Battle"
+            icon={<GiAllForOne />}
+        >
+            <MenuItem page={UiPages.CombatZones} parentCollapsed={isSidebarCollapsed} />
+            <MenuItem page={UiPages.Combat} parentCollapsed={isSidebarCollapsed} />
+        </CollapsibleMenu>
+    )
+})
 const SidebarGathering = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
     const isSidebarCollapsed = useGameStore(isCollapsed(CollapsedEnum.Sidebar))
