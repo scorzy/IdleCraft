@@ -14,11 +14,11 @@ import { InitialState } from '@/entityAdapter/InitialState'
 export const getItemId2 = (stdItemId: string | null | undefined, craftItemId: string | null | undefined) =>
     stdItemId ? `s${stdItemId}` : craftItemId ? `c${craftItemId}` : ''
 
-export function getItemId(s: string): ItemId | undefined {
+export const getItemId = memoize(function getItemId(s?: string): ItemId | undefined {
     if (!s || s === '') return
     if (s.startsWith('s')) return { stdItemId: s.substring(1), craftItemId: null }
     else return { craftItemId: s.substring(1), stdItemId: null }
-}
+})
 
 function subAddItem(
     state: StorageState,

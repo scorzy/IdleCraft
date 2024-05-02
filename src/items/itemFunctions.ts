@@ -1,6 +1,10 @@
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { equipItem } from '../characters/characterFunctions'
 import { useGameStore } from '../game/state'
+import { ComboBoxValue } from '../components/ui/comboBox'
+import { Msg } from '../msg/Msg'
+import { memoize } from '../utils/memoize'
+import { Item } from './Item'
 
 export const changeEquip = (slot: EquipSlotsEnum, axeId: string, charId: string) =>
     useGameStore.setState((s) => {
@@ -12,3 +16,11 @@ export const changeEquip = (slot: EquipSlotsEnum, axeId: string, charId: string)
 
         return equipItem(s, charId, slot, stdItemId, craftItemId)
     })
+
+export const getItemCombo = memoize(function getItemCombo(item: Item, itemId: string, t: Msg): ComboBoxValue {
+    return {
+        label: t[item.nameId],
+        value: itemId,
+        iconId: item.icon,
+    }
+})

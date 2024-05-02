@@ -1,15 +1,16 @@
 import { memo, useCallback, useMemo } from 'react'
 import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
-import { selectItemsByTypeCombo } from '../../storage/StorageSelectors'
+import { selectGameItem, selectItemsByTypeCombo } from '../../storage/StorageSelectors'
 import { SlotsData } from '../slotsData'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { selectEquipId } from '../itemSelectors'
-import { changeEquip } from '../itemFunctions'
+import { changeEquip, getItemCombo } from '../itemFunctions'
 import { GameState } from '../../game/GameState'
 import { Msg } from '../../msg/Msg'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { ComboBoxList, ComboBoxResponsive, ComboBoxValue } from '../../components/ui/comboBox'
+import { getItemId } from '../../storage/storageFunctions'
 
 export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEnum; charId?: string }) {
     const { slot } = props
@@ -40,16 +41,18 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
         [itemsId]
     )
 
-    const selectedRecipeId: ComboBoxValue | null = itemsId.find((v) => v.value === itemId) ?? null
+    const item = getItemId(itemId)
+    const selectGameItemMemo = useCallback(
+        (state: GameState) => selectGameItem(item?.stdItemId, item?.craftItemId)(state),
+        [item]
+    )
+    const selectedItem = useGameStore(selectGameItemMemo)
+    const selectedCombo: ComboBoxValue | null = selectedItem && itemId ? getItemCombo(selectedItem, itemId, t) : null
 
     return (
         <div>
             <span className="text-sm font-medium">{t[slotData.ItemType as keyof Msg]}</span>
-            <ComboBoxResponsive
-                values={values}
-                selectedValues={selectedRecipeId}
-                setSelectedValue={handleComboChange}
-            />
+            <ComboBoxResponsive values={values} selectedValues={selectedCombo} setSelectedValue={handleComboChange} />
         </div>
     )
 })
