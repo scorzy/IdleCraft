@@ -21,7 +21,7 @@ module.exports = {
         project: true,
         tsconfigRootDir: __dirname,
     },
-    plugins: ['react-refresh', 'import'],
+    plugins: ['react-refresh', 'import', 'eslint-plugin-react-compiler'],
     settings: {
         react: {
             version: 'detect',
@@ -44,6 +44,7 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
         'import/order': 'error',
         'import/newline-after-import': 'error',
+        'react-compiler/react-compiler': 'error',
         // 'import/no-unused-modules': [1, { unusedExports: true }],
     },
 }

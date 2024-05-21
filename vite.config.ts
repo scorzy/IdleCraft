@@ -4,10 +4,18 @@ import path from 'path'
 import { test } from 'vitest'
 import svgr from 'vite-plugin-svgr'
 
+const ReactCompilerConfig = {
+    /* ... */
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        react(),
+        react({
+            babel: {
+                plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
+            },
+        }),
         svgr({
             include: '**/*.svg',
         }),
