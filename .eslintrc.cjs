@@ -45,6 +45,5 @@ module.exports = {
         'import/order': 'error',
         'import/newline-after-import': 'error',
         'react-compiler/react-compiler': 'error',
-        // 'import/no-unused-modules': [1, { unusedExports: true }],
     },
 }
