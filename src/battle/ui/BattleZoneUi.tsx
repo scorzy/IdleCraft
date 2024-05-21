@@ -18,10 +18,10 @@ import { CharTemplateEnum } from '../../characters/templates/characterTemplateEn
 import { generateCharacter } from '../../characters/templates/generateCharacter'
 import { CharTemplatesData } from '../../characters/templates/charTemplateData'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { addBattle } from '../functions/addBattle'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { isCollapsed } from '../../ui/state/uiSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
+import { addBattle } from '../functions/addbattle'
 import classes from './battleZone.module.css'
 
 export const CombatPage = memo(function CombatPage() {
