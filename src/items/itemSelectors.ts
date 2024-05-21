@@ -3,7 +3,7 @@ import { PLAYER_ID } from '../characters/charactersConst'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { GameState } from '../game/GameState'
 import { selectGameItem } from '../storage/StorageSelectors'
-import { getItemId2 } from '../storage/storageFunctions'
+import { getItemId2 } from '@/storage/getItemId2'
 
 export const selectEquippedItem =
     (slot: EquipSlotsEnum, characterId = PLAYER_ID) =>

@@ -29,6 +29,7 @@ export const generateCharacter = memoize(function (template: CharTemplate): Char
         lastCombatAbilityId: null,
         lastCombatAbilityNum: 0,
         perks: {},
+        loot: template.loot,
     })
 
     char.health = selectMaxHealthFromChar(char).total

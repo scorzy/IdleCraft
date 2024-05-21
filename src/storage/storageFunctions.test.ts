@@ -24,8 +24,8 @@ describe('Storage Functions', () => {
     })
     test('Add Item craft 2', () => {
         let state = GetInitialGameState()
-        state.locations.StartVillage.storage.StdItems = { OakLog: 1 }
-        state.locations.StartVillage.storage.CraftedItems = { std: 1, craft: 2 }
+        state.locations.StartVillage.storage.stdItems = { OakLog: 1 }
+        state.locations.StartVillage.storage.craftedItems = { std: 1, craft: 2 }
         state = addItem(state, null, 'craft', 3)
         expect(state.locations.StartVillage.storage).toEqual({
             StdItems: { OakLog: 1 },
@@ -34,7 +34,7 @@ describe('Storage Functions', () => {
     })
     test('Remove Item 1', () => {
         let state = GetInitialGameState()
-        state.locations.StartVillage.storage.StdItems = { OakLog: 1 }
+        state.locations.StartVillage.storage.stdItems = { OakLog: 1 }
         state = removeItem(state, 'OakLog', null, 1)
         expect(state.locations.StartVillage.storage).toEqual({
             StdItems: {},
@@ -43,7 +43,7 @@ describe('Storage Functions', () => {
     })
     test('Remove Item 2', () => {
         let state = GetInitialGameState()
-        state.locations.StartVillage.storage.StdItems = { OakLog: 10 }
+        state.locations.StartVillage.storage.stdItems = { OakLog: 10 }
         state = removeItem(state, 'OakLog', null, 2)
         expect(state.locations.StartVillage.storage).toEqual({
             StdItems: { OakLog: 8 },
@@ -52,7 +52,7 @@ describe('Storage Functions', () => {
     })
     test('Remove Item 1 craft', () => {
         let state = GetInitialGameState()
-        state.locations.StartVillage.storage.CraftedItems = { craft2: 1 }
+        state.locations.StartVillage.storage.craftedItems = { craft2: 1 }
         state.craftedItems = {
             ids: ['craft2'],
             entries: { craft2: { id: 'craft2', icon: Icons.Axe, nameId: 'Craft', type: ItemTypes.Bar, value: 1 } },
@@ -73,7 +73,7 @@ describe('Storage Functions', () => {
     })
     test('Remove Item 2 craft', () => {
         let state = GetInitialGameState()
-        state.locations.StartVillage.storage.CraftedItems = { craft: 10 }
+        state.locations.StartVillage.storage.craftedItems = { craft: 10 }
         state = removeItem(state, null, 'craft', 2)
         expect(state.locations.StartVillage.storage).toEqual({
             StdItems: {},
@@ -94,7 +94,7 @@ describe('Storage Functions', () => {
     })
     test('Has Item Yes', () => {
         const state = GetInitialGameState()
-        state.locations.StartVillage.storage.CraftedItems = { craft: 1 }
+        state.locations.StartVillage.storage.craftedItems = { craft: 1 }
         expect(hasItem(state, null, 'craft', 1)).toBe(true)
     })
 })

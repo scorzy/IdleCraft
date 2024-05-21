@@ -4,6 +4,7 @@ import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 import { PerkState } from '../perks/PerkState'
 import { PerksEnum } from '../perks/perksEnum'
+import { Loot } from '../storage/storageState'
 import { CharInventory } from './inventory'
 import { InitialState } from '@/entityAdapter/InitialState'
 
@@ -33,4 +34,5 @@ export interface CharacterState {
     lastCombatAbilityId: string | null
     selectedAbilityId?: string
     selectedPerk?: PerksEnum
+    loot?: Loot[]
 }

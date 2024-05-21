@@ -13,5 +13,11 @@ export const CharTemplatesData: { [k in CharTemplateEnum]: CharTemplate } = {
         healthPoints: 1,
         staminaPoints: 1,
         manaPoints: 0,
+        loot: [
+            {
+                quantity: 1,
+                stdItem: 'DeadBoar',
+            },
+        ],
     },
 }

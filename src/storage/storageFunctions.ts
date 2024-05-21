@@ -11,9 +11,6 @@ import { ItemAdapter } from './ItemAdapter'
 import { ItemId, StorageState } from './storageState'
 import { InitialState } from '@/entityAdapter/InitialState'
 
-export const getItemId2 = (stdItemId: string | null | undefined, craftItemId: string | null | undefined) =>
-    stdItemId ? `s${stdItemId}` : craftItemId ? `c${craftItemId}` : ''
-
 export const getItemId = memoize(function getItemId(s?: string): ItemId | undefined {
     if (!s || s === '') return
     if (s.startsWith('s')) return { stdItemId: s.substring(1), craftItemId: null }
@@ -26,11 +23,11 @@ function subAddItem(
     craftItemId: string | null,
     qta: number
 ): StorageState {
-    let subState: Record<string, number> = state.StdItems
+    let subState: Record<string, number> = state.stdItems
     let id = ''
 
     if (craftItemId) {
-        subState = state.CraftedItems
+        subState = state.craftedItems
         id = craftItemId
     } else if (stdItemId) id = stdItemId
     else throw new Error('[addItem] stdItemId and craftItemId null')
@@ -43,15 +40,15 @@ function subAddItem(
         subState = newSubState
     } else subState = { ...subState, [id]: newQta }
 
-    if (stdItemId) state = { ...state, StdItems: subState }
-    else state = { ...state, CraftedItems: subState }
+    if (stdItemId) state = { ...state, stdItems: subState }
+    else state = { ...state, craftedItems: subState }
 
     return state
 }
 
 function subHasItem(state: StorageState, stdItemId: string | null, craftItemId: string | null, qta: number): boolean {
-    if (stdItemId) return (state.StdItems[stdItemId] ?? 0) >= qta
-    else if (craftItemId) return (state.CraftedItems[craftItemId] ?? 0) >= qta
+    if (stdItemId) return (state.stdItems[stdItemId] ?? 0) >= qta
+    else if (craftItemId) return (state.craftedItems[craftItemId] ?? 0) >= qta
     else throw new Error('[hasItem] stdItemId and craftItemId null')
 }
 
@@ -93,7 +90,7 @@ function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
     if (equipped) return true
 
     const locations = Object.values(state.locations)
-    for (const loc of locations) if (loc.storage.CraftedItems[craftItemId] ?? 0 > 0) return true
+    for (const loc of locations) if (loc.storage.craftedItems[craftItemId] ?? 0 > 0) return true
 
     return false
 }
@@ -172,3 +169,28 @@ function removeCraftItem(state: InitialState<Item>, id: string): InitialState<It
 
     return ret
 }
+/*
+function addLoot(
+    loot: InitialState<Loot>,
+    quantity: number,
+    stdItem: string | null,
+    craftedItem: string | null
+): InitialState<Loot> {
+    const id = getItemId2(stdItem, craftedItem)
+    const newQta = quantity + (LootAdapter.select(loot, id)?.quantity ?? 0)
+
+    loot = LootAdapter.upsertMerge(loot, {
+        stdItem,
+        craftedItem,
+        quantity: newQta,
+    })
+
+    const ids = LootAdapter.getIds(loot)
+    if (ids.length > 10) {
+        const idToRemove = ids[0]
+        if (idToRemove) loot = LootAdapter.remove(loot, idToRemove)
+    }
+
+    return loot
+}
+*/

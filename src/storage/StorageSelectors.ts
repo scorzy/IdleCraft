@@ -18,7 +18,7 @@ const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]:
     const res: GameLocations[] = []
     const locationsEntries = Object.entries(locations)
     for (const loc of locationsEntries) {
-        if (Object.keys(loc[1].storage.StdItems).length > 0 || Object.keys(loc[1].storage.CraftedItems).length > 0)
+        if (Object.keys(loc[1].storage.stdItems).length > 0 || Object.keys(loc[1].storage.craftedItems).length > 0)
             res.push(loc[0] as GameLocations)
     }
     return res
@@ -75,8 +75,8 @@ export const selectLocationItems = memoize((location: GameLocations) => {
         const ord: ItemOrdQta[] = []
         items.forEach((e) => {
             let qta = 0
-            if (e.stdItemId) qta = storage.StdItems[e.stdItemId] ?? 0
-            else if (e.craftItemId) qta = storage.CraftedItems[e.craftItemId] ?? 0
+            if (e.stdItemId) qta = storage.stdItems[e.stdItemId] ?? 0
+            else if (e.craftItemId) qta = storage.craftedItems[e.craftItemId] ?? 0
             ord.push({ ...e, qta })
         })
         return ord.sort((a, b) => a.qta - b.qta)
@@ -94,8 +94,8 @@ export const selectLocationItems = memoize((location: GameLocations) => {
 
     return (state: GameState) => {
         const loc = state.locations[location]
-        const stdItems = loc.storage.StdItems
-        const craftedItems = loc.storage.CraftedItems
+        const stdItems = loc.storage.stdItems
+        const craftedItems = loc.storage.craftedItems
         const order = state.ui.storageOrder
 
         let items = orderItems(stdItems, craftedItems)
@@ -114,8 +114,8 @@ export const selectItemQta =
     (location: GameLocations | null, stdItemId?: string | null, craftItemId?: string | null) => (state: GameState) => {
         location = location ?? state.location
         const storage = state.locations[location].storage
-        if (stdItemId) return storage.StdItems[stdItemId] ?? 0
-        if (craftItemId) return storage.CraftedItems[craftItemId] ?? 0
+        if (stdItemId) return storage.stdItems[stdItemId] ?? 0
+        if (craftItemId) return storage.craftedItems[craftItemId] ?? 0
         return 0
     }
 
@@ -187,8 +187,8 @@ export const selectItemsByType = memoize(function (itemType: ItemTypes | undefin
 
         const loc = state.locations[state.location]
 
-        const std = getStdItems(loc.storage.StdItems)
-        const crafted = getCraftItems(loc.storage.CraftedItems, state.craftedItems)
+        const std = getStdItems(loc.storage.stdItems)
+        const crafted = getCraftItems(loc.storage.craftedItems, state.craftedItems)
         return combine(std, crafted)
     }
 })
@@ -239,8 +239,8 @@ export const selectItemsByTypeCombo = memoize(function (
 
         const loc = state.locations[state.location]
         const t = selectTranslations(state)
-        const std = getStdItems(t.t, loc.storage.StdItems)
-        const crafted = getCraftItems(t.t, loc.storage.CraftedItems, state.craftedItems)
+        const std = getStdItems(t.t, loc.storage.stdItems)
+        const crafted = getCraftItems(t.t, loc.storage.craftedItems, state.craftedItems)
         const ret = combine(std, crafted)
 
         return ret

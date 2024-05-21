@@ -1,9 +1,10 @@
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
-import { getItemId2, getItemId } from '../storage/storageFunctions'
+import { getItemId } from '../storage/storageFunctions'
 import { ItemId } from '../storage/storageState'
 import { RecipeParameterValue } from './RecipeInterfaces'
 import { recipes } from './Recipes'
+import { getItemId2 } from '@/storage/getItemId2'
 
 export function changeRecipeState(state: GameState, recipeId: string) {
     if (state.recipeId === recipeId) return state

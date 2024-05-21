@@ -14,6 +14,7 @@ export enum ItemTypes {
     OneHand = 'OneHand',
     TwoHands = 'TwoHands',
     Body = 'Body',
+    Corpse = 'Corpse',
 }
 export enum ItemSubType {
     Weapon = 'Weapon',

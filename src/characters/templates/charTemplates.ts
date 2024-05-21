@@ -1,6 +1,7 @@
 import { ExpState } from '../../experience/ExpState'
 import { Icons } from '../../icons/Icons'
 import { Msg } from '../../msg/Msg'
+import { Loot } from '../../storage/storageState'
 import { CharInventory } from '../inventory'
 
 export interface CharTemplate {
@@ -13,4 +14,5 @@ export interface CharTemplate {
     healthPoints: number
     staminaPoints: number
     manaPoints: number
+    loot: Loot[]
 }

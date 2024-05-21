@@ -5,8 +5,12 @@ export interface ItemId {
     craftItemId: string | null
 }
 export interface StorageState {
-    StdItems: Record<string, number>
-    CraftedItems: Record<string, number>
+    stdItems: Record<string, number>
+    craftedItems: Record<string, number>
 }
-
 export type InventoryNoQta = { [k in EquipSlotsEnum]?: { stdItemId?: string; craftItemId?: string } }
+export type Loot = {
+    stdItem?: string | null
+    craftedItem?: string | null
+    quantity: number
+}

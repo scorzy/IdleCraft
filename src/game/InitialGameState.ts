@@ -5,7 +5,7 @@ import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { MiningAdapter } from '../mining/MiningAdapter'
 import { OreTypes } from '../mining/OreTypes'
-import { ItemAdapter } from '../storage/ItemAdapter'
+import { ItemAdapter, LootAdapter } from '../storage/ItemAdapter'
 import { TimerAdapter } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
 import { WoodTypes } from '../wood/WoodTypes'
@@ -18,15 +18,17 @@ import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
 import { RecipeTypes } from '../crafting/RecipeInterfaces'
 import { GameState, LocationState } from './GameState'
 
-const InitialVillageState: () => LocationState = () =>
-    structuredClone({
+const getInitialVillageState: () => LocationState = () => {
+    return {
         storage: {
-            StdItems: {},
-            CraftedItems: {},
+            stdItems: {},
+            craftedItems: {},
         },
         forests: {},
         ores: {},
-    })
+        loot: LootAdapter.getInitialState(),
+    }
+}
 
 export const InitialGameState: GameState = {
     gameId: '',
@@ -70,7 +72,10 @@ export const InitialGameState: GameState = {
     craftedItems: ItemAdapter.getInitialState(),
     woodcutting: WoodcuttingAdapter.getInitialState(),
     waitingTrees: null,
-    locations: { [GameLocations.StartVillage]: InitialVillageState(), [GameLocations.Test]: InitialVillageState() },
+    locations: {
+        [GameLocations.StartVillage]: getInitialVillageState(),
+        [GameLocations.Test]: getInitialVillageState(),
+    },
     treeGrowth: TreeGrowthAdapter.getInitialState(),
     crafting: CraftingAdapter.getInitialState(),
     recipeId: '',

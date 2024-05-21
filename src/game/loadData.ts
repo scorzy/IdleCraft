@@ -53,12 +53,12 @@ export function loadData(data: object): GameState {
                 if ('StdItems' in storage)
                     for (const entryStd of Object.entries(storage.StdItems as Record<string, unknown>))
                         if (typeof entryStd[1] === 'number' && StdItemsEntries.find((i) => i.id === entryStd[0]))
-                            location.storage.StdItems[entryStd[0]] = entryStd[1]
+                            location.storage.stdItems[entryStd[0]] = entryStd[1]
 
                 if ('CraftedItems' in storage)
                     for (const entryCraft of Object.entries(storage.CraftedItems as Record<string, unknown>))
                         if (typeof entryCraft[0] === 'string' && typeof entryCraft[1] === 'number')
-                            location.storage.CraftedItems[entryCraft[0]] = entryCraft[1]
+                            location.storage.craftedItems[entryCraft[0]] = entryCraft[1]
             }
 
             if ('forests' in locationData) location.forests = loadForest(locationData.forests)

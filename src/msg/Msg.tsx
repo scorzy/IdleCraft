@@ -188,6 +188,8 @@ export interface Msg {
     FilterDots: string
 
     Battle: string
+
+    DeadBoar: string
 }
 export interface MsgFunctions {
     // Time
