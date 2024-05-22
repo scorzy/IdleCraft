@@ -13,7 +13,7 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: [
-                    'Inter var, sans-serif',
+                    'InterVariable, Inter, system-ui',
                     {
                         fontFeatureSettings: '"cv11", "ss01", "tnum", "calt", "case", "ccmp", "dlig", "ss02", "ss03"',
                         fontVariationSettings: '"opsz" 32',

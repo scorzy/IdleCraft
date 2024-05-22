@@ -1,7 +1,7 @@
 /* eslint-disable import/default */
 import './global.css'
 import './main.css'
-import 'inter-ui/inter-latin.css'
+import 'inter-ui/inter-variable-latin.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
