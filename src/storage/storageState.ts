@@ -10,7 +10,9 @@ export interface StorageState {
 }
 export type InventoryNoQta = { [k in EquipSlotsEnum]?: { stdItemId?: string; craftItemId?: string } }
 export type Loot = {
-    stdItem?: string | null
-    craftedItem?: string | null
+    stdItem: string | null
+    craftedItem: string | null
     quantity: number
 }
+
+export type LootId = { id: string } & Loot

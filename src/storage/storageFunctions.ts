@@ -169,28 +169,3 @@ function removeCraftItem(state: InitialState<Item>, id: string): InitialState<It
 
     return ret
 }
-/*
-function addLoot(
-    loot: InitialState<Loot>,
-    quantity: number,
-    stdItem: string | null,
-    craftedItem: string | null
-): InitialState<Loot> {
-    const id = getItemId2(stdItem, craftedItem)
-    const newQta = quantity + (LootAdapter.select(loot, id)?.quantity ?? 0)
-
-    loot = LootAdapter.upsertMerge(loot, {
-        stdItem,
-        craftedItem,
-        quantity: newQta,
-    })
-
-    const ids = LootAdapter.getIds(loot)
-    if (ids.length > 10) {
-        const idToRemove = ids[0]
-        if (idToRemove) loot = LootAdapter.remove(loot, idToRemove)
-    }
-
-    return loot
-}
-*/

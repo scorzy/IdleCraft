@@ -5,7 +5,7 @@ import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { MiningAdapter } from '../mining/MiningAdapter'
 import { OreTypes } from '../mining/OreTypes'
-import { ItemAdapter, LootAdapter } from '../storage/ItemAdapter'
+import { ItemAdapter } from '../storage/ItemAdapter'
 import { TimerAdapter } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
 import { WoodTypes } from '../wood/WoodTypes'
@@ -26,7 +26,7 @@ const getInitialVillageState: () => LocationState = () => {
         },
         forests: {},
         ores: {},
-        loot: LootAdapter.getInitialState(),
+        loot: [],
     }
 }
 

@@ -248,11 +248,11 @@ const StorageItem = memo(function StorageItem(props: {
                         <span>{t[item.nameId]}</span>
                     </span>
                     <span className={classes.smallRow}>
-                        <span className="text-left align-middle font-medium text-muted-foreground">Quantity</span>
+                        <span className="text-left align-middle font-medium text-muted-foreground">{t.Quantity}</span>
                         {f(qta)}
                     </span>
                     <span className={classes.smallRow}>
-                        <span className="text-left align-middle font-medium text-muted-foreground">Value</span>
+                        <span className="text-left align-middle font-medium text-muted-foreground">{t.Value}</span>
                         {f(item.value)}
                     </span>
                 </TableCell>
@@ -263,8 +263,8 @@ const StorageItem = memo(function StorageItem(props: {
             <TableRow onClick={onClick} className={cn(classes.row, { 'bg-muted': selected })}>
                 <TableCell>{IconsData[item.icon]}</TableCell>
                 <TableCell>{t[item.nameId]}</TableCell>
-                <TableCell className="text-right">{f(qta)}</TableCell>
                 <TableCell className="text-right">{f(item.value)}</TableCell>
+                <TableCell className="text-right">{f(qta)}</TableCell>
             </TableRow>
         )
 })

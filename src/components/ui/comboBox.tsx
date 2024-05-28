@@ -6,6 +6,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { useState } from 'react'
 import { Icons, IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
+import { cn } from '../../lib/utils'
+import { CheckIcon } from '@radix-ui/react-icons'
 
 export type ComboBoxValue = {
     value: string
@@ -45,7 +47,12 @@ export function ComboBoxResponsive(props: {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[300px] p-0" align="start">
-                    <StatusList setOpen={setOpen} setSelectedStatus={setSelectedValue} values={values} />
+                    <StatusList
+                        setOpen={setOpen}
+                        setSelectedStatus={setSelectedValue}
+                        values={values}
+                        selectedValues={selectedValues}
+                    />
                 </PopoverContent>
             </Popover>
         )
@@ -69,7 +76,12 @@ export function ComboBoxResponsive(props: {
             </DrawerTrigger>
             <DrawerContent>
                 <div className="mt-4 border-t">
-                    <StatusList setOpen={setOpen} setSelectedStatus={setSelectedValue} values={values} />
+                    <StatusList
+                        setOpen={setOpen}
+                        setSelectedStatus={setSelectedValue}
+                        values={values}
+                        selectedValues={selectedValues}
+                    />
                 </div>
             </DrawerContent>
         </Drawer>
@@ -77,10 +89,12 @@ export function ComboBoxResponsive(props: {
 }
 
 function StatusList({
+    selectedValues,
     setOpen,
     setSelectedStatus,
     values,
 }: {
+    selectedValues: ComboBoxValue | null | undefined
     setOpen: (open: boolean) => void
     setSelectedStatus: (status: ComboBoxValue | null) => void
     values: ComboBoxList[]
@@ -111,6 +125,12 @@ function StatusList({
                             >
                                 {status.iconId && <span className="mr-2 h-4 w-4">{IconsData[status.iconId]}</span>}
                                 {status.label}
+                                <CheckIcon
+                                    className={cn(
+                                        'ml-auto h-4 w-4',
+                                        status.label === selectedValues?.label ? 'opacity-100' : 'opacity-0'
+                                    )}
+                                />
                             </CommandItem>
                         ))}
                     </CommandGroup>

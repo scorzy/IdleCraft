@@ -1,5 +1,5 @@
 import { memo, useState } from 'react'
-import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
+import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { MyPage } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
@@ -33,6 +33,11 @@ import { Card, CardContent, CardTitle } from '../../components/ui/card'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
 import { AttackInfo, ArmourInfo } from '../../characters/ui/CharactersUi'
 import { Button } from '../../components/ui/button'
+import { Table, TableBody, TableCell, TableRow } from '../../components/ui/table'
+import { selectLoot } from '../../storage/selectors/selectLoot'
+import { LootId } from '../../storage/storageState'
+import { selectGameItem } from '../../storage/StorageSelectors'
+import { collectLootUi } from '../../storage/function/collectLoot'
 import classes from './Combat.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
@@ -42,6 +47,7 @@ export const CombatUi = memo(function CombatUi() {
             <div className={classes.mainContainer}>
                 <CombatChars />
                 <BattleLogUi />
+                <BattleLootUi />
             </div>
         </MyPage>
     )
@@ -234,3 +240,44 @@ const CombatAbilityBadge = memo(function CombatAbilitiesList(props: {
         </MyHoverCard>
     )
 })
+const BattleLootUi = () => {
+    const { t } = useTranslations()
+    const loots = useGameStore(selectLoot)
+    return (
+        <Card>
+            <MyCardHeaderTitle title={t.Loot} />
+            <CardContent>
+                <Table className={classes.lootTable}>
+                    <TableBody>
+                        {loots.map((loot) => (
+                            <LootRow loot={loot} key={loot.id} />
+                        ))}
+                    </TableBody>
+                </Table>
+            </CardContent>
+        </Card>
+    )
+}
+const LootRow = (props: { loot: LootId }) => {
+    const { loot } = props
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    const item = useGameStore(selectGameItem(loot.stdItem, loot.craftedItem))
+
+    const onClick = () => collectLootUi(loot.id)
+
+    if (!item) return
+
+    return (
+        <TableRow>
+            <TableCell>{IconsData[item.icon]}</TableCell>
+            <TableCell className="w-full">{t[item.nameId]}</TableCell>
+            <TableCell className="text-right">{f(loot.quantity)}</TableCell>
+            <TableCell>
+                <Button variant="ghost" size="xs" title={t.Collect} onClick={onClick}>
+                    <GiSwapBag />
+                </Button>
+            </TableCell>
+        </TableRow>
+    )
+}

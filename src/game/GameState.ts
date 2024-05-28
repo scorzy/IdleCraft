@@ -4,7 +4,7 @@ import { RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
 import { OreType } from '../mining/OreState'
-import { Loot, StorageState } from '../storage/storageState'
+import { LootId, StorageState } from '../storage/storageState'
 import { InitialTimerState } from '../timers/Timer'
 import { ForestsType } from '../wood/ForestsState'
 import { Woodcutting } from '../wood/Woodcutting'
@@ -22,7 +22,7 @@ export interface LocationState {
     storage: StorageState
     forests: ForestsType
     ores: OreType
-    loot: InitialState<Loot>
+    loot: LootId[]
 }
 export interface GameState {
     gameId: string

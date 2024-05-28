@@ -190,6 +190,8 @@ export interface Msg {
     Battle: string
 
     DeadBoar: string
+    Loot: string
+    Collect: string
 }
 export interface MsgFunctions {
     // Time

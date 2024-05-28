@@ -166,6 +166,8 @@ export const engMsg: Msg = {
     Battle: 'Battle',
 
     DeadBoar: 'Dead Boar',
+    Loot: 'Loot',
+    Collect: 'Collect',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,
