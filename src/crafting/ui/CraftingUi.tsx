@@ -33,7 +33,9 @@ import { Card, CardContent } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { ItemSubType } from '../../items/Item'
 import { ComboBoxList, ComboBoxResponsive, ComboBoxValue } from '../../components/ui/comboBox'
-import { Msg } from '../../msg/Msg'
+import { MyComboBoxList, MyComboBoxResponsive } from '../../components/ui/myComboBox'
+import { IconsData } from '../../icons/Icons'
+import { MyComboItem } from '../../components/ui/myComboItem'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
@@ -51,14 +53,13 @@ const selectRecipes: (t: RecipeTypes) => { list: Recipe[]; itemSubType: ItemSubT
         }
     return ret
 })
-const recipeToCombo = (t: Msg, r: Recipe) => ({ value: r.id, label: t[r.nameId], iconId: r.iconId })
 
-const selectRecipesValues: (t: Msg, recipes: { list: Recipe[]; itemSubType: ItemSubType }[]) => ComboBoxList[] =
-    memoize((t: Msg, recipes: { list: Recipe[]; itemSubType: ItemSubType }[]) =>
+const selectRecipesValues: (recipes: { list: Recipe[]; itemSubType: ItemSubType }[]) => MyComboBoxList<Recipe>[] =
+    memoize((recipes: { list: Recipe[]; itemSubType: ItemSubType }[]) =>
         recipes.map((e) => {
             return {
                 title: e.itemSubType,
-                list: e.list.map((v) => recipeToCombo(t, v)),
+                list: e.list,
             }
         })
     )
@@ -105,6 +106,16 @@ const RecipeUi = memo(function RecipeUi() {
     )
 })
 
+const RecipeItem = memo(function RecipeItem(props: { recipe: Recipe }) {
+    const { recipe } = props
+    const { t } = useTranslations()
+
+    if (!recipe) return
+
+    return <MyComboItem title={t[recipe.nameId]} icon={IconsData[recipe.iconId]} />
+})
+const getRecipeId = (item: Recipe) => item.id
+
 const RecipeSelectUi = memo(function RecipeSelectUi() {
     const recipeType = useGameStore(selectRecipeType)
     const recipeId = useGameStore(selectRecipeId)
@@ -114,14 +125,19 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     const recipesByType = selectRecipes(recipeType)
     const selected = recipes.get(recipeId)
 
-    const values = selectRecipesValues(t, recipesByType)
-    const selectedRecipeId = selected ? recipeToCombo(t, selected) : null
-    const onComboChange = (status: ComboBoxValue | null) => handleRecipeChange(status?.value ?? '')
+    const values = selectRecipesValues(recipesByType)
+    const onComboChange = (item: Recipe | null) => handleRecipeChange(item?.id ?? '')
 
     return (
         <div>
             <Label>{t.Recipe}</Label>
-            <ComboBoxResponsive values={values} selectedValues={selectedRecipeId} setSelectedValue={onComboChange} />
+            <MyComboBoxResponsive<Recipe>
+                values={values}
+                selectedValue={selected}
+                setSelectedValue={onComboChange}
+                getId={getRecipeId}
+                render={(item: Recipe) => <RecipeItem recipe={item} />}
+            />
         </div>
     )
 })

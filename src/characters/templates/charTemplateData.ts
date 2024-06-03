@@ -17,6 +17,7 @@ export const CharTemplatesData: { [k in CharTemplateEnum]: CharTemplate } = {
             {
                 quantity: 1,
                 stdItem: 'DeadBoar',
+                craftedItem: null,
             },
         ],
     },
