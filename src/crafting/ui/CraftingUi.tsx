@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback } from 'react'
 import { LuHourglass } from 'react-icons/lu'
 import { memoize } from '../../utils/memoize'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
@@ -17,7 +17,7 @@ import {
 } from '../CraftingSelectors'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { selectItemsByTypeCombo } from '../../storage/StorageSelectors'
+import { selectGameItem, selectItemQta, selectItemsByType } from '../../storage/StorageSelectors'
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
@@ -31,38 +31,19 @@ import { addCrafting } from '../functions/addCrafting'
 import { handleRecipeChange } from '../CraftingFunctions'
 import { Card, CardContent } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
-import { ItemSubType } from '../../items/Item'
-import { ComboBoxList, ComboBoxResponsive, ComboBoxValue } from '../../components/ui/comboBox'
-import { MyComboBoxList, MyComboBoxResponsive } from '../../components/ui/myComboBox'
 import { IconsData } from '../../icons/Icons'
-import { MyComboItem } from '../../components/ui/myComboItem'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
+import { ItemId } from '../../storage/storageState'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
 
-const selectRecipes: (t: RecipeTypes) => { list: Recipe[]; itemSubType: ItemSubType }[] = memoize((t: RecipeTypes) => {
-    const ret: { list: Recipe[]; itemSubType: ItemSubType }[] = []
-    for (const recipe of recipes.values())
-        if (recipe.type === t) {
-            let r = ret.find((v) => v.itemSubType === recipe.itemSubType)
-            if (!r) {
-                r = { list: [], itemSubType: recipe.itemSubType }
-                ret.push(r)
-            }
-            r.list.push(recipe)
-        }
+const selectRecipes: (t: RecipeTypes) => Recipe[] = memoize((t: RecipeTypes) => {
+    const ret: Recipe[] = []
+    const recipeValues = recipes.values()
+    for (const recipe of recipeValues) if (recipe.type === t) ret.push(recipe)
     return ret
 })
-
-const selectRecipesValues: (recipes: { list: Recipe[]; itemSubType: ItemSubType }[]) => MyComboBoxList<Recipe>[] =
-    memoize((recipes: { list: Recipe[]; itemSubType: ItemSubType }[]) =>
-        recipes.map((e) => {
-            return {
-                title: e.itemSubType,
-                list: e.list,
-            }
-        })
-    )
 
 export const CraftingUi = memo(function CraftingUi() {
     const result = useGameStore(selectRecipeResult)
@@ -106,16 +87,6 @@ const RecipeUi = memo(function RecipeUi() {
     )
 })
 
-const RecipeItem = memo(function RecipeItem(props: { recipe: Recipe }) {
-    const { recipe } = props
-    const { t } = useTranslations()
-
-    if (!recipe) return
-
-    return <MyComboItem title={t[recipe.nameId]} icon={IconsData[recipe.iconId]} />
-})
-const getRecipeId = (item: Recipe) => item.id
-
 const RecipeSelectUi = memo(function RecipeSelectUi() {
     const recipeType = useGameStore(selectRecipeType)
     const recipeId = useGameStore(selectRecipeId)
@@ -124,20 +95,29 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     if (!recipeType) return
     const recipesByType = selectRecipes(recipeType)
     const selected = recipes.get(recipeId)
-
-    const values = selectRecipesValues(recipesByType)
-    const onComboChange = (item: Recipe | null) => handleRecipeChange(item?.id ?? '')
+    const icon = selected && IconsData[selected.iconId]
 
     return (
         <div>
             <Label>{t.Recipe}</Label>
-            <MyComboBoxResponsive<Recipe>
-                values={values}
-                selectedValue={selected}
-                setSelectedValue={onComboChange}
-                getId={getRecipeId}
-                render={(item: Recipe) => <RecipeItem recipe={item} />}
-            />
+            <Select value={recipeId} onValueChange={handleRecipeChange}>
+                <SelectTrigger>
+                    <SelectValue placeholder={t.SelectARecipe}>
+                        {selected && (
+                            <span className="select-trigger">
+                                {icon} {t[selected.nameId]}
+                            </span>
+                        )}
+                    </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                    {recipesByType.map((r) => (
+                        <SelectItem key={r.id} value={r.id} icon={IconsData[r.iconId]}>
+                            {t[r.nameId]}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
         </div>
     )
 })
@@ -184,31 +164,54 @@ const RecipeParamUi = memo(function RecipeParamUi(props: { recipeParam: RecipePa
 const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipeParam: RecipeParameter }) {
     const { recipeParam } = props
     const { t } = useTranslations()
-    const itemsId = useGameStore(selectItemsByTypeCombo(recipeParam.itemType))
+    const itemsId = useGameStore(selectItemsByType(recipeParam.itemType))
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
     const selectedValue = getRecipeParamId(selected)
+    const selectedItem = useGameStore(selectGameItem(selected?.stdItemId, selected?.craftItemId))
 
-    const onComboChange = useCallback(
-        (status: ComboBoxValue | null) => setRecipeItemParam(recipeParam.id, status?.value ?? ''),
+    const handleRecipeChange = useCallback(
+        (value: string) => setRecipeItemParam(recipeParam.id, value),
         [recipeParam.id]
     )
-
-    const values: ComboBoxList[] = useMemo(
-        () => [
-            {
-                title: '',
-                list: itemsId,
-            },
-        ],
-        [itemsId]
-    )
-
-    const selectedRecipeId: ComboBoxValue | null = itemsId.find((v) => v.value === selectedValue) ?? null
 
     return (
         <div>
             <Label>{t[recipeParam.nameId]}</Label>
-            <ComboBoxResponsive values={values} selectedValues={selectedRecipeId} setSelectedValue={onComboChange} />
+            <Select value={selectedValue} onValueChange={handleRecipeChange}>
+                <SelectTrigger>
+                    <SelectValue placeholder={`-- ${t[recipeParam.nameId]} --`}>
+                        {selectedItem && (
+                            <span className="select-trigger">
+                                {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
+                            </span>
+                        )}
+                    </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                    {itemsId.map((t) => {
+                        const value = getRecipeParamId(t)
+                        return <ParamItem itemId={t} key={value} />
+                    })}
+                </SelectContent>
+            </Select>
         </div>
+    )
+})
+const ParamItem = memo(function ParamItem(props: { itemId: ItemId }) {
+    const { itemId } = props
+    const value = getRecipeParamId(itemId)
+    const itemObj = useGameStore(selectGameItem(itemId.stdItemId ?? null, itemId.craftItemId ?? null))
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    const qta = useGameStore(selectItemQta(null, itemId.stdItemId ?? null, itemId.craftItemId ?? null))
+    const text = itemObj ? t[itemObj.nameId] : t.None
+
+    return (
+        <SelectItem value={value} icon={itemObj && IconsData[itemObj.icon]} className={classes.seleBtn}>
+            <span className={classes.item}>
+                <span className={classes.text}>{text}</span>
+                <span className="text-muted-foreground">{f(qta)}</span>
+            </span>
+        </SelectItem>
     )
 })

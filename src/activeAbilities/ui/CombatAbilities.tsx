@@ -3,8 +3,8 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { useGameStore } from '../../game/state'
 import { selectCombatAbilities } from '../selectors/selectCombatAbilities'
 import { IconsData } from '../../icons/Icons'
-import { selectCombatAbilityId } from '../selectors/selectCombatAbility'
-import { selectAllCombatAbilitiesCombo } from '../selectors/selectAllCombatAbilities'
+import { selectCombatAbility, selectCombatAbilityId } from '../selectors/selectCombatAbility'
+import { selectAllCombatAbilities } from '../selectors/selectAllCombatAbilities'
 import { selectCombatAbilityById } from '../selectors/selectCombatAbilityById'
 import { ActiveAbilityData } from '../ActiveAbilityData'
 import { useTranslations } from '../../msg/useTranslations'
@@ -16,7 +16,7 @@ import { removeRotation } from '../functions/removeRotation'
 import { TrashIcon } from '../../icons/IconsMemo'
 import { Card, CardContent } from '../../components/ui/card'
 import { isCharReadonly } from '../../ui/state/uiSelectors'
-import { ComboBoxResponsive, ComboBoxValue } from '../../components/ui/comboBox'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
 import classes from './combatAbilities.module.css'
 
 export const CombatAbilities = memo(function CombatAbilities() {
@@ -61,25 +61,47 @@ export const CombatAbilitiesReadOnly = memo(function CombatAbilitiesReadOnly(pro
 const CombatAbility = memo(function CombatAbility(props: { index: number }) {
     const { index } = props
     const { t } = useTranslations()
-
+    const selectedCharAbility = useGameStore(selectCombatAbility(index))
+    const allCombatAbilities = useGameStore(selectAllCombatAbilities)
     const selectedId = useGameStore(selectCombatAbilityId(index))
-    const onClick = useCallback(() => removeRotation(index), [index])
 
-    const values = useGameStore(selectAllCombatAbilitiesCombo)
-    const onChangeCombo = useCallback(
-        (value: ComboBoxValue | null) => changeCombatAbility(index, value?.value ?? ''),
-        [index]
-    )
-    const selectedCombo = values[0]?.list.find((v) => v.value === selectedId) || null
+    const onChange = useCallback((value: string) => changeCombatAbility(index, value), [index])
+    const onClick = useCallback(() => removeRotation(index), [index])
 
     return (
         <div className={classes.abilityRow}>
-            <ComboBoxResponsive values={values} selectedValues={selectedCombo} setSelectedValue={onChangeCombo} />
-
+            <Select value={selectedCharAbility} onValueChange={onChange}>
+                <SelectTrigger>
+                    <SelectValue placeholder={' - '}>
+                        {selectedId && <SelectedAbility selectedId={selectedId} />}
+                    </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                    {allCombatAbilities.map((r) => (
+                        <Ability key={r} id={r} />
+                    ))}
+                </SelectContent>
+            </Select>
             <Button variant="ghost" title={t.Remove} onClick={onClick}>
                 {TrashIcon}
             </Button>
         </div>
+    )
+})
+
+const Ability = memo(function Ability(props: { id: string }) {
+    const { id } = props
+    const { t } = useTranslations()
+    const charAbility = useGameStore(selectCombatAbilityById(id))
+    const ability = ActiveAbilityData.getEx(charAbility.abilityId)
+    const iconId = useGameStore((state: GameState) =>
+        ability.getIconId({ state, characterId: state.ui.selectedCharId })
+    )
+
+    return (
+        <SelectItem value={id} icon={IconsData[iconId]}>
+            {t[ability.nameId]}
+        </SelectItem>
     )
 })
 
