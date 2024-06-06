@@ -10,19 +10,19 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
     const { t } = useTranslations()
 
     return (
-        <ul>
-            <li>
+        <div>
+            <div>
                 {t.ItemType} {item.type}
-            </li>
-            <li>
+            </div>
+            <div>
                 {t.Value} {f(item.value)}
-            </li>
+            </div>
             {item.weaponData && <WeaponDataUi weaponData={item.weaponData} />}
             {item.armourData && <ArmourDataUi armourData={item.armourData} />}
             {item.craftingData && <CraftingDataUi craftingData={item.craftingData} />}
             {item.woodAxeData && <WoodAxeDataUi woodAxeData={item.woodAxeData} />}
             {item.pickaxeData && <PickaxeDataUi pickaxeData={item.pickaxeData} />}
-        </ul>
+        </div>
     )
 })
 export const CraftingDataUi = memo(function CraftingDataUi(props: { craftingData: CraftingData }) {
@@ -41,12 +41,12 @@ export const WoodAxeDataUi = memo(function WoodAxeDataUi(props: { woodAxeData: W
 
     return (
         <>
-            <li>
+            <div>
                 {t.Damage} {f(woodAxeData.damage)}
-            </li>
-            <li>
+            </div>
+            <div>
                 {t.AttackSpeed} {ft(woodAxeData.time)}
-            </li>
+            </div>
         </>
     )
 })
@@ -57,15 +57,15 @@ export const PickaxeDataUi = memo(function PickaxeDataUi(props: { pickaxeData: P
 
     return (
         <>
-            <li>
+            <div>
                 {t.Damage} {f(pickaxeData.damage)}
-            </li>
-            <li>
+            </div>
+            <div>
                 {t.AttackSpeed} {ft(pickaxeData.time)}
-            </li>
-            <li>
+            </div>
+            <div>
                 {t.ArmourPen} {f(pickaxeData.armourPen)}
-            </li>
+            </div>
         </>
     )
 })
@@ -76,13 +76,13 @@ export const WeaponDataUi = memo(function WeaponDataUi(props: { weaponData: Weap
 
     return (
         <>
-            <li>
+            <div>
                 {t.AttackSpeed} {ft(weaponData.attackSpeed)}
-            </li>
+            </div>
             {Object.entries(weaponData.damage).map((kv) => (
-                <li key={kv[0]}>
+                <div key={kv[0]}>
                     {t[DamageTypesData[kv[0] as DamageTypes].DamageName]} {f(kv[1])}
-                </li>
+                </div>
             ))}
         </>
     )
@@ -95,9 +95,9 @@ export const ArmourDataUi = memo(function ArmourDataUi(props: { armourData: Dama
     return (
         <>
             {Object.entries(armourData).map((kv) => (
-                <li key={kv[0]}>
+                <div key={kv[0]}>
                     {t[DamageTypesData[kv[0] as DamageTypes].DamageName]} {f(kv[1])}
-                </li>
+                </div>
             ))}
         </>
     )

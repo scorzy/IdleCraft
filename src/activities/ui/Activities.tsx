@@ -1,21 +1,23 @@
 import { memo, useCallback } from 'react'
-import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
+import { LuArrowDown, LuArrowUp, LuInfo } from 'react-icons/lu'
 import { useGameStore } from '../../game/state'
 import { selectActivityIcon, selectActivityId, selectActivityMax, selectActivityTitle } from '../ActivitySelectors'
 import { moveActivityNext, moveActivityPrev } from '../activityFunctions'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { Alert, AlertTitle } from '../../components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert'
 import { MyPage } from '../../ui/pages/MyPage'
 import { removeActivity } from '../functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
 import { Input } from '../../components/ui/input'
 import { setActivityNum } from '../functions/setActivityNum'
-import { InfoIcon, TrashIcon } from '../../icons/IconsMemo'
+import { TrashIcon } from '../../icons/IconsMemo'
 import { Card, CardContent } from '../../components/ui/card'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+
+const InfoIcon = <LuInfo className="h-4 w-4" />
 
 export const Activities = memo(function Activities() {
     const ids = useGameStore(selectActivityId)
@@ -75,7 +77,7 @@ const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: bo
         <div className={classes.container}>
             <div className={classes.icon}>{IconsData[icon]}</div>
             <div className={classes.title}>
-                <div>{title}</div>
+                <div className="text-md font-medium leading-none">{title}</div>
                 <Badge variant={active ? 'default' : 'secondary'}>
                     {active ? 'Active' : 'In Queue'} {f(cur)}/{f(max)}
                 </Badge>
@@ -101,7 +103,13 @@ const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: bo
                     min={1}
                     step={1}
                 />
-                <Button aria-label={t.Remove} color="error" onClick={onClickRemove} variant="ghost">
+                <Button
+                    aria-label={t.Remove}
+                    color="error"
+                    onClick={onClickRemove}
+                    variant="ghost"
+                    className="text-muted-foreground"
+                >
                     {TrashIcon}
                 </Button>
             </div>

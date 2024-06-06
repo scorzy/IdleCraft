@@ -25,7 +25,6 @@ import { getRecipeParamId } from '../../crafting/RecipeFunctions'
 import { Msg } from '../../msg/Msg'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { getItemId2 } from '../../storage/getItemId2'
-import classes from './equipSelect.module.css'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
 const noIcon = <GiRock />
@@ -64,7 +63,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
             <Select value={itemId ?? '-'} onValueChange={handleEquipChange}>
                 <SelectTrigger>
                     <SelectValue>
-                        <span className={classes.title}>
+                        <span className="grid grid-flow-col items-center gap-2">
                             {icon}
                             {name}
                         </span>
@@ -108,12 +107,12 @@ const OptionItemInt = memo(function AxeItemInt(props: { name: string; slot: Equi
     const { name, slot, item } = props
 
     return (
-        <span>
-            {name}
-            <ul className="text-muted-foreground">
+        <div>
+            <span className="text-sm font-medium leading-none">{name}</span>
+            <div className="flex max-w-md flex-wrap gap-2 text-sm font-medium leading-none text-muted-foreground">
                 {slot === EquipSlotsEnum.WoodAxe && <WoodAxeDataUi woodAxeData={item?.woodAxeData ?? DEF_WOOD_AXE} />}
                 {slot === EquipSlotsEnum.Pickaxe && <PickaxeDataUi pickaxeData={item?.pickaxeData ?? DEF_PICKAXE} />}
-            </ul>
-        </span>
+            </div>
+        </div>
     )
 })

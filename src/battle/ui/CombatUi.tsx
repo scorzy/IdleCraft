@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { MyPage } from '../../ui/pages/MyPage'
@@ -240,7 +240,7 @@ const CombatAbilityBadge = memo(function CombatAbilitiesList(props: {
         </MyHoverCard>
     )
 })
-const BattleLootUi = () => {
+const BattleLootUi = memo(function BattleLootUi() {
     const { t } = useTranslations()
     const loots = useGameStore(selectLoot)
     return (
@@ -257,14 +257,14 @@ const BattleLootUi = () => {
             </CardContent>
         </Card>
     )
-}
-const LootRow = (props: { loot: LootId }) => {
+})
+const LootRow = memo(function LootRow(props: { loot: LootId }) {
     const { loot } = props
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     const item = useGameStore(selectGameItem(loot.stdItem, loot.craftedItem))
 
-    const onClick = () => collectLootUi(loot.id)
+    const onClick = useCallback(() => collectLootUi(loot.id), [loot])
 
     if (!item) return
 
@@ -280,4 +280,4 @@ const LootRow = (props: { loot: LootId }) => {
             </TableCell>
         </TableRow>
     )
-}
+})
