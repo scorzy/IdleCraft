@@ -25,9 +25,8 @@ import { GameState } from '../../game/GameState'
 import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
-import classes from './mining.module.css'
 import { MiningSidebar } from './MiningSidebar'
-import { MyLabel } from '@/ui/myCard/MyLabel'
+import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
 
 export const Mining = memo(function Mining() {
     const oreType = useGameStore(selectOreType)
@@ -94,20 +93,18 @@ const MiningOre = memo(function MiningOre() {
         <Card>
             <MyCardHeaderTitle title={t.Mining} icon={IconsData[Icons.Pickaxe]} />
             <CardContent>
-                <MyLabel className="text-muted-foreground">
-                    <span className={classes.oreHp}>
+                <MyLabelContainer className="text-muted-foreground">
+                    <MyLabel>
                         {t.OreHp} {f(ore.hp)}/{f(def.hp)}
-                    </span>
-                    <span>
+                    </MyLabel>
+                    <MyLabel>
                         {t.Armour} {f(oreData.armour)}
-                    </span>
-                </MyLabel>
-                <MyLabel className="text-muted-foreground">
-                    <span>
+                    </MyLabel>
+                    <MyLabel>
                         {t.Damage} {f(damage)}
-                    </span>
-                    <BonusDialog title={t.MiningDamage} selectBonusResult={selectMiningDamageAll} />
-                </MyLabel>
+                        <BonusDialog title={t.MiningDamage} selectBonusResult={selectMiningDamageAll} />
+                    </MyLabel>
+                </MyLabelContainer>
                 <RestartProgress value={hpPercent} color="health" className="mb-2" />
                 <MyLabel className="text-muted-foreground">
                     {t.Time} {ft(time)}

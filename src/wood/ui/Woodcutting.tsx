@@ -35,7 +35,7 @@ import { isSelectedWoodEnabled } from '../selectors/WoodcuttingSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
-import { MyLabel } from '@/ui/myCard/MyLabel'
+import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
 import { Button } from '@/components/ui/button'
 
 const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
@@ -105,15 +105,15 @@ const Cutting = memo(function Cutting() {
         <Card>
             <MyCardHeaderTitle title={fun.cutting(woodType)} icon={IconsData.Axe} />
             <CardContent>
-                <MyLabel className="text-muted-foreground">
-                    <span>
+                <MyLabelContainer className="text-muted-foreground">
+                    <MyLabel>
                         {t.TreeHP} {f(forest.hp)}/{f(def.hp)}
-                    </span>
-                </MyLabel>
-                <MyLabel className="text-muted-foreground">
-                    {t.Damage} {f(damage)}
-                    <BonusDialog title={t.WoodcuttingDamage} selectBonusResult={selectWoodcuttingDamageAll} />
-                </MyLabel>
+                    </MyLabel>
+                    <MyLabel>
+                        {t.Damage} {f(damage)}
+                        <BonusDialog title={t.WoodcuttingDamage} selectBonusResult={selectWoodcuttingDamageAll} />
+                    </MyLabel>
+                </MyLabelContainer>
                 <RestartProgress value={hpPercent} color="health" className="mb-2" />
                 <MyLabel className="text-muted-foreground">
                     {t.Time} {ft(time)}

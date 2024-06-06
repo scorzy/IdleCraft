@@ -1,7 +1,16 @@
 import { ReactNode, memo } from 'react'
 import { cn } from '../../lib/utils'
 
-export const MyLabel = memo(function BonusSpan(props: { children: ReactNode; className?: string }) {
+export const MyLabelContainer = memo(function MyLabelContainer(props: { children: ReactNode; className?: string }) {
     const { children, className } = props
-    return <span className={cn('grid grid-flow-col items-center justify-start gap-2', className)}>{children}</span>
+    return <span className={cn('flex flex-wrap gap-2', className)}>{children}</span>
+})
+
+export const MyLabel = memo(function MyLabel(props: { children: ReactNode; className?: string }) {
+    const { children, className } = props
+    return (
+        <span className={cn('grid flex-grow grid-flow-col items-center justify-start gap-2', className)}>
+            {children}
+        </span>
+    )
 })
