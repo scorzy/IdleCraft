@@ -80,3 +80,6 @@
 .inlineSize {
     container-type: inline-size;
 }
+.bg-card {
+    background: linear-gradient(225deg, transparent 0%, hsl(var(--card)) 100%);
+}
