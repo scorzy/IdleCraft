@@ -240,12 +240,13 @@ const CombatAbilityBadge = memo(function CombatAbilitiesList(props: {
         </MyHoverCard>
     )
 })
+const BAG_ICON = <GiSwapBag />
 const BattleLootUi = memo(function BattleLootUi() {
     const { t } = useTranslations()
     const loots = useGameStore(selectLoot)
     return (
         <Card>
-            <MyCardHeaderTitle title={t.Loot} />
+            <MyCardHeaderTitle title={t.Loot} icon={BAG_ICON} />
             <CardContent>
                 <Table className={classes.lootTable}>
                     <TableBody>

@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import ScrollableFeed from 'react-scrollable-feed'
+import { TbList } from 'react-icons/tb'
 import { Card, CardContent } from '../../components/ui/card'
 import { useGameStore } from '../../game/state'
 import { selectBattleLog, selectBattleLogsIds } from '../battleLogSelectors'
@@ -7,11 +8,12 @@ import { IconsData } from '../../icons/Icons'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { useTranslations } from '../../msg/useTranslations'
 
+const LIST_ICON = <TbList />
 export const BattleLogUi = memo(function BattleLogUi() {
     const { t } = useTranslations()
     return (
         <Card>
-            <MyCardHeaderTitle title={t.Log} />
+            <MyCardHeaderTitle title={t.Log} icon={LIST_ICON} />
             <CardContent>
                 <BattleLogs />
             </CardContent>
