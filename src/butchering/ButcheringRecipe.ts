@@ -10,7 +10,6 @@ import {
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { ItemTypes, ItemSubType } from '../items/Item'
-import { handleParam } from '../wood/recipes/HandleRecipe'
 
 export const butcheringRecipeParam: RecipeParameter[] = [
     {
@@ -25,9 +24,9 @@ export const butcheringRecipe: Recipe = {
     id: 'butcheringRecipe',
     type: RecipeTypes.Butchering,
     nameId: 'Butchering',
-    iconId: Icons.Dagger,
+    iconId: Icons.MeatCleaver,
     itemSubType: ItemSubType.Crafting,
-    getParameters: () => handleParam,
+    getParameters: () => butcheringRecipeParam,
     getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const corpse = params.find((i) => i.id === 'corpse')
         if (!corpse) return

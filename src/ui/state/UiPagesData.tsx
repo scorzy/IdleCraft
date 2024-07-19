@@ -43,4 +43,9 @@ export const UiPagesData: { [k in UiPages]: UiPageData } = {
         nameId: 'Characters',
         icon: <TbUsers />,
     },
+    [UiPages.Butchering]: {
+        nameId: 'Butchering',
+        icon: <TbUsers />,
+        recipeType: RecipeTypes.Butchering,
+    },
 }

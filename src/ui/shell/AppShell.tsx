@@ -72,17 +72,18 @@ const PageContent = memo(function PageContent() {
             return <UiStorage />
         case UiPages.Activities:
             return <Activities />
-        case UiPages.Woodworking:
-            return <CraftingUi />
         case UiPages.Mining:
             return <Mining />
-        case UiPages.Smithing:
-            return <CraftingUi />
         case UiPages.CombatZones:
             return <CombatPage />
         case UiPages.Combat:
             return <CombatUi />
         case UiPages.Characters:
             return <CharactersUi />
+
+        case UiPages.Woodworking:
+        case UiPages.Smithing:
+        case UiPages.Butchering:
+            return <CraftingUi />
     }
 })
