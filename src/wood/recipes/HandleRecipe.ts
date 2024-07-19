@@ -34,7 +34,8 @@ export const HandleRecipe: Recipe = {
         const plank = params.find((i) => i.id === 'plank')
         if (plank === undefined) return
         if (!plank.stdItemId) return
-
+        const id = PlankToHandle.get(plank.stdItemId)
+        if (!id) throw new Error(`PlankToHandle not found ${plank.stdItemId}`)
         return {
             time: 3000,
             requirements: [
@@ -43,10 +44,7 @@ export const HandleRecipe: Recipe = {
                     stdItemId: plank.stdItemId,
                 },
             ],
-            results: {
-                qta: 1,
-                stdItemId: PlankToHandle.get(plank.stdItemId),
-            },
+            results: [{ id, qta: 1, stdItemId: PlankToHandle.get(plank.stdItemId) }],
         }
     },
 }

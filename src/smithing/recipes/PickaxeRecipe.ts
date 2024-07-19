@@ -82,10 +82,7 @@ export const PickaxeRecipe: Recipe = {
                     craftedItemId: bar.stdItemId,
                 },
             ],
-            results: {
-                qta: 1,
-                craftedItem: craftedAxe,
-            },
+            results: [{ id: 'craftedAxe', qta: 1, craftedItem: craftedAxe }],
         }
     },
 }

@@ -192,6 +192,9 @@ export interface Msg {
     DeadBoar: string
     Loot: string
     Collect: string
+
+    Corpse: string
+    Butchering: string
 }
 export interface MsgFunctions {
     // Time

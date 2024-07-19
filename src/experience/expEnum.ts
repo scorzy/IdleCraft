@@ -9,6 +9,7 @@ export enum ExpEnum {
     OneHanded = 'OneHanded',
     TwoHanded = 'TwoHanded ',
     Block = 'Block',
+    Butchering = 'Butchering',
 }
 export const ExpData: { [k in ExpEnum]: { nameId: keyof Msg } } = {
     [ExpEnum.Mining]: { nameId: 'MiningExp' },
@@ -19,4 +20,5 @@ export const ExpData: { [k in ExpEnum]: { nameId: keyof Msg } } = {
     [ExpEnum.OneHanded]: { nameId: 'OneHanded' },
     [ExpEnum.TwoHanded]: { nameId: 'TwoHanded' },
     [ExpEnum.Block]: { nameId: 'Block' },
+    [ExpEnum.Butchering]: { nameId: 'Butchering' },
 }

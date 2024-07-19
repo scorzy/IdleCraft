@@ -66,10 +66,7 @@ export class ArmourRecipe implements Recipe {
                     craftedItemId: bar.stdItemId,
                 },
             ],
-            results: {
-                qta: 1,
-                craftedItem,
-            },
+            results: [{ id: 'craftedItem', qta: 1, craftedItem }],
         }
     }
 }

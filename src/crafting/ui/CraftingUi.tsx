@@ -61,7 +61,8 @@ export const CraftingUi = memo(function CraftingUi() {
         >
             <MyPage className="page__main" key={recipeType}>
                 <RecipeUi />
-                <CraftingResult result={result} />
+                {result && result?.map((r) => <CraftingResult key={r.id} result={r} />)}
+
                 <CraftingReq req={req} />
             </MyPage>
         </MyPageAll>

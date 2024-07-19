@@ -5,10 +5,10 @@ import { CraftingAdapter } from '../CraftingAdapter'
 
 export function getCraftingIcon(state: GameState, id: string) {
     const data = CraftingAdapter.selectEx(state.crafting, id)
-    if (data.result.results.stdItemId) {
-        const stdItem = StdItems[data.result.results.stdItemId]
-        if (!stdItem) throw new Error(`StdItem not found ${data.result.results.stdItemId}`)
+    if (data.result.results[0]?.stdItemId) {
+        const stdItem = StdItems[data.result.results[0].stdItemId]
+        if (!stdItem) throw new Error(`StdItem not found ${data.result.results[0].stdItemId}`)
         return stdItem.icon
-    } else if (data.result.results.craftedItem) return data.result.results.craftedItem.icon
-    else return Icons.Axe
+    } else if (data.result.results[0]?.craftedItem) return data.result.results[0].craftedItem.icon
+    else return Icons.Bar
 }

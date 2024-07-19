@@ -68,10 +68,7 @@ export class DaggerRecipe implements Recipe {
                     craftedItemId: bar.stdItemId,
                 },
             ],
-            results: {
-                qta: 1,
-                craftedItem: craftedDagger,
-            },
+            results: [{ id: 'craftedDagger', qta: 1, craftedItem: craftedDagger }],
         }
     }
 }

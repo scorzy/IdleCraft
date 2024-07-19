@@ -21,15 +21,14 @@ export const execCrafting = makeExecActivity((state: GameState, timer: Timer) =>
         if (req.stdItemId) state = addItem(state, req.stdItemId, null, req.qta * -1)
         if (req.craftedItemId) state = addItem(state, null, req.craftedItemId, req.qta * -1)
     }
-
-    if (craftResult.results.stdItemId)
-        state = addItem(state, craftResult.results.stdItemId, null, craftResult.results.qta)
-    else if (craftResult.results.craftedItem) {
-        const { id, state: craftedItems } = saveCraftItem(state.craftedItems, craftResult.results.craftedItem)
-        state = { ...state, craftedItems }
-        state = addItem(state, null, id, craftResult.results.qta)
+    for (const res of craftResult.results) {
+        if (res.stdItemId) state = addItem(state, res.stdItemId, null, res.qta)
+        else if (res.craftedItem) {
+            const { id, state: craftedItems } = saveCraftItem(state.craftedItems, res.craftedItem)
+            state = { ...state, craftedItems }
+            state = addItem(state, null, id, res.qta)
+        }
     }
-
     state = addExp(state, RecipeData[recipe.type].expType, 10)
 
     return { state, result: ActivityStartResult.Ended }

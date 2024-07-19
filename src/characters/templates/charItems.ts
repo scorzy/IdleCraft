@@ -1,9 +1,10 @@
+import { RecipeItem } from '../../crafting/RecipeInterfaces'
 import { Icons } from '../../icons/Icons'
 import { Item, ItemTypes } from '../../items/Item'
 
-export type Butchering = { stdItem: string; quantity: number }[]
+export type Butchering = { stdItem: string; qta: number }[]
 
-export const DeadAnimals: Record<string, Item & { butchering: Butchering }> = {
+export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> = {
     DeadBoar: {
         id: 'DeadBoar',
         icon: Icons.Boar,
@@ -12,8 +13,9 @@ export const DeadAnimals: Record<string, Item & { butchering: Butchering }> = {
         value: 5,
         butchering: [
             {
-                stdItem: '',
-                quantity: 1,
+                id: '',
+                stdItemId: '',
+                qta: 1,
             },
         ],
     },

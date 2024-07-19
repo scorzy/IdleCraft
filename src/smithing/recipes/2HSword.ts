@@ -68,10 +68,7 @@ export class TwoHSwordRecipe implements Recipe {
                     craftedItemId: bar.stdItemId,
                 },
             ],
-            results: {
-                qta: 1,
-                craftedItem: crafted2HSword,
-            },
+            results: [{ id: 'crafted2HSword', qta: 1, craftedItem: crafted2HSword }],
         }
     }
 }

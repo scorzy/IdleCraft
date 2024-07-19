@@ -35,6 +35,9 @@ export const PlankRecipe: Recipe = {
         if (!log) return
         if (!log.stdItemId) return
 
+        const id = LogToPlank.get(log.stdItemId)
+        if (!id) throw new Error(`LogToPlank not found ${log.stdItemId}`)
+
         return {
             time: 3000,
             requirements: [
@@ -43,10 +46,13 @@ export const PlankRecipe: Recipe = {
                     stdItemId: log.stdItemId,
                 },
             ],
-            results: {
-                qta: 1,
-                stdItemId: LogToPlank.get(log.stdItemId),
-            },
+            results: [
+                {
+                    id,
+                    qta: 1,
+                    stdItemId: id,
+                },
+            ],
         }
     },
 }

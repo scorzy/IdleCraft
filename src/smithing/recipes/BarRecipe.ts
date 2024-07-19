@@ -35,6 +35,7 @@ export const BarRecipe: Recipe = {
         if (!ore) return
         if (!ore.stdItemId) return
         const res = OreToBar.get(ore.stdItemId)
+        if (!res) throw new Error(`OreToBar not found ${ore.stdItemId}`)
 
         return {
             time: 3000,
@@ -44,10 +45,7 @@ export const BarRecipe: Recipe = {
                     stdItemId: ore.stdItemId,
                 },
             ],
-            results: {
-                qta: 1,
-                stdItemId: res,
-            },
+            results: [{ id: res, qta: 1, stdItemId: res }],
         }
     },
 }

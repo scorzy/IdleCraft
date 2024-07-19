@@ -8,6 +8,7 @@ import { getBattleIcon } from '../battle/functions/getBattleIcon'
 import { getBattleTitle } from '../battle/functions/getBattleTitle'
 import { removeBattle } from '../battle/functions/removeBattle'
 import { startBattle } from '../battle/functions/startBattle'
+import { butcheringRecipe } from '../butchering/ButcheringRecipe'
 import { recipes } from '../crafting/Recipes'
 import { execCrafting } from '../crafting/functions/execCrafting'
 import { getCraftingIcon } from '../crafting/functions/getCraftingIcon'
@@ -81,6 +82,7 @@ function initRecipes() {
     recipes.set(longSwordRecipe.id, longSwordRecipe)
     recipes.set(twoHSwordRecipe.id, twoHSwordRecipe)
     recipes.set(armourRecipe.id, armourRecipe)
+    recipes.set(butcheringRecipe.id, butcheringRecipe)
 }
 function initAbilities() {
     ActiveAbilityData.set(AbilitiesEnum.NormalAttack, new NormalAttack())

@@ -68,10 +68,7 @@ export class LongSwordRecipe implements Recipe {
                     craftedItemId: bar.stdItemId,
                 },
             ],
-            results: {
-                qta: 1,
-                craftedItem: craftedSword,
-            },
+            results: [{ id: 'craftedSword', qta: 1, craftedItem: craftedSword }],
         }
     }
 }
