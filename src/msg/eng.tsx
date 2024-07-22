@@ -173,6 +173,7 @@ export const engMsg: Msg = {
     Butchering: 'Butchering',
 
     BoarMeat: 'Boar Meat',
+    ButcheringExp: 'Butchering Level',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

@@ -20,5 +20,5 @@ export const ExpData: { [k in ExpEnum]: { nameId: keyof Msg } } = {
     [ExpEnum.OneHanded]: { nameId: 'OneHanded' },
     [ExpEnum.TwoHanded]: { nameId: 'TwoHanded' },
     [ExpEnum.Block]: { nameId: 'Block' },
-    [ExpEnum.Butchering]: { nameId: 'Butchering' },
+    [ExpEnum.Butchering]: { nameId: 'ButcheringExp' },
 }
