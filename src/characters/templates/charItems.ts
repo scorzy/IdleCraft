@@ -13,8 +13,8 @@ export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> =
         value: 5,
         butchering: [
             {
-                id: '',
-                stdItemId: '',
+                id: 'BoarMeat',
+                stdItemId: 'BoarMeat',
                 qta: 1,
             },
         ],

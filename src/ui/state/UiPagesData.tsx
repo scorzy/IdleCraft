@@ -1,4 +1,4 @@
-import { GiAnvil, GiCrossedSwords, GiMining, GiWoodAxe } from 'react-icons/gi'
+import { GiAnvil, GiCrossedSwords, GiMeatCleaver, GiMining, GiWoodAxe } from 'react-icons/gi'
 import { LuBox, LuLayoutList } from 'react-icons/lu'
 import { TbUsers } from 'react-icons/tb'
 import { RecipeTypes } from '../../crafting/RecipeInterfaces'
@@ -45,7 +45,7 @@ export const UiPagesData: { [k in UiPages]: UiPageData } = {
     },
     [UiPages.Butchering]: {
         nameId: 'Butchering',
-        icon: <TbUsers />,
+        icon: <GiMeatCleaver />,
         recipeType: RecipeTypes.Butchering,
     },
 }

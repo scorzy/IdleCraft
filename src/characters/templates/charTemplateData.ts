@@ -10,7 +10,7 @@ export const CharTemplatesData: { [k in CharTemplateEnum]: CharTemplate } = {
         skillsExp: {},
         skillsLevel: {},
         level: 1,
-        healthPoints: 1,
+        healthPoints: -9,
         staminaPoints: 1,
         manaPoints: 0,
         loot: [

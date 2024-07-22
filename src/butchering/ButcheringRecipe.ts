@@ -2,14 +2,14 @@ import { DeadAnimals } from '../characters/templates/charItems'
 import { Recipe } from '../crafting/Recipe'
 import {
     RecipeParameter,
-    RecipeParamType,
-    RecipeTypes,
     RecipeParameterValue,
+    RecipeParamType,
     RecipeResult,
+    RecipeTypes,
 } from '../crafting/RecipeInterfaces'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
-import { ItemTypes, ItemSubType } from '../items/Item'
+import { ItemSubType, ItemTypes } from '../items/Item'
 
 export const butcheringRecipeParam: RecipeParameter[] = [
     {

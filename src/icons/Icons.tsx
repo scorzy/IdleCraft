@@ -23,6 +23,7 @@ import {
     GiPlainDagger,
     GiBroadsword,
     GiMeatCleaver,
+    GiSteak,
 } from 'react-icons/gi'
 
 export enum Icons {
@@ -49,6 +50,7 @@ export enum Icons {
     Dagger = 'Dagger',
     Broadsword = 'Broadsword',
     MeatCleaver = 'MeatCleaver',
+    Steak = 'Steak',
 }
 export const IconsData: { [k in Icons]: ReactNode } = {
     Axe: <GiWoodAxe />,
@@ -74,4 +76,5 @@ export const IconsData: { [k in Icons]: ReactNode } = {
     Dagger: <GiPlainDagger />,
     Broadsword: <GiBroadsword />,
     MeatCleaver: <GiMeatCleaver />,
+    Steak: <GiSteak />,
 }

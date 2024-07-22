@@ -14,7 +14,7 @@ const selectHealthBonusList = memoize((points: number) => {
         iconId: Icons.Heart,
         nameId: 'Base',
     })
-    if (points > 0)
+    if (points >= -9)
         bonuses.push({
             id: 'basePoints',
             add: 10 * points,

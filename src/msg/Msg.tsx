@@ -195,6 +195,8 @@ export interface Msg {
 
     Corpse: string
     Butchering: string
+
+    BoarMeat: string
 }
 export interface MsgFunctions {
     // Time
