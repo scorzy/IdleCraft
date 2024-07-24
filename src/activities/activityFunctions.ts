@@ -3,18 +3,22 @@ import { activityStarters } from '../game/globals'
 import { useGameStore } from '../game/state'
 import { ActivityAdapter } from './ActivityState'
 import { ActivityStartResult } from './activityInterfaces'
+import { removeActivityInt } from './functions/removeActivity'
 
 export function startNextActivity(state: GameState): GameState {
     if (state.orderedActivities.length < 1) return state
 
-    if (state.activityId !== null) {
+    if (state.activityId) {
         const currentAct = ActivityAdapter.select(state.activities, state.activityId)
         if (currentAct === undefined) {
             state = { ...state, activityId: null }
         } else if (currentAct.max > state.activityDone) {
+            const actId = state.activityId
             const start = activityStarters.getEx(currentAct.type)
-            const { state: gameState, result } = start(state, state.activityId)
+            const { state: gameState, result } = start(state, actId)
             state = gameState
+            if (result === ActivityStartResult.NotPossible) state = removeActivityInt(state, actId)
+
             if (result === ActivityStartResult.Started) return state
         }
     }
@@ -33,6 +37,7 @@ export function startNextActivity(state: GameState): GameState {
         const start = activityStarters.getEx(activity.type)
         const { state: gameState, result } = start(state, activityId)
         state = gameState
+        if (result === ActivityStartResult.NotPossible) state = removeActivityInt(state, activityId)
 
         return result === ActivityStartResult.Started
     }
