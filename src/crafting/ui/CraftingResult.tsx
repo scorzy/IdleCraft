@@ -10,7 +10,7 @@ import { selectGameItem, selectItemQta } from '../../storage/StorageSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { selectResultQta } from '../CraftingSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
-import { Card, CardContent } from '../../components/ui/card'
+import { CardContent } from '../../components/ui/card'
 import { getItemId2 } from '@/storage/getItemId2'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
@@ -27,36 +27,31 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
     if (!item) return <></>
 
     return (
-        <Card>
+        <>
             <MyCardHeaderTitle title={t[item.nameId]} icon={IconsData[item.icon]} />
             <CardContent>
-                <div className="text-muted-foreground">
+                <div className="text-sm text-muted-foreground">
                     <MyLabel>Quantity {f(result.qta)}</MyLabel>
                     <MyLabel>You have {f(have)}</MyLabel>
                     <ItemInfo item={item} />
                 </div>
             </CardContent>
-        </Card>
+        </>
     )
 })
 export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq[] | undefined }) {
     const { req } = props
-    const { t } = useTranslations()
 
     if (!req) return <></>
 
     return (
-        <Card title={t.Requirements}>
-            <CardContent>
-                <Table>
-                    <TableBody>
-                        {req.map((r) => (
-                            <CraftingReqRow req={r} key={getItemId2(r.stdItemId, r.craftedItemId)} />
-                        ))}
-                    </TableBody>
-                </Table>
-            </CardContent>
-        </Card>
+        <Table>
+            <TableBody>
+                {req.map((r) => (
+                    <CraftingReqRow req={r} key={getItemId2(r.stdItemId, r.craftedItemId)} />
+                ))}
+            </TableBody>
+        </Table>
     )
 })
 const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeItemReq }) {
