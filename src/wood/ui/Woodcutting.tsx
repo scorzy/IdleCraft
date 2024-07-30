@@ -51,10 +51,18 @@ export const Woodcutting = memo(function Woodcutting() {
         <MyPageAll
             key={woodType}
             sidebar={<WoodcuttingSidebar />}
-            header={
+            info={
                 <div className="page__info">
-                    <ExperienceCard expType={ExpEnum.Woodcutting} charId={PLAYER_ID} />
-                    <EquipItemUi slot={EquipSlotsEnum.WoodAxe} />
+                    <Card>
+                        <CardContent>
+                            <ExperienceCard expType={ExpEnum.Woodcutting} charId={PLAYER_ID} />
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardContent>
+                            <EquipItemUi slot={EquipSlotsEnum.WoodAxe} />
+                        </CardContent>
+                    </Card>
                 </div>
             }
         >

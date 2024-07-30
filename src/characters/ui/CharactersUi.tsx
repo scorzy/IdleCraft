@@ -53,53 +53,58 @@ export const CharactersUi = memo(function CharactersUi() {
     return (
         <Tabs value={tab} onValueChange={(value) => setTab(value)} className="overflow-auto" orientation="vertical">
             <MyPageAll sidebar={<CharactersSidebar />}>
-                <MyPageAll
-                    sidebar={sidebar}
-                    header={
-                        <TabsList className="m-3">
-                            <TabsTrigger value="info">
-                                <StatsTab />
-                            </TabsTrigger>
-                            <TabsTrigger value="perks">
-                                <PerksTab />
-                            </TabsTrigger>
-                            <TabsTrigger value="abilities">{t.Abilities}</TabsTrigger>
-                            <TabsTrigger value="equipments">{t.Equipments}</TabsTrigger>
-                            <TabsTrigger value="skills">{t.Skills}</TabsTrigger>
-                        </TabsList>
-                    }
-                >
-                    <TabsContent value="info">
-                        <MyPage className="page__main">
-                            <CharInfo />
-                            <CombatAbilities />
-                        </MyPage>
-                    </TabsContent>
+                <div className="page__container-sidebar">
+                    <div className="page__all">
+                        <div className="page__header">
+                            <TabsList className="m-3">
+                                <TabsTrigger value="info">
+                                    <StatsTab />
+                                </TabsTrigger>
+                                <TabsTrigger value="perks">
+                                    <PerksTab />
+                                </TabsTrigger>
+                                <TabsTrigger value="abilities">{t.Abilities}</TabsTrigger>
+                                <TabsTrigger value="equipments">{t.Equipments}</TabsTrigger>
+                                <TabsTrigger value="skills">{t.Skills}</TabsTrigger>
+                            </TabsList>
+                        </div>
 
-                    <TabsContent value="perks">
-                        <MyPage className="page__main">
-                            <PerkPage />
-                        </MyPage>
-                    </TabsContent>
+                        {sidebar && <div className="page__sidebar">{sidebar}</div>}
 
-                    <TabsContent value="abilities">
-                        <MyPage className="page__main">
-                            <AbilityUi />
-                        </MyPage>
-                    </TabsContent>
+                        <div className="page__main2">
+                            <TabsContent value="info">
+                                <MyPage className="page__main">
+                                    <CharInfo />
+                                    <CombatAbilities />
+                                </MyPage>
+                            </TabsContent>
 
-                    <TabsContent value="equipments">
-                        <MyPage className="page__main">
-                            <CharEquipments />
-                        </MyPage>
-                    </TabsContent>
+                            <TabsContent value="perks">
+                                <MyPage className="page__main">
+                                    <PerkPage />
+                                </MyPage>
+                            </TabsContent>
 
-                    <TabsContent value="skills">
-                        <MyPage className="page__main">
-                            <CharSkills />
-                        </MyPage>
-                    </TabsContent>
-                </MyPageAll>
+                            <TabsContent value="abilities">
+                                <MyPage className="page__main">
+                                    <AbilityUi />
+                                </MyPage>
+                            </TabsContent>
+
+                            <TabsContent value="equipments">
+                                <MyPage className="page__main">
+                                    <CharEquipments />
+                                </MyPage>
+                            </TabsContent>
+
+                            <TabsContent value="skills">
+                                <MyPage className="page__main">
+                                    <CharSkills />
+                                </MyPage>
+                            </TabsContent>
+                        </div>
+                    </div>
+                </div>
             </MyPageAll>
         </Tabs>
     )

@@ -38,7 +38,7 @@
 .sidebarContainer {
     padding-top: 0.5rem;
 }
-@container (min-width: 900px) {
+@container (min-width: 1000px) {
     .collapseContainer {
         transition-duration: 300ms;
         width: 250px;
