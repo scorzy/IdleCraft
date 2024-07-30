@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@hookform/resolvers':
-    specifier: ^3.9.0
-    version: 3.9.0(react-hook-form@7.52.1)
   '@radix-ui/react-collapsible':
     specifier: ^1.1.0
     version: 1.1.0(react-dom@19.0.0-rc-3563387fe3-20240621)(react@19.0.0-rc-3563387fe3-20240621)(types-react-dom@19.0.0-rc.1)(types-react@19.0.0-rc.1)
@@ -1147,14 +1144,6 @@ packages:
 
   /@floating-ui/utils@0.2.5:
     resolution: {integrity: sha512-sTcG+QZ6fdEUObICavU+aB3Mp8HY4n14wYHdxK4fXjPmv3PXZZeY5RaguJmGyeH/CJQhX3fqKUtS4qc1LoHwhQ==}
-    dev: false
-
-  /@hookform/resolvers@3.9.0(react-hook-form@7.52.1):
-    resolution: {integrity: sha512-bU0Gr4EepJ/EQsH/IwEzYLsT/PEj5C0ynLQ4m+GSHS+xKH4TfSelhluTgOaoc4kA5s7eCsQbM4wvZLzELmWzUg==}
-    peerDependencies:
-      react-hook-form: ^7.0.0
-    dependencies:
-      react-hook-form: 7.52.1(react@19.0.0-rc-3563387fe3-20240621)
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
