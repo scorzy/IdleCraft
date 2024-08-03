@@ -152,10 +152,12 @@ const CharInfo = memo(function CharInfo() {
             <MyCardHeaderTitle icon={<TbInfoCircle />} title={t.Info} />
             <CardContent className="grid gap-2">
                 <StatsInfo />
-                {t.Attack}
-                <AttackInfo charId={charId} />
-                {t.Defence}
-                <ArmourInfo charId={charId} />
+                <div>
+                    {t.Attack}
+                    <AttackInfo charId={charId} />
+                    {t.Defence}
+                    <ArmourInfo charId={charId} />
+                </div>
             </CardContent>
         </Card>
     )

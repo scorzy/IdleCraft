@@ -141,7 +141,7 @@ export const PerkPage = () => {
     const requirements = data.requiredExp ?? data.requiredPerks
 
     const content = (
-        <>
+        <div className="text-sm">
             {t[data.descId]}
             {requirements && <span>{t.Requirements}</span>}
             {requirements && (
@@ -150,7 +150,7 @@ export const PerkPage = () => {
                     {data.requiredPerks?.map((r) => <PerkPerkReq perk={r} key={r} />)}
                 </ul>
             )}
-        </>
+        </div>
     )
     return (
         <Card>
