@@ -74,9 +74,6 @@ dependencies:
   react-fast-compare:
     specifier: ^3.2.2
     version: 3.2.2
-  react-hook-form:
-    specifier: ^7.52.2
-    version: 7.52.2(react@19.0.0-rc-3563387fe3-20240621)
   react-icons:
     specifier: ^5.2.1
     version: 5.2.1(react@19.0.0-rc-3563387fe3-20240621)
@@ -5351,15 +5348,6 @@ packages:
 
   /react-fast-compare@3.2.2:
     resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
-    dev: false
-
-  /react-hook-form@7.52.2(react@19.0.0-rc-3563387fe3-20240621):
-    resolution: {integrity: sha512-pqfPEbERnxxiNMPd0bzmt1tuaPcVccywFDpyk2uV5xCIBphHV5T8SVnX9/o3kplPE1zzKt77+YIoq+EMwJp56A==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18 || ^19
-    dependencies:
-      react: 19.0.0-rc-3563387fe3-20240621
     dev: false
 
   /react-icons@5.2.1(react@19.0.0-rc-3563387fe3-20240621):
