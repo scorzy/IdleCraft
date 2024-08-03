@@ -9,4 +9,11 @@ export const ButcheringItems: Record<string, Item> = {
         type: ItemTypes.RawFood,
         value: 5,
     },
+    BoarSkin: {
+        id: 'BoarSkin',
+        icon: Icons.AnimalHide,
+        nameId: 'BoarSkin',
+        type: ItemTypes.RawSkin,
+        value: 5,
+    },
 }

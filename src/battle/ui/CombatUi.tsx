@@ -80,7 +80,6 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
     const name = useGameStore(selectCharName(charId))
     const icon = useGameStore(selectCharIcon(charId))
     const [isAttOpen, setAttIsOpen] = useState(false)
-    const [isDefOpen, setIsDefOpen] = useState(false)
 
     return (
         <Card>
@@ -97,26 +96,18 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
                     <Collapsible open={isAttOpen} onOpenChange={setAttIsOpen} className="text-sm">
                         <CollapsibleTrigger asChild>
                             <Button variant="ghost" className="w-full">
-                                {t.OffensiveInfo}
+                                {t.Stats}
                                 <CaretSortIcon />
                             </Button>
                         </CollapsibleTrigger>
 
                         <CollapsibleContent className="CollapsibleContent">
-                            <AttackInfo charId={charId} />
-                        </CollapsibleContent>
-                    </Collapsible>
-
-                    <Collapsible open={isDefOpen} onOpenChange={setIsDefOpen} className="text-sm">
-                        <CollapsibleTrigger asChild>
-                            <Button variant="ghost" className="w-full">
-                                {t.DefensiveInfo}
-                                <CaretSortIcon />
-                            </Button>
-                        </CollapsibleTrigger>
-
-                        <CollapsibleContent className="CollapsibleContent">
-                            <ArmourInfo charId={charId} />
+                            <CardContent className="grid gap-2">
+                                {t.Attack}
+                                <AttackInfo charId={charId} />
+                                {t.Defence}
+                                <ArmourInfo charId={charId} />
+                            </CardContent>
                         </CollapsibleContent>
                     </Collapsible>
                 </div>

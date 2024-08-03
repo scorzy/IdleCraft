@@ -76,7 +76,6 @@
         border-bottom: none;
     }
     .page__info-side {
-        border-left: 1px solid hsl(var(--border));
         border-bottom: none;
     }
     .page__container-sidebar {

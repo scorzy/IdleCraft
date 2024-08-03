@@ -1,6 +1,7 @@
 import { memo, useCallback, useState } from 'react'
 import { TbInfoCircle, TbPlus } from 'react-icons/tb'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
+import clsx from 'clsx'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
@@ -190,7 +191,7 @@ const StatsInfo = memo(function StatsInfo() {
     const hasUnused = usedPoints < maxPoints
 
     return (
-        <div className={classes.stats}>
+        <div className={clsx(classes.stats, 'text-sm')}>
             <span className="text-muted-foreground">
                 {t.Points} {f(usedPoints)}/{f(maxPoints)}
             </span>
@@ -265,7 +266,7 @@ const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; 
     const data = DamageTypesData[type]
     const name = t[data.ArmourName]
     return (
-        <li className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
+        <li className="grid grid-flow-col items-center justify-start gap-2 text-sm text-muted-foreground">
             {name} {f(value)}
             <BonusDialog title={name} selectBonusResult={list} />
         </li>
@@ -277,13 +278,16 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
     const { t } = useTranslations()
 
     const damage = useGameStore(selectAllCharacterAttackDamage(charId))
-
     const speed = useGameStore(selectCharacterAttackSpeed(charId))
     const speedList = selectCharacterAttackSpeedList(charId)
 
     return (
         <div>
-            <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
+            <div className="grid grid-flow-col items-center justify-start gap-2 text-sm text-muted-foreground">
+                {t.NormalAttack} {ft(speed)}
+                <BonusDialog title={t.NormalAttack} selectBonusResult={speedList} isTime={true} />
+            </div>
+            <div className="grid grid-flow-col items-center justify-start gap-2 text-sm text-muted-foreground">
                 <ul>
                     {Object.entries(damage).map((kv) => (
                         <AttackTypeInfo
@@ -294,10 +298,6 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
                         ></AttackTypeInfo>
                     ))}
                 </ul>
-            </div>
-            <div className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
-                {t.NormalAttack} {ft(speed)}
-                <BonusDialog title={t.NormalAttack} selectBonusResult={speedList} isTime={true} />
             </div>
         </div>
     )

@@ -3,6 +3,7 @@ import { DamageData, CraftingData, Item, PickaxeData, WeaponData, WoodAxeData, D
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 import { DamageTypesData } from '../damageTypes'
+import { Msg } from '../../msg/Msg'
 
 export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
     const { item } = props
@@ -12,7 +13,7 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
     return (
         <div>
             <div>
-                {t.ItemType} {item.type}
+                {t.ItemType} {t[item.type as keyof Msg]}
             </div>
             <div>
                 {t.Value} {f(item.value)}

@@ -17,6 +17,11 @@ export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> =
                 stdItemId: 'BoarMeat',
                 qta: 1,
             },
+            {
+                id: 'BoarSkin',
+                stdItemId: 'BoarSkin',
+                qta: 1,
+            },
         ],
     },
 }

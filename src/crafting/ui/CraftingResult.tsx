@@ -31,8 +31,12 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
             <MyCardHeaderTitle title={t[item.nameId]} icon={IconsData[item.icon]} />
             <CardContent>
                 <div className="text-sm text-muted-foreground">
-                    <MyLabel>Quantity {f(result.qta)}</MyLabel>
-                    <MyLabel>You have {f(have)}</MyLabel>
+                    <MyLabel>
+                        {t.Quantity} {f(result.qta)}
+                    </MyLabel>
+                    <MyLabel>
+                        {t.YouHave} {f(have)}
+                    </MyLabel>
                     <ItemInfo item={item} />
                 </div>
             </CardContent>

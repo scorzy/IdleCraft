@@ -23,7 +23,7 @@ export const ExperienceCard = memo(function ExperienceCard(props: { expType: Exp
 
     return (
         <div>
-            <div className={`text-sm font-medium ${styles.title}`}>
+            <div className={` font-medium ${styles.title}`}>
                 {t[expData.nameId]}
                 <Badge className="w-min text-sm font-medium">{f(level)}</Badge>
             </div>

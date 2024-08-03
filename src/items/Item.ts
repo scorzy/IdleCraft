@@ -16,6 +16,7 @@ export enum ItemTypes {
     Body = 'Body',
     Corpse = 'Corpse',
     RawFood = 'RawFood',
+    RawSkin = 'RawSkin',
 }
 export enum ItemSubType {
     Weapon = 'Weapon',
