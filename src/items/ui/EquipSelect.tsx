@@ -25,6 +25,8 @@ import { getRecipeParamId } from '../../crafting/RecipeFunctions'
 import { Msg } from '../../msg/Msg'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { getItemId2 } from '../../storage/getItemId2'
+import { Card, CardContent } from '../../components/ui/card'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
 const noIcon = <GiRock />
@@ -58,32 +60,34 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     }
 
     return (
-        <div>
-            <span className="text-sm font-medium">{t[slotData.ItemType as keyof Msg]}</span>
-            <Select value={itemId ?? '-'} onValueChange={handleEquipChange}>
-                <SelectTrigger>
-                    <SelectValue>
-                        <span className="grid grid-flow-col items-center gap-2">
-                            {icon}
-                            {name}
-                        </span>
-                    </SelectValue>
-                </SelectTrigger>
+        <Card>
+            <MyCardHeaderTitle title={t[slotData.ItemType as keyof Msg]} />
+            <CardContent>
+                <Select value={itemId ?? '-'} onValueChange={handleEquipChange}>
+                    <SelectTrigger>
+                        <SelectValue>
+                            <span className="grid grid-flow-col items-center gap-2">
+                                {icon}
+                                {name}
+                            </span>
+                        </SelectValue>
+                    </SelectTrigger>
 
-                <SelectContent>
-                    <SelectItem value="-" icon={<GiRock className="text-2xl" />}>
-                        <OptionItemInt name={'None'} slot={slot} />
-                    </SelectItem>
-                    {itemsId.length > 0 && <SelectSeparator />}
-                    {itemsId.map((t, index) => (
-                        <Fragment key={getItemId2(t.stdItemId, t.craftItemId)}>
-                            {index !== 0 && <SelectSeparator />}
-                            <OptionItem itemId={t} slot={slot} />
-                        </Fragment>
-                    ))}
-                </SelectContent>
-            </Select>
-        </div>
+                    <SelectContent>
+                        <SelectItem value="-" icon={<GiRock className="text-2xl" />}>
+                            <OptionItemInt name={'None'} slot={slot} />
+                        </SelectItem>
+                        {itemsId.length > 0 && <SelectSeparator />}
+                        {itemsId.map((t, index) => (
+                            <Fragment key={getItemId2(t.stdItemId, t.craftItemId)}>
+                                {index !== 0 && <SelectSeparator />}
+                                <OptionItem itemId={t} slot={slot} />
+                            </Fragment>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </CardContent>
+        </Card>
     )
 })
 

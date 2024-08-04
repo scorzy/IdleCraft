@@ -70,21 +70,19 @@ export const CraftingUi = memo(function CraftingUi() {
                 </CardContent>
             </Card>
 
-            <Card>
-                <CardContent>
-                    <ExperienceCard expType={RecipeData[recipeType].expType} charId={PLAYER_ID} />
-                </CardContent>
-            </Card>
+            <ExperienceCard expType={RecipeData[recipeType].expType} charId={PLAYER_ID} />
         </MyPage>
     )
 })
 const RecipeUi = memo(function RecipeUi() {
     const recipeType = useGameStore(selectRecipeType)
     const params = useGameStore(selectRecipeParams)
+    const { t } = useTranslations()
 
     if (!recipeType) return <></>
     return (
         <Card>
+            <MyCardHeaderTitle title={t.Recipe} />
             <CardContent>
                 <div className={classes.craftingForm}>
                     <RecipeSelectUi />
@@ -109,8 +107,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     const icon = selected && IconsData[selected.iconId]
 
     return (
-        <div>
-            <Label>{t.Recipe}</Label>
+        <>
             <Select value={recipeId} onValueChange={handleRecipeChange}>
                 <SelectTrigger>
                     <SelectValue placeholder={t.SelectARecipe}>
@@ -129,7 +126,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
                     ))}
                 </SelectContent>
             </Select>
-        </div>
+        </>
     )
 })
 

@@ -6,8 +6,7 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { Badge } from '../../components/ui/badge'
 import { useTranslations } from '../../msg/useTranslations'
-import { MyLabel, MyLabelContainer } from '../../ui/myCard/MyLabel'
-import styles from './ExperienceCard.module.css'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
 
 export const ExperienceCard = memo(function ExperienceCard(props: { expType: ExpEnum; charId: string }) {
     const { expType, charId } = props
@@ -37,19 +36,21 @@ export const ExperienceCardUi = memo(function ExperienceCardUi(props: {
     const percent = Math.floor((100 * (xp - levelXp)) / (nextLevelXp - levelXp))
 
     return (
-        <div>
-            <MyLabelContainer>
-                <MyLabel className={`font-medium ${styles.title}`}>
+        <Card>
+            <CardHeader>
+                <CardTitle className="gap-y-0">
                     {title}
                     <Badge className="w-min text-sm font-medium" size={'xs'}>
                         {f(level)}
                     </Badge>
-                </MyLabel>
-                <MyLabel className="text-sm text-muted-foreground">
-                    {t.XP} {f(xp)}/{f(nextLevelXp)}
-                </MyLabel>
-            </MyLabelContainer>
-            <ProgressBar value={percent} key={title} color="primary" />
-        </div>
+                    <CardDescription>
+                        {t.XP} {f(xp)}/{f(nextLevelXp)}
+                    </CardDescription>
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-1">
+                <ProgressBar value={percent} key={title} color="primary" />
+            </CardContent>
+        </Card>
     )
 })
