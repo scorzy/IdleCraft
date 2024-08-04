@@ -1,6 +1,6 @@
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { GameState } from '../game/GameState'
-import { EXP_BASE_PRICE, EXP_GROW_RATE } from './expConst'
+import { EXP_BASE_PRICE, EXP_BASE_PRICE_MAIN, EXP_GROW_RATE, EXP_GROW_RATE_MAIN } from './expConst'
 import { ExpEnum } from './expEnum'
 
 export const getLevel = (state: GameState, expType: ExpEnum, charId: string) =>
@@ -31,3 +31,12 @@ export const selectPlayerLevel = (state: GameState, charId: string) => {
     if (!player) throw new Error('Player not found')
     return player.level
 }
+
+export const getCharLevelExp = (level: number) =>
+    Math.floor(EXP_BASE_PRICE_MAIN * (EXP_GROW_RATE_MAIN ** level - 1)) / (EXP_GROW_RATE_MAIN - 1)
+export const selectCharExp = (charId: string) => (state: GameState) =>
+    getCharLevelExp(CharacterAdapter.selectEx(state.characters, charId).exp)
+export const selectCharLevelExp = (charId: string) => (state: GameState) =>
+    getCharLevelExp(CharacterAdapter.selectEx(state.characters, charId).level)
+export const selectNextCharExp = (charId: string) => (state: GameState) =>
+    getCharLevelExp(CharacterAdapter.selectEx(state.characters, charId).level + 1)

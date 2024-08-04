@@ -25,7 +25,7 @@ import { selectCharacterMaxStamina, selectCharacterMaxStaminaList } from '../sel
 import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { Button } from '../../components/ui/button'
-import { selectCharacterMaxAttr, selectCharacterUsedAttr } from '../characterSelectors'
+import { selectCharacterLevel, selectCharacterMaxAttr, selectCharacterUsedAttr } from '../characterSelectors'
 import { addHealthPointClick, addManaPointClick, addStaminaPointClick } from '../characterFunctions'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
@@ -40,6 +40,8 @@ import { Card, CardContent } from '../../components/ui/card'
 import { selectAllCharacterAttackDamage, selectCharacterAttackDamageList } from '../selectors/attackDamageSelectors'
 import { selectCharacterAttackSpeed, selectCharacterAttackSpeedList } from '../selectors/attackSpeedSelectors'
 import { CharSkills } from '../../experience/ui/CharSkills'
+import { selectCharExp, selectCharLevelExp, selectNextCharExp } from '../../experience/expSelectors'
+import { ExperienceCardUi } from '../../experience/ui/ExperienceCard'
 import classes from './charactersUi.module.css'
 import { CharEquipments } from './CharEquipments'
 
@@ -194,6 +196,8 @@ const StatsInfo = memo(function StatsInfo() {
 
     return (
         <div className={clsx(classes.stats, 'text-sm')}>
+            <CharLevelUi charId={charId} />
+
             <span className="text-muted-foreground">
                 {t.Points} {f(usedPoints)}/{f(maxPoints)}
             </span>
@@ -244,6 +248,17 @@ const StatsInfo = memo(function StatsInfo() {
             </div>
         </div>
     )
+})
+
+const CharLevelUi = memo(function CharLevelUi(props: { charId: string }) {
+    const { charId } = props
+
+    const level = useGameStore(selectCharacterLevel(charId))
+    const xp = useGameStore(selectCharExp(charId))
+    const levelXp = useGameStore(selectCharLevelExp(charId))
+    const nextLevelXp = useGameStore(selectNextCharExp(charId))
+
+    return <ExperienceCardUi title={'Level'} level={level} xp={xp} levelXp={levelXp} nextLevelXp={nextLevelXp} />
 })
 
 const armourTypes = Object.values(DamageTypes).sort()
