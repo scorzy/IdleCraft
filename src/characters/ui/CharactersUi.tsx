@@ -150,18 +150,21 @@ const CharInfo = memo(function CharInfo() {
     const { t } = useTranslations()
     const charId = useGameStore(selectSelectedCharId)
     return (
-        <Card>
-            <MyCardHeaderTitle icon={<TbInfoCircle />} title={t.Info} />
-            <CardContent className="grid gap-2">
-                <StatsInfo />
-                <div>
-                    {t.Attack}
-                    <AttackInfo charId={charId} />
-                    {t.Defence}
-                    <ArmourInfo charId={charId} />
-                </div>
-            </CardContent>
-        </Card>
+        <div className="grid gap-4">
+            <CharLevelUi charId={charId} />
+            <Card>
+                <MyCardHeaderTitle icon={<TbInfoCircle />} title={t.Info} />
+                <CardContent className="grid gap-2">
+                    <StatsInfo />
+                    <div>
+                        {t.Attack}
+                        <AttackInfo charId={charId} />
+                        {t.Defence}
+                        <ArmourInfo charId={charId} />
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
     )
 })
 
@@ -196,8 +199,6 @@ const StatsInfo = memo(function StatsInfo() {
 
     return (
         <div className={clsx(classes.stats, 'text-sm')}>
-            <CharLevelUi charId={charId} />
-
             <span className="text-muted-foreground">
                 {t.Points} {f(usedPoints)}/{f(maxPoints)}
             </span>
