@@ -31,4 +31,15 @@ export default defineConfig({
             provider: 'v8',
         },
     },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: function manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        return 'vendor'
+                    }
+                },
+            },
+        },
+    },
 })
