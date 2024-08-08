@@ -5,7 +5,9 @@ import { EXP_BASE_PRICE, EXP_BASE_PRICE_MAIN, EXP_GROW_RATE, EXP_GROW_RATE_MAIN 
 import { ExpEnum } from './expEnum'
 
 export function addExp(state: GameState, expType: ExpEnum, expQta: number, characterId: string = PLAYER_ID) {
-    const char = CharacterAdapter.selectEx(state.characters, PLAYER_ID)
+    if (characterId !== PLAYER_ID) return state
+
+    const char = CharacterAdapter.selectEx(state.characters, characterId)
 
     const currentExp = char.skillsExp[expType] ?? 0
     const currentLevel = char.skillsLevel[expType] ?? 0
