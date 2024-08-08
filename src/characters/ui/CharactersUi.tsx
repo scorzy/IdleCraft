@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from 'react'
 import { TbInfoCircle, TbPlus } from 'react-icons/tb'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
