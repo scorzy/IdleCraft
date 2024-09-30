@@ -1,4 +1,3 @@
-import { useShallow } from 'zustand/react/shallow'
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'

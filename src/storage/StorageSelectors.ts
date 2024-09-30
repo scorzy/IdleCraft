@@ -9,6 +9,7 @@ import { selectTranslations } from '../msg/useTranslations'
 import { Translations } from '../msg/Msg'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
+import { checkLast } from '../utils/memoizeLast'
 import { ItemAdapter } from './ItemAdapter'
 import { InventoryNoQta, ItemId, StorageState } from './storageState'
 import { InitialState } from '@/entityAdapter/InitialState'
@@ -191,16 +192,18 @@ export const selectItemsByType = memoize(function (itemType: ItemTypes | undefin
     }
 })
 
-export const selectInventoryNoQta = memoize((charId: string) => (state: GameState) => {
-    const inventory = CharacterAdapter.selectEx(state.characters, charId).inventory
-    const ret: InventoryNoQta = {}
-    Object.entries(inventory).forEach((kv) => {
-        const slot = kv[0] as EquipSlotsEnum
-        const itemIds = kv[1]
-        ret[slot] = {
-            stdItemId: itemIds.stdItemId,
-            craftItemId: itemIds.craftItemId,
-        }
+export const selectInventoryNoQta = memoize((charId: string) =>
+    checkLast((state: GameState) => {
+        const inventory = CharacterAdapter.selectEx(state.characters, charId).inventory
+        const ret: InventoryNoQta = {}
+        Object.entries(inventory).forEach((kv) => {
+            const slot = kv[0] as EquipSlotsEnum
+            const itemIds = kv[1]
+            ret[slot] = {
+                stdItemId: itemIds.stdItemId,
+                craftItemId: itemIds.craftItemId,
+            }
+        })
+        return ret
     })
-    return ret
-})
+)

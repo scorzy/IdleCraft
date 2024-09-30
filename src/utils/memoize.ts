@@ -12,16 +12,9 @@ export function memoize<T>(fn: T) {
         let i = 0
         const len = args.length
         let arg1
-
-        const getKeyArt = (arg: unknown) => {
-            const type = typeof getKeyArt
-            if (type === 'bigint' || type === 'number' || type === 'string') return arg
-            else return JSON.stringify(arg)
-        }
-
         for (i = 0; i < len; i++) {
             arg1 = args[i]
-            const newLevel = level.m?.get(getKeyArt(arg1))
+            const newLevel = level.m?.get(arg1)
             if (newLevel) level = newLevel
             else {
                 found = false
@@ -39,7 +32,7 @@ export function memoize<T>(fn: T) {
             for (let k = len - 1; k > i; k--) {
                 const arg = args[k]
                 const m = new Map<unknown, Cache>()
-                m.set(getKeyArt(arg), lastLevel)
+                m.set(arg, lastLevel)
                 lastLevel = { m }
             }
 
@@ -47,9 +40,10 @@ export function memoize<T>(fn: T) {
             if (map === undefined) {
                 map = new Map<unknown, Cache>()
                 level.m = map
-                map.set(getKeyArt(arg1), lastLevel)
+                map.set(arg1, lastLevel)
             } else {
-                map.set(getKeyArt(arg1), lastLevel)
+                map.set(arg1, lastLevel)
+                if (map.size > 20) map.delete(map.keys().next().value)
             }
 
             return res

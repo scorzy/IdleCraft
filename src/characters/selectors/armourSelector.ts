@@ -24,7 +24,6 @@ const selectArmourList = memoize((inventory: InventoryItems, type: DamageTypes) 
         bonuses,
         total: getTotal(bonuses),
     }
-    console.log(inventory, type)
     return bonusList
 })
 
