@@ -24,12 +24,13 @@ const selectArmourList = memoize((inventory: InventoryItems, type: DamageTypes) 
         bonuses,
         total: getTotal(bonuses),
     }
-
+    console.log(inventory, type)
     return bonusList
 })
 
 export const selectCharacterArmourList = memoize((charId: string, type: DamageTypes) => (state: GameState) => {
     const inventory = selectAllCharInventory(state, charId)
+
     return selectArmourList(inventory, type)
 })
 export const selectCharacterArmour = memoize(

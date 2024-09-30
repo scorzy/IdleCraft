@@ -1,9 +1,11 @@
+import { useShallow } from 'zustand/react/shallow'
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageData, DamageTypes, Item, damageTypesValues } from '../../items/Item'
 import { memoize } from '../../utils/memoize'
+import { checkLast } from '../../utils/memoizeLast'
 import { selectMainWeapon } from './selectMainWeapon'
 
 const selectAttackDamageList = memoize((weapon: Item | undefined, type: DamageTypes) => {
@@ -42,11 +44,12 @@ export const selectCharacterAttackDamage = memoize(
     (charId: string, type: DamageTypes) => (state: GameState) =>
         selectCharacterAttackDamageList(charId, type)(state).total
 )
-export const selectAllCharacterAttackDamage = memoize((charId: string) => (state: GameState) => {
-    const ret: DamageData = {}
-    damageTypesValues.forEach((type) => {
-        const damage = selectCharacterAttackDamageList(charId, type)(state).total
-        if (damage > 0) ret[type] = damage
+export const selectAllCharacterAttackDamage = (charId: string) =>
+    checkLast((state: GameState) => {
+        const ret: DamageData = {}
+        damageTypesValues.forEach((type) => {
+            const damage = selectCharacterAttackDamageList(charId, type)(state).total
+            if (damage > 0) ret[type] = damage
+        })
+        return ret
     })
-    return ret
-})

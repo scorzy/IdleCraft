@@ -6,14 +6,19 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
+import { checkLast } from '../../utils/memoizeLast'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
-const BonusListUi = memo(function BonusListUi(props: { bonusResult: BonusResult; isTime?: boolean }) {
-    const { bonusResult, isTime } = props
+const BonusListUi = memo(function BonusListUi(props: {
+    selectBonusResult: (state: GameState) => BonusResult
+    isTime?: boolean
+}) {
+    const { selectBonusResult, isTime } = props
     const { f, ft } = useNumberFormatter()
     const { t } = useTranslations()
     const format = isTime ? ft : f
+    const bonusResult = useGameStore(checkLast(selectBonusResult))
 
     return (
         <Table>
@@ -61,7 +66,6 @@ export const BonusDialog = memo(function BonusDialog(props: {
 }) {
     const { selectBonusResult, title, isTime } = props
     const { t } = useTranslations()
-    const bonusResult = useGameStore(selectBonusResult)
 
     return (
         <Dialog>
@@ -74,7 +78,7 @@ export const BonusDialog = memo(function BonusDialog(props: {
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>
-                <BonusListUi bonusResult={bonusResult} isTime={isTime} />
+                <BonusListUi selectBonusResult={selectBonusResult} isTime={isTime} />
             </DialogContent>
         </Dialog>
     )
