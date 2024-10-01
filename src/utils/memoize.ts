@@ -1,3 +1,5 @@
+import equal from 'react-fast-compare'
+
 interface Cache {
     m?: Map<unknown, Cache>
     v?: unknown
@@ -5,6 +7,7 @@ interface Cache {
 
 export function memoize<T>(fn: T) {
     const cache: Cache = {}
+    const results: unknown[] = []
 
     const ret = (...args: unknown[]) => {
         let level = cache
@@ -22,11 +25,19 @@ export function memoize<T>(fn: T) {
             }
         }
 
+        const getResult = () => {
+            const result = (fn as (...args: unknown[]) => unknown)(...args)
+            for (const r of results) if (equal(r, result)) return r
+            results.push(result)
+            if (results.length > 100) results.shift()
+            return result
+        }
+
         if (found) {
-            if (level.v === undefined) level.v = (fn as (...args: unknown[]) => unknown)(...args)
+            if (!level.v) level.v = getResult()
             return level.v
         } else {
-            const res = (fn as (...args: unknown[]) => unknown)(...args)
+            const res = getResult()
             let lastLevel: Cache = { v: res }
 
             for (let k = len - 1; k > i; k--) {
@@ -37,7 +48,7 @@ export function memoize<T>(fn: T) {
             }
 
             let map = level.m
-            if (map === undefined) {
+            if (!map) {
                 map = new Map<unknown, Cache>()
                 level.m = map
                 map.set(arg1, lastLevel)

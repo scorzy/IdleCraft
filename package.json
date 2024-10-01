@@ -10,7 +10,8 @@
     "build": "tsc && vite build",
     "analyze": "vite-bundle-visualizer -c vite.config.ts",
     "lint": "eslint src --fix && prettier --write --log-level warn .",
-    "test": "vitest --watch",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {

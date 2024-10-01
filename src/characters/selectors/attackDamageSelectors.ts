@@ -4,7 +4,7 @@ import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageData, DamageTypes, Item, damageTypesValues } from '../../items/Item'
 import { memoize } from '../../utils/memoize'
-import { checkLast } from '../../utils/memoizeLast'
+import { memoizeLast } from '../../utils/memoizeLast'
 import { selectMainWeapon } from './selectMainWeapon'
 
 const selectAttackDamageList = memoize((weapon: Item | undefined, type: DamageTypes) => {
@@ -43,8 +43,8 @@ export const selectCharacterAttackDamage = memoize(
     (charId: string, type: DamageTypes) => (state: GameState) =>
         selectCharacterAttackDamageList(charId, type)(state).total
 )
-export const selectAllCharacterAttackDamage = (charId: string) =>
-    checkLast((state: GameState) => {
+export const selectAllCharacterAttackDamage = memoize((charId: string) =>
+    memoizeLast((state: GameState) => {
         const ret: DamageData = {}
         damageTypesValues.forEach((type) => {
             const damage = selectCharacterAttackDamageList(charId, type)(state).total
@@ -52,3 +52,4 @@ export const selectAllCharacterAttackDamage = (charId: string) =>
         })
         return ret
     })
+)

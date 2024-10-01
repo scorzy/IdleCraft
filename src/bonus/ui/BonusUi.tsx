@@ -5,8 +5,7 @@ import { IconsData } from '../../icons/Icons'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 import { GameState } from '../../game/GameState'
-import { useGameStore } from '../../game/state'
-import { checkLast } from '../../utils/memoizeLast'
+import { useGameStoreShallow } from '../../game/state'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
@@ -18,12 +17,12 @@ const BonusListUi = memo(function BonusListUi(props: {
     const { f, ft } = useNumberFormatter()
     const { t } = useTranslations()
     const format = isTime ? ft : f
-    const bonusResult = useGameStore(checkLast(selectBonusResult))
+    const bonusRes = useGameStoreShallow(selectBonusResult)
 
     return (
         <Table>
             <TableBody>
-                {bonusResult.bonuses.map((b) => (
+                {bonusRes.bonuses.map((b) => (
                     <BonusUi key={b.id} bonus={b} isTime={isTime} />
                 ))}
 
@@ -31,7 +30,7 @@ const BonusListUi = memo(function BonusListUi(props: {
                     <TableCell colSpan={2} className="w-[100px]">
                         {t.Total}
                     </TableCell>
-                    <TableCell className="text-right">{format(bonusResult.total)}</TableCell>
+                    <TableCell className="text-right">{format(bonusRes.total)}</TableCell>
                 </TableRow>
             </TableBody>
         </Table>

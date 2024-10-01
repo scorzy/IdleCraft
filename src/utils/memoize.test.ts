@@ -105,10 +105,10 @@ describe('memoize', () => {
         const res1 = memoized(-1, 'a')
         const res2 = memoized(2, 'a')
 
-        for (let i = 0; i < 20; i++) memoized(i, 'a')
+        for (let i = 0; i < 30; i++) memoized(i, 'a')
 
-        expect(res1).not.toBe(memoized(-1, 'a'))
-        expect(res2).not.toBe(memoized(2, 'a'))
+        expect(res1).toBe(memoized(-1, 'a'))
+        expect(res2).toBe(memoized(2, 'a'))
     })
     test('memoize null', () => {
         const fn = (a: number | null, b: string | null) => ({
