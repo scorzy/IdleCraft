@@ -2,11 +2,17 @@ import { memoize } from 'proxy-memoize'
 import { GameState } from '../game/GameState'
 import { getCharLevelExp } from '../experience/expSelectors'
 import { selectTranslations } from '../msg/useTranslations'
+import { Bonus, BonusResult } from '../bonus/Bonus'
+import { bonusFromItem, getTotal } from '../bonus/BonusFunctions'
+import { DamageData, DamageTypes } from '../items/Item'
+import { Icons } from '../icons/Icons'
 import { CharacterAdapter } from './characterAdapter'
 import { CharacterSelector } from './CharacterSelector'
 import { selectMaxHealthFromChar } from './selectors/healthSelectors'
 import { selectMaxManaFromChar } from './selectors/manaSelectors'
 import { selectMaxStaminaFromChar } from './selectors/staminaSelectors'
+import { selectAllCharInventory } from './selectors/selectAllCharInventory'
+import { selectMainWeapon } from './selectors/selectMainWeapon'
 
 export const makeCharacterSelector: (charId: string) => CharacterSelector = (charId: string) => {
     const selChar = memoize((s: GameState) => CharacterAdapter.selectEx(s.characters, charId))
@@ -26,14 +32,18 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const Exp = memoize((s: GameState) => selChar(s).exp)
     const LevelExp = memoize((s: GameState) => getCharLevelExp(selChar(s).level))
     const NextLevelExp = memoize((s: GameState) => getCharLevelExp(selChar(s).level + 1))
+
     const MaxAttributes = memoize((s: GameState) => Level(s))
     const UsedAttributes = memoize((s: GameState) => {
         const char = selChar(s)
         return Math.floor(char.healthPoints + char.staminaPoints + char.manaPoints)
     })
+    const AvailableAttributes = memoize((s: GameState) => MaxAttributes(s) - UsedAttributes(s))
+
     const HealthPoints = memoize((s: GameState) => selChar(s).healthPoints)
     const StaminaPoint = memoize((s: GameState) => selChar(s).staminaPoints)
     const ManaPoints = memoize((s: GameState) => selChar(s).manaPoints)
+
     const Health = memoize((s: GameState) => selChar(s).health)
     const Stamina = memoize((s: GameState) => selChar(s).stamina)
     const Mana = memoize((s: GameState) => selChar(s).mana)
@@ -46,11 +56,116 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const MaxMana = memoize((state: GameState) => MaxManaList(state).total)
     const MaxStamina = memoize((state: GameState) => MaxStaminaList(state).total)
 
+    const makeArmourSelectors = (type: DamageTypes) => {
+        const ArmourList = memoize((state: GameState) => {
+            const inventory = selectAllCharInventory(state, charId)
+
+            const bonuses: Bonus[] = []
+
+            Object.entries(inventory).forEach((kv) => {
+                const item = kv[1]
+                if (!item.armourData) return
+                const add = item.armourData[type]
+                if (add && add !== 0)
+                    bonuses.push(
+                        bonusFromItem(item, {
+                            add,
+                        })
+                    )
+            })
+
+            const bonusList: BonusResult = {
+                bonuses,
+                total: getTotal(bonuses),
+            }
+            return bonusList
+        })
+
+        const Armour = memoize((state: GameState) => ArmourList(state).total)
+        return {
+            ArmourList,
+            Armour,
+        }
+    }
+
+    const armour: Record<
+        DamageTypes,
+        {
+            ArmourList: (state: GameState) => BonusResult
+            Armour: (state: GameState) => number
+        }
+    > = {
+        Bludgeoning: makeArmourSelectors(DamageTypes.Bludgeoning),
+        Piercing: makeArmourSelectors(DamageTypes.Piercing),
+        Slashing: makeArmourSelectors(DamageTypes.Slashing),
+    }
+
+    const makeDamageSelectors = (type: DamageTypes) => {
+        const DamageList = memoize((state: GameState) => {
+            const weapon = selectMainWeapon(charId)(state)
+
+            const bonuses: Bonus[] = []
+
+            if (weapon && weapon.weaponData) {
+                const add = weapon.weaponData.damage[type]
+                if (add)
+                    bonuses.push({
+                        id: `w_${weapon.id}`,
+                        add,
+                        iconId: weapon.icon,
+                        nameId: weapon.nameId,
+                    })
+            } else
+                bonuses.push({
+                    id: 'unharmed',
+                    add: 30,
+                    iconId: Icons.Punch,
+                    nameId: 'Unharmed',
+                })
+
+            const bonusList: BonusResult = {
+                bonuses,
+                total: getTotal(bonuses),
+            }
+
+            return bonusList
+        })
+        const Damage = memoize((state: GameState) => DamageList(state).total)
+
+        return {
+            DamageList,
+            Damage,
+        }
+    }
+
+    const damage: Record<
+        DamageTypes,
+        {
+            DamageList: (state: GameState) => BonusResult
+            Damage: (state: GameState) => number
+        }
+    > = {
+        Bludgeoning: makeDamageSelectors(DamageTypes.Bludgeoning),
+        Piercing: makeDamageSelectors(DamageTypes.Piercing),
+        Slashing: makeDamageSelectors(DamageTypes.Slashing),
+    }
+
+    const AllAttackDamage = memoize((s: GameState) => {
+        const ret: DamageData = {}
+
+        Object.values(DamageTypes).forEach((type: DamageTypes) => {
+            const totDamage = damage[type].Damage(s)
+            if (totDamage > 0) ret[type] = totDamage
+        })
+        return ret
+    })
+
     return {
         Name,
         Icon,
         Level,
         Exp,
+        AvailableAttributes,
         LevelExp,
         NextLevelExp,
         MaxAttributes,
@@ -67,5 +182,8 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         MaxHealthList,
         MaxManaList,
         MaxStaminaList,
+        armour,
+        damage,
+        AllAttackDamage,
     }
 }

@@ -1,24 +1,11 @@
 import { ActiveAbilityData } from '../../activeAbilities/ActiveAbilityData'
 import { CastCharAbilityAdapter } from '../../activeAbilities/abilityAdapters'
 import { GameState } from '../../game/GameState'
-import { selectTranslations } from '../../msg/useTranslations'
 import { TimerAdapter } from '../../timers/Timer'
 import { memoizeOne } from '../../utils/memoizeOne'
 import { CharacterAdapter } from '../characterAdapter'
 import { CharacterState } from '../characterState'
 import { InitialState } from '@/entityAdapter/InitialState'
-
-export const selectCharName = (charId: string) => (state: GameState) => {
-    const char = CharacterAdapter.selectEx(state.characters, charId)
-    if (char.name) return char.name
-    const t = selectTranslations(state)
-    const nameId = char.nameId
-    if (!nameId) throw new Error('name not found')
-    return t.t[nameId]
-}
-
-export const selectCharIcon = (charId: string) => (state: GameState) =>
-    CharacterAdapter.selectEx(state.characters, charId).iconId
 
 export const selectCharMainAttackTimer = (charId: string) => (state: GameState) => {
     const ability = CastCharAbilityAdapter.find(state.castCharAbility, (a) => a.characterId === charId)

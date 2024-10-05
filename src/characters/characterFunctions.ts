@@ -2,7 +2,6 @@ import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { addItem, removeItem } from '../storage/storageFunctions'
 import { CharacterAdapter } from './characterAdapter'
-import { selectPlayerAvAttr } from './characterSelectors'
 import { getCharacterSelector } from './characterSelectorsNew'
 import { PLAYER_ID } from './charactersConst'
 import { EquipSlotsEnum } from './equipSlotsEnum'
@@ -56,7 +55,7 @@ export const equipClick = (
 ) => useGameStore.setState((s) => equipItem(s, charId, slot, stdItemId, craftItemId, quantity))
 
 const addHealthPoints = (state: GameState, charId: string) => {
-    const av = selectPlayerAvAttr(state)
+    const av = getCharacterSelector(charId).AvailableAttributes(state)
     if (av < 1) return state
 
     const charSel = getCharacterSelector(charId)
@@ -82,7 +81,7 @@ const addHealthPoints = (state: GameState, charId: string) => {
 export const addHealthPointClick = (charId: string) => useGameStore.setState((s) => addHealthPoints(s, charId))
 
 const addStaminaPoint = (state: GameState, charId: string) => {
-    const av = selectPlayerAvAttr(state)
+    const av = getCharacterSelector(charId).AvailableAttributes(state)
     if (av < 1) return state
     const charSel = getCharacterSelector(charId)
     const maxPrev = charSel.MaxStamina(state)
@@ -106,7 +105,7 @@ const addStaminaPoint = (state: GameState, charId: string) => {
 export const addStaminaPointClick = (charId: string) => useGameStore.setState((s) => addStaminaPoint(s, charId))
 
 const addManaPoint = (state: GameState, charId: string) => {
-    const av = selectPlayerAvAttr(state)
+    const av = getCharacterSelector(charId).AvailableAttributes(state)
     if (av < 1) return state
     const charSel = getCharacterSelector(charId)
     const maxPrev = charSel.MaxMana(state)

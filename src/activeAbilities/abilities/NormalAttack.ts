@@ -9,14 +9,13 @@ import { selectRandomEnemy } from '../../characters/functions/selectRandomEnemy'
 import { CharacterAdapter } from '../../characters/characterAdapter'
 import { GameState } from '../../game/GameState'
 import { dealDamage } from '../../characters/functions/dealDamage'
-import { selectAllCharacterAttackDamage } from '../../characters/selectors/attackDamageSelectors'
 import { AbilitiesEnum } from '../abilitiesEnum'
 import { addBattleLog } from '../../battleLog/functions/addBattleLog'
-import { selectCharName } from '../../characters/selectors/characterSelectors'
 import { addExp } from '../../experience/expFunctions'
 import { DAMAGE_EXP_MULTI } from '../../const'
 import { DamageData } from '../../items/Item'
 import { sumDamage } from '../functions/sumDamage'
+import { getCharacterSelector } from '../../characters/characterSelectorsNew'
 
 export class NormalAttack implements ActiveAbility {
     id = AbilitiesEnum.NormalAttack
@@ -44,7 +43,7 @@ export class NormalAttack implements ActiveAbility {
     }
 
     getDamage(characterId: string, state: GameState): DamageData {
-        return selectAllCharacterAttackDamage(characterId)(state)
+        return getCharacterSelector(characterId).AllAttackDamage(state)
     }
 
     exec(params: AbilityParams): GameState {
@@ -57,8 +56,10 @@ export class NormalAttack implements ActiveAbility {
 
         const damage = this.getDamage(characterId, state)
 
-        const source = selectCharName(params.characterId)(state)
-        const targets = selectCharName(enemyId)(state)
+        getCharacterSelector(params.characterId).Name(state)
+
+        const source = getCharacterSelector(params.characterId).Name(state)
+        const targets = getCharacterSelector(enemyId).Name(state)
 
         state = addBattleLog(state, {
             iconId: this.getIconId(params),

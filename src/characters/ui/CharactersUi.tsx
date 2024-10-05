@@ -8,7 +8,7 @@ import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
-import { selectCharIcon, selectCharName, selectCharactersTeamIds } from '../selectors/characterSelectors'
+import { selectCharactersTeamIds } from '../selectors/characterSelectors'
 import { setSelectedChar } from '../../ui/state/uiFunctions'
 import { isCharReadonly, isCharSelected, isCollapsed, selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
@@ -23,10 +23,8 @@ import { MyTabNum } from '../../ui/myCard/MyTabNum'
 import { CombatAbilities } from '../../activeAbilities/ui/CombatAbilities'
 import { AbilitySidebar, AbilityUi } from '../../activeAbilities/ui/CharAbilities'
 import { DamageTypes } from '../../items/Item'
-import { selectCharacterArmour, selectCharacterArmourList } from '../selectors/armourSelector'
 import { DamageTypesData } from '../../items/damageTypes'
 import { Card, CardContent } from '../../components/ui/card'
-import { selectAllCharacterAttackDamage, selectCharacterAttackDamageList } from '../selectors/attackDamageSelectors'
 import { selectCharacterAttackSpeed, selectCharacterAttackSpeedList } from '../selectors/attackSpeedSelectors'
 import { CharSkills } from '../../experience/ui/CharSkills'
 import { ExperienceCardUi } from '../../experience/ui/ExperienceCard'
@@ -130,13 +128,14 @@ const CharactersSidebar = memo(function CharactersSidebar() {
 const CharacterLink = memo(function CharacterLink(props: { charId: string; collapsed: boolean }) {
     const { charId, collapsed } = props
 
-    const nameId = useGameStore(selectCharName(charId))
-    const iconId = useGameStore(selectCharIcon(charId))
+    const charSel = getCharacterSelector(charId)
+    const name = useGameStore(useCallback((s) => charSel.Name(s), [charSel]))
+    const iconId = useGameStore(useCallback((s) => charSel.Icon(s), [charSel]))
     const active = useGameStore(isCharSelected(charId))
 
     const onClick = useCallback(() => setSelectedChar(charId), [charId])
 
-    return <MyListItem text={nameId} collapsed={collapsed} icon={IconsData[iconId]} active={active} onClick={onClick} />
+    return <MyListItem text={name} collapsed={collapsed} icon={IconsData[iconId]} active={active} onClick={onClick} />
 })
 
 const CharInfo = memo(function CharInfo() {
@@ -276,8 +275,9 @@ const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; 
     const { type, charId } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
-    const value = useGameStore(selectCharacterArmour(charId, type))
-    const list = selectCharacterArmourList(charId, type)
+    const charSel = getCharacterSelector(charId)
+    const value = useGameStore(useCallback((s) => charSel.armour[type].Armour(s), [charSel, type]))
+    const list = charSel.armour[type].ArmourList
     const data = DamageTypesData[type]
     const name = t[data.ArmourName]
     return (
@@ -292,7 +292,9 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
     const { ft } = useNumberFormatter()
     const { t } = useTranslations()
 
-    const damage = useGameStore(selectAllCharacterAttackDamage(charId))
+    const charSel = getCharacterSelector(charId)
+
+    const damage = useGameStore(charSel.AllAttackDamage)
     const speed = useGameStore(selectCharacterAttackSpeed(charId))
     const speedList = selectCharacterAttackSpeedList(charId)
 
@@ -326,7 +328,7 @@ export const AttackTypeInfo = memo(function AttackTypeInfo(props: {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
 
-    const damageList = selectCharacterAttackDamageList(charId, damageType)
+    const damageList = getCharacterSelector(charId).damage[damageType].DamageList
     return (
         <li className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
             {t[DamageTypesData[damageType].DamageName]} {f(damage)}

@@ -1,7 +1,7 @@
 import { GameState } from '../../game/GameState'
 import { DamageData, DamageTypes } from '../../items/Item'
 import { CharacterAdapter } from '../characterAdapter'
-import { selectCharacterArmour } from '../selectors/armourSelector'
+import { getCharacterSelector } from '../characterSelectorsNew'
 import { getDamageMulti } from './getDamageMulti'
 import { kill } from './kill'
 
@@ -17,7 +17,9 @@ export function dealDamage(
 
         const damageType: DamageTypes = kv[0] as DamageTypes
         const damage = kv[1]
-        const armour = selectCharacterArmour(targetId, damageType)(state)
+
+        const targetSel = getCharacterSelector(targetId)
+        const armour = targetSel.armour[damageType].Armour(state)
 
         const multi = getDamageMulti(damage, armour)
         const damageTaken = damage * multi

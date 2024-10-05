@@ -6,10 +6,10 @@ import { CHARGED_ATTACK_DAMAGE_BONUS, CHARGED_ATTACK_STAMINA, CHARGED_ATTACK_TIM
 import { selectTranslations } from '../../msg/useTranslations'
 import { selectCharacterAttackSpeed } from '../../characters/selectors/attackSpeedSelectors'
 import { GameState } from '../../game/GameState'
-import { selectAllCharacterAttackDamage } from '../../characters/selectors/attackDamageSelectors'
 import { AbilitiesEnum } from '../abilitiesEnum'
 import { DamageData } from '../../items/Item'
 import { multiplyDamage } from '../functions/multiplyDamage'
+import { getCharacterSelector } from '../../characters/characterSelectorsNew'
 import { NormalAttack } from './NormalAttack'
 
 export class ChargedAttack extends NormalAttack {
@@ -37,6 +37,6 @@ export class ChargedAttack extends NormalAttack {
         return 0
     }
     getDamage(characterId: string, state: GameState): DamageData {
-        return multiplyDamage(selectAllCharacterAttackDamage(characterId)(state), CHARGED_ATTACK_DAMAGE_BONUS)
+        return multiplyDamage(getCharacterSelector(characterId).AllAttackDamage(state), CHARGED_ATTACK_DAMAGE_BONUS)
     }
 }
