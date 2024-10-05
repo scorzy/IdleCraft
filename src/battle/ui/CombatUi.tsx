@@ -5,22 +5,14 @@ import { MyPage } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
 import { selectTeams } from '../../characters/selectors/selectTeams'
 import {
-    selectCharHealth,
-    selectCharIcon,
     selectCharMainAttack,
     selectCharMainAttackIcon,
     selectCharMainAttackTimer,
-    selectCharMana,
-    selectCharName,
-    selectCharStamina,
 } from '../../characters/selectors/characterSelectors'
 import { useTranslations } from '../../msg/useTranslations'
 import { IconsData } from '../../icons/Icons'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
-import { selectCharacterMaxHealth } from '../../characters/selectors/healthSelectors'
-import { selectCharacterMaxMana } from '../../characters/selectors/manaSelectors'
-import { selectCharacterMaxStamina } from '../../characters/selectors/staminaSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { TimerProgressFromId } from '../../ui/progress/TimerProgress'
 import { ActiveAbilityData } from '../../activeAbilities/ActiveAbilityData'
@@ -38,6 +30,7 @@ import { selectLoot } from '../../storage/selectors/selectLoot'
 import { LootId } from '../../storage/storageState'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { collectLootUi } from '../../storage/function/collectLoot'
+import { getCharacterSelector } from '../../characters/characterSelectorsNew'
 import classes from './Combat.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
@@ -77,8 +70,11 @@ const CombatChars = memo(function CombatChars() {
 const CharCard = memo(function CharCard(props: { charId: string }) {
     const { charId } = props
     const { t } = useTranslations()
-    const name = useGameStore(selectCharName(charId))
-    const icon = useGameStore(selectCharIcon(charId))
+    const charSel = getCharacterSelector(charId)
+
+    const name = useGameStore(useCallback((s: GameState) => charSel.Name(s), [charSel]))
+    const icon = useGameStore(useCallback((s: GameState) => charSel.Icon(s), [charSel]))
+
     const [isAttOpen, setAttIsOpen] = useState(false)
 
     return (
@@ -119,8 +115,9 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
 const CharHealth = memo(function CharHealth(props: { charId: string }) {
     const { charId } = props
     const { f } = useNumberFormatter()
-    const health = useGameStore(selectCharHealth(charId))
-    const maxHealth = useGameStore(selectCharacterMaxHealth(charId))
+    const charSel = getCharacterSelector(charId)
+    const health = useGameStore(useCallback((s: GameState) => charSel.Health(s), [charSel]))
+    const maxHealth = useGameStore(useCallback((s: GameState) => charSel.MaxHealth(s), [charSel]))
     const hPercent = Math.floor((100 * health) / maxHealth)
 
     return (
@@ -137,8 +134,9 @@ const CharHealth = memo(function CharHealth(props: { charId: string }) {
 const CharStamina = memo(function CharStamina(props: { charId: string }) {
     const { charId } = props
     const { f } = useNumberFormatter()
-    const stamina = useGameStore(selectCharStamina(charId))
-    const maxStamina = useGameStore(selectCharacterMaxStamina(charId))
+    const charSel = getCharacterSelector(charId)
+    const stamina = useGameStore(useCallback((s: GameState) => charSel.Stamina(s), [charSel]))
+    const maxStamina = useGameStore(useCallback((s: GameState) => charSel.MaxStamina(s), [charSel]))
     const sPercent = Math.floor((100 * stamina) / maxStamina)
 
     return (
@@ -155,8 +153,9 @@ const CharStamina = memo(function CharStamina(props: { charId: string }) {
 const CharMana = memo(function CharMana(props: { charId: string }) {
     const { charId } = props
     const { f } = useNumberFormatter()
-    const mana = useGameStore(selectCharMana(charId))
-    const maxMana = useGameStore(selectCharacterMaxMana(charId))
+    const charSel = getCharacterSelector(charId)
+    const mana = useGameStore(useCallback((s: GameState) => charSel.Mana(s), [charSel]))
+    const maxMana = useGameStore(useCallback((s: GameState) => charSel.MaxMana(s), [charSel]))
     const mPercent = Math.floor((100 * mana) / maxMana)
 
     return (

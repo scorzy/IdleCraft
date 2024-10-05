@@ -19,12 +19,7 @@ export const selectCharName = (charId: string) => (state: GameState) => {
 
 export const selectCharIcon = (charId: string) => (state: GameState) =>
     CharacterAdapter.selectEx(state.characters, charId).iconId
-export const selectCharHealth = (charId: string) => (state: GameState) =>
-    CharacterAdapter.selectEx(state.characters, charId).health
-export const selectCharStamina = (charId: string) => (state: GameState) =>
-    CharacterAdapter.selectEx(state.characters, charId).stamina
-export const selectCharMana = (charId: string) => (state: GameState) =>
-    CharacterAdapter.selectEx(state.characters, charId).mana
+
 export const selectCharMainAttackTimer = (charId: string) => (state: GameState) => {
     const ability = CastCharAbilityAdapter.find(state.castCharAbility, (a) => a.characterId === charId)
     if (!ability) return

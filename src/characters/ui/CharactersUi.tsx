@@ -8,24 +8,16 @@ import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
-import {
-    selectCharHealth,
-    selectCharIcon,
-    selectCharMana,
-    selectCharName,
-    selectCharStamina,
-    selectCharactersTeamIds,
-} from '../selectors/characterSelectors'
+import { selectCharIcon, selectCharName, selectCharactersTeamIds } from '../selectors/characterSelectors'
 import { setSelectedChar } from '../../ui/state/uiFunctions'
 import { isCharReadonly, isCharSelected, isCollapsed, selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { selectCharacterMaxHealth, selectCharacterMaxHealthList } from '../selectors/healthSelectors'
-import { selectCharacterMaxMana, selectCharacterMaxManaList } from '../selectors/manaSelectors'
-import { selectCharacterMaxStamina, selectCharacterMaxStaminaList } from '../selectors/staminaSelectors'
+import { selectCharacterMaxHealthList } from '../selectors/healthSelectors'
+import { selectCharacterMaxManaList } from '../selectors/manaSelectors'
+import { selectCharacterMaxStaminaList } from '../selectors/staminaSelectors'
 import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { Button } from '../../components/ui/button'
-import { selectCharacterLevel, selectCharacterMaxAttr, selectCharacterUsedAttr } from '../characterSelectors'
 import { addHealthPointClick, addManaPointClick, addStaminaPointClick } from '../characterFunctions'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
@@ -40,8 +32,9 @@ import { Card, CardContent } from '../../components/ui/card'
 import { selectAllCharacterAttackDamage, selectCharacterAttackDamageList } from '../selectors/attackDamageSelectors'
 import { selectCharacterAttackSpeed, selectCharacterAttackSpeedList } from '../selectors/attackSpeedSelectors'
 import { CharSkills } from '../../experience/ui/CharSkills'
-import { selectCharExp, selectCharLevelExp, selectNextCharExp } from '../../experience/expSelectors'
 import { ExperienceCardUi } from '../../experience/ui/ExperienceCard'
+import { getCharacterSelector } from '../characterSelectorsNew'
+import { GameState } from '../../game/GameState'
 import classes from './charactersUi.module.css'
 import { CharEquipments } from './CharEquipments'
 
@@ -115,9 +108,12 @@ export const CharactersUi = memo(function CharactersUi() {
 
 export const StatsTab = memo(function StatsTab() {
     const { t } = useTranslations()
+
     const charId = useGameStore(selectSelectedCharId)
-    const used = useGameStore(selectCharacterUsedAttr(charId))
-    const max = useGameStore(selectCharacterMaxAttr(charId))
+
+    const used = useGameStore(useCallback((s: GameState) => getCharacterSelector(charId).UsedAttributes(s), [charId]))
+    const max = useGameStore(useCallback((s: GameState) => getCharacterSelector(charId).MaxAttributes(s), [charId]))
+
     const diff = Math.floor(max - used)
 
     return <MyTabNum text={t.Stats} num={diff} />
@@ -174,19 +170,21 @@ const StatsInfo = memo(function StatsInfo() {
 
     const charId = useGameStore(selectSelectedCharId)
 
-    const maxPoints = useGameStore(selectCharacterMaxAttr(charId))
-    const usedPoints = useGameStore(selectCharacterUsedAttr(charId))
+    const charSel = getCharacterSelector(charId)
 
-    const health = useGameStore(selectCharHealth(charId))
-    const maxH = useGameStore(selectCharacterMaxHealth(charId))
+    const usedPoints = useGameStore(useCallback((s: GameState) => charSel.UsedAttributes(s), [charSel]))
+    const maxPoints = useGameStore(useCallback((s: GameState) => charSel.MaxAttributes(s), [charSel]))
+
+    const health = useGameStore(useCallback((s: GameState) => charSel.Health(s), [charSel]))
+    const maxH = useGameStore(useCallback((s: GameState) => charSel.MaxHealth(s), [charSel]))
     const maxHB = selectCharacterMaxHealthList(charId)
 
-    const stamina = useGameStore(selectCharStamina(charId))
-    const maxS = useGameStore(selectCharacterMaxStamina(charId))
+    const stamina = useGameStore(useCallback((s: GameState) => charSel.Stamina(s), [charSel]))
+    const maxS = useGameStore(useCallback((s: GameState) => charSel.MaxStamina(s), [charSel]))
     const maxSB = selectCharacterMaxStaminaList(charId)
 
-    const mana = useGameStore(selectCharMana(charId))
-    const maxM = useGameStore(selectCharacterMaxMana(charId))
+    const mana = useGameStore(useCallback((s: GameState) => charSel.Mana(s), [charSel]))
+    const maxM = useGameStore(useCallback((s: GameState) => charSel.MaxMana(s), [charSel]))
     const maxMB = selectCharacterMaxManaList(charId)
 
     const healthClick = useCallback(() => addHealthPointClick(charId), [charId])
@@ -254,10 +252,12 @@ const StatsInfo = memo(function StatsInfo() {
 const CharLevelUi = memo(function CharLevelUi(props: { charId: string }) {
     const { charId } = props
 
-    const level = useGameStore(selectCharacterLevel(charId))
-    const xp = useGameStore(selectCharExp(charId))
-    const levelXp = useGameStore(selectCharLevelExp(charId))
-    const nextLevelXp = useGameStore(selectNextCharExp(charId))
+    const charSel = getCharacterSelector(charId)
+
+    const level = useGameStore(useCallback((s: GameState) => charSel.Level(s), [charSel]))
+    const xp = useGameStore(useCallback((s: GameState) => charSel.Exp(s), [charSel]))
+    const levelXp = useGameStore(useCallback((s: GameState) => charSel.LevelExp(s), [charSel]))
+    const nextLevelXp = useGameStore(useCallback((s: GameState) => charSel.NextLevelExp(s), [charSel]))
 
     return <ExperienceCardUi title={'Level'} level={level} xp={xp} levelXp={levelXp} nextLevelXp={nextLevelXp} />
 })

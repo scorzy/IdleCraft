@@ -45,5 +45,11 @@ module.exports = {
         'import/order': 'error',
         'import/newline-after-import': 'error',
         'react-compiler/react-compiler': 'error',
+        '@typescript-eslint/unbound-method': [
+            'error',
+            {
+                ignoreStatic: true,
+            },
+        ],
     },
 }
