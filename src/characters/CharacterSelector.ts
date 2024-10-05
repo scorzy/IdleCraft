@@ -1,3 +1,4 @@
+import { BonusResult } from '../bonus/Bonus'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 
@@ -19,4 +20,7 @@ export type CharacterSelector = {
     MaxHealth(state: GameState): number
     MaxMana(state: GameState): number
     MaxStamina(state: GameState): number
+    MaxHealthList(state: GameState): BonusResult
+    MaxManaList(state: GameState): BonusResult
+    MaxStaminaList(state: GameState): BonusResult
 }

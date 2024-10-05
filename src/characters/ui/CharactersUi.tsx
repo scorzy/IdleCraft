@@ -12,9 +12,6 @@ import { selectCharIcon, selectCharName, selectCharactersTeamIds } from '../sele
 import { setSelectedChar } from '../../ui/state/uiFunctions'
 import { isCharReadonly, isCharSelected, isCollapsed, selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { selectCharacterMaxHealthList } from '../selectors/healthSelectors'
-import { selectCharacterMaxManaList } from '../selectors/manaSelectors'
-import { selectCharacterMaxStaminaList } from '../selectors/staminaSelectors'
 import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { Button } from '../../components/ui/button'
@@ -177,15 +174,15 @@ const StatsInfo = memo(function StatsInfo() {
 
     const health = useGameStore(useCallback((s: GameState) => charSel.Health(s), [charSel]))
     const maxH = useGameStore(useCallback((s: GameState) => charSel.MaxHealth(s), [charSel]))
-    const maxHB = selectCharacterMaxHealthList(charId)
+    const maxHB = charSel.MaxHealthList.bind(charSel)
 
     const stamina = useGameStore(useCallback((s: GameState) => charSel.Stamina(s), [charSel]))
     const maxS = useGameStore(useCallback((s: GameState) => charSel.MaxStamina(s), [charSel]))
-    const maxSB = selectCharacterMaxStaminaList(charId)
+    const maxSB = charSel.MaxStaminaList.bind(charSel)
 
     const mana = useGameStore(useCallback((s: GameState) => charSel.Mana(s), [charSel]))
     const maxM = useGameStore(useCallback((s: GameState) => charSel.MaxMana(s), [charSel]))
-    const maxMB = selectCharacterMaxManaList(charId)
+    const maxMB = charSel.MaxManaList.bind(charSel)
 
     const healthClick = useCallback(() => addHealthPointClick(charId), [charId])
     const staminaClick = useCallback(() => addStaminaPointClick(charId), [charId])

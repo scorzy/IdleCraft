@@ -1,8 +1,8 @@
 import { GameState } from '../../game/GameState'
 import { CharacterAdapter } from '../characterAdapter'
-import { selectCharacterMaxStamina } from '../selectors/staminaSelectors'
+import { getCharacterSelector } from '../characterSelectorsNew'
 
 export function resetStamina(state: GameState, charId: string): GameState {
-    const stamina = selectCharacterMaxStamina(charId)(state)
+    const stamina = getCharacterSelector(charId).MaxStamina(state)
     return { ...state, characters: CharacterAdapter.update(state.characters, charId, { stamina }) }
 }

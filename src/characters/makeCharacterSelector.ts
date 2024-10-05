@@ -4,9 +4,9 @@ import { getCharLevelExp } from '../experience/expSelectors'
 import { selectTranslations } from '../msg/useTranslations'
 import { CharacterAdapter } from './characterAdapter'
 import { CharacterSelector } from './CharacterSelector'
-import { selectCharacterMaxHealthList } from './selectors/healthSelectors'
-import { selectCharacterMaxManaList } from './selectors/manaSelectors'
-import { selectCharacterMaxStaminaList } from './selectors/staminaSelectors'
+import { selectMaxHealthFromChar } from './selectors/healthSelectors'
+import { selectMaxManaFromChar } from './selectors/manaSelectors'
+import { selectMaxStaminaFromChar } from './selectors/staminaSelectors'
 
 export const makeCharacterSelector: (charId: string) => CharacterSelector = (charId: string) => {
     const selChar = memoize((s: GameState) => CharacterAdapter.selectEx(s.characters, charId))
@@ -38,9 +38,13 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const Stamina = memoize((s: GameState) => selChar(s).stamina)
     const Mana = memoize((s: GameState) => selChar(s).mana)
 
-    const MaxHealth = memoize((state: GameState) => selectCharacterMaxHealthList(charId)(state).total)
-    const MaxMana = memoize((state: GameState) => selectCharacterMaxManaList(charId)(state).total)
-    const MaxStamina = memoize((state: GameState) => selectCharacterMaxStaminaList(charId)(state).total)
+    const MaxHealthList = memoize((s: GameState) => selectMaxHealthFromChar(selChar(s)))
+    const MaxManaList = memoize((s: GameState) => selectMaxManaFromChar(selChar(s)))
+    const MaxStaminaList = memoize((s: GameState) => selectMaxStaminaFromChar(selChar(s)))
+
+    const MaxHealth = memoize((state: GameState) => MaxHealthList(state).total)
+    const MaxMana = memoize((state: GameState) => MaxManaList(state).total)
+    const MaxStamina = memoize((state: GameState) => MaxStaminaList(state).total)
 
     return {
         Name,
@@ -60,5 +64,8 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         MaxHealth,
         MaxMana,
         MaxStamina,
+        MaxHealthList,
+        MaxManaList,
+        MaxStaminaList,
     }
 }

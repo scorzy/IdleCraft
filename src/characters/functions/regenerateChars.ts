@@ -1,8 +1,6 @@
 import { GameState } from '../../game/GameState'
 import { CharacterAdapter } from '../characterAdapter'
-import { selectCharacterMaxHealth } from '../selectors/healthSelectors'
-import { selectCharacterMaxMana } from '../selectors/manaSelectors'
-import { selectCharacterMaxStamina } from '../selectors/staminaSelectors'
+import { getCharacterSelector } from '../characterSelectorsNew'
 
 export function regenerateChars(state: GameState, seconds: number) {
     const charIds = CharacterAdapter.getIds(state.characters)
@@ -13,9 +11,11 @@ export function regenerateChars(state: GameState, seconds: number) {
 function regenerateChar(state: GameState, charId: string, seconds: number): GameState {
     const char = CharacterAdapter.selectEx(state.characters, charId)
 
-    const maxHealth = selectCharacterMaxHealth(charId)(state)
-    const maxStamina = selectCharacterMaxStamina(charId)(state)
-    const maxMana = selectCharacterMaxMana(charId)(state)
+    const charSel = getCharacterSelector(charId)
+
+    const maxHealth = charSel.MaxHealth(state)
+    const maxStamina = charSel.MaxStamina(state)
+    const maxMana = charSel.MaxMana(state)
 
     const health = Math.min(char.health + seconds / 2, maxHealth)
     const stamina = Math.min(char.stamina + seconds / 2, maxStamina)
