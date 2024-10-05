@@ -9,7 +9,9 @@ export const MyLabelContainer = memo(function MyLabelContainer(props: { children
 export const MyLabel = memo(function MyLabel(props: { children: ReactNode; className?: string }) {
     const { children, className } = props
     return (
-        <span className={cn('grid flex-grow grid-flow-col items-center justify-start gap-2 text-sm', className)}>
+        <span
+            className={cn('grid flex-grow basis-0 grid-flow-col items-center justify-start gap-2 text-sm', className)}
+        >
             {children}
         </span>
     )

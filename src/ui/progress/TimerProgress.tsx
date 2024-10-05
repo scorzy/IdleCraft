@@ -1,8 +1,10 @@
 import './progress.css'
 
-import { memo, useEffect, useRef } from 'react'
+import { memo, useCallback, useEffect, useRef } from 'react'
+import { memoize } from 'proxy-memoize'
 import { useGameStore } from '../../game/state'
 import { Colors } from '../state/uiFunctions'
+import { GameState } from '../../game/GameState'
 import { usePageVisibility } from './usePageVisibility'
 import styles from './timerProgress.module.css'
 
@@ -53,10 +55,18 @@ export const GameTimerProgress = memo(function GameTimerProgress(props: {
 }) {
     const { className, actionId, color } = props
 
-    const timerId = useGameStore((s) => Object.entries(s.timers.entries).find((kv) => kv[1].actId === actionId)?.[0])
-    const timer = useGameStore((s) => (timerId !== undefined ? s.timers.entries[timerId] : undefined))
+    const timer = useGameStore(
+        // eslint-disable-next-line react-compiler/react-compiler
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        useCallback(
+            memoize((s: GameState) =>
+                actionId ? Object.entries(s.timers.entries).find((kv) => kv[1].actId === actionId)?.[1] : null
+            ),
+            [actionId]
+        )
+    )
 
-    return <TimerProgressFix className={className} start={timer?.from} end={timer?.to} key={timerId} color={color} />
+    return <TimerProgressFix className={className} start={timer?.from} end={timer?.to} key={timer?.id} color={color} />
 })
 
 export const TimerProgressFromId = memo(function TimerProgressFromId(props: {
@@ -65,7 +75,15 @@ export const TimerProgressFromId = memo(function TimerProgressFromId(props: {
     color: Colors
 }) {
     const { className, timerId, color } = props
-    const timer = useGameStore((s) => (timerId !== undefined ? s.timers.entries[timerId] : undefined))
+
+    const timer = useGameStore(
+        // eslint-disable-next-line react-compiler/react-compiler
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        useCallback(
+            memoize((s: GameState) => (timerId !== undefined ? s.timers.entries[timerId] : undefined)),
+            [timerId]
+        )
+    )
 
     return <TimerProgressFix className={className} start={timer?.from} end={timer?.to} key={timerId} color={color} />
 })
