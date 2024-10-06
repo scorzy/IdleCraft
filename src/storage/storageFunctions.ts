@@ -1,3 +1,4 @@
+import { memoize } from 'proxy-memoize'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GameState } from '../game/GameState'
@@ -5,8 +6,6 @@ import { useGameStore } from '../game/state'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
 import { getUniqueId } from '../utils/getUniqueId'
-import { memoize } from '../utils/memoize'
-import { memoizeOne } from '../utils/memoizeOne'
 import { myCompare } from '../utils/myCompare'
 import { ItemAdapter } from './ItemAdapter'
 import { StorageState } from './storageState'
@@ -80,8 +79,8 @@ export const setSelectedItem = (itemId: string | null, location: GameLocations) 
 
 const craftIdsByType = new Map<string, string[]>()
 
-const selectCraftItemMemo = memoizeOne((state: InitialState<Item>) => {
-    return memoize((item: Item) => {
+const selectCraftItemMemo = memoize((state: InitialState<Item>) =>
+    memoize((item: Item) => {
         const byType = craftIdsByType.get(item.type)
         if (byType) {
             for (const id of byType) {
@@ -97,7 +96,7 @@ const selectCraftItemMemo = memoizeOne((state: InitialState<Item>) => {
 
         return null
     })
-})
+)
 
 export function selectCraftItem(state: InitialState<Item>, item: Item): string | null {
     return selectCraftItemMemo(state)(item)
