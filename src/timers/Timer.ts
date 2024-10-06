@@ -11,7 +11,7 @@ export interface Timer {
     actId: string
 }
 
-export interface InitialTimerState extends InitialState<Timer> {}
+export type InitialTimerState = InitialState<Timer>
 
 class TimerAdapterInt extends AbstractEntityAdapter<Timer> {
     getId(data: Timer): string {

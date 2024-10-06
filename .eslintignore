@@ -1,9 +1,0 @@
-node_modules
-dist
-coverage
-.eslintcache
-*.svg
-serviceWorker.ts
-coverage
-src/components
-public
