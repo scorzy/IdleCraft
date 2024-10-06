@@ -1,5 +1,5 @@
 import { default as microMemoize } from 'micro-memoize'
-import { memoize } from 'proxy-memoize'
+import { memoize, memoizeWithArgs } from 'proxy-memoize'
 import { GameState, LocationState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { StdItems } from '../items/stdItems'
@@ -7,13 +7,12 @@ import { memoizeOne } from '../utils/memoizeOne'
 import { Entries } from '../utils/types'
 import { Item, ItemTypes } from '../items/Item'
 import { selectTranslations } from '../msg/useTranslations'
-import { Translations } from '../msg/Msg'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
 import { ItemAdapter } from './ItemAdapter'
-import { InventoryNoQta, StorageState } from './storageState'
+import { InventoryNoQta } from './storageState'
 import { isCrafted } from './storageFunctions'
 import { InitialState } from '@/entityAdapter/InitialState'
 
@@ -34,40 +33,31 @@ export const selectStorageLocations = (state: GameState) => selectStorageLocatio
 
 type ItemId = { id: string }
 type ItemOrdQta = ItemId & { qta: number }
-
 type ItemOrdName = ItemId & { name: string }
-
 type ItemOrdValue = ItemId & { value: number }
 
 export const selectLocationItems = microMemoize((location: GameLocations) => {
-    const orderItems = memoize((items: Record<string, number>) => {
-        const ret: ItemId[] = (
-            Object.entries<number | undefined>(items) as Entries<Record<string, number>>
-        ).map<ItemId>((e) => {
-            return {
-                id: e[0],
-            }
-        })
+    const selectItemsArr = memoize((items: Record<string, number>) =>
+        (Object.entries<number | undefined>(items) as Entries<Record<string, number>>).map<ItemId>((e) => ({
+            id: e[0],
+        }))
+    )
 
-        return ret
-    })
+    const reorderName = memoizeWithArgs((state: GameState, items: ItemId[]) => {
+        const t = selectTranslations(state)
 
-    const reorderName = function reorderName(
-        craftedItems: InitialState<Item>,
-        items: ItemId[],
-        t: Translations
-    ): ItemId[] {
         const ord: ItemOrdName[] = []
         items.forEach((e) => {
-            const item = selectGameItemFromCraft(e.id, craftedItems)
+            const item = selectGameItemFromCraft(e.id, state.craftedItems)
             let name = ''
             if (item) name = t.t[item.nameId]
             ord.push({ ...e, name })
         })
         return ord.sort((a, b) => a.name.localeCompare(b.name))
-    }
+    })
 
-    const reorderQta = function reorderQta(items: ItemId[], storage: StorageState): ItemId[] {
+    const reorderQta = memoizeWithArgs((state: GameState, items: ItemId[]) => {
+        const storage = state.locations[location].storage
         const ord: ItemOrdQta[] = []
         items.forEach((e) => {
             let qta = 0
@@ -75,32 +65,30 @@ export const selectLocationItems = microMemoize((location: GameLocations) => {
             ord.push({ ...e, qta })
         })
         return ord.sort((a, b) => a.qta - b.qta)
-    }
+    })
 
-    const reorderValue = function reorderName(craftedItems: InitialState<Item>, items: ItemId[]): ItemId[] {
+    const reorderValue = memoizeWithArgs((state: GameState, items: ItemId[]) => {
+        const craftedItems = state.craftedItems
         const ord: ItemOrdValue[] = []
         items.forEach((e) => {
             const item = selectGameItemFromCraft(e.id, craftedItems)
             ord.push({ ...e, value: item?.value ?? 0 })
         })
         return ord.sort((a, b) => a.value - b.value)
-    }
+    })
 
-    const sortDesc = memoizeOne((items: ItemId[]) => items.slice(0).reverse())
+    const sortDesc = memoize((items: ItemId[]) => items.slice(0).reverse())
 
     const ret = memoize((state: GameState) => {
-        const loc = state.locations[location]
-        const itemsObj = loc.storage
         const order = state.ui.storageOrder
 
-        let items = orderItems(itemsObj)
-        if (order === 'name') {
-            const t = selectTranslations(state)
-            items = reorderName(state.craftedItems, items, t)
-        } else if (order === 'quantity') items = reorderQta(items, loc.storage)
-        else if (order === 'value') items = reorderValue(state.craftedItems, items)
+        let items = selectItemsArr(state.locations[location].storage)
+        if (order === 'name') items = reorderName(state, items)
+        else if (order === 'quantity') items = reorderQta(state, items)
+        else if (order === 'value') items = reorderValue(state, items)
 
         if (!state.ui.storageAsc) items = sortDesc(items)
+
         return items
     })
     return ret
