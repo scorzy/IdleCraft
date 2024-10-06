@@ -1,13 +1,13 @@
 import { CharAbilityAdapter } from '../../activeAbilities/abilityAdapters'
 import { getUniqueId } from '../../utils/getUniqueId'
-import { memoize } from '../../utils/memoize'
+import { myMemoize } from '../../utils/memoize'
 import { CharacterState } from '../characterState'
 import { selectMaxHealthFromChar } from '../selectors/healthSelectors'
 import { selectMaxManaFromChar } from '../selectors/manaSelectors'
 import { selectMaxStaminaFromChar } from '../selectors/staminaSelectors'
 import { CharTemplate } from './charTemplates'
 
-export const generateCharacter = memoize(function (template: CharTemplate): CharacterState {
+export const generateCharacter = myMemoize(function (template: CharTemplate): CharacterState {
     const char: CharacterState = structuredClone({
         id: getUniqueId(),
         nameId: template.nameId,

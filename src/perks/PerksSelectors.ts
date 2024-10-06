@@ -3,8 +3,8 @@ import { PLAYER_ID } from '../characters/charactersConst'
 import { ExpState } from '../experience/ExpState'
 import { selectPlayerExp, selectPlayerLevel } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
-import { memoize } from '../utils/memoize'
-import { memoizeOne } from '../utils/memoizeOne'
+import { myMemoize } from '../utils/memoize'
+import { myMemoizeOne } from '../utils/memoizeOne'
 import { PerksData } from './Perk'
 import { PerkState } from './PerkState'
 import { PerksEnum } from './perksEnum'
@@ -18,8 +18,8 @@ export const hasPerk =
     (s: GameState) =>
         (s.characters.entries[charId]?.perks[perk] ?? 0) > 0
 
-const isPerkEnabledInt = memoize((perkEnum: PerksEnum) =>
-    memoizeOne((perks: PerkState, skills: ExpState) => {
+const isPerkEnabledInt = myMemoize((perkEnum: PerksEnum) =>
+    myMemoizeOne((perks: PerkState, skills: ExpState) => {
         const perkData = PerksData[perkEnum]
         if (perkData.requiredExp?.some((r) => r.level > (skills[r.skill] ?? 0))) return false
         if (perkData.requiredPerks?.some((r) => !hasPerkInt(r, perks))) return false
@@ -56,7 +56,7 @@ export const selectPerkCompleted =
 
 const perksValues = Object.values(PerksEnum)
 
-const selectPerksInt = memoizeOne(function selectPerksInt(
+const selectPerksInt = myMemoizeOne(function selectPerksInt(
     perks: PerkState,
     skills: ExpState,
     available: boolean,

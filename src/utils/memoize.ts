@@ -25,7 +25,7 @@ const makeCache: () => Cache = () => {
     return { set, get }
 }
 
-export function memoize<T>(fn: T) {
+export function myMemoize<T>(fn: T) {
     const cache = makeCache()
     const results: unknown[] = []
 

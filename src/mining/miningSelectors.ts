@@ -3,7 +3,7 @@ import { ExpEnum } from '../experience/expEnum'
 import { selectLevelExp } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
 import { PickaxeData } from '../items/Item'
-import { memoize } from '../utils/memoize'
+import { myMemoize } from '../utils/memoize'
 import { OreData } from './OreData'
 import { OreState } from './OreState'
 import { OreTypes } from './OreTypes'
@@ -16,20 +16,20 @@ export const DEF_PICKAXE: PickaxeData = {
 
 export const isOreSelected = (oreType: OreTypes) => (state: GameState) => state.ui.oreType === oreType
 
-export const selectDefaultMine = memoize(function selectDefaultMine(oreType: OreTypes): OreState {
+export const selectDefaultMine = myMemoize(function selectDefaultMine(oreType: OreTypes): OreState {
     const data = OreData[oreType]
     return {
         hp: data.hp,
         qta: data.qta,
     }
 })
-export const selectOre = memoize((oreType: OreTypes) => (state: GameState) => {
+export const selectOre = myMemoize((oreType: OreTypes) => (state: GameState) => {
     const ore = state.locations[state.location].ores[oreType]
     if (ore) return ore
     return selectDefaultMine(oreType)
 })
 
-export const selectMining = memoize((oreType: OreTypes) => (s: GameState) => {
+export const selectMining = myMemoize((oreType: OreTypes) => (s: GameState) => {
     for (const id of s.mining.ids) {
         const act = s.mining.entries[id]
         if (act?.oreType === oreType) return act.activityId

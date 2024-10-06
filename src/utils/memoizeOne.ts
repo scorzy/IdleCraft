@@ -1,6 +1,6 @@
 import equal from 'react-fast-compare'
 
-export function memoizeOne<T>(fn: T) {
+export function myMemoizeOne<T>(fn: T) {
     let lastVal: unknown
     let params: unknown[] | null
 

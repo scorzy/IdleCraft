@@ -4,7 +4,7 @@ import { GameState } from '../../game/GameState'
 import { Item } from '../../items/Item'
 import { hasPerk } from '../../perks/PerksSelectors'
 import { PerksEnum } from '../../perks/perksEnum'
-import { memoizeOne } from '../../utils/memoizeOne'
+import { myMemoizeOne } from '../../utils/memoizeOne'
 import { FAST_WOODCUTTING_PERK } from '../WoodConst'
 import { WoodBase, DEF_WOOD_AXE, selectAxe } from './WoodcuttingSelectors'
 
@@ -19,7 +19,7 @@ export const selectWoodcuttingTimeAll = (state: GameState) => {
     return selectWoodcuttingTimeInt(selectAxe(state), hasPerk(PerksEnum.FAST_WOODCUTTING)(state))
 }
 
-const selectWoodcuttingTimeInt = memoizeOne((axe: Item | undefined, fastWoodPerk: boolean) => {
+const selectWoodcuttingTimeInt = myMemoizeOne((axe: Item | undefined, fastWoodPerk: boolean) => {
     const ret: BonusResult = { total: DEF_WOOD_AXE.time, bonuses: [] }
 
     if (axe && axe.woodAxeData) ret.bonuses.push(bonusFromItem(axe, { add: axe.woodAxeData.time }))

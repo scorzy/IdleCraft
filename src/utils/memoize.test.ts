@@ -1,11 +1,11 @@
 import { test, describe, expect, vi } from 'vitest'
-import { memoize } from './memoize'
+import { myMemoize } from './memoize'
 
 describe('memoize', () => {
     test('memoize 0', () => {
         const fn = () => ({ r: 10 })
 
-        const memoized = memoize<typeof fn>(fn)
+        const memoized = myMemoize<typeof fn>(fn)
 
         expect(fn()).toEqual({ r: 10 })
         expect(memoized()).toEqual({ r: 10 })
@@ -14,7 +14,7 @@ describe('memoize', () => {
     test('memoize 1', () => {
         const fn = (a: number) => a
 
-        const memoized = memoize<typeof fn>(fn)
+        const memoized = myMemoize<typeof fn>(fn)
 
         expect(fn(1)).toBe(1)
         expect(memoized(1)).toBe(1)
@@ -23,7 +23,7 @@ describe('memoize', () => {
     test('memoize 2', () => {
         const fn = vi.fn().mockImplementation((a: number, b: string) => a.toString() + b)
 
-        const memoized = memoize<typeof fn>(fn)
+        const memoized = myMemoize<typeof fn>(fn)
 
         expect(fn(1, 'a')).toBe('1a')
         expect(memoized(1, 'a')).toBe('1a')
@@ -36,7 +36,7 @@ describe('memoize', () => {
             res: a.toString() + b + c,
         }))
 
-        const memoized = memoize<typeof fn>(fn)
+        const memoized = myMemoize<typeof fn>(fn)
 
         expect(memoized(2, 'a', 'c')).toBe(memoized(2, 'a', 'c'))
         expect(memoized(2, 'a', 'c')).toBe(memoized(2, 'a', 'c'))
@@ -48,7 +48,7 @@ describe('memoize', () => {
             res: a.toString() + b + c + d.d,
         })
 
-        const memoized = memoize<typeof fn>(fn)
+        const memoized = myMemoize<typeof fn>(fn)
         const d = { d: 'd' }
         const d2 = { d: '2' }
         const res1 = memoized(2, 'a', 'c', d)
@@ -62,7 +62,7 @@ describe('memoize', () => {
             res: a.toString() + b + c + d.d,
         })
 
-        const memoized = memoize<typeof fn>(fn)
+        const memoized = myMemoize<typeof fn>(fn)
         const d = { d: 'd' }
         const res1 = memoized(2, 'a', 'c', d)
         const res2 = memoized(2, 'a', 'c')
@@ -81,7 +81,7 @@ describe('memoize', () => {
             res: a.toString() + b + c + (d?.d ?? '--'),
         })
 
-        const memoized = memoize<typeof fn>(fn)
+        const memoized = myMemoize<typeof fn>(fn)
         const d = { d: 'd' }
         const res1 = memoized(2, 'a', 'c', d)
         const res2 = memoized(2, 'a', 'c')
@@ -100,7 +100,7 @@ describe('memoize', () => {
             res: a.toString() + b,
         })
 
-        const memoized = memoize<typeof fn>(fn)
+        const memoized = myMemoize<typeof fn>(fn)
 
         const res1 = memoized(-1, 'a')
         const res2 = memoized(2, 'a')
@@ -115,7 +115,7 @@ describe('memoize', () => {
             res: (a?.toString() ?? 'null') + (b ?? '_null'),
         })
 
-        const memoized = memoize<typeof fn>(fn)
+        const memoized = myMemoize<typeof fn>(fn)
 
         const res1 = memoized(1, 'a')
         const res2 = memoized(null, '_a')
@@ -134,7 +134,7 @@ describe('memoize', () => {
             res: (a?.toString() ?? 'null') + (b ?? '_null'),
         })
 
-        const memoized = memoize<typeof fn>(fn)
+        const memoized = myMemoize<typeof fn>(fn)
 
         const res1 = memoized(1, 'a')
         const res2 = memoized(undefined, '_a')

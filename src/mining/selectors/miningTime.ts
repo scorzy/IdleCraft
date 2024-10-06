@@ -4,7 +4,7 @@ import { GameState } from '../../game/GameState'
 import { Item } from '../../items/Item'
 import { hasPerk } from '../../perks/PerksSelectors'
 import { PerksEnum } from '../../perks/perksEnum'
-import { memoizeOne } from '../../utils/memoizeOne'
+import { myMemoizeOne } from '../../utils/memoizeOne'
 import { FAST_MINING_PERK } from '../MiningCost'
 import { DEF_PICKAXE } from '../miningSelectors'
 import { PickaxeBase, selectPickaxe } from './miningSelectors'
@@ -20,7 +20,7 @@ export const selectMiningTimeAll = (state: GameState) => {
     return selectMiningTimeInt(selectPickaxe(state), hasPerk(PerksEnum.FAST_MINING)(state))
 }
 
-const selectMiningTimeInt = memoizeOne((pickaxe: Item | undefined, fastWoodPerk: boolean) => {
+const selectMiningTimeInt = myMemoizeOne((pickaxe: Item | undefined, fastWoodPerk: boolean) => {
     const ret: BonusResult = { total: DEF_PICKAXE.time, bonuses: [] }
 
     if (pickaxe && pickaxe.woodAxeData) ret.bonuses.push(bonusFromItem(pickaxe, { add: pickaxe.woodAxeData.time }))

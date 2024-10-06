@@ -1,7 +1,7 @@
 import equal from 'react-fast-compare'
 import { GameState } from '../game/GameState'
-import { memoizeOne } from '../utils/memoizeOne'
-import { memoize } from '../utils/memoize'
+import { myMemoizeOne } from '../utils/memoizeOne'
+import { myMemoize } from '../utils/memoize'
 import { selectCraftItem } from '../storage/storageFunctions'
 import { selectItemQta } from '../storage/StorageSelectors'
 import { RecipeItem, RecipeParameterValue } from './RecipeInterfaces'
@@ -21,8 +21,8 @@ export const canCraft = (s: GameState) => s.craftingForm.result !== undefined &&
 
 export const selectCraftTime = (s: GameState) => s.craftingForm.result?.time
 
-const compareCrafting = memoizeOne((crafting: InitialState<Crafting>, recipeId: string) => {
-    const compare = memoize((values: RecipeParameterValue[]) => {
+const compareCrafting = myMemoizeOne((crafting: InitialState<Crafting>, recipeId: string) => {
+    const compare = myMemoize((values: RecipeParameterValue[]) => {
         const len = values.length
 
         const ret = CraftingAdapter.find(crafting, (e) => {

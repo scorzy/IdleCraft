@@ -2,7 +2,7 @@ import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { bonusFromItem, getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
 import { Item } from '../../items/Item'
-import { memoizeOne } from '../../utils/memoizeOne'
+import { myMemoizeOne } from '../../utils/memoizeOne'
 import { DEF_WOOD_AXE, WoodBase, selectAxe } from './WoodcuttingSelectors'
 
 const DAMAGE_BASE: Bonus = {
@@ -10,7 +10,7 @@ const DAMAGE_BASE: Bonus = {
     add: DEF_WOOD_AXE.damage,
     ...WoodBase,
 }
-const selectWoodcuttingDamageInt = memoizeOne((axe: Item | undefined) => {
+const selectWoodcuttingDamageInt = myMemoizeOne((axe: Item | undefined) => {
     const ret: BonusResult = { total: DEF_WOOD_AXE.damage, bonuses: [] }
 
     if (axe && axe.woodAxeData) ret.bonuses.push(bonusFromItem(axe, { add: axe.woodAxeData.damage }))

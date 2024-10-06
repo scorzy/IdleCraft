@@ -17,7 +17,7 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { RestartProgress } from '../../ui/progress/RestartProgress'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { memoize } from '../../utils/memoize'
+import { myMemoize } from '../../utils/memoize'
 import { useTranslations } from '../../msg/useTranslations'
 import { WoodData } from '../WoodData'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
@@ -38,7 +38,7 @@ import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
 import { Button } from '@/components/ui/button'
 
-const selectWoodcutting = memoize((woodType: WoodTypes) => (s: GameState) => {
+const selectWoodcutting = myMemoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.woodcutting.ids) {
         const act = s.woodcutting.entries[id]
         if (act?.woodType === woodType) return act.activityId

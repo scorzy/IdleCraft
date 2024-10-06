@@ -3,7 +3,7 @@ import { memoize, memoizeWithArgs } from 'proxy-memoize'
 import { GameState, LocationState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { StdItems } from '../items/stdItems'
-import { memoizeOne } from '../utils/memoizeOne'
+import { myMemoizeOne } from '../utils/memoizeOne'
 import { Entries } from '../utils/types'
 import { Item, ItemTypes } from '../items/Item'
 import { selectTranslations } from '../msg/useTranslations'
@@ -16,7 +16,7 @@ import { InventoryNoQta } from './storageState'
 import { isCrafted } from './storageFunctions'
 import { InitialState } from '@/entityAdapter/InitialState'
 
-const selectStorageLocationsInt = memoizeOne((locations: { [k in GameLocations]: LocationState }) => {
+const selectStorageLocationsInt = myMemoizeOne((locations: { [k in GameLocations]: LocationState }) => {
     const res: GameLocations[] = []
     const locationsEntries = Object.entries(locations)
     for (const loc of locationsEntries) if (Object.keys(loc[1].storage).length > 0) res.push(loc[0] as GameLocations)

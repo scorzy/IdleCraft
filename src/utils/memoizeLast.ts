@@ -1,6 +1,6 @@
 import equal from 'react-fast-compare'
 
-export function memoizeLast<T>(fn: T) {
+export function myMemoizeLast<T>(fn: T) {
     let lastVal: unknown
 
     const ret = (...args: unknown[]) => {

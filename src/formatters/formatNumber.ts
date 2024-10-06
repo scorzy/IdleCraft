@@ -1,4 +1,4 @@
-import { memoize } from '../utils/memoize'
+import { myMemoize } from '../utils/memoize'
 import { CommaTypes } from './CommaTypes'
 import { NotationTypes } from './NotationTypes'
 
@@ -107,7 +107,7 @@ export function getFormatter(
             break
     }
 
-    formatter = memoize(formatter)
+    formatter = myMemoize(formatter)
 
     return [formatter, parseIntl]
 }

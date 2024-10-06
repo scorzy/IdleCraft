@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react'
 import { LuHourglass } from 'react-icons/lu'
-import { memoize } from '../../utils/memoize'
+import { myMemoize } from '../../utils/memoize'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
 import { recipes } from '../Recipes'
 import { useGameStore } from '../../game/state'
@@ -39,7 +39,7 @@ import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
 
-const selectRecipes: (t: RecipeTypes) => Recipe[] = memoize((t: RecipeTypes) => {
+const selectRecipes: (t: RecipeTypes) => Recipe[] = myMemoize((t: RecipeTypes) => {
     const ret: Recipe[] = []
     const recipeValues = recipes.values()
     for (const recipe of recipeValues) if (recipe.type === t) ret.push(recipe)
