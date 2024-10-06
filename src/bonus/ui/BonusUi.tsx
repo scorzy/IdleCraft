@@ -5,8 +5,15 @@ import { IconsData } from '../../icons/Icons'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 import { GameState } from '../../game/GameState'
-import { useGameStoreShallow } from '../../game/state'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { useGameStore } from '../../game/state'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
 const BonusListUi = memo(function BonusListUi(props: {
@@ -17,7 +24,7 @@ const BonusListUi = memo(function BonusListUi(props: {
     const { f, ft } = useNumberFormatter()
     const { t } = useTranslations()
     const format = isTime ? ft : f
-    const bonusRes = useGameStoreShallow(selectBonusResult)
+    const bonusRes = useGameStore(selectBonusResult)
 
     return (
         <Table>
@@ -77,6 +84,7 @@ export const BonusDialog = memo(function BonusDialog(props: {
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>
+                <DialogDescription></DialogDescription>
                 <BonusListUi selectBonusResult={selectBonusResult} isTime={isTime} />
             </DialogContent>
         </Dialog>

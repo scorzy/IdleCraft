@@ -35,7 +35,14 @@ import { IconsData } from '../../icons/Icons'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../components/ui/dialog'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '../../components/ui/dialog'
 import { Card, CardContent, CardFooter, CardTitle } from '../../components/ui/card'
 import { MyTabNum } from '../../ui/myCard/MyTabNum'
 import { PLAYER_ID } from '../../characters/charactersConst'
@@ -171,6 +178,7 @@ export const PerkPage = () => {
                                     {IconsData[data.iconId]} {t[data.nameId]}
                                 </CardTitle>
                             </DialogTitle>
+                            <DialogDescription></DialogDescription>
                         </DialogHeader>
                         {content}
                         {!readonly && (

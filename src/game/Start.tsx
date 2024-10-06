@@ -1,4 +1,5 @@
 import { SetStateAction, memo, useCallback, useEffect, useState } from 'react'
+import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog'
 import { Button } from '../components/ui/button'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { TrashIcon } from '../icons/IconsMemo'
@@ -87,16 +88,16 @@ export const Start = memo(function Start() {
 const NewGame = memo(function NewGame() {
     const { t } = useTranslations()
     const [name, setName] = useState('')
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value
-        setName(newValue)
-    }
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)
+
     return (
         <Dialog>
             <DialogTrigger asChild>
                 <Button variant="secondary">{t.NewGame}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
+                <DialogTitle>New Game</DialogTitle>
+                <DialogDescription></DialogDescription>
                 <Label htmlFor="name">{t.Name}</Label>
                 <Input id="name" maxLength={10} value={name} onChange={onChange} />
                 <div>

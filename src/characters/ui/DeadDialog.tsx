@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Dialog, DialogContent, DialogHeader } from '../../components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader } from '../../components/ui/dialog'
 import { useGameStore } from '../../game/state'
 import { selectDeadDialog } from '../selectors/characterSelectors'
 import { closeDeadDialog } from '../functions/closeDeadDialog'
@@ -13,6 +13,7 @@ export const DeadDialog = memo(function DeadDialog() {
             <DialogContent>
                 <DialogHeader>{t.YouDied}</DialogHeader>
             </DialogContent>
+            <DialogDescription></DialogDescription>
         </Dialog>
     )
 })
