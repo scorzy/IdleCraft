@@ -1,12 +1,32 @@
 import equal from 'react-fast-compare'
 
 interface Cache {
-    m?: Map<unknown, Cache>
     v?: unknown
+    set: (k: unknown, other: Cache) => void
+    get: (k: unknown) => Cache | undefined
+}
+
+const makeCache: () => Cache = () => {
+    const m = new Map<unknown, Cache>()
+    const w = new WeakMap<object, Cache>()
+
+    const set = (k: unknown, other: Cache) => {
+        if (k && typeof k === 'object') w.set(k, other)
+        else {
+            if (m.size > 100) m.clear()
+            m.set(k, other)
+        }
+    }
+    const get = (k: unknown) => {
+        if (k && typeof k === 'object') return w.get(k)
+        else return m.get(k)
+    }
+
+    return { set, get }
 }
 
 export function memoize<T>(fn: T) {
-    const cache: Cache = {}
+    const cache = makeCache()
     const results: unknown[] = []
 
     const ret = (...args: unknown[]) => {
@@ -17,7 +37,7 @@ export function memoize<T>(fn: T) {
         let arg1
         for (i = 0; i < len; i++) {
             arg1 = args[i]
-            const newLevel = level.m?.get(arg1)
+            const newLevel = level.get(arg1)
             if (newLevel) level = newLevel
             else {
                 found = false
@@ -38,24 +58,17 @@ export function memoize<T>(fn: T) {
             return level.v
         } else {
             const res = getResult()
-            let lastLevel: Cache = { v: res }
+            let lastLevel: Cache = makeCache()
+            lastLevel.v = res
 
             for (let k = len - 1; k > i; k--) {
                 const arg = args[k]
-                const m = new Map<unknown, Cache>()
-                m.set(arg, lastLevel)
-                lastLevel = { m }
+                const oldLast = lastLevel
+                lastLevel = makeCache()
+                lastLevel.set(arg, oldLast)
             }
 
-            let map = level.m
-            if (!map) {
-                map = new Map<unknown, Cache>()
-                level.m = map
-                map.set(arg1, lastLevel)
-            } else {
-                map.set(arg1, lastLevel)
-                if (map.size > 20) map.delete(map.keys().next().value)
-            }
+            level.set(arg1, lastLevel)
 
             return res
         }
