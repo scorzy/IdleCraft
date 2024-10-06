@@ -1,4 +1,3 @@
-import { default as microMemoize } from 'micro-memoize'
 import { memoize, memoizeWithArgs } from 'proxy-memoize'
 import { GameState, LocationState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
@@ -11,6 +10,7 @@ import { CharacterAdapter } from '../characters/characterAdapter'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
+import { myMemoize } from '../utils/memoize'
 import { ItemAdapter } from './ItemAdapter'
 import { InventoryNoQta } from './storageState'
 import { isCrafted } from './storageFunctions'
@@ -36,7 +36,7 @@ type ItemOrdQta = ItemId & { qta: number }
 type ItemOrdName = ItemId & { name: string }
 type ItemOrdValue = ItemId & { value: number }
 
-export const selectLocationItems = microMemoize((location: GameLocations) => {
+export const selectLocationItems = myMemoize((location: GameLocations) => {
     const selectItemsArr = memoize((items: Record<string, number>) =>
         (Object.entries<number | undefined>(items) as Entries<Record<string, number>>).map<ItemId>((e) => ({
             id: e[0],
@@ -123,7 +123,7 @@ export const getSelectedItemQta = (state: GameState) => {
 }
 type ItemIdValue = ItemId & { value: number }
 
-export const selectItemsByType = microMemoize((itemType: ItemTypes | undefined) =>
+export const selectItemsByType = myMemoize((itemType: ItemTypes | undefined) =>
     memoize((state: GameState) => {
         if (!itemType) return EMPTY_ARRAY
 

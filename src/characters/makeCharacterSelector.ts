@@ -1,5 +1,4 @@
 import { memoize } from 'proxy-memoize'
-import { default as microMemoize } from 'micro-memoize'
 import { GameState } from '../game/GameState'
 import { getCharLevelExp } from '../experience/expSelectors'
 import { selectTranslations } from '../msg/useTranslations'
@@ -8,6 +7,7 @@ import { bonusFromItem, getTotal } from '../bonus/BonusFunctions'
 import { DamageData, DamageTypes, Item } from '../items/Item'
 import { Icons } from '../icons/Icons'
 import { selectGameItem, selectGameItemFromCraft, selectInventoryNoQta } from '../storage/StorageSelectors'
+import { myMemoize } from '../utils/memoize'
 import { CharacterAdapter } from './characterAdapter'
 import { CharacterSelector } from './CharacterSelector'
 import { selectMaxHealthFromChar } from './selectors/healthSelectors'
@@ -57,7 +57,7 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const MaxMana = memoize((state: GameState) => MaxManaList(state).total)
     const MaxStamina = memoize((state: GameState) => MaxStaminaList(state).total)
 
-    const EquippedItem = microMemoize((slot: EquipSlotsEnum) =>
+    const EquippedItem = myMemoize((slot: EquipSlotsEnum) =>
         memoize((s: GameState) => {
             const equipped = selChar(s).inventory[slot]
             if (!equipped) return
