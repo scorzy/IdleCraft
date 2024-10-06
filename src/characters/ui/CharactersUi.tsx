@@ -25,7 +25,6 @@ import { AbilitySidebar, AbilityUi } from '../../activeAbilities/ui/CharAbilitie
 import { DamageTypes } from '../../items/Item'
 import { DamageTypesData } from '../../items/damageTypes'
 import { Card, CardContent } from '../../components/ui/card'
-import { selectCharacterAttackSpeed, selectCharacterAttackSpeedList } from '../selectors/attackSpeedSelectors'
 import { CharSkills } from '../../experience/ui/CharSkills'
 import { ExperienceCardUi } from '../../experience/ui/ExperienceCard'
 import { getCharacterSelector } from '../characterSelectorsNew'
@@ -295,8 +294,8 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
     const charSel = getCharacterSelector(charId)
 
     const damage = useGameStore(charSel.AllAttackDamage)
-    const speed = useGameStore(selectCharacterAttackSpeed(charId))
-    const speedList = selectCharacterAttackSpeedList(charId)
+    const speed = useGameStore(charSel.AttackSpeed)
+    const speedList = charSel.AttackSpeedList
 
     return (
         <div>

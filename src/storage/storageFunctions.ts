@@ -1,4 +1,5 @@
 import { CharacterAdapter } from '../characters/characterAdapter'
+import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { GameLocations } from '../gameLocations/GameLocations'
@@ -144,9 +145,9 @@ export function selectCraftItem(state: InitialState<Item>, item: Item): string |
 
 export function saveCraftItem(state: InitialState<Item>, item: Item): { id: string; state: InitialState<Item> } {
     const id = selectCraftItem(state, item)
-    if (id !== null) return { id, state }
+    if (id) return { id, state }
 
-    const newItem = { ...item, id: getUniqueId() }
+    const newItem = { ...item, id: CRAFTED_ITEM_PREFIX + getUniqueId() }
     state = ItemAdapter.create(state, newItem)
 
     const byType = craftIdsByType.get(item.type) ?? []

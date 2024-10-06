@@ -1,4 +1,5 @@
 import { memoize } from 'proxy-memoize'
+import { default as microMemoize } from 'micro-memoize'
 import { GameState } from '../game/GameState'
 import { getCharLevelExp } from '../experience/expSelectors'
 import { selectTranslations } from '../msg/useTranslations'
@@ -6,13 +7,14 @@ import { Bonus, BonusResult } from '../bonus/Bonus'
 import { bonusFromItem, getTotal } from '../bonus/BonusFunctions'
 import { DamageData, DamageTypes } from '../items/Item'
 import { Icons } from '../icons/Icons'
+import { selectGameItem } from '../storage/StorageSelectors'
 import { CharacterAdapter } from './characterAdapter'
 import { CharacterSelector } from './CharacterSelector'
 import { selectMaxHealthFromChar } from './selectors/healthSelectors'
 import { selectMaxManaFromChar } from './selectors/manaSelectors'
 import { selectMaxStaminaFromChar } from './selectors/staminaSelectors'
 import { selectAllCharInventory } from './selectors/selectAllCharInventory'
-import { selectMainWeapon } from './selectors/selectMainWeapon'
+import { EquipSlotsEnum } from './equipSlotsEnum'
 
 export const makeCharacterSelector: (charId: string) => CharacterSelector = (charId: string) => {
     const selChar = memoize((s: GameState) => CharacterAdapter.selectEx(s.characters, charId))
@@ -55,6 +57,18 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const MaxHealth = memoize((state: GameState) => MaxHealthList(state).total)
     const MaxMana = memoize((state: GameState) => MaxManaList(state).total)
     const MaxStamina = memoize((state: GameState) => MaxStaminaList(state).total)
+
+    const EquippedItem = microMemoize((slot: EquipSlotsEnum) =>
+        memoize((s: GameState) => {
+            const equipped = selChar(s).inventory[slot]
+            if (!equipped) return
+            return selectGameItem(equipped.stdItemId, equipped.craftItemId)(s)
+        })
+    )
+
+    const MainWeapon = memoize(
+        (s: GameState) => EquippedItem(EquipSlotsEnum.MainHand)(s) ?? EquippedItem(EquipSlotsEnum.TwoHand)(s)
+    )
 
     const makeArmourSelectors = (type: DamageTypes) => {
         const ArmourList = memoize((state: GameState) => {
@@ -102,7 +116,7 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
 
     const makeDamageSelectors = (type: DamageTypes) => {
         const DamageList = memoize((state: GameState) => {
-            const weapon = selectMainWeapon(charId)(state)
+            const weapon = MainWeapon(state)
 
             const bonuses: Bonus[] = []
 
@@ -160,6 +174,35 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         return ret
     })
 
+    const AttackSpeedList = memoize((s: GameState) => {
+        const weapon = MainWeapon(s)
+        const bonuses: Bonus[] = []
+
+        if (weapon && weapon.weaponData) {
+            bonuses.push({
+                id: `w_${weapon.id}`,
+                add: weapon.weaponData.attackSpeed,
+                iconId: weapon.icon,
+                nameId: weapon.nameId,
+            })
+        } else
+            bonuses.push({
+                id: 'unharmed',
+                add: 5e3,
+                iconId: Icons.Punch,
+                nameId: 'Unharmed',
+            })
+
+        const bonusList: BonusResult = {
+            bonuses,
+            total: getTotal(bonuses),
+        }
+
+        return bonusList
+    })
+
+    const AttackSpeed = memoize((s: GameState) => AttackSpeedList(s).total)
+
     return {
         Name,
         Icon,
@@ -185,5 +228,9 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         armour,
         damage,
         AllAttackDamage,
+        AttackSpeedList,
+        AttackSpeed,
+        EquippedItem,
+        MainWeapon,
     }
 }

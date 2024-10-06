@@ -8,7 +8,7 @@ import { ItemId } from '../../storage/storageState'
 import { Item } from '../Item'
 import { SlotsData } from '../slotsData'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { selectEquipId, selectEquippedItem } from '../itemSelectors'
+import { selectEquipId } from '../itemSelectors'
 import { changeEquip } from '../itemFunctions'
 import { DEF_PICKAXE } from '../../mining/miningSelectors'
 import { DEF_WOOD_AXE } from '../../wood/selectors/WoodcuttingSelectors'
@@ -27,6 +27,7 @@ import { PLAYER_ID } from '../../characters/charactersConst'
 import { getItemId2 } from '../../storage/getItemId2'
 import { Card, CardContent } from '../../components/ui/card'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+import { getCharacterSelector } from '../../characters/characterSelectorsNew'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
 const noIcon = <GiRock />
@@ -37,19 +38,13 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     const { t } = useTranslations()
     const slotData = SlotsData[slot]
 
-    const selectEquippedItemMemo = useCallback(
-        (state: GameState) => selectEquippedItem(slot, charId)(state),
-        [slot, charId]
+    const equipped = useGameStore(
+        useCallback((s: GameState) => getCharacterSelector(charId).EquippedItem(slot)(s), [slot, charId])
     )
-    const selectEquipIdMemo = useCallback((state: GameState) => selectEquipId(slot, charId)(state), [slot, charId])
-    const selectItemsByTypeMemo = useCallback(
-        (state: GameState) => selectItemsByType(slotData.ItemType)(state),
-        [slotData]
-    )
+    const itemId = useGameStore(useCallback((s: GameState) => selectEquipId(slot, charId)(s), [slot, charId]))
 
-    const equipped = useGameStore(selectEquippedItemMemo)
-    const itemId = useGameStore(selectEquipIdMemo)
-    const itemsId = useGameStore(selectItemsByTypeMemo)
+    const itemsId = useGameStore(useCallback((s: GameState) => selectItemsByType(slotData.ItemType)(s), [slotData]))
+
     const handleEquipChange = useCallback((value: string) => changeEquip(slot, value, charId), [slot, charId])
 
     let name = t.None

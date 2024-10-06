@@ -4,7 +4,6 @@ import { Msg } from '../../msg/Msg'
 import { AbilityParams } from '../ActiveAbility'
 import { CHARGED_ATTACK_DAMAGE_BONUS, CHARGED_ATTACK_STAMINA, CHARGED_ATTACK_TIME } from '../abilityConst'
 import { selectTranslations } from '../../msg/useTranslations'
-import { selectCharacterAttackSpeed } from '../../characters/selectors/attackSpeedSelectors'
 import { GameState } from '../../game/GameState'
 import { AbilitiesEnum } from '../abilitiesEnum'
 import { DamageData } from '../../items/Item'
@@ -23,7 +22,7 @@ export class ChargedAttack extends NormalAttack {
         return Icons.SaberSlash
     }
     getChargeTime(params: AbilityParams): number {
-        return selectCharacterAttackSpeed(params.characterId)(params.state) * CHARGED_ATTACK_TIME
+        return getCharacterSelector(params.characterId).AttackSpeed(params.state) * CHARGED_ATTACK_TIME
     }
     getHealthCost(): number {
         return 0

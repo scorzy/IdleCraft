@@ -1,7 +1,8 @@
 import { BonusResult } from '../bonus/Bonus'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
-import { DamageData, DamageTypes } from '../items/Item'
+import { DamageData, DamageTypes, Item } from '../items/Item'
+import { EquipSlotsEnum } from './equipSlotsEnum'
 
 export type CharacterSelector = {
     Name: (state: GameState) => string
@@ -43,4 +44,10 @@ export type CharacterSelector = {
     >
 
     AllAttackDamage: (state: GameState) => DamageData
+
+    AttackSpeedList: (state: GameState) => BonusResult
+    AttackSpeed: (state: GameState) => number
+
+    EquippedItem: (slot: EquipSlotsEnum) => (state: GameState) => Item | undefined
+    MainWeapon: (state: GameState) => Item | undefined
 }

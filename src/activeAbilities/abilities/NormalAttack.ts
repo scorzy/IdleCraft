@@ -3,8 +3,6 @@ import { Icons } from '../../icons/Icons'
 import { Msg } from '../../msg/Msg'
 import { AbilityParams, ActiveAbility } from '../ActiveAbility'
 import { selectTranslations } from '../../msg/useTranslations'
-import { selectCharacterAttackSpeed } from '../../characters/selectors/attackSpeedSelectors'
-import { selectMainWeapon } from '../../characters/selectors/selectMainWeapon'
 import { selectRandomEnemy } from '../../characters/functions/selectRandomEnemy'
 import { CharacterAdapter } from '../../characters/characterAdapter'
 import { GameState } from '../../game/GameState'
@@ -25,11 +23,11 @@ export class NormalAttack implements ActiveAbility {
         return t.t.NormalAttackDesc
     }
     getIconId(params: AbilityParams): Icons {
-        const weapon = selectMainWeapon(params.characterId)(params.state)
+        const weapon = getCharacterSelector(params.characterId).MainWeapon(params.state)
         return weapon?.icon ?? Icons.Punch
     }
     getChargeTime(params: AbilityParams): number {
-        return selectCharacterAttackSpeed(params.characterId)(params.state)
+        return getCharacterSelector(params.characterId).AttackSpeed(params.state)
     }
     getHealthCost(): number {
         return 0
@@ -69,7 +67,7 @@ export class NormalAttack implements ActiveAbility {
         })
 
         if (!caster.isEnemy) {
-            const weapon = selectMainWeapon(characterId)(state)
+            const weapon = getCharacterSelector(characterId).MainWeapon(state)
             if (weapon && weapon.weaponData)
                 state = addExp(state, weapon.weaponData.expType, sumDamage(damage) * DAMAGE_EXP_MULTI)
         }

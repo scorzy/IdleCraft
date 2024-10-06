@@ -5,3 +5,4 @@ export const BASE_SWORD_SPEED = 2.5e3
 export const DAMAGE_EXP_MULTI = 0.1
 
 export const MAX_LOOT = 10
+export const CRAFTED_ITEM_PREFIX = 'C_'
