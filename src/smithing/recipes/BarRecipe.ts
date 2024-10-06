@@ -33,16 +33,16 @@ export const BarRecipe: Recipe = {
     getResult: function (_: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const ore = params.find((i) => i.id === 'ore')
         if (!ore) return
-        if (!ore.stdItemId) return
-        const res = OreToBar.get(ore.stdItemId)
-        if (!res) throw new Error(`OreToBar not found ${ore.stdItemId}`)
+        if (!ore.itemId) return
+        const res = OreToBar.get(ore.itemId)
+        if (!res) throw new Error(`OreToBar not found ${ore.itemId}`)
 
         return {
             time: 3000,
             requirements: [
                 {
                     qta: 1,
-                    stdItemId: ore.stdItemId,
+                    itemId: ore.itemId,
                 },
             ],
             results: [{ id: res, qta: 1, stdItemId: res }],

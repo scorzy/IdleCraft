@@ -23,7 +23,7 @@ export const WoodBase: BaseBonus = {
 export function selectAxe(state: GameState): Item | undefined {
     const axe = CharacterAdapter.selectEx(state.characters, PLAYER_ID).inventory[EquipSlotsEnum.WoodAxe]
     if (!axe) return
-    return selectGameItem(axe.stdItemId, axe.craftItemId)(state)
+    return selectGameItem(axe.itemId)(state)
 }
 
 export const isWoodEnabled = (woodType: WoodTypes) => (state: GameState) => {

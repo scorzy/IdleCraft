@@ -6,7 +6,7 @@ export function collectLoot(state: GameState, lootId: string): GameState {
     const loot = state.locations[state.location].loot.find((l) => l.id === lootId)
     if (!loot) throw new Error(`Loot with id ${lootId} not found`)
 
-    state = addItem(state, loot.stdItem, loot.craftedItem, loot.quantity)
+    state = addItem(state, loot.itemId, loot.quantity)
 
     const lootArr = state.locations[state.location].loot.filter((l) => l.id !== lootId)
 

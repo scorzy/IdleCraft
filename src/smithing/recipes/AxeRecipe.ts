@@ -43,9 +43,9 @@ class AxeRecipeInt implements Recipe {
         const handle = params.find((i) => i.id === 'handle')
         if (handle === undefined) return
 
-        const barItem = selectGameItem(bar.stdItemId, bar.stdItemId)(state)
+        const barItem = selectGameItem(bar.itemId)(state)
         if (!barItem) return
-        const handleItem = selectGameItem(handle.stdItemId, handle.stdItemId)(state)
+        const handleItem = selectGameItem(handle.itemId)(state)
         if (!handleItem) return
 
         if (!barItem.craftingWoodAxeData) return
@@ -71,13 +71,11 @@ class AxeRecipeInt implements Recipe {
             requirements: [
                 {
                     qta: 1,
-                    stdItemId: bar.stdItemId,
-                    craftedItemId: bar.stdItemId,
+                    itemId: bar.itemId,
                 },
                 {
                     qta: 1,
-                    stdItemId: handle.stdItemId,
-                    craftedItemId: bar.stdItemId,
+                    itemId: handle.itemId,
                 },
             ],
             results: [{ id: 'craftedAxe', qta: 1, craftedItem: craftedAxe }],

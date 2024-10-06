@@ -2,12 +2,7 @@ import { memo, useCallback } from 'react'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
-import {
-    getSelectedItem,
-    getSelectedItemQta,
-    selectSelectedCraftedItemId,
-    selectSelectedStdItemId,
-} from '../../storage/StorageSelectors'
+import { getSelectedItem, getSelectedItemQta, selectSelectedItemId } from '../../storage/StorageSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { Button } from '../../components/ui/button'
 import { equipClick } from '../../characters/characterFunctions'
@@ -35,13 +30,13 @@ export const SelectedItem = memo(function SelectedItem() {
     )
 })
 const EquipItem = memo(function EquipItem() {
-    const selectedStdItem = useGameStore(selectSelectedStdItemId)
-    const selectedCraftedItemId = useGameStore(selectSelectedCraftedItemId)
+    const selectedItemId = useGameStore(selectSelectedItemId)
     const item = useGameStore(getSelectedItem)
 
     const onClick = useCallback(() => {
         if (!item) return
-        if (item.equipSlot) equipClick(PLAYER_ID, item.equipSlot, selectedStdItem, selectedCraftedItemId, 1)
-    }, [item, selectedStdItem, selectedCraftedItemId])
+        if (item.equipSlot) equipClick(PLAYER_ID, item.equipSlot, selectedItemId, 1)
+    }, [item, selectedItemId])
+
     return <Button onClick={onClick}>Equip</Button>
 })

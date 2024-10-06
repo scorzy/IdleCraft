@@ -4,7 +4,6 @@ import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { selectItemsByType, selectGameItem } from '../../storage/StorageSelectors'
-import { ItemId } from '../../storage/storageState'
 import { Item } from '../Item'
 import { SlotsData } from '../slotsData'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
@@ -21,10 +20,8 @@ import {
     SelectValue,
 } from '../../components/ui/select'
 import { GameState } from '../../game/GameState'
-import { getRecipeParamId } from '../../crafting/RecipeFunctions'
 import { Msg } from '../../msg/Msg'
 import { PLAYER_ID } from '../../characters/charactersConst'
-import { getItemId2 } from '../../storage/getItemId2'
 import { Card, CardContent } from '../../components/ui/card'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { getCharacterSelector } from '../../characters/characterSelectorsNew'
@@ -74,9 +71,9 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
                         </SelectItem>
                         {itemsId.length > 0 && <SelectSeparator />}
                         {itemsId.map((t, index) => (
-                            <Fragment key={getItemId2(t.stdItemId, t.craftItemId)}>
+                            <Fragment key={t.id}>
                                 {index !== 0 && <SelectSeparator />}
-                                <OptionItem itemId={t} slot={slot} />
+                                <OptionItem itemId={t.id} slot={slot} />
                             </Fragment>
                         ))}
                     </SelectContent>
@@ -86,10 +83,9 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     )
 })
 
-const OptionItem = memo(function ParamItem(props: { itemId: ItemId; slot: EquipSlotsEnum }) {
+const OptionItem = memo(function ParamItem(props: { itemId: string; slot: EquipSlotsEnum }) {
     const { itemId, slot } = props
-    const value = getRecipeParamId(itemId)
-    const itemObj = useGameStore(selectGameItem(itemId?.stdItemId ?? null, itemId?.craftItemId ?? null))
+    const itemObj = useGameStore(selectGameItem(itemId))
     const { t } = useTranslations()
     const text = itemObj ? t[itemObj.nameId] : t.None
 
@@ -97,7 +93,7 @@ const OptionItem = memo(function ParamItem(props: { itemId: ItemId; slot: EquipS
     if (itemObj) icon = <span className="text-2xl">{IconsData[itemObj.icon]}</span>
 
     return (
-        <SelectItem value={value} icon={icon}>
+        <SelectItem value={itemId} icon={icon}>
             <OptionItemInt name={text} slot={slot} item={itemObj} />
         </SelectItem>
     )

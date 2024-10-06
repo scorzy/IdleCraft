@@ -9,75 +9,42 @@ import { memoize } from '../utils/memoize'
 import { memoizeOne } from '../utils/memoizeOne'
 import { myCompare } from '../utils/myCompare'
 import { ItemAdapter } from './ItemAdapter'
-import { ItemId, StorageState } from './storageState'
+import { StorageState } from './storageState'
 import { InitialState } from '@/entityAdapter/InitialState'
 
-export const getItemId = memoize(function getItemId(s?: string): ItemId | undefined {
-    if (!s || s === '') return
-    if (s.startsWith('s')) return { stdItemId: s.substring(1), craftItemId: null }
-    else return { craftItemId: s.substring(1), stdItemId: null }
-})
-
-function subAddItem(
-    state: StorageState,
-    stdItemId: string | null,
-    craftItemId: string | null,
-    qta: number
-): StorageState {
-    let subState: Record<string, number> = state.stdItems
-    let id = ''
-
-    if (craftItemId) {
-        subState = state.craftedItems
-        id = craftItemId
-    } else if (stdItemId) id = stdItemId
-    else throw new Error('[addItem] stdItemId and craftItemId null')
-
-    const old = subState[id]
+function subAddItem(state: StorageState, id: string, qta: number): StorageState {
+    const old = state[id]
     const newQta = Math.max(qta + (old ?? 0), 0)
 
     if (Math.abs(newQta) < Number.EPSILON) {
-        const { [id]: _, ...newSubState } = subState
-        subState = newSubState
-    } else subState = { ...subState, [id]: newQta }
-
-    if (stdItemId) state = { ...state, stdItems: subState }
-    else state = { ...state, craftedItems: subState }
+        const { [id]: _, ...newSubState } = state
+        state = newSubState
+    } else state = { ...state, [id]: newQta }
 
     return state
 }
 
-function subHasItem(state: StorageState, stdItemId: string | null, craftItemId: string | null, qta: number): boolean {
-    if (stdItemId) return (state.stdItems[stdItemId] ?? 0) >= qta
-    else if (craftItemId) return (state.craftedItems[craftItemId] ?? 0) >= qta
-    else throw new Error('[hasItem] stdItemId and craftItemId null')
+function subHasItem(state: StorageState, id: string, qta: number): boolean {
+    return (state[id] ?? 0) >= qta
 }
 
-export function addItem(
-    state: GameState,
-    stdItemId: string | null,
-    craftItemId: string | null,
-    qta: number,
-    location?: GameLocations
-): GameState {
+export function addItem(state: GameState, itemId: string, qta: number, location?: GameLocations): GameState {
     location = location ?? state.location
     let storage = state.locations[location].storage
-    storage = subAddItem(storage, stdItemId, craftItemId, qta)
+    storage = subAddItem(storage, itemId, qta)
     state = { ...state, locations: { ...state.locations, [location]: { ...state.locations[location], storage } } }
     return state
 }
 
-export function removeItem(
-    state: GameState,
-    stdItemId: string | null,
-    craftItemId: string | null,
-    qta: number,
-    location?: GameLocations
-): GameState {
-    state = addItem(state, stdItemId, craftItemId, qta * -1, location)
+export function isCrafted(itemId: string): boolean {
+    return itemId.startsWith(CRAFTED_ITEM_PREFIX)
+}
 
-    if (craftItemId && !isCraftItemUsed(state, craftItemId))
-        state = { ...state, craftedItems: removeCraftItem(state.craftedItems, craftItemId) }
+export function removeItem(state: GameState, id: string, qta: number, location?: GameLocations): GameState {
+    state = addItem(state, id, qta * -1, location)
+
+    if (isCrafted(id) && !isCraftItemUsed(state, id))
+        state = { ...state, craftedItems: removeCraftItem(state.craftedItems, id) }
 
     return state
 }
@@ -85,35 +52,28 @@ export function removeItem(
 function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
     const equipped = CharacterAdapter.find(
         state.characters,
-        (char) => !!Object.values(char.inventory).find((inv) => inv.craftItemId === craftItemId)
+        (char) => !!Object.values(char.inventory).find((inv) => inv.itemId === craftItemId)
     )
 
     if (equipped) return true
 
     const locations = Object.values(state.locations)
-    for (const loc of locations) if (loc.storage.craftedItems[craftItemId] ?? 0 > 0) return true
+    for (const loc of locations) if (loc.storage[craftItemId] ?? 0 > 0) return true
 
     return false
 }
 
-export function hasItem(
-    state: GameState,
-    stdItemId: string | null,
-    craftItemId: string | null,
-    qta: number,
-    location?: GameLocations
-): boolean {
+export function hasItem(state: GameState, stdItemId: string, qta: number, location?: GameLocations): boolean {
     location = location ?? state.location
     const storage = state.locations[location].storage
-    return subHasItem(storage, stdItemId, craftItemId, qta)
+    return subHasItem(storage, stdItemId, qta)
 }
 
-export const setSelectedItem = (stdItemId: string | null, craftItemId: string | null, location: GameLocations) =>
+export const setSelectedItem = (itemId: string | null, location: GameLocations) =>
     useGameStore.setState((s) => ({
         ui: {
             ...s.ui,
-            selectedStdItemId: stdItemId ?? null,
-            selectedCraftedItemId: craftItemId ?? null,
+            selectedItemId: itemId ?? null,
             selectedItemLocation: location,
         },
     }))

@@ -33,18 +33,18 @@ export const HandleRecipe: Recipe = {
     getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const plank = params.find((i) => i.id === 'plank')
         if (plank === undefined) return
-        if (!plank.stdItemId) return
-        const id = PlankToHandle.get(plank.stdItemId)
-        if (!id) throw new Error(`PlankToHandle not found ${plank.stdItemId}`)
+        if (!plank.itemId) return
+        const id = PlankToHandle.get(plank.itemId)
+        if (!id) throw new Error(`PlankToHandle not found ${plank.itemId}`)
         return {
             time: 3000,
             requirements: [
                 {
                     qta: 1,
-                    stdItemId: plank.stdItemId,
+                    itemId: plank.itemId,
                 },
             ],
-            results: [{ id, qta: 1, stdItemId: PlankToHandle.get(plank.stdItemId) }],
+            results: [{ id, qta: 1, stdItemId: PlankToHandle.get(plank.itemId) }],
         }
     },
 }

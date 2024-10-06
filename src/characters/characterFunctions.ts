@@ -5,35 +5,29 @@ import { CharacterAdapter } from './characterAdapter'
 import { getCharacterSelector } from './characterSelectorsNew'
 import { PLAYER_ID } from './charactersConst'
 import { EquipSlotsEnum } from './equipSlotsEnum'
-import { Inventory } from './inventory'
 
 export function equipItem(
     state: GameState,
     charId: string,
     slot: EquipSlotsEnum,
-    stdItemId: string | null,
-    craftItemId: string | null,
+    itemId: string | null = null,
     quantity = 1
 ): GameState {
     let char = CharacterAdapter.selectEx(state.characters, charId)
 
     const equipped = char.inventory[slot]
-    if (equipped)
-        state = addItem(state, equipped.stdItemId ?? null, equipped.craftItemId ?? null, equipped.quantity ?? 1)
+    if (equipped && itemId) state = addItem(state, itemId, equipped.quantity ?? 1)
 
     char = CharacterAdapter.selectEx(state.characters, charId)
 
-    if (stdItemId || craftItemId) {
-        const equippedSlot: Inventory = { quantity }
-        if (stdItemId) equippedSlot.stdItemId = stdItemId
-        else if (craftItemId) equippedSlot.craftItemId = craftItemId
+    if (itemId) {
         state = {
             ...state,
             characters: CharacterAdapter.update(state.characters, charId, {
-                inventory: { ...char.inventory, [slot]: equippedSlot },
+                inventory: { ...char.inventory, [slot]: { itemId, quantity } },
             }),
         }
-        state = removeItem(state, stdItemId, craftItemId, quantity)
+        state = removeItem(state, itemId, quantity)
     } else {
         const { [slot]: _, ...inventory } = char.inventory
         state = {
@@ -46,13 +40,8 @@ export function equipItem(
 
     return state
 }
-export const equipClick = (
-    charId: string,
-    slot: EquipSlotsEnum,
-    stdItemId: string | null,
-    craftItemId: string | null,
-    quantity = 1
-) => useGameStore.setState((s) => equipItem(s, charId, slot, stdItemId, craftItemId, quantity))
+export const equipClick = (charId: string, slot: EquipSlotsEnum, itemId: string | null = null, quantity = 1) =>
+    useGameStore.setState((s) => equipItem(s, charId, slot, itemId, quantity))
 
 const addHealthPoints = (state: GameState, charId: string) => {
     const av = getCharacterSelector(charId).AvailableAttributes(state)

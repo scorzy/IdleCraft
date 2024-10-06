@@ -19,7 +19,7 @@ const selectAllCharInventoryInt = memoize((inventory: InventoryNoQta, crafted: I
     Object.entries(inventory).forEach((kv) => {
         const slot = kv[0] as EquipSlotsEnum
         const itemIds = kv[1]
-        const item = selectGameItemFromCraft(itemIds.stdItemId, itemIds.craftItemId, crafted)
+        const item = selectGameItemFromCraft(itemIds.itemId, crafted)
         if (item) ret[slot] = item
     })
     return ret

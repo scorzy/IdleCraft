@@ -30,9 +30,9 @@ export const butcheringRecipe: Recipe = {
     getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const corpse = params.find((i) => i.id === 'corpse')
         if (!corpse) return
-        if (!corpse.stdItemId) return
+        if (!corpse.itemId) return
 
-        const animal = DeadAnimals[corpse.stdItemId]
+        const animal = DeadAnimals[corpse.itemId]
         if (!animal) return
         if (!animal.butchering) return
 
@@ -41,7 +41,7 @@ export const butcheringRecipe: Recipe = {
             requirements: [
                 {
                     qta: 1,
-                    stdItemId: corpse.stdItemId,
+                    itemId: corpse.itemId,
                 },
             ],
             results: animal.butchering,

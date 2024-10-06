@@ -24,7 +24,7 @@ export const execWoodcutting = makeExecActivity((state: GameState, timer: Timer)
     state = res.state
     state = addExp(state, ExpEnum.Woodcutting, damage * 0.1)
     if (res.cut) {
-        state = addItem(state, `${data.woodType}Log`, null, 1)
+        state = addItem(state, `${data.woodType}Log`, 1)
     } else {
         const time = selectWoodcuttingTime(state)
         state = startTimer(state, time, ActivityTypes.Woodcutting, id)

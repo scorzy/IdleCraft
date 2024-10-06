@@ -18,8 +18,7 @@ export interface UiState {
     lang: string
     woodType: WoodTypes
     oreType: OreTypes
-    selectedStdItemId: string | null
-    selectedCraftedItemId: string | null
+    selectedItemId: string | null
     selectedItemLocation: GameLocations | null
     recipeType?: RecipeTypes
     storageOrder: 'name' | 'quantity' | 'value'

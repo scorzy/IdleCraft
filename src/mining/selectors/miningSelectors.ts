@@ -19,5 +19,5 @@ export const PickaxeBase: BaseBonus = {
 export function selectPickaxe(state: GameState) {
     const axe = CharacterAdapter.selectEx(state.characters, PLAYER_ID).inventory[EquipSlotsEnum.Pickaxe]
     if (!axe) return
-    return selectGameItem(axe.stdItemId, axe.craftItemId)(state)
+    return selectGameItem(axe.itemId)(state)
 }

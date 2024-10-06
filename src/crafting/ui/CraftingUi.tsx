@@ -23,7 +23,7 @@ import { Badge } from '../../components/ui/badge'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { RecipeData } from '../RecipeData'
-import { setRecipeItemParam, getRecipeParamId } from '../RecipeFunctions'
+import { setRecipeItemParam } from '../RecipeFunctions'
 import { Recipe } from '../Recipe'
 import { MyPage } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
@@ -33,8 +33,8 @@ import { Card, CardContent } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { IconsData } from '../../icons/Icons'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
-import { ItemId } from '../../storage/storageState'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+import { GameState } from '../../game/GameState'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
@@ -174,8 +174,11 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
     const { t } = useTranslations()
     const itemsId = useGameStore(selectItemsByType(recipeParam.itemType))
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
-    const selectedValue = getRecipeParamId(selected)
-    const selectedItem = useGameStore(selectGameItem(selected?.stdItemId, selected?.craftItemId))
+    const selectedValue = selected?.itemId
+    const selectedItem = useGameStore((s: GameState) => {
+        if (!selected) return null
+        return selectGameItem(selected.id)(s)
+    })
 
     const handleRecipeChange = useCallback(
         (value: string) => setRecipeItemParam(recipeParam.id, value),
@@ -197,25 +200,24 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
                 </SelectTrigger>
                 <SelectContent>
                     {itemsId.map((t) => {
-                        const value = getRecipeParamId(t)
-                        return <ParamItem itemId={t} key={value} />
+                        return <ParamItem itemId={t.id} key={t.id} />
                     })}
                 </SelectContent>
             </Select>
         </div>
     )
 })
-const ParamItem = memo(function ParamItem(props: { itemId: ItemId }) {
+const ParamItem = memo(function ParamItem(props: { itemId: string }) {
     const { itemId } = props
-    const value = getRecipeParamId(itemId)
-    const itemObj = useGameStore(selectGameItem(itemId.stdItemId ?? null, itemId.craftItemId ?? null))
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
-    const qta = useGameStore(selectItemQta(null, itemId.stdItemId ?? null, itemId.craftItemId ?? null))
+
+    const itemObj = useGameStore(selectGameItem(itemId))
+    const qta = useGameStore(selectItemQta(null, itemId))
     const text = itemObj ? t[itemObj.nameId] : t.None
 
     return (
-        <SelectItem value={value} icon={itemObj && IconsData[itemObj.icon]} className={classes.seleBtn}>
+        <SelectItem value={itemId} icon={itemObj && IconsData[itemObj.icon]} className={classes.seleBtn}>
             <span className={classes.item}>
                 <span className={classes.text}>{text}</span>
                 <span className="text-muted-foreground">{f(qta)}</span>

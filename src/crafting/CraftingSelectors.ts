@@ -43,11 +43,11 @@ export function selectCurrentCrafting(s: GameState): string | null {
 export const selectResultQta = (result?: RecipeItem) => (s: GameState) => {
     if (!result) return 0
     if (result.stdItemId) {
-        return selectItemQta(null, result.stdItemId, null)(s)
+        return selectItemQta(null, result.stdItemId)(s)
     } else if (result.craftedItem) {
         const craftId = selectCraftItem(s.craftedItems, result.craftedItem)
         if (!craftId) return 0
-        return selectItemQta(null, null, craftId)(s)
+        return selectItemQta(null, craftId)(s)
     }
     return 0
 }

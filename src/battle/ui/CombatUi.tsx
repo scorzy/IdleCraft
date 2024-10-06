@@ -249,11 +249,12 @@ const BattleLootUi = memo(function BattleLootUi() {
         </Card>
     )
 })
+
 const LootRow = memo(function LootRow(props: { loot: LootId }) {
     const { loot } = props
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
-    const item = useGameStore(selectGameItem(loot.stdItem, loot.craftedItem))
+    const item = useGameStore(selectGameItem(loot.itemId))
 
     const onClick = useCallback(() => collectLootUi(loot.id), [loot])
 

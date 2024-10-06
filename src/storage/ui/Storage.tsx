@@ -13,7 +13,6 @@ import {
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
 import { setSelectedItem } from '../storageFunctions'
-import { getItemId2 } from '../getItemId2'
 import { SelectedItem } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
 import { Button, buttonVariants } from '../../components/ui/button'
@@ -149,13 +148,7 @@ const LocationStorage = memo(function LocationStorage(props: {
                     {show && (
                         <TableBody>
                             {items.map((i) => (
-                                <StorageItem
-                                    small={small}
-                                    key={getItemId2(i.stdItemId, i.craftItemId)}
-                                    stdItemId={i.stdItemId}
-                                    craftItemId={i.craftItemId}
-                                    location={location}
-                                />
+                                <StorageItem small={small} key={i.id} itemId={i.id} location={location} />
                             ))}
                         </TableBody>
                     )}
@@ -220,23 +213,15 @@ const StorageHeaderArrow = memo(function StorageHeaderValue() {
     return asc ? ArrowDownIcon : ArrowUpIcon
 })
 
-const StorageItem = memo(function StorageItem(props: {
-    small: boolean
-    location: GameLocations
-    stdItemId: string | null
-    craftItemId: string | null
-}) {
-    const { location, stdItemId, craftItemId, small } = props
+const StorageItem = memo(function StorageItem(props: { small: boolean; location: GameLocations; itemId: string }) {
+    const { location, itemId, small } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
-    const qta = useGameStore(selectItemQta(location, stdItemId, craftItemId))
-    const item = useGameStore(selectGameItem(stdItemId, craftItemId))
-    const selected = useGameStore(isSelected(stdItemId, craftItemId))
+    const qta = useGameStore(selectItemQta(location, itemId))
+    const item = useGameStore(selectGameItem(itemId))
+    const selected = useGameStore(isSelected(itemId))
 
-    const onClick = useCallback(
-        () => setSelectedItem(stdItemId, craftItemId, location),
-        [stdItemId, craftItemId, location]
-    )
+    const onClick = useCallback(() => setSelectedItem(itemId, location), [itemId, location])
 
     if (!item) return
     if (small)

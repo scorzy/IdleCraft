@@ -35,7 +35,7 @@ export class TwoHSwordRecipe implements Recipe {
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')
         if (bar === undefined) return
-        const barItem = selectGameItem(bar.stdItemId, bar.stdItemId)(state)
+        const barItem = selectGameItem(bar.itemId)(state)
         if (!barItem) return
         if (!barItem.craftingData) return
 
@@ -64,8 +64,7 @@ export class TwoHSwordRecipe implements Recipe {
             requirements: [
                 {
                     qta: 4,
-                    stdItemId: bar.stdItemId,
-                    craftedItemId: bar.stdItemId,
+                    itemId: bar.itemId,
                 },
             ],
             results: [{ id: 'crafted2HSword', qta: 1, craftedItem: crafted2HSword }],

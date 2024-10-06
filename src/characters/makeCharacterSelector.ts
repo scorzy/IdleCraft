@@ -62,7 +62,7 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         memoize((s: GameState) => {
             const equipped = selChar(s).inventory[slot]
             if (!equipped) return
-            return selectGameItem(equipped.stdItemId, equipped.craftItemId)(s)
+            return selectGameItem(equipped.itemId)(s)
         })
     )
 

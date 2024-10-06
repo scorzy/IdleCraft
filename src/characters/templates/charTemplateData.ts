@@ -16,8 +16,7 @@ export const CharTemplatesData: { [k in CharTemplateEnum]: CharTemplate } = {
         loot: [
             {
                 quantity: 1,
-                stdItem: 'DeadBoar',
-                craftedItem: null,
+                itemId: 'DeadBoar',
             },
         ],
     },

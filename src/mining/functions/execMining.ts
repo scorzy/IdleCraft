@@ -30,7 +30,7 @@ export const execMining = makeExecActivity((state: GameState, timer: Timer) => {
     }
 
     if (completed) {
-        state = addItem(state, `${data.oreType}Ore`, null, 1)
+        state = addItem(state, `${data.oreType}Ore`, 1)
     } else {
         state = startMiningOre(state, id)
     }

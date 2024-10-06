@@ -19,13 +19,11 @@ export interface RecipeParameter {
 }
 export interface RecipeParameterValue {
     id: string
-    stdItemId?: string | null
-    craftItemId?: string | null
+    itemId: string
 }
 export interface RecipeItemReq {
     qta: number
-    stdItemId?: string | null
-    craftedItemId?: string | null
+    itemId: string
 }
 export interface RecipeItem {
     id: string

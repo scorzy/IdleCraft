@@ -20,10 +20,7 @@ import { GameState, LocationState } from './GameState'
 
 const getInitialVillageState: () => LocationState = () => {
     return {
-        storage: {
-            stdItems: {},
-            craftedItems: {},
-        },
+        storage: {},
         forests: {},
         ores: {},
         loot: [],
@@ -43,8 +40,7 @@ export const InitialGameState: GameState = {
         lang: 'eng',
         numberFormatNotation: NotationTypes.STANDARD,
         woodType: WoodTypes.DeadTree,
-        selectedStdItemId: null,
-        selectedCraftedItemId: null,
+        selectedItemId: null,
         selectedItemLocation: null,
         storageOrder: 'name',
         storageAsc: true,

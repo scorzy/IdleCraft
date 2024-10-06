@@ -1,8 +1,7 @@
 import { EquipSlotsEnum } from './equipSlotsEnum'
 
 export interface Inventory {
-    stdItemId?: string
-    craftItemId?: string
+    itemId: string
     quantity?: number
 }
 export type CharInventory = {

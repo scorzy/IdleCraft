@@ -33,17 +33,17 @@ export const PlankRecipe: Recipe = {
     getResult: function (_: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const log = params.find((i) => i.id === 'log')
         if (!log) return
-        if (!log.stdItemId) return
+        if (!log.itemId) return
 
-        const id = LogToPlank.get(log.stdItemId)
-        if (!id) throw new Error(`LogToPlank not found ${log.stdItemId}`)
+        const id = LogToPlank.get(log.itemId)
+        if (!id) throw new Error(`LogToPlank not found ${log.itemId}`)
 
         return {
             time: 3000,
             requirements: [
                 {
                     qta: 1,
-                    stdItemId: log.stdItemId,
+                    itemId: log.itemId,
                 },
             ],
             results: [
