@@ -30,7 +30,7 @@ import { selectLoot } from '../../storage/selectors/selectLoot'
 import { LootId } from '../../storage/storageState'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { collectLootUi } from '../../storage/function/collectLoot'
-import { getCharacterSelector } from '../../characters/characterSelectorsNew'
+import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import classes from './Combat.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 

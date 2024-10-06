@@ -2,7 +2,7 @@ import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { addItem, removeItem } from '../storage/storageFunctions'
 import { CharacterAdapter } from './characterAdapter'
-import { getCharacterSelector } from './characterSelectorsNew'
+import { getCharacterSelector } from './getCharacterSelector'
 import { PLAYER_ID } from './charactersConst'
 import { EquipSlotsEnum } from './equipSlotsEnum'
 

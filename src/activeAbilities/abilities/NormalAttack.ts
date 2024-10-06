@@ -13,7 +13,7 @@ import { addExp } from '../../experience/expFunctions'
 import { DAMAGE_EXP_MULTI } from '../../const'
 import { DamageData } from '../../items/Item'
 import { sumDamage } from '../functions/sumDamage'
-import { getCharacterSelector } from '../../characters/characterSelectorsNew'
+import { getCharacterSelector } from '../../characters/getCharacterSelector'
 
 export class NormalAttack implements ActiveAbility {
     id = AbilitiesEnum.NormalAttack

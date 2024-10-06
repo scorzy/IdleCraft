@@ -5,15 +5,14 @@ import { getCharLevelExp } from '../experience/expSelectors'
 import { selectTranslations } from '../msg/useTranslations'
 import { Bonus, BonusResult } from '../bonus/Bonus'
 import { bonusFromItem, getTotal } from '../bonus/BonusFunctions'
-import { DamageData, DamageTypes } from '../items/Item'
+import { DamageData, DamageTypes, Item } from '../items/Item'
 import { Icons } from '../icons/Icons'
-import { selectGameItem } from '../storage/StorageSelectors'
+import { selectGameItem, selectGameItemFromCraft, selectInventoryNoQta } from '../storage/StorageSelectors'
 import { CharacterAdapter } from './characterAdapter'
 import { CharacterSelector } from './CharacterSelector'
 import { selectMaxHealthFromChar } from './selectors/healthSelectors'
 import { selectMaxManaFromChar } from './selectors/manaSelectors'
 import { selectMaxStaminaFromChar } from './selectors/staminaSelectors'
-import { selectAllCharInventory } from './selectors/selectAllCharInventory'
 import { EquipSlotsEnum } from './equipSlotsEnum'
 
 export const makeCharacterSelector: (charId: string) => CharacterSelector = (charId: string) => {
@@ -70,9 +69,23 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         (s: GameState) => EquippedItem(EquipSlotsEnum.MainHand)(s) ?? EquippedItem(EquipSlotsEnum.TwoHand)(s)
     )
 
+    const AllCharInventory = memoize((state: GameState) => {
+        const inventory = selectInventoryNoQta(charId)(state)
+        const crafted = state.craftedItems
+
+        const ret: { [k in EquipSlotsEnum]?: Item } = {}
+        Object.entries(inventory).forEach((kv) => {
+            const slot = kv[0] as EquipSlotsEnum
+            const itemIds = kv[1]
+            const item = selectGameItemFromCraft(itemIds.itemId, crafted)
+            if (item) ret[slot] = item
+        })
+        return ret
+    })
+
     const makeArmourSelectors = (type: DamageTypes) => {
         const ArmourList = memoize((state: GameState) => {
-            const inventory = selectAllCharInventory(state, charId)
+            const inventory = AllCharInventory(state)
 
             const bonuses: Bonus[] = []
 
@@ -96,6 +109,7 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         })
 
         const Armour = memoize((state: GameState) => ArmourList(state).total)
+
         return {
             ArmourList,
             Armour,
@@ -232,5 +246,6 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         AttackSpeed,
         EquippedItem,
         MainWeapon,
+        AllCharInventory,
     }
 }

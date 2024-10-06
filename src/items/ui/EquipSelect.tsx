@@ -24,7 +24,7 @@ import { Msg } from '../../msg/Msg'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { Card, CardContent } from '../../components/ui/card'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { getCharacterSelector } from '../../characters/characterSelectorsNew'
+import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
 const noIcon = <GiRock />

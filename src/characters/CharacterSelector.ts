@@ -50,4 +50,6 @@ export type CharacterSelector = {
 
     EquippedItem: (slot: EquipSlotsEnum) => (state: GameState) => Item | undefined
     MainWeapon: (state: GameState) => Item | undefined
+
+    AllCharInventory: (state: GameState) => { [k in EquipSlotsEnum]?: Item }
 }

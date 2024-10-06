@@ -1,7 +1,7 @@
 import { GameState } from '../../game/GameState'
 import { DamageData, DamageTypes } from '../../items/Item'
 import { CharacterAdapter } from '../characterAdapter'
-import { getCharacterSelector } from '../characterSelectorsNew'
+import { getCharacterSelector } from '../getCharacterSelector'
 import { getDamageMulti } from './getDamageMulti'
 import { kill } from './kill'
 

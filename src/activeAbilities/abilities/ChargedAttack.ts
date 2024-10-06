@@ -8,7 +8,7 @@ import { GameState } from '../../game/GameState'
 import { AbilitiesEnum } from '../abilitiesEnum'
 import { DamageData } from '../../items/Item'
 import { multiplyDamage } from '../functions/multiplyDamage'
-import { getCharacterSelector } from '../../characters/characterSelectorsNew'
+import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import { NormalAttack } from './NormalAttack'
 
 export class ChargedAttack extends NormalAttack {
