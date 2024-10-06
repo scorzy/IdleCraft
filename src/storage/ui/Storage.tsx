@@ -168,8 +168,8 @@ const StorageHeader = memo(function StorageHeader() {
             <TableRow>
                 <TableHead className="w-7"></TableHead>
                 <StorageHeaderName />
-                <StorageHeaderQuantity />
                 <StorageHeaderValue />
+                <StorageHeaderQuantity />
             </TableRow>
         </TableHeader>
     )
@@ -192,7 +192,7 @@ const StorageHeaderQuantity = memo(function StorageHeaderQuantity() {
     return (
         <TableHead className="w-28 text-right">
             <Button variant="ghost" size="sm" className="gap-1" onClick={quantityClick}>
-                {t.Value} {order && <StorageHeaderArrow />}
+                {t.Quantity} {order && <StorageHeaderArrow />}
             </Button>
         </TableHead>
     )
@@ -203,7 +203,8 @@ const StorageHeaderValue = memo(function StorageHeaderValue() {
     return (
         <TableHead className="w-28 text-right">
             <Button variant="ghost" size="sm" className="gap-1" onClick={valueClick}>
-                {t.Quantity} {order && <StorageHeaderArrow />}
+                {t.Value}
+                {order && <StorageHeaderArrow />}
             </Button>
         </TableHead>
     )
