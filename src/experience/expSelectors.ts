@@ -32,5 +32,12 @@ export const selectPlayerLevel = (state: GameState, charId: string) => {
     return player.level
 }
 
+const getLevelFromExp = (exp: number, growRate: number, expBasePrice: number) =>
+    Math.round(Math.log10((exp * (growRate - 1)) / expBasePrice + 1) / Math.log10(growRate))
+
+export const getSkillLevel = (skillExp: number) => getLevelFromExp(skillExp, EXP_GROW_RATE, EXP_BASE_PRICE)
+
+export const getCharLevel = (exp: number) => getLevelFromExp(exp, EXP_GROW_RATE_MAIN, EXP_BASE_PRICE_MAIN)
+
 export const getCharLevelExp = (level: number) =>
-    Math.floor(EXP_BASE_PRICE_MAIN * (EXP_GROW_RATE_MAIN ** level - 1)) / (EXP_GROW_RATE_MAIN - 1)
+    Math.round(Math.floor(EXP_BASE_PRICE_MAIN * (EXP_GROW_RATE_MAIN ** level - 1)) / (EXP_GROW_RATE_MAIN - 1))

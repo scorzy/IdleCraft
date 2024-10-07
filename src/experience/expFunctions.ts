@@ -1,8 +1,9 @@
 import { GameState } from '../game/GameState'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { CharacterAdapter } from '../characters/characterAdapter'
-import { EXP_BASE_PRICE, EXP_BASE_PRICE_MAIN, EXP_GROW_RATE, EXP_GROW_RATE_MAIN } from './expConst'
+import { EXP_BASE_PRICE, EXP_GROW_RATE } from './expConst'
 import { ExpEnum } from './expEnum'
+import { getCharLevel } from './expSelectors'
 
 export function addExp(state: GameState, expType: ExpEnum, expQta: number, characterId: string = PLAYER_ID) {
     if (characterId !== PLAYER_ID) return state
@@ -19,9 +20,7 @@ export function addExp(state: GameState, expType: ExpEnum, expQta: number, chara
 
     const newLevels = Math.max(Math.floor(skillLevel - currentLevel), 0)
     const exp = char.exp + newLevels
-    const level = Math.floor(
-        Math.log10((exp * (EXP_GROW_RATE_MAIN - 1)) / EXP_BASE_PRICE_MAIN + 1) / Math.log10(EXP_GROW_RATE_MAIN)
-    )
+    const level = getCharLevel(exp)
 
     state = {
         ...state,
