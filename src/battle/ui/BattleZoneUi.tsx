@@ -87,7 +87,7 @@ const BattleZoneInfoUi = memo(function BattleZoneInfoUi() {
         if (battleZoneEnum) addBattle(battleZoneEnum)
     }, [battleZoneEnum])
 
-    if (!battleZoneEnum) return <></>
+    if (!battleZoneEnum) return null
     const battleZone = BattleZones[battleZoneEnum]
     return (
         <Card>
@@ -118,7 +118,7 @@ const EnemyInfoUi = memo(function EnemyInfoUi(props: { quantity: number; templat
                 <p className="text-sm font-medium leading-none">
                     {enemy.nameId} X {f(quantity)}
                 </p>
-                <p className="grid grid-flow-col gap-2 text-sm text-muted-foreground">
+                <p className="grid grid-flow-col gap-2 text-sm">
                     <span>Lv. {f(enemy.level)}</span>
                     <span className="text-health">
                         <GiHearts className="inline" />

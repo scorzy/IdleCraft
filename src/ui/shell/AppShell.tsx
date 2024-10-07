@@ -54,7 +54,7 @@ const Header = memo(function Header() {
     const { t } = useTranslations()
 
     const uiPage = UiPagesData[page]
-    if (!uiPage) return <></>
+    if (!uiPage) return null
     return (
         <CardTitle>
             {uiPage.icon}

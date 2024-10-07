@@ -105,9 +105,12 @@ const Cutting = memo(function Cutting() {
         <Card>
             <MyCardHeaderTitle title={fun.cutting(woodType)} icon={IconsData.Axe} />
             <CardContent>
-                <MyLabelContainer className="text-muted-foreground">
+                <MyLabelContainer>
                     <MyLabel>
-                        {t.TreeHP} {f(forest.hp)}/{f(def.hp)}
+                        <span>
+                            {t.TreeHP} {f(forest.hp)}
+                        </span>
+                        <span className="text-muted-foreground">/ {f(def.hp)}</span>
                     </MyLabel>
                     <MyLabel>
                         {t.Damage} {f(damage)}
@@ -115,7 +118,7 @@ const Cutting = memo(function Cutting() {
                     </MyLabel>
                 </MyLabelContainer>
                 <RestartProgress value={hpPercent} color="health" className="mb-2" />
-                <MyLabel className="text-muted-foreground">
+                <MyLabel>
                     {t.Time} {ft(time)}
                     <BonusDialog title={t.WoodcuttingTime} selectBonusResult={selectWoodcuttingTimeAll} isTime={true} />
                 </MyLabel>
@@ -170,8 +173,8 @@ const ForestQta = memo(function ForestQta() {
 
     return (
         <>
-            <MyLabel className="text-muted-foreground">
-                {t.Trees} {f(qta)}/{f(def.qta)}
+            <MyLabel>
+                {t.Trees} {f(qta)} <span className="text-muted-foreground">/ {f(def.qta)}</span>
             </MyLabel>
             <ProgressBar value={treePercent} color="success" className="mb-2" />
         </>
@@ -185,7 +188,7 @@ const Trees = memo(function Trees() {
     const { t } = useTranslations()
     return (
         <>
-            <MyLabel className="text-muted-foreground">
+            <MyLabel>
                 {t.GrowingTrees} {f(trees.length)}
             </MyLabel>
 

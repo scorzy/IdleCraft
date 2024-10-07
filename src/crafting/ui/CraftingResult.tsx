@@ -20,16 +20,16 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
     const { f } = useNumberFormatter()
     const have = useGameStore(selectResultQta(result))
 
-    if (!result) return <></>
+    if (!result) return null
 
     const item: Item | undefined = result.craftedItem ?? StdItems[result.stdItemId ?? '']
-    if (!item) return <></>
+    if (!item) return null
 
     return (
         <>
             <MyCardHeaderTitle title={t[item.nameId]} icon={IconsData[item.icon]} />
             <CardContent>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm">
                     <MyLabel>
                         {t.Quantity} {f(result.qta)}
                     </MyLabel>
@@ -45,7 +45,7 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
 export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq[] | undefined }) {
     const { req } = props
 
-    if (!req) return <></>
+    if (!req) return null
 
     return (
         <Table>
@@ -63,13 +63,16 @@ const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeItemReq 
     const { f } = useNumberFormatter()
     const item = useGameStore(selectGameItem(req.itemId))
     const qtaStorage = useGameStore(selectItemQta(null, req.itemId))
-    if (!item) return <></>
+    if (!item) return null
     return (
         <TableRow>
             <TableCell className="text-lg">{IconsData[item.icon]}</TableCell>
             <TableCell width={'100%'}>{t[item.nameId]}</TableCell>
             <TableCell>
-                {f(req.qta)}/{f(qtaStorage)}
+                <span className="text-nowrap">
+                    {f(req.qta)}
+                    <span className="text-muted-foreground"> / {f(qtaStorage)}</span>
+                </span>
             </TableCell>
         </TableRow>
     )

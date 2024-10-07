@@ -43,10 +43,10 @@ export const ExperienceCardUi = memo(function ExperienceCardUi(props: {
                     <Badge className="w-min text-sm font-medium" size={'xs'}>
                         {f(level)}
                     </Badge>
-                    <CardDescription>
-                        {t.XP} {f(xp)}/{f(nextLevelXp)}
-                    </CardDescription>
                 </CardTitle>
+                <CardDescription>
+                    {t.XP} {f(xp)} / {f(nextLevelXp)}
+                </CardDescription>
             </CardHeader>
             <CardContent className="pt-1">
                 <ProgressBar value={percent} key={title} color="primary" />

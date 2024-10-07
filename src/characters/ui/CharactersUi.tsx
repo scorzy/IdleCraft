@@ -24,7 +24,7 @@ import { CombatAbilities } from '../../activeAbilities/ui/CombatAbilities'
 import { AbilitySidebar, AbilityUi } from '../../activeAbilities/ui/CharAbilities'
 import { DamageTypes } from '../../items/Item'
 import { DamageTypesData } from '../../items/damageTypes'
-import { Card, CardContent } from '../../components/ui/card'
+import { Card, CardContent, CardTitle } from '../../components/ui/card'
 import { CharSkills } from '../../experience/ui/CharSkills'
 import { ExperienceCardUi } from '../../experience/ui/ExperienceCard'
 import { getCharacterSelector } from '../getCharacterSelector'
@@ -147,12 +147,12 @@ const CharInfo = memo(function CharInfo() {
                 <MyCardHeaderTitle icon={<TbInfoCircle />} title={t.Info} />
                 <CardContent className="grid gap-2">
                     <StatsInfo />
-                    <div>
-                        {t.Attack}
-                        <AttackInfo charId={charId} />
-                        {t.Defence}
-                        <ArmourInfo charId={charId} />
-                    </div>
+
+                    <CardTitle className="mt-2">{t.Attack}</CardTitle>
+                    <AttackInfo charId={charId} />
+
+                    <CardTitle className="mt-2">{t.Defence}</CardTitle>
+                    <ArmourInfo charId={charId} />
                 </CardContent>
             </Card>
         </div>
@@ -192,7 +192,7 @@ const StatsInfo = memo(function StatsInfo() {
 
     return (
         <div className={clsx(classes.stats, 'text-sm')}>
-            <span className="text-muted-foreground">
+            <span>
                 {t.Points} {f(usedPoints)}/{f(maxPoints)}
             </span>
             <div className={classes.line}>
@@ -200,7 +200,7 @@ const StatsInfo = memo(function StatsInfo() {
                 <span className={classes.stat}>
                     {t.Health}{' '}
                     <span className={classes.max}>
-                        {f(health)}/{f(maxH)}
+                        {f(health)} / {f(maxH)}
                     </span>
                 </span>
                 <BonusDialog title={t.Health} selectBonusResult={maxHB} />
@@ -215,7 +215,7 @@ const StatsInfo = memo(function StatsInfo() {
                 <span className={classes.stat}>
                     {t.Stamina}{' '}
                     <span className={classes.max}>
-                        {f(stamina)}/{f(maxS)}
+                        {f(stamina)} / {f(maxS)}
                     </span>
                 </span>
                 <BonusDialog title={t.Stamina} selectBonusResult={maxSB} />
@@ -230,7 +230,7 @@ const StatsInfo = memo(function StatsInfo() {
                 <span className={classes.stat}>
                     {t.Mana}{' '}
                     <span className={classes.max}>
-                        {f(mana)}/{f(maxM)}
+                        {f(mana)} / {f(maxM)}
                     </span>
                 </span>
                 <BonusDialog title={t.Mana} selectBonusResult={maxMB} />
@@ -280,7 +280,7 @@ const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; 
     const data = DamageTypesData[type]
     const name = t[data.ArmourName]
     return (
-        <li className="grid grid-flow-col items-center justify-start gap-2 text-sm text-muted-foreground">
+        <li className="grid grid-flow-col items-center justify-start gap-2 text-sm">
             {name} {f(value)}
             <BonusDialog title={name} selectBonusResult={list} />
         </li>
@@ -299,11 +299,11 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
 
     return (
         <div>
-            <div className="grid grid-flow-col items-center justify-start gap-2 text-sm text-muted-foreground">
+            <div className="grid grid-flow-col items-center justify-start gap-2 text-sm">
                 {t.NormalAttack} {ft(speed)}
                 <BonusDialog title={t.NormalAttack} selectBonusResult={speedList} isTime={true} />
             </div>
-            <div className="grid grid-flow-col items-center justify-start gap-2 text-sm text-muted-foreground">
+            <div className="grid grid-flow-col items-center justify-start gap-2 text-sm">
                 <ul>
                     {Object.entries(damage).map((kv) => (
                         <AttackTypeInfo
@@ -329,7 +329,7 @@ export const AttackTypeInfo = memo(function AttackTypeInfo(props: {
 
     const damageList = getCharacterSelector(charId).damage[damageType].DamageList
     return (
-        <li className="grid grid-flow-col items-center justify-start gap-2 text-muted-foreground">
+        <li className="grid grid-flow-col items-center justify-start gap-2">
             {t[DamageTypesData[damageType].DamageName]} {f(damage)}
             <BonusDialog title={t.NormalAttack} selectBonusResult={damageList} />
         </li>

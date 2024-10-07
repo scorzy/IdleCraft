@@ -10,7 +10,7 @@
     gap: 0;
 }
 .stat {
-    color: hsl(var(--muted-foreground));
+    /* color: hsl(var(--muted-foreground)); */
     min-width: 10ch;
     display: grid;
     grid-template-columns: 1fr auto;

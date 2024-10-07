@@ -79,7 +79,7 @@ const RecipeUi = memo(function RecipeUi() {
     const params = useGameStore(selectRecipeParams)
     const { t } = useTranslations()
 
-    if (!recipeType) return <></>
+    if (!recipeType) return null
     return (
         <Card>
             <MyCardHeaderTitle title={t.Recipe} />

@@ -93,9 +93,9 @@ const MiningOre = memo(function MiningOre() {
         <Card>
             <MyCardHeaderTitle title={t.Mining} icon={IconsData[Icons.Pickaxe]} />
             <CardContent>
-                <MyLabelContainer className="text-muted-foreground">
+                <MyLabelContainer>
                     <MyLabel>
-                        {t.OreHp} {f(ore.hp)}/{f(def.hp)}
+                        {t.OreHp} {f(ore.hp)} <span className="text-muted-foreground">/ {f(def.hp)}</span>
                     </MyLabel>
                     <MyLabel>
                         {t.Armour} {f(oreData.armour)}
@@ -106,7 +106,7 @@ const MiningOre = memo(function MiningOre() {
                     </MyLabel>
                 </MyLabelContainer>
                 <RestartProgress value={hpPercent} color="health" className="mb-2" />
-                <MyLabel className="text-muted-foreground">
+                <MyLabel>
                     {t.Time} {ft(time)}
                     <BonusDialog title={t.MiningTime} selectBonusResult={selectMiningTimeAll} isTime={true} />
                 </MyLabel>
@@ -150,7 +150,7 @@ const OreUi = memo(function MiningOre() {
         <Card>
             <MyCardHeaderTitle title={t.OreVein} icon={IconsData[oreData.iconId]} />
             <CardContent>
-                <MyLabel className="text-muted-foreground">
+                <MyLabel>
                     {t.OreQta} {f(ore.qta)}/{f(def.qta)}
                 </MyLabel>
                 <RestartProgress value={hpPercent} color="health" />
