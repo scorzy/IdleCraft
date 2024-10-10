@@ -4,7 +4,7 @@ import { GameState } from '../../game/GameState'
 import { Item } from '../../items/Item'
 import { hasPerk } from '../../perks/PerksSelectors'
 import { PerksEnum } from '../../perks/perksEnum'
-import { myMemoizeOne } from '../../utils/memoizeOne'
+import { myMemoizeOne } from '../../utils/myMemoizeOne'
 import { FAST_WOODCUTTING_PERK } from '../WoodConst'
 import { WoodBase, DEF_WOOD_AXE, selectAxe } from './WoodcuttingSelectors'
 

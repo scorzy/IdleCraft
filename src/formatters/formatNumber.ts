@@ -1,4 +1,4 @@
-import { myMemoize } from '../utils/memoize'
+import { myMemoize } from '../utils/myMemoize'
 import { CommaTypes } from './CommaTypes'
 import { NotationTypes } from './NotationTypes'
 

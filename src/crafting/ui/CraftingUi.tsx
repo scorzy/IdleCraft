@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react'
 import { LuHourglass } from 'react-icons/lu'
-import { myMemoize } from '../../utils/memoize'
+import { myMemoize } from '../../utils/myMemoize'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
 import { recipes } from '../Recipes'
 import { useGameStore } from '../../game/state'

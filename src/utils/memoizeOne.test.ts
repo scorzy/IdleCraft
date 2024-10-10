@@ -1,5 +1,5 @@
 import { test, describe, expect } from 'vitest'
-import { myMemoizeOne } from './memoizeOne'
+import { myMemoizeOne } from './myMemoizeOne'
 
 describe('memoizeOne', () => {
     test('memoizeOne 0', () => {

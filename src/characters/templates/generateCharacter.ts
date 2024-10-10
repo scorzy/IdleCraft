@@ -1,6 +1,6 @@
 import { CharAbilityAdapter } from '../../activeAbilities/abilityAdapters'
 import { getUniqueId } from '../../utils/getUniqueId'
-import { myMemoize } from '../../utils/memoize'
+import { myMemoize } from '../../utils/myMemoize'
 import { CharacterState } from '../characterState'
 import { selectMaxHealthFromChar } from '../selectors/healthSelectors'
 import { selectMaxManaFromChar } from '../selectors/manaSelectors'
