@@ -14,9 +14,9 @@ export const startBattle = makeStartActivity((state: GameState, id: string) => {
     state = createEnemies(state, battleZone.enemies)
 
     const charIds = CharacterAdapter.getIds(state.characters)
-    charIds.forEach((charId) => {
+    for (const charId of charIds) {
         state = startNextAbility(state, charId)
-    })
+    }
 
     return { state, result: ActivityStartResult.Started }
 })

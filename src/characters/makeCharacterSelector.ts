@@ -27,12 +27,12 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         return t.t[nameId]
     })
 
-    const Icon = memoize((state: GameState) => CharacterAdapter.selectEx(state.characters, charId).iconId)
+    const Icon = (s: GameState) => selChar(s).iconId
 
-    const Level = memoize((s: GameState) => selChar(s).level)
-    const Exp = memoize((s: GameState) => selChar(s).exp)
-    const LevelExp = memoize((s: GameState) => getCharLevelExp(selChar(s).level))
-    const NextLevelExp = memoize((s: GameState) => getCharLevelExp(selChar(s).level + 1))
+    const Level = (s: GameState) => selChar(s).level
+    const Exp = (s: GameState) => selChar(s).exp
+    const LevelExp = (s: GameState) => getCharLevelExp(selChar(s).level)
+    const NextLevelExp = (s: GameState) => getCharLevelExp(selChar(s).level + 1)
 
     const MaxAttributes = memoize((s: GameState) => Level(s))
     const UsedAttributes = memoize((s: GameState) => {
@@ -41,13 +41,13 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     })
     const AvailableAttributes = memoize((s: GameState) => MaxAttributes(s) - UsedAttributes(s))
 
-    const HealthPoints = memoize((s: GameState) => selChar(s).healthPoints)
-    const StaminaPoint = memoize((s: GameState) => selChar(s).staminaPoints)
-    const ManaPoints = memoize((s: GameState) => selChar(s).manaPoints)
+    const HealthPoints = (s: GameState) => selChar(s).healthPoints
+    const StaminaPoint = (s: GameState) => selChar(s).staminaPoints
+    const ManaPoints = (s: GameState) => selChar(s).manaPoints
 
-    const Health = memoize((s: GameState) => selChar(s).health)
-    const Stamina = memoize((s: GameState) => selChar(s).stamina)
-    const Mana = memoize((s: GameState) => selChar(s).mana)
+    const Health = (s: GameState) => selChar(s).health
+    const Stamina = (s: GameState) => selChar(s).stamina
+    const Mana = (s: GameState) => selChar(s).mana
 
     const MaxHealthList = memoize((s: GameState) => selectMaxHealthFromChar(selChar(s)))
     const MaxManaList = memoize((s: GameState) => selectMaxManaFromChar(selChar(s)))

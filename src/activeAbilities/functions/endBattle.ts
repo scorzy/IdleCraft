@@ -8,11 +8,12 @@ import { CastCharAbilityAdapter } from '../abilityAdapters'
 
 export function endBattle(state: GameState): GameState {
     const charIds = CharacterAdapter.getIds(state.characters)
-    charIds.forEach((charId) => {
+
+    for (const charId of charIds) {
         const char = CharacterAdapter.selectEx(state.characters, charId)
-        if (!char) return
+        if (!char) continue
         if (char.isEnemy) state = removeCharacter(state, charId)
-    })
+    }
 
     state = { ...state, castCharAbility: CastCharAbilityAdapter.getInitialState() }
     const timersIds = TimerAdapter.findMany(state.timers, (t) => t.type === ActivityTypes.Ability)
