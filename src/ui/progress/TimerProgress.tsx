@@ -1,6 +1,6 @@
 import './progress.css'
 
-import { memo, useCallback, useEffect, useRef } from 'react'
+import { memo, useCallback,  useLayoutEffect, useRef } from 'react'
 import { memoize } from 'proxy-memoize'
 import { useGameStore } from '../../game/state'
 import { Colors } from '../state/uiFunctions'
@@ -17,7 +17,7 @@ const TimerProgress = memo(function TimerProgress(props: {
     const { className, start, end, color } = props
     const inputEl = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!inputEl.current) return
         const now = Date.now()
         const time = end ? end - now : 0
