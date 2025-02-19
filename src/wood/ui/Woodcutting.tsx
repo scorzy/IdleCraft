@@ -34,14 +34,15 @@ import { Alert, AlertTitle, AlertDescription } from '../../components/ui/alert'
 import { isSelectedWoodEnabled } from '../selectors/WoodcuttingSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
+import { isWoodcutting } from '../Woodcutting'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
 import { Button } from '@/components/ui/button'
 
 const selectWoodcutting = myMemoize((woodType: WoodTypes) => (s: GameState) => {
-    for (const id of s.woodcutting.ids) {
-        const act = s.woodcutting.entries[id]
-        if (act?.woodType === woodType) return act.activityId
+    for (const id of s.activities.ids) {
+        const act = s.activities.entries[id]
+        if (act && isWoodcutting(act) && act?.woodType === woodType) return act.activityId
     }
 })
 

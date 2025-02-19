@@ -1,4 +1,4 @@
-import { ActivityTypes } from '../../activities/ActivityState'
+import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Timer } from '../../timers/Timer'
@@ -7,6 +7,7 @@ import { myMemoizeOne } from '../../utils/myMemoizeOne'
 import { ForestsState } from '../ForestsState'
 import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
+import { isWoodcutting } from '../Woodcutting'
 import { WoodcuttingAdapter } from '../WoodcuttingAdapter'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
 import { InitialState } from '@/entityAdapter/InitialState'
@@ -54,5 +55,5 @@ export const selectGrowingTrees = myMemoize((woodType: WoodTypes) => {
 
 export const woodCuttingActId = myMemoize(
     (woodType: WoodTypes) => (state: GameState) =>
-        WoodcuttingAdapter.find(state.woodcutting, (e) => e.woodType === woodType)
+        ActivityAdapter.find(state.activities, (e) => isWoodcutting(e) && e.woodType === woodType)
 )

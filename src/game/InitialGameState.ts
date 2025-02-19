@@ -9,7 +9,6 @@ import { ItemAdapter } from '../storage/ItemAdapter'
 import { TimerAdapter } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
 import { WoodTypes } from '../wood/WoodTypes'
-import { WoodcuttingAdapter } from '../wood/WoodcuttingAdapter'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { PLAYER_CHAR, PLAYER_ID } from '../characters/charactersConst'
 import { BattleAdapter } from '../battle/BattleAdapter'
@@ -66,7 +65,6 @@ export const InitialGameState: GameState = {
     now: Date.now(),
     loading: false,
     craftedItems: ItemAdapter.getInitialState(),
-    woodcutting: WoodcuttingAdapter.getInitialState(),
     waitingTrees: null,
     locations: {
         [GameLocations.StartVillage]: getInitialVillageState(),

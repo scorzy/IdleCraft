@@ -1,7 +1,5 @@
-import { afterEach, beforeEach } from 'node:test'
 import { describe, expect, it } from 'vitest'
 import { AbstractEntityAdapter } from './entityAdapter'
-import { adapterFunctions } from './AdapterFunctions'
 
 class TestEntityAdapter extends AbstractEntityAdapter<{ name: string }> {
     getId(data: { name: string }): string {
@@ -17,9 +15,6 @@ class TestEntityAdapter2 extends AbstractEntityAdapter<{ id: string; name: strin
 describe('EntityAdapter Immutable', () => {
     const adapter = new TestEntityAdapter()
     const adapter2 = new TestEntityAdapter2()
-
-    beforeEach(() => adapterFunctions.setMutable())
-    afterEach(() => adapterFunctions.setImmutable())
 
     it('create first', () => {
         const state = adapter.getInitialState()

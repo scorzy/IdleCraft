@@ -7,7 +7,6 @@ import { OreType } from '../mining/OreState'
 import { LootId, StorageState } from '../storage/storageState'
 import { InitialTimerState } from '../timers/Timer'
 import { ForestsType } from '../wood/ForestsState'
-import { Woodcutting } from '../wood/Woodcutting'
 import { TreeGrowth } from '../wood/forest/forestGrowth'
 import { Mining } from '../mining/Mining'
 import { CharacterState } from '../characters/characterState'
@@ -40,7 +39,6 @@ export interface GameState {
     activityDone: number
     lastActivityDone: number
     craftedItems: InitialState<Item>
-    woodcutting: InitialState<Woodcutting>
     waitingTrees: string | null
     locations: { [k in GameLocations]: LocationState }
     treeGrowth: InitialState<TreeGrowth>
