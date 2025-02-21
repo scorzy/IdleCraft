@@ -8,12 +8,12 @@ import { CharacterAdapter } from '../../characters/characterAdapter'
 import { GameState } from '../../game/GameState'
 import { dealDamage } from '../../characters/functions/dealDamage'
 import { AbilitiesEnum } from '../abilitiesEnum'
-import { addBattleLog } from '../../battleLog/functions/addBattleLog'
 import { addExp } from '../../experience/expFunctions'
 import { DAMAGE_EXP_MULTI } from '../../const'
 import { DamageData } from '../../items/Item'
 import { sumDamage } from '../functions/sumDamage'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
+import { addBattleLog } from '../../battleLog/functions/addbattleLog'
 
 export class NormalAttack implements ActiveAbility {
     id = AbilitiesEnum.NormalAttack
