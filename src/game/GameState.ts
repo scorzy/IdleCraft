@@ -25,6 +25,13 @@ export interface LocationState {
 }
 export interface GameState {
     gameId: string
+    loadingData?: {
+        loading: boolean
+        start: number
+        now: number
+        end: number
+        percent: number
+    }
     isTimer: boolean
     lastRegen: number
     ui: UiState

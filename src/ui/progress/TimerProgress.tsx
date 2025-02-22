@@ -1,6 +1,6 @@
 import './progress.css'
 
-import { memo, useCallback,  useLayoutEffect, useRef } from 'react'
+import { memo, useCallback, useLayoutEffect, useRef } from 'react'
 import { memoize } from 'proxy-memoize'
 import { useGameStore } from '../../game/state'
 import { Colors } from '../state/uiFunctions'

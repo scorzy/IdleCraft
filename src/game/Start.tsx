@@ -6,14 +6,22 @@ import { TrashIcon } from '../icons/IconsMemo'
 import { useTranslations } from '../msg/useTranslations'
 import { getUniqueId } from '../utils/getUniqueId'
 import { useNumberFormatter } from '../formatters/selectNumberFormatter'
+import { ProgressBar } from '../ui/progress/ProgressBar'
 import { useGameStore } from './state'
 import { GetInitialGameState } from './InitialGameState'
-import { load } from './functions/gameFunctions'
+import { load, startAnyway, stopLoad } from './functions/gameFunctions'
 import { GameState } from './GameState'
 import classes from './start.module.css'
+import {
+    selectLoading,
+    selectLoadingEnd,
+    selectLoadingNow,
+    selectLoadingProgress,
+    selectLoadingStart,
+} from './gameSelectors'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from '@/components/ui/dialog'
 
 const startGame = (name: string) => () => {
     if (name === '') return
@@ -71,6 +79,7 @@ export const Start = memo(function Start() {
     return (
         <div className={classes.container}>
             <NewGame />
+            <Loading />
             {loadName.length > 0 && (
                 <>
                     <span className="text-center">{t.SavedGames}</span>
@@ -160,4 +169,33 @@ const TimeAgo = memo(function TimeAgo(props: { date: number }) {
     const timeDiff = 1e3 * Math.floor((time - date) / 1e3)
 
     return <>{ft(timeDiff)}</>
+})
+
+const Loading = memo(function Loading() {
+    const { ftp } = useNumberFormatter()
+    const loading = useGameStore(selectLoading)
+    const percent = useGameStore(selectLoadingProgress)
+    const start = useGameStore(selectLoadingStart)
+    const end = useGameStore(selectLoadingEnd)
+    const now = useGameStore(selectLoadingNow)
+    const total = end - start
+    const done = now - start
+
+    return (
+        <Dialog open={loading} onOpenChange={stopLoad}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Loading...</DialogTitle>
+                    <DialogDescription></DialogDescription>
+                </DialogHeader>
+                {ftp(done)} / {ftp(total)}
+                <ProgressBar value={percent} color="primary" />
+                <DialogFooter className="sm:justify-start">
+                    <Button type="button" variant="destructive" onClick={startAnyway}>
+                        Start anyway
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    )
 })
