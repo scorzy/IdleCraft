@@ -8,7 +8,6 @@ import { ForestsState } from '../ForestsState'
 import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
 import { isWoodcutting } from '../Woodcutting'
-import { WoodcuttingAdapter } from '../WoodcuttingAdapter'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
 import { InitialState } from '@/entityAdapter/InitialState'
 

@@ -42,7 +42,7 @@ import { Button } from '@/components/ui/button'
 const selectWoodcutting = myMemoize((woodType: WoodTypes) => (s: GameState) => {
     for (const id of s.activities.ids) {
         const act = s.activities.entries[id]
-        if (act && isWoodcutting(act) && act?.woodType === woodType) return act.activityId
+        if (act && isWoodcutting(act) && act?.woodType === woodType) return act.id
     }
 })
 
@@ -136,7 +136,7 @@ const CuttingButton = memo(function CuttingButton() {
     const woodType = useGameStore(selectWoodType)
     const actId = useGameStore(woodCuttingActId(woodType))
     const onClickStart = useCallback(() => addWoodcutting(woodType), [woodType])
-    const onClickRemove = useCallback(() => removeActivity(actId?.activityId), [actId])
+    const onClickRemove = useCallback(() => removeActivity(actId?.id), [actId])
     const { t } = useTranslations()
 
     if (actId === undefined) return <Button onClick={onClickStart}>{t.Cut}</Button>

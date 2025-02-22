@@ -1,8 +1,10 @@
+import { ActivityAdapter } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
+import { isWoodcutting } from '../Woodcutting'
 import { WoodData } from '../WoodData'
-import { WoodcuttingAdapter } from '../WoodcuttingAdapter'
 
 export function getWoodcuttingIcon(state: GameState, id: string) {
-    const data = WoodcuttingAdapter.selectEx(state.woodcutting, id)
+    const data = ActivityAdapter.selectEx(state.activities, id)
+    if (!isWoodcutting(data)) throw new Error('[getWoodcuttingIcon] Activity is not woodcutting')
     return WoodData[data.woodType].iconId
 }

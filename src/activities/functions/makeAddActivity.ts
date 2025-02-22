@@ -6,14 +6,18 @@ import { ActivityState, ActivityAdapter, ActivityTypes } from '../ActivityState'
 import { startNextActivity } from '../activityFunctions'
 
 export const makeAddActivity =
-    (type: ActivityTypes, add: (state: GameState, activityId: string) => GameState) => (state: GameState) => {
+    (type: ActivityTypes, data?: object, add?: (state: GameState, activityId: string) => GameState) =>
+    (state: GameState) => {
         const id = getUniqueId()
 
         const activity: ActivityState = {
             id: id,
             type: type,
             max: 1,
+            ...data,
         }
+
+        console.log('Adding activity', activity)
 
         state = {
             ...state,
@@ -21,7 +25,7 @@ export const makeAddActivity =
             orderedActivities: [...state.orderedActivities, id],
         }
 
-        state = add(state, id)
+        if (add) state = add(state, id)
 
         const title = activityTitles.getEx(type)(state, id)
         const iconId = activityIcons.getEx(type)(state, id)
