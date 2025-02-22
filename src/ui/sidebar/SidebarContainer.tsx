@@ -12,14 +12,18 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
     children?: ReactNode
     className?: string
     collapsedId: CollapsedEnum
+    ref: React.RefObject<HTMLDivElement | null>
 }) {
-    const { children, className, collapsedId } = props
+    const { children, className, collapsedId, ref } = props
 
     const collapseClick = useCallback(() => collapse(collapsedId), [collapsedId])
     const collapsed = useGameStore(isCollapsed(collapsedId))
 
     return (
-        <nav className={clsx(classes.collapseContainer, { [classes.collapsedContainer!]: collapsed }, className)}>
+        <nav
+            ref={ref}
+            className={clsx(classes.collapseContainer, { [classes.collapsedContainer!]: collapsed }, className)}
+        >
             <div className={clsx(classes.sidebarContainer, { [classes.collapsed!]: collapsed })}>{children}</div>
 
             <div className={clsx(classes.sidebarContainer, classes.btnExpand, { [classes.collapsed!]: collapsed })}>

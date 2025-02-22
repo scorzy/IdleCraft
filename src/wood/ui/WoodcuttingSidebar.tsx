@@ -1,9 +1,10 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useEffect, useRef } from 'react'
+import { useMeasure } from 'react-use'
 import { useTranslations } from '../../msg/useTranslations'
 import { WoodTypes } from '../WoodTypes'
 import { WoodData } from '../WoodData'
 import { useGameStore } from '../../game/state'
-import { isCollapsed, isWoodSelected } from '../../ui/state/uiSelectors'
+import { isWoodSelected } from '../../ui/state/uiSelectors'
 import { lockedIcon, setWood } from '../../ui/state/uiFunctions'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
@@ -15,11 +16,16 @@ import { GameState } from '../../game/GameState'
 const trees = Object.values(WoodTypes)
 
 export const WoodcuttingSidebar = memo(function WoodcuttingSidebar() {
-    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Woodcutting))
+    const containerRef = useRef<HTMLDivElement | null>(null)
+    const [setRef, { width }] = useMeasure()
+    useEffect(() => {
+        if (containerRef.current) setRef(containerRef.current)
+    }, [setRef])
+
     return (
-        <SidebarContainer collapsedId={CollapsedEnum.Woodcutting}>
+        <SidebarContainer collapsedId={CollapsedEnum.Woodcutting} ref={containerRef}>
             {trees.map((t) => (
-                <TreeLink key={t} woodType={t} collapsed={collapsed} />
+                <TreeLink key={t} woodType={t} collapsed={width < 47} />
             ))}
         </SidebarContainer>
     )
