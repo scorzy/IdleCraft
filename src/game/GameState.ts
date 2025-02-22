@@ -8,7 +8,6 @@ import { LootId, StorageState } from '../storage/storageState'
 import { InitialTimerState } from '../timers/Timer'
 import { ForestsType } from '../wood/ForestsState'
 import { TreeGrowth } from '../wood/forest/forestGrowth'
-import { Mining } from '../mining/Mining'
 import { CharacterState } from '../characters/characterState'
 import { ToastState } from '../notification/toastState'
 import { BattleState } from '../battle/BattleTypes'
@@ -51,7 +50,6 @@ export interface GameState {
     treeGrowth: InitialState<TreeGrowth>
     crafting: InitialState<Crafting>
     recipeId: string
-    mining: InitialState<Mining>
     craftingForm: {
         params: RecipeParameter[]
         paramsValue: RecipeParameterValue[]

@@ -1,6 +1,5 @@
 import { ActivityAdapter } from '../activities/ActivityState'
 import { CraftingAdapter } from '../crafting/CraftingAdapter'
-import { MiningAdapter } from '../mining/MiningAdapter'
 import { ItemAdapter } from '../storage/ItemAdapter'
 import { TimerAdapter } from '../timers/Timer'
 import { copyValues } from '../utils/copyValues'
@@ -24,7 +23,6 @@ export function loadData(data: object): GameState {
     if ('craftedItems' in data) state.craftedItems = ItemAdapter.load(data.craftedItems)
     if ('treeGrowth' in data) state.treeGrowth = TreeGrowthAdapter.load(data.treeGrowth)
     if ('crafting' in data) state.crafting = CraftingAdapter.load(data.crafting)
-    if ('mining' in data) state.mining = MiningAdapter.load(data.mining)
     if ('battle' in data) state.battle = BattleAdapter.load(data.battle)
     if ('castCharAbility' in data) state.castCharAbility = CastCharAbilityAdapter.load(data.castCharAbility)
 

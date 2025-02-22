@@ -1,17 +1,19 @@
 import { ActivityStartResult } from '../../activities/activityInterfaces'
+import { ActivityAdapter } from '../../activities/ActivityState'
 import { makeExecActivity } from '../../activities/functions/makeExecActivity'
 import { ExpEnum } from '../../experience/expEnum'
 import { addExp } from '../../experience/expFunctions'
 import { GameState } from '../../game/GameState'
 import { addItem } from '../../storage/storageFunctions'
 import { Timer } from '../../timers/Timer'
-import { MiningAdapter } from '../MiningAdapter'
+import { isMining } from '../Mining'
 import { resetOre, mineOre } from '../miningFunctions'
 import { selectMiningDamage } from '../selectors/miningDamage'
 import { startMiningOre } from './startMiningOre'
 
 export const execMining = makeExecActivity((state: GameState, timer: Timer) => {
-    const data = MiningAdapter.selectEx(state.mining, timer.actId)
+    const data = ActivityAdapter.selectEx(state.activities, timer.actId)
+    if (!isMining(data)) throw new Error('[makeExecActivity] Not a mining activity')
     const id = timer.actId
     let completed = false
 

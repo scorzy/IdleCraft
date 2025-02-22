@@ -3,7 +3,6 @@ import { CraftingAdapter } from '../crafting/CraftingAdapter'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
-import { MiningAdapter } from '../mining/MiningAdapter'
 import { OreTypes } from '../mining/OreTypes'
 import { ItemAdapter } from '../storage/ItemAdapter'
 import { TimerAdapter } from '../timers/Timer'
@@ -73,7 +72,6 @@ export const InitialGameState: GameState = {
     treeGrowth: TreeGrowthAdapter.getInitialState(),
     crafting: CraftingAdapter.getInitialState(),
     recipeId: '',
-    mining: MiningAdapter.getInitialState(),
     craftingForm: {
         params: [],
         paramsValue: [],
