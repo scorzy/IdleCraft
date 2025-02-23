@@ -24,6 +24,9 @@ export interface Msg {
     SelectARecipe: string
     Add: string
     Points: string
+    Loading: string
+    StartNow: string
+    Ago: string
 
     CraftingUnknown: string
     Woodworking: string
