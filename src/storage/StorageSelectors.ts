@@ -136,7 +136,7 @@ export const selectItemsByType = myMemoize((itemType: ItemTypes | undefined) =>
     })
 )
 
-const createInventoryNoQta = memoize((inventory: CharInventory) => {
+export const createInventoryNoQta = memoize((inventory: CharInventory) => {
     const ret: InventoryNoQta = {}
 
     Object.entries(inventory).forEach((kv) => {
