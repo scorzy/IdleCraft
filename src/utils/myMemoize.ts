@@ -1,8 +1,7 @@
 import moize from 'moize'
 
 const options = {
-    isDeepEqual: true,
-    maxSize: 100,
+    maxSize: 30,
 }
 
 export const myMemoize = moize(options)
