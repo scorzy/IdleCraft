@@ -7,6 +7,7 @@ import { selectBattleLog, selectBattleLogsIds } from '../battleLogSelectors'
 import { IconsData } from '../../icons/Icons'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { useTranslations } from '../../msg/useTranslations'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 
 const LIST_ICON = <TbList />
 export const BattleLogUi = memo(function BattleLogUi() {
@@ -37,6 +38,7 @@ const LogUi = memo(function LogUi(props: { id: string }) {
     const { id } = props
     const log = useGameStore(selectBattleLog(id))
     const { t } = useTranslations()
+    const { f } = useNumberFormatter()
 
     const date = new Date(log.date).toLocaleTimeString()
 
@@ -46,8 +48,14 @@ const LogUi = memo(function LogUi(props: { id: string }) {
             {log.source}
             {IconsData[log.iconId]}
             {t[log.abilityId]}
-            {' => '}
-            {log.targets}
+            <span className="text-muted-foreground">{' => '}</span>
+            {log.targets}{' '}
+            {log.damageDone !== undefined && (
+                <>
+                    <span className="text-muted-foreground">{t.Damage}</span>
+                    {f(log.damageDone)}
+                </>
+            )}
         </div>
     )
 })

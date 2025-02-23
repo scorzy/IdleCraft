@@ -27,6 +27,7 @@ export interface Msg {
     Loading: string
     StartNow: string
     Ago: string
+    Fight: string
 
     CraftingUnknown: string
     Woodworking: string
@@ -208,6 +209,8 @@ export interface Msg {
 
     RawFood: string
     RawSkin: string
+    Wolf: string
+    DeadWolf: string
 }
 export interface MsgFunctions {
     // Time

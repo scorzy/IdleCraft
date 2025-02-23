@@ -17,6 +17,7 @@ export const engMsg: Msg = {
     Loading: 'Loading...',
     StartNow: 'Start Now',
     Ago: 'ago',
+    Fight: 'Fight',
     CraftingUnknown: 'Crafting ??',
     DeadTree: 'Dead Tree',
     Oak: 'Oak',
@@ -184,6 +185,8 @@ export const engMsg: Msg = {
 
     RawFood: 'Raw Food',
     RawSkin: 'Raw Skin',
+    Wolf: 'Wolf',
+    DeadWolf: 'Dead Wolf',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,

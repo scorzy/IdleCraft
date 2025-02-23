@@ -9,9 +9,10 @@ export function dealDamage(
     state: GameState,
     targetId: string,
     damageData: DamageData
-): { state: GameState; killed: boolean } {
+): { state: GameState; killed: boolean; damageDone: number } {
     let killed = false
     const target = CharacterAdapter.selectEx(state.characters, targetId)
+    let damageDone = 0
     Object.entries(damageData).forEach((kv) => {
         if (killed) return
 
@@ -23,6 +24,7 @@ export function dealDamage(
 
         const multi = getDamageMulti(damage, armour)
         const damageTaken = damage * multi
+        damageDone += damageTaken
 
         const health = Math.max(0, Math.floor(target.health - damageTaken))
         if (health < 0.0001) {
@@ -32,5 +34,5 @@ export function dealDamage(
             state = { ...state, characters: CharacterAdapter.update(state.characters, targetId, { health }) }
         }
     })
-    return { state, killed }
+    return { state, killed, damageDone }
 }

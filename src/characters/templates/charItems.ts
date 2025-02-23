@@ -24,4 +24,23 @@ export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> =
             },
         ],
     },
+    DeadWolf: {
+        id: 'DeadWolf',
+        icon: Icons.Boar,
+        nameId: 'DeadWolf',
+        type: ItemTypes.Corpse,
+        value: 8,
+        butchering: [
+            {
+                id: 'BoarMeat',
+                stdItemId: 'BoarMeat',
+                qta: 1,
+            },
+            {
+                id: 'BoarSkin',
+                stdItemId: 'BoarSkin',
+                qta: 1,
+            },
+        ],
+    },
 }

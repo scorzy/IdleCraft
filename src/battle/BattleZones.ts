@@ -20,7 +20,7 @@ export const BattleZones: { [k in BattleZoneEnum]: BattleZone } = {
         enemies: [
             {
                 quantity: 2,
-                template: CharTemplateEnum.Boar,
+                template: CharTemplateEnum.Wolf,
             },
         ],
     },

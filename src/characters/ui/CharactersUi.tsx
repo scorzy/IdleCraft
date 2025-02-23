@@ -4,7 +4,7 @@ import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { clsx } from 'clsx'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
-import { IconsData } from '../../icons/Icons'
+import { Icons, IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
@@ -155,14 +155,28 @@ const CharInfo = memo(function CharInfo() {
                 <CardContent className="grid gap-2">
                     <StatsInfo />
 
-                    <CardTitle className="mt-2">{t.Attack}</CardTitle>
-                    <AttackInfo charId={charId} />
-
-                    <CardTitle className="mt-2">{t.Defence}</CardTitle>
-                    <ArmourInfo charId={charId} />
+                    <CharCombatInfo charId={charId} />
                 </CardContent>
             </Card>
         </div>
+    )
+})
+
+export const CharCombatInfo = memo(function CharCombatInfo(props: { charId: string }) {
+    const { t } = useTranslations()
+    const { charId } = props
+    return (
+        <>
+            <CardTitle className="mt-2">
+                {IconsData[Icons.Sword]} {t.Attack}
+            </CardTitle>
+            <AttackInfo charId={charId} />
+
+            <CardTitle className="mt-2">
+                {IconsData[Icons.Shield]} {t.Defence}
+            </CardTitle>
+            <ArmourInfo charId={charId} />
+        </>
     )
 })
 
