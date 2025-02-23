@@ -12,7 +12,7 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
     children?: ReactNode
     className?: string
     collapsedId: CollapsedEnum
-    ref: React.RefObject<HTMLDivElement | null>
+    ref?: React.RefObject<HTMLDivElement | null>
 }) {
     const { children, className, collapsedId, ref } = props
 
