@@ -8,6 +8,7 @@ import { changeRecipeState } from '../../crafting/RecipeFunctions'
 import { CollapsedEnum } from '../sidebar/CollapsedEnum'
 import { UiPagesData } from './UiPagesData'
 import { UiPages } from './UiPages'
+import { useUiTempStore } from './uiTempStore'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'health' | 'stamina' | 'mana'
 type StorageOrder = 'name' | 'quantity' | 'value'
@@ -68,3 +69,8 @@ export const setCollapseInt = (id: CollapsedEnum, open: boolean) => (s: GameStat
     return s
 }
 export const lockedIcon = (icon: ReactNode, enabled: boolean) => (enabled ? icon : <TbLock />)
+
+export const setSidebarWidth = (id: CollapsedEnum, width: number) =>
+    useUiTempStore.setState((s) => ({
+        sidebarWidths: { ...s.sidebarWidths, [id]: width },
+    }))

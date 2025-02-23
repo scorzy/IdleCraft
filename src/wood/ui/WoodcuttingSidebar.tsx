@@ -1,5 +1,4 @@
-import { memo, useCallback, useEffect, useRef } from 'react'
-import { useMeasure } from 'react-use'
+import { memo, useCallback } from 'react'
 import { useTranslations } from '../../msg/useTranslations'
 import { WoodTypes } from '../WoodTypes'
 import { WoodData } from '../WoodData'
@@ -16,23 +15,17 @@ import { GameState } from '../../game/GameState'
 const trees = Object.values(WoodTypes)
 
 export const WoodcuttingSidebar = memo(function WoodcuttingSidebar() {
-    const containerRef = useRef<HTMLDivElement | null>(null)
-    const [setRef, { width }] = useMeasure()
-    useEffect(() => {
-        if (containerRef.current) setRef(containerRef.current)
-    }, [setRef])
-
     return (
-        <SidebarContainer collapsedId={CollapsedEnum.Woodcutting} ref={containerRef}>
+        <SidebarContainer collapsedId={CollapsedEnum.Woodcutting}>
             {trees.map((t) => (
-                <TreeLink key={t} woodType={t} collapsed={width < 47} />
+                <TreeLink key={t} woodType={t} />
             ))}
         </SidebarContainer>
     )
 })
 
-export const TreeLink = memo(function TreeLink(props: { woodType: WoodTypes; collapsed: boolean }) {
-    const { woodType, collapsed } = props
+export const TreeLink = memo(function TreeLink(props: { woodType: WoodTypes }) {
+    const { woodType } = props
     const data = WoodData[woodType]
     const { t } = useTranslations()
 
@@ -47,11 +40,11 @@ export const TreeLink = memo(function TreeLink(props: { woodType: WoodTypes; col
     return (
         <MyListItem
             text={t[data.nameId]}
-            collapsed={collapsed}
             icon={lockedIcon(IconsData[data.iconId], enabled)}
             active={selected}
             onClick={onClick}
             enabled={enabled}
+            collapsedId={CollapsedEnum.Woodcutting}
         />
     )
 })

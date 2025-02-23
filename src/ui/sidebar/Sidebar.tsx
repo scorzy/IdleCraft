@@ -6,19 +6,16 @@ import { sidebarOpen } from '../state/uiFunctions'
 import { Badge } from '../../components/ui/badge'
 import { selectActivityNum } from '../../activities/ActivitySelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { isCollapsed } from '../state/uiSelectors'
 import { SidebarContainer } from './SidebarContainer'
 import { CollapsibleMenu, MenuItem } from './MenuItem'
 import { CollapsedEnum } from './CollapsedEnum'
 
 export const Sidebar = memo(function Sidebar() {
-    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Sidebar))
-
     return (
         <SidebarContainer collapsedId={CollapsedEnum.Sidebar}>
-            <MenuItem page={UiPages.Activities} parentCollapsed={collapsed} right={<ActivitiesLinkBadge />} />
-            <MenuItem page={UiPages.Storage} parentCollapsed={collapsed} />
-            <MenuItem page={UiPages.Characters} parentCollapsed={collapsed} />
+            <MenuItem page={UiPages.Activities} collapsedId={CollapsedEnum.Sidebar} right={<ActivitiesLinkBadge />} />
+            <MenuItem page={UiPages.Storage} collapsedId={CollapsedEnum.Sidebar} />
+            <MenuItem page={UiPages.Characters} collapsedId={CollapsedEnum.Sidebar} />
 
             <SidebarBattle />
             <SidebarGathering />
@@ -35,53 +32,50 @@ const ActivitiesLinkBadge = memo(function ActivitiesLinkBadge() {
 })
 const SidebarBattle = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
-    const isSidebarCollapsed = useGameStore(isCollapsed(CollapsedEnum.Sidebar))
 
     return (
         <CollapsibleMenu
             key={open ? '1' : '0'}
             collapsedId={CollapsedEnum.CombatSide}
-            parentCollapsed={isSidebarCollapsed}
             name="Battle"
+            parentCollapsedId={CollapsedEnum.Sidebar}
             icon={<GiAllForOne />}
         >
-            <MenuItem page={UiPages.CombatZones} parentCollapsed={isSidebarCollapsed} />
-            <MenuItem page={UiPages.Combat} parentCollapsed={isSidebarCollapsed} />
+            <MenuItem page={UiPages.CombatZones} collapsedId={CollapsedEnum.Sidebar} />
+            <MenuItem page={UiPages.Combat} collapsedId={CollapsedEnum.Sidebar} />
         </CollapsibleMenu>
     )
 })
 const SidebarGathering = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
-    const isSidebarCollapsed = useGameStore(isCollapsed(CollapsedEnum.Sidebar))
 
     return (
         <CollapsibleMenu
             key={open ? '1' : '0'}
             collapsedId={CollapsedEnum.GatheringSide}
-            parentCollapsed={isSidebarCollapsed}
             name="Gathering"
+            parentCollapsedId={CollapsedEnum.Sidebar}
             icon={<GiThreeLeaves />}
         >
-            <MenuItem page={UiPages.Woodcutting} parentCollapsed={isSidebarCollapsed} />
-            <MenuItem page={UiPages.Mining} parentCollapsed={isSidebarCollapsed} />
+            <MenuItem page={UiPages.Woodcutting} collapsedId={CollapsedEnum.Sidebar} />
+            <MenuItem page={UiPages.Mining} collapsedId={CollapsedEnum.Sidebar} />
         </CollapsibleMenu>
     )
 })
 const SidebarCraft = memo(function SidebarCraft() {
     const open = useGameStore(sidebarOpen)
-    const isSidebarCollapsed = useGameStore(isCollapsed(CollapsedEnum.Sidebar))
 
     return (
         <CollapsibleMenu
             key={open ? '2' : '3'}
             collapsedId={CollapsedEnum.CraftingSide}
-            parentCollapsed={isSidebarCollapsed}
             name="Crafting"
+            parentCollapsedId={CollapsedEnum.Sidebar}
             icon={<GiAnvilImpact />}
         >
-            <MenuItem page={UiPages.Woodworking} parentCollapsed={isSidebarCollapsed} />
-            <MenuItem page={UiPages.Smithing} parentCollapsed={isSidebarCollapsed} />
-            <MenuItem page={UiPages.Butchering} parentCollapsed={isSidebarCollapsed} />
+            <MenuItem page={UiPages.Woodworking} collapsedId={CollapsedEnum.Sidebar} />
+            <MenuItem page={UiPages.Smithing} collapsedId={CollapsedEnum.Sidebar} />
+            <MenuItem page={UiPages.Butchering} collapsedId={CollapsedEnum.Sidebar} />
         </CollapsibleMenu>
     )
 })

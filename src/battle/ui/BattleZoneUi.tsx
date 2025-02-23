@@ -19,7 +19,6 @@ import { generateCharacter } from '../../characters/templates/generateCharacter'
 import { CharTemplatesData } from '../../characters/templates/charTemplateData'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
-import { isCollapsed } from '../../ui/state/uiSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { addBattle } from '../functions/addbattle'
 import classes from './battleZone.module.css'
@@ -35,35 +34,34 @@ export const CombatPage = memo(function CombatPage() {
 })
 
 const CombatSidebar = memo(function CombatSidebar() {
-    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Combat))
     return (
         <SidebarContainer collapsedId={CollapsedEnum.Combat}>
             {BattleAreasList.map((bt) => (
-                <BattleAreasListUi bt={bt} key={bt.nameId} parentCollapsed={collapsed} />
+                <BattleAreasListUi bt={bt} key={bt.nameId} />
             ))}
         </SidebarContainer>
     )
 })
 
-const BattleAreasListUi = memo(function BattleAreasList(props: { bt: BattleAreas; parentCollapsed: boolean }) {
-    const { bt, parentCollapsed } = props
+const BattleAreasListUi = memo(function BattleAreasList(props: { bt: BattleAreas }) {
+    const { bt } = props
 
     return (
         <CollapsibleMenu
             key={bt.id}
             collapsedId={CollapsedEnum.BattleArea}
-            parentCollapsed={parentCollapsed}
             name={bt.nameId}
+            parentCollapsedId={CollapsedEnum.Combat}
             icon={IconsData[bt.iconId]}
         >
             {bt.zones.map((z) => (
-                <BattleZoneUi key={z} battleZoneEnum={z} parentCollapsed={parentCollapsed} />
+                <BattleZoneUi key={z} battleZoneEnum={z} />
             ))}
         </CollapsibleMenu>
     )
 })
-const BattleZoneUi = memo(function BattleZoneUi(props: { battleZoneEnum: BattleZoneEnum; parentCollapsed: boolean }) {
-    const { battleZoneEnum, parentCollapsed } = props
+const BattleZoneUi = memo(function BattleZoneUi(props: { battleZoneEnum: BattleZoneEnum }) {
+    const { battleZoneEnum } = props
     const { t } = useTranslations()
     const battleZone = BattleZones[battleZoneEnum]
 
@@ -72,7 +70,7 @@ const BattleZoneUi = memo(function BattleZoneUi(props: { battleZoneEnum: BattleZ
 
     return (
         <MyListItem
-            collapsed={parentCollapsed}
+            collapsedId={CollapsedEnum.BattleArea}
             active={active}
             text={t[battleZone.nameId]}
             icon={IconsData[battleZone.iconId]}

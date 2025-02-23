@@ -1,7 +1,8 @@
-import { memo, ReactNode, useCallback } from 'react'
+import { memo, ReactNode, useCallback, useEffect, useRef } from 'react'
 import { clsx } from 'clsx'
 import { LuChevronLeft } from 'react-icons/lu'
-import { collapse } from '../state/uiFunctions'
+import { useMeasure } from 'react-use'
+import { collapse, setSidebarWidth } from '../state/uiFunctions'
 import { useGameStore } from '../../game/state'
 import { isCollapsed } from '../state/uiSelectors'
 import { MyListItem } from './MenuItem'
@@ -12,16 +13,25 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
     children?: ReactNode
     className?: string
     collapsedId: CollapsedEnum
-    ref?: React.RefObject<HTMLDivElement | null>
 }) {
-    const { children, className, collapsedId, ref } = props
+    const { children, className, collapsedId } = props
 
     const collapseClick = useCallback(() => collapse(collapsedId), [collapsedId])
     const collapsed = useGameStore(isCollapsed(collapsedId))
 
+    const containerRef = useRef<HTMLDivElement | null>(null)
+    const [setRef, { width }] = useMeasure()
+    useEffect(() => {
+        if (containerRef.current) setRef(containerRef.current)
+    }, [setRef])
+
+    useEffect(() => {
+        setSidebarWidth(collapsedId, width)
+    }, [collapsedId, width])
+
     return (
         <nav
-            ref={ref}
+            ref={containerRef}
             className={clsx(classes.collapseContainer, { [classes.collapsedContainer!]: collapsed }, className)}
         >
             <div className={clsx(classes.sidebarContainer, { [classes.collapsed!]: collapsed })}>{children}</div>
@@ -32,7 +42,7 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
                     active={false}
                     icon={<LuChevronLeft className={clsx(classes.icon, { [classes.iconCollapsed!]: collapsed })} />}
                     text={''}
-                    collapsed={collapsed}
+                    collapsedId={collapsedId}
                 />
             </div>
         </nav>

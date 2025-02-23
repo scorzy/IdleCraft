@@ -1,7 +1,6 @@
 import { ReactNode, memo, useCallback } from 'react'
 import { clsx } from 'clsx'
 import { TbChevronRight } from 'react-icons/tb'
-import { useMediaQuery } from 'usehooks-ts'
 import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
 import { UiPages } from '../state/UiPages'
@@ -9,15 +8,20 @@ import { UiPagesData } from '../state/UiPagesData'
 import { collapse, setPage } from '../state/uiFunctions'
 import { Collapsible, CollapsibleContent } from '../../components/ui/collapsible'
 import { Msg } from '../../msg/Msg'
-import { isCollapsed } from '../state/uiSelectors'
+import { getSidebarWidth, isCollapsed } from '../state/uiSelectors'
+import { useUiTempStore } from '../state/uiTempStore'
 import classes from './menuItem.module.css'
 import { CollapsedEnum } from './CollapsedEnum'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
-export const MenuItem = memo(function MenuItem(props: { page: UiPages; parentCollapsed: boolean; right?: ReactNode }) {
-    const { page, parentCollapsed, right } = props
+export const MenuItem = memo(function MenuItem(props: {
+    page: UiPages
+    right?: ReactNode
+    collapsedId: CollapsedEnum
+}) {
+    const { page, collapsedId, right } = props
     const { t } = useTranslations()
     const data = UiPagesData[page]
     const active = useGameStore((s) => s.ui.page === page)
@@ -29,14 +33,13 @@ export const MenuItem = memo(function MenuItem(props: { page: UiPages; parentCol
             text={t[data.nameId]}
             active={active}
             icon={data.icon}
-            collapsed={parentCollapsed}
+            collapsedId={collapsedId}
             right={right}
         />
     )
 })
 
 export const MyListItem = memo(function MyListItem(props: {
-    collapsed: boolean
     active: boolean
     text: string
     onClick?: () => void
@@ -44,16 +47,18 @@ export const MyListItem = memo(function MyListItem(props: {
     arrowOpen?: boolean
     right?: ReactNode
     enabled?: boolean
+    collapsedId: CollapsedEnum
 }) {
-    const { text, onClick, active, icon, arrowOpen, right } = props
+    const { text, onClick, active, icon, arrowOpen, right, collapsedId } = props
     let { enabled } = props
-    let { collapsed } = props
-    const matches = useMediaQuery('(min-width: 900px)')
+
+    const parentWidth = useUiTempStore(getSidebarWidth(collapsedId))
+
+    const collapsed = parentWidth < 47
 
     if (enabled === undefined) enabled = true
 
-    if (!matches) collapsed = false
-    if (!collapsed || text === '' || !matches) {
+    if (!collapsed || text === '') {
         let arrow = <></>
         if (arrowOpen !== undefined)
             arrow = <TbChevronRight className={clsx(classes.arrow, { [classes.arrowDown!]: arrowOpen })} />
@@ -63,14 +68,12 @@ export const MyListItem = memo(function MyListItem(props: {
                 title={text}
                 type="button"
                 onClick={onClick}
-                // disabled={!enabled}
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     { 'bg-muted hover:bg-muted': active },
                     { 'text-muted-foreground hover:bg-muted': !active },
                     'mt-1 justify-start gap-4 text-nowrap',
-                    classes.item,
-                    collapsed ? classes.itemCollapsed : ''
+                    classes.item
                 )}
             >
                 {icon}
@@ -85,7 +88,6 @@ export const MyListItem = memo(function MyListItem(props: {
                 <Tooltip>
                     <TooltipTrigger
                         onClick={onClick}
-                        // disabled={!enabled}
                         title={text}
                         className={cn(
                             buttonVariants({ variant: 'ghost' }),
@@ -105,22 +107,23 @@ export const MyListItem = memo(function MyListItem(props: {
 })
 
 export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
-    parentCollapsed: boolean
     name: keyof Msg
     icon: ReactNode
     children: ReactNode
     collapsedId: CollapsedEnum
+    parentCollapsedId: CollapsedEnum
 }) {
-    const { children, name, icon, parentCollapsed, collapsedId } = props
+    const { children, name, icon, collapsedId, parentCollapsedId } = props
     const { t } = useTranslations()
 
     const collapsed = useGameStore(isCollapsed(collapsedId))
+    const parentCollapsed = useUiTempStore(getSidebarWidth(parentCollapsedId)) < 240
     const collapseClick = useCallback(() => collapse(collapsedId), [collapsedId])
 
     return (
         <Collapsible open={!collapsed}>
             <MyListItem
-                collapsed={parentCollapsed}
+                collapsedId={parentCollapsedId}
                 active={false}
                 text={t[name]}
                 icon={icon}

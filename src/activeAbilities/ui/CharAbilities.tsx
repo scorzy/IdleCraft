@@ -3,7 +3,7 @@ import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
-import { isCollapsed, selectSelectedCharId } from '../../ui/state/uiSelectors'
+import { selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { selectAllCombatAbilities } from '../selectors/selectAllCombatAbilities'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { GameState } from '../../game/GameState'
@@ -33,13 +33,12 @@ const AbilityLink = memo(function AbilityLink(props: { id: string }) {
     const charAbility = useGameStore(selectCombatAbilityById(id))
     const ability = ActiveAbilityData.getEx(charAbility.abilityId)
     const iconId = useGameStore((state: GameState) => ability.getIconId({ state, characterId }))
-    const collapsed = useGameStore(isCollapsed(CollapsedEnum.AbilityList))
     const selected = useGameStore(isAbilityUiSelected(id))
     const onClick = useCallback(() => setAbilityUi(id), [id])
 
     return (
         <MyListItem
-            collapsed={collapsed}
+            collapsedId={CollapsedEnum.AbilityList}
             active={selected}
             text={t[ability.nameId]}
             icon={IconsData[iconId]}

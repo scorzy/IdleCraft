@@ -9,24 +9,22 @@ import { isOreEnabled, isOreSelected } from '../miningSelectors'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { IconsData } from '../../icons/Icons'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
-import { isCollapsed } from '../../ui/state/uiSelectors'
 import { GameState } from '../../game/GameState'
 
 const ores = Object.values(OreTypes)
 
 export const MiningSidebar = memo(function MiningSidebar() {
-    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Mining))
     return (
         <SidebarContainer collapsedId={CollapsedEnum.Mining}>
             {ores.map((t) => (
-                <MiningLink key={t} oreType={t} collapsed={collapsed} />
+                <MiningLink key={t} oreType={t} />
             ))}
         </SidebarContainer>
     )
 })
 
-const MiningLink = memo(function MiningLink(props: { oreType: OreTypes; collapsed: boolean }) {
-    const { oreType, collapsed } = props
+const MiningLink = memo(function MiningLink(props: { oreType: OreTypes }) {
+    const { oreType } = props
     const { t } = useTranslations()
 
     const isSelected = useCallback((state: GameState) => isOreSelected(oreType)(state), [oreType])
@@ -40,7 +38,7 @@ const MiningLink = memo(function MiningLink(props: { oreType: OreTypes; collapse
     return (
         <MyListItem
             text={t[data.nameId]}
-            collapsed={collapsed}
+            collapsedId={CollapsedEnum.Mining}
             icon={lockedIcon(IconsData[data.iconId], enabled)}
             active={selected}
             onClick={onClick}
