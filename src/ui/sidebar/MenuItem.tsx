@@ -1,4 +1,4 @@
-import { ReactNode, memo, useCallback } from 'react'
+import { ReactNode, memo, useCallback, useLayoutEffect, useState } from 'react'
 import { clsx } from 'clsx'
 import { TbChevronRight } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
@@ -119,6 +119,12 @@ export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
     const parentCollapsed = useUiTempStore(getSidebarWidth(parentCollapsedId)) < 240
     const collapseClick = useCallback(() => collapse(collapsedId), [collapsedId])
 
+    const [created, setCreated] = useState(false)
+    useLayoutEffect(() => {
+        const timeout = setTimeout(() => setCreated(true), 100)
+        return () => clearTimeout(timeout)
+    }, [])
+
     return (
         <Collapsible open={!collapsed}>
             <MyListItem
@@ -130,7 +136,9 @@ export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
                 onClick={collapseClick}
             />
             <CollapsibleContent className="CollapsibleContent">
-                <div className={clsx(classes.myList, { 'pl-4': !parentCollapsed })}>{children}</div>
+                <div className={clsx(created ? classes.myListTransition : '', { 'pl-4': !parentCollapsed })}>
+                    {children}
+                </div>
             </CollapsibleContent>
         </Collapsible>
     )

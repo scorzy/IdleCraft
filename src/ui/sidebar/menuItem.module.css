@@ -27,6 +27,6 @@
 .arrowDown {
     transform: rotate(90deg);
 }
-.myList {
+.myListTransition {
     transition: all 0.25s ease;
 }
