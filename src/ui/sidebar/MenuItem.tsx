@@ -88,7 +88,6 @@ export const MyListItem = memo(function MyListItem(props: {
                 <Tooltip>
                     <TooltipTrigger
                         onClick={onClick}
-                        title={text}
                         className={cn(
                             buttonVariants({ variant: 'ghost' }),
                             { 'bg-muted hover:bg-muted': active },
