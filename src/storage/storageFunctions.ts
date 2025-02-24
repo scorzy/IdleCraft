@@ -1,4 +1,3 @@
-import { memoize } from 'proxy-memoize'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GameState } from '../game/GameState'
@@ -79,31 +78,25 @@ export const setSelectedItem = (itemId: string | null, location: GameLocations) 
 
 const craftIdsByType = new Map<string, string[]>()
 
-const selectCraftItemMemo = memoize((state: InitialState<Item>) =>
-    memoize((item: Item) => {
-        const byType = craftIdsByType.get(item.type)
-        if (byType) {
-            for (const id of byType) {
-                const itemByType = ItemAdapter.select(state, id)
-                if (itemByType && myCompare(item, itemByType)) {
-                    return itemByType.id
-                }
+export function selectCraftItemId(state: InitialState<Item>, item: Item): string | null {
+    const byType = craftIdsByType.get(item.type)
+    if (byType) {
+        for (const id of byType) {
+            const itemByType = ItemAdapter.select(state, id)
+            if (itemByType && myCompare(item, itemByType)) {
+                return itemByType.id
             }
         }
+    }
 
-        const res = ItemAdapter.find(state, (i) => myCompare(i, item))
-        if (res) return res.id
+    const res = ItemAdapter.find(state, (i) => myCompare(i, item))
+    if (res) return res.id
 
-        return null
-    })
-)
-
-export function selectCraftItem(state: InitialState<Item>, item: Item): string | null {
-    return selectCraftItemMemo(state)(item)
+    return null
 }
 
 export function saveCraftItem(state: InitialState<Item>, item: Item): { id: string; state: InitialState<Item> } {
-    const id = selectCraftItem(state, item)
+    const id = selectCraftItemId(state, item)
     if (id) return { id, state }
 
     const newItem = { ...item, id: CRAFTED_ITEM_PREFIX + getUniqueId() }

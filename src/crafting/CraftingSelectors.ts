@@ -2,7 +2,7 @@ import equal from 'react-fast-compare'
 import { GameState } from '../game/GameState'
 import { myMemoizeOne } from '../utils/myMemoizeOne'
 import { myMemoize } from '../utils/myMemoize'
-import { selectCraftItem } from '../storage/storageFunctions'
+import { selectCraftItemId } from '../storage/storageFunctions'
 import { selectItemQta } from '../storage/StorageSelectors'
 import { RecipeItem, RecipeParameterValue } from './RecipeInterfaces'
 import { Crafting } from './CraftingIterfaces'
@@ -45,7 +45,7 @@ export const selectResultQta = (result?: RecipeItem) => (s: GameState) => {
     if (result.stdItemId) {
         return selectItemQta(null, result.stdItemId)(s)
     } else if (result.craftedItem) {
-        const craftId = selectCraftItem(s.craftedItems, result.craftedItem)
+        const craftId = selectCraftItemId(s.craftedItems, result.craftedItem)
         if (!craftId) return 0
         return selectItemQta(null, craftId)(s)
     }

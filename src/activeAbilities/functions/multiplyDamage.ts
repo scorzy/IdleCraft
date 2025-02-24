@@ -1,7 +1,7 @@
-import { memoizeWithArgs } from 'proxy-memoize'
+import moize from 'moize'
 import { DamageData, DamageTypes } from '../../items/Item'
 
-export const multiplyDamage = memoizeWithArgs(
+export const multiplyDamage = moize(
     function multiplyDamage(damage: DamageData, multi: number): DamageData {
         const ret: DamageData = {}
         Object.entries(damage).forEach((kv) => {
@@ -10,5 +10,8 @@ export const multiplyDamage = memoizeWithArgs(
         })
         return ret
     },
-    { size: 10 }
+    {
+        isDeepEqual: true,
+        maxSize: 30,
+    }
 )
