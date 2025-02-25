@@ -6,9 +6,9 @@ import { GameLocations } from '../../gameLocations/GameLocations'
 import {
     selectGameItem,
     selectItemQta,
-    selectLocationItems,
     selectStorageLocations,
     isSelected,
+    useLocationItems,
 } from '../StorageSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
@@ -127,7 +127,7 @@ const LocationStorage = memo(function LocationStorage(props: {
     location: GameLocations
 }) {
     const { location, small, show } = props
-    const items = useGameStore(selectLocationItems(location))
+    const items = useLocationItems(location)
     const [open, setOpen] = useState(true)
     const handleClick = () => setOpen(!open)
     const { ref, active } = useContainerQueries({ breakpoints })
