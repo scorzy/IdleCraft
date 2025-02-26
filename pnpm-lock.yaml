@@ -68,9 +68,6 @@ dependencies:
   postcss-preset-env:
     specifier: ^10.1.4
     version: 10.1.4(postcss@8.5.3)
-  proxy-memoize:
-    specifier: ^3.0.1
-    version: 3.0.1
   react:
     specifier: 19.0.0
     version: 19.0.0
@@ -5388,16 +5385,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-
-  /proxy-compare@3.0.1:
-    resolution: {integrity: sha512-V9plBAt3qjMlS1+nC8771KNf6oJ12gExvaxnNzN/9yVRLdTv/lc+oJlnSzrdYDAvBfTStPCoiaCOTmTs0adv7Q==}
-    dev: false
-
-  /proxy-memoize@3.0.1:
-    resolution: {integrity: sha512-VDdG/VYtOgdGkWJx7y0o7p+zArSf2383Isci8C+BP3YXgMYDoPd3cCBjw0JdWb6YBb9sFiOPbAADDVTPJnh+9g==}
-    dependencies:
-      proxy-compare: 3.0.1
-    dev: false
 
   /punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
