@@ -1,4 +1,3 @@
-import { memoize } from 'proxy-memoize'
 import { createSelector } from 'reselect'
 import { GameState, LocationState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
@@ -6,7 +5,6 @@ import { StdItems } from '../items/stdItems'
 import { myMemoizeOne } from '../utils/myMemoizeOne'
 import { Item, ItemTypes } from '../items/Item'
 import { selectTranslations } from '../msg/useTranslations'
-import { CharacterAdapter } from '../characters/characterAdapter'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
@@ -169,32 +167,38 @@ export const getSelectedItemQta = (state: GameState) => {
 }
 type ItemIdValue = ItemId & { value: number }
 
-export const selectItemsByType = myMemoize((itemType: ItemTypes | undefined) =>
-    memoize((state: GameState) => {
-        if (!itemType) return EMPTY_ARRAY
+const itemTypeSelectors = new Map<ItemTypes, (state: GameState) => ItemIdValue[]>()
+export const selectItemsByType = (itemType: ItemTypes | undefined) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    if (!itemType) return (_state: GameState) => EMPTY_ARRAY
+    let selector = itemTypeSelectors.get(itemType)
+    if (!selector) {
+        selector = createDeepEqualSelector(
+            [(state: GameState) => state.locations[state.location].storage, (state: GameState) => state.craftedItems],
+            (storage, craftedItems) => {
+                const ret: ItemIdValue[] = []
+                for (const id of Object.keys(storage).sort()) {
+                    const item = selectGameItemFromCraft(id, craftedItems)
+                    if (item && item.type === itemType) ret.push({ id, value: item.value })
+                }
+                return ret
+            }
+        )
+    }
+    itemTypeSelectors.set(itemType, selector)
+    return selector
+}
 
-        const ret: ItemIdValue[] = []
-        for (const id of Object.keys(state.locations[state.location].storage)) {
-            const item = selectGameItemFromCraft(id, state.craftedItems)
-            if (item && item.type === itemType) ret.push({ id, value: item.value })
-        }
-        return ret
-    })
-)
-
-export const createInventoryNoQta = memoize((inventory: CharInventory) => {
+export const createInventoryNoQta = myMemoize((inventory: CharInventory) => {
     const ret: InventoryNoQta = {}
 
-    Object.entries(inventory).forEach((kv) => {
-        const slot = kv[0] as EquipSlotsEnum
-        const itemIds = kv[1]
-        ret[slot] = { itemId: itemIds.itemId }
-    })
+    Object.entries(inventory)
+        .sort()
+        .forEach((kv) => {
+            const slot = kv[0] as EquipSlotsEnum
+            const itemIds = kv[1]
+            ret[slot] = { itemId: itemIds.itemId }
+        })
 
     return ret
 })
-
-export const selectInventoryNoQta = (charId: string) => (state: GameState) => {
-    const inventory = CharacterAdapter.selectEx(state.characters, charId).inventory
-    return createInventoryNoQta(inventory)
-}
