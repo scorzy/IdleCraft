@@ -22,8 +22,8 @@ import { removeMining } from '../mining/functions/removeMining'
 import { startMining } from '../mining/functions/startMining'
 import { twoHSwordRecipe } from '../smithing/recipes/2HSword'
 import { armourRecipe } from '../smithing/recipes/ArmourRecipes'
-import { AxeRecipe } from '../smithing/recipes/AxeRecipe'
-import { BarRecipe } from '../smithing/recipes/BarRecipe'
+import { axeRecipe } from '../smithing/recipes/AxeRecipe'
+import { barRecipe } from '../smithing/recipes/BarRecipe'
 import { daggerRecipe } from '../smithing/recipes/Dagger'
 import { longSwordRecipe } from '../smithing/recipes/LongSwordRecipe'
 import { PickaxeRecipe } from '../smithing/recipes/PickaxeRecipe'
@@ -33,8 +33,8 @@ import { getWoodcuttingIcon } from '../wood/functions/getWoodcuttingIcon'
 import { getWoodcuttingTitle } from '../wood/functions/getWoodcuttingTitle'
 import { removeWoodcutting } from '../wood/functions/removeWoodcutting'
 import { startWoodcutting } from '../wood/functions/startWoodcutting'
-import { HandleRecipe } from '../wood/recipes/HandleRecipe'
-import { PlankRecipe } from '../wood/recipes/PlankRecipe'
+import { handleRecipe } from '../wood/recipes/HandleRecipe'
+import { plankRecipe } from '../wood/recipes/PlankRecipe'
 import { activityIcons, activityRemovers, activityStarters, activityTitles, activityExecutors } from './globals'
 
 export function initialize() {
@@ -73,10 +73,10 @@ function initActivities() {
 }
 
 function initRecipes() {
-    recipes.set(PlankRecipe.id, PlankRecipe)
-    recipes.set(HandleRecipe.id, HandleRecipe)
-    recipes.set(BarRecipe.id, BarRecipe)
-    recipes.set(AxeRecipe.id, AxeRecipe)
+    recipes.set(plankRecipe.id, plankRecipe)
+    recipes.set(handleRecipe.id, handleRecipe)
+    recipes.set(barRecipe.id, barRecipe)
+    recipes.set(axeRecipe.id, axeRecipe)
     recipes.set(PickaxeRecipe.id, PickaxeRecipe)
     recipes.set(daggerRecipe.id, daggerRecipe)
     recipes.set(longSwordRecipe.id, longSwordRecipe)

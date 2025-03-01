@@ -1,14 +1,8 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BASE_SWORD_SPEED, BASE_SWORD_DAMAGE } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { Recipe } from '../../crafting/Recipe'
-import {
-    RecipeTypes,
-    RecipeParameter,
-    RecipeParameterValue,
-    RecipeResult,
-    RecipeParamType,
-} from '../../crafting/RecipeInterfaces'
+import { makeRecipe } from '../../crafting/makeRecipe'
+import { RecipeTypes, RecipeParameter, RecipeParameterValue, RecipeParamType } from '../../crafting/RecipeInterfaces'
 import { ExpEnum } from '../../experience/expEnum'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
@@ -25,14 +19,14 @@ const longSwordParams: RecipeParameter[] = [
     },
 ]
 
-export class LongSwordRecipe implements Recipe {
-    id = 'LongSwordRecipe'
-    nameId = 'LongSword' as keyof Msg
-    iconId = Icons.Sword
-    type = RecipeTypes.Smithing
-    itemSubType = ItemSubType.Weapon
-    getParameters = () => longSwordParams
-    getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
+export const longSwordRecipe = makeRecipe({
+    id: 'LongSwordRecipe',
+    nameId: 'LongSword' as keyof Msg,
+    iconId: Icons.Sword,
+    type: RecipeTypes.Smithing,
+    itemSubType: ItemSubType.Weapon,
+    getParameters: () => longSwordParams,
+    getResult: (state: GameState, params: RecipeParameterValue[]) => {
         const bar = params.find((i) => i.id === 'bar')
         if (bar === undefined) return
         const barItem = selectGameItem(bar.itemId)(state)
@@ -69,6 +63,5 @@ export class LongSwordRecipe implements Recipe {
             ],
             results: [{ id: 'craftedSword', qta: 1, craftedItem: craftedSword }],
         }
-    }
-}
-export const longSwordRecipe = new LongSwordRecipe()
+    },
+})

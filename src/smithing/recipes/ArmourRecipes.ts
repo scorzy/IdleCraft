@@ -1,6 +1,6 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { Recipe } from '../../crafting/Recipe'
+import { makeRecipe } from '../../crafting/makeRecipe'
 import {
     RecipeTypes,
     RecipeParameter,
@@ -23,13 +23,13 @@ const armourParams: RecipeParameter[] = [
     },
 ]
 
-export class ArmourRecipe implements Recipe {
-    id = 'ArmourRecipe'
-    nameId = 'Armour' as keyof Msg
-    iconId = Icons.Breastplate
-    type = RecipeTypes.Smithing
-    itemSubType = ItemSubType.Armour
-    getParameters = () => armourParams
+export const armourRecipe = makeRecipe({
+    id: 'ArmourRecipe',
+    nameId: 'Armour' as keyof Msg,
+    iconId: Icons.Breastplate,
+    type: RecipeTypes.Smithing,
+    itemSubType: ItemSubType.Armour,
+    getParameters: () => armourParams,
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')
         if (bar === undefined) return
@@ -67,6 +67,5 @@ export class ArmourRecipe implements Recipe {
             ],
             results: [{ id: 'craftedItem', qta: 1, craftedItem }],
         }
-    }
-}
-export const armourRecipe = new ArmourRecipe()
+    },
+})

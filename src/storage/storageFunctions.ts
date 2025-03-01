@@ -1,3 +1,4 @@
+import moize from 'moize'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GameState } from '../game/GameState'
@@ -76,24 +77,12 @@ export const setSelectedItem = (itemId: string | null, location: GameLocations) 
         },
     }))
 
-const craftIdsByType = new Map<string, string[]>()
-
-export function selectCraftItemId(state: InitialState<Item>, item: Item): string | null {
-    const byType = craftIdsByType.get(item.type)
-    if (byType) {
-        for (const id of byType) {
-            const itemByType = ItemAdapter.select(state, id)
-            if (itemByType && myCompare(item, itemByType)) {
-                return itemByType.id
-            }
-        }
+export const selectCraftItemId = moize(
+    (state: InitialState<Item>, item: Item) => ItemAdapter.find(state, (i) => myCompare(i, item))?.id ?? null,
+    {
+        maxSize: 5,
     }
-
-    const res = ItemAdapter.find(state, (i) => myCompare(i, item))
-    if (res) return res.id
-
-    return null
-}
+)
 
 export function saveCraftItem(state: InitialState<Item>, item: Item): { id: string; state: InitialState<Item> } {
     const id = selectCraftItemId(state, item)
@@ -102,9 +91,6 @@ export function saveCraftItem(state: InitialState<Item>, item: Item): { id: stri
     const newItem = { ...item, id: CRAFTED_ITEM_PREFIX + getUniqueId() }
     state = ItemAdapter.create(state, newItem)
 
-    const byType = craftIdsByType.get(item.type) ?? []
-    craftIdsByType.set(newItem.type, [...byType, newItem.id])
-
     return { id: newItem.id, state }
 }
 
@@ -112,13 +98,5 @@ function removeCraftItem(state: InitialState<Item>, id: string): InitialState<It
     const item = ItemAdapter.select(state, id)
     if (!item) return state
 
-    const ret = ItemAdapter.remove(state, id)
-    const arr = craftIdsByType.get(item.type)
-    if (!arr) return ret
-
-    const newArr = arr.filter((a) => a !== id)
-    if (newArr.length < 1) craftIdsByType.delete(item.type)
-    else craftIdsByType.set(item.type, newArr)
-
-    return ret
+    return ItemAdapter.remove(state, id)
 }

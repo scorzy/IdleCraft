@@ -1,5 +1,5 @@
 import { DeadAnimals } from '../characters/templates/charItems'
-import { Recipe } from '../crafting/Recipe'
+import { makeRecipe } from '../crafting/makeRecipe'
 import {
     RecipeParameter,
     RecipeParameterValue,
@@ -20,7 +20,7 @@ export const butcheringRecipeParam: RecipeParameter[] = [
     },
 ]
 
-export const butcheringRecipe: Recipe = {
+export const butcheringRecipe = makeRecipe({
     id: 'butcheringRecipe',
     type: RecipeTypes.Butchering,
     nameId: 'Butchering',
@@ -47,4 +47,4 @@ export const butcheringRecipe: Recipe = {
             results: animal.butchering,
         }
     },
-}
+})

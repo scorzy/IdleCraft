@@ -1,4 +1,4 @@
-import { Recipe } from '../../crafting/Recipe'
+import { makeRecipe } from '../../crafting/makeRecipe'
 import {
     RecipeParameter,
     RecipeParamType,
@@ -23,7 +23,7 @@ export const handleParam: RecipeParameter[] = [
     },
 ]
 
-export const HandleRecipe: Recipe = {
+export const handleRecipe = makeRecipe({
     id: 'handleRecipe',
     type: RecipeTypes.Woodworking,
     nameId: 'Handle',
@@ -47,4 +47,4 @@ export const HandleRecipe: Recipe = {
             results: [{ id, qta: 1, stdItemId: PlankToHandle.get(plank.itemId) }],
         }
     },
-}
+})
