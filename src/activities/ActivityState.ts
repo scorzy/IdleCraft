@@ -13,7 +13,7 @@ export interface ActivityState {
     type: ActivityTypes
     max: number
 }
-class ActivityAdapterInt extends AbstractEntityAdapter<ActivityState> {
+class ActivityAdapterInt<T extends ActivityState> extends AbstractEntityAdapter<T> {
     getId(data: ActivityState): string {
         return data.id
     }

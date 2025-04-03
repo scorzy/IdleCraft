@@ -6,7 +6,7 @@ import { addExp } from '../../experience/expFunctions'
 import { GameState } from '../../game/GameState'
 import { addItem } from '../../storage/storageFunctions'
 import { Timer } from '../../timers/Timer'
-import { isMining } from '../Mining'
+import { isMining, Mining } from '../Mining'
 import { resetOre, mineOre } from '../miningFunctions'
 import { selectMiningDamage } from '../selectors/miningDamage'
 import { startMiningOre } from './startMiningOre'
@@ -17,10 +17,11 @@ export const execMining = makeExecActivity((state: GameState, timer: Timer) => {
     const id = timer.actId
     let completed = false
 
+    const miningData: Partial<Mining> = { isMining: true }
     if (!data.isMining) {
         state = {
             ...state,
-            mining: MiningAdapter.update(state.mining, id, { isMining: true }),
+            activities: ActivityAdapter.update(state.activities, id, miningData),
         }
         state = resetOre(state, data.oreType, state.location)
     } else {

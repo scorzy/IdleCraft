@@ -1,8 +1,8 @@
 import { GameState } from '../../game/GameState'
-import { MiningAdapter } from '../MiningAdapter'
 import { OreData } from '../OreData'
+import { getMiningActivity } from '../selectors/getMiningActivity'
 
 export function getMiningIcon(state: GameState, id: string) {
-    const data = MiningAdapter.selectEx(state.mining, id)
-    return OreData[data.oreType].iconId
+    const activity = getMiningActivity(state.activities, id)
+    return OreData[activity.oreType].iconId
 }

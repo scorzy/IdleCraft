@@ -4,9 +4,9 @@ import { ActivityAdapter } from '../ActivityState'
 import { startNextActivity } from '../activityFunctions'
 
 export const makeRemoveActivity =
-    (onRemove: (state: GameState, activityId: string) => GameState) => (state: GameState, activityId: string) => {
+    (onRemove?: (state: GameState, activityId: string) => GameState) => (state: GameState, activityId: string) => {
         const isCurrent = state.activityId === activityId
-        state = onRemove(state, activityId)
+        if (onRemove) state = onRemove(state, activityId)
 
         const lastActivityDone =
             state.lastActivityDone >= state.orderedActivities.indexOf(activityId)

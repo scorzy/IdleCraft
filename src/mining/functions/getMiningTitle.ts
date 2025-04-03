@@ -1,10 +1,10 @@
 import { GameState } from '../../game/GameState'
 import { selectTranslations } from '../../msg/useTranslations'
-import { MiningAdapter } from '../MiningAdapter'
 import { OreData } from '../OreData'
+import { getMiningActivity } from '../selectors/getMiningActivity'
 
 export function getMiningTitle(state: GameState, id: string) {
-    const data = MiningAdapter.selectEx(state.mining, id)
+    const activity = getMiningActivity(state.activities, id)
     const t = selectTranslations(state)
-    return t.fun.mining(OreData[data.oreType].nameId)
+    return t.fun.mining(OreData[activity.oreType].nameId)
 }
