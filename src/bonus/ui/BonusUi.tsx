@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { TbInfoCircle } from 'react-icons/tb'
 import { Bonus, BonusResult } from '../Bonus'
 import { IconsData } from '../../icons/Icons'
@@ -72,9 +72,10 @@ export const BonusDialog = memo(function BonusDialog(props: {
 }) {
     const { selectBonusResult, title, isTime } = props
     const { t } = useTranslations()
+    const [open, setOpen] = useState(false)
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <button title={t.Info} className="text-muted-foreground" type="button">
                     <TbInfoCircle size={18} />
@@ -85,7 +86,7 @@ export const BonusDialog = memo(function BonusDialog(props: {
                     <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>
                 <DialogDescription></DialogDescription>
-                <BonusListUi selectBonusResult={selectBonusResult} isTime={isTime} />
+                {open && <BonusListUi selectBonusResult={selectBonusResult} isTime={isTime} />}
             </DialogContent>
         </Dialog>
     )

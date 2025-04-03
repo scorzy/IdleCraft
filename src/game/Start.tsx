@@ -105,7 +105,7 @@ const NewGame = memo(function NewGame() {
                 <Button variant="secondary">{t.NewGame}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
-                <DialogTitle>New Game</DialogTitle>
+                <DialogTitle>{t.NewGame}</DialogTitle>
                 <DialogDescription></DialogDescription>
                 <Label htmlFor="name">{t.Name}</Label>
                 <Input id="name" maxLength={10} value={name} onChange={onChange} />
@@ -144,7 +144,7 @@ const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Di
         <>
             <Button onClick={loadClick}>{item.name}</Button>
             <span className="min-w-20 text-right text-sm text-muted-foreground">
-                <TimeAgo date={item.state.now} /> ago
+                <TimeAgo date={item.state.now} /> {t.Ago}
             </span>
             <Button onClick={deleteGame} variant="ghost" title={t.Delete} className="text-muted-foreground">
                 {TrashIcon}
@@ -173,6 +173,7 @@ const TimeAgo = memo(function TimeAgo(props: { date: number }) {
 
 const Loading = memo(function Loading() {
     const { ftp } = useNumberFormatter()
+    const { t } = useTranslations()
     const loading = useGameStore(selectLoading)
     const percent = useGameStore(selectLoadingProgress)
     const start = useGameStore(selectLoadingStart)
@@ -185,14 +186,14 @@ const Loading = memo(function Loading() {
         <Dialog open={loading} onOpenChange={stopLoad}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Loading...</DialogTitle>
+                    <DialogTitle>{t.Loading}</DialogTitle>
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
                 {ftp(done)} / {ftp(total)}
                 <ProgressBar value={percent} color="primary" />
                 <DialogFooter className="sm:justify-start">
                     <Button type="button" variant="destructive" onClick={startAnyway}>
-                        Start anyway
+                        {t.StartNow}
                     </Button>
                 </DialogFooter>
             </DialogContent>

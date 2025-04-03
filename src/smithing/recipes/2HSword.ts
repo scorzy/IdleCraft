@@ -1,7 +1,7 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BASE_SWORD_SPEED, BASE_SWORD_DAMAGE } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { Recipe } from '../../crafting/Recipe'
+import { makeRecipe } from '../../crafting/makeRecipe'
 import {
     RecipeTypes,
     RecipeParameterValue,
@@ -25,13 +25,13 @@ const twoHSwordParams: RecipeParameter[] = [
     },
 ]
 
-export class TwoHSwordRecipe implements Recipe {
-    id = 'TwoHSwordRecipe'
-    nameId = 'TwoHSword' as keyof Msg
-    iconId = Icons.Sword
-    type = RecipeTypes.Smithing
-    itemSubType = ItemSubType.Weapon
-    getParameters = () => twoHSwordParams
+export const twoHSwordRecipe = makeRecipe({
+    id: 'TwoHSwordRecipe',
+    nameId: 'TwoHSword' as keyof Msg,
+    iconId: Icons.Sword,
+    type: RecipeTypes.Smithing,
+    itemSubType: ItemSubType.Weapon,
+    getParameters: () => twoHSwordParams,
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')
         if (bar === undefined) return
@@ -69,6 +69,5 @@ export class TwoHSwordRecipe implements Recipe {
             ],
             results: [{ id: 'crafted2HSword', qta: 1, craftedItem: crafted2HSword }],
         }
-    }
-}
-export const twoHSwordRecipe = new TwoHSwordRecipe()
+    },
+})

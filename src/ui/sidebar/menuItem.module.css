@@ -6,8 +6,8 @@
     text-align: start;
     align-content: center;
 
-    transition-property: margin-left, border-radius, color, background-color, border-color, text-decoration-color, fill,
-        stroke, width;
+    transition-property:
+        margin-left, border-radius, color, background-color, border-color, text-decoration-color, fill, stroke, width;
 }
 .itemCollapsed {
     grid-template-columns: auto;
@@ -27,6 +27,6 @@
 .arrowDown {
     transform: rotate(90deg);
 }
-.myList {
-    transition: all 0.3s ease;
+.myListTransition {
+    transition: all 0.25s ease;
 }

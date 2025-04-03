@@ -10,6 +10,15 @@ export interface Recipe {
     iconId: Icons
     type: RecipeTypes
     itemSubType: ItemSubType
-    getParameters(state: GameState): RecipeParameter[]
-    getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined
+    getParameters: (state: GameState) => RecipeParameter[]
+    getResult: (state: GameState, params: RecipeParameterValue[]) => RecipeResult | undefined
+}
+export interface RecipeData {
+    id: string
+    nameId: keyof Msg
+    iconId: Icons
+    type: RecipeTypes
+    itemSubType: ItemSubType
+    getParameters: (state: GameState) => RecipeParameter[]
+    getResult: (state: GameState, params: RecipeParameterValue[]) => RecipeResult | undefined
 }

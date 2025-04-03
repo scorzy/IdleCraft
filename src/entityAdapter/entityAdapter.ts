@@ -89,9 +89,9 @@ export abstract class AbstractEntityAdapter<T> {
     }
     forEach(state: InitialState<T>, fun: (el: T) => void) {
         const ids = state.ids
-        ids.forEach((id: string) => {
+        for (const id of ids) {
             const element = state.entries[id]
             if (element) fun(element)
-        })
+        }
     }
 }

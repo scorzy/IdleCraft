@@ -1,11 +1,10 @@
-import { memoize } from 'proxy-memoize'
+import { createSelector } from 'reselect'
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { getTotal } from '../../bonus/BonusFunctions'
 import { Icons } from '../../icons/Icons'
 import { CharacterState } from '../characterState'
 
-export const selectMaxManaFromChar = memoize((char: CharacterState) => {
-    const points = char.healthPoints
+export const selectMaxManaFromChar = createSelector([(char: CharacterState) => char.manaPoints], (points) => {
     const bonuses: Bonus[] = []
     bonuses.push({
         id: 'baseMana',

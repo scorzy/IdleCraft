@@ -20,4 +20,21 @@ export const CharTemplatesData: { [k in CharTemplateEnum]: CharTemplate } = {
             },
         ],
     },
+    [CharTemplateEnum.Wolf]: {
+        nameId: 'Wolf',
+        iconId: Icons.WolfHead,
+        inventory: {},
+        skillsExp: {},
+        skillsLevel: {},
+        level: 2,
+        healthPoints: 1,
+        staminaPoints: 1,
+        manaPoints: 0,
+        loot: [
+            {
+                quantity: 1,
+                itemId: 'DeadWolf',
+            },
+        ],
+    },
 }

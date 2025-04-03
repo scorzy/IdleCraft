@@ -59,22 +59,21 @@ export class NormalAttack implements ActiveAbility {
         const source = getCharacterSelector(params.characterId).Name(state)
         const targets = getCharacterSelector(enemyId).Name(state)
 
-        state = addBattleLog(state, {
-            iconId: this.getIconId(params),
-            abilityId: this.nameId,
-            source,
-            targets,
-        })
-
         if (!caster.isEnemy) {
             const weapon = getCharacterSelector(characterId).MainWeapon(state)
             if (weapon && weapon.weaponData)
                 state = addExp(state, weapon.weaponData.expType, sumDamage(damage) * DAMAGE_EXP_MULTI)
         }
 
-        const { state: gameState } = dealDamage(state, enemyId, damage)
+        const { state: gameState, damageDone } = dealDamage(state, enemyId, damage)
         state = gameState
-
+        state = addBattleLog(state, {
+            iconId: this.getIconId(params),
+            abilityId: this.nameId,
+            source,
+            targets,
+            damageDone,
+        })
         return state
     }
 }

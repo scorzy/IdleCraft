@@ -3,7 +3,7 @@ import { useTranslations } from '../../msg/useTranslations'
 import { WoodTypes } from '../WoodTypes'
 import { WoodData } from '../WoodData'
 import { useGameStore } from '../../game/state'
-import { isCollapsed, isWoodSelected } from '../../ui/state/uiSelectors'
+import { isWoodSelected } from '../../ui/state/uiSelectors'
 import { lockedIcon, setWood } from '../../ui/state/uiFunctions'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
@@ -15,18 +15,17 @@ import { GameState } from '../../game/GameState'
 const trees = Object.values(WoodTypes)
 
 export const WoodcuttingSidebar = memo(function WoodcuttingSidebar() {
-    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Woodcutting))
     return (
         <SidebarContainer collapsedId={CollapsedEnum.Woodcutting}>
             {trees.map((t) => (
-                <TreeLink key={t} woodType={t} collapsed={collapsed} />
+                <TreeLink key={t} woodType={t} />
             ))}
         </SidebarContainer>
     )
 })
 
-export const TreeLink = memo(function TreeLink(props: { woodType: WoodTypes; collapsed: boolean }) {
-    const { woodType, collapsed } = props
+export const TreeLink = memo(function TreeLink(props: { woodType: WoodTypes }) {
+    const { woodType } = props
     const data = WoodData[woodType]
     const { t } = useTranslations()
 
@@ -41,11 +40,11 @@ export const TreeLink = memo(function TreeLink(props: { woodType: WoodTypes; col
     return (
         <MyListItem
             text={t[data.nameId]}
-            collapsed={collapsed}
             icon={lockedIcon(IconsData[data.iconId], enabled)}
             active={selected}
             onClick={onClick}
             enabled={enabled}
+            collapsedId={CollapsedEnum.Woodcutting}
         />
     )
 })

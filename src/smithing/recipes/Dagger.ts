@@ -1,14 +1,8 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BASE_SWORD_SPEED, BASE_SWORD_DAMAGE } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { Recipe } from '../../crafting/Recipe'
-import {
-    RecipeTypes,
-    RecipeParameter,
-    RecipeParameterValue,
-    RecipeResult,
-    RecipeParamType,
-} from '../../crafting/RecipeInterfaces'
+import { makeRecipe } from '../../crafting/makeRecipe'
+import { RecipeTypes, RecipeParameter, RecipeParameterValue, RecipeParamType } from '../../crafting/RecipeInterfaces'
 import { ExpEnum } from '../../experience/expEnum'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
@@ -25,14 +19,14 @@ const daggerParams: RecipeParameter[] = [
     },
 ]
 
-export class DaggerRecipe implements Recipe {
-    id = 'DaggerRecipe'
-    nameId = 'Dagger' as keyof Msg
-    iconId = Icons.Sword
-    type = RecipeTypes.Smithing
-    itemSubType = ItemSubType.Weapon
-    getParameters = () => daggerParams
-    getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
+export const daggerRecipe = makeRecipe({
+    id: 'DaggerRecipe',
+    nameId: 'Dagger' as keyof Msg,
+    iconId: Icons.Sword,
+    type: RecipeTypes.Smithing,
+    itemSubType: ItemSubType.Weapon,
+    getParameters: () => daggerParams,
+    getResult: (state: GameState, params: RecipeParameterValue[]) => {
         const bar = params.find((i) => i.id === 'bar')
         if (bar === undefined) return
         const barItem = selectGameItem(bar.itemId)(state)
@@ -69,6 +63,5 @@ export class DaggerRecipe implements Recipe {
             ],
             results: [{ id: 'craftedDagger', qta: 1, craftedItem: craftedDagger }],
         }
-    }
-}
-export const daggerRecipe = new DaggerRecipe()
+    },
+})

@@ -33,7 +33,7 @@ export const CraftingDataUi = memo(function CraftingDataUi(props: { craftingData
 
     const craftingDataPercent = 100 * (craftingData.prestige - 1)
 
-    return <li>{fun.prestigePercent(f(craftingDataPercent))}</li>
+    return <div>{fun.prestigePercent(f(craftingDataPercent))}</div>
 })
 export const WoodAxeDataUi = memo(function WoodAxeDataUi(props: { woodAxeData: WoodAxeData }) {
     const { woodAxeData } = props

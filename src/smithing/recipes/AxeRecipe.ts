@@ -1,13 +1,7 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { Recipe } from '../../crafting/Recipe'
-import {
-    RecipeTypes,
-    RecipeParameter,
-    RecipeParameterValue,
-    RecipeResult,
-    RecipeParamType,
-} from '../../crafting/RecipeInterfaces'
+import { makeRecipe } from '../../crafting/makeRecipe'
+import { RecipeTypes, RecipeParameter, RecipeParameterValue, RecipeParamType } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { Item, ItemSubType, ItemTypes } from '../../items/Item'
@@ -29,14 +23,14 @@ const woodAxeParam: RecipeParameter[] = [
     },
 ]
 
-class AxeRecipeInt implements Recipe {
-    id = 'AxeRecipe'
-    type = RecipeTypes.Smithing
-    iconId = Icons.Axe
-    nameId = 'WoodAxe' as keyof Msg
-    itemSubType = ItemSubType.Tool
-    getParameters = () => woodAxeParam
-    getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
+export const axeRecipe = makeRecipe({
+    id: 'AxeRecipe',
+    type: RecipeTypes.Smithing,
+    iconId: Icons.Axe,
+    nameId: 'WoodAxe' as keyof Msg,
+    itemSubType: ItemSubType.Tool,
+    getParameters: () => woodAxeParam,
+    getResult: (state: GameState, params: RecipeParameterValue[]) => {
         const bar = params.find((i) => i.id === 'bar')
         if (bar === undefined) return
 
@@ -80,6 +74,5 @@ class AxeRecipeInt implements Recipe {
             ],
             results: [{ id: 'craftedAxe', qta: 1, craftedItem: craftedAxe }],
         }
-    }
-}
-export const AxeRecipe = new AxeRecipeInt()
+    },
+})

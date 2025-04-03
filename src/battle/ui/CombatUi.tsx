@@ -23,7 +23,7 @@ import { MyHoverCard } from '../../ui/MyHoverCard'
 import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
 import { Card, CardContent, CardTitle } from '../../components/ui/card'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
-import { AttackInfo, ArmourInfo } from '../../characters/ui/CharactersUi'
+import { CharCombatInfo } from '../../characters/ui/CharactersUi'
 import { Button } from '../../components/ui/button'
 import { Table, TableBody, TableCell, TableRow } from '../../components/ui/table'
 import { selectLoot } from '../../storage/selectors/selectLoot'
@@ -99,10 +99,7 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
 
                         <CollapsibleContent className="CollapsibleContent">
                             <CardContent className="grid gap-2">
-                                {t.Attack}
-                                <AttackInfo charId={charId} />
-                                {t.Defence}
-                                <ArmourInfo charId={charId} />
+                                <CharCombatInfo charId={charId} />
                             </CardContent>
                         </CollapsibleContent>
                     </Collapsible>

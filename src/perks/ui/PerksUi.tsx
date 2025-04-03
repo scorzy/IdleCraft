@@ -122,12 +122,11 @@ export const PerkLink = memo(function PerkLink(props: { perk: PerksEnum }) {
     const selected = useGameStore(isPerkSelected(perk))
     const enabled = useGameStore(isPerkEnabled(perk))
     const ownPerk = useGameStore(hasPerk(perk))
-    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Perk))
 
     const data = PerksData[perk]
     return (
         <MyListItem
-            collapsed={collapsed}
+            collapsedId={CollapsedEnum.Perk}
             active={selected}
             text={t[data.nameId]}
             icon={enabled ? IconsData[data.iconId] : <TbLock />}

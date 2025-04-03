@@ -4,13 +4,13 @@ import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { clsx } from 'clsx'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
-import { IconsData } from '../../icons/Icons'
+import { Icons, IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { selectCharactersTeamIds } from '../selectors/characterSelectors'
 import { setSelectedChar } from '../../ui/state/uiFunctions'
-import { isCharReadonly, isCharSelected, isCollapsed, selectSelectedCharId } from '../../ui/state/uiSelectors'
+import { isCharReadonly, isCharSelected, selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -115,17 +115,16 @@ export const StatsTab = memo(function StatsTab() {
 
 const CharactersSidebar = memo(function CharactersSidebar() {
     const charIds = useGameStore(selectCharactersTeamIds)
-    const collapsed = useGameStore(isCollapsed(CollapsedEnum.Characters))
     return (
         <SidebarContainer collapsedId={CollapsedEnum.Characters}>
             {charIds.map((t) => (
-                <CharacterLink key={t} charId={t} collapsed={collapsed} />
+                <CharacterLink key={t} charId={t} />
             ))}
         </SidebarContainer>
     )
 })
-const CharacterLink = memo(function CharacterLink(props: { charId: string; collapsed: boolean }) {
-    const { charId, collapsed } = props
+const CharacterLink = memo(function CharacterLink(props: { charId: string }) {
+    const { charId } = props
 
     const charSel = getCharacterSelector(charId)
     const name = useGameStore(useCallback((s) => charSel.Name(s), [charSel]))
@@ -134,7 +133,15 @@ const CharacterLink = memo(function CharacterLink(props: { charId: string; colla
 
     const onClick = useCallback(() => setSelectedChar(charId), [charId])
 
-    return <MyListItem text={name} collapsed={collapsed} icon={IconsData[iconId]} active={active} onClick={onClick} />
+    return (
+        <MyListItem
+            text={name}
+            collapsedId={CollapsedEnum.Characters}
+            icon={IconsData[iconId]}
+            active={active}
+            onClick={onClick}
+        />
+    )
 })
 
 const CharInfo = memo(function CharInfo() {
@@ -148,14 +155,28 @@ const CharInfo = memo(function CharInfo() {
                 <CardContent className="grid gap-2">
                     <StatsInfo />
 
-                    <CardTitle className="mt-2">{t.Attack}</CardTitle>
-                    <AttackInfo charId={charId} />
-
-                    <CardTitle className="mt-2">{t.Defence}</CardTitle>
-                    <ArmourInfo charId={charId} />
+                    <CharCombatInfo charId={charId} />
                 </CardContent>
             </Card>
         </div>
+    )
+})
+
+export const CharCombatInfo = memo(function CharCombatInfo(props: { charId: string }) {
+    const { t } = useTranslations()
+    const { charId } = props
+    return (
+        <>
+            <CardTitle className="mt-2">
+                {IconsData[Icons.Sword]} {t.Attack}
+            </CardTitle>
+            <AttackInfo charId={charId} />
+
+            <CardTitle className="mt-2">
+                {IconsData[Icons.Shield]} {t.Defence}
+            </CardTitle>
+            <ArmourInfo charId={charId} />
+        </>
     )
 })
 

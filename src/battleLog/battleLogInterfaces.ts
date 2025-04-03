@@ -7,6 +7,7 @@ export interface AddBattleLog {
     abilityId: keyof Msg
     source?: string
     targets?: string
+    damageDone?: number
 }
 
 export interface BattleLog {
@@ -17,4 +18,5 @@ export interface BattleLog {
     abilityId: keyof Msg
     source?: string
     targets?: string
+    damageDone?: number
 }

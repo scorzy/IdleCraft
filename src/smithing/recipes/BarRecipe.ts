@@ -1,4 +1,4 @@
-import { Recipe } from '../../crafting/Recipe'
+import { makeRecipe } from '../../crafting/makeRecipe'
 import {
     RecipeTypes,
     RecipeParameter,
@@ -23,7 +23,7 @@ const barParam: RecipeParameter[] = [
     },
 ]
 
-export const BarRecipe: Recipe = {
+export const barRecipe = makeRecipe({
     id: 'BarRecipe',
     type: RecipeTypes.Smithing,
     nameId: 'Bar',
@@ -48,4 +48,4 @@ export const BarRecipe: Recipe = {
             results: [{ id: res, qta: 1, stdItemId: res }],
         }
     },
-}
+})
