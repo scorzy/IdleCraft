@@ -4,11 +4,11 @@ import { CharacterAdapter } from '../../characters/characterAdapter'
 import { createEnemies } from '../../characters/functions/createEnemies'
 import { startNextAbility } from '../../characters/functions/startNextAbility'
 import { GameState } from '../../game/GameState'
-import { BattleAdapter } from '../BattleAdapter'
 import { BattleZones } from '../BattleZones'
+import { getBattleActivity } from '../selectors/battleSelectors'
 
 export const startBattle = makeStartActivity((state: GameState, id: string) => {
-    const data = BattleAdapter.selectEx(state.battle, id)
+    const data = getBattleActivity(state, id)
     const battleZone = BattleZones[data.battleZoneEnum]
 
     state = createEnemies(state, battleZone.enemies)

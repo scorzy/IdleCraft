@@ -3,7 +3,6 @@ import { ItemAdapter } from '../storage/ItemAdapter'
 import { TimerAdapter } from '../timers/Timer'
 import { copyValues } from '../utils/copyValues'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
-import { BattleAdapter } from '../battle/BattleAdapter'
 import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
@@ -21,7 +20,6 @@ export function loadData(data: object): GameState {
     if ('timers' in data) state.timers = TimerAdapter.load(data.timers)
     if ('craftedItems' in data) state.craftedItems = ItemAdapter.load(data.craftedItems)
     if ('treeGrowth' in data) state.treeGrowth = TreeGrowthAdapter.load(data.treeGrowth)
-    if ('battle' in data) state.battle = BattleAdapter.load(data.battle)
     if ('castCharAbility' in data) state.castCharAbility = CastCharAbilityAdapter.load(data.castCharAbility)
 
     if (

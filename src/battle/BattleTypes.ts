@@ -1,12 +1,9 @@
+import { ActivityState, ActivityTypes } from '../activities/ActivityState'
 import { BattleZoneEnum } from './BattleZoneEnum'
-import { BattleZone } from './BattleZone'
 
-export interface BattleAddType {
+export type BattleState = ActivityState & {
     battleZoneEnum: BattleZoneEnum
 }
-export interface BattleState extends BattleAddType {
-    activityId: string
-}
-export interface BattleStateFull extends BattleState {
-    battleZone: BattleZone
+export function isBattle(act: ActivityState | BattleState): act is BattleState {
+    return act.type === ActivityTypes.Battle
 }

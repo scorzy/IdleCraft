@@ -9,7 +9,6 @@ import { UiPages } from '../ui/state/UiPages'
 import { WoodTypes } from '../wood/WoodTypes'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { PLAYER_CHAR, PLAYER_ID } from '../characters/charactersConst'
-import { BattleAdapter } from '../battle/BattleAdapter'
 import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
 import { RecipeTypes } from '../crafting/RecipeInterfaces'
@@ -81,7 +80,6 @@ export const InitialGameState: GameState = {
             [PLAYER_ID]: PLAYER_CHAR,
         },
     },
-    battle: BattleAdapter.getInitialState(),
     castCharAbility: CastCharAbilityAdapter.getInitialState(),
     battleLogs: BattleLogAdapter.getInitialState(),
 }

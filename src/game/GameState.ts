@@ -9,7 +9,6 @@ import { ForestsType } from '../wood/ForestsState'
 import { TreeGrowth } from '../wood/forest/forestGrowth'
 import { CharacterState } from '../characters/characterState'
 import { ToastState } from '../notification/toastState'
-import { BattleState } from '../battle/BattleTypes'
 import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
 import { BattleLog } from '../battleLog/battleLogInterfaces'
 import { UiState } from '../ui/UiState'
@@ -54,7 +53,6 @@ export interface GameState {
         result: RecipeResult | undefined
     }
     characters: InitialState<CharacterState>
-    battle: InitialState<BattleState>
     castCharAbility: InitialState<CastCharAbility>
     battleLogs: InitialState<BattleLog>
 }
