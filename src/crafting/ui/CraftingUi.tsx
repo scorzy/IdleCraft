@@ -27,7 +27,7 @@ import { setRecipeItemParam } from '../RecipeFunctions'
 import { Recipe } from '../Recipe'
 import { MyPage } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
-import { addCrafting } from '../functions/addCrafting'
+import { addCraftingClick } from '../functions/addCrafting'
 import { handleRecipeChange } from '../CraftingFunctions'
 import { Card, CardContent } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
@@ -146,7 +146,7 @@ const CraftingButtons = memo(function CraftingButtons() {
                 {time ? ft(time) : '-'}
             </Badge>
             {id === null && (
-                <Button type="submit" className="w-min" onClick={addCrafting} disabled={!bntEnabled}>
+                <Button type="submit" className="w-min" onClick={addCraftingClick} disabled={!bntEnabled}>
                     {t.Craft}
                 </Button>
             )}

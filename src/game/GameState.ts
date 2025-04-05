@@ -1,5 +1,4 @@
 import { ActivityState } from '../activities/ActivityState'
-import { Crafting } from '../crafting/CraftingIterfaces'
 import { RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
@@ -48,7 +47,6 @@ export interface GameState {
     waitingTrees: string | null
     locations: { [k in GameLocations]: LocationState }
     treeGrowth: InitialState<TreeGrowth>
-    crafting: InitialState<Crafting>
     recipeId: string
     craftingForm: {
         params: RecipeParameter[]

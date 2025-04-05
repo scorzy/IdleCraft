@@ -2,21 +2,26 @@ import { ActivityTypes } from '../../activities/ActivityState'
 import { makeAddActivity } from '../../activities/functions/makeAddActivity'
 import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
-import { CraftingAdapter } from '../CraftingAdapter'
-import { Crafting } from '../CraftingIterfaces'
+import { RecipeParameterValue, RecipeResult } from '../RecipeInterfaces'
 
-const makeCrafting = makeAddActivity(ActivityTypes.Crafting, (state: GameState, activityId: string) => {
+type CraftingData = {
+    recipeId: string
+    paramsValue: RecipeParameterValue[]
+    result: RecipeResult
+}
+
+const makeCrafting = (data: CraftingData) => makeAddActivity(ActivityTypes.Crafting, data)
+
+const addCrafting = (state: GameState) => {
     if (!state.craftingForm.result) return state
 
-    const data: Crafting = {
-        activityId,
+    const data: CraftingData = {
         recipeId: state.recipeId,
         paramsValue: state.craftingForm.paramsValue,
         result: state.craftingForm.result,
     }
 
-    state = { ...state, crafting: CraftingAdapter.create(state.crafting, data) }
-    return state
-})
+    return makeCrafting(data)(state)
+}
 
-export const addCrafting = () => useGameStore.setState(makeCrafting)
+export const addCraftingClick = () => useGameStore.setState(addCrafting)

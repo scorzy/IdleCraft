@@ -4,14 +4,15 @@ import { addExp } from '../../experience/expFunctions'
 import { GameState } from '../../game/GameState'
 import { addItem, saveCraftItem } from '../../storage/storageFunctions'
 import { Timer } from '../../timers/Timer'
-import { CraftingAdapter } from '../CraftingAdapter'
+import { getCraftingActivity } from '../CraftingSelectors'
 import { RecipeData } from '../RecipeData'
 import { recipes } from '../Recipes'
 import { isCraftable } from './canCraft'
 
 export const execCrafting = makeExecActivity((state: GameState, timer: Timer) => {
     const id = timer.actId
-    const data = CraftingAdapter.selectEx(state.crafting, id)
+    const data = getCraftingActivity(state, id)
+
     const recipe = recipes.getEx(data.recipeId)
 
     const craftResult = data.result

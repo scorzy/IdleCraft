@@ -1,10 +1,10 @@
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { StdItems } from '../../items/stdItems'
-import { CraftingAdapter } from '../CraftingAdapter'
+import { getCraftingActivity } from '../CraftingSelectors'
 
 export function getCraftingIcon(state: GameState, id: string) {
-    const data = CraftingAdapter.selectEx(state.crafting, id)
+    const data = getCraftingActivity(state, id)
     if (data.result.results[0]?.stdItemId) {
         const stdItem = StdItems[data.result.results[0].stdItemId]
         if (!stdItem) throw new Error(`StdItem not found ${data.result.results[0].stdItemId}`)

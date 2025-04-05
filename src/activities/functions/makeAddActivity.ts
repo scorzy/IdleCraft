@@ -17,8 +17,6 @@ export const makeAddActivity =
             ...data,
         }
 
-        console.log('Adding activity', activity)
-
         state = {
             ...state,
             activities: ActivityAdapter.create(state.activities, activity),
@@ -29,7 +27,8 @@ export const makeAddActivity =
 
         const title = activityTitles.getEx(type)(state, id)
         const iconId = activityIcons.getEx(type)(state, id)
-        state.notifications = addNotification(state.notifications, { title, iconId })
+
+        state = { ...state, notifications: addNotification(state.notifications, { title, iconId }) }
 
         if (state.orderedActivities.length === 1) state = startNextActivity(state)
 

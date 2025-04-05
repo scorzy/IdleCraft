@@ -1,5 +1,4 @@
 import { ActivityAdapter } from '../activities/ActivityState'
-import { CraftingAdapter } from '../crafting/CraftingAdapter'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
@@ -70,7 +69,6 @@ export const InitialGameState: GameState = {
         [GameLocations.Test]: getInitialVillageState(),
     },
     treeGrowth: TreeGrowthAdapter.getInitialState(),
-    crafting: CraftingAdapter.getInitialState(),
     recipeId: '',
     craftingForm: {
         params: [],
