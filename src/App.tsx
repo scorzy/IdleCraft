@@ -28,7 +28,7 @@ if ('indexedDB' in window) {
         const transaction = db.transaction('save', 'readwrite')
         const objectStore = transaction.objectStore('save')
         const putRes = objectStore.put(state)
-        console.log(`Save`)
+
         putRes.onerror = () => {
             console.log(`Save failed`)
         }
