@@ -10,10 +10,11 @@ import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 
 const LIST_ICON = <TbList />
-export const BattleLogUi = memo(function BattleLogUi() {
+export const BattleLogUi = memo(function BattleLogUi(props: { className?: string }) {
+    const { className } = props
     const { t } = useTranslations()
     return (
-        <Card>
+        <Card className={className}>
             <MyCardHeaderTitle title={t.Log} icon={LIST_ICON} />
             <CardContent>
                 <BattleLogs />
@@ -25,7 +26,7 @@ const BattleLogs = memo(function BattleLogs() {
     const ids = useGameStore(selectBattleLogsIds)
 
     return (
-        <div className="h-60 overflow-auto text-sm">
+        <div className="text-sm">
             <ScrollableFeed>
                 {ids.map((id) => (
                     <LogUi id={id} key={id} />

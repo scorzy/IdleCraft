@@ -39,7 +39,7 @@ export const CombatUi = memo(function CombatUi() {
         <MyPage>
             <div className={classes.mainContainer}>
                 <CombatChars />
-                <BattleLogUi />
+                <BattleLogUi className={classes.log} />
                 <BattleLootUi />
             </div>
         </MyPage>
@@ -49,28 +49,30 @@ const CombatChars = memo(function CombatChars() {
     const ids = useGameStore(selectTeams)
     const { t } = useTranslations()
     return (
-        <div className={classes.container}>
-            <Card>
-                <MyCardHeaderTitle title={t.Allies} />
-
-                <CardContent className={classes.team}>
-                    {ids.allies.map((id) => (
-                        <CharCard charId={id} key={id} />
-                    ))}
-                </CardContent>
-            </Card>
-
-            {ids.enemies.length > 0 && (
-                <Card>
-                    <MyCardHeaderTitle title={t.Enemies} />
+        <>
+            <div className={classes.allies}>
+                <div>
+                    <MyCardHeaderTitle title={t.Allies} />
                     <CardContent className={classes.team}>
-                        {ids.enemies.map((id) => (
+                        {ids.allies.map((id) => (
                             <CharCard charId={id} key={id} />
                         ))}
                     </CardContent>
-                </Card>
-            )}
-        </div>
+                </div>
+            </div>
+            <div className={classes.enemies}>
+                {ids.enemies.length > 0 && (
+                    <div>
+                        <MyCardHeaderTitle title={t.Enemies} />
+                        <CardContent className={classes.team}>
+                            {ids.enemies.map((id) => (
+                                <CharCard charId={id} key={id} />
+                            ))}
+                        </CardContent>
+                    </div>
+                )}
+            </div>
+        </>
     )
 })
 const CharCard = memo(function CharCard(props: { charId: string }) {
@@ -238,7 +240,7 @@ const BattleLootUi = memo(function BattleLootUi() {
     const { t } = useTranslations()
     const loots = useGameStore(selectLoot)
     return (
-        <Card>
+        <Card className={classes.loot}>
             <MyCardHeaderTitle title={t.Loot} icon={BAG_ICON} />
             <CardContent>
                 <Table className={classes.lootTable}>
