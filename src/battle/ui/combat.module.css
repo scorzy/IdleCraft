@@ -2,12 +2,14 @@
     display: grid;
     gap: var(--gap);
     align-items: start;
-    grid-template-rows: auto;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-flow: row;
 }
 .team {
     display: grid;
     gap: var(--gap);
+
+    grid-template-rows: auto;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 .label {
     display: grid;
@@ -43,11 +45,6 @@
     grid-auto-flow: row;
 }
 
-@container (min-width: 650px) {
-    .mainContainer {
-        grid-template-columns: 1fr 1fr;
-    }
-}
 .lootTable {
     & svg {
         font-size: 1.25rem;

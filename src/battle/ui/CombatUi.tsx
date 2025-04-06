@@ -21,7 +21,7 @@ import { GameState } from '../../game/GameState'
 import { Badge } from '../../components/ui/badge'
 import { MyHoverCard } from '../../ui/MyHoverCard'
 import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
-import { Card, CardContent, CardTitle } from '../../components/ui/card'
+import { Card, CardContent } from '../../components/ui/card'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
 import { CharCombatInfo } from '../../characters/ui/CharactersUi'
 import { Button } from '../../components/ui/button'
@@ -50,20 +50,26 @@ const CombatChars = memo(function CombatChars() {
     const { t } = useTranslations()
     return (
         <div className={classes.container}>
-            <div className={classes.team}>
-                <CardTitle>{t.Allies}</CardTitle>
+            <Card>
+                <MyCardHeaderTitle title={t.Allies} />
 
-                {ids.allies.map((id) => (
-                    <CharCard charId={id} key={id} />
-                ))}
-            </div>
-            <div className={classes.team}>
-                <CardTitle>{t.Enemies}</CardTitle>
+                <CardContent className={classes.team}>
+                    {ids.allies.map((id) => (
+                        <CharCard charId={id} key={id} />
+                    ))}
+                </CardContent>
+            </Card>
 
-                {ids.enemies.map((id) => (
-                    <CharCard charId={id} key={id} />
-                ))}
-            </div>
+            {ids.enemies.length > 0 && (
+                <Card>
+                    <MyCardHeaderTitle title={t.Enemies} />
+                    <CardContent className={classes.team}>
+                        {ids.enemies.map((id) => (
+                            <CharCard charId={id} key={id} />
+                        ))}
+                    </CardContent>
+                </Card>
+            )}
         </div>
     )
 })
