@@ -19,6 +19,7 @@ import { CombatPage } from '../../battle/ui/BattleZoneUi'
 import { CombatUi } from '../../battle/ui/CombatUi'
 import { CharactersUi } from '../../characters/ui/CharactersUi'
 import { DeadDialog } from '../../characters/ui/DeadDialog'
+import { selectPage } from '../uiSelectors'
 import classes from './appShell.module.css'
 
 export const AppShell = memo(function AppShell() {
@@ -28,7 +29,7 @@ export const AppShell = memo(function AppShell() {
         <div className={clsx(classes.container, { sideOpen: open }, { contentOpen: !open })}>
             <header className={classes.header}>
                 <div className={classes.headerLeft}>
-                    <Button onClick={() => toggle()} className={classes.menu} variant="outline">
+                    <Button onClick={toggle} className={classes.menu} variant="outline">
                         <LuMenu />
                     </Button>
                     <Header />
@@ -50,7 +51,7 @@ export const AppShell = memo(function AppShell() {
 })
 
 const Header = memo(function Header() {
-    const page = useGameStore((s) => s.ui.page)
+    const page = useGameStore(selectPage)
     const { t } = useTranslations()
 
     const uiPage = UiPagesData[page]
@@ -64,7 +65,7 @@ const Header = memo(function Header() {
 })
 
 const PageContent = memo(function PageContent() {
-    const page = useGameStore((s) => s.ui.page)
+    const page = useGameStore(selectPage)
     switch (page) {
         case UiPages.Woodcutting:
             return <Woodcutting />
