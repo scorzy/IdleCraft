@@ -40,7 +40,7 @@ const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttribu
 CardDescription.displayName = 'CardDescription'
 
 const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-    ({ className, ...props }, ref) => <div ref={ref} className={cn('overflow-auto p-3 pt-3', className)} {...props} />
+    ({ className, ...props }, ref) => <div ref={ref} className={cn('m-3 mt-3 overflow-auto', className)} {...props} />
 )
 CardContent.displayName = 'CardContent'
 
