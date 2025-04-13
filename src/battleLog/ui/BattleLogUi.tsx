@@ -1,5 +1,4 @@
-import { memo } from 'react'
-import ScrollableFeed from 'react-scrollable-feed'
+import React, { memo, useEffect, useState } from 'react'
 import { TbList } from 'react-icons/tb'
 import { Card, CardContent } from '../../components/ui/card'
 import { useGameStore } from '../../game/state'
@@ -24,14 +23,41 @@ export const BattleLogUi = memo(function BattleLogUi(props: { className?: string
 })
 const BattleLogs = memo(function BattleLogs() {
     const ids = useGameStore(selectBattleLogsIds)
+    const lastRef = React.useRef<HTMLSpanElement>(null)
+    const [lastVisible, setLastVisible] = useState<boolean>(true)
+
+    useEffect(() => {
+        if (!lastRef.current) return
+
+        if (lastVisible) lastRef.current.scrollIntoView({ behavior: 'smooth' })
+    }, [ids, lastVisible])
+
+    useEffect(() => {
+        if (!lastRef.current) return
+        if (lastVisible) lastRef.current.scrollIntoView({ behavior: 'smooth' })
+    }, [lastVisible])
+
+    useEffect(() => {
+        if (!lastRef.current) return
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                setLastVisible(entry.isIntersecting)
+            })
+        })
+        observer.observe(lastRef.current)
+
+        return () => {
+            observer.disconnect()
+        }
+    }, [])
 
     return (
         <div className="text-sm">
-            <ScrollableFeed>
-                {ids.map((id) => (
-                    <LogUi id={id} key={id} />
-                ))}
-            </ScrollableFeed>
+            {ids.map((id) => (
+                <LogUi id={id} key={id} />
+            ))}
+            <span ref={lastRef} />
         </div>
     )
 })
