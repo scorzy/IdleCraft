@@ -326,14 +326,16 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
             </div>
             <div className="grid grid-flow-col items-center justify-start gap-2 text-sm">
                 <ul>
-                    {Object.entries(damage).map((kv) => (
-                        <AttackTypeInfo
-                            key={kv[0]}
-                            charId={charId}
-                            damage={kv[1]}
-                            damageType={kv[0] as DamageTypes}
-                        ></AttackTypeInfo>
-                    ))}
+                    {Object.entries(damage)
+                        .sort()
+                        .map((kv) => (
+                            <AttackTypeInfo
+                                key={kv[0]}
+                                charId={charId}
+                                damage={kv[1]}
+                                damageType={kv[0] as DamageTypes}
+                            ></AttackTypeInfo>
+                        ))}
                 </ul>
             </div>
         </div>

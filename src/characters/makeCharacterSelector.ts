@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+import { deepEqual } from 'fast-equals'
 import { GameState } from '../game/GameState'
 import { getCharLevelExp } from '../experience/expSelectors'
 import { selectTranslations } from '../msg/useTranslations'
@@ -8,8 +9,8 @@ import { DamageData, DamageTypes, Item } from '../items/Item'
 import { Icons } from '../icons/Icons'
 import { createInventoryNoQta, selectGameItem, selectGameItemFromCraft } from '../storage/StorageSelectors'
 import { myMemoize } from '../utils/myMemoize'
-import { myMemoizeOne } from '../utils/myMemoizeOne'
 import { createDeepEqualSelector } from '../utils/createDeepEqualSelector'
+import { myMemoizeOne } from '../utils/myMemoizeOne'
 import { CharacterAdapter } from './characterAdapter'
 import { CharacterSelector } from './CharacterSelector'
 import { selectMaxHealthFromChar } from './selectors/healthSelectors'
@@ -180,13 +181,13 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const AllAttackDamage = myMemoizeOne((s: GameState) => {
         const ret: DamageData = {}
 
-        Object.values(DamageTypes).forEach((type: DamageTypes) => {
-            const totDamage = damage[type].Damage(s)
-            if (totDamage > 0) ret[type] = totDamage
+        Object.entries(damage).forEach((kv) => {
+            const totDamage = kv[1].Damage(s)
+            if (totDamage > 0) ret[kv[0] as DamageTypes] = totDamage
         })
+
         return ret
     })
-
     const AttackSpeedList = createDeepEqualSelector([(s: GameState) => MainWeapon(s)], (weapon) => {
         const bonuses: Bonus[] = []
 
