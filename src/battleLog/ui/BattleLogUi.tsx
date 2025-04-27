@@ -7,6 +7,7 @@ import { IconsData } from '../../icons/Icons'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import classes from './battleLogUi.module.css'
 
 const LIST_ICON = <TbList />
 export const BattleLogUi = memo(function BattleLogUi(props: { className?: string }) {
@@ -28,36 +29,36 @@ const BattleLogs = memo(function BattleLogs() {
 
     useEffect(() => {
         if (!lastRef.current) return
-
         if (lastVisible) lastRef.current.scrollIntoView({ behavior: 'smooth' })
-    }, [ids, lastVisible])
+    }, [ids, lastVisible, lastRef])
 
     useEffect(() => {
         if (!lastRef.current) return
-        if (lastVisible) lastRef.current.scrollIntoView({ behavior: 'smooth' })
-    }, [lastVisible])
 
-    useEffect(() => {
-        if (!lastRef.current) return
+        console.log('lastRef.current', lastRef.current)
 
         const observer = new IntersectionObserver((entries) => {
+            let newLastVisible = false
             entries.forEach((entry) => {
-                setLastVisible(entry.isIntersecting)
+                newLastVisible = entry.isIntersecting
             })
+            setLastVisible(newLastVisible)
         })
         observer.observe(lastRef.current)
 
         return () => {
             observer.disconnect()
         }
-    }, [])
+    }, [lastRef, lastVisible])
 
     return (
         <div className="text-sm">
             {ids.map((id) => (
                 <LogUi id={id} key={id} />
             ))}
-            <span ref={lastRef} />
+            <span ref={lastRef} className={classes.lastSpan}>
+                &nbsp;
+            </span>
         </div>
     )
 })
