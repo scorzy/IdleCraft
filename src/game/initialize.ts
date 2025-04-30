@@ -8,6 +8,7 @@ import { getBattleIcon } from '../battle/functions/getBattleIcon'
 import { getBattleTitle } from '../battle/functions/getBattleTitle'
 import { removeBattle } from '../battle/functions/removeBattle'
 import { startBattle } from '../battle/functions/startBattle'
+import { startBattleTimer } from '../battle/functions/startBattleTimer'
 import { butcheringRecipe } from '../butchering/ButcheringRecipe'
 import { recipes } from '../crafting/Recipes'
 import { execCrafting } from '../crafting/functions/execCrafting'
@@ -62,7 +63,6 @@ function initActivities() {
     activityTitles.set(ActivityTypes.Crafting, getCraftingTitle)
     activityIcons.set(ActivityTypes.Crafting, getCraftingIcon)
 
-    // activityExecutors.set(ActivityTypes.Battle, execBattle)
     activityRemovers.set(ActivityTypes.Battle, removeBattle)
     activityStarters.set(ActivityTypes.Battle, startBattle)
     activityTitles.set(ActivityTypes.Battle, getBattleTitle)
@@ -70,6 +70,7 @@ function initActivities() {
 
     activityExecutors.set(ActivityTypes.Tree, execTreeGrow)
     activityExecutors.set(ActivityTypes.Ability, execAbilityTimer)
+    activityExecutors.set(ActivityTypes.StartBattle, startBattleTimer)
 }
 
 function initRecipes() {

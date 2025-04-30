@@ -1,22 +1,11 @@
 import { ActivityStartResult } from '../../activities/activityInterfaces'
+import { ActivityTypes } from '../../activities/ActivityState'
 import { makeStartActivity } from '../../activities/functions/makeStartActivity'
-import { CharacterAdapter } from '../../characters/characterAdapter'
-import { createEnemies } from '../../characters/functions/createEnemies'
-import { startNextAbility } from '../../characters/functions/startNextAbility'
 import { GameState } from '../../game/GameState'
-import { BattleZones } from '../BattleZones'
-import { getBattleActivity } from '../selectors/battleSelectors'
+import { startTimer } from '../../timers/startTimer'
 
 export const startBattle = makeStartActivity((state: GameState, id: string) => {
-    const data = getBattleActivity(state, id)
-    const battleZone = BattleZones[data.battleZoneEnum]
-
-    state = createEnemies(state, battleZone.enemies)
-
-    const charIds = CharacterAdapter.getIds(state.characters)
-    for (const charId of charIds) {
-        state = startNextAbility(state, charId)
-    }
+    state = startTimer(state, 3e3, ActivityTypes.StartBattle, id)
 
     return { state, result: ActivityStartResult.Started }
 })

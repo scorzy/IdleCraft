@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useLayoutEffect, useRef, useState } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { MyPage } from '../../ui/pages/MyPage'
@@ -21,7 +21,7 @@ import { GameState } from '../../game/GameState'
 import { Badge } from '../../components/ui/badge'
 import { MyHoverCard } from '../../ui/MyHoverCard'
 import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
-import { Card, CardContent } from '../../components/ui/card'
+import { Card, CardContent, CardTitle } from '../../components/ui/card'
 import { BattleLogUi } from '../../battleLog/ui/battleLogUi'
 import { CharCombatInfo } from '../../characters/ui/CharactersUi'
 import { Button } from '../../components/ui/button'
@@ -31,6 +31,7 @@ import { LootId } from '../../storage/storageState'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { collectLootUi } from '../../storage/function/collectLoot'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
+import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
 import classes from './Combat.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
@@ -48,11 +49,21 @@ export const CombatUi = memo(function CombatUi() {
 const CombatChars = memo(function CombatChars() {
     const ids = useGameStore(selectTeams)
     const { t } = useTranslations()
+    const [alliesHeight, setAlliesHeight] = useState(0)
+    const refAllies = useRef<HTMLDivElement>(null)
+
+    useLayoutEffect(() => {
+        if (refAllies.current) setAlliesHeight(refAllies.current.clientHeight)
+
+        return () => {}
+    }, [refAllies])
+
     return (
         <>
-            <div className={classes.allies}>
+            <div className={classes.allies} ref={refAllies}>
                 <div>
-                    <MyCardHeaderTitle title={t.Allies} />
+                    <CardTitle>{t.Allies}</CardTitle>
+
                     <CardContent className={classes.team}>
                         {ids.allies.map((id) => (
                             <CharCard charId={id} key={id} />
@@ -60,17 +71,16 @@ const CombatChars = memo(function CombatChars() {
                     </CardContent>
                 </div>
             </div>
-            <div className={classes.enemies}>
-                {ids.enemies.length > 0 && (
-                    <div>
-                        <MyCardHeaderTitle title={t.Enemies} />
-                        <CardContent className={classes.team}>
-                            {ids.enemies.map((id) => (
-                                <CharCard charId={id} key={id} />
-                            ))}
-                        </CardContent>
-                    </div>
-                )}
+            <div className={classes.enemies} style={{ minHeight: alliesHeight }}>
+                <div>
+                    <CardTitle>{t.Enemies}</CardTitle>
+
+                    <CardContent className={classes.team}>
+                        {ids.enemies.map((id) => (
+                            <CharCard charId={id} key={id} />
+                        ))}
+                    </CardContent>
+                </div>
             </div>
         </>
     )
@@ -177,19 +187,22 @@ const CharMana = memo(function CharMana(props: { charId: string }) {
 const MainAttack = memo(function MainAttack(props: { charId: string }) {
     const { charId } = props
     const { t } = useTranslations()
+    const { ft } = useNumberFormatter()
     const timer = useGameStore(selectCharMainAttackTimer(charId))
     const attack = useGameStore(selectCharMainAttack(charId))
     const icon = useGameStore(selectCharMainAttackIcon(charId))
-    if (!timer || !attack) return
-    const ability = ActiveAbilityData.getEx(attack.abilityId)
+    let ability: ActiveAbility | null = null
+    if (timer && attack) ability = ActiveAbilityData.getEx(attack.abilityId)
     return (
         <div>
             <span className={classes.attackLabel}>
                 {icon && IconsData[icon]}
-                {t[ability.nameId]}
+                {!icon && IconsData.Punch}&nbsp;
+                {ability && t[ability.nameId]}
+                {timer && <span className="text-muted-foreground">{ft(timer.to - timer.from)}</span>}
             </span>
 
-            <TimerProgressFromId timerId={timer.id} color="primary" />
+            <TimerProgressFromId timerId={timer?.id} color="primary" />
         </div>
     )
 })
@@ -202,6 +215,9 @@ const CombatAbilitiesList = memo(function CombatAbilitiesList(props: { charId: s
             {allAbilities.map((id, index) => (
                 <CombatAbilityBadge characterId={charId} abilityId={id} key={id + charId + index} index={index} />
             ))}
+            {allAbilities.length === 0 && (
+                <CombatAbilityBadge characterId={charId} abilityId="NormalAttack" index={0} />
+            )}
         </div>
     )
 })
