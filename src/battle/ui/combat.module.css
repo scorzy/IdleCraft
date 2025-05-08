@@ -1,22 +1,7 @@
-.allies {
-    display: grid;
-    gap: var(--gap);
-    align-items: start;
-    grid-auto-flow: row;
-    grid-area: characters;
-    grid-area: allies;
-}
-.enemies {
-    display: grid;
-    gap: var(--gap);
-    align-items: start;
-    grid-auto-flow: row;
-    grid-area: enemies;
-}
 .team {
     display: grid;
     gap: var(--gap);
-
+    grid-area: chars;
     grid-template-rows: auto;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
@@ -51,31 +36,24 @@
     display: grid;
     gap: var(--gap);
     grid-template:
-        'allies' auto
-        'enemies' auto
+        'chars' auto
         'log' auto
         'loot' auto;
 }
-.lootTable {
-    overflow: auto;
-    & svg {
-        font-size: 1.25rem;
-    }
-}
+
 .log {
     grid-area: log;
     height: 20rem;
 }
 .loot {
     grid-area: loot;
-    max-height: 20rem;
+    height: 20rem;
 }
 @container (min-width: 900px) {
     .mainContainer {
         grid-template:
-            [row1-start] 'allies allies' auto [row1-end]
-            [row2-start] 'enemies enemies' auto [row2-end]
-            [row3-start] 'loot log' auto [row3-end];
+            [row1-start] 'chars chars' auto [row1-end]
+            [row2-start] 'loot log' auto [row2-end];
     }
 }
 .lootRow {

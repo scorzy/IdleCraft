@@ -22,11 +22,10 @@ import { GameState } from '../../game/GameState'
 import { Badge } from '../../components/ui/badge'
 import { MyHoverCard } from '../../ui/MyHoverCard'
 import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
-import { Card, CardContent, CardTitle } from '../../components/ui/card'
+import { Card, CardContent } from '../../components/ui/card'
 import { BattleLogUi } from '../../battleLog/ui/battleLogUi'
 import { CharCombatInfo } from '../../characters/ui/CharactersUi'
 import { Button } from '../../components/ui/button'
-import { Table, TableBody, TableCell, TableRow } from '../../components/ui/table'
 import { selectLoot } from '../../storage/selectors/selectLoot'
 import { LootId } from '../../storage/storageState'
 import { selectGameItem } from '../../storage/StorageSelectors'
@@ -49,41 +48,16 @@ export const CombatUi = memo(function CombatUi() {
 })
 const CombatChars = memo(function CombatChars() {
     const ids = useGameStore(selectTeams)
-    const { t } = useTranslations()
-    const [alliesHeight, setAlliesHeight] = useState(0)
-    const refAllies = useRef<HTMLDivElement>(null)
-
-    useLayoutEffect(() => {
-        if (refAllies.current) setAlliesHeight(refAllies.current.clientHeight)
-
-        return () => {}
-    }, [refAllies])
 
     return (
-        <>
-            <div className={classes.allies} ref={refAllies}>
-                <div>
-                    <CardTitle>{t.Allies}</CardTitle>
-
-                    <CardContent className={classes.team}>
-                        {ids.allies.map((id) => (
-                            <CharCard charId={id} key={id} />
-                        ))}
-                    </CardContent>
-                </div>
-            </div>
-            <div className={classes.enemies} style={{ minHeight: alliesHeight }}>
-                <div>
-                    <CardTitle>{t.Enemies}</CardTitle>
-
-                    <CardContent className={classes.team}>
-                        {ids.enemies.map((id) => (
-                            <CharCard charId={id} key={id} />
-                        ))}
-                    </CardContent>
-                </div>
-            </div>
-        </>
+        <div className={classes.team}>
+            {ids.allies.map((id) => (
+                <CharCard charId={id} key={id} />
+            ))}
+            {ids.enemies.map((id) => (
+                <CharCard charId={id} key={id} />
+            ))}
+        </div>
     )
 })
 const CharCard = memo(function CharCard(props: { charId: string }) {
