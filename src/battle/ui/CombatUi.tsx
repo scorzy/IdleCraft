@@ -1,6 +1,7 @@
 import { memo, useCallback, useLayoutEffect, useRef, useState } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
 import { CaretSortIcon } from '@radix-ui/react-icons'
+import { Virtuoso } from 'react-virtuoso'
 import { MyPage } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
 import { selectTeams } from '../../characters/selectors/selectTeams'
@@ -32,7 +33,7 @@ import { selectGameItem } from '../../storage/StorageSelectors'
 import { collectLootUi } from '../../storage/function/collectLoot'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
-import classes from './Combat.module.css'
+import classes from './combat.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 export const CombatUi = memo(function CombatUi() {
@@ -258,14 +259,16 @@ const BattleLootUi = memo(function BattleLootUi() {
     return (
         <Card className={classes.loot}>
             <MyCardHeaderTitle title={t.Loot} icon={BAG_ICON} />
-            <CardContent>
-                <Table className={classes.lootTable}>
-                    <TableBody>
-                        {loots.map((loot) => (
-                            <LootRow loot={loot} key={loot.id} />
-                        ))}
-                    </TableBody>
-                </Table>
+            <CardContent className="h-full">
+                <Virtuoso
+                    style={{ height: '100%' }}
+                    totalCount={loots.length}
+                    itemContent={(index) => {
+                        const loot = loots[index]
+                        if (!loot) return null
+                        return <LootRow loot={loot} key={loot.id} />
+                    }}
+                />
             </CardContent>
         </Card>
     )
@@ -282,15 +285,13 @@ const LootRow = memo(function LootRow(props: { loot: LootId }) {
     if (!item) return
 
     return (
-        <TableRow>
-            <TableCell>{IconsData[item.icon]}</TableCell>
-            <TableCell className="w-full">{t[item.nameId]}</TableCell>
-            <TableCell className="text-right">{f(loot.quantity)}</TableCell>
-            <TableCell>
-                <Button variant="ghost" size="xs" title={t.Collect} onClick={onClick}>
-                    <GiSwapBag />
-                </Button>
-            </TableCell>
-        </TableRow>
+        <div className={classes.lootRow}>
+            <span className={classes.svgIcon}>{IconsData[item.icon]}</span>
+            <div>{t[item.nameId]}</div>
+            <div className="text-right">{f(loot.quantity)}</div>
+            <Button variant="ghost" size="xs" title={t.Collect} onClick={onClick}>
+                <GiSwapBag />
+            </Button>
+        </div>
     )
 })

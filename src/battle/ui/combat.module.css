@@ -78,3 +78,15 @@
             [row3-start] 'loot log' auto [row3-end];
     }
 }
+.lootRow {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.375rem;
+    align-items: center;
+    justify-content: space-between;
+    grid-template-columns: auto 1fr auto auto;
+}
+
+.svgIcon {
+    font-size: 1.25rem;
+}
