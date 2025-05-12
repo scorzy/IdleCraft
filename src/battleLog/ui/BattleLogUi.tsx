@@ -56,13 +56,18 @@ const LogUi = memo(function LogUi(props: { id: string }) {
             <span className="text-muted-foreground">{date}</span>
             {log.source}
             {IconsData[log.iconId]}
-            {t[log.abilityId]}
-            <span className="text-muted-foreground">{' => '}</span>
-            {log.targets}{' '}
-            {log.damageDone !== undefined && (
+            {log.text !== undefined && t[log.text]}
+            {log.abilityId !== undefined && (
                 <>
-                    <span className="text-muted-foreground">{t.Damage}</span>
-                    {f(log.damageDone)}
+                    {t[log.abilityId]}
+                    <span className="text-muted-foreground">{' => '}</span>
+                    {log.targets}{' '}
+                    {log.damageDone !== undefined && (
+                        <>
+                            <span className="text-muted-foreground">{t.Damage}</span>
+                            {f(log.damageDone)}
+                        </>
+                    )}
                 </>
             )}
         </div>

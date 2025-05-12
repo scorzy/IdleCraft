@@ -26,6 +26,7 @@ import {
     GiSteak,
     GiAnimalHide,
     GiShield,
+    GiCrossedSwords,
 } from 'react-icons/gi'
 
 export enum Icons {
@@ -55,6 +56,7 @@ export enum Icons {
     Steak = 'Steak',
     AnimalHide = 'AnimalHide',
     Shield = 'Shield',
+    CrossedSwords = 'CrossedSwords',
 }
 export const IconsData: { [k in Icons]: ReactNode } = {
     Axe: <GiWoodAxe />,
@@ -83,4 +85,5 @@ export const IconsData: { [k in Icons]: ReactNode } = {
     Steak: <GiSteak />,
     AnimalHide: <GiAnimalHide />,
     Shield: <GiShield />,
+    CrossedSwords: <GiCrossedSwords />,
 }

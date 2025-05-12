@@ -211,6 +211,9 @@ export interface Msg {
     RawSkin: string
     Wolf: string
     DeadWolf: string
+
+    BattleStarted: string
+    BattleFinished: string
 }
 export interface MsgFunctions {
     // Time

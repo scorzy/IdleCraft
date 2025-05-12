@@ -1,7 +1,9 @@
 import { ActivityTypes } from '../../activities/ActivityState'
+import { addBattleLog } from '../../battleLog/functions/addBattleLog'
 import { CharacterAdapter } from '../../characters/characterAdapter'
 import { removeCharacter } from '../../characters/functions/removeCharacter'
 import { GameState } from '../../game/GameState'
+import { Icons } from '../../icons/Icons'
 import { TimerAdapter } from '../../timers/Timer'
 import { removeTimer } from '../../timers/removeTimer'
 import { CastCharAbilityAdapter } from '../abilityAdapters'
@@ -19,6 +21,11 @@ export function endBattle(state: GameState): GameState {
     const timersIds = TimerAdapter.findMany(state.timers, (t) => t.type === ActivityTypes.Ability)
     timersIds?.forEach((tim) => {
         state = removeTimer(state, tim.id)
+    })
+
+    state = addBattleLog(state, {
+        text: 'BattleFinished',
+        iconId: Icons.CrossedSwords,
     })
 
     return state

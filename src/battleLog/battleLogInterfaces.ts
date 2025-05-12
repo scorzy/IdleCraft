@@ -2,9 +2,9 @@ import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 
 export interface AddBattleLog {
-    text?: string
+    text?: keyof Msg
     iconId: Icons
-    abilityId: keyof Msg
+    abilityId?: keyof Msg
     source?: string
     targets?: string
     damageDone?: number
@@ -12,10 +12,10 @@ export interface AddBattleLog {
 
 export interface BattleLog {
     id: string
-    text?: string
+    text?: keyof Msg
     iconId: Icons
     date: number
-    abilityId: keyof Msg
+    abilityId?: keyof Msg
     source?: string
     targets?: string
     damageDone?: number

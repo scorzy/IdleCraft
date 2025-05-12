@@ -187,6 +187,9 @@ export const engMsg: Msg = {
     RawSkin: 'Raw Skin',
     Wolf: 'Wolf',
     DeadWolf: 'Dead Wolf',
+
+    BattleStarted: 'Battle started',
+    BattleFinished: 'Battle finished',
 }
 export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
     years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,
