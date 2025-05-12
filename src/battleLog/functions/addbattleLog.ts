@@ -3,15 +3,14 @@ import { getUniqueId } from '../../utils/getUniqueId'
 import { BattleLogAdapter } from '../battleLogAdapter'
 import { AddBattleLog, BattleLog } from '../battleLogInterfaces'
 
-const MAX_LOGS = 100
-const MAX_LOGS_LOADING = 20
+const MAX_LOGS = 10
 
 export function addBattleLog(state: GameState, addLog: AddBattleLog) {
     const battleLog: BattleLog = { ...addLog, id: getUniqueId(), date: state.now }
 
     let battleLogs = BattleLogAdapter.create(state.battleLogs, battleLog)
 
-    const maxLogs = state.loading ? MAX_LOGS_LOADING : MAX_LOGS
+    const maxLogs = MAX_LOGS
 
     while (battleLogs.ids.length > maxLogs) {
         const id = battleLogs.ids[0]

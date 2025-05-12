@@ -1,39 +1,51 @@
-import React, { memo, useState, useEffect, useRef } from 'react'
-import classes from './autoScroll.module.css'
+import { memo, useState, useRef, JSX, useLayoutEffect, useCallback } from 'react'
+import { Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
-export const AutoScroll = memo(function AutoScroll(props: { className?: string; children: React.ReactNode }) {
-    const { children, className } = props
-    const lastRef = useRef<HTMLSpanElement>(null)
+export const AutoScroll = memo(function AutoScroll(props: {
+    className?: string
+    totalCount: number
+    itemContent: (index: number) => JSX.Element | null
+}) {
+    const { totalCount, itemContent, className } = props
     const [lastVisible, setLastVisible] = useState<boolean>(true)
+    const virtuosoRef = useRef<VirtuosoHandle>(null)
+    const [visibleRange, setVisibleRange] = useState({
+        startIndex: 0,
+        endIndex: 0,
+    })
 
-    useEffect(() => {
-        if (!lastRef.current) return
-        if (lastVisible) lastRef.current.scrollIntoView({ behavior: 'smooth' })
-    }, [children, lastVisible, lastRef])
+    const onScroll = useCallback(
+        (e: React.UIEvent<HTMLDivElement>) => {
+            const scrollTop = e.currentTarget.scrollTop
+            const scrollHeight = e.currentTarget.scrollHeight
+            const clientHeight = e.currentTarget.clientHeight
+            const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1
+            setLastVisible(isAtBottom)
+        },
+        [setLastVisible]
+    )
 
-    useEffect(() => {
-        if (!lastRef.current) return
-
-        const observer = new IntersectionObserver((entries) => {
-            let newLastVisible = false
-            entries.forEach((entry) => {
-                newLastVisible = entry.isIntersecting
-            })
-            setLastVisible(newLastVisible)
-        })
-        observer.observe(lastRef.current)
+    useLayoutEffect(() => {
+        let timeout = null
+        if (lastVisible && virtuosoRef.current)
+            timeout = setTimeout(() => {
+                virtuosoRef.current?.scrollToIndex(totalCount)
+            }, 0)
 
         return () => {
-            observer.disconnect()
+            if (timeout) clearTimeout(timeout)
         }
-    }, [lastRef, lastVisible])
+    }, [lastVisible, visibleRange, totalCount])
 
     return (
-        <div className={className}>
-            {children}
-            <span ref={lastRef} className={classes.lastSpan}>
-                &nbsp;
-            </span>
-        </div>
+        <Virtuoso
+            onScroll={onScroll}
+            ref={virtuosoRef}
+            className={className}
+            style={{ height: '100%' }}
+            totalCount={totalCount}
+            rangeChanged={setVisibleRange}
+            itemContent={itemContent}
+        />
     )
 })

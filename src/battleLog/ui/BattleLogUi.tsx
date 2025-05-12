@@ -16,7 +16,7 @@ export const BattleLogUi = memo(function BattleLogUi(props: { className?: string
     return (
         <Card className={className}>
             <MyCardHeaderTitle title={t.Log} icon={LIST_ICON} />
-            <CardContent>
+            <CardContent style={{ height: '100%' }}>
                 <BattleLogs />
             </CardContent>
         </Card>
@@ -26,18 +26,28 @@ const BattleLogs = memo(function BattleLogs() {
     const ids = useGameStore(selectBattleLogsIds)
 
     return (
-        <AutoScroll className="text-sm">
-            {ids.map((id) => (
-                <LogUi id={id} key={id} />
-            ))}
-        </AutoScroll>
+        <AutoScroll
+            className="text-sm"
+            totalCount={ids.length}
+            itemContent={(index: number) => {
+                const id = ids[index]
+                if (!id) return null
+                return <LogUi id={id} />
+            }}
+        />
     )
 })
 const LogUi = memo(function LogUi(props: { id: string }) {
     const { id } = props
+
     const log = useGameStore(selectBattleLog(id))
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
+
+    if (!log) {
+        //console.warn('LogUi: log not found', id)
+        return null
+    }
 
     const date = new Date(log.date).toLocaleTimeString()
 
