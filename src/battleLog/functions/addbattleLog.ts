@@ -3,7 +3,7 @@ import { getUniqueId } from '../../utils/getUniqueId'
 import { BattleLogAdapter } from '../battleLogAdapter'
 import { AddBattleLog, BattleLog } from '../battleLogInterfaces'
 
-const MAX_LOGS = 10
+const MAX_LOGS = 100
 
 export function addBattleLog(state: GameState, addLog: AddBattleLog) {
     const battleLog: BattleLog = { ...addLog, id: getUniqueId(), date: state.now }

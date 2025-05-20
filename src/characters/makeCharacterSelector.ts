@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import { deepEqual } from 'fast-equals'
 import { GameState } from '../game/GameState'
 import { getCharLevelExp } from '../experience/expSelectors'
 import { selectTranslations } from '../msg/useTranslations'
