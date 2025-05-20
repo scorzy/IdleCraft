@@ -214,6 +214,8 @@ export interface Msg {
 
     BattleStarted: string
     BattleFinished: string
+
+    Killed: string
 }
 export interface MsgFunctions {
     // Time

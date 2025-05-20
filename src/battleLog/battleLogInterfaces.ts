@@ -8,6 +8,7 @@ export interface AddBattleLog {
     source?: string
     targets?: string
     damageDone?: number
+    type?: 'kill'
 }
 
 export interface BattleLog {
@@ -19,4 +20,5 @@ export interface BattleLog {
     source?: string
     targets?: string
     damageDone?: number
+    type?: 'kill'
 }

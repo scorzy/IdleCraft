@@ -50,26 +50,42 @@ const LogUi = memo(function LogUi(props: { id: string }) {
     }
 
     const date = new Date(log.date).toLocaleTimeString()
+    let content = <></>
+    if (log.type === 'kill')
+        content = (
+            <>
+                {IconsData[log.iconId]}
+                {log.targets}
+                <span className="text-muted-foreground">{t.Killed}</span>
+            </>
+        )
+    else if (log.abilityId !== undefined)
+        content = (
+            <>
+                {t[log.abilityId]}
+                <span className="text-muted-foreground">{' => '}</span>
+                {log.targets}{' '}
+                {log.damageDone !== undefined && (
+                    <>
+                        <span className="text-muted-foreground">{t.Damage}</span>
+                        {f(log.damageDone)}
+                    </>
+                )}
+            </>
+        )
+    else
+        content = (
+            <>
+                {log.source}
+                {IconsData[log.iconId]}
+                {log.text !== undefined && t[log.text]}
+            </>
+        )
 
     return (
         <div className="grid grid-flow-col items-center justify-start gap-2">
             <span className="text-muted-foreground">{date}</span>
-            {log.source}
-            {IconsData[log.iconId]}
-            {log.text !== undefined && t[log.text]}
-            {log.abilityId !== undefined && (
-                <>
-                    {t[log.abilityId]}
-                    <span className="text-muted-foreground">{' => '}</span>
-                    {log.targets}{' '}
-                    {log.damageDone !== undefined && (
-                        <>
-                            <span className="text-muted-foreground">{t.Damage}</span>
-                            {f(log.damageDone)}
-                        </>
-                    )}
-                </>
-            )}
+            {content}
         </div>
     )
 })

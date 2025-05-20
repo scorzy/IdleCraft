@@ -10,9 +10,7 @@ export function addBattleLog(state: GameState, addLog: AddBattleLog) {
 
     let battleLogs = BattleLogAdapter.create(state.battleLogs, battleLog)
 
-    const maxLogs = MAX_LOGS
-
-    while (battleLogs.ids.length > maxLogs) {
+    while (battleLogs.ids.length > MAX_LOGS) {
         const id = battleLogs.ids[0]
         if (id) battleLogs = BattleLogAdapter.remove(battleLogs, id)
     }

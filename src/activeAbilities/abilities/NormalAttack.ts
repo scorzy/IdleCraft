@@ -54,8 +54,6 @@ export class NormalAttack implements ActiveAbility {
 
         const damage = this.getDamage(characterId, state)
 
-        getCharacterSelector(params.characterId).Name(state)
-
         const source = getCharacterSelector(params.characterId).Name(state)
         const targets = getCharacterSelector(enemyId).Name(state)
 
