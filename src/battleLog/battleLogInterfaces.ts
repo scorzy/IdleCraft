@@ -15,13 +15,17 @@ export interface AddKillBattleLog {
     type: BattleLogType.Kill
     targets: string
 }
-export type AddDamageBattleLog = AddBattleLog & {
+export type AbilityLog = {
     iconId: Icons
     source: string
     targets: string
-    damageDone: number
     abilityId: keyof Msg
 }
+
+export type AddDamageBattleLog = AddBattleLog &
+    AbilityLog & {
+        damageDone: number
+    }
 
 export type BattleLog = {
     id: string

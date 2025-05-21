@@ -13,8 +13,6 @@ import { DAMAGE_EXP_MULTI } from '../../const'
 import { DamageData } from '../../items/Item'
 import { sumDamage } from '../functions/sumDamage'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
-import { addBattleLog } from '../../battleLog/functions/addBattleLog'
-import { AddDamageBattleLog, BattleLogType } from '../../battleLog/battleLogInterfaces'
 
 export class NormalAttack implements ActiveAbility {
     id = AbilitiesEnum.NormalAttack
@@ -64,18 +62,13 @@ export class NormalAttack implements ActiveAbility {
                 state = addExp(state, weapon.weaponData.expType, sumDamage(damage) * DAMAGE_EXP_MULTI)
         }
 
-        const { state: gameState, damageDone } = dealDamage(state, enemyId, damage)
-        state = gameState
-
-        const addLog: AddDamageBattleLog = {
-            type: BattleLogType.Damage,
+        const { state: gameState } = dealDamage(state, enemyId, damage, {
             iconId: this.getIconId(params),
             abilityId: this.nameId,
             source,
             targets,
-            damageDone,
-        }
-        state = addBattleLog(state, addLog)
+        })
+        state = gameState
 
         return state
     }

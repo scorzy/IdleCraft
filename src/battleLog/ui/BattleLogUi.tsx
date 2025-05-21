@@ -83,7 +83,7 @@ const DamageBattleLogUi = memo(function DamageBattleLogUi(props: { log: DamageBa
     const { f } = useNumberFormatter()
     return (
         <>
-            {t[log.abilityId]}
+            {log.source} {t[log.abilityId]}
             <span className="text-muted-foreground">{' => '}</span>
             {log.targets}{' '}
             {log.damageDone !== undefined && (
