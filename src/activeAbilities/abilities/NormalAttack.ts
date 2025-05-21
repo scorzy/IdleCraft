@@ -14,6 +14,7 @@ import { DamageData } from '../../items/Item'
 import { sumDamage } from '../functions/sumDamage'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import { addBattleLog } from '../../battleLog/functions/addBattleLog'
+import { AddDamageBattleLog, BattleLogType } from '../../battleLog/battleLogInterfaces'
 
 export class NormalAttack implements ActiveAbility {
     id = AbilitiesEnum.NormalAttack
@@ -65,13 +66,17 @@ export class NormalAttack implements ActiveAbility {
 
         const { state: gameState, damageDone } = dealDamage(state, enemyId, damage)
         state = gameState
-        state = addBattleLog(state, {
+
+        const addLog: AddDamageBattleLog = {
+            type: BattleLogType.Damage,
             iconId: this.getIconId(params),
             abilityId: this.nameId,
             source,
             targets,
             damageDone,
-        })
+        }
+        state = addBattleLog(state, addLog)
+
         return state
     }
 }

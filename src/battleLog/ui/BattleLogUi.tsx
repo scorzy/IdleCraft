@@ -8,6 +8,14 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { AutoScroll } from '../../components/ui/autoScroll'
+import {
+    DamageBattleLog,
+    isDamageBattleLog,
+    isEndBattleLog,
+    isKillBattleLog,
+    isStartBattleLog,
+    KillBattleLog,
+} from '../battleLogInterfaces'
 
 const LIST_ICON = <TbList />
 export const BattleLogUi = memo(function BattleLogUi(props: { className?: string }) {
@@ -39,53 +47,69 @@ const BattleLogs = memo(function BattleLogs() {
 })
 const LogUi = memo(function LogUi(props: { id: string }) {
     const { id } = props
-
     const log = useGameStore(selectBattleLog(id))
-    const { t } = useTranslations()
-    const { f } = useNumberFormatter()
-
-    if (!log) {
-        //console.warn('LogUi: log not found', id)
-        return null
-    }
+    if (!log) return null
 
     const date = new Date(log.date).toLocaleTimeString()
     let content = <></>
-    if (log.type === 'kill')
-        content = (
-            <>
-                {IconsData[log.iconId]}
-                {log.targets}
-                <span className="text-muted-foreground">{t.Killed}</span>
-            </>
-        )
-    else if (log.abilityId !== undefined)
-        content = (
-            <>
-                {t[log.abilityId]}
-                <span className="text-muted-foreground">{' => '}</span>
-                {log.targets}{' '}
-                {log.damageDone !== undefined && (
-                    <>
-                        <span className="text-muted-foreground">{t.Damage}</span>
-                        {f(log.damageDone)}
-                    </>
-                )}
-            </>
-        )
-    else
-        content = (
-            <>
-                {log.source}
-                {IconsData[log.iconId]}
-                {log.text !== undefined && t[log.text]}
-            </>
-        )
+    if (isKillBattleLog(log)) content = <KillLogUi log={log} />
+    else if (isDamageBattleLog(log)) content = <DamageBattleLogUi log={log} />
+    else if (isStartBattleLog(log)) content = <StartLogUi />
+    else if (isEndBattleLog(log)) content = <EndLogUi />
 
     return (
         <div className="grid grid-flow-col items-center justify-start gap-2">
             <span className="text-muted-foreground">{date}</span>
             {content}
         </div>
+    )
+})
+
+const KillLogUi = memo(function KillLogUi(props: { log: KillBattleLog }) {
+    const { log } = props
+    const { t } = useTranslations()
+
+    return (
+        <>
+            {IconsData.Skull}
+            {log.targets}
+            <span className="text-muted-foreground">{t.Killed}</span>
+        </>
+    )
+})
+const DamageBattleLogUi = memo(function DamageBattleLogUi(props: { log: DamageBattleLog }) {
+    const { log } = props
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    return (
+        <>
+            {t[log.abilityId]}
+            <span className="text-muted-foreground">{' => '}</span>
+            {log.targets}{' '}
+            {log.damageDone !== undefined && (
+                <>
+                    <span className="text-muted-foreground">{t.Damage}</span>
+                    {f(log.damageDone)}
+                </>
+            )}
+        </>
+    )
+})
+const StartLogUi = memo(function StartLogUi() {
+    const { t } = useTranslations()
+    return (
+        <>
+            {IconsData.CrossedSwords}
+            {t['BattleStarted']}
+        </>
+    )
+})
+const EndLogUi = memo(function StartLogUi() {
+    const { t } = useTranslations()
+    return (
+        <>
+            {IconsData.CrossedSwords}
+            {t['BattleFinished']}
+        </>
     )
 })
