@@ -43,7 +43,7 @@
 }
 .page__sidebar {
     grid-area: side;
-    border-bottom: 1px solid hsl(var(--border));
+    border-bottom: 1px solid var(--border);
 }
 .page__main2 {
     grid-area: main;
@@ -72,7 +72,7 @@
     }
     .page__sidebar {
         overflow: auto;
-        border-right: 1px solid hsl(var(--border));
+        border-right: 1px solid var(--border);
         border-bottom: none;
     }
     .page__info-side {

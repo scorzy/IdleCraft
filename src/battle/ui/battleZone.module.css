@@ -17,7 +17,7 @@
     overflow: auto;
 }
 .side {
-    border-bottom: 1px solid hsl(var(--border));
+    border-bottom: 1px solid var(--border);
 }
 @container (min-width: 900px) {
     .allPage {
@@ -25,7 +25,7 @@
         height: 100%;
     }
     .side {
-        border-right: 1px solid hsl(var(--border));
+        border-right: 1px solid var(--border);
         border-bottom: none;
     }
 }
