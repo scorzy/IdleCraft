@@ -1,22 +1,22 @@
 .primary {
-    --progress-bg: hsl(var(--primary) / 0.2);
-    --progress-color: hsl(var(--primary));
+    --progress-bg: var(--primary-bg);
+    --progress-color: var(--primary);
 }
 .secondary {
-    --progress-bg: hsl(var(--secondary) / 0.2);
-    --progress-color: hsl(var(--secondary));
+    --progress-bg: var(--secondary-bg);
+    --progress-color: var(--secondary);
 }
 .success {
     --progress-bg: hsl(var(--success) / 0.2);
     --progress-color: hsl(var(--success));
 }
 .error {
-    --progress-bg: hsl(var(--destructive) / 0.2);
-    --progress-color: hsl(var(--destructive));
+    --progress-bg: var(--destructive-bg);
+    --progress-color: var(--destructive);
 }
 .health {
-    --progress-bg: hsl(var(--health) / 0.2);
-    --progress-color: hsl(var(--health));
+    --progress-bg: var(--health-bg);
+    --progress-color: var(--health);
 }
 .stamina {
     --progress-bg: hsl(var(--stamina) / 0.2);
