@@ -7,8 +7,8 @@
     --progress-color: var(--secondary);
 }
 .success {
-    --progress-bg: hsl(var(--success) / 0.2);
-    --progress-color: hsl(var(--success));
+    --progress-bg: var(--success-bg);
+    --progress-color: var(--success);
 }
 .error {
     --progress-bg: var(--destructive-bg);
@@ -19,12 +19,12 @@
     --progress-color: var(--health);
 }
 .stamina {
-    --progress-bg: hsl(var(--stamina) / 0.2);
-    --progress-color: hsl(var(--stamina));
+    --progress-bg: var(--stamina-bg);
+    --progress-color: var(--stamina);
 }
 .mana {
-    --progress-bg: hsl(var(--mana) / 0.2);
-    --progress-color: hsl(var(--mana));
+    --progress-bg: var(--mana-bg);
+    --progress-color: var(--mana);
 }
 
 .progress__root {
