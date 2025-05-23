@@ -42,6 +42,15 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-health: var(--health);
+    --color-health-foreground: var(--health-foreground);
+    --color-stamina: var(--stamina);
+    --color-stamina-foreground: var(--stamina-foreground);
+    --color-mana: var(--mana);
+    --color-mana-foreground: var(--mana-foreground);
 }
 
 :root {

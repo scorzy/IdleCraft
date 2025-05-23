@@ -17,6 +17,7 @@ const buttonVariants = cva(
                 secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
                 link: 'text-primary underline-offset-4 hover:underline',
+
                 health: 'bg-health text-health-foreground hover:bg-health/90',
                 stamina: 'bg-stamina text-stamina-foreground hover:bg-stamina/90',
                 mana: 'bg-mana text-mana-foreground hover:bg-mana/90',
