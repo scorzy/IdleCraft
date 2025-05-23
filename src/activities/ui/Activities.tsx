@@ -77,7 +77,7 @@ const ActivityCard = memo(function ActivityCard(props: { id: string; isFirst: bo
         <div className={classes.container}>
             <div className={classes.icon}>{IconsData[icon]}</div>
             <div className={classes.title}>
-                <div className="text-md font-medium leading-none">{title}</div>
+                <div className="text-md leading-none font-medium">{title}</div>
                 <Badge variant={active ? 'default' : 'secondary'}>
                     {active ? 'Active' : 'In Queue'} {f(cur)}/{f(max)}
                 </Badge>

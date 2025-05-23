@@ -103,8 +103,8 @@ const OptionItemInt = memo(function AxeItemInt(props: { name: string; slot: Equi
 
     return (
         <div>
-            <span className="font-medium leading-none">{name}</span>
-            <div className="flex max-w-md flex-wrap gap-2 text-sm font-medium leading-none text-muted-foreground">
+            <span className="leading-none font-medium">{name}</span>
+            <div className="text-muted-foreground flex max-w-md flex-wrap gap-2 text-sm leading-none font-medium">
                 {slot === EquipSlotsEnum.WoodAxe && <WoodAxeDataUi woodAxeData={item?.woodAxeData ?? DEF_WOOD_AXE} />}
                 {slot === EquipSlotsEnum.Pickaxe && <PickaxeDataUi pickaxeData={item?.pickaxeData ?? DEF_PICKAXE} />}
             </div>

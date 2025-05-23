@@ -114,7 +114,7 @@ const EnemyInfoUi = memo(function EnemyInfoUi(props: { quantity: number; templat
                 <span className="aspect-square h-full w-full">{IconsData[enemy.iconId]}</span>
             </span>
             <div className="ml-4 space-y-1">
-                <p className="text-sm font-medium leading-none">
+                <p className="text-sm leading-none font-medium">
                     {enemy.nameId} X {f(quantity)}
                 </p>
                 <p className="grid grid-flow-col gap-2 text-sm">

@@ -234,11 +234,11 @@ const StorageItem = memo(function StorageItem(props: { small: boolean; location:
                         <span>{t[item.nameId]}</span>
                     </span>
                     <span className={classes.smallRow}>
-                        <span className="text-left align-middle font-medium text-muted-foreground">{t.Quantity}</span>
+                        <span className="text-muted-foreground text-left align-middle font-medium">{t.Quantity}</span>
                         {f(qta)}
                     </span>
                     <span className={classes.smallRow}>
-                        <span className="text-left align-middle font-medium text-muted-foreground">{t.Value}</span>
+                        <span className="text-muted-foreground text-left align-middle font-medium">{t.Value}</span>
                         {f(item.value)}
                     </span>
                 </TableCell>

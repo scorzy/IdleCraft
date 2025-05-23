@@ -143,7 +143,7 @@ const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Di
     return (
         <>
             <Button onClick={loadClick}>{item.name}</Button>
-            <span className="min-w-20 text-right text-sm text-muted-foreground">
+            <span className="text-muted-foreground min-w-20 text-right text-sm">
                 <TimeAgo date={item.state.now} /> {t.Ago}
             </span>
             <Button onClick={deleteGame} variant="ghost" title={t.Delete} className="text-muted-foreground">
