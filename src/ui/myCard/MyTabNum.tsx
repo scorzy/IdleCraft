@@ -9,12 +9,7 @@ export const MyTabNum = memo(function MyTabNum(props: { text: string; num: numbe
 
     return (
         <div className={classes.tab}>
-            {text}{' '}
-            {num > 0 && (
-                <Badge size="xs" className="ml-2">
-                    {f(num)}
-                </Badge>
-            )}
+            {text} {num > 0 && <Badge className="ml-2">{f(num)}</Badge>}
         </div>
     )
 })

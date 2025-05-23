@@ -74,6 +74,9 @@ dependencies:
   moize:
     specifier: ^6.1.6
     version: 6.1.6
+  next-themes:
+    specifier: ^0.4.6
+    version: 0.4.6(react-dom@19.0.0)(react@19.0.0)
   postcss-preset-env:
     specifier: ^10.1.6
     version: 10.1.6(postcss@8.5.3)
@@ -101,6 +104,9 @@ dependencies:
   reselect:
     specifier: ^5.1.1
     version: 5.1.1
+  sonner:
+    specifier: ^2.0.3
+    version: 2.0.3(react-dom@19.0.0)(react@19.0.0)
   tailwind-merge:
     specifier: ^3.3.0
     version: 3.3.0
@@ -5132,6 +5138,16 @@ packages:
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
+  /next-themes@0.4.6(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-pZvgD5L0IEvX5/9GWyHMf3m8BKiVQwsCMHfoFosXtXBMnaS0ZnIJ9ST4b4NqLVKDEm8QBxoNNGNaBv2JNF6XNA==}
+    peerDependencies:
+      react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+    dev: false
+
   /no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
     dependencies:
@@ -6216,6 +6232,16 @@ packages:
     dependencies:
       dot-case: 3.0.4
       tslib: 2.8.1
+    dev: false
+
+  /sonner@2.0.3(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-njQ4Hht92m0sMqqHVDL32V2Oun9W1+PHO9NDv9FHfJjT3JT22IG4Jpo3FPQy+mouRKCXFWO+r67v6MrHX2zeIA==}
+    peerDependencies:
+      react: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+      react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
     dev: false
 
   /source-map-js@1.2.1:

@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
+import { ExternalToast, toast } from 'sonner'
 import { useGameStore } from '../game/state'
 import { GameState } from '../game/GameState'
 import { useTranslations } from '../msg/useTranslations'
-import { ToastType, useToast } from '@/components/ui/use-toast'
+import { IconsData } from '../icons/Icons'
 
 const selectNotifications = (s: GameState) => s.notifications
 const removeNotifications = () =>
@@ -14,20 +15,19 @@ const removeNotifications = () =>
 export function ToasterProvider() {
     const notifications = useGameStore(selectNotifications)
     const { t } = useTranslations()
-    const { toast } = useToast()
 
     useEffect(() => {
         if (notifications.length < 1) return
 
         for (const n of notifications) {
-            const myToast: ToastType = {}
-            if (n.title) myToast.title = n.title
-            if (n.titleId) myToast.title = t[n.titleId]
-            if (n.descriptionId) myToast.title = t[n.descriptionId]
-            if (n.iconId) myToast.iconId = n.iconId
+            const toastData: ExternalToast = {}
+            let title = n.title
+            if (n.titleId) title = t[n.titleId]
+            if (n.descriptionId) toastData.description = t[n.descriptionId]
+            if (n.iconId) toastData.icon = IconsData[n.iconId]
 
-            toast(myToast)
+            toast(title, toastData)
         }
         removeNotifications()
-    }, [notifications, toast, t])
+    }, [notifications, t])
 }
