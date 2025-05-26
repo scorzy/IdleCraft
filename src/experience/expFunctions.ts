@@ -11,15 +11,15 @@ export function addExp(state: GameState, expType: ExpEnum, expQta: number, chara
     const char = CharacterAdapter.selectEx(state.characters, characterId)
 
     const currentExp = char.skillsExp[expType] ?? 0
-    const currentLevel = char.skillsLevel[expType] ?? 0
+    const currentLevel = char.skillsLevel[expType] ?? -1
 
     const skillExp = Math.floor(currentExp + expQta)
-    const skillLevel = Math.floor(
-        Math.log10((skillExp * (EXP_GROW_RATE - 1)) / EXP_BASE_PRICE + 1) / Math.log10(EXP_GROW_RATE)
-    )
+    const skillLevel =
+        skillExp < EXP_BASE_PRICE
+            ? 0
+            : Math.floor(Math.log10((skillExp * (EXP_GROW_RATE - 1)) / EXP_BASE_PRICE + 1) / Math.log10(EXP_GROW_RATE))
 
-    const newLevels = Math.max(Math.floor(skillLevel - currentLevel), 0)
-    const exp = char.exp + newLevels
+    const exp = char.exp + expQta
     const level = getCharLevel(exp)
 
     state = {

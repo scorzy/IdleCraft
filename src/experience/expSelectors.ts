@@ -7,7 +7,7 @@ export const getLevel = (state: GameState, expType: ExpEnum, charId: string) =>
     CharacterAdapter.selectEx(state.characters, charId).skillsLevel[expType] ?? 0
 
 export const getLevelExp = (level: number) =>
-    Math.floor(EXP_BASE_PRICE * (EXP_GROW_RATE ** level - 1)) / (EXP_GROW_RATE - 1)
+    Math.round((EXP_BASE_PRICE * (EXP_GROW_RATE ** level - 1)) / (EXP_GROW_RATE - 1))
 
 export const selectLevel = (expType: ExpEnum, charId: string) => (state: GameState) => getLevel(state, expType, charId)
 export const selectExp = (expType: ExpEnum, charId: string) => (state: GameState) =>
@@ -33,7 +33,7 @@ export const selectPlayerLevel = (state: GameState, charId: string) => {
 }
 
 const getLevelFromExp = (exp: number, growRate: number, expBasePrice: number) =>
-    Math.round(Math.log10((exp * (growRate - 1)) / expBasePrice + 1) / Math.log10(growRate))
+    Math.floor(Math.log((exp * (growRate - 1)) / expBasePrice + 1) / Math.log(growRate))
 
 export const getSkillLevel = (skillExp: number) => getLevelFromExp(skillExp, EXP_GROW_RATE, EXP_BASE_PRICE)
 
