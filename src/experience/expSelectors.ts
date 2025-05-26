@@ -39,5 +39,9 @@ export const getSkillLevel = (skillExp: number) => getLevelFromExp(skillExp, EXP
 
 export const getCharLevel = (exp: number) => getLevelFromExp(exp, EXP_GROW_RATE_MAIN, EXP_BASE_PRICE_MAIN)
 
-export const getCharLevelExp = (level: number) =>
-    Math.round(Math.floor(EXP_BASE_PRICE_MAIN * (EXP_GROW_RATE_MAIN ** level - 1)) / (EXP_GROW_RATE_MAIN - 1))
+export const getCharLevelExp = (level: number) => {
+    let ret = Math.round((EXP_BASE_PRICE_MAIN * (EXP_GROW_RATE_MAIN ** level - 1)) / (EXP_GROW_RATE_MAIN - 1))
+
+    if (ret.toString().endsWith('9')) ret = Math.floor(ret + 1) // Adjust to avoid rounding issues that can cause level mismatch
+    return ret
+}
