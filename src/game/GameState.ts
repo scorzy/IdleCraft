@@ -12,6 +12,7 @@ import { ToastState } from '../notification/toastState'
 import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
 import { BattleLog } from '../battleLog/battleLogInterfaces'
 import { UiState } from '../ui/UiState'
+import { QuestState } from '../quest/QuestTypes'
 import { InitialState } from '@/entityAdapter/InitialState'
 
 export interface LocationState {
@@ -55,4 +56,5 @@ export interface GameState {
     characters: InitialState<CharacterState>
     castCharAbility: InitialState<CastCharAbility>
     battleLogs: InitialState<BattleLog>
+    quests: InitialState<QuestState>
 }
