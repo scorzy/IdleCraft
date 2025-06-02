@@ -3,7 +3,7 @@ import { RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
 import { OreType } from '../mining/OreState'
-import { LootId, StorageState } from '../storage/storageState'
+import { LootId, StorageState } from '../storage/storageTypes'
 import { InitialTimerState } from '../timers/Timer'
 import { ForestsType } from '../wood/ForestsState'
 import { TreeGrowth } from '../wood/forest/forestGrowth'

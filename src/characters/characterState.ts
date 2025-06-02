@@ -4,7 +4,7 @@ import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 import { PerkState } from '../perks/PerkState'
 import { PerksEnum } from '../perks/perksEnum'
-import { Loot } from '../storage/storageState'
+import { Loot } from '../storage/storageTypes'
 import { CharInventory } from './inventory'
 import { InitialState } from '@/entityAdapter/InitialState'
 

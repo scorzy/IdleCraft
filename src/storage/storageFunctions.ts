@@ -8,7 +8,7 @@ import { Item } from '../items/Item'
 import { getUniqueId } from '../utils/getUniqueId'
 import { myCompare } from '../utils/myCompare'
 import { ItemAdapter } from './ItemAdapter'
-import { StorageState } from './storageState'
+import { StorageState } from './storageTypes'
 import { InitialState } from '@/entityAdapter/InitialState'
 
 function subAddItem(state: StorageState, id: string, qta: number): StorageState {

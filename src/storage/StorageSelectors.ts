@@ -14,7 +14,7 @@ import { createDeepEqualSelector } from '../utils/createDeepEqualSelector'
 import { useGameStore } from '../game/state'
 import { selectStorageOrder } from '../ui/state/uiSelectors'
 import { ItemAdapter } from './ItemAdapter'
-import { InventoryNoQta } from './storageState'
+import { InventoryNoQta } from './storageTypes'
 import { isCrafted } from './storageFunctions'
 import { InitialState } from '@/entityAdapter/InitialState'
 

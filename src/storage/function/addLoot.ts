@@ -1,7 +1,7 @@
 import { MAX_LOOT } from '../../const'
 import { GameState } from '../../game/GameState'
 import { getUniqueId } from '../../utils/getUniqueId'
-import { Loot } from '../storageState'
+import { Loot } from '../storageTypes'
 
 export function addLoot(state: GameState, loot: Loot[]) {
     let locLoot = state.locations[state.location].loot

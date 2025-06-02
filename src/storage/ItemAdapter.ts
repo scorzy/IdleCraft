@@ -1,6 +1,6 @@
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 import { Item } from '../items/Item'
-import { Loot } from './storageState'
+import { Loot } from './storageTypes'
 
 class ItemAdapterInt extends AbstractEntityAdapter<Item> {
     getId(data: Item): string {
