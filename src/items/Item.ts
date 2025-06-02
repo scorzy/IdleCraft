@@ -59,6 +59,7 @@ export interface Item {
     nameId: keyof Msg
     icon: Icons
     type: ItemTypes
+    subType: ItemSubType
     value: number
     equipSlot?: EquipSlotsEnum
     craftingData?: CraftingData
@@ -68,4 +69,20 @@ export interface Item {
     pickaxeData?: PickaxeData
     weaponData?: WeaponData
     armourData?: DamageData
+}
+export type ItemFilter = {
+    itemId?: string
+    nameId?: keyof Msg
+    location?: string
+    itemType: ItemTypes
+    itemSubType?: ItemSubType
+    minStats?: Partial<Item>
+    equipSlot?: Partial<EquipSlotsEnum>
+    craftingData?: Partial<CraftingData>
+    woodAxeData?: Partial<WoodAxeData>
+    craftingWoodAxeData?: Partial<WoodAxeData>
+    craftingPickaxeData?: Partial<PickaxeData>
+    pickaxeData?: Partial<PickaxeData>
+    weaponData?: Partial<WeaponData>
+    armourData?: Partial<DamageData>
 }

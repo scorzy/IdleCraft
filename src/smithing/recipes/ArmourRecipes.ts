@@ -52,6 +52,7 @@ export const armourRecipe = makeRecipe({
             nameId: 'Armour',
             icon: Icons.Breastplate,
             type: ItemTypes.Body,
+            subType: ItemSubType.Armour,
             equipSlot: EquipSlotsEnum.Body,
             value: getItemValue(components, true),
             armourData,
