@@ -31,7 +31,7 @@ export enum DamageTypes {
     Bludgeoning = 'Bludgeoning',
 }
 export const damageTypesValues: DamageTypes[] = Object.keys(DamageTypes) as DamageTypes[]
-export type DamageData = { [k in DamageTypes]?: number }
+export type DamageData = Partial<Record<DamageTypes, number>>
 export interface CraftingData {
     prestige: number
     speedBonus?: number
@@ -59,7 +59,7 @@ export interface Item {
     nameId: keyof Msg
     icon: Icons
     type: ItemTypes
-    subType: ItemSubType
+    subType?: ItemSubType
     value: number
     equipSlot?: EquipSlotsEnum
     craftingData?: CraftingData
@@ -70,7 +70,7 @@ export interface Item {
     weaponData?: WeaponData
     armourData?: DamageData
 }
-export type ItemFilter = {
+export interface ItemFilter {
     itemId?: string
     nameId?: keyof Msg
     location?: string

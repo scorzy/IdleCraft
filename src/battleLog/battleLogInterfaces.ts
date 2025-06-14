@@ -15,7 +15,7 @@ export interface AddKillBattleLog {
     type: BattleLogType.Kill
     targets: string
 }
-export type AbilityLog = {
+export interface AbilityLog {
     iconId: Icons
     source: string
     targets: string
@@ -27,7 +27,7 @@ export type AddDamageBattleLog = AddBattleLog &
         damageDone: number
     }
 
-export type BattleLog = {
+export interface BattleLog {
     id: string
     date: number
     type: BattleLogType

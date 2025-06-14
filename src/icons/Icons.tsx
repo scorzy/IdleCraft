@@ -60,7 +60,7 @@ export enum Icons {
     CrossedSwords = 'CrossedSwords',
     Skull = 'Skull',
 }
-export const IconsData: { [k in Icons]: ReactNode } = {
+export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
     Log: <GiLog />,
     Plank: <GiPlanks />,

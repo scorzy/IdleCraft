@@ -4,7 +4,7 @@ import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
 import { RecipeParameterValue, RecipeResult } from '../RecipeInterfaces'
 
-type CraftingData = {
+interface CraftingData {
     recipeId: string
     paramsValue: RecipeParameterValue[]
     result: RecipeResult

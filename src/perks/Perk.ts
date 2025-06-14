@@ -13,12 +13,12 @@ interface Perk {
     iconId: Icons
     nameId: keyof Msg
     descId: keyof Msg
-    requiredExp?: Array<ExpReq>
+    requiredExp?: ExpReq[]
     requiredPerks?: PerksEnum[]
     max?: number
     abilityUnlock?: AbilitiesEnum
 }
-export const PerksData: { [k in PerksEnum]: Perk } = {
+export const PerksData: Record<PerksEnum, Perk> = {
     [PerksEnum.FAST_WOODCUTTING]: {
         id: PerksEnum.FAST_WOODCUTTING,
         iconId: Icons.Axe,

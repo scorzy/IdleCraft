@@ -6,7 +6,7 @@ export interface DamageTypeData {
     ArmourName: keyof Msg
 }
 
-export const DamageTypesData: { [k in DamageTypes]: DamageTypeData } = {
+export const DamageTypesData: Record<DamageTypes, DamageTypeData> = {
     [DamageTypes.Bludgeoning]: {
         ArmourName: 'BludgeoningArmour',
         DamageName: 'BludgeoningDamage',

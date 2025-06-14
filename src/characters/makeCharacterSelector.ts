@@ -75,7 +75,7 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const AllCharInventory = createDeepEqualSelector(
         [(s: GameState) => selectInventoryNoQta(s), (s: GameState) => s.craftedItems],
         (inventory, crafted) => {
-            const ret: { [k in EquipSlotsEnum]?: Item } = {}
+            const ret: Partial<Record<EquipSlotsEnum, Item>> = {}
             Object.entries(inventory).forEach((kv) => {
                 const slot = kv[0] as EquipSlotsEnum
                 const itemIds = kv[1]

@@ -16,4 +16,4 @@ export const MiningItems = {
         type: ItemTypes.Ore,
         value: 10,
     },
-} satisfies { [k: string]: Item }
+} satisfies Record<string, Item>

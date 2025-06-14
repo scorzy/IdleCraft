@@ -5,7 +5,7 @@ function getIsDocumentHidden() {
 }
 
 export function usePageVisibility() {
-    const [isVisible, setIsVisible] = useState(getIsDocumentHidden())
+    const [isVisible, setIsVisible] = useState(() => getIsDocumentHidden())
     const onVisibilityChange = () => setIsVisible(getIsDocumentHidden())
 
     useEffect(() => {

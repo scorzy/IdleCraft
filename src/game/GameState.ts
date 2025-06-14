@@ -12,7 +12,7 @@ import { ToastState } from '../notification/toastState'
 import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
 import { BattleLog } from '../battleLog/battleLogInterfaces'
 import { UiState } from '../ui/UiState'
-import { QuestState } from '../quest/QuestTypes'
+import { QuestState } from '../quests/QuestTypes'
 import { InitialState } from '@/entityAdapter/InitialState'
 
 export interface LocationState {
@@ -45,7 +45,7 @@ export interface GameState {
     lastActivityDone: number
     craftedItems: InitialState<Item>
     waitingTrees: string | null
-    locations: { [k in GameLocations]: LocationState }
+    locations: Record<GameLocations, LocationState>
     treeGrowth: InitialState<TreeGrowth>
     recipeId: string
     craftingForm: {

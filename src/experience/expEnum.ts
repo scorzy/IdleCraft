@@ -11,7 +11,7 @@ export enum ExpEnum {
     Block = 'Block',
     Butchering = 'Butchering',
 }
-export const ExpData: { [k in ExpEnum]: { nameId: keyof Msg } } = {
+export const ExpData: Record<ExpEnum, { nameId: keyof Msg }> = {
     [ExpEnum.Mining]: { nameId: 'MiningExp' },
     [ExpEnum.Woodcutting]: { nameId: 'WoodcuttingExp' },
     [ExpEnum.Woodworking]: { nameId: 'WoodworkingExp' },

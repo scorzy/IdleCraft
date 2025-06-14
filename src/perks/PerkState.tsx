@@ -1,3 +1,3 @@
 import { PerksEnum } from './perksEnum'
 
-export type PerkState = { [k in PerksEnum]?: number }
+export type PerkState = Partial<Record<PerksEnum, number>>

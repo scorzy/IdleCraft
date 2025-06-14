@@ -3,7 +3,7 @@ import { Icons } from '../icons/Icons'
 import { BattleZone } from './BattleZone'
 import { BattleZoneEnum } from './BattleZoneEnum'
 
-export const BattleZones: { [k in BattleZoneEnum]: BattleZone } = {
+export const BattleZones: Record<BattleZoneEnum, BattleZone> = {
     [BattleZoneEnum.Boar]: {
         nameId: 'Boar',
         iconId: Icons.Boar,

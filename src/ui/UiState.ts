@@ -28,11 +28,7 @@ export interface UiState {
     showOwnedPerks: boolean
     battleZone: BattleZoneEnum | null
     selectedCharId: string
-    collapsed: {
-        [K in CollapsedEnum]?: boolean
-    }
-    defaultClosed: {
-        [k in string]: boolean
-    }
+    collapsed: Partial<Record<CollapsedEnum, boolean>>
+    defaultClosed: Record<string, boolean>
     deadDialog: boolean
 }

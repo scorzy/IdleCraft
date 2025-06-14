@@ -5,6 +5,7 @@ import { WorkerMessage } from '../loadWorkerTypes'
 import { regenerate } from '../regenerate'
 import { useGameStore } from '../state'
 import { advanceTimers } from './advanceTimers'
+
 // eslint-disable-next-line import/default
 import LoadWorker from './loadWorker?worker'
 import { startTimers } from './startTimers'

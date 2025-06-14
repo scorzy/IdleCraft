@@ -4,7 +4,7 @@ import { TbUsers } from 'react-icons/tb'
 import { RecipeTypes } from '../../crafting/RecipeInterfaces'
 import { UiPages, UiPageData } from './UiPages'
 
-export const UiPagesData: { [k in UiPages]: UiPageData } = {
+export const UiPagesData: Record<UiPages, UiPageData> = {
     [UiPages.Activities]: {
         nameId: 'Activities',
         icon: <LuLayoutList />,

@@ -5,7 +5,7 @@ export interface SlotData {
     ItemType: ItemTypes
 }
 
-export const SlotsData: { [k in EquipSlotsEnum]: SlotData } = {
+export const SlotsData: Record<EquipSlotsEnum, SlotData> = {
     [EquipSlotsEnum.WoodAxe]: {
         ItemType: ItemTypes.WoodAxe,
     },

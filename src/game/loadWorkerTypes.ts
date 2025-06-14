@@ -1,5 +1,5 @@
 import { GameState } from './GameState'
 
-export type WorkerMessage = {
+export interface WorkerMessage {
     state: GameState
 }

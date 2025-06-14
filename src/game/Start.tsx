@@ -62,9 +62,9 @@ export const Start = memo(function Start() {
                 res.forEach((value) => {
                     if (!('gameId' in value && 'characters' in value)) return
                     try {
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                         
                         const name: string = value.characters?.entries[PLAYER_ID]?.name
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                         
                         const gameId: string = value.gameId
 
                         if (name) nameIds.push({ gameId, name, state: value as GameState })

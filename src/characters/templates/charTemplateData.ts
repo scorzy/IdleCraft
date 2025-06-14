@@ -2,7 +2,7 @@ import { Icons } from '../../icons/Icons'
 import { CharTemplate } from './charTemplates'
 import { CharTemplateEnum } from './characterTemplateEnum'
 
-export const CharTemplatesData: { [k in CharTemplateEnum]: CharTemplate } = {
+export const CharTemplatesData: Record<CharTemplateEnum, CharTemplate> = {
     [CharTemplateEnum.Boar]: {
         nameId: 'Boar',
         iconId: Icons.Boar,

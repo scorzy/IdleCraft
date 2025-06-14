@@ -14,7 +14,7 @@ interface OreDataType {
     requiredLevel: number
 }
 
-export const OreData: { [k in OreTypes]: OreDataType } = {
+export const OreData: Record<OreTypes, OreDataType> = {
     [OreTypes.Copper]: {
         id: OreTypes.Copper,
         qta: 10,

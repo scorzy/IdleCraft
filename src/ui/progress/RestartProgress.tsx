@@ -21,7 +21,7 @@ export function RestartProgress(props: { value: number; className?: string; colo
         return () => {
             if (frame !== -1) {
                 setIsZero(false)
-                window.clearInterval(frame)
+                window.clearTimeout(frame)
             }
         }
     }, [hpPercent])

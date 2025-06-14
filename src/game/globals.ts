@@ -5,11 +5,11 @@ import { MapEx } from '../utils/MapEx'
 import { Icons } from '../icons/Icons'
 import { GameState } from './GameState'
 
-export const activityExecutors: MapEx<ActivityTypes, (state: GameState, timer: Timer) => GameState> = new MapEx()
-export const activityRemovers: MapEx<ActivityTypes, (state: GameState, activityId: string) => GameState> = new MapEx()
-export const activityStarters: MapEx<
+export const activityExecutors = new MapEx<ActivityTypes, (state: GameState, timer: Timer) => GameState>()
+export const activityRemovers = new MapEx<ActivityTypes, (state: GameState, activityId: string) => GameState>()
+export const activityStarters = new MapEx<
     ActivityTypes,
     (state: GameState, activityId: string) => { state: GameState; result: ActivityStartResult }
-> = new MapEx()
-export const activityTitles: MapEx<ActivityTypes, (state: GameState, activityId: string) => string> = new MapEx()
-export const activityIcons: MapEx<ActivityTypes, (state: GameState, activityId: string) => Icons> = new MapEx()
+>()
+export const activityTitles = new MapEx<ActivityTypes, (state: GameState, activityId: string) => string>()
+export const activityIcons = new MapEx<ActivityTypes, (state: GameState, activityId: string) => Icons>()

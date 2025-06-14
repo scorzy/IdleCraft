@@ -10,7 +10,7 @@ export function copyValues(origin: object, objValues: object) {
                 typeof value === 'number' ||
                 typeof value === 'string'
             )
-                (origin as { [key in string]: unknown })[key] = value
+                (origin as Record<string, unknown>)[key] = value
         }
     })
 }

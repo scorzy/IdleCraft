@@ -4,7 +4,7 @@ import { Icons } from '../icons/Icons'
 import { DamageData, DamageTypes, Item } from '../items/Item'
 import { EquipSlotsEnum } from './equipSlotsEnum'
 
-export type CharacterSelector = {
+export interface CharacterSelector {
     Name: (state: GameState) => string
     Icon: (state: GameState) => Icons
     Level: (state: GameState) => number
@@ -51,5 +51,5 @@ export type CharacterSelector = {
     EquippedItem: (slot: EquipSlotsEnum) => (state: GameState) => Item | undefined
     MainWeapon: (state: GameState) => Item | undefined
 
-    AllCharInventory: (state: GameState) => { [k in EquipSlotsEnum]?: Item }
+    AllCharInventory: (state: GameState) => Partial<Record<EquipSlotsEnum, Item>>
 }

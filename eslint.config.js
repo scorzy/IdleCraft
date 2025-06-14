@@ -1,91 +1,79 @@
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import _import from 'eslint-plugin-import'
-import reactCompiler from 'eslint-plugin-react-compiler'
 import globals from 'globals'
+import tseslint from 'typescript-eslint'
+import pluginReact from 'eslint-plugin-react'
+import { defineConfig } from 'eslint/config'
+import eslint from '@eslint/js'
+import importPlugin from 'eslint-plugin-import'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import reactCompiler from 'eslint-plugin-react-compiler'
+import eslintJs from '@eslint/js'
+import eslintReact from '@eslint-react/eslint-plugin'
+import eslintConfigPrettier from 'eslint-config-prettier/flat'
+import react from 'eslint-plugin-react'
+import typescriptEslint from '@typescript-eslint/eslint-plugin'
+import reactRecommended from 'eslint-plugin-react/configs/recommended.js'
 import tsParser from '@typescript-eslint/parser'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all,
-})
-
-export default [
+export default defineConfig([
+    eslint.configs.recommended,
+    tseslint.configs.strict,
+    tseslint.configs.stylistic,
+    pluginReact.configs.flat.recommended,
+    js.configs.recommended,
+    reactRefresh.configs.recommended,
+    importPlugin.flatConfigs.recommended,
+    reactCompiler.configs.recommended,
+    eslintConfigPrettier,
+    { files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'], plugins: { js }, extends: ['js/recommended'] },
     {
-        ignores: [
-            '**/dist',
-            '**/.eslintrc.cjs',
-            '**/node_modules',
-            '**/dist',
-            '**/coverage',
-            '**/.eslintcache',
-            '**/*.svg',
-            '**/serviceWorker.ts',
-            '**/coverage',
-            'src/components',
-            '**/public',
-        ],
-    },
-    ...fixupConfigRules(
-        compat.extends(
-            'eslint:recommended',
-            'plugin:@typescript-eslint/recommended',
-            'plugin:@typescript-eslint/recommended-requiring-type-checking',
-            'plugin:@typescript-eslint/strict',
-            'plugin:import/recommended',
-            'plugin:import/typescript',
-            'plugin:react/recommended',
-            'plugin:react/jsx-runtime',
-            'plugin:react-hooks/recommended',
-            'prettier'
-        )
-    ),
-    {
-        plugins: {
-            'react-refresh': reactRefresh,
-            import: fixupPluginRules(_import),
-            'react-compiler': reactCompiler,
-        },
-
-        languageOptions: {
-            globals: {
-                ...globals.browser,
-            },
-
-            parser: tsParser,
-            ecmaVersion: 'latest',
-            sourceType: 'module',
-
-            parserOptions: {
-                project: true,
-                tsconfigRootDir: __dirname,
-            },
-        },
-
+        files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
         settings: {
             react: {
                 version: 'detect',
             },
-
-            'import/parsers': {
-                '@typescript-eslint/parser': ['.ts', '.tsx'],
-            },
-
             'import/resolver': {
+                // alias: {
+                //     map: [['@', './src']],
+                //     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+                // },
                 typescript: {
                     alwaysTryTypes: true,
                 },
             },
         },
-
+        plugins: { '@typescript-eslint': typescriptEslint, react },
+        extends: [
+            eslintJs.configs.recommended,
+            tseslint.configs.recommended,
+            eslintReact.configs['recommended-typescript'],
+            importPlugin.flatConfigs.recommended,
+            importPlugin.flatConfigs.typescript,
+        ],
+        languageOptions: {
+            ...pluginReact.configs.flat.recommended.languageOptions,
+            ...reactRecommended.languageOptions,
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            sourceType: 'module',
+            parser: tsParser,
+            parserOptions: {
+                ecmaFeatures: {
+                    jsx: true,
+                },
+                ecmaVersion: 'latest',
+                sourceType: 'module',
+                projectService: true,
+                project: 'tsconfig.json',
+            },
+            globals: {
+                ...globals.serviceworker,
+                ...globals.browser,
+            },
+        },
         rules: {
+            'react/react-in-jsx-scope': 'off',
+            'react/jsx-uses-react': 'off',
             'react-refresh/only-export-components': [
                 'warn',
                 {
@@ -115,6 +103,7 @@ export default [
                     ignoreStatic: true,
                 },
             ],
+            '@eslint-react/no-missing-key': 'warn',
         },
     },
-]
+])

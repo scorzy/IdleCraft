@@ -8,14 +8,14 @@ export enum QuestType {
     KILL = 'kill',
     COLLECT = 'collect',
 }
-export type QuestOutcome = {
+export interface QuestOutcome {
     id: string
     type: QuestType
     goldReward?: number
     itemReward?: string
     itemCount?: number
 }
-export type QuestOutcomeData = {
+export interface QuestOutcomeData {
     outcomeId: string
 }
 export type KillQuestOutcome = QuestOutcome & {
@@ -41,7 +41,7 @@ export function isKillingOutcome(out: QuestOutcome | KillQuestOutcome): out is K
 export function isCollectOutcome(out: QuestOutcome | CollectQuestOutcome): out is CollectQuestOutcome {
     return out.type === QuestType.COLLECT
 }
-export type QuestTemplate = {
+export interface QuestTemplate {
     id: string
     nameId: keyof Msg
     descriptionId: keyof Msg
@@ -50,7 +50,7 @@ export type QuestTemplate = {
     outcomes: Record<string, QuestOutcome>
 }
 
-export type QuestState = {
+export interface QuestState {
     id: string
     templateId: string
     outcomeData: Record<string, QuestOutcomeData>

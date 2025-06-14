@@ -46,7 +46,7 @@ export function UiStorage() {
     useEffect(() => {
         const id = setTimeout(() => setShow(true), 0)
         return () => {
-            if (id) clearInterval(id)
+            if (id) clearTimeout(id)
         }
     }, [])
     const small = active === 'small'

@@ -4,4 +4,4 @@ export interface OreState {
     qta: number
     hp: number
 }
-export type OreType = { [k in OreTypes]?: OreState }
+export type OreType = Partial<Record<OreTypes, OreState>>

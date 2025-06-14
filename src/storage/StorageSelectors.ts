@@ -18,7 +18,7 @@ import { InventoryNoQta } from './storageTypes'
 import { isCrafted } from './storageFunctions'
 import { InitialState } from '@/entityAdapter/InitialState'
 
-const selectStorageLocationsInt = myMemoizeOne((locations: { [k in GameLocations]: LocationState }) => {
+const selectStorageLocationsInt = myMemoizeOne((locations: Record<GameLocations, LocationState>) => {
     const res: GameLocations[] = []
     const locationsEntries = Object.entries(locations)
     for (const loc of locationsEntries) if (Object.keys(loc[1].storage).length > 0) res.push(loc[0] as GameLocations)
@@ -33,7 +33,7 @@ export const selectGameItemFromCraft = (itemId: string, craftedItems: InitialSta
 
 export const selectStorageLocations = (state: GameState) => selectStorageLocationsInt(state.locations)
 
-type ItemId = { id: string }
+interface ItemId { id: string }
 type ItemOrdQta = ItemId & { qta: number }
 type ItemOrdName = ItemId & { name: string }
 type ItemOrdValue = ItemId & { value: number }

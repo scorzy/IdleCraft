@@ -12,7 +12,7 @@ interface WoodDataType {
     handleId: string
     requiredLevel: number
 }
-export const WoodData: { [k in WoodTypes]: WoodDataType } = {
+export const WoodData: Record<WoodTypes, WoodDataType> = {
     [WoodTypes.DeadTree]: {
         maxHp: 100,
         maxQta: 10,
