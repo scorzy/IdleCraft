@@ -13,7 +13,7 @@ import { useUiTempStore } from '../state/uiTempStore'
 import classes from './menuItem.module.css'
 import { CollapsedEnum } from './CollapsedEnum'
 import { cn } from '@/lib/utils'
-import { buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/buttonVariants'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 export const MenuItem = memo(function MenuItem(props: {

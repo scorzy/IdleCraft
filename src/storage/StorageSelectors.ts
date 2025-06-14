@@ -33,7 +33,9 @@ export const selectGameItemFromCraft = (itemId: string, craftedItems: InitialSta
 
 export const selectStorageLocations = (state: GameState) => selectStorageLocationsInt(state.locations)
 
-interface ItemId { id: string }
+interface ItemId {
+    id: string
+}
 type ItemOrdQta = ItemId & { qta: number }
 type ItemOrdName = ItemId & { name: string }
 type ItemOrdValue = ItemId & { value: number }

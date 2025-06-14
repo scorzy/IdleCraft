@@ -62,9 +62,8 @@ export const Start = memo(function Start() {
                 res.forEach((value) => {
                     if (!('gameId' in value && 'characters' in value)) return
                     try {
-                         
                         const name: string = value.characters?.entries[PLAYER_ID]?.name
-                         
+
                         const gameId: string = value.gameId
 
                         if (name) nameIds.push({ gameId, name, state: value as GameState })
