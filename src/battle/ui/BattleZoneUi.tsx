@@ -92,8 +92,8 @@ const BattleZoneInfoUi = memo(function BattleZoneInfoUi() {
         <Card>
             <MyCardHeaderTitle title={t.Enemies} />
             <CardContent>
-                {battleZone.enemies.map((e, index) => (
-                    <EnemyInfoUi key={e.template + index} quantity={e.quantity} templateEnum={e.template} />
+                {battleZone.enemies.map((e) => (
+                    <EnemyInfoUi key={e.id} quantity={e.quantity} templateEnum={e.template} />
                 ))}
             </CardContent>
             <CardFooter>

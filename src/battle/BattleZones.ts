@@ -9,6 +9,7 @@ export const BattleZones: Record<BattleZoneEnum, BattleZone> = {
         iconId: Icons.Boar,
         enemies: [
             {
+                id: 'boar-1',
                 quantity: 1,
                 template: CharTemplateEnum.Boar,
             },
@@ -19,6 +20,7 @@ export const BattleZones: Record<BattleZoneEnum, BattleZone> = {
         iconId: Icons.WolfHead,
         enemies: [
             {
+                id: 'wolf-1',
                 quantity: 2,
                 template: CharTemplateEnum.Wolf,
             },

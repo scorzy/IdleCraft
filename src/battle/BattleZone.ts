@@ -6,6 +6,7 @@ export interface BattleZone {
     nameId: keyof Msg
     iconId: Icons
     enemies: {
+        id: string
         quantity: number
         template: CharTemplateEnum
     }[]
