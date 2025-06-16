@@ -28,10 +28,11 @@ export default defineConfig({
         },
     },
     test: {
-        environment: 'happy-dom',
+        // environment: 'happy-dom',
         coverage: {
             provider: 'v8',
         },
+        pool: 'threads',
     },
     build: {
         rollupOptions: {
