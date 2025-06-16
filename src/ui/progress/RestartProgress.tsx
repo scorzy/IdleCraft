@@ -11,6 +11,7 @@ export function RestartProgress(props: { value: number; className?: string; colo
         let frame = -1
 
         if (hpPercent === 100 && hpPercent > prevHpPercentRef.current) {
+            // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
             setIsZero(true)
 
             frame = window.setTimeout(() => {

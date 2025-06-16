@@ -1,15 +1,16 @@
-import * as React from 'react'
+import { useState, useEffect } from 'react'
 
 export function useMediaQuery(query: string) {
-    const [value, setValue] = React.useState(false)
+    const [value, setValue] = useState(false)
 
-    React.useEffect(() => {
+    useEffect(() => {
         function onChange(event: MediaQueryListEvent) {
             setValue(event.matches)
         }
 
         const result = matchMedia(query)
         result.addEventListener('change', onChange)
+        // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
         setValue(result.matches)
 
         return () => result.removeEventListener('change', onChange)

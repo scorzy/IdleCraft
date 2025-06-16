@@ -188,6 +188,7 @@ const CombatAbilitiesList = memo(function CombatAbilitiesList(props: { charId: s
     return (
         <div className={classes.abilitiesList}>
             {allAbilities.map((id, index) => (
+                // eslint-disable-next-line @eslint-react/no-array-index-key
                 <CombatAbilityBadge characterId={charId} abilityId={id} key={id + charId + index} index={index} />
             ))}
             {allAbilities.length === 0 && (

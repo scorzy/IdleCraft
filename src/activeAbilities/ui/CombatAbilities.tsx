@@ -31,6 +31,7 @@ export const CombatAbilities = memo(function CombatAbilities() {
                 {!readonly && (
                     <>
                         {selected.map((c, index) => (
+                            // eslint-disable-next-line @eslint-react/no-array-index-key
                             <CombatAbility index={index} key={c + index} />
                         ))}
                         <Button variant="secondary" onClick={addRotation}>
@@ -41,6 +42,7 @@ export const CombatAbilities = memo(function CombatAbilities() {
                 {readonly && (
                     <>
                         {selected.map((c, index) => (
+                            // eslint-disable-next-line @eslint-react/no-array-index-key
                             <CombatAbilitiesReadOnly index={index} key={c + index} />
                         ))}
                     </>
