@@ -62,3 +62,10 @@ class QuestAdapterInt extends AbstractEntityAdapter<QuestState> {
     }
 }
 export const QuestAdapter = new QuestAdapterInt()
+
+class QuestTemplateAdapterInt extends AbstractEntityAdapter<QuestTemplate> {
+    getId(data: QuestTemplate): string {
+        return data.id
+    }
+}
+export const QuestTemplateAdapter = new QuestTemplateAdapterInt()

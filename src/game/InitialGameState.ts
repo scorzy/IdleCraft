@@ -12,7 +12,7 @@ import { PLAYER_CHAR, PLAYER_ID } from '../characters/charactersConst'
 import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
 import { RecipeTypes } from '../crafting/RecipeInterfaces'
-import { QuestAdapter } from '../quests/QuestTypes'
+import { QuestAdapter, QuestTemplateAdapter } from '../quests/QuestTypes'
 import { GameState, LocationState } from './GameState'
 
 const getInitialVillageState: () => LocationState = () => {
@@ -84,6 +84,7 @@ export const InitialGameState: GameState = {
     castCharAbility: CastCharAbilityAdapter.getInitialState(),
     battleLogs: BattleLogAdapter.getInitialState(),
     quests: QuestAdapter.getInitialState(),
+    availableQuests: QuestTemplateAdapter.getInitialState(),
 }
 
 export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)
