@@ -216,6 +216,13 @@ export interface Msg {
     BattleFinished: string
 
     Killed: string
+    Quests: string
+
+    BoarQuest1: string
+    BoarQuest1Desc: string
+
+    AcceptedQuests: string
+    AvailableQuests: string
 }
 export interface MsgFunctions {
     // Time
@@ -239,4 +246,7 @@ export interface MsgFunctions {
 
     requireWoodcuttingLevel: (formattedQta: string) => string
     requireMiningLevel: (formattedQta: string) => string
+
+    killQuest1Name: (targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => string
+    killQuest1Desc: (targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => string
 }

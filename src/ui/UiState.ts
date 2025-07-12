@@ -31,4 +31,5 @@ export interface UiState {
     collapsed: Partial<Record<CollapsedEnum, boolean>>
     defaultClosed: Record<string, boolean>
     deadDialog: boolean
+    selectedQuestId: string | null
 }

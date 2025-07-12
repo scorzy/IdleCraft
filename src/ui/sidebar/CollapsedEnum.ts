@@ -13,4 +13,7 @@ export enum CollapsedEnum {
     AbilityList = 'AbilityList',
     CombatSide = 'CombatSide',
     Forest = 'Forest',
+    Quest = 'Quest',
+    QuestAccepted = 'QuestAccepted',
+    QuestAvailable = 'QuestAvailable',
 }

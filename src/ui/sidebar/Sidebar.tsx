@@ -16,6 +16,7 @@ export const Sidebar = memo(function Sidebar() {
             <MenuItem page={UiPages.Activities} collapsedId={CollapsedEnum.Sidebar} right={<ActivitiesLinkBadge />} />
             <MenuItem page={UiPages.Storage} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Characters} collapsedId={CollapsedEnum.Sidebar} />
+            <MenuItem page={UiPages.Quest} collapsedId={CollapsedEnum.Sidebar} />
 
             <SidebarBattle />
             <SidebarGathering />

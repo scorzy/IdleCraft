@@ -13,6 +13,7 @@ export enum UiPages {
     Combat = 'Combat',
     Characters = 'Characters',
     Butchering = 'Butchering',
+    Quest = 'Quest',
 }
 export interface UiPageData {
     nameId: keyof Msg

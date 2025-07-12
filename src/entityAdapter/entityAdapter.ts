@@ -60,6 +60,9 @@ export abstract class AbstractEntityAdapter<T> {
         }
         return ret
     }
+    findManyIds(state: InitialState<T>, fun: (entity: T) => boolean): string[] {
+        return this.findMany(state, fun)?.map((el) => this.getId(el)) ?? []
+    }
     load(data: unknown): InitialState<T> {
         let state = this.getInitialState()
         if (

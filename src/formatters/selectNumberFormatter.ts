@@ -5,7 +5,7 @@ import { GameState } from '../game/GameState'
 import { getFormatter } from './formatNumber'
 import { getTimeFormatter, getTimeFormatterPrecise } from './formatTime'
 
-const selectFormatter = createSelector(
+export const selectFormatter = createSelector(
     [(s: GameState) => s.ui.numberFormatNotation, (s: GameState) => s.ui.comma, (s: GameState) => s.ui.lang],
     (numberFormatNotation, comma, lang) => {
         const formatter = getFormatter(numberFormatNotation, comma)
