@@ -8,3 +8,5 @@ export const MAX_LOOT = 10
 export const CRAFTED_ITEM_PREFIX = 'C_'
 
 export const EMPTY_ARRAY = []
+
+export const RESELECT_MAX_SIZE = 10

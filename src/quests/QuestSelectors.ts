@@ -1,12 +1,16 @@
 import { GameState } from '../game/GameState'
+import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
 import { QuestData } from './QuestData'
 import { QuestAdapter, QuestStatus } from './QuestTypes'
 
-export const selectAcceptedQuests = (state: GameState) =>
-    QuestAdapter.findManyIds(state.quests, (quest) => quest.state === QuestStatus.ACCEPTED)
+export const selectAcceptedQuests = createMemoizeLatestSelector([(state: GameState) => state.quests], (quests) =>
+    QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.ACCEPTED)
+)
 
-export const selectAvailableQuests = (state: GameState) =>
-    QuestAdapter.findManyIds(state.quests, (quest) => quest.state === QuestStatus.AVAILABLE)
+export const selectAvailableQuests = createMemoizeLatestSelector([(state: GameState) => state.quests], (quests) =>
+    QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.AVAILABLE)
+)
+
 export const selectQuestName = (questId: string) => (state: GameState) => {
     const templateId = QuestAdapter.selectEx(state.quests, questId).templateId
     const data = QuestData[templateId]
