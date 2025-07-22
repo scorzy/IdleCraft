@@ -13,20 +13,17 @@ export const selectAvailableQuests = createMemoizeLatestSelector([(state: GameSt
 
 export const selectQuestName = (questId: string) => (state: GameState) => {
     const templateId = QuestAdapter.selectEx(state.quests, questId).templateId
-    const data = QuestData[templateId]
-    if (!data) throw new Error(`Quest template not found for id: ${templateId}`)
+    const data = QuestData.getEx(templateId)
     return data.getName(questId)(state)
 }
 export const selectQuestDescription = (questId: string) => (state: GameState) => {
     const templateId = QuestAdapter.selectEx(state.quests, questId).templateId
-    const data = QuestData[templateId]
-    if (!data) throw new Error(`Quest template not found for id: ${templateId}`)
+    const data = QuestData.getEx(templateId)
     return data.getDescription(questId)(state)
 }
 export const selectQuestIcon = (questId: string) => (state: GameState) => {
     const templateId = QuestAdapter.selectEx(state.quests, questId).templateId
-    const data = QuestData[templateId]
-    if (!data) throw new Error(`Quest template not found for id: ${templateId}`)
+    const data = QuestData.getEx(templateId)
     return data.getIcon(questId)(state)
 }
 export const isQuestSelected = (questId: string) => (state: GameState) => state.ui.selectedQuestId === questId

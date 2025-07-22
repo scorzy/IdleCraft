@@ -26,7 +26,7 @@ const QuestLink = (props: { id: string }) => {
 
     return (
         <MyListItem
-            collapsedId={CollapsedEnum.QuestAccepted}
+            collapsedId={CollapsedEnum.Quest}
             active={selected}
             text={nameId}
             icon={IconsData[iconId]}

@@ -1,6 +1,6 @@
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
-import { QuestParameter, KillQuestOutcome, CollectQuestOutcome } from './QuestTypes'
+import { QuestState } from './QuestTypes'
 
 export interface QuestTemplate {
     id: string
@@ -8,6 +8,6 @@ export interface QuestTemplate {
     getDescription: (id: string) => (state: GameState) => string
     nextQuestId?: string
     getIcon: (id: string) => (state: GameState) => Icons
-    parameters: Record<string, QuestParameter>
-    outcomes: Record<string, KillQuestOutcome | CollectQuestOutcome>
+
+    generateQuestData: (state: GameState) => QuestState
 }

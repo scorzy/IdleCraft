@@ -10,3 +10,5 @@ export const CRAFTED_ITEM_PREFIX = 'C_'
 export const EMPTY_ARRAY = []
 
 export const RESELECT_MAX_SIZE = 10
+
+export const MAX_AVAILABLE_QUESTS = 10

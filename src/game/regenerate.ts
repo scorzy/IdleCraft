@@ -1,4 +1,5 @@
 import { regenerateChars } from '../characters/functions/regenerateChars'
+import { updateQuests } from '../quests/QuestFunctions'
 import { GameState } from './GameState'
 
 export function regenerate(state: GameState, now: number): GameState {
@@ -11,7 +12,9 @@ export function regenerate(state: GameState, now: number): GameState {
     if (toRegen < 1) return state
 
     state = { ...state, lastRegen: state.lastRegen + toRegen * 1e3 }
+
     state = regenerateChars(state, toRegen)
+    state = updateQuests(state)
 
     return state
 }
