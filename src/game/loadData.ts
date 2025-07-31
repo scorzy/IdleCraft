@@ -8,6 +8,7 @@ import { CharacterAdapter } from '../characters/characterAdapter'
 import { RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
 import { loadUi } from '../ui/loadUi'
 import { loadLocation } from '../gameLocations/loadLocations'
+import { QuestAdapter } from '../quests/QuestTypes'
 import { GameState } from './GameState'
 import { GetInitialGameState } from './InitialGameState'
 
@@ -33,6 +34,7 @@ export function loadData(data: object): GameState {
     loadLocation(state, data)
 
     if ('characters' in data) state.characters = CharacterAdapter.load(data.characters)
+    if ('quests' in data) state.quests = QuestAdapter.load(data.quests)
 
     if ('craftingForm' in data)
         state.craftingForm = data.craftingForm as {

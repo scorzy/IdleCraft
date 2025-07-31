@@ -3,14 +3,14 @@ import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { QuestData } from './QuestData'
 import { selectAvailableQuests } from './QuestSelectors'
-import { QuestAdapter, QuestState } from './QuestTypes'
+import { QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
 
 export const selectQuest = (id: string) =>
     useGameStore.setState((state: GameState) => {
         return {
             ...state,
-            quests: {
-                ...state.quests,
+            ui: {
+                ...state.ui,
                 selectedQuestId: id,
             },
         }
@@ -31,3 +31,12 @@ export function updateQuests(state: GameState): GameState {
 
     return state
 }
+export const acceptQuest = (state: GameState, questId: string) => {
+    const quest = QuestAdapter.selectEx(state.quests, questId)
+    if (!quest) return state
+    if (quest.state !== QuestStatus.AVAILABLE) return state
+    state = { ...state, quests: QuestAdapter.update(state.quests, questId, { state: QuestStatus.ACCEPTED }) }
+    return state
+}
+
+export const acceptClick = (questId: string) => useGameStore.setState((state: GameState) => acceptQuest(state, questId))

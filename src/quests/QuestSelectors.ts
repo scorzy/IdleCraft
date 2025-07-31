@@ -1,4 +1,5 @@
 import { GameState } from '../game/GameState'
+import { Icons } from '../icons/Icons'
 import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
 import { QuestData } from './QuestData'
 import { QuestAdapter, QuestStatus } from './QuestTypes'
@@ -11,19 +12,38 @@ export const selectAvailableQuests = createMemoizeLatestSelector([(state: GameSt
     QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.AVAILABLE)
 )
 
-export const selectQuestName = (questId: string) => (state: GameState) => {
+export const selectQuestName = (questId: string | null) => (state: GameState) => {
+    if (!questId) return ''
     const templateId = QuestAdapter.selectEx(state.quests, questId).templateId
     const data = QuestData.getEx(templateId)
     return data.getName(questId)(state)
 }
-export const selectQuestDescription = (questId: string) => (state: GameState) => {
+export const selectQuestDescription = (questId: string | null) => (state: GameState) => {
+    if (!questId) return ''
     const templateId = QuestAdapter.selectEx(state.quests, questId).templateId
     const data = QuestData.getEx(templateId)
     return data.getDescription(questId)(state)
 }
-export const selectQuestIcon = (questId: string) => (state: GameState) => {
+export const selectQuestIcon = (questId: string | null) => (state: GameState) => {
+    if (!questId) return Icons.Dagger
     const templateId = QuestAdapter.selectEx(state.quests, questId).templateId
     const data = QuestData.getEx(templateId)
     return data.getIcon(questId)(state)
 }
 export const isQuestSelected = (questId: string) => (state: GameState) => state.ui.selectedQuestId === questId
+export const selectQuestId = (state: GameState) => state.ui.selectedQuestId
+
+export const selectQuestStatus = (questId: string | null) => (state: GameState) => {
+    if (!questId) return QuestStatus.AVAILABLE
+    return QuestAdapter.selectEx(state.quests, questId).state
+}
+
+export const selectOutcomeIds = createMemoizeLatestSelector(
+    [selectQuestId, (s: GameState) => s.quests],
+    (questId, quests) => {
+        if (!questId) return []
+        const outcomes = QuestAdapter.selectEx(quests, questId).outcomeData
+        if (!outcomes) return []
+        return Object.keys(outcomes).sort()
+    }
+)
