@@ -1,3 +1,4 @@
+import { create } from 'domain'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
@@ -47,3 +48,13 @@ export const selectOutcomeIds = createMemoizeLatestSelector(
         return Object.keys(outcomes).sort()
     }
 )
+
+export const selectOutcomeDescription = (questId: string | null, outcomeId: string | null) => (state: GameState) => {
+    if (!questId || !outcomeId) return ''
+    const quest = QuestAdapter.selectEx(state.quests, questId)
+    const outcomeData = quest.outcomeData[outcomeId]
+    if (!outcomeData) return ''
+    const templateId = quest.templateId
+    const data = QuestData.getEx(templateId)
+    return data.getOutcomeDescription(questId, outcomeId)(state)
+}

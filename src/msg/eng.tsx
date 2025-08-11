@@ -236,7 +236,7 @@ export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
             if (t.qta === 1) toKill += `1 ${targetStr}`
             else if (t.qta > 1) toKill += `${t.formattedQta} ${targetStr}s`
         }
-
         return `Hunt down and kill ${toKill}.`
     },
+    killQuest1Outcome: (_targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => '',
 })

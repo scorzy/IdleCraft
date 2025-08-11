@@ -26,16 +26,10 @@ export type KillQuestOutcome = QuestOutcome & {
     targetCount: number
     locationId?: string
 }
-export type KillOutcomeData = QuestOutcomeData & {
-    killed: number
-}
 export type CollectQuestOutcome = QuestOutcome & {
     type: QuestType.COLLECT
     itemCount: number
     itemFilter: ItemFilter
-}
-export type CollectOutcomeData = QuestOutcomeData & {
-    selectedItemId: string
 }
 export function isKillingOutcome(out: QuestOutcome | KillQuestOutcome): out is KillQuestOutcome {
     return out.type === QuestType.KILL

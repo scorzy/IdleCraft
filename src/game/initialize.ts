@@ -21,6 +21,8 @@ import { getMiningIcon } from '../mining/functions/getMiningIcon'
 import { getMiningTitle } from '../mining/functions/getMiningTitle'
 import { removeMining } from '../mining/functions/removeMining'
 import { startMining } from '../mining/functions/startMining'
+import { QuestData } from '../quests/QuestData'
+import { KillQuestTemplate } from '../quests/QuestTemplates'
 import { twoHSwordRecipe } from '../smithing/recipes/2HSword'
 import { armourRecipe } from '../smithing/recipes/ArmourRecipes'
 import { axeRecipe } from '../smithing/recipes/AxeRecipe'
@@ -42,6 +44,7 @@ export function initialize() {
     initActivities()
     initRecipes()
     initAbilities()
+    initQuests()
 }
 
 function initActivities() {
@@ -88,4 +91,8 @@ function initRecipes() {
 function initAbilities() {
     ActiveAbilityData.set(AbilitiesEnum.NormalAttack, new NormalAttack())
     ActiveAbilityData.set(AbilitiesEnum.ChargedAttack, new ChargedAttack())
+}
+
+function initQuests() {
+    QuestData.set('kill-n', new KillQuestTemplate())
 }

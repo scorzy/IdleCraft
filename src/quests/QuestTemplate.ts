@@ -10,4 +10,5 @@ export interface QuestTemplate {
     getIcon: (id: string) => (state: GameState) => Icons
 
     generateQuestData: (state: GameState) => QuestState
+    getOutcomeDescription: (questId: string, outcomeId: string) => (state: GameState) => string
 }

@@ -249,4 +249,5 @@ export interface MsgFunctions {
 
     killQuest1Name: (targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => string
     killQuest1Desc: (targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => string
+    killQuest1Outcome: (targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => string
 }
