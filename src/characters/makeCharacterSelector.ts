@@ -16,9 +16,12 @@ import { selectMaxHealthFromChar } from './selectors/healthSelectors'
 import { selectMaxManaFromChar } from './selectors/manaSelectors'
 import { selectMaxStaminaFromChar } from './selectors/staminaSelectors'
 import { EquipSlotsEnum } from './equipSlotsEnum'
+import { CharTemplateEnum } from './templates/characterTemplateEnum'
 
 export const makeCharacterSelector: (charId: string) => CharacterSelector = (charId: string) => {
     const selChar = (s: GameState) => CharacterAdapter.selectEx(s.characters, charId)
+
+    const TemplateId = (s: GameState) => selChar(s).templateId as CharTemplateEnum
 
     const Name = (state: GameState) => {
         const char = CharacterAdapter.selectEx(state.characters, charId)
@@ -216,6 +219,7 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const AttackSpeed = (s: GameState) => AttackSpeedList(s).total
 
     return {
+        TemplateId,
         Name,
         Icon,
         Level,

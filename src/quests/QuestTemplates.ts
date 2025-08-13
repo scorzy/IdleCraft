@@ -54,10 +54,12 @@ export class KillQuestTemplate implements QuestTemplate {
         },
         outcomeData: {
             'outcome-1': {
+                id: 'outcome-1',
                 outcomeId: 'outcome-1',
                 type: QuestType.KILL,
                 targetId: CharTemplateEnum.Boar,
                 targetCount: 5,
+                killedCount: 0,
                 goldReward: 100,
             },
         },

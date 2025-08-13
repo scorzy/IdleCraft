@@ -57,3 +57,18 @@ export const selectOutcomeDescription = (questId: string | null, outcomeId: stri
     const data = QuestData.getEx(templateId)
     return data.getOutcomeDescription(questId, outcomeId)(state)
 }
+export const selectOutcomeType = (questId: string | null, outcomeId: string | null) => (state: GameState) => {
+    if (!questId || !outcomeId) return null
+    const quest = QuestAdapter.selectEx(state.quests, questId)
+    const outcomeData = quest.outcomeData[outcomeId]
+    if (!outcomeData) return null
+    return outcomeData.type
+}
+export const selectOutcome = (questId: string, outcomeId: string) => (state: GameState) => {
+    if (!questId || !outcomeId) return null
+    const quest = QuestAdapter.selectEx(state.quests, questId)
+    const outcomeData = quest.outcomeData[outcomeId]
+    if (!outcomeData) return null
+    const outcome = quest.outcomeData[outcomeId]
+    return outcome
+}

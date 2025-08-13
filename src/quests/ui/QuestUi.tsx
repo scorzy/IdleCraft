@@ -10,7 +10,10 @@ import {
     isQuestSelected,
     selectAcceptedQuests,
     selectAvailableQuests,
+    selectOutcome,
+    selectOutcomeDescription,
     selectOutcomeIds,
+    selectOutcomeType,
     selectQuestDescription,
     selectQuestIcon,
     selectQuestId,
@@ -21,8 +24,9 @@ import { IconsData } from '../../icons/Icons'
 import { acceptClick, selectQuest } from '../QuestFunctions'
 import { GameState } from '../../game/GameState'
 import { Button } from '../../components/ui/button'
-import { QuestStatus } from '../QuestTypes'
+import { isKillingOutcome, QuestStatus, QuestType } from '../QuestTypes'
 import { TitleH1, TypographyP } from '../../ui/typography'
+import { ProgressBar } from '../../ui/progress/ProgressBar'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -118,20 +122,51 @@ const QuestDetailUi = () => {
             </TitleH1>
             <TypographyP>{descriptionId}</TypographyP>
             {outcomeIds.map((outcomeId) => (
-                <QuestOutcomeUi id={outcomeId} key={outcomeId} />
+                <QuestOutcomeUi questId={id} outcomeId={outcomeId} key={outcomeId} />
             ))}
             <TypographyP>{state === QuestStatus.AVAILABLE && <QuestButtons id={id} />}</TypographyP>
         </>
     )
 }
-const QuestOutcomeUi = (props: { id: string }) => {
-    const { id } = props
-    return <>{id}</>
-}
+
 const QuestButtons = (props: { id: string }) => {
     const { id } = props
 
     const onClick = useCallback(() => acceptClick(id), [id])
 
     return <Button onClick={onClick}>Accept</Button>
+}
+const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
+    const { questId, outcomeId } = props
+    const type = useGameStore(
+        useCallback((s: GameState) => selectOutcomeType(questId, outcomeId)(s), [questId, outcomeId])
+    )
+    if (!type) return <></>
+
+    if (type === QuestType.KILL) return <KillOutcomeUi questId={questId} outcomeId={outcomeId} />
+    else if (type === QuestType.COLLECT) return <CollectOutcomeUi questId={questId} id={outcomeId} />
+}
+const KillOutcomeUi = (props: { questId: string; outcomeId: string }) => {
+    const { questId, outcomeId } = props
+    const description = useGameStore(
+        useCallback((s: GameState) => selectOutcomeDescription(questId, outcomeId)(s), [questId, outcomeId])
+    )
+    const outcome = useGameStore(
+        useCallback((s: GameState) => selectOutcome(questId, outcomeId)(s), [questId, outcomeId])
+    )
+    if (!outcome) return <></>
+    if (!isKillingOutcome(outcome)) return <></>
+
+    const percent = Math.round((outcome.killedCount / outcome.targetCount) * 100)
+
+    return (
+        <div>
+            {description}
+            <ProgressBar value={percent} color="primary" />
+        </div>
+    )
+}
+const CollectOutcomeUi = (props: { questId: string; id: string }) => {
+    const { id } = props
+    return <>{id}</>
 }

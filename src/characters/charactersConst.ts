@@ -5,6 +5,7 @@ import { CharacterState } from './characterState'
 export const PLAYER_ID = 'Player'
 export const PLAYER_CHAR: CharacterState = {
     iconId: Icons.Axe,
+    templateId: 'Player',
     nameId: 'Activities',
     id: PLAYER_ID,
     inventory: {},

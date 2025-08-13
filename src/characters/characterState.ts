@@ -10,6 +10,7 @@ import { InitialState } from '@/entityAdapter/InitialState'
 
 export interface CharacterState {
     id: string
+    templateId: string
     iconId: Icons
     name?: string
     nameId?: keyof Msg

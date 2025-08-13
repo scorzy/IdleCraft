@@ -1,9 +1,10 @@
+import { CharacterAdapter } from '../characters/characterAdapter'
 import { MAX_AVAILABLE_QUESTS } from '../const'
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { QuestData } from './QuestData'
 import { selectAvailableQuests } from './QuestSelectors'
-import { QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
+import { isKillingOutcome, KillQuestOutcome, QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
 
 export const selectQuest = (id: string) =>
     useGameStore.setState((state: GameState) => {
@@ -40,3 +41,29 @@ export const acceptQuest = (state: GameState, questId: string) => {
 }
 
 export const acceptClick = (questId: string) => useGameStore.setState((state: GameState) => acceptQuest(state, questId))
+export const questOnKillListener = (state: GameState, targetId: string): GameState => {
+    QuestAdapter.forEach(state.quests, (quest) => {
+        if (quest.state !== QuestStatus.ACCEPTED) return
+        Object.values(quest.outcomeData).forEach((outcome) => {
+            if (!isKillingOutcome(outcome)) return
+            if (outcome.killedCount >= outcome.targetCount) return
+
+            const templateId = CharacterAdapter.selectEx(state.characters, targetId).templateId
+
+            if (outcome.targetId !== templateId) return
+
+            const killedCount = outcome.killedCount + 1
+            state = {
+                ...state,
+                quests: QuestAdapter.update(state.quests, quest.id, {
+                    outcomeData: {
+                        ...quest.outcomeData,
+                        [outcome.id]: { ...outcome, killedCount } as KillQuestOutcome,
+                    },
+                }),
+            }
+        })
+    })
+
+    return state
+}

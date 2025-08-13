@@ -38,6 +38,9 @@ import { removeWoodcutting } from '../wood/functions/removeWoodcutting'
 import { startWoodcutting } from '../wood/functions/startWoodcutting'
 import { handleRecipe } from '../wood/recipes/HandleRecipe'
 import { plankRecipe } from '../wood/recipes/PlankRecipe'
+import { onKillListeners } from '../characters/functions/onKillListeners'
+import { addKillBattleLog } from '../battleLog/functions/addBattleLog'
+import { questOnKillListener } from '../quests/QuestFunctions'
 import { activityIcons, activityRemovers, activityStarters, activityTitles, activityExecutors } from './globals'
 
 export function initialize() {
@@ -45,6 +48,7 @@ export function initialize() {
     initRecipes()
     initAbilities()
     initQuests()
+    initListeners()
 }
 
 function initActivities() {
@@ -95,4 +99,9 @@ function initAbilities() {
 
 function initQuests() {
     QuestData.set('kill-n', new KillQuestTemplate())
+}
+
+function initListeners() {
+    onKillListeners.push(addKillBattleLog)
+    onKillListeners.push(questOnKillListener)
 }

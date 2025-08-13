@@ -19,11 +19,13 @@ export interface QuestOutcome {
 }
 export interface QuestOutcomeData {
     outcomeId: string
+    type: QuestType
 }
 export type KillQuestOutcome = QuestOutcome & {
     type: QuestType.KILL
     targetId: CharTemplateEnum
     targetCount: number
+    killedCount: number
     locationId?: string
 }
 export type CollectQuestOutcome = QuestOutcome & {
@@ -56,7 +58,7 @@ export interface QuestState {
     state: QuestStatus
     templateId: string
     parameters: Record<string, QuestParameter>
-    outcomeData: Record<string, QuestOutcomeData>
+    outcomeData: Record<string, QuestOutcome>
 }
 
 class QuestAdapterInt extends AbstractEntityAdapter<QuestState> {

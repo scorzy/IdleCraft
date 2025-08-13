@@ -10,6 +10,7 @@ import { CharTemplate } from './charTemplates'
 export const generateCharacter = myMemoize(function (template: CharTemplate): CharacterState {
     const char: CharacterState = structuredClone({
         id: getUniqueId(),
+        templateId: template.id,
         nameId: template.nameId,
         iconId: template.iconId,
         inventory: template.inventory,

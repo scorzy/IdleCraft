@@ -171,7 +171,6 @@ type ItemIdValue = ItemId & { value: number }
 
 const itemTypeSelectors = new Map<ItemTypes, (state: GameState) => ItemIdValue[]>()
 export const selectItemsByType = (itemType: ItemTypes | undefined) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     if (!itemType) return (_state: GameState) => EMPTY_ARRAY
     let selector = itemTypeSelectors.get(itemType)
     if (!selector) {

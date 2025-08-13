@@ -31,7 +31,6 @@ export class NormalAttack implements ActiveAbility {
     getHealthCost(): number {
         return 0
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getStaminaCost(_params: AbilityParams): number {
         return 0
     }

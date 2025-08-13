@@ -4,6 +4,7 @@ import { CharTemplateEnum } from './characterTemplateEnum'
 
 export const CharTemplatesData: Record<CharTemplateEnum, CharTemplate> = {
     [CharTemplateEnum.Boar]: {
+        id: CharTemplateEnum.Boar,
         nameId: 'Boar',
         iconId: Icons.Boar,
         inventory: {},
@@ -21,6 +22,7 @@ export const CharTemplatesData: Record<CharTemplateEnum, CharTemplate> = {
         ],
     },
     [CharTemplateEnum.Wolf]: {
+        id: CharTemplateEnum.Wolf,
         nameId: 'Wolf',
         iconId: Icons.WolfHead,
         inventory: {},
