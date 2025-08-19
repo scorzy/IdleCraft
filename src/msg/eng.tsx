@@ -1,6 +1,7 @@
 import { CharTemplatesData } from '../characters/templates/charTemplateData'
 import { splitTime } from '../formatters/splitTime'
 import { FAST_MINING_PERK } from '../mining/MiningCost'
+import { KillQuestTarget } from '../quests/QuestTypes'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
 import { Msg, MsgFunctions } from './Msg'
 
@@ -253,28 +254,29 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
         fighting: (enemy: keyof Msg) => `Fighting ${msg[enemy]}`,
         requireWoodcuttingLevel: (formattedQta: string) => `Require woodcutting level ${formattedQta}`,
         requireMiningLevel: (formattedQta: string) => `Require mining level ${formattedQta}`,
-        killQuest1Name: (targets: { target: keyof typeof CharacterData; qta: number }[]) => {
+
+        killQuest1Name: (targets: KillQuestTarget[]) => {
             if (!targets || targets.length === 0) return 'Kill Quest'
-            const target = targets[0]!.target
+            const target = targets[0]!.targetId
             if (!target) return 'Kill Quest'
             const targetData = CharTemplatesData[target as keyof typeof CharTemplatesData]
             return `Kill ${msg[targetData.nameId]}`
         },
-        killQuest1Desc: (targets: { target: keyof typeof CharacterData; qta: number }[]) => {
+        killQuest1Desc: (targets: KillQuestTarget[]) => {
             let toKill = ''
 
             for (const t of targets) {
-                const target = targets[0]!.target
+                const target = targets[0]!.targetId
                 if (!target) continue
                 const targetData = CharTemplatesData[target as keyof typeof CharTemplatesData]
-                if (Math.abs(t.qta) < 0.00001) continue
+                if (Math.abs(t.targetCount) < 0.00001) continue
                 if (toKill.length > 0) toKill += ', '
                 const targetStr = msg[targetData.nameId]
-                if (t.qta === 1) toKill += `1 ${targetStr}`
-                else if (t.qta > 1) toKill += `${f(t.qta)} ${targetStr}s`
+                if (t.targetCount === 1) toKill += `1 ${targetStr}`
+                else if (t.targetCount > 1) toKill += `${f(t.targetCount)} ${targetStr}s`
             }
             return `Hunt down and kill ${toKill}.`
         },
-        killQuest1Outcome: (_targets: { target: keyof typeof CharacterData; qta: number }[]) => '',
+        killQuest1Outcome: (_targets: KillQuestTarget[]) => '',
     }
 }

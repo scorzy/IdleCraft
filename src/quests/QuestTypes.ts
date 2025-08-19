@@ -1,6 +1,6 @@
-import { CharTemplateEnum } from '../characters/templates/characterTemplateEnum'
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 import { ItemFilter } from '../items/Item'
+import { CharTemplatesData } from '../characters/templates/charTemplateData'
 
 export enum QuestType {
     KILL = 'KILL',
@@ -21,12 +21,15 @@ export interface QuestOutcomeData {
     outcomeId: string
     type: QuestType
 }
-export type KillQuestOutcome = QuestOutcome & {
-    type: QuestType.KILL
-    targetId: CharTemplateEnum
+export interface KillQuestTarget {
+    targetId: keyof typeof CharTemplatesData
     targetCount: number
     killedCount: number
     locationId?: string
+}
+export type KillQuestOutcome = QuestOutcome & {
+    type: QuestType.KILL
+    targets: KillQuestTarget[]
 }
 export type CollectQuestOutcome = QuestOutcome & {
     type: QuestType.COLLECT
@@ -42,16 +45,6 @@ export function isCollectOutcome(out: QuestOutcome | CollectQuestOutcome): out i
 
 export interface QuestParameter {
     id: string
-}
-export interface KillQuestParameter extends QuestParameter {
-    id: string
-    quantity: number
-    targetId: keyof typeof CharacterData
-}
-export interface CollectQuestParameter extends QuestParameter {
-    id: string
-    quantity: number
-    itemFilter: ItemFilter
 }
 export interface QuestState {
     id: string

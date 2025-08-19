@@ -1,3 +1,5 @@
+import { KillQuestTarget } from '../quests/QuestTypes'
+
 export interface Translations {
     t: Msg
     fun: MsgFunctions
@@ -250,7 +252,7 @@ export interface MsgFunctions {
     requireWoodcuttingLevel: (formattedQta: string) => string
     requireMiningLevel: (formattedQta: string) => string
 
-    killQuest1Name: (targets: { target: keyof typeof CharacterData; qta: number }[]) => string
-    killQuest1Desc: (targets: { target: keyof typeof CharacterData; qta: number }[]) => string
-    killQuest1Outcome: (targets: { target: keyof typeof CharacterData; qta: number }[]) => string
+    killQuest1Name: (targets: KillQuestTarget[]) => string
+    killQuest1Desc: (targets: KillQuestTarget[]) => string
+    killQuest1Outcome: (targets: KillQuestTarget[]) => string
 }
