@@ -21,9 +21,9 @@ const BonusListUi = memo(function BonusListUi(props: {
     isTime?: boolean
 }) {
     const { selectBonusResult, isTime } = props
-    const { f, ft } = useNumberFormatter()
-    const { t } = useTranslations()
-    const format = isTime ? ft : f
+    const { f } = useNumberFormatter()
+    const { t, fun } = useTranslations()
+    const format = isTime ? fun.formatTime : f
     const bonusRes = useGameStore(selectBonusResult)
 
     return (
@@ -46,9 +46,9 @@ const BonusListUi = memo(function BonusListUi(props: {
 
 const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boolean }) {
     const { bonus, isTime } = props
-    const { t } = useTranslations()
-    const { f, ft } = useNumberFormatter()
-    const format = isTime ? ft : f
+    const { t, fun } = useTranslations()
+    const { f } = useNumberFormatter()
+    const format = isTime ? fun.formatTime : f
 
     return (
         <TableRow>

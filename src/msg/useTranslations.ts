@@ -1,19 +1,14 @@
-import { GameState } from '../game/GameState'
+import { createSelector } from 'reselect'
+import { selectFormatter } from '../formatters/selectNumberFormatter'
 import { useGameStore } from '../game/state'
 import { selectLang } from '../ui/state/uiSelectors'
 import { Translations } from './Msg'
 import { messages } from './allMsg'
 
-export const selectTranslations: (state: GameState) => Translations = (state: GameState) => {
-    const lang = selectLang(state)
+export const selectTranslations = createSelector(selectLang, selectFormatter, (lang, formatter): Translations => {
     const ret = messages[lang]
     if (!ret) throw new Error(`Language ${lang} not found`)
-    return ret
-}
+    return ret(formatter.f)
+})
 
-export const useTranslations = () => {
-    const lang = useGameStore(selectLang)
-    const ret = messages[lang]
-    if (!ret) throw new Error(`Language ${lang} not found`)
-    return ret
-}
+export const useTranslations = () => useGameStore(selectTranslations)

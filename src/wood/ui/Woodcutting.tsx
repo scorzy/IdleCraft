@@ -95,7 +95,7 @@ const Cutting = memo(function Cutting() {
     const woodType = useGameStore(selectWoodType)
     const forest = useGameStore(selectForest(woodType))
     const act = useGameStore(selectWoodcutting(woodType))
-    const { f, ft } = useNumberFormatter()
+    const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
     const def = selectDefaultForest(woodType)
     const hpPercent = Math.floor((100 * forest.hp) / def.hp)
@@ -120,7 +120,7 @@ const Cutting = memo(function Cutting() {
                 </MyLabelContainer>
                 <RestartProgress value={hpPercent} color="health" className="mb-2" />
                 <MyLabel>
-                    {t.Time} {ft(time)}
+                    {t.Time} {fun.formatTime(time)}
                     <BonusDialog title={t.WoodcuttingTime} selectBonusResult={selectWoodcuttingTimeAll} isTime={true} />
                 </MyLabel>
                 <GameTimerProgress actionId={act} color="primary" className="mb-2" />

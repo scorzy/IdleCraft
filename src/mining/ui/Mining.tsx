@@ -73,8 +73,8 @@ const MiningOreLock = memo(function MiningOreLock() {
 })
 
 const MiningOre = memo(function MiningOre() {
-    const { f, ft } = useNumberFormatter()
-    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
 
     const selectOreMemo = useCallback((state: GameState) => selectOre(oreType)(state), [oreType])
@@ -107,7 +107,7 @@ const MiningOre = memo(function MiningOre() {
                 </MyLabelContainer>
                 <RestartProgress value={hpPercent} color="health" className="mb-2" />
                 <MyLabel>
-                    {t.Time} {ft(time)}
+                    {t.Time} {fun.formatTime(time)}
                     <BonusDialog title={t.MiningTime} selectBonusResult={selectMiningTimeAll} isTime={true} />
                 </MyLabel>
                 <GameTimerProgress actionId={act} color="primary" className="mb-2" />

@@ -5,7 +5,6 @@ import { PLAYER_ID } from '../characters/charactersConst'
 import { TrashIcon } from '../icons/IconsMemo'
 import { useTranslations } from '../msg/useTranslations'
 import { getUniqueId } from '../utils/getUniqueId'
-import { useNumberFormatter } from '../formatters/selectNumberFormatter'
 import { ProgressBar } from '../ui/progress/ProgressBar'
 import { useGameStore } from './state'
 import { GetInitialGameState } from './InitialGameState'
@@ -154,7 +153,7 @@ const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Di
 
 const TimeAgo = memo(function TimeAgo(props: { date: number }) {
     const { date } = props
-    const { ft } = useNumberFormatter()
+    const { fun } = useTranslations()
 
     const [time, setTime] = useState(Date.now())
 
@@ -167,12 +166,11 @@ const TimeAgo = memo(function TimeAgo(props: { date: number }) {
 
     const timeDiff = 1e3 * Math.floor((time - date) / 1e3)
 
-    return <>{ft(timeDiff)}</>
+    return <>{fun.formatTime(timeDiff)}</>
 })
 
 const Loading = memo(function Loading() {
-    const { ftp } = useNumberFormatter()
-    const { t } = useTranslations()
+    const { t, fun } = useTranslations()
     const loading = useGameStore(selectLoading)
     const percent = useGameStore(selectLoadingProgress)
     const start = useGameStore(selectLoadingStart)
@@ -188,7 +186,7 @@ const Loading = memo(function Loading() {
                     <DialogTitle>{t.Loading}</DialogTitle>
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
-                {ftp(done)} / {ftp(total)}
+                {fun.formatTimePrecise(done)} / {fun.formatTimePrecise(total)}
                 <ProgressBar value={percent} color="primary" />
                 <DialogFooter className="sm:justify-start">
                     <Button type="button" variant="destructive" onClick={startAnyway}>

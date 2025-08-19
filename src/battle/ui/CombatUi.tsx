@@ -161,8 +161,7 @@ const CharMana = memo(function CharMana(props: { charId: string }) {
 
 const MainAttack = memo(function MainAttack(props: { charId: string }) {
     const { charId } = props
-    const { t } = useTranslations()
-    const { ft } = useNumberFormatter()
+    const { t, fun } = useTranslations()
     const timer = useGameStore(selectCharMainAttackTimer(charId))
     const attack = useGameStore(selectCharMainAttack(charId))
     const icon = useGameStore(selectCharMainAttackIcon(charId))
@@ -174,7 +173,7 @@ const MainAttack = memo(function MainAttack(props: { charId: string }) {
                 {icon && IconsData[icon]}
                 {!icon && IconsData.Punch}&nbsp;
                 {ability && t[ability.nameId]}
-                {timer && <span className="text-muted-foreground">{ft(timer.to - timer.from)}</span>}
+                {timer && <span className="text-muted-foreground">{fun.formatTime(timer.to - timer.from)}</span>}
             </span>
 
             <TimerProgressFromId timerId={timer?.id} color="primary" />

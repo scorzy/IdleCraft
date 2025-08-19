@@ -131,8 +131,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
 })
 
 const CraftingButtons = memo(function CraftingButtons() {
-    const { ft } = useNumberFormatter()
-    const { t } = useTranslations()
+    const { t, fun } = useTranslations()
     const time = useGameStore(selectCraftTime)
 
     const id = useGameStore(selectCurrentCrafting)
@@ -143,7 +142,7 @@ const CraftingButtons = memo(function CraftingButtons() {
         <>
             <Badge className={classes.timeBadge} variant="secondary">
                 <LuHourglass />
-                {time ? ft(time) : '-'}
+                {time ? fun.formatTime(time) : '-'}
             </Badge>
             {id === null && (
                 <Button type="submit" className="w-min" onClick={addCraftingClick} disabled={!bntEnabled}>

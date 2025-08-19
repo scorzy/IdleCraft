@@ -309,8 +309,7 @@ const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; 
 })
 export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
     const { charId } = props
-    const { ft } = useNumberFormatter()
-    const { t } = useTranslations()
+    const { t, fun } = useTranslations()
 
     const charSel = getCharacterSelector(charId)
 
@@ -321,7 +320,7 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
     return (
         <div>
             <div className="grid grid-flow-col items-center justify-start gap-2 text-sm">
-                {t.NormalAttack} {ft(speed)}
+                {t.NormalAttack} {fun.formatTime(speed)}
                 <BonusDialog title={t.NormalAttack} selectBonusResult={speedList} isTime={true} />
             </div>
             <div className="grid grid-flow-col items-center justify-start gap-2 text-sm">

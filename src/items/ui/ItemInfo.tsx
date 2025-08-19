@@ -37,8 +37,8 @@ export const CraftingDataUi = memo(function CraftingDataUi(props: { craftingData
 })
 export const WoodAxeDataUi = memo(function WoodAxeDataUi(props: { woodAxeData: WoodAxeData }) {
     const { woodAxeData } = props
-    const { f, ft } = useNumberFormatter()
-    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    const { t, fun } = useTranslations()
 
     return (
         <>
@@ -46,15 +46,15 @@ export const WoodAxeDataUi = memo(function WoodAxeDataUi(props: { woodAxeData: W
                 {t.Damage} {f(woodAxeData.damage)}
             </div>
             <div>
-                {t.AttackSpeed} {ft(woodAxeData.time)}
+                {t.AttackSpeed} {fun.formatTime(woodAxeData.time)}
             </div>
         </>
     )
 })
 export const PickaxeDataUi = memo(function PickaxeDataUi(props: { pickaxeData: PickaxeData }) {
     const { pickaxeData } = props
-    const { f, ft } = useNumberFormatter()
-    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    const { t, fun } = useTranslations()
 
     return (
         <>
@@ -62,7 +62,7 @@ export const PickaxeDataUi = memo(function PickaxeDataUi(props: { pickaxeData: P
                 {t.Damage} {f(pickaxeData.damage)}
             </div>
             <div>
-                {t.AttackSpeed} {ft(pickaxeData.time)}
+                {t.AttackSpeed} {fun.formatTime(pickaxeData.time)}
             </div>
             <div>
                 {t.ArmourPen} {f(pickaxeData.armourPen)}
@@ -72,13 +72,13 @@ export const PickaxeDataUi = memo(function PickaxeDataUi(props: { pickaxeData: P
 })
 export const WeaponDataUi = memo(function WeaponDataUi(props: { weaponData: WeaponData }) {
     const { weaponData } = props
-    const { f, ft } = useNumberFormatter()
-    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    const { t, fun } = useTranslations()
 
     return (
         <>
             <div>
-                {t.AttackSpeed} {ft(weaponData.attackSpeed)}
+                {t.AttackSpeed} {fun.formatTime(weaponData.attackSpeed)}
             </div>
             {Object.entries(weaponData.damage).map((kv) => (
                 <div key={kv[0]}>

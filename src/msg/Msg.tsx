@@ -233,6 +233,9 @@ export interface MsgFunctions {
     m: (qta: number, formattedQta: string) => string
     s: (qta: number, formattedQta: string) => string
 
+    formatTime: (time: number) => string
+    formatTimePrecise: (time: number) => string
+
     //
     cutting: (woodName: keyof Msg) => string
     crafting: (itemNameId: keyof Msg) => string
@@ -247,7 +250,7 @@ export interface MsgFunctions {
     requireWoodcuttingLevel: (formattedQta: string) => string
     requireMiningLevel: (formattedQta: string) => string
 
-    killQuest1Name: (targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => string
-    killQuest1Desc: (targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => string
-    killQuest1Outcome: (targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => string
+    killQuest1Name: (targets: { target: keyof typeof CharacterData; qta: number }[]) => string
+    killQuest1Desc: (targets: { target: keyof typeof CharacterData; qta: number }[]) => string
+    killQuest1Outcome: (targets: { target: keyof typeof CharacterData; qta: number }[]) => string
 }

@@ -1,4 +1,5 @@
 import { CharTemplatesData } from '../characters/templates/charTemplateData'
+import { splitTime } from '../formatters/splitTime'
 import { FAST_MINING_PERK } from '../mining/MiningCost'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
 import { Msg, MsgFunctions } from './Msg'
@@ -201,42 +202,79 @@ export const engMsg: Msg = {
     AcceptedQuests: 'Accepted Quests',
     AvailableQuests: 'Available Quests',
 }
-export const makeEngMsg: (msg: Msg) => MsgFunctions = (msg: Msg) => ({
-    years: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'year' : 'years'}`,
-    months: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'month' : 'months'}`,
-    days: (qta: number, formattedQta: string) => `${formattedQta} ${qta === 1 ? 'day' : 'days'}`,
-    h: (_qta: number, formattedQta: string) => `${formattedQta}h`,
-    m: (_qta: number, formattedQta: string) => `${formattedQta}m`,
-    s: (_qta: number, formattedQta: string) => `${formattedQta}s`,
-    cutting: (woodName: keyof Msg) => `Cutting ${msg[woodName]}`,
-    crafting: (itemNameId: keyof Msg) => `Crafting ${msg[itemNameId]}`,
-    mining: (oreNameId: keyof Msg) => `Mining ${msg[oreNameId]}`,
-    speedBonusPercent: (bonus: string) => `Speed bonus +${bonus}%`,
-    prestigePercent: (bonus: string) => `Value bonus +${bonus}%`,
-    fighting: (enemy: keyof Msg) => `Fighting ${msg[enemy]}`,
-    requireWoodcuttingLevel: (formattedQta: string) => `Require woodcutting level ${formattedQta}`,
-    requireMiningLevel: (formattedQta: string) => `Require mining level ${formattedQta}`,
-    killQuest1Name: (targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => {
-        if (!targets || targets.length === 0) return 'Kill Quest'
-        const target = targets[0]!.target
-        if (!target) return 'Kill Quest'
-        const targetData = CharTemplatesData[target as keyof typeof CharTemplatesData]
-        return `Kill ${msg[targetData.nameId]}`
-    },
-    killQuest1Desc: (targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => {
-        let toKill = ''
 
-        for (const t of targets) {
+export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
+    msg: Msg,
+    f: (value: number) => string
+) => {
+    const years = (qta: number) => `${f(qta)} ${qta === 1 ? 'year' : 'years'}`
+    const months = (qta: number) => `${f(qta)} ${qta === 1 ? 'month' : 'months'}`
+    const days = (qta: number) => `${f(qta)} ${qta === 1 ? 'day' : 'days'}`
+    const h = (qta: number) => `${f(qta)}h`
+    const m = (qta: number) => `${f(qta)}m`
+    const s = (qta: number) => `${f(qta)}s`
+
+    return {
+        years,
+        months,
+        days,
+        h,
+        m,
+        s,
+        formatTime: (time: number) => {
+            const split = splitTime(time)
+            if (split.years > 0) return years(split.years)
+            if (split.months > 0) return months(split.months)
+            if (split.days > 0) return days(split.days)
+            if (split.hours > 0) return h(split.hours)
+            if (split.minutes > 0) return m(split.minutes)
+            if (split.seconds >= 10) return s(Math.floor(split.seconds))
+            if (split.seconds > 10) return s(Math.floor(split.seconds))
+            return s(Math.floor(split.seconds * 10) / 10)
+        },
+        formatTimePrecise: (time: number) => {
+            const split = splitTime(time)
+            if (split.years > 0) return years(split.years)
+            if (split.months > 0) return months(split.months)
+            if (split.days > 0) return `${days(split.days)} ${h(split.hours)}`
+            if (split.hours > 0) return `${h(split.hours)} ${m(split.minutes)}`
+            if (split.minutes > 0) return `${m(split.minutes)} ${s(Math.floor(split.seconds))}`
+            if (split.seconds >= 10) return s(Math.floor(split.seconds))
+            if (split.seconds > 10) return s(Math.floor(split.seconds))
+            return s(Math.floor(split.seconds * 10) / 10)
+        },
+
+        //
+        cutting: (woodName: keyof Msg) => `Cutting ${msg[woodName]}`,
+        crafting: (itemNameId: keyof Msg) => `Crafting ${msg[itemNameId]}`,
+        mining: (oreNameId: keyof Msg) => `Mining ${msg[oreNameId]}`,
+        speedBonusPercent: (bonus: string) => `Speed bonus +${bonus}%`,
+        prestigePercent: (bonus: string) => `Value bonus +${bonus}%`,
+        fighting: (enemy: keyof Msg) => `Fighting ${msg[enemy]}`,
+        requireWoodcuttingLevel: (formattedQta: string) => `Require woodcutting level ${formattedQta}`,
+        requireMiningLevel: (formattedQta: string) => `Require mining level ${formattedQta}`,
+        killQuest1Name: (targets: { target: keyof typeof CharacterData; qta: number }[]) => {
+            if (!targets || targets.length === 0) return 'Kill Quest'
             const target = targets[0]!.target
-            if (!target) continue
+            if (!target) return 'Kill Quest'
             const targetData = CharTemplatesData[target as keyof typeof CharTemplatesData]
-            if (t.formattedQta === '0') continue
-            if (toKill.length > 0) toKill += ', '
-            const targetStr = msg[targetData.nameId]
-            if (t.qta === 1) toKill += `1 ${targetStr}`
-            else if (t.qta > 1) toKill += `${t.formattedQta} ${targetStr}s`
-        }
-        return `Hunt down and kill ${toKill}.`
-    },
-    killQuest1Outcome: (_targets: { target: keyof typeof CharacterData; formattedQta: string; qta: number }[]) => '',
-})
+            return `Kill ${msg[targetData.nameId]}`
+        },
+        killQuest1Desc: (targets: { target: keyof typeof CharacterData; qta: number }[]) => {
+            let toKill = ''
+
+            for (const t of targets) {
+                const target = targets[0]!.target
+                if (!target) continue
+                const targetData = CharTemplatesData[target as keyof typeof CharTemplatesData]
+                if (Math.abs(t.qta) < 0.00001) continue
+                if (toKill.length > 0) toKill += ', '
+                const targetStr = msg[targetData.nameId]
+                if (t.qta === 1) toKill += `1 ${targetStr}`
+                else if (t.qta > 1) toKill += `${f(t.qta)} ${targetStr}s`
+            }
+            return `Hunt down and kill ${toKill}.`
+        },
+        killQuest1Outcome: (_targets: { target: keyof typeof CharacterData; qta: number }[]) => '',
+    }
+}
