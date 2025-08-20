@@ -72,3 +72,8 @@ export const selectOutcome = (questId: string, outcomeId: string) => (state: Gam
     const outcome = quest.outcomeData[outcomeId]
     return outcome
 }
+export const isOutcomeCompleted = (questId: string, outcomeId: string) => (state: GameState) => {
+    if (!questId || !outcomeId) return false
+    const quest = QuestAdapter.selectEx(state.quests, questId)
+    return QuestData.getEx(quest.templateId).isOutcomeCompleted(questId, outcomeId)(state)
+}

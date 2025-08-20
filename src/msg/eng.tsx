@@ -1,9 +1,9 @@
 import { CharTemplatesData } from '../characters/templates/charTemplateData'
 import { splitTime } from '../formatters/splitTime'
 import { FAST_MINING_PERK } from '../mining/MiningCost'
-import { KillQuestTarget } from '../quests/QuestTypes'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
 import { Msg, MsgFunctions } from './Msg'
+import { KillQuestTarget } from '@/quests/KillQuestTarget'
 
 export const engMsg: Msg = {
     LevelToLow: 'Level to low',
@@ -202,6 +202,8 @@ export const engMsg: Msg = {
 
     AcceptedQuests: 'Accepted Quests',
     AvailableQuests: 'Available Quests',
+
+    Complete: 'Complete',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

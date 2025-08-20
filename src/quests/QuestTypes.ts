@@ -1,6 +1,6 @@
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 import { ItemFilter } from '../items/Item'
-import { CharTemplatesData } from '../characters/templates/charTemplateData'
+import { KillQuestTarget } from './KillQuestTarget'
 
 export enum QuestType {
     KILL = 'KILL',
@@ -20,12 +20,6 @@ export interface QuestOutcome {
 export interface QuestOutcomeData {
     outcomeId: string
     type: QuestType
-}
-export interface KillQuestTarget {
-    targetId: keyof typeof CharTemplatesData
-    targetCount: number
-    killedCount: number
-    locationId?: string
 }
 export type KillQuestOutcome = QuestOutcome & {
     type: QuestType.KILL

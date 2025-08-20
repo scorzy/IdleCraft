@@ -11,4 +11,5 @@ export interface QuestTemplate {
 
     generateQuestData: (state: GameState) => QuestState
     getOutcomeDescription: (questId: string, outcomeId: string) => (state: GameState) => string
+    isOutcomeCompleted: (questId: string, outcomeId: string) => (state: GameState) => boolean
 }

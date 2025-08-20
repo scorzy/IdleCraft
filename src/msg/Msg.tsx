@@ -1,4 +1,4 @@
-import { KillQuestTarget } from '../quests/QuestTypes'
+import { KillQuestTarget } from '@/quests/KillQuestTarget'
 
 export interface Translations {
     t: Msg
@@ -225,6 +225,7 @@ export interface Msg {
 
     AcceptedQuests: string
     AvailableQuests: string
+    Complete: string
 }
 export interface MsgFunctions {
     // Time

@@ -66,4 +66,10 @@ export class KillQuestTemplate implements QuestTemplate {
         const t = selectTranslations(state)
         return t.fun.killQuest1Outcome(this.selectTargetsForKillQuest(state, questId))
     }
+    isOutcomeCompleted = (questId: string, outcomeId: string) => (state: GameState) => {
+        const outcome = QuestAdapter.selectEx(state.quests, questId).outcomeData[outcomeId]
+        if (!outcome) return false
+        if (!isKillingOutcome(outcome)) return false
+        return outcome.targets.every((target) => target.killedCount >= target.targetCount)
+    }
 }

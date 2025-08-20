@@ -7,6 +7,7 @@ import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { sidebarOpen } from '../../ui/state/uiFunctions'
 import {
+    isOutcomeCompleted,
     isQuestSelected,
     selectAcceptedQuests,
     selectAvailableQuests,
@@ -24,7 +25,8 @@ import { IconsData } from '../../icons/Icons'
 import { acceptClick, selectQuest } from '../QuestFunctions'
 import { GameState } from '../../game/GameState'
 import { Button } from '../../components/ui/button'
-import { isKillingOutcome, KillQuestTarget, QuestStatus, QuestType } from '../QuestTypes'
+import { isKillingOutcome, QuestStatus, QuestType } from '../QuestTypes'
+import { KillQuestTarget } from '../KillQuestTarget'
 import { TitleH1, TypographyP } from '../../ui/typography'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { useTranslations } from '../../msg/useTranslations'
@@ -142,13 +144,25 @@ const QuestButtons = (props: { id: string }) => {
 }
 const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     const { questId, outcomeId } = props
+    const { t } = useTranslations()
     const type = useGameStore(
         useCallback((s: GameState) => selectOutcomeType(questId, outcomeId)(s), [questId, outcomeId])
     )
+    const completed = useGameStore(
+        useCallback((s: GameState) => isOutcomeCompleted(questId, outcomeId)(s), [questId, outcomeId])
+    )
     if (!type) return <></>
 
-    if (type === QuestType.KILL) return <KillOutcomeUi questId={questId} outcomeId={outcomeId} />
-    else if (type === QuestType.COLLECT) return <CollectOutcomeUi questId={questId} id={outcomeId} />
+    let component = null
+    if (type === QuestType.KILL) component = <KillOutcomeUi questId={questId} outcomeId={outcomeId} />
+    else if (type === QuestType.COLLECT) component = <CollectOutcomeUi questId={questId} id={outcomeId} />
+
+    return (
+        <>
+            {component}
+            {completed && <Button className="mt-6">{t.Complete}</Button>}
+        </>
+    )
 }
 const KillOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     const { questId, outcomeId } = props
@@ -165,7 +179,7 @@ const KillOutcomeUi = (props: { questId: string; outcomeId: string }) => {
         <div>
             {description}
             {outcome.targets.map((target: KillQuestTarget) => (
-                <KillOutcomeProgress key={target.targetId} target={target} />
+                <KillOutcomeProgress key={questId + outcomeId + target.targetId} target={target} />
             ))}
         </div>
     )
