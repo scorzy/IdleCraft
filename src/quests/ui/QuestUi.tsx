@@ -30,6 +30,7 @@ import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { useTranslations } from '../../msg/useTranslations'
 import { CharTemplatesData } from '../../characters/templates/charTemplateData'
 import { MyLabel } from '../../ui/myCard/MyLabel'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -173,6 +174,7 @@ const KillOutcomeProgress = (props: { target: KillQuestTarget }) => {
     const { target } = props
     const { targetId, targetCount, killedCount } = target
     const { t } = useTranslations()
+    const { f } = useNumberFormatter()
     const charTemplate = CharTemplatesData[targetId]
 
     if (targetCount <= 0) return <></>
@@ -180,7 +182,7 @@ const KillOutcomeProgress = (props: { target: KillQuestTarget }) => {
     return (
         <>
             <MyLabel>
-                {IconsData[charTemplate.iconId]} {t[charTemplate.nameId]}
+                {IconsData[charTemplate.iconId]} {t[charTemplate.nameId]} {f(killedCount)}/{f(targetCount)}
             </MyLabel>
             <ProgressBar value={percent} color="primary" />
         </>

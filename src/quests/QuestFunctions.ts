@@ -46,22 +46,27 @@ export const questOnKillListener = (state: GameState, targetId: string): GameSta
         if (quest.state !== QuestStatus.ACCEPTED) return
         Object.values(quest.outcomeData).forEach((outcome) => {
             if (!isKillingOutcome(outcome)) return
-            if (outcome.killedCount >= outcome.targetCount) return
 
-            const templateId = CharacterAdapter.selectEx(state.characters, targetId).templateId
-
-            if (outcome.targetId !== templateId) return
-
-            const killedCount = outcome.killedCount + 1
-            state = {
-                ...state,
-                quests: QuestAdapter.update(state.quests, quest.id, {
-                    outcomeData: {
-                        ...quest.outcomeData,
-                        [outcome.id]: { ...outcome, killedCount } as KillQuestOutcome,
-                    },
-                }),
+            const targets = [...outcome.targets]
+            let updated = false
+            for (const target of targets) {
+                if (target.killedCount >= target.targetCount) continue
+                const templateId = CharacterAdapter.selectEx(state.characters, targetId).templateId
+                if (target.targetId !== templateId) return
+                target.killedCount = target.killedCount + 1
+                updated = true
             }
+
+            if (updated)
+                state = {
+                    ...state,
+                    quests: QuestAdapter.update(state.quests, quest.id, {
+                        outcomeData: {
+                            ...quest.outcomeData,
+                            [outcome.id]: { ...outcome, targets } as KillQuestOutcome,
+                        },
+                    }),
+                }
         })
     })
 
