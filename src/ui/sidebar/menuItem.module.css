@@ -5,6 +5,7 @@
     align-items: center;
     text-align: start;
     align-content: center;
+    max-width: 240px;
 
     transition-property:
         margin-left, border-radius, color, background-color, border-color, text-decoration-color, fill, stroke, width;
