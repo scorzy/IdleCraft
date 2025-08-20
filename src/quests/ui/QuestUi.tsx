@@ -24,9 +24,12 @@ import { IconsData } from '../../icons/Icons'
 import { acceptClick, selectQuest } from '../QuestFunctions'
 import { GameState } from '../../game/GameState'
 import { Button } from '../../components/ui/button'
-import { isKillingOutcome, QuestStatus, QuestType } from '../QuestTypes'
+import { isKillingOutcome, KillQuestTarget, QuestStatus, QuestType } from '../QuestTypes'
 import { TitleH1, TypographyP } from '../../ui/typography'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
+import { useTranslations } from '../../msg/useTranslations'
+import { CharTemplatesData } from '../../characters/templates/charTemplateData'
+import { MyLabel } from '../../ui/myCard/MyLabel'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -157,15 +160,33 @@ const KillOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     if (!outcome) return <></>
     if (!isKillingOutcome(outcome)) return <></>
 
-    const percent = Math.round((outcome.killedCount / outcome.targetCount) * 100)
-
     return (
         <div>
             {description}
-            <ProgressBar value={percent} color="primary" />
+            {outcome.targets.map((target: KillQuestTarget) => (
+                <KillOutcomeProgress key={target.targetId} target={target} />
+            ))}
         </div>
     )
 }
+const KillOutcomeProgress = (props: { target: KillQuestTarget }) => {
+    const { target } = props
+    const { targetId, targetCount, killedCount } = target
+    const { t } = useTranslations()
+    const charTemplate = CharTemplatesData[targetId]
+
+    if (targetCount <= 0) return <></>
+    const percent = Math.round((killedCount / targetCount) * 100)
+    return (
+        <>
+            <MyLabel>
+                {IconsData[charTemplate.iconId]} {t[charTemplate.nameId]}
+            </MyLabel>
+            <ProgressBar value={percent} color="primary" />
+        </>
+    )
+}
+
 const CollectOutcomeUi = (props: { questId: string; id: string }) => {
     const { id } = props
     return <>{id}</>
