@@ -205,6 +205,7 @@ export const engMsg: Msg = {
 
     Complete: 'Complete',
     Accept: 'Accept',
+    Gold: 'Gold',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

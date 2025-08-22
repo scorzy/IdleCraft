@@ -10,12 +10,16 @@ export enum QuestStatus {
     ACCEPTED = 'ACCEPTED',
     AVAILABLE = 'AVAILABLE',
 }
+
+export interface ItemsReward {
+    itemId: string
+    quantity: number
+}
 export interface QuestOutcome {
     id: string
     type: QuestType
     goldReward?: number
-    itemReward?: string
-    itemCount?: number
+    itemsRewards?: ItemsReward[]
 }
 export interface QuestOutcomeData {
     outcomeId: string

@@ -82,7 +82,8 @@ export const completeQuest = (state: GameState, questId: string, outcomeId: stri
     const outcome = quest.outcomeData[outcomeId]
     if (!outcome) return state
 
-    if (outcome.itemReward) addItem(state, outcome.itemReward, outcome.itemCount || 1)
+    if (outcome.itemsRewards)
+        for (const reward of outcome.itemsRewards) addItem(state, reward.itemId, reward.quantity || 1)
     if (outcome.goldReward) state = addGold(state, outcome.goldReward)
 
     const oldIndex = selectAcceptedQuests(state).indexOf(questId)

@@ -13,7 +13,9 @@ import {
     selectAvailableQuests,
     selectOutcome,
     selectOutcomeDescription,
+    selectOutcomeGoldReward,
     selectOutcomeIds,
+    selectOutcomeItemReward,
     selectOutcomeType,
     selectQuestDescription,
     selectQuestIcon,
@@ -33,6 +35,10 @@ import { useTranslations } from '../../msg/useTranslations'
 import { CharTemplatesData } from '../../characters/templates/charTemplateData'
 import { MyLabel } from '../../ui/myCard/MyLabel'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { selectGameItem } from '../../storage/StorageSelectors'
+import { ItemInfo } from '../../items/ui/ItemInfo'
+import { Card, CardContent } from '../../components/ui/card'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -163,16 +169,72 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     else if (type === QuestType.COLLECT) component = <CollectOutcomeUi questId={questId} id={outcomeId} />
 
     return (
-        <>
+        <TypographyP>
             {component}
+            <OutcomeReward questId={questId} outcomeId={outcomeId} />
             {completed && (
                 <Button className="mt-6" onClick={completeClick}>
                     {t.Complete}
                 </Button>
             )}
+        </TypographyP>
+    )
+}
+const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
+    const { questId, outcomeId } = props
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+
+    const gold = useGameStore(
+        useCallback((s: GameState) => selectOutcomeGoldReward(s, questId, outcomeId), [questId, outcomeId])
+    )
+    const items = useGameStore(
+        useCallback((s: GameState) => selectOutcomeItemReward(s, questId, outcomeId), [questId, outcomeId])
+    )
+
+    return (
+        <>
+            <TypographyP>
+                {gold > 0 && (
+                    <div>
+                        {t.Gold}: {f(gold)}
+                    </div>
+                )}{' '}
+            </TypographyP>
+            <div className="mt-2 flex flex-wrap gap-2">
+                {items.map((r) => (
+                    <ItemRewardUi itemId={r.itemId} quantity={r.quantity} key={questId + r.itemId + r.quantity} />
+                ))}
+            </div>
         </>
     )
 }
+
+export function ItemRewardUi(props: { itemId: string; quantity: number }) {
+    const { itemId, quantity } = props
+
+    const { f } = useNumberFormatter()
+
+    const item = useGameStore(
+        useCallback(
+            (s: GameState) => {
+                if (!itemId) return null
+                return selectGameItem(itemId)(s)
+            },
+            [itemId]
+        )
+    )
+    if (!item) return <></>
+    return (
+        <Card className="min-w-50">
+            <MyCardHeaderTitle title={`X ${f(quantity)} ${item.nameId}`} icon={IconsData[item.icon]} />
+            <CardContent>
+                <ItemInfo item={item} />
+            </CardContent>
+        </Card>
+    )
+}
+
 const KillOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     const { questId, outcomeId } = props
     const description = useGameStore(

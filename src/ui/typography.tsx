@@ -10,7 +10,7 @@ export const TitleH1 = (props: React.ComponentProps<'h1'>) => {
 }
 export const TypographyP = (props: React.ComponentProps<'p'>) => {
     return (
-        <p className="leading-7 [&:not(:first-child)]:mt-6" {...props}>
+        <p className="leading-7 [&:not(:first-child)]:mt-4" {...props}>
             {props.children}
         </p>
     )

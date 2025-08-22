@@ -3,7 +3,7 @@ import { Icons } from '../icons/Icons'
 import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
 import { QuestData } from './QuestData'
 import { QuestTemplate } from './QuestTemplate'
-import { QuestAdapter, QuestStatus } from './QuestTypes'
+import { ItemsReward, QuestAdapter, QuestStatus } from './QuestTypes'
 
 export const selectAcceptedQuests = createMemoizeLatestSelector([(state: GameState) => state.quests], (quests) =>
     QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.ACCEPTED)
@@ -75,4 +75,10 @@ export const isOutcomeCompleted = (questId: string, outcomeId: string) => (state
 export function selectQuestTemplate(state: GameState, questId: string): QuestTemplate {
     const quest = QuestAdapter.selectEx(state.quests, questId)
     return QuestData.getEx(quest.templateId)
+}
+export function selectOutcomeGoldReward(state: GameState, questId: string, outcomeId: string): number {
+    return selectQuestTemplate(state, questId).getOutcomeGoldReward(questId, outcomeId)(state)
+}
+export function selectOutcomeItemReward(state: GameState, questId: string, outcomeId: string): ItemsReward[] {
+    return selectQuestTemplate(state, questId).getOutcomeItemReward(questId, outcomeId)(state)
 }

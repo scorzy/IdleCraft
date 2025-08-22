@@ -48,14 +48,17 @@ export class KillQuestTemplate implements QuestTemplate {
         outcomeData: {
             'outcome-1': {
                 id: 'outcome-1',
-                outcomeId: 'outcome-1',
                 type: QuestType.KILL,
+                goldReward: 100,
+                itemsRewards: [
+                    { itemId: 'TinOre', quantity: 1 },
+                    { itemId: 'DeadBoar', quantity: 1 },
+                ],
                 targets: [
                     {
                         targetId: CharTemplateEnum.Boar,
                         targetCount: 5,
                         killedCount: 0,
-                        goldReward: 100,
                     },
                 ],
             },
@@ -72,4 +75,11 @@ export class KillQuestTemplate implements QuestTemplate {
         if (!isKillingOutcome(outcome)) return false
         return outcome.targets.every((target) => target.killedCount >= target.targetCount)
     }
+    getOutcomeGoldReward = (questId: string, outcomeId: string) => (state: GameState) => {
+        const outcome = QuestAdapter.selectEx(state.quests, questId).outcomeData[outcomeId]
+        if (!outcome) return 0
+        return outcome.goldReward ?? 0
+    }
+    getOutcomeItemReward = (questId: string, outcomeId: string) => (state: GameState) =>
+        QuestAdapter.selectEx(state.quests, questId).outcomeData[outcomeId]?.itemsRewards ?? []
 }
