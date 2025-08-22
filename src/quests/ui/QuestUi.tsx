@@ -22,7 +22,7 @@ import {
     selectQuestStatus,
 } from '../QuestSelectors'
 import { IconsData } from '../../icons/Icons'
-import { acceptClick, selectQuest } from '../QuestFunctions'
+import { acceptClick, completeQuest, selectQuest } from '../QuestFunctions'
 import { GameState } from '../../game/GameState'
 import { Button } from '../../components/ui/button'
 import { isKillingOutcome, QuestStatus, QuestType } from '../QuestTypes'
@@ -152,6 +152,10 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     const completed = useGameStore(
         useCallback((s: GameState) => isOutcomeCompleted(questId, outcomeId)(s), [questId, outcomeId])
     )
+    const completeClick = useCallback(() => {
+        useGameStore.setState((s: GameState) => completeQuest(s, questId, outcomeId))
+    }, [questId, outcomeId])
+
     if (!type) return <></>
 
     let component = null
@@ -161,7 +165,11 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     return (
         <>
             {component}
-            {completed && <Button className="mt-6">{t.Complete}</Button>}
+            {completed && (
+                <Button className="mt-6" onClick={completeClick}>
+                    {t.Complete}
+                </Button>
+            )}
         </>
     )
 }

@@ -31,6 +31,7 @@ export interface GameState {
         percent: number
     }
     isTimer: boolean
+    gold: number
     lastRegen: number
     ui: UiState
     notifications: ToastState

@@ -2,6 +2,7 @@ import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
 import { QuestData } from './QuestData'
+import { QuestTemplate } from './QuestTemplate'
 import { QuestAdapter, QuestStatus } from './QuestTypes'
 
 export const selectAcceptedQuests = createMemoizeLatestSelector([(state: GameState) => state.quests], (quests) =>
@@ -14,21 +15,15 @@ export const selectAvailableQuests = createMemoizeLatestSelector([(state: GameSt
 
 export const selectQuestName = (questId: string | null) => (state: GameState) => {
     if (!questId) return ''
-    const templateId = QuestAdapter.selectEx(state.quests, questId).templateId
-    const data = QuestData.getEx(templateId)
-    return data.getName(questId)(state)
+    return selectQuestTemplate(state, questId).getName(questId)(state)
 }
 export const selectQuestDescription = (questId: string | null) => (state: GameState) => {
     if (!questId) return ''
-    const templateId = QuestAdapter.selectEx(state.quests, questId).templateId
-    const data = QuestData.getEx(templateId)
-    return data.getDescription(questId)(state)
+    return selectQuestTemplate(state, questId).getDescription(questId)(state)
 }
 export const selectQuestIcon = (questId: string | null) => (state: GameState) => {
     if (!questId) return Icons.Dagger
-    const templateId = QuestAdapter.selectEx(state.quests, questId).templateId
-    const data = QuestData.getEx(templateId)
-    return data.getIcon(questId)(state)
+    return selectQuestTemplate(state, questId).getIcon(questId)(state)
 }
 export const isQuestSelected = (questId: string) => (state: GameState) => state.ui.selectedQuestId === questId
 export const selectQuestId = (state: GameState) => state.ui.selectedQuestId
@@ -76,4 +71,8 @@ export const isOutcomeCompleted = (questId: string, outcomeId: string) => (state
     if (!questId || !outcomeId) return false
     const quest = QuestAdapter.selectEx(state.quests, questId)
     return QuestData.getEx(quest.templateId).isOutcomeCompleted(questId, outcomeId)(state)
+}
+export function selectQuestTemplate(state: GameState, questId: string): QuestTemplate {
+    const quest = QuestAdapter.selectEx(state.quests, questId)
+    return QuestData.getEx(quest.templateId)
 }

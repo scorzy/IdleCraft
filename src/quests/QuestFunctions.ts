@@ -2,8 +2,9 @@ import { CharacterAdapter } from '../characters/characterAdapter'
 import { MAX_AVAILABLE_QUESTS } from '../const'
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
+import { addGold, addItem } from '../storage/storageFunctions'
 import { QuestData } from './QuestData'
-import { selectAvailableQuests } from './QuestSelectors'
+import { selectAcceptedQuests, selectAvailableQuests, selectQuestTemplate } from './QuestSelectors'
 import { isKillingOutcome, KillQuestOutcome, QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
 
 export const selectQuest = (id: string) =>
@@ -19,7 +20,6 @@ export const selectQuest = (id: string) =>
 
 function GenerateQuestState(state: GameState, templateId: string): QuestState {
     const questTemplate = QuestData.getEx(templateId)
-
     return questTemplate.generateQuestData(state)
 }
 
@@ -69,6 +69,41 @@ export const questOnKillListener = (state: GameState, targetId: string): GameSta
                 }
         })
     })
+
+    return state
+}
+export const completeQuest = (state: GameState, questId: string, outcomeId: string) => {
+    const quest = QuestAdapter.selectEx(state.quests, questId)
+    if (!quest) return state
+    if (quest.state !== QuestStatus.ACCEPTED) return state
+    const questTemplate = selectQuestTemplate(state, questId)
+    if (!questTemplate.isOutcomeCompleted(questId, outcomeId)(state)) return state
+
+    const outcome = quest.outcomeData[outcomeId]
+    if (!outcome) return state
+
+    if (outcome.itemReward) addItem(state, outcome.itemReward, outcome.itemCount || 1)
+    if (outcome.goldReward) state = addGold(state, outcome.goldReward)
+
+    const oldIndex = selectAcceptedQuests(state).indexOf(questId)
+
+    state = { ...state, quests: QuestAdapter.remove(state.quests, questId) }
+
+    if (questTemplate.nextQuestId) {
+        const newQuest: QuestState = GenerateQuestState(state, questTemplate.nextQuestId)
+        state = {
+            ...state,
+            ui: { ...state.ui, selectedQuestId: newQuest.id },
+            quests: QuestAdapter.create(state.quests, newQuest),
+        }
+    } else {
+        const acceptedQuests = selectAcceptedQuests(state)
+        const newSelectedQuestId = acceptedQuests[Math.min(oldIndex, acceptedQuests.length - 1)]
+        state = {
+            ...state,
+            ui: { ...state.ui, selectedQuestId: newSelectedQuestId ?? null },
+        }
+    }
 
     return state
 }

@@ -11,6 +11,10 @@ import { ItemAdapter } from './ItemAdapter'
 import { StorageState } from './storageTypes'
 import { InitialState } from '@/entityAdapter/InitialState'
 
+export function addGold(state: GameState, amount: number): GameState {
+    return { ...state, gold: Math.max(0, state.gold + amount) }
+}
+
 function subAddItem(state: StorageState, id: string, qta: number): StorageState {
     const old = state[id]
     const newQta = Math.max(qta + (old ?? 0), 0)
