@@ -137,10 +137,11 @@ const QuestDetailUi = () => {
 
 const QuestButtons = (props: { id: string }) => {
     const { id } = props
+    const { t } = useTranslations()
 
     const onClick = useCallback(() => acceptClick(id), [id])
 
-    return <Button onClick={onClick}>Accept</Button>
+    return <Button onClick={onClick}>{t.Accept}</Button>
 }
 const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     const { questId, outcomeId } = props

@@ -204,6 +204,7 @@ export const engMsg: Msg = {
     AvailableQuests: 'Available Quests',
 
     Complete: 'Complete',
+    Accept: 'Accept',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

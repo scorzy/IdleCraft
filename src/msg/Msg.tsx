@@ -226,6 +226,7 @@ export interface Msg {
     AcceptedQuests: string
     AvailableQuests: string
     Complete: string
+    Accept: string
 }
 export interface MsgFunctions {
     // Time
