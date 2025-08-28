@@ -1,4 +1,5 @@
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
+import { InitialState } from '../entityAdapter/InitialState'
 import { ItemFilter } from '../items/Item'
 import { KillQuestTarget } from './KillQuestTarget'
 
@@ -20,24 +21,25 @@ export interface QuestOutcome {
     type: QuestType
     goldReward?: number
     itemsRewards?: ItemsReward[]
+    requests: InitialState<QuestRequest>
 }
-export interface QuestOutcomeData {
-    outcomeId: string
+export interface QuestRequest {
+    id: string
     type: QuestType
 }
-export type KillQuestOutcome = QuestOutcome & {
+export type KillQuestRequest = QuestRequest & {
     type: QuestType.KILL
     targets: KillQuestTarget[]
 }
-export type CollectQuestOutcome = QuestOutcome & {
+export type CollectQuestRequest = QuestRequest & {
     type: QuestType.COLLECT
     itemCount: number
     itemFilter: ItemFilter
 }
-export function isKillingOutcome(out: QuestOutcome | KillQuestOutcome): out is KillQuestOutcome {
+export function isKillingQuestRequest(out: QuestRequest | KillQuestRequest): out is KillQuestRequest {
     return out.type === QuestType.KILL
 }
-export function isCollectOutcome(out: QuestOutcome | CollectQuestOutcome): out is CollectQuestOutcome {
+export function isCollectQuestRequest(out: QuestRequest | CollectQuestRequest): out is CollectQuestRequest {
     return out.type === QuestType.COLLECT
 }
 
@@ -49,7 +51,7 @@ export interface QuestState {
     state: QuestStatus
     templateId: string
     parameters: Record<string, QuestParameter>
-    outcomeData: Record<string, QuestOutcome>
+    outcomeData: InitialState<QuestOutcome>
 }
 
 class QuestAdapterInt extends AbstractEntityAdapter<QuestState> {
@@ -58,3 +60,17 @@ class QuestAdapterInt extends AbstractEntityAdapter<QuestState> {
     }
 }
 export const QuestAdapter = new QuestAdapterInt()
+
+class QuestOutcomeAdapterInt extends AbstractEntityAdapter<QuestOutcome> {
+    getId(data: QuestOutcome): string {
+        return data.id
+    }
+}
+export const QuestOutcomeAdapter = new QuestOutcomeAdapterInt()
+
+class QuestRequestAdapterInt extends AbstractEntityAdapter<QuestRequest> {
+    getId(data: QuestOutcome): string {
+        return data.id
+    }
+}
+export const QuestRequestAdapter = new QuestRequestAdapterInt()

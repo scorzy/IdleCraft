@@ -5,7 +5,7 @@ import { Icons } from '../icons/Icons'
 import { selectTranslations } from '../msg/useTranslations'
 import { getUniqueId } from '../utils/getUniqueId'
 import { QuestTemplate } from './QuestTemplate'
-import { isKillingOutcome, QuestAdapter, QuestStatus, QuestType } from './QuestTypes'
+import { isKillingQuestRequest, QuestAdapter, QuestStatus, QuestType } from './QuestTypes'
 
 export class KillQuestTemplate implements QuestTemplate {
     nextQuestId?: string | undefined
@@ -15,7 +15,7 @@ export class KillQuestTemplate implements QuestTemplate {
         const data = QuestAdapter.selectEx(state.quests, id)
         const outcomeData = data.outcomeData['outcome-1']
         if (!outcomeData) return []
-        if (!isKillingOutcome(outcomeData)) return []
+        if (!isKillingQuestRequest(outcomeData)) return []
         return outcomeData.targets
     }
 
@@ -72,7 +72,7 @@ export class KillQuestTemplate implements QuestTemplate {
     isOutcomeCompleted = (questId: string, outcomeId: string) => (state: GameState) => {
         const outcome = QuestAdapter.selectEx(state.quests, questId).outcomeData[outcomeId]
         if (!outcome) return false
-        if (!isKillingOutcome(outcome)) return false
+        if (!isKillingQuestRequest(outcome)) return false
         return outcome.targets.every((target) => target.killedCount >= target.targetCount)
     }
     getOutcomeGoldReward = (questId: string, outcomeId: string) => (state: GameState) => {

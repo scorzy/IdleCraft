@@ -27,7 +27,7 @@ import { IconsData } from '../../icons/Icons'
 import { acceptClick, completeQuest, selectQuest } from '../QuestFunctions'
 import { GameState } from '../../game/GameState'
 import { Button } from '../../components/ui/button'
-import { isKillingOutcome, QuestStatus, QuestType } from '../QuestTypes'
+import { isKillingQuestRequest, QuestStatus, QuestType } from '../QuestTypes'
 import { KillQuestTarget } from '../KillQuestTarget'
 import { TitleH1, TypographyP } from '../../ui/typography'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
@@ -244,7 +244,7 @@ const KillOutcomeUi = (props: { questId: string; outcomeId: string }) => {
         useCallback((s: GameState) => selectOutcome(questId, outcomeId)(s), [questId, outcomeId])
     )
     if (!outcome) return <></>
-    if (!isKillingOutcome(outcome)) return <></>
+    if (!isKillingQuestRequest(outcome)) return <></>
 
     return (
         <div>

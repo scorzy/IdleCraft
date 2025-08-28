@@ -5,7 +5,7 @@ import { useGameStore } from '../game/state'
 import { addGold, addItem } from '../storage/storageFunctions'
 import { QuestData } from './QuestData'
 import { selectAcceptedQuests, selectAvailableQuests, selectQuestTemplate } from './QuestSelectors'
-import { isKillingOutcome, KillQuestOutcome, QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
+import { isKillingQuestRequest, KillQuestRequest, QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
 
 export const selectQuest = (id: string) =>
     useGameStore.setState((state: GameState) => {
@@ -45,7 +45,7 @@ export const questOnKillListener = (state: GameState, targetId: string): GameSta
     QuestAdapter.forEach(state.quests, (quest) => {
         if (quest.state !== QuestStatus.ACCEPTED) return
         Object.values(quest.outcomeData).forEach((outcome) => {
-            if (!isKillingOutcome(outcome)) return
+            if (!isKillingQuestRequest(outcome)) return
 
             const targets = [...outcome.targets]
             let updated = false
@@ -63,7 +63,7 @@ export const questOnKillListener = (state: GameState, targetId: string): GameSta
                     quests: QuestAdapter.update(state.quests, quest.id, {
                         outcomeData: {
                             ...quest.outcomeData,
-                            [outcome.id]: { ...outcome, targets } as KillQuestOutcome,
+                            [outcome.id]: { ...outcome, targets } as KillQuestRequest,
                         },
                     }),
                 }
