@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@radix-ui/react-tooltip'
+import { Popover, PopoverTrigger, PopoverContent, Portal } from '@radix-ui/react-popover'
 import { useGameStore } from '../../game/state'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
@@ -41,6 +41,7 @@ import { selectGameItem } from '../../storage/StorageSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
 import { Card, CardContent } from '../../components/ui/card'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+import { Badge } from '../../components/ui/badge'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -254,21 +255,26 @@ export function ItemRewardUi(props: { itemId: string; quantity: number }) {
     )
     if (!item) return <></>
     return (
-        <Tooltip>
-            <TooltipTrigger>
-                <span>
-                    X {f(quantity)} {IconsData[item.icon]} {item.nameId}
-                </span>
-            </TooltipTrigger>
-            <TooltipContent side="top">
-                <Card className="min-w-50">
-                    <MyCardHeaderTitle title={`X ${f(quantity)} ${item.nameId}`} icon={IconsData[item.icon]} />
-                    <CardContent>
-                        <ItemInfo item={item} />
-                    </CardContent>
-                </Card>
-            </TooltipContent>
-        </Tooltip>
+        <div>
+            <Popover>
+                <PopoverTrigger>
+                    <Badge>
+                        X {f(quantity)} {IconsData[item.icon]} {item.nameId}
+                    </Badge>
+                </PopoverTrigger>
+
+                <Portal>
+                    <PopoverContent side="top">
+                        <Card className="min-w-50">
+                            <MyCardHeaderTitle title={`X ${f(quantity)} ${item.nameId}`} icon={IconsData[item.icon]} />
+                            <CardContent className="text-sm">
+                                <ItemInfo item={item} />
+                            </CardContent>
+                        </Card>
+                    </PopoverContent>
+                </Portal>
+            </Popover>
+        </div>
     )
 }
 
