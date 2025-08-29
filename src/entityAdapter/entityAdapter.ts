@@ -97,4 +97,12 @@ export abstract class AbstractEntityAdapter<T> {
             if (element) fun(element)
         }
     }
+    every(state: InitialState<T>, fun: (el: T) => boolean): boolean {
+        const ids = state.ids
+        for (const id of ids) {
+            const element = state.entries[id]
+            if (element && !fun(element)) return false
+        }
+        return true
+    }
 }

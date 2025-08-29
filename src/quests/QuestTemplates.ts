@@ -4,33 +4,33 @@ import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { selectTranslations } from '../msg/useTranslations'
 import { getUniqueId } from '../utils/getUniqueId'
+import { selectFirstKillRequest } from './QuestSelectors'
 import { QuestTemplate } from './QuestTemplate'
-import { isKillingQuestRequest, QuestAdapter, QuestStatus, QuestType } from './QuestTypes'
+import { QuestAdapter, QuestOutcomeAdapter, QuestRequestAdapter, QuestStatus, QuestType } from './QuestTypes'
+import { getQuestRequestSelectors } from './RequestSelectors'
 
 export class KillQuestTemplate implements QuestTemplate {
     nextQuestId?: string | undefined
     id = 'kill-n'
 
-    selectTargetsForKillQuest = (state: GameState, id: string) => {
-        const data = QuestAdapter.selectEx(state.quests, id)
-        const outcomeData = data.outcomeData['outcome-1']
-        if (!outcomeData) return []
-        if (!isKillingQuestRequest(outcomeData)) return []
-        return outcomeData.targets
-    }
-
-    getName = (id: string) => (state: GameState) => {
+    getName = (questId: string) => (state: GameState) => {
         const t = selectTranslations(state)
-        return t.fun.killQuest1Desc(this.selectTargetsForKillQuest(state, id))
+        const req = selectFirstKillRequest(state, questId)
+        if (!req) return t.fun.killQuest1Name([])
+        return t.fun.killQuest1Desc(req.targets)
     }
-    getDescription = (id: string) => (state: GameState) => {
+    getDescription = (questId: string) => (state: GameState) => {
         const t = selectTranslations(state)
-        return t.fun.killQuest1Desc(this.selectTargetsForKillQuest(state, id))
+        const req = selectFirstKillRequest(state, questId)
+        if (!req) return t.fun.killQuest1Desc([])
+        return t.fun.killQuest1Desc(req.targets)
     }
-    getIcon = (id: string) => (state: GameState) => {
-        const target = this.selectTargetsForKillQuest(state, id)[0]?.targetId as keyof typeof CharTemplatesData
+    getIcon = (questId: string) => (state: GameState) => {
+        const req = selectFirstKillRequest(state, questId)
+        if (!req) return Icons.Skull
+        const target = req.targets[0]
         if (!target) return Icons.Skull
-        const targetData = CharTemplatesData[target]
+        const targetData = CharTemplatesData[target.targetId]
         return Icons[targetData.iconId] || Icons.Skull
     }
 
@@ -46,40 +46,58 @@ export class KillQuestTemplate implements QuestTemplate {
             },
         },
         outcomeData: {
-            'outcome-1': {
-                id: 'outcome-1',
-                type: QuestType.KILL,
-                goldReward: 100,
-                itemsRewards: [
-                    { itemId: 'TinOre', quantity: 1 },
-                    { itemId: 'DeadBoar', quantity: 1 },
-                ],
-                targets: [
-                    {
-                        targetId: CharTemplateEnum.Boar,
-                        targetCount: 5,
-                        killedCount: 0,
+            ids: ['k'],
+            entries: {
+                k: {
+                    id: 'k',
+                    type: QuestType.KILL,
+                    goldReward: 100,
+                    itemsRewards: [
+                        { itemId: 'TinOre', quantity: 1 },
+                        { itemId: 'DeadBoar', quantity: 1 },
+                    ],
+                    requests: {
+                        ids: ['request-1'],
+                        entries: {
+                            'request-1': {
+                                id: 'request-1',
+                                type: QuestType.KILL,
+                                targets: [
+                                    {
+                                        targetId: CharTemplateEnum.Boar,
+                                        targetCount: 5,
+                                        killedCount: 0,
+                                    },
+                                ],
+                            },
+                        },
                     },
-                ],
+                },
             },
         },
     })
 
-    getOutcomeDescription = (questId: string, _outcomeId: string) => (state: GameState) => {
-        const t = selectTranslations(state)
-        return t.fun.killQuest1Outcome(this.selectTargetsForKillQuest(state, questId))
+    getOutcomeDescription = (_questId: string, _outcomeId: string) => (_state: GameState) => {
+        return ''
     }
     isOutcomeCompleted = (questId: string, outcomeId: string) => (state: GameState) => {
-        const outcome = QuestAdapter.selectEx(state.quests, questId).outcomeData[outcomeId]
-        if (!outcome) return false
-        if (!isKillingQuestRequest(outcome)) return false
-        return outcome.targets.every((target) => target.killedCount >= target.targetCount)
+        const questState = QuestAdapter.selectEx(state.quests, questId)
+        const outcome = QuestOutcomeAdapter.selectEx(questState.outcomeData, outcomeId)
+        if (!outcome) return true
+        return QuestRequestAdapter.every(outcome.requests, (req) =>
+            getQuestRequestSelectors(req.type).isCompleted(questId, outcomeId, req.id)(state)
+        )
     }
     getOutcomeGoldReward = (questId: string, outcomeId: string) => (state: GameState) => {
-        const outcome = QuestAdapter.selectEx(state.quests, questId).outcomeData[outcomeId]
+        const questState = QuestAdapter.selectEx(state.quests, questId)
+        const outcome = QuestOutcomeAdapter.selectEx(questState.outcomeData, outcomeId)
         if (!outcome) return 0
         return outcome.goldReward ?? 0
     }
-    getOutcomeItemReward = (questId: string, outcomeId: string) => (state: GameState) =>
-        QuestAdapter.selectEx(state.quests, questId).outcomeData[outcomeId]?.itemsRewards ?? []
+    getOutcomeItemReward = (questId: string, outcomeId: string) => (state: GameState) => {
+        const questState = QuestAdapter.selectEx(state.quests, questId)
+        const outcome = QuestOutcomeAdapter.selectEx(questState.outcomeData, outcomeId)
+        if (!outcome) return []
+        return outcome.itemsRewards ?? []
+    }
 }

@@ -5,7 +5,14 @@ import { useGameStore } from '../game/state'
 import { addGold, addItem } from '../storage/storageFunctions'
 import { QuestData } from './QuestData'
 import { selectAcceptedQuests, selectAvailableQuests, selectQuestTemplate } from './QuestSelectors'
-import { isKillingQuestRequest, KillQuestRequest, QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
+import {
+    isKillingQuestRequest,
+    KillQuestRequest,
+    QuestAdapter,
+    QuestOutcomeAdapter,
+    QuestState,
+    QuestStatus,
+} from './QuestTypes'
 
 export const selectQuest = (id: string) =>
     useGameStore.setState((state: GameState) => {
@@ -79,7 +86,7 @@ export const completeQuest = (state: GameState, questId: string, outcomeId: stri
     const questTemplate = selectQuestTemplate(state, questId)
     if (!questTemplate.isOutcomeCompleted(questId, outcomeId)(state)) return state
 
-    const outcome = quest.outcomeData[outcomeId]
+    const outcome = QuestOutcomeAdapter.selectEx(quest.outcomeData, outcomeId)
     if (!outcome) return state
 
     if (outcome.itemsRewards)

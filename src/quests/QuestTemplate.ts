@@ -8,8 +8,8 @@ export interface QuestTemplate {
     getDescription: (id: string) => (state: GameState) => string
     nextQuestId?: string
     getIcon: (id: string) => (state: GameState) => Icons
-
     generateQuestData: (state: GameState) => QuestState
+
     getOutcomeDescription: (questId: string, outcomeId: string) => (state: GameState) => string
     isOutcomeCompleted: (questId: string, outcomeId: string) => (state: GameState) => boolean
 

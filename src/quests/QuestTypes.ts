@@ -18,7 +18,6 @@ export interface ItemsReward {
 }
 export interface QuestOutcome {
     id: string
-    type: QuestType
     goldReward?: number
     itemsRewards?: ItemsReward[]
     requests: InitialState<QuestRequest>
@@ -69,7 +68,7 @@ class QuestOutcomeAdapterInt extends AbstractEntityAdapter<QuestOutcome> {
 export const QuestOutcomeAdapter = new QuestOutcomeAdapterInt()
 
 class QuestRequestAdapterInt extends AbstractEntityAdapter<QuestRequest> {
-    getId(data: QuestOutcome): string {
+    getId(data: QuestRequest): string {
         return data.id
     }
 }

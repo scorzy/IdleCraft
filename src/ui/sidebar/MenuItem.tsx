@@ -14,7 +14,7 @@ import classes from './menuItem.module.css'
 import { CollapsedEnum } from './CollapsedEnum'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/buttonVariants'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 export const MenuItem = memo(function MenuItem(props: {
     page: UiPages
@@ -84,24 +84,22 @@ export const MyListItem = memo(function MyListItem(props: {
         )
     } else
         return (
-            <TooltipProvider delayDuration={150}>
-                <Tooltip>
-                    <TooltipTrigger
-                        onClick={onClick}
-                        className={cn(
-                            buttonVariants({ variant: 'ghost' }),
-                            { 'bg-muted hover:bg-muted': active },
-                            { 'text-muted-foreground hover:bg-muted': !active },
-                            'mt-1 justify-start gap-4',
-                            classes.item,
-                            collapsed ? classes.itemCollapsed : ''
-                        )}
-                    >
-                        {icon}
-                    </TooltipTrigger>
-                    <TooltipContent side="right">{text}</TooltipContent>
-                </Tooltip>
-            </TooltipProvider>
+            <Tooltip>
+                <TooltipTrigger
+                    onClick={onClick}
+                    className={cn(
+                        buttonVariants({ variant: 'ghost' }),
+                        { 'bg-muted hover:bg-muted': active },
+                        { 'text-muted-foreground hover:bg-muted': !active },
+                        'mt-1 justify-start gap-4',
+                        classes.item,
+                        collapsed ? classes.itemCollapsed : ''
+                    )}
+                >
+                    {icon}
+                </TooltipTrigger>
+                <TooltipContent side="right">{text}</TooltipContent>
+            </Tooltip>
         )
 })
 
