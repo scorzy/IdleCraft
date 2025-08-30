@@ -1,7 +1,7 @@
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { GameState } from '../game/GameState'
 import { EXP_BASE_PRICE, EXP_BASE_PRICE_MAIN, EXP_GROW_RATE, EXP_GROW_RATE_MAIN } from './expConst'
-import { ExpEnum } from './expEnum'
+import { ExpEnum } from './ExpEnum'
 
 export const getLevel = (state: GameState, expType: ExpEnum, charId: string) =>
     CharacterAdapter.selectEx(state.characters, charId).skillsLevel[expType] ?? 0

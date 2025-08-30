@@ -1,3 +1,3 @@
-import { ExpEnum } from './expEnum'
+import { ExpEnum } from './ExpEnum'
 
 export type ExpState = Partial<Record<ExpEnum, number>>

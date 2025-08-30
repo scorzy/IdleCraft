@@ -1,4 +1,4 @@
-import { ExpEnum } from '../experience/expEnum'
+import { ExpEnum } from '@/experience/ExpEnum.1'
 import { Msg } from '../msg/Msg'
 import { Icons } from '../icons/Icons'
 import { AbilitiesEnum } from '../activeAbilities/abilitiesEnum'

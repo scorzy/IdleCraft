@@ -1,6 +1,6 @@
 import { ActivityAdapter } from '../activities/ActivityState'
 import { PLAYER_ID } from '../characters/charactersConst'
-import { ExpEnum } from '../experience/expEnum'
+import { ExpEnum } from '@/experience/ExpEnum.1'
 import { selectLevelExp } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
 import { PickaxeData } from '../items/Item'

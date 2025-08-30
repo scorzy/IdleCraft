@@ -1,5 +1,6 @@
 import { memo } from 'react'
-import { ExpData, ExpEnum } from '../expEnum'
+import { ExpData } from '../ExpData'
+import { ExpEnum } from '../ExpEnum'
 import { useGameStore } from '../../game/state'
 import { selectExp, selectLevel, selectLevelExp, selectNextExp } from '../expSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'

@@ -1,12 +1,9 @@
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 import { InitialState } from '../entityAdapter/InitialState'
-import { ItemFilter } from '../items/Item'
+import { GameLocations } from '../gameLocations/GameLocations'
+import { ItemRequest } from './ItemRequest'
 import { KillQuestTarget } from './KillQuestTarget'
 
-export enum QuestType {
-    KILL = 'KILL',
-    COLLECT = 'COLLECT',
-}
 export enum QuestStatus {
     ACCEPTED = 'ACCEPTED',
     AVAILABLE = 'AVAILABLE',
@@ -18,38 +15,17 @@ export interface ItemsReward {
 }
 export interface QuestOutcome {
     id: string
+    location: GameLocations
     goldReward?: number
     itemsRewards?: ItemsReward[]
-    requests: InitialState<QuestRequest>
-}
-export interface QuestRequest {
-    id: string
-    type: QuestType
-}
-export type KillQuestRequest = QuestRequest & {
-    type: QuestType.KILL
-    targets: KillQuestTarget[]
-}
-export type CollectQuestRequest = QuestRequest & {
-    type: QuestType.COLLECT
-    itemCount: number
-    itemFilter: ItemFilter
-}
-export function isKillingQuestRequest(out: QuestRequest | KillQuestRequest): out is KillQuestRequest {
-    return out.type === QuestType.KILL
-}
-export function isCollectQuestRequest(out: QuestRequest | CollectQuestRequest): out is CollectQuestRequest {
-    return out.type === QuestType.COLLECT
-}
-
-export interface QuestParameter {
-    id: string
+    targets?: KillQuestTarget[]
+    reqItems?: ItemRequest[]
 }
 export interface QuestState {
     id: string
     state: QuestStatus
     templateId: string
-    parameters: Record<string, QuestParameter>
+    parameters: Record<string, number | string>
     outcomeData: InitialState<QuestOutcome>
 }
 
@@ -66,10 +42,3 @@ class QuestOutcomeAdapterInt extends AbstractEntityAdapter<QuestOutcome> {
     }
 }
 export const QuestOutcomeAdapter = new QuestOutcomeAdapterInt()
-
-class QuestRequestAdapterInt extends AbstractEntityAdapter<QuestRequest> {
-    getId(data: QuestRequest): string {
-        return data.id
-    }
-}
-export const QuestRequestAdapter = new QuestRequestAdapterInt()

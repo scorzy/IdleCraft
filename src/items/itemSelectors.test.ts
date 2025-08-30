@@ -51,6 +51,7 @@ describe('filterItem', () => {
         expect(filterItem(baseItem, { itemSubType: ItemSubType.Crafting } as ItemFilter)).toBe(false)
     })
     it('filters by craftingData', () => {
+        expect(filterItem(baseItem, { craftingData: { speedBonus: 1 } } as ItemFilter)).toBe(true)
         expect(filterItem(baseItem, { craftingData: { speedBonus: 2 } } as ItemFilter)).toBe(true)
         expect(filterItem(baseItem, { craftingData: { speedBonus: 3 } } as ItemFilter)).toBe(false)
     })

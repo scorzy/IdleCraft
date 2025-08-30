@@ -1,18 +1,13 @@
+import uniq from 'lodash-es/uniq'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
+import { selectTranslations } from '../msg/useTranslations'
+import { selectItemQta } from '../storage/StorageSelectors'
 import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
 import { QuestData } from './QuestData'
+import { QuestRequestSelectors } from './QuestRequestSelectors'
 import { QuestTemplate } from './QuestTemplate'
-import {
-    isKillingQuestRequest,
-    ItemsReward,
-    KillQuestRequest,
-    QuestAdapter,
-    QuestOutcomeAdapter,
-    QuestRequestAdapter,
-    QuestStatus,
-} from './QuestTypes'
-import { getQuestRequestSelectors } from './RequestSelectors'
+import { ItemsReward, QuestAdapter, QuestOutcomeAdapter, QuestStatus } from './QuestTypes'
 
 export const selectAcceptedQuests = createMemoizeLatestSelector([(state: GameState) => state.quests], (quests) =>
     QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.ACCEPTED)
@@ -68,9 +63,10 @@ export const selectOutcome = (questId: string, outcomeId: string) => (state: Gam
     return QuestOutcomeAdapter.select(quest.outcomeData, outcomeId) || null
 }
 export const isOutcomeCompleted = (questId: string, outcomeId: string) => (state: GameState) => {
-    if (!questId || !outcomeId) return false
-    const quest = QuestAdapter.selectEx(state.quests, questId)
-    return QuestData.getEx(quest.templateId).isOutcomeCompleted(questId, outcomeId)(state)
+    const questState = QuestAdapter.selectEx(state.quests, questId)
+    const outcome = QuestOutcomeAdapter.selectEx(questState.outcomeData, outcomeId)
+    if (!outcome) return true
+    return QuestReqSelectors.every((selector) => selector.isCompleted(questId, outcomeId)(state))
 }
 export function selectQuestTemplate(state: GameState, questId: string): QuestTemplate {
     const quest = QuestAdapter.selectEx(state.quests, questId)
@@ -83,52 +79,42 @@ export function selectOutcomeItemReward(state: GameState, questId: string, outco
     return selectQuestTemplate(state, questId).getOutcomeItemReward(questId, outcomeId)(state)
 }
 
-export const selectTargetsForKillQuest = (state: GameState, questId: string, outcomeId: string, requestId: string) => {
-    const data = QuestAdapter.selectEx(state.quests, questId)
-    const outcome = QuestOutcomeAdapter.selectEx(data.outcomeData, outcomeId)
-    const request = QuestRequestAdapter.selectEx(outcome.requests, requestId)
-    if (!request) return []
-    if (!isKillingQuestRequest(request)) return []
-    return request.targets
+export function selectQuestTargets(state: GameState, questId: string, outcomeId: string) {
+    return selectOutcome(questId, outcomeId)(state)?.targets
 }
-export function selectFirstKillRequest(state: GameState, questId: string): KillQuestRequest | null {
-    const data = QuestAdapter.selectEx(state.quests, questId)
 
-    for (const outcomeId of data.outcomeData.ids) {
-        const outcome = data.outcomeData.entries[outcomeId]
-        if (!outcome) continue
-        for (const requestId of outcome.requests.ids) {
-            const request = outcome.requests.entries[requestId]
-            if (!request) continue
-            if (isKillingQuestRequest(request)) return request
+export function isKillingReq(state: GameState, questId: string, outcomeId: string): boolean {
+    return !!selectOutcome(questId, outcomeId)(state)?.targets
+}
+export function isCollectReq(state: GameState, questId: string, outcomeId: string): boolean {
+    return !!selectOutcome(questId, outcomeId)(state)?.reqItems
+}
+
+export const KillQuestRequestSelectors: QuestRequestSelectors = {
+    getDescription: (_questId: string, _outcomeId: string) => (state: GameState) =>
+        selectTranslations(state).t.KillRequestDesc,
+
+    isCompleted: (questId: string, outcomeId: string) => (state: GameState) => {
+        const targets = selectOutcome(questId, outcomeId)(state)?.targets
+        if (!targets) return true
+        return targets.every((target) => target.killedCount >= target.targetCount)
+    },
+}
+
+export const CollectQuestRequestSelectors: QuestRequestSelectors = {
+    getDescription: (_questId: string, _outcomeId: string) => (state: GameState) =>
+        selectTranslations(state).t.collectReqDesc,
+
+    isCompleted: (questId: string, outcomeId: string) => (state: GameState) => {
+        const reqItems = selectOutcome(questId, outcomeId)(state)?.reqItems
+        if (!reqItems) return true
+        for (const reqItem of reqItems) {
+            let qta = 0
+            for (const selectedItem of uniq(reqItem.selectedItems)) qta += selectItemQta(null, selectedItem)(state)
+            if (qta < reqItem.itemCount) return false
         }
-    }
+        return true
+    },
+}
 
-    return null
-}
-export const selectRequestIds = (questId: string, outcomeId: string) => (state: GameState) => {
-    if (!questId || !outcomeId) return []
-    const quest = QuestAdapter.selectEx(state.quests, questId)
-    const outcome = QuestOutcomeAdapter.select(quest.outcomeData, outcomeId)
-    return outcome?.requests.ids ?? []
-}
-export const selectRequest = (questId: string, outcomeId: string, requestId: string) => (state: GameState) => {
-    if (!questId || !outcomeId || !requestId) return null
-    const quest = QuestAdapter.selectEx(state.quests, questId)
-    const outcome = QuestOutcomeAdapter.select(quest.outcomeData, outcomeId)
-    if (!outcome) return null
-    return QuestRequestAdapter.select(outcome.requests, requestId) || null
-}
-export const selectRequestType = (questId: string, outcomeId: string, requestId: string) => (state: GameState) => {
-    if (!questId || !outcomeId || !requestId) return null
-    const quest = QuestAdapter.selectEx(state.quests, questId)
-    const outcome = QuestOutcomeAdapter.select(quest.outcomeData, outcomeId)
-    if (!outcome) return null
-    return QuestRequestAdapter.select(outcome.requests, requestId)?.type || null
-}
-export const selectRequestDescription =
-    (questId: string, outcomeId: string, requestId: string) => (state: GameState) => {
-        const type = selectRequestType(questId, outcomeId, requestId)(state)
-        if (!type) return ''
-        return getQuestRequestSelectors(type).getDescription(questId, outcomeId, requestId)(state)
-    }
+export const QuestReqSelectors = [KillQuestRequestSelectors, CollectQuestRequestSelectors]

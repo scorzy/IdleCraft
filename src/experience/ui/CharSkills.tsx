@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { ExpEnum } from '../expEnum'
+import { ExpEnum } from '../ExpEnum'
 import { useGameStore } from '../../game/state'
 import { selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { ExperienceCard } from './ExperienceCard'

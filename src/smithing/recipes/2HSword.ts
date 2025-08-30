@@ -9,7 +9,7 @@ import {
     RecipeParamType,
     RecipeParameter,
 } from '../../crafting/RecipeInterfaces'
-import { ExpEnum } from '../../experience/expEnum'
+import { ExpEnum } from '@/experience/ExpEnum.1'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'

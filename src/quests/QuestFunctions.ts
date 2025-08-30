@@ -4,15 +4,8 @@ import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { addGold, addItem } from '../storage/storageFunctions'
 import { QuestData } from './QuestData'
-import { selectAcceptedQuests, selectAvailableQuests, selectQuestTemplate } from './QuestSelectors'
-import {
-    isKillingQuestRequest,
-    KillQuestRequest,
-    QuestAdapter,
-    QuestOutcomeAdapter,
-    QuestState,
-    QuestStatus,
-} from './QuestTypes'
+import { isOutcomeCompleted, selectAcceptedQuests, selectAvailableQuests, selectQuestTemplate } from './QuestSelectors'
+import { QuestAdapter, QuestOutcome, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
 
 export const selectQuest = (id: string) =>
     useGameStore.setState((state: GameState) => {
@@ -48,32 +41,32 @@ export const acceptQuest = (state: GameState, questId: string) => {
 }
 
 export const acceptClick = (questId: string) => useGameStore.setState((state: GameState) => acceptQuest(state, questId))
-export const questOnKillListener = (state: GameState, targetId: string): GameState => {
+export const questOnKillListener = (state: GameState, killedCharId: string): GameState => {
     QuestAdapter.forEach(state.quests, (quest) => {
         if (quest.state !== QuestStatus.ACCEPTED) return
-        Object.values(quest.outcomeData).forEach((outcome) => {
-            if (!isKillingQuestRequest(outcome)) return
+
+        Object.values(quest.outcomeData).forEach((outcome: QuestOutcome) => {
+            if (outcome.location !== state.location) return
+            if (!outcome.targets) return
 
             const targets = [...outcome.targets]
             let updated = false
             for (const target of targets) {
                 if (target.killedCount >= target.targetCount) continue
-                const templateId = CharacterAdapter.selectEx(state.characters, targetId).templateId
+                const templateId = CharacterAdapter.selectEx(state.characters, killedCharId).templateId
                 if (target.targetId !== templateId) return
                 target.killedCount = target.killedCount + 1
                 updated = true
             }
 
-            if (updated)
-                state = {
-                    ...state,
-                    quests: QuestAdapter.update(state.quests, quest.id, {
-                        outcomeData: {
-                            ...quest.outcomeData,
-                            [outcome.id]: { ...outcome, targets } as KillQuestRequest,
-                        },
-                    }),
-                }
+            if (!updated) return
+
+            state = {
+                ...state,
+                quests: QuestAdapter.update(state.quests, quest.id, {
+                    outcomeData: QuestOutcomeAdapter.update(quest.outcomeData, outcome.id, { targets }),
+                }),
+            }
         })
     })
 
@@ -84,7 +77,7 @@ export const completeQuest = (state: GameState, questId: string, outcomeId: stri
     if (!quest) return state
     if (quest.state !== QuestStatus.ACCEPTED) return state
     const questTemplate = selectQuestTemplate(state, questId)
-    if (!questTemplate.isOutcomeCompleted(questId, outcomeId)(state)) return state
+    if (!isOutcomeCompleted(questId, outcomeId)(state)) return state
 
     const outcome = QuestOutcomeAdapter.selectEx(quest.outcomeData, outcomeId)
     if (!outcome) return state

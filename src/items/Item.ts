@@ -1,5 +1,5 @@
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
-import { ExpEnum } from '../experience/expEnum'
+import { ExpEnum } from '../experience/ExpEnum'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 
@@ -73,7 +73,6 @@ export interface Item {
 export interface ItemFilter {
     itemId?: string
     nameId?: keyof Msg
-    location?: string
     itemType: ItemTypes
     itemSubType?: ItemSubType
     minStats?: Partial<Item>

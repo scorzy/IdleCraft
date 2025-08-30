@@ -19,7 +19,7 @@ import {
 } from '../PerksSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { Button } from '../../components/ui/button'
-import { ExpData } from '../../experience/expEnum'
+import { ExpData } from '../../experience/ExpData'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { selectLevel } from '../../experience/expSelectors'
 import { toggleShowAvailablePerks, toggleCompletedPerks, toggleShowUnavailablePerks } from '../../ui/state/uiFunctions'

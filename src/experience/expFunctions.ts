@@ -2,7 +2,7 @@ import { GameState } from '../game/GameState'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { EXP_BASE_PRICE, EXP_GROW_RATE } from './expConst'
-import { ExpEnum } from './expEnum'
+import { ExpEnum } from './ExpEnum'
 import { getCharLevel } from './expSelectors'
 
 export function addExp(state: GameState, expType: ExpEnum, expQta: number, characterId: string = PLAYER_ID) {

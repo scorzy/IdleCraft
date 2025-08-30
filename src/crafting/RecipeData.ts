@@ -1,4 +1,4 @@
-import { ExpEnum } from '../experience/expEnum'
+import { ExpEnum } from '@/experience/ExpEnum.1'
 import { RecipeTypes } from './RecipeInterfaces'
 
 export const RecipeData: Record<RecipeTypes, { expType: ExpEnum }> = {

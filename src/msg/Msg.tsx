@@ -1,4 +1,4 @@
-import { KillQuestTarget } from '@/quests/KillQuestTarget'
+import { QuestParams } from '../quests/QuestParams'
 
 export interface Translations {
     t: Msg
@@ -228,6 +228,9 @@ export interface Msg {
     Complete: string
     Accept: string
     Gold: string
+
+    KillRequestDesc: string
+    collectReqDesc: string
 }
 export interface MsgFunctions {
     // Time
@@ -255,7 +258,8 @@ export interface MsgFunctions {
     requireWoodcuttingLevel: (formattedQta: string) => string
     requireMiningLevel: (formattedQta: string) => string
 
-    killQuest1Name: (targets: KillQuestTarget[]) => string
-    killQuest1Desc: (targets: KillQuestTarget[]) => string
-    killQuest1Outcome: (targets: KillQuestTarget[]) => string
+    testQuestName: (questParams: QuestParams) => string
+    testQuestDesc: (questParams: QuestParams) => string
+    testOutcomeDesc: (questParams: QuestParams) => string
+    testOutcome2Desc: (questParams: QuestParams) => string
 }

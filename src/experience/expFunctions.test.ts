@@ -3,7 +3,7 @@ import { GetInitialGameState } from '../game/InitialGameState'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { addExp } from './expFunctions'
-import { ExpEnum } from './expEnum'
+import { ExpEnum } from './ExpEnum'
 import { getLevelExp } from './expSelectors'
 
 describe('Exp Functions', () => {

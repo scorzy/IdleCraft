@@ -8,7 +8,7 @@ import { BaseBonus } from '../../bonus/Bonus'
 import { CharacterAdapter } from '../../characters/characterAdapter'
 import { WoodTypes } from '../WoodTypes'
 import { selectLevelExp } from '../../experience/expSelectors'
-import { ExpEnum } from '../../experience/expEnum'
+import { ExpEnum } from '@/experience/ExpEnum.1'
 import { WoodData } from '../WoodData'
 
 export const DEF_WOOD_AXE: WoodAxeData = {

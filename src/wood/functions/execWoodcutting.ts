@@ -1,7 +1,7 @@
 import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
 import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { makeExecActivity } from '../../activities/functions/makeExecActivity'
-import { ExpEnum } from '../../experience/expEnum'
+import { ExpEnum } from '@/experience/ExpEnum.1'
 import { addExp } from '../../experience/expFunctions'
 import { GameState } from '../../game/GameState'
 import { addItem } from '../../storage/storageFunctions'
