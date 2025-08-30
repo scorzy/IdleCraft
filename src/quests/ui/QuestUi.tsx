@@ -22,6 +22,7 @@ import {
     selectQuestName,
     selectQuestStatus,
     selectRequest,
+    selectRequestDescription,
     selectRequestIds,
     selectRequestType,
 } from '../QuestSelectors'
@@ -123,7 +124,7 @@ const QuestDetailUi = () => {
     const id = useGameStore(selectQuestId)
     const nameId = useGameStore(useCallback((s: GameState) => selectQuestName(id)(s), [id]))
     const iconId = useGameStore(useCallback((s: GameState) => selectQuestIcon(id)(s), [id]))
-    const descriptionId = useGameStore(useCallback((s: GameState) => selectQuestDescription(id)(s), [id]))
+    const description = useGameStore(useCallback((s: GameState) => selectQuestDescription(id)(s), [id]))
     const outcomeIds = useGameStore(selectOutcomeIds)
     const state = useGameStore(useCallback((s: GameState) => selectQuestStatus(id)(s), [id]))
 
@@ -135,11 +136,13 @@ const QuestDetailUi = () => {
                 {IconsData[iconId]}
                 {nameId}
             </TitleH1>
-            <TypographyP>{descriptionId}</TypographyP>
-            {outcomeIds.map((outcomeId) => (
-                <QuestOutcomeUi questId={id} outcomeId={outcomeId} key={outcomeId} />
-            ))}
-            <TypographyP>{state === QuestStatus.AVAILABLE && <QuestButtons id={id} />}</TypographyP>
+            <TypographyP>{description}</TypographyP>
+            <div className="mt-4 grid gap-4">
+                {outcomeIds.map((outcomeId) => (
+                    <QuestOutcomeUi questId={id} outcomeId={outcomeId} key={outcomeId} />
+                ))}
+                {state === QuestStatus.AVAILABLE && <QuestButtons id={id} />}
+            </div>
         </>
     )
 }
@@ -150,7 +153,11 @@ const QuestButtons = (props: { id: string }) => {
 
     const onClick = useCallback(() => acceptClick(id), [id])
 
-    return <Button onClick={onClick}>{t.Accept}</Button>
+    return (
+        <Button onClick={onClick} className="justify-self-start">
+            {t.Accept}
+        </Button>
+    )
 }
 
 const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
@@ -168,10 +175,15 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
         useCallback((s: GameState) => selectRequestIds(questId, outcomeId)(s), [questId, outcomeId])
     )
 
+    const description = useGameStore(
+        useCallback((s: GameState) => selectOutcomeDescription(questId, outcomeId)(s), [questId, outcomeId])
+    )
+
     return (
         <Card>
             <CardContent>
                 <TypographyP>
+                    <TypographyP>{description}</TypographyP>
                     {requestIds.map((requestId) => (
                         <QuestRequestUi
                             questId={questId}
@@ -222,15 +234,13 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
 
     return (
         <>
-            <TypographyP>
-                Rewards:{' '}
-                {gold > 0 && (
-                    <div>
-                        {t.Gold}: {f(gold)}
-                    </div>
-                )}{' '}
-            </TypographyP>
             <div className="mt-2 flex flex-wrap gap-2">
+                <TypographyP>Rewards: </TypographyP>
+                {gold > 0 && (
+                    <Badge variant="secondary">
+                        {t.Gold}: {f(gold)}
+                    </Badge>
+                )}
                 {items.map((r) => (
                     <ItemRewardUi itemId={r.itemId} quantity={r.quantity} key={questId + r.itemId + r.quantity} />
                 ))}
@@ -241,7 +251,7 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
 
 export function ItemRewardUi(props: { itemId: string; quantity: number }) {
     const { itemId, quantity } = props
-
+    const { t } = useTranslations()
     const { f } = useNumberFormatter()
 
     const item = useGameStore(
@@ -254,34 +264,36 @@ export function ItemRewardUi(props: { itemId: string; quantity: number }) {
         )
     )
     if (!item) return <></>
-    return (
-        <div>
-            <Popover>
-                <PopoverTrigger>
-                    <Badge>
-                        X {f(quantity)} {IconsData[item.icon]} {item.nameId}
-                    </Badge>
-                </PopoverTrigger>
 
-                <Portal>
-                    <PopoverContent side="top">
-                        <Card className="min-w-50">
-                            <MyCardHeaderTitle title={`X ${f(quantity)} ${item.nameId}`} icon={IconsData[item.icon]} />
-                            <CardContent className="text-sm">
-                                <ItemInfo item={item} />
-                            </CardContent>
-                        </Card>
-                    </PopoverContent>
-                </Portal>
-            </Popover>
-        </div>
+    const name = t[item.nameId]
+    const icon = IconsData[item.icon]
+
+    return (
+        <Popover>
+            <PopoverTrigger asChild>
+                <Badge variant="secondary">
+                    {f(quantity)} {icon} {name}
+                </Badge>
+            </PopoverTrigger>
+
+            <Portal>
+                <PopoverContent side="top">
+                    <Card className="min-w-50">
+                        <MyCardHeaderTitle title={`${f(quantity)} ${name}`} icon={icon} />
+                        <CardContent className="text-sm">
+                            <ItemInfo item={item} />
+                        </CardContent>
+                    </Card>
+                </PopoverContent>
+            </Portal>
+        </Popover>
     )
 }
 
 const KillRequestUi = (props: { questId: string; outcomeId: string; requestId: string }) => {
     const { questId, outcomeId, requestId } = props
     const description = useGameStore(
-        useCallback((s: GameState) => selectOutcomeDescription(questId, outcomeId)(s), [questId, outcomeId])
+        useCallback((s: GameState) => selectRequestDescription(questId, outcomeId, requestId)(s), [questId, outcomeId])
     )
     const request = useGameStore(
         useCallback((s: GameState) => selectRequest(questId, outcomeId, requestId)(s), [questId, outcomeId])
@@ -291,7 +303,8 @@ const KillRequestUi = (props: { questId: string; outcomeId: string; requestId: s
 
     return (
         <div>
-            {description}
+            <TypographyP>{description}</TypographyP>
+
             {request.targets.map((target: KillQuestTarget) => (
                 <KillOutcomeProgress key={questId + outcomeId + target.targetId} target={target} />
             ))}

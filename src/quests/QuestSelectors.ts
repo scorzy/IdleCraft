@@ -12,6 +12,7 @@ import {
     QuestRequestAdapter,
     QuestStatus,
 } from './QuestTypes'
+import { getQuestRequestSelectors } from './RequestSelectors'
 
 export const selectAcceptedQuests = createMemoizeLatestSelector([(state: GameState) => state.quests], (quests) =>
     QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.ACCEPTED)
@@ -125,3 +126,9 @@ export const selectRequestType = (questId: string, outcomeId: string, requestId:
     if (!outcome) return null
     return QuestRequestAdapter.select(outcome.requests, requestId)?.type || null
 }
+export const selectRequestDescription =
+    (questId: string, outcomeId: string, requestId: string) => (state: GameState) => {
+        const type = selectRequestType(questId, outcomeId, requestId)(state)
+        if (!type) return ''
+        return getQuestRequestSelectors(type).getDescription(questId, outcomeId, requestId)(state)
+    }
