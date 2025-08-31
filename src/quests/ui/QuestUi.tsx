@@ -1,6 +1,7 @@
 import { memo, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { Popover, PopoverTrigger, PopoverContent, Portal } from '@radix-ui/react-popover'
+import { useShallow } from 'zustand/react/shallow'
 import { useGameStore } from '../../game/state'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
@@ -16,6 +17,7 @@ import {
     KillQuestRequestSelectors,
     selectAcceptedQuests,
     selectAvailableQuests,
+    selectItemReq,
     selectOutcomeDescription,
     selectOutcomeGoldReward,
     selectOutcomeIds,
@@ -23,6 +25,7 @@ import {
     selectQuestDescription,
     selectQuestIcon,
     selectQuestId,
+    selectQuestItemsReqIds,
     selectQuestName,
     selectQuestStatus,
     selectQuestTargets,
@@ -322,9 +325,29 @@ const CollectRequestUi = (props: { questId: string; outcomeId: string }) => {
             [questId, outcomeId]
         )
     )
+    const itemsReq = useGameStore(
+        useShallow(useCallback((s: GameState) => selectQuestItemsReqIds(s, questId, outcomeId), [questId, outcomeId]))
+    )
+
+    if (!itemsReq) return
+
     return (
         <div>
             <TypographyP>{description}</TypographyP>
+            {itemsReq.map((req) => (
+                <CollectRequest questId={questId} outcomeId={outcomeId} reqId={req} key={req}></CollectRequest>
+            ))}
         </div>
     )
+}
+const CollectRequest = (props: { questId: string; outcomeId: string; reqId: string }) => {
+    const { questId, outcomeId, reqId } = props
+
+    const req = useGameStore(
+        useCallback((s: GameState) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
+    )
+
+    if (!req) return null
+
+    return <div></div>
 }

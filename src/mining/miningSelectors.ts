@@ -1,6 +1,5 @@
 import { ActivityAdapter } from '../activities/ActivityState'
 import { PLAYER_ID } from '../characters/charactersConst'
-import { ExpEnum } from '@/experience/ExpEnum.1'
 import { selectLevelExp } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
 import { PickaxeData } from '../items/Item'
@@ -9,6 +8,7 @@ import { isMining } from './Mining'
 import { OreData } from './OreData'
 import { OreState } from './OreState'
 import { OreTypes } from './OreTypes'
+import { ExpEnum } from '@/experience/ExpEnum'
 
 export const DEF_PICKAXE: PickaxeData = {
     damage: 20,

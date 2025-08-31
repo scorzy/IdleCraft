@@ -82,6 +82,16 @@ export function selectOutcomeItemReward(state: GameState, questId: string, outco
 export function selectQuestTargets(state: GameState, questId: string, outcomeId: string) {
     return selectOutcome(questId, outcomeId)(state)?.targets
 }
+export const selectQuestItemsReqIds = (state: GameState, questId: string, outcomeId: string) => {
+    const reqItems = selectOutcome(questId, outcomeId)(state)?.reqItems
+    if (!reqItems) return []
+    return reqItems.map((r) => r.id)
+}
+export const selectItemReq = (state: GameState, questId: string, outcomeId: string, reqId: string) => {
+    const reqItems = selectOutcome(questId, outcomeId)(state)?.reqItems
+    if (!reqItems) return null
+    return reqItems.find((r) => r.id === reqId)
+}
 
 export function isKillingReq(state: GameState, questId: string, outcomeId: string): boolean {
     return !!selectOutcome(questId, outcomeId)(state)?.targets
