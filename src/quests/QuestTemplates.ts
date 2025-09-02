@@ -59,7 +59,19 @@ export class KillQuestTemplate implements QuestTemplate {
                             killedCount: 0,
                         },
                     ],
-                    reqItems: [{ id: '1', itemCount: 5, selectedItems: [], itemFilter: { itemType: ItemTypes.Plank } }],
+                    reqItems: [
+                        {
+                            id: '1',
+                            itemCount: 5,
+                            selectedItems: [],
+                            itemFilter: {
+                                itemType: ItemTypes.Plank,
+                                minStats: {
+                                    value: 10,
+                                },
+                            },
+                        },
+                    ],
                 },
             },
         },

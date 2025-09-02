@@ -47,6 +47,7 @@ import { ItemInfo } from '../../items/ui/ItemInfo'
 import { Card, CardContent } from '../../components/ui/card'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { Badge } from '../../components/ui/badge'
+import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -188,18 +189,14 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
 
     return (
         <Card>
-            <CardContent>
+            <CardContent className="flex flex-col gap-4">
                 <TypographyP>{description}</TypographyP>
 
                 {isKilling && <KillRequestUi questId={questId} outcomeId={outcomeId} />}
                 {isCollecting && <CollectRequestUi questId={questId} outcomeId={outcomeId} />}
 
                 <OutcomeReward questId={questId} outcomeId={outcomeId} />
-                {completed && (
-                    <Button className="mt-6" onClick={completeClick}>
-                        {t.Complete}
-                    </Button>
-                )}
+                {completed && <Button onClick={completeClick}>{t.Complete}</Button>}
             </CardContent>
         </Card>
     )
@@ -220,7 +217,7 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
     return (
         <>
             <div className="mt-2 flex flex-wrap gap-2">
-                <TypographyP>Rewards: </TypographyP>
+                <TypographyP>{t.Rewards}</TypographyP>
                 {gold > 0 && (
                     <Badge variant="secondary">
                         {t.Gold}: {f(gold)}
@@ -319,12 +316,7 @@ const KillOutcomeProgress = (props: { target: KillQuestTarget }) => {
 
 const CollectRequestUi = (props: { questId: string; outcomeId: string }) => {
     const { questId, outcomeId } = props
-    const description = useGameStore(
-        useCallback(
-            (s: GameState) => CollectQuestRequestSelectors.getDescription(questId, outcomeId)(s),
-            [questId, outcomeId]
-        )
-    )
+
     const itemsReq = useGameStore(
         useShallow(useCallback((s: GameState) => selectQuestItemsReqIds(s, questId, outcomeId), [questId, outcomeId]))
     )
@@ -333,7 +325,6 @@ const CollectRequestUi = (props: { questId: string; outcomeId: string }) => {
 
     return (
         <div>
-            <TypographyP>{description}</TypographyP>
             {itemsReq.map((req) => (
                 <CollectRequest questId={questId} outcomeId={outcomeId} reqId={req} key={req}></CollectRequest>
             ))}
@@ -343,11 +334,18 @@ const CollectRequestUi = (props: { questId: string; outcomeId: string }) => {
 const CollectRequest = (props: { questId: string; outcomeId: string; reqId: string }) => {
     const { questId, outcomeId, reqId } = props
 
+    const { fun } = useTranslations()
+
     const req = useGameStore(
         useCallback((s: GameState) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
     )
 
     if (!req) return null
 
-    return <div></div>
+    return (
+        <div>
+            {fun.collectN(req.itemCount)}
+            <ItemFilterDescription itemFilter={req.itemFilter} />
+        </div>
+    )
 }

@@ -64,6 +64,7 @@ export const selectOutcome = (questId: string, outcomeId: string) => (state: Gam
 }
 export const isOutcomeCompleted = (questId: string, outcomeId: string) => (state: GameState) => {
     const questState = QuestAdapter.selectEx(state.quests, questId)
+    if (questState.state !== QuestStatus.ACCEPTED) return false
     const outcome = QuestOutcomeAdapter.selectEx(questState.outcomeData, outcomeId)
     if (!outcome) return true
     return QuestReqSelectors.every((selector) => selector.isCompleted(questId, outcomeId)(state))

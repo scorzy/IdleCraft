@@ -76,7 +76,7 @@ export interface ItemFilter {
     itemType: ItemTypes
     itemSubType?: ItemSubType
     minStats?: Partial<Item>
-    equipSlot?: Partial<EquipSlotsEnum>
+    equipSlot?: EquipSlotsEnum
     craftingData?: Partial<CraftingData>
     woodAxeData?: Partial<WoodAxeData>
     craftingWoodAxeData?: Partial<WoodAxeData>

@@ -26,6 +26,40 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
         </div>
     )
 })
+export const WeaponDataUi = memo(function WeaponDataUi(props: { weaponData: WeaponData }) {
+    const { weaponData } = props
+    const { f } = useNumberFormatter()
+    const { t, fun } = useTranslations()
+
+    return (
+        <>
+            <div>
+                {t.AttackSpeed} {fun.formatTime(weaponData.attackSpeed)}
+            </div>
+            {Object.entries(weaponData.damage).map((kv) => (
+                <div key={kv[0]}>
+                    {t[DamageTypesData[kv[0] as DamageTypes].DamageName]} {f(kv[1])}
+                </div>
+            ))}
+        </>
+    )
+})
+export const ArmourDataUi = memo(function ArmourDataUi(props: { armourData: DamageData }) {
+    const { armourData } = props
+    const { f } = useNumberFormatter()
+    const { t } = useTranslations()
+
+    return (
+        <>
+            {Object.entries(armourData).map((kv) => (
+                <div key={kv[0]}>
+                    {t[DamageTypesData[kv[0] as DamageTypes].DamageName]} {f(kv[1])}
+                </div>
+            ))}
+        </>
+    )
+})
+
 export const CraftingDataUi = memo(function CraftingDataUi(props: { craftingData: CraftingData }) {
     const { craftingData } = props
     const { f } = useNumberFormatter()
@@ -67,39 +101,6 @@ export const PickaxeDataUi = memo(function PickaxeDataUi(props: { pickaxeData: P
             <div>
                 {t.ArmourPen} {f(pickaxeData.armourPen)}
             </div>
-        </>
-    )
-})
-export const WeaponDataUi = memo(function WeaponDataUi(props: { weaponData: WeaponData }) {
-    const { weaponData } = props
-    const { f } = useNumberFormatter()
-    const { t, fun } = useTranslations()
-
-    return (
-        <>
-            <div>
-                {t.AttackSpeed} {fun.formatTime(weaponData.attackSpeed)}
-            </div>
-            {Object.entries(weaponData.damage).map((kv) => (
-                <div key={kv[0]}>
-                    {t[DamageTypesData[kv[0] as DamageTypes].DamageName]} {f(kv[1])}
-                </div>
-            ))}
-        </>
-    )
-})
-export const ArmourDataUi = memo(function ArmourDataUi(props: { armourData: DamageData }) {
-    const { armourData } = props
-    const { f } = useNumberFormatter()
-    const { t } = useTranslations()
-
-    return (
-        <>
-            {Object.entries(armourData).map((kv) => (
-                <div key={kv[0]}>
-                    {t[DamageTypesData[kv[0] as DamageTypes].DamageName]} {f(kv[1])}
-                </div>
-            ))}
         </>
     )
 })

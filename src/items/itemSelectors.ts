@@ -1,3 +1,4 @@
+import moize from 'moize'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
@@ -87,3 +88,23 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
 
     return true
 }
+export const selectItemFilterObjects = moize(
+    (itemFilter: ItemFilter) =>
+        Object.entries(itemFilter)
+            .filter((f) => typeof f[1] === 'object')
+            .sort((a, b) => a[0].localeCompare(b[0])),
+    {
+        isDeepEqual: true,
+        maxSize: 30,
+    }
+)
+export const selectItemFilterProps = moize(
+    (minStats: object) =>
+        Object.entries(minStats)
+            .filter((f) => typeof f[1] === 'number')
+            .sort((a, b) => a[0].localeCompare(b[0])),
+    {
+        isDeepEqual: true,
+        maxSize: 30,
+    }
+)

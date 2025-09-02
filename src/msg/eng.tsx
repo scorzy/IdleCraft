@@ -208,6 +208,11 @@ export const engMsg: Msg = {
 
     KillRequestDesc: 'Kill the following targets:',
     collectReqDesc: 'Collect the following items',
+
+    Rewards: 'Rewards:',
+    items: 'items',
+    with1: 'with',
+    withProps: 'with the following properties:',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
@@ -265,5 +270,7 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
         testQuestDesc: (_questParams: QuestParams) => 'testQuestDesc',
         testOutcomeDesc: (_questParams: QuestParams) => 'testOutcomeDesc',
         testOutcome2Desc: (_questParams: QuestParams) => 'testOutcome2Desc',
+
+        collectN: (n: number) => `Collect ${f(n)}`,
     }
 }

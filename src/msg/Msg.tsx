@@ -231,6 +231,12 @@ export interface Msg {
 
     KillRequestDesc: string
     collectReqDesc: string
+
+    Rewards: string
+    items: string
+
+    with1: string
+    withProps: string
 }
 export interface MsgFunctions {
     // Time
@@ -262,4 +268,6 @@ export interface MsgFunctions {
     testQuestDesc: (questParams: QuestParams) => string
     testOutcomeDesc: (questParams: QuestParams) => string
     testOutcome2Desc: (questParams: QuestParams) => string
+
+    collectN: (n: number) => string
 }
