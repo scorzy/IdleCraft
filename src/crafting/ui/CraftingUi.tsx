@@ -23,7 +23,7 @@ import { Badge } from '../../components/ui/badge'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { RecipeData } from '../RecipeData'
-import { setRecipeItemParam } from '../RecipeFunctions'
+import { setRecipeItemParamUi } from '../RecipeFunctions'
 import { Recipe } from '../Recipe'
 import { MyPage } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
@@ -107,26 +107,24 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     const icon = selected && IconsData[selected.iconId]
 
     return (
-        <>
-            <Select value={recipeId} onValueChange={handleRecipeChange}>
-                <SelectTrigger>
-                    <SelectValue placeholder={t.SelectARecipe}>
-                        {selected && (
-                            <span className="select-trigger">
-                                {icon} {t[selected.nameId]}
-                            </span>
-                        )}
-                    </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                    {recipesByType.map((r) => (
-                        <SelectItem key={r.id} value={r.id} icon={IconsData[r.iconId]}>
-                            {t[r.nameId]}
-                        </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
-        </>
+        <Select value={recipeId ?? ''} onValueChange={handleRecipeChange}>
+            <SelectTrigger>
+                <SelectValue placeholder={t.SelectARecipe}>
+                    {selected && (
+                        <span className="select-trigger">
+                            {icon} {t[selected.nameId]}
+                        </span>
+                    )}
+                </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+                {recipesByType.map((r) => (
+                    <SelectItem key={r.id} value={r.id} icon={IconsData[r.iconId]}>
+                        {t[r.nameId]}
+                    </SelectItem>
+                ))}
+            </SelectContent>
+        </Select>
     )
 })
 
@@ -180,14 +178,14 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
     })
 
     const handleRecipeChange = useCallback(
-        (value: string) => setRecipeItemParam(recipeParam.id, value),
+        (value: string) => setRecipeItemParamUi(recipeParam.id, value),
         [recipeParam.id]
     )
 
     return (
         <div>
             <Label>{t[recipeParam.nameId]}</Label>
-            <Select value={selectedValue} onValueChange={handleRecipeChange}>
+            <Select value={selectedValue ?? ''} onValueChange={handleRecipeChange}>
                 <SelectTrigger>
                     <SelectValue placeholder={`-- ${t[recipeParam.nameId]} --`}>
                         {selectedItem && (

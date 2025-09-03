@@ -42,6 +42,7 @@ import { onKillListeners } from '../characters/functions/onKillListeners'
 import { addKillBattleLog } from '../battleLog/functions/addBattleLog'
 import { questOnItemRemove, questOnKillListener } from '../quests/QuestFunctions'
 import { onItemRemovedListeners } from '../storage/storageEvents'
+import { recipeOnItemRemove } from '../crafting/RecipeFunctions'
 import { activityIcons, activityRemovers, activityStarters, activityTitles, activityExecutors } from './globals'
 
 export function initialize() {
@@ -107,4 +108,5 @@ function initListeners() {
     onKillListeners.push(questOnKillListener)
 
     onItemRemovedListeners.push(questOnItemRemove)
+    onItemRemovedListeners.push(recipeOnItemRemove)
 }

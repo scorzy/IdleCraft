@@ -1,5 +1,6 @@
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
+import { GameLocations } from '../gameLocations/GameLocations'
 import { RecipeParameterValue } from './RecipeInterfaces'
 import { recipes } from './Recipes'
 
@@ -35,25 +36,42 @@ export function changeRecipeState(state: GameState, recipeId: string) {
 }
 export const changeRecipe = (recipeId: string) => useGameStore.setState((state) => changeRecipeState(state, recipeId))
 
-export const setRecipeItemParam = (id: string, paramValue: string) =>
-    useGameStore.setState((state) => {
-        const paramsValue: RecipeParameterValue[] = state.craftingForm.paramsValue.filter((p) => p.id !== id)
+export const setRecipeItemParam = (state: GameState, id: string, paramValue: string) => {
+    const paramsValue: RecipeParameterValue[] = state.craftingForm.paramsValue.filter((p) => p.id !== id)
 
-        const value: RecipeParameterValue = { id, itemId: paramValue }
+    const value: RecipeParameterValue = { id, itemId: paramValue }
 
-        paramsValue.push(value)
+    paramsValue.push(value)
 
-        const recipe = recipes.getEx(state.recipeId)
-        const result = recipe.getResult(state, paramsValue)
+    const recipe = recipes.getEx(state.recipeId)
+    const result = recipe.getResult(state, paramsValue)
 
-        state = {
-            ...state,
-            craftingForm: {
-                ...state.craftingForm,
-                paramsValue,
-                result,
-            },
-        }
+    state = {
+        ...state,
+        craftingForm: {
+            ...state.craftingForm,
+            paramsValue,
+            result,
+        },
+    }
 
-        return state
-    })
+    return state
+}
+
+export const setRecipeItemParamUi = (id: string, paramValue: string) =>
+    useGameStore.setState((state) => setRecipeItemParam(state, id, paramValue))
+
+export const recipeOnItemRemove = (state: GameState, itemId: string, location: GameLocations): GameState => {
+    if (state.location !== location) return state
+
+    let toRemove = state.craftingForm.paramsValue.find((p) => p.itemId === itemId)
+
+    let n = 0
+    while (toRemove && n < 1) {
+        n++
+        state = setRecipeItemParam(state, toRemove.id, '')
+        toRemove = state.craftingForm.paramsValue.find((p) => p.itemId === itemId)
+    }
+
+    return state
+}
