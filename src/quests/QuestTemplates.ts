@@ -63,7 +63,6 @@ export class KillQuestTemplate implements QuestTemplate {
                         {
                             id: '1',
                             itemCount: 5,
-                            selectedItems: [],
                             itemFilter: {
                                 itemType: ItemTypes.Plank,
                                 minStats: {

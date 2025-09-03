@@ -9,7 +9,6 @@ import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { sidebarOpen } from '../../ui/state/uiFunctions'
 import {
-    CollectQuestRequestSelectors,
     isCollectReq,
     isKillingReq,
     isOutcomeCompleted,
@@ -17,6 +16,7 @@ import {
     KillQuestRequestSelectors,
     selectAcceptedQuests,
     selectAvailableQuests,
+    selectCollectQuestItemValue,
     selectItemReq,
     selectOutcomeDescription,
     selectOutcomeGoldReward,
@@ -31,7 +31,7 @@ import {
     selectQuestTargets,
 } from '../QuestSelectors'
 import { IconsData } from '../../icons/Icons'
-import { acceptClick, completeQuest, selectQuest } from '../QuestFunctions'
+import { acceptClick, completeQuest, makeOnCollectQuestItemSelect, selectQuest } from '../QuestFunctions'
 import { GameState } from '../../game/GameState'
 import { Button } from '../../components/ui/button'
 import { QuestStatus } from '../QuestTypes'
@@ -48,6 +48,9 @@ import { Card, CardContent } from '../../components/ui/card'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { Badge } from '../../components/ui/badge'
 import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
+import { ItemsSelect } from '../../storage/ui/ItemsSelect'
+import { Label } from '../../components/ui/label'
+import classes from './QuestUi.module.css'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -340,12 +343,73 @@ const CollectRequest = (props: { questId: string; outcomeId: string; reqId: stri
         useCallback((s: GameState) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
     )
 
+    const selectedValue = useGameStore(
+        useCallback(
+            (s: GameState) => selectCollectQuestItemValue(s, questId, outcomeId, reqId, 0),
+            [questId, outcomeId, reqId]
+        )
+    )
+    const onValueChange = useCallback(
+        (value: string) => makeOnCollectQuestItemSelect(questId, outcomeId, reqId, 0, value),
+        [questId, outcomeId, reqId]
+    )
+
+    const selectedValue2 = useGameStore(
+        useCallback(
+            (s: GameState) => selectCollectQuestItemValue(s, questId, outcomeId, reqId, 1),
+            [questId, outcomeId, reqId]
+        )
+    )
+    const onValueChange2 = useCallback(
+        (value: string) => makeOnCollectQuestItemSelect(questId, outcomeId, reqId, 1, value),
+        [questId, outcomeId, reqId]
+    )
+
+    const selectedValue3 = useGameStore(
+        useCallback(
+            (s: GameState) => selectCollectQuestItemValue(s, questId, outcomeId, reqId, 2),
+            [questId, outcomeId, reqId]
+        )
+    )
+    const onValueChange3 = useCallback(
+        (value: string) => makeOnCollectQuestItemSelect(questId, outcomeId, reqId, 2, value),
+        [questId, outcomeId, reqId]
+    )
+
     if (!req) return null
+    if (!req.itemFilter) return null
 
     return (
         <div>
             {fun.collectN(req.itemCount)}
             <ItemFilterDescription itemFilter={req.itemFilter} />
+
+            <div className={classes.CollectSelects}>
+                <div>
+                    <Label>Priority</Label>
+                    <ItemsSelect
+                        itemFilter={req.itemFilter}
+                        selectedValue={selectedValue}
+                        onValueChange={onValueChange}
+                    />
+                </div>
+                <div>
+                    <Label>Priority</Label>
+                    <ItemsSelect
+                        itemFilter={req.itemFilter}
+                        selectedValue={selectedValue2}
+                        onValueChange={onValueChange2}
+                    />
+                </div>
+                <div>
+                    <Label>Priority</Label>
+                    <ItemsSelect
+                        itemFilter={req.itemFilter}
+                        selectedValue={selectedValue3}
+                        onValueChange={onValueChange3}
+                    />
+                </div>
+            </div>
         </div>
     )
 }

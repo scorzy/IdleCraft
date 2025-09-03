@@ -4,5 +4,7 @@ export interface ItemRequest {
     id: string
     itemCount: number
     itemFilter: ItemFilter
-    selectedItems: string[]
+    selectedItems1?: string
+    selectedItems2?: string
+    selectedItems3?: string
 }

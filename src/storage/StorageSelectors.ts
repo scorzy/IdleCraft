@@ -3,7 +3,7 @@ import { GameState, LocationState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { StdItems } from '../items/stdItems'
 import { myMemoizeOne } from '../utils/myMemoizeOne'
-import { Item, ItemTypes } from '../items/Item'
+import { Item, ItemFilter, ItemTypes } from '../items/Item'
 import { selectTranslations } from '../msg/useTranslations'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
@@ -13,6 +13,8 @@ import { Translations } from '../msg/Msg'
 import { createDeepEqualSelector } from '../utils/createDeepEqualSelector'
 import { useGameStore } from '../game/state'
 import { selectStorageOrder } from '../ui/state/uiSelectors'
+import { filterItem } from '../items/itemSelectors'
+import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
 import { ItemAdapter } from './ItemAdapter'
 import { InventoryNoQta } from './storageTypes'
 import { isCrafted } from './storageFunctions'
@@ -203,3 +205,22 @@ export const createInventoryNoQta = myMemoize((inventory: CharInventory) => {
 
     return ret
 })
+
+export const selectFilteredItems = createMemoizeLatestSelector(
+    [
+        (s: GameState) => s.locations[s.location].storage,
+        (s: GameState) => s.craftedItems,
+        (_s: GameState, itemFilter: ItemFilter) => itemFilter,
+    ],
+    (storage, craftedItems, itemFilter) => {
+        if (!itemFilter) return EMPTY_ARRAY
+
+        const ret: ItemIdValue[] = []
+        for (const id of Object.keys(storage).sort()) {
+            const item = selectGameItemFromCraft(id, craftedItems)
+            if (item && filterItem(item, itemFilter)) ret.push({ id, value: item.value })
+        }
+
+        return ret
+    }
+)

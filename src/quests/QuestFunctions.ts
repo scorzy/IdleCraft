@@ -3,8 +3,15 @@ import { MAX_AVAILABLE_QUESTS } from '../const'
 import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
 import { addGold, addItem } from '../storage/storageFunctions'
+import { ItemRequest } from './ItemRequest'
 import { QuestData } from './QuestData'
-import { isOutcomeCompleted, selectAcceptedQuests, selectAvailableQuests, selectQuestTemplate } from './QuestSelectors'
+import {
+    isOutcomeCompleted,
+    selectAcceptedQuests,
+    selectAvailableQuests,
+    selectOutcome,
+    selectQuestTemplate,
+} from './QuestSelectors'
 import { QuestAdapter, QuestOutcome, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
 
 export const selectQuest = (id: string) =>
@@ -108,3 +115,38 @@ export const completeQuest = (state: GameState, questId: string, outcomeId: stri
 
     return state
 }
+
+export const makeOnCollectQuestItemSelect = (
+    questId: string,
+    outcomeId: string,
+    reqId: string,
+    itemIndex: number,
+    value: string | undefined
+) =>
+    useGameStore.setState((state: GameState) => {
+        const outcome = selectOutcome(questId, outcomeId)(state)
+        const reqItems = outcome?.reqItems
+        if (!reqItems) return state
+
+        const index = reqItems.findIndex((e) => e.id === reqId)
+        const oldReq = reqItems[index]
+        if (!oldReq) return state
+
+        let newReq: ItemRequest[] = []
+        if (itemIndex === 0) newReq = reqItems.with(index, { ...oldReq, selectedItems1: value })
+        else if (itemIndex === 1) newReq = reqItems.with(index, { ...oldReq, selectedItems2: value })
+        else if (itemIndex === 2) newReq = reqItems.with(index, { ...oldReq, selectedItems3: value })
+
+        return {
+            ...state,
+            quests: QuestAdapter.update(state.quests, questId, {
+                outcomeData: QuestOutcomeAdapter.update(
+                    QuestAdapter.selectEx(state.quests, questId).outcomeData,
+                    outcomeId,
+                    {
+                        reqItems: newReq,
+                    }
+                ),
+            }),
+        }
+    })

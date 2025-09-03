@@ -1,0 +1,67 @@
+import { memo, useCallback } from 'react'
+import { useShallow } from 'zustand/react/shallow'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { GameState } from '../../game/GameState'
+import { useGameStore } from '../../game/state'
+import { IconsData } from '../../icons/Icons'
+import { useTranslations } from '../../msg/useTranslations'
+import { selectGameItem, selectItemQta, selectFilteredItems } from '../StorageSelectors'
+import { ItemFilter } from '../../items/Item'
+import classes from './ItemsSelect.module.css'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
+
+export const ItemsSelect = memo(function ItemsSelect(props: {
+    itemFilter: ItemFilter
+    onValueChange: (value: string) => void
+    selectedValue: string | undefined
+}) {
+    const { itemFilter, onValueChange, selectedValue } = props
+    const { t } = useTranslations()
+    const selectedItem = useGameStore((s: GameState) => {
+        if (!selectedValue) return null
+        return selectGameItem(selectedValue)(s)
+    })
+
+    const itemsId = useGameStore(
+        useShallow(useCallback((s: GameState) => selectFilteredItems(s, itemFilter), [itemFilter]))
+    )
+
+    return (
+        <div>
+            <Select value={selectedValue ?? ''} onValueChange={onValueChange}>
+                <SelectTrigger>
+                    <SelectValue placeholder={`-- Select --`}>
+                        {selectedItem && (
+                            <span className="select-trigger">
+                                {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
+                            </span>
+                        )}
+                    </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                    {itemsId.map((t) => {
+                        return <ParamItem itemId={t.id} key={t.id} />
+                    })}
+                </SelectContent>
+            </Select>
+        </div>
+    )
+})
+export const ParamItem = memo(function ParamItem(props: { itemId: string }) {
+    const { itemId } = props
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+
+    const itemObj = useGameStore(selectGameItem(itemId))
+    const qta = useGameStore(selectItemQta(null, itemId))
+    const text = itemObj ? t[itemObj.nameId] : t.None
+
+    return (
+        <SelectItem value={itemId} icon={itemObj && IconsData[itemObj.icon]} className={classes.seleBtn}>
+            <span className={classes.item}>
+                <span className={classes.text}>{text}</span>
+                <span className="text-muted-foreground">{f(qta)}</span>
+            </span>
+        </SelectItem>
+    )
+})
