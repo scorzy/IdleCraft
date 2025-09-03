@@ -36,6 +36,10 @@ export function addItem(state: GameState, itemId: string, qta: number, location?
     let storage = state.locations[location].storage
     storage = subAddItem(storage, itemId, qta)
     state = { ...state, locations: { ...state.locations, [location]: { ...state.locations[location], storage } } }
+
+    if (isCrafted(itemId) && !isCraftItemUsed(state, itemId))
+        state = { ...state, craftedItems: removeCraftItem(state.craftedItems, itemId) }
+
     return state
 }
 
@@ -43,11 +47,8 @@ export function isCrafted(itemId: string): boolean {
     return itemId.startsWith(CRAFTED_ITEM_PREFIX)
 }
 
-export function removeItem(state: GameState, id: string, qta: number, location?: GameLocations): GameState {
-    state = addItem(state, id, qta * -1, location)
-
-    if (isCrafted(id) && !isCraftItemUsed(state, id))
-        state = { ...state, craftedItems: removeCraftItem(state.craftedItems, id) }
+export function removeItem(state: GameState, itemId: string, qta: number, location?: GameLocations): GameState {
+    state = addItem(state, itemId, qta * -1, location)
 
     return state
 }
