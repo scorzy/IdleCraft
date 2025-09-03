@@ -18,7 +18,7 @@ export const execCrafting = makeExecActivity((state: GameState, timer: Timer) =>
     const craftResult = data.result
     if (!isCraftable(state, craftResult)) return { state, result: ActivityStartResult.NotPossible }
 
-    for (const req of craftResult.requirements) addItem(state, req.itemId, req.qta * -1)
+    for (const req of craftResult.requirements) state = addItem(state, req.itemId, req.qta * -1)
 
     for (const res of craftResult.results) {
         if (res.stdItemId) state = addItem(state, res.stdItemId, res.qta)
