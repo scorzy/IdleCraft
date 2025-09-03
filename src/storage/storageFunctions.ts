@@ -9,22 +9,11 @@ import { getUniqueId } from '../utils/getUniqueId'
 import { myCompare } from '../utils/myCompare'
 import { ItemAdapter } from './ItemAdapter'
 import { StorageState } from './storageTypes'
+import { onItemRemovedListeners } from './storageEvents'
 import { InitialState } from '@/entityAdapter/InitialState'
 
 export function addGold(state: GameState, amount: number): GameState {
     return { ...state, gold: Math.max(0, state.gold + amount) }
-}
-
-function subAddItem(state: StorageState, id: string, qta: number): StorageState {
-    const old = state[id]
-    const newQta = Math.max(qta + (old ?? 0), 0)
-
-    if (Math.abs(newQta) < Number.EPSILON) {
-        const { [id]: _, ...newSubState } = state
-        state = newSubState
-    } else state = { ...state, [id]: newQta }
-
-    return state
 }
 
 function subHasItem(state: StorageState, id: string, qta: number): boolean {
@@ -34,7 +23,17 @@ function subHasItem(state: StorageState, id: string, qta: number): boolean {
 export function addItem(state: GameState, itemId: string, qta: number, location?: GameLocations): GameState {
     location = location ?? state.location
     let storage = state.locations[location].storage
-    storage = subAddItem(storage, itemId, qta)
+
+    const old = storage[itemId]
+    const newQta = Math.max(qta + (old ?? 0), 0)
+
+    if (Math.abs(newQta) < Number.EPSILON) {
+        for (const event of onItemRemovedListeners) state = event(state, itemId, location)
+
+        const { [itemId]: _, ...newSubState } = storage
+        storage = newSubState
+    } else storage = { ...storage, [itemId]: newQta }
+
     state = { ...state, locations: { ...state.locations, [location]: { ...state.locations[location], storage } } }
 
     if (isCrafted(itemId) && !isCraftItemUsed(state, itemId))

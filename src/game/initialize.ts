@@ -22,7 +22,7 @@ import { getMiningTitle } from '../mining/functions/getMiningTitle'
 import { removeMining } from '../mining/functions/removeMining'
 import { startMining } from '../mining/functions/startMining'
 import { QuestData } from '../quests/QuestData'
-import { KillQuestTemplate } from '../quests/QuestTemplates'
+import { TestQuestTemplate } from '../quests/QuestTemplates'
 import { twoHSwordRecipe } from '../smithing/recipes/2HSword'
 import { armourRecipe } from '../smithing/recipes/ArmourRecipes'
 import { axeRecipe } from '../smithing/recipes/AxeRecipe'
@@ -40,7 +40,8 @@ import { handleRecipe } from '../wood/recipes/HandleRecipe'
 import { plankRecipe } from '../wood/recipes/PlankRecipe'
 import { onKillListeners } from '../characters/functions/onKillListeners'
 import { addKillBattleLog } from '../battleLog/functions/addBattleLog'
-import { questOnKillListener } from '../quests/QuestFunctions'
+import { questOnItemRemove, questOnKillListener } from '../quests/QuestFunctions'
+import { onItemRemovedListeners } from '../storage/storageEvents'
 import { activityIcons, activityRemovers, activityStarters, activityTitles, activityExecutors } from './globals'
 
 export function initialize() {
@@ -98,10 +99,12 @@ function initAbilities() {
 }
 
 function initQuests() {
-    QuestData.set('kill-n', new KillQuestTemplate())
+    QuestData.set('kill-n', new TestQuestTemplate())
 }
 
 function initListeners() {
     onKillListeners.push(addKillBattleLog)
     onKillListeners.push(questOnKillListener)
+
+    onItemRemovedListeners.push(questOnItemRemove)
 }

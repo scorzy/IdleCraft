@@ -121,7 +121,7 @@ export const CollectQuestRequestSelectors: QuestRequestSelectors = {
         if (!reqItems) return true
         for (const reqItem of reqItems) {
             let qta = 0
-            const itemIds = [reqItem.selectedItems1, reqItem.selectedItems2, reqItem.selectedItems3]
+            const itemIds = [reqItem.selectedItem1, reqItem.selectedItem2, reqItem.selectedItem3]
             for (const selectedItem of uniq(itemIds)) if (selectedItem) qta += selectItemQta(null, selectedItem)(state)
             if (qta < reqItem.itemCount) return false
         }
@@ -142,7 +142,7 @@ export const selectCollectQuestItemValue = (
     const req = outcome?.reqItems?.find((e) => e.id === reqId)
     if (!req) return
 
-    if (itemIndex === 0) return req.selectedItems1
-    else if (itemIndex === 1) return req.selectedItems2
-    else if (itemIndex === 2) return req.selectedItems3
+    if (itemIndex === 0) return req.selectedItem1
+    else if (itemIndex === 1) return req.selectedItem2
+    else if (itemIndex === 2) return req.selectedItem3
 }

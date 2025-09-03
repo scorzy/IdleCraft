@@ -8,7 +8,7 @@ import { getUniqueId } from '../utils/getUniqueId'
 import { QuestTemplate } from './QuestTemplate'
 import { QuestAdapter, QuestOutcomeAdapter, QuestStatus } from './QuestTypes'
 
-export class KillQuestTemplate implements QuestTemplate {
+export class TestQuestTemplate implements QuestTemplate {
     nextQuestId?: string | undefined
     id = 'kill-n'
     getName = (questId: string) => (state: GameState) =>
