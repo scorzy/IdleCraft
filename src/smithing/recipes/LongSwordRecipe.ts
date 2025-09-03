@@ -3,12 +3,12 @@ import { BASE_SWORD_SPEED, BASE_SWORD_DAMAGE } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
 import { makeRecipe } from '../../crafting/makeRecipe'
 import { RecipeTypes, RecipeParameter, RecipeParameterValue, RecipeParamType } from '../../crafting/RecipeInterfaces'
-import { ExpEnum } from '@/experience/ExpEnum'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
+import { ExpEnum } from '@/experience/ExpEnum'
 
 const longSwordParams: RecipeParameter[] = [
     {

@@ -1,7 +1,6 @@
 import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
 import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { makeExecActivity } from '../../activities/functions/makeExecActivity'
-import { ExpEnum } from '@/experience/ExpEnum'
 import { addExp } from '../../experience/expFunctions'
 import { GameState } from '../../game/GameState'
 import { addItem } from '../../storage/storageFunctions'
@@ -12,6 +11,7 @@ import { cutTree } from '../forest/cutTree'
 import { hasTrees } from '../forest/forestFunctions'
 import { selectWoodcuttingDamage } from '../selectors/woodcuttingDamage'
 import { selectWoodcuttingTime } from '../selectors/woodcuttingTime'
+import { ExpEnum } from '@/experience/ExpEnum'
 
 export const execWoodcutting = makeExecActivity((state: GameState, timer: Timer) => {
     const id = timer.actId
