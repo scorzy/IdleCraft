@@ -213,6 +213,11 @@ export const engMsg: Msg = {
     items: 'items',
     with1: 'with',
     withProps: 'with the following properties:',
+
+    hightPriority: 'Hight Priority',
+    mediumPriority: 'Medium Priority',
+    lowPriority: 'Low Priority',
+    selectPlaceholder: '-- Select --',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

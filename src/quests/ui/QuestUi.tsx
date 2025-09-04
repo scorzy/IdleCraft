@@ -50,6 +50,7 @@ import { Badge } from '../../components/ui/badge'
 import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
 import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { Label } from '../../components/ui/label'
+import { InputContainer } from '../../components/ui/inputContainer'
 import classes from './QuestUi.module.css'
 
 const QuestLink = (props: { id: string }) => {
@@ -121,7 +122,7 @@ export const QuestUi = () => {
     return (
         <MyPageAll sidebar={<QUestSidebar />}>
             <MyPage>
-                <div className="mx-auto max-w-2xl">
+                <div className="mx-auto max-w-5xl">
                     <QuestDetailUi />
                 </div>
             </MyPage>
@@ -199,7 +200,9 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
                 {isCollecting && <CollectRequestUi questId={questId} outcomeId={outcomeId} />}
 
                 <OutcomeReward questId={questId} outcomeId={outcomeId} />
-                {completed && <Button onClick={completeClick}>{t.Complete}</Button>}
+                <Button onClick={completeClick} disabled={!completed} className="self-start">
+                    {t.Complete}
+                </Button>
             </CardContent>
         </Card>
     )
@@ -218,19 +221,17 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
     )
 
     return (
-        <>
-            <div className="mt-2 flex flex-wrap gap-2">
-                <TypographyP>{t.Rewards}</TypographyP>
-                {gold > 0 && (
-                    <Badge variant="secondary">
-                        {t.Gold}: {f(gold)}
-                    </Badge>
-                )}
-                {items.map((r) => (
-                    <ItemRewardUi itemId={r.itemId} quantity={r.quantity} key={questId + r.itemId + r.quantity} />
-                ))}
-            </div>
-        </>
+        <div className="mt-2 flex flex-wrap gap-2">
+            <TypographyP>{t.Rewards}</TypographyP>
+            {gold > 0 && (
+                <Badge variant="secondary">
+                    {t.Gold}: {f(gold)}
+                </Badge>
+            )}
+            {items.map((r) => (
+                <ItemRewardUi itemId={r.itemId} quantity={r.quantity} key={questId + r.itemId + r.quantity} />
+            ))}
+        </div>
     )
 }
 
@@ -337,7 +338,7 @@ const CollectRequestUi = (props: { questId: string; outcomeId: string }) => {
 const CollectRequest = (props: { questId: string; outcomeId: string; reqId: string }) => {
     const { questId, outcomeId, reqId } = props
 
-    const { fun } = useTranslations()
+    const { t, fun } = useTranslations()
 
     const req = useGameStore(
         useCallback((s: GameState) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
@@ -383,32 +384,31 @@ const CollectRequest = (props: { questId: string; outcomeId: string; reqId: stri
         <div>
             {fun.collectN(req.itemCount)}
             <ItemFilterDescription itemFilter={req.itemFilter} />
-
             <div className={classes.CollectSelects}>
-                <div>
-                    <Label>Priority</Label>
+                <InputContainer>
+                    <Label>{t.hightPriority}</Label>
                     <ItemsSelect
                         itemFilter={req.itemFilter}
                         selectedValue={selectedValue}
                         onValueChange={onValueChange}
                     />
-                </div>
-                <div>
-                    <Label>Priority</Label>
+                </InputContainer>
+                <InputContainer>
+                    <Label>{t.mediumPriority}</Label>
                     <ItemsSelect
                         itemFilter={req.itemFilter}
                         selectedValue={selectedValue2}
                         onValueChange={onValueChange2}
                     />
-                </div>
-                <div>
-                    <Label>Priority</Label>
+                </InputContainer>
+                <InputContainer>
+                    <Label>{t.lowPriority}</Label>
                     <ItemsSelect
                         itemFilter={req.itemFilter}
                         selectedValue={selectedValue3}
                         onValueChange={onValueChange3}
                     />
-                </div>
+                </InputContainer>
             </div>
         </div>
     )

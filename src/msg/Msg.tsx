@@ -237,6 +237,10 @@ export interface Msg {
 
     with1: string
     withProps: string
+    hightPriority: string
+    mediumPriority: string
+    lowPriority: string
+    selectPlaceholder: string
 }
 export interface MsgFunctions {
     // Time

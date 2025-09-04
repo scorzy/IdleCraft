@@ -92,8 +92,9 @@ function SelectItem({
     className,
     children,
     icon,
+    rightSlot,
     ...props
-}: React.ComponentProps<typeof SelectPrimitive.Item> & { icon?: ReactNode }) {
+}: React.ComponentProps<typeof SelectPrimitive.Item> & { icon?: ReactNode; rightSlot?: ReactNode }) {
     return (
         <SelectPrimitive.Item
             data-slot="select-item"
@@ -103,7 +104,8 @@ function SelectItem({
             )}
             {...props}
         >
-            <span className="absolute right-2 flex size-3.5 items-center justify-center">
+            <span className="absolute right-2 flex items-center justify-center gap-3">
+                {rightSlot}
                 <SelectPrimitive.ItemIndicator>
                     <CheckIcon className="size-4" />
                 </SelectPrimitive.ItemIndicator>
