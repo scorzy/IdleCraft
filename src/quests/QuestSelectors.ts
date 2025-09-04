@@ -2,7 +2,7 @@ import uniq from 'lodash-es/uniq'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { selectTranslations } from '../msg/useTranslations'
-import { selectItemQta } from '../storage/StorageSelectors'
+import { selectItemQta, selectTotalFilteredQta } from '../storage/StorageSelectors'
 import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
 import { QuestData } from './QuestData'
 import { QuestRequestSelectors } from './QuestRequestSelectors'
@@ -145,4 +145,18 @@ export const selectCollectQuestItemValue = (
     if (itemIndex === 0) return req.selectedItem1
     else if (itemIndex === 1) return req.selectedItem2
     else if (itemIndex === 2) return req.selectedItem3
+}
+
+export const selectOutcomeLocation = (state: GameState, questId: string, outcomeId: string) =>
+    selectOutcome(questId, outcomeId)(state)?.location
+
+export const selectCollectQuestTotalQta = (state: GameState, questId: string, outcomeId: string, reqId: string) => {
+    const outcome = selectOutcome(questId, outcomeId)(state)
+    if (!outcome) return 0
+    if (!outcome.reqItems) return 0
+
+    const req = outcome.reqItems.find((r) => r.id === reqId)
+    if (!req) return 0
+
+    return selectTotalFilteredQta(state, outcome.location, req.itemFilter)
 }

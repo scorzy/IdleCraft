@@ -2,6 +2,7 @@ import { memo, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { Popover, PopoverTrigger, PopoverContent, Portal } from '@radix-ui/react-popover'
 import { useShallow } from 'zustand/react/shallow'
+import { TbCircleCheck, TbXboxX } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
@@ -17,6 +18,7 @@ import {
     selectAcceptedQuests,
     selectAvailableQuests,
     selectCollectQuestItemValue,
+    selectCollectQuestTotalQta,
     selectItemReq,
     selectOutcomeDescription,
     selectOutcomeGoldReward,
@@ -173,6 +175,8 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     const { questId, outcomeId } = props
     const { t } = useTranslations()
 
+    const status = useGameStore(useCallback((s: GameState) => selectQuestStatus(questId)(s), [questId]))
+
     const completed = useGameStore(
         useCallback((s: GameState) => isOutcomeCompleted(questId, outcomeId)(s), [questId, outcomeId])
     )
@@ -200,9 +204,11 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
                 {isCollecting && <CollectRequestUi questId={questId} outcomeId={outcomeId} />}
 
                 <OutcomeReward questId={questId} outcomeId={outcomeId} />
-                <Button onClick={completeClick} disabled={!completed} className="self-start">
-                    {t.Complete}
-                </Button>
+                {status === QuestStatus.ACCEPTED && (
+                    <Button onClick={completeClick} disabled={!completed} className="self-start">
+                        {t.Complete}
+                    </Button>
+                )}
             </CardContent>
         </Card>
     )
@@ -338,7 +344,45 @@ const CollectRequestUi = (props: { questId: string; outcomeId: string }) => {
 const CollectRequest = (props: { questId: string; outcomeId: string; reqId: string }) => {
     const { questId, outcomeId, reqId } = props
 
-    const { t, fun } = useTranslations()
+    const { fun } = useTranslations()
+
+    const status = useGameStore(useCallback((s: GameState) => selectQuestStatus(questId)(s), [questId]))
+
+    const req = useGameStore(
+        useCallback((s: GameState) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
+    )
+
+    const totalQta = useGameStore(
+        useCallback(
+            (s: GameState) => selectCollectQuestTotalQta(s, questId, outcomeId, reqId),
+            [questId, outcomeId, reqId]
+        )
+    )
+
+    if (!req) return null
+    if (!req.itemFilter) return null
+
+    return (
+        <div>
+            {fun.collectN(req.itemCount)}
+            <ItemFilterDescription itemFilter={req.itemFilter} />
+            <br />
+            <div className="grid grow basis-0 grid-flow-col items-center justify-start gap-1">
+                {req.itemCount <= totalQta && <TbCircleCheck color="var(--color-success)" />}
+                {req.itemCount > totalQta && <TbXboxX />}
+                {fun.collectItemsTotal(totalQta)}
+            </div>
+            {status === QuestStatus.ACCEPTED && (
+                <CollectRequestSelection questId={questId} outcomeId={outcomeId} reqId={reqId} />
+            )}
+        </div>
+    )
+}
+
+const CollectRequestSelection = (props: { questId: string; outcomeId: string; reqId: string }) => {
+    const { questId, outcomeId, reqId } = props
+
+    const { t } = useTranslations()
 
     const req = useGameStore(
         useCallback((s: GameState) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
@@ -381,35 +425,27 @@ const CollectRequest = (props: { questId: string; outcomeId: string; reqId: stri
     if (!req.itemFilter) return null
 
     return (
-        <div>
-            {fun.collectN(req.itemCount)}
-            <ItemFilterDescription itemFilter={req.itemFilter} />
-            <div className={classes.CollectSelects}>
-                <InputContainer>
-                    <Label>{t.hightPriority}</Label>
-                    <ItemsSelect
-                        itemFilter={req.itemFilter}
-                        selectedValue={selectedValue}
-                        onValueChange={onValueChange}
-                    />
-                </InputContainer>
-                <InputContainer>
-                    <Label>{t.mediumPriority}</Label>
-                    <ItemsSelect
-                        itemFilter={req.itemFilter}
-                        selectedValue={selectedValue2}
-                        onValueChange={onValueChange2}
-                    />
-                </InputContainer>
-                <InputContainer>
-                    <Label>{t.lowPriority}</Label>
-                    <ItemsSelect
-                        itemFilter={req.itemFilter}
-                        selectedValue={selectedValue3}
-                        onValueChange={onValueChange3}
-                    />
-                </InputContainer>
-            </div>
+        <div className={classes.CollectSelects}>
+            <InputContainer>
+                <Label>{t.hightPriority}</Label>
+                <ItemsSelect itemFilter={req.itemFilter} selectedValue={selectedValue} onValueChange={onValueChange} />
+            </InputContainer>
+            <InputContainer>
+                <Label>{t.mediumPriority}</Label>
+                <ItemsSelect
+                    itemFilter={req.itemFilter}
+                    selectedValue={selectedValue2}
+                    onValueChange={onValueChange2}
+                />
+            </InputContainer>
+            <InputContainer>
+                <Label>{t.lowPriority}</Label>
+                <ItemsSelect
+                    itemFilter={req.itemFilter}
+                    selectedValue={selectedValue3}
+                    onValueChange={onValueChange3}
+                />
+            </InputContainer>
         </div>
     )
 }

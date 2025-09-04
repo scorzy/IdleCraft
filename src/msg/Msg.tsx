@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { QuestParams } from '../quests/QuestParams'
 
 export interface Translations {
@@ -274,4 +275,6 @@ export interface MsgFunctions {
     testOutcome2Desc: (questParams: QuestParams) => string
 
     collectN: (n: number) => string
+
+    collectItemsTotal: (n: number) => ReactNode
 }

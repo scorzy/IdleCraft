@@ -16,7 +16,7 @@ import { selectStorageOrder } from '../ui/state/uiSelectors'
 import { filterItem } from '../items/itemSelectors'
 import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
 import { ItemAdapter } from './ItemAdapter'
-import { InventoryNoQta } from './storageTypes'
+import { InventoryNoQta, StorageState } from './storageTypes'
 import { isCrafted } from './storageFunctions'
 import { InitialState } from '@/entityAdapter/InitialState'
 
@@ -27,6 +27,11 @@ const selectStorageLocationsInt = myMemoizeOne((locations: Record<GameLocations,
 
     return res
 })
+
+const selectStorageIds = myMemoizeOne((storage: StorageState) => Object.keys(storage).sort())
+
+export const selectCurrentLocationStorageIds = (state: GameState) =>
+    selectStorageIds(state.locations[state.location].storage)
 
 export const selectGameItemFromCraft = (itemId: string, craftedItems: InitialState<Item>) => {
     if (!isCrafted(itemId)) return StdItems[itemId]
@@ -208,18 +213,33 @@ export const createInventoryNoQta = myMemoize((inventory: CharInventory) => {
 
 export const selectFilteredItems = createMemoizeLatestSelector(
     [
-        (s: GameState) => s.locations[s.location].storage,
+        (s: GameState) => selectCurrentLocationStorageIds(s),
         (s: GameState) => s.craftedItems,
         (_s: GameState, itemFilter: ItemFilter) => itemFilter,
     ],
-    (storage, craftedItems, itemFilter) => {
+    (storageIds, craftedItems, itemFilter) => {
         if (!itemFilter) return EMPTY_ARRAY
 
-        const ret: ItemIdValue[] = []
-        for (const id of Object.keys(storage).sort()) {
+        const ret: string[] = []
+        for (const id of storageIds) {
             const item = selectGameItemFromCraft(id, craftedItems)
-            if (item && filterItem(item, itemFilter)) ret.push({ id, value: item.value })
+            if (item && filterItem(item, itemFilter)) ret.push(id)
         }
+
+        return ret
+    }
+)
+
+export const selectTotalFilteredQta = createMemoizeLatestSelector(
+    [
+        (s: GameState, location: GameLocations) => s.locations[location].storage,
+
+        (s: GameState, _location: GameLocations, itemFilter: ItemFilter) => selectFilteredItems(s, itemFilter),
+    ],
+    (storage, itemFilter) => {
+        let ret = 0
+
+        for (const itemId of itemFilter) ret += storage[itemId] ?? 0
 
         return ret
     }

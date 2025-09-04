@@ -40,7 +40,7 @@ export const ItemsSelect = memo(function ItemsSelect(props: {
             </SelectTrigger>
             <SelectContent>
                 {itemsId.map((t) => {
-                    return <ParamItem itemId={t.id} key={t.id} />
+                    return <ParamItem itemId={t} key={t} />
                 })}
             </SelectContent>
         </Select>

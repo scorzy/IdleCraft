@@ -1,6 +1,7 @@
 import { splitTime } from '../formatters/splitTime'
 import { FAST_MINING_PERK } from '../mining/MiningCost'
 import { QuestParams } from '../quests/QuestParams'
+import { sameNumber } from '../utils/sameNumber'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
 import { Msg, MsgFunctions } from './Msg'
 
@@ -277,5 +278,11 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
         testOutcome2Desc: (_questParams: QuestParams) => 'testOutcome2Desc',
 
         collectN: (n: number) => `Collect ${f(n)}`,
+
+        collectItemsTotal: (n: number) => {
+            if (n < Number.EPSILON) return "You don't have any item that can be used to complete the quest"
+            if (sameNumber(n, 1)) return 'You have one item that can be used to complete the quest'
+            return `You have ${f(n)} items that can be used to complete the quest`
+        },
     }
 }
