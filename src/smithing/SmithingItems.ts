@@ -9,7 +9,7 @@ export const SmithingItems: Record<string, Item> = {
         type: ItemTypes.Bar,
         value: 10,
         craftingData: {
-            prestige: 1.2,
+            prestige: 1.05,
             speedBonus: 1.1,
             damage: {
                 Bludgeoning: 1,
@@ -27,7 +27,7 @@ export const SmithingItems: Record<string, Item> = {
             time: 3e3,
         },
         craftingPickaxeData: {
-            damage: 10,
+            damage: 15,
             armourPen: 0,
             time: 3e3,
         },
@@ -57,7 +57,7 @@ export const SmithingItems: Record<string, Item> = {
             time: 3e3,
         },
         craftingPickaxeData: {
-            damage: 15,
+            damage: 20,
             armourPen: 1,
             time: 3e3,
         },

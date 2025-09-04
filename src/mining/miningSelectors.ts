@@ -11,8 +11,8 @@ import { OreTypes } from './OreTypes'
 import { ExpEnum } from '@/experience/ExpEnum'
 
 export const DEF_PICKAXE: PickaxeData = {
-    damage: 20,
-    time: 3e3,
+    damage: 10,
+    time: 4e3,
     armourPen: 0,
 }
 

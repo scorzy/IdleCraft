@@ -17,7 +17,7 @@ interface OreDataType {
 export const OreData: Record<OreTypes, OreDataType> = {
     [OreTypes.Copper]: {
         id: OreTypes.Copper,
-        qta: 10,
+        qta: 20,
         iconId: Icons.Ore,
         nameId: 'CopperOre',
         hp: 100,
@@ -28,7 +28,7 @@ export const OreData: Record<OreTypes, OreDataType> = {
     },
     [OreTypes.Tin]: {
         id: OreTypes.Tin,
-        qta: 20,
+        qta: 15,
         iconId: Icons.Ore,
         nameId: 'TinOre',
         hp: 200,

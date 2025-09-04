@@ -12,8 +12,8 @@ import { WoodData } from '../WoodData'
 import { ExpEnum } from '@/experience/ExpEnum'
 
 export const DEF_WOOD_AXE: WoodAxeData = {
-    damage: 25,
-    time: 3e3,
+    damage: 10,
+    time: 4e3,
 }
 export const WoodBase: BaseBonus = {
     nameId: 'Base',
