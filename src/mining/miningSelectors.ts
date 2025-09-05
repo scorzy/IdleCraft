@@ -1,3 +1,4 @@
+import { createSelector } from 'reselect'
 import { ActivityAdapter } from '../activities/ActivityState'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { selectLevelExp } from '../experience/expSelectors'
@@ -6,7 +7,6 @@ import { PickaxeData } from '../items/Item'
 import { myMemoize } from '../utils/myMemoize'
 import { isMining } from './Mining'
 import { OreData } from './OreData'
-import { OreState } from './OreState'
 import { OreTypes } from './OreTypes'
 import { ExpEnum } from '@/experience/ExpEnum'
 
@@ -18,17 +18,21 @@ export const DEF_PICKAXE: PickaxeData = {
 
 export const isOreSelected = (oreType: OreTypes) => (state: GameState) => state.ui.oreType === oreType
 
-export const selectDefaultMine = myMemoize(function selectDefaultMine(oreType: OreTypes): OreState {
-    const data = OreData[oreType]
-    return {
-        hp: data.hp,
-        qta: data.qta,
+export const selectDefaultMine = createSelector(
+    [(_s: GameState, oreType: OreTypes) => oreType],
+    (oreType: OreTypes) => {
+        const data = OreData[oreType]
+        return {
+            hp: data.hp,
+            qta: data.qta,
+        }
     }
-})
+)
+
 export const selectOre = myMemoize((oreType: OreTypes) => (state: GameState) => {
     const ore = state.locations[state.location].ores[oreType]
     if (ore) return ore
-    return selectDefaultMine(oreType)
+    return selectDefaultMine(state, oreType)
 })
 
 export const selectMining = myMemoize((oreType: OreTypes) => (s: GameState) => {

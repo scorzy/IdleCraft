@@ -9,7 +9,7 @@ export function hasOre(state: GameState, oreType: OreTypes, location?: GameLocat
     return (state.locations[location ?? state.location].ores[oreType]?.qta ?? 1) > 0
 }
 export function resetOre(state: GameState, oreType: OreTypes, location: GameLocations): GameState {
-    const def = selectDefaultMine(oreType)
+    const def = selectDefaultMine(state, oreType)
 
     state = {
         ...state,
@@ -43,7 +43,7 @@ export function mineOre(
     let qta: number
     let curHp: number
 
-    const def = selectDefaultMine(oreType)
+    const def = selectDefaultMine(state, oreType)
     if (mine) {
         qta = mine.qta
         curHp = mine.hp

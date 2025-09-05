@@ -4,20 +4,12 @@ import { useGameStore } from '../../game/state'
 import { selectWoodType } from '../../ui/state/uiSelectors'
 import { addWoodcutting } from '../functions/addWoodcutting'
 import { GameTimerProgress, TimerProgressFromId } from '../../ui/progress/TimerProgress'
-import { WoodTypes } from '../WoodTypes'
 import { GameState } from '../../game/GameState'
-import {
-    selectDefaultForest,
-    selectForest,
-    selectForestQta,
-    selectGrowingTrees,
-    woodCuttingActId,
-} from '../forest/forestSelectors'
+import { selectDefaultForest, selectForest, selectForestQta, selectGrowingTrees } from '../forest/forestSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { RestartProgress } from '../../ui/progress/RestartProgress'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { myMemoize } from '../../utils/myMemoize'
 import { useTranslations } from '../../msg/useTranslations'
 import { WoodData } from '../WoodData'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
@@ -30,21 +22,13 @@ import { IconsData } from '../../icons/Icons'
 import { selectWoodcuttingDamage, selectWoodcuttingDamageAll } from '../selectors/woodcuttingDamage'
 import { selectWoodcuttingTime, selectWoodcuttingTimeAll } from '../selectors/woodcuttingTime'
 import { Alert, AlertTitle, AlertDescription } from '../../components/ui/alert'
-import { isSelectedWoodEnabled } from '../selectors/WoodcuttingSelectors'
+import { isSelectedWoodEnabled, selectWoodcuttingId } from '../selectors/WoodcuttingSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
-import { isWoodcutting } from '../Woodcutting'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { ExpEnum } from '@/experience/ExpEnum'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
 import { Button } from '@/components/ui/button'
-
-const selectWoodcutting = myMemoize((woodType: WoodTypes) => (s: GameState) => {
-    for (const id of s.activities.ids) {
-        const act = s.activities.entries[id]
-        if (act && isWoodcutting(act) && act?.woodType === woodType) return act.id
-    }
-})
 
 export const Woodcutting = memo(function Woodcutting() {
     const woodType = useGameStore(selectWoodType)
@@ -92,11 +76,12 @@ const WoodPage = memo(function WoodPage() {
 })
 
 const Cutting = memo(function Cutting() {
-    const woodType = useGameStore(selectWoodType)
-    const forest = useGameStore(selectForest(woodType))
-    const act = useGameStore(selectWoodcutting(woodType))
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
+
+    const woodType = useGameStore(selectWoodType)
+    const forest = useGameStore(useCallback((s) => selectForest(s, woodType), [woodType]))
+    const act = useGameStore(useCallback((s) => selectWoodcuttingId(s, woodType), [woodType]))
     const def = useGameStore(useCallback((state) => selectDefaultForest(state, woodType), [woodType]))
     const hpPercent = Math.floor((100 * forest.hp) / def.hp)
     const time = useGameStore(selectWoodcuttingTime)
@@ -134,9 +119,9 @@ const Cutting = memo(function Cutting() {
 
 const CuttingButton = memo(function CuttingButton() {
     const woodType = useGameStore(selectWoodType)
-    const actId = useGameStore(woodCuttingActId(woodType))
+    const actId = useGameStore(useCallback((s) => selectWoodcuttingId(s, woodType), [woodType]))
     const onClickStart = useCallback(() => addWoodcutting(woodType), [woodType])
-    const onClickRemove = useCallback(() => removeActivity(actId?.id), [actId])
+    const onClickRemove = useCallback(() => removeActivity(actId), [actId])
     const { t } = useTranslations()
 
     if (actId === undefined) return <Button onClick={onClickStart}>{t.Cut}</Button>
@@ -166,7 +151,7 @@ const Forest = memo(function Forest() {
 
 const ForestQta = memo(function ForestQta() {
     const woodType = useGameStore(selectWoodType)
-    const qta = useGameStore(selectForestQta(woodType))
+    const qta = useGameStore(useCallback((s) => selectForestQta(s, woodType), [woodType]))
     const def = useGameStore(useCallback((state) => selectDefaultForest(state, woodType), [woodType]))
     const { f } = useNumberFormatter()
     const { t } = useTranslations()

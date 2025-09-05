@@ -84,7 +84,7 @@ const MiningOre = memo(function MiningOre() {
     const damage = useGameStore(selectMiningDamage)
     const time = useGameStore(selectMiningTime)
 
-    const def = selectDefaultMine(oreType)
+    const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
     const hpPercent = Math.floor((100 * ore.hp) / def.hp)
 
     const oreData = OreData[oreType]
@@ -142,7 +142,7 @@ const OreUi = memo(function MiningOre() {
     const oreType = useGameStore(selectOreType)
     const selectOreMemo = useCallback((state: GameState) => selectOre(oreType)(state), [oreType])
     const ore = useGameStore(selectOreMemo)
-    const def = selectDefaultMine(oreType)
+    const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
     const hpPercent = Math.floor((100 * ore.qta) / def.qta)
     const oreData = OreData[oreType]
 

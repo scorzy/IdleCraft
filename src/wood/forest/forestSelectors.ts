@@ -1,12 +1,10 @@
 import { createSelector } from 'reselect'
-import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
+import { ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Timer } from '../../timers/Timer'
-import { myMemoize } from '../../utils/myMemoize'
 import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
-import { isWoodcutting } from '../Woodcutting'
 import { createDeepEqualSelector } from '../../utils/createDeepEqualSelector'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
 import { InitialState } from '@/entityAdapter/InitialState'
@@ -19,16 +17,14 @@ export const selectDefaultForest = createSelector([(_s: GameState, woodType: Woo
     }
 })
 
-export const selectForest = myMemoize((woodType: WoodTypes) => (state: GameState) => {
+export const selectForest = (state: GameState, woodType: WoodTypes) => {
     const forest = state.locations[state.location].forests[woodType]
     if (forest) return forest
     return selectDefaultForest(state, woodType)
-})
+}
 
 export const selectTreeGrowthTime = () => 60e3
-export const selectForestQta = myMemoize(
-    (woodType: WoodTypes) => (state: GameState) => selectForest(woodType)(state).qta
-)
+export const selectForestQta = (state: GameState, woodType: WoodTypes) => selectForest(state, woodType).qta
 
 const selectGrowingTreesInt = (
     woodType: WoodTypes,
@@ -55,9 +51,4 @@ export const selectGrowingTrees = createDeepEqualSelector(
         (_s: GameState, woodType: WoodTypes) => woodType,
     ],
     (location, treeGrowth, timers, woodType) => selectGrowingTreesInt(woodType, location, treeGrowth, timers)
-)
-
-export const woodCuttingActId = myMemoize(
-    (woodType: WoodTypes) => (state: GameState) =>
-        ActivityAdapter.find(state.activities, (e) => isWoodcutting(e) && e.woodType === woodType)
 )
