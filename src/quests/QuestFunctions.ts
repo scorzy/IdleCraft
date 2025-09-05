@@ -81,7 +81,7 @@ export const questOnKillListener = (state: GameState, killedCharId: string): Gam
 
                     const newTarget = { ...target, killedCount: target.killedCount + 1 }
 
-                    targets = targets.with(1, newTarget)
+                    targets = targets.with(index, newTarget)
                 }
                 index = getIndex(targets)
             }
