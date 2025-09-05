@@ -1,5 +1,5 @@
 import { TbAlertTriangle } from 'react-icons/tb'
-import throttle from 'lodash-es/throttle'
+import { throttle } from 'es-toolkit/compat'
 import { Start } from './game/Start'
 import { useGameStore } from './game/state'
 import { ToasterProvider } from './notification/ToasterProvider'

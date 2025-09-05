@@ -1,4 +1,4 @@
-import uniq from 'lodash-es/uniq'
+import { uniq } from 'es-toolkit/compat'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { selectTranslations } from '../msg/useTranslations'
