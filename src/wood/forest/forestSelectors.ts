@@ -1,17 +1,17 @@
+import { createSelector } from 'reselect'
 import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Timer } from '../../timers/Timer'
 import { myMemoize } from '../../utils/myMemoize'
-import { myMemoizeOne } from '../../utils/myMemoizeOne'
-import { ForestsState } from '../ForestsState'
 import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
 import { isWoodcutting } from '../Woodcutting'
+import { createDeepEqualSelector } from '../../utils/createDeepEqualSelector'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
 import { InitialState } from '@/entityAdapter/InitialState'
 
-export const selectDefaultForest = myMemoize(function selectDefaultForest(woodType: WoodTypes): ForestsState {
+export const selectDefaultForest = createSelector([(_s: GameState, woodType: WoodTypes) => woodType], (woodType) => {
     const data = WoodData[woodType]
     return {
         hp: data.maxHp,
@@ -22,7 +22,7 @@ export const selectDefaultForest = myMemoize(function selectDefaultForest(woodTy
 export const selectForest = myMemoize((woodType: WoodTypes) => (state: GameState) => {
     const forest = state.locations[state.location].forests[woodType]
     if (forest) return forest
-    return selectDefaultForest(woodType)
+    return selectDefaultForest(state, woodType)
 })
 
 export const selectTreeGrowthTime = () => 60e3
@@ -47,10 +47,15 @@ const selectGrowingTreesInt = (
     return ret
 }
 
-export const selectGrowingTrees = myMemoize((woodType: WoodTypes) => {
-    const memo = myMemoizeOne(selectGrowingTreesInt)
-    return (state: GameState) => memo(woodType, state.location, state.treeGrowth, state.timers)
-})
+export const selectGrowingTrees = createDeepEqualSelector(
+    [
+        (s: GameState) => s.location,
+        (s: GameState) => s.treeGrowth,
+        (s: GameState) => s.timers,
+        (_s: GameState, woodType: WoodTypes) => woodType,
+    ],
+    (location, treeGrowth, timers, woodType) => selectGrowingTreesInt(woodType, location, treeGrowth, timers)
+)
 
 export const woodCuttingActId = myMemoize(
     (woodType: WoodTypes) => (state: GameState) =>

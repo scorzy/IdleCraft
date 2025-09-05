@@ -97,7 +97,7 @@ const Cutting = memo(function Cutting() {
     const act = useGameStore(selectWoodcutting(woodType))
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
-    const def = selectDefaultForest(woodType)
+    const def = useGameStore(useCallback((state) => selectDefaultForest(state, woodType), [woodType]))
     const hpPercent = Math.floor((100 * forest.hp) / def.hp)
     const time = useGameStore(selectWoodcuttingTime)
     const damage = useGameStore(selectWoodcuttingDamage)
@@ -167,7 +167,7 @@ const Forest = memo(function Forest() {
 const ForestQta = memo(function ForestQta() {
     const woodType = useGameStore(selectWoodType)
     const qta = useGameStore(selectForestQta(woodType))
-    const def = selectDefaultForest(woodType)
+    const def = useGameStore(useCallback((state) => selectDefaultForest(state, woodType), [woodType]))
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const treePercent = Math.floor((100 * qta) / def.qta)
@@ -184,7 +184,7 @@ const ForestQta = memo(function ForestQta() {
 
 const Trees = memo(function Trees() {
     const woodType = useGameStore(selectWoodType)
-    const trees = useGameStore(selectGrowingTrees(woodType))
+    const trees = useGameStore((s: GameState) => selectGrowingTrees(s, woodType))
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     return (

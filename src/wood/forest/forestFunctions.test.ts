@@ -38,7 +38,7 @@ describe('Forest Functions', () => {
     test('Cut Tree No', () => {
         const state = GetInitialGameState()
         const res = cutTree(state, WoodTypes.DeadTree, 1, state.location)
-        const def = selectDefaultForest(WoodTypes.DeadTree)
+        const def = selectDefaultForest(state, WoodTypes.DeadTree)
         expect(res.state.locations.StartVillage.forests.DeadTree).toEqual({
             qta: def.qta,
             hp: def.hp - 1,
@@ -54,7 +54,7 @@ describe('Forest Functions', () => {
         const res = cutTree(state, WoodTypes.DeadTree, 1, state.location)
         expect(res.state.locations.StartVillage.forests.DeadTree).toEqual({
             qta: 1,
-            hp: selectDefaultForest(WoodTypes.DeadTree).hp,
+            hp: selectDefaultForest(state, WoodTypes.DeadTree).hp,
         })
         expect(res.cut).toBeTruthy()
     })
