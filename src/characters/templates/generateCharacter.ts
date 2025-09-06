@@ -1,13 +1,12 @@
 import { CharAbilityAdapter } from '../../activeAbilities/abilityAdapters'
 import { getUniqueId } from '../../utils/getUniqueId'
-import { myMemoize } from '../../utils/myMemoize'
 import { CharacterState } from '../characterState'
 import { selectMaxHealthFromChar } from '../selectors/healthSelectors'
 import { selectMaxManaFromChar } from '../selectors/manaSelectors'
 import { selectMaxStaminaFromChar } from '../selectors/staminaSelectors'
 import { CharTemplate } from './charTemplates'
 
-export const generateCharacter = myMemoize(function (template: CharTemplate): CharacterState {
+export function generateCharacter(template: CharTemplate): CharacterState {
     const char: CharacterState = structuredClone({
         id: getUniqueId(),
         templateId: template.id,
@@ -38,4 +37,4 @@ export const generateCharacter = myMemoize(function (template: CharTemplate): Ch
     char.stamina = selectMaxStaminaFromChar(char).total
 
     return char
-})
+}
