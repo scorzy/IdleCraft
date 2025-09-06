@@ -1,10 +1,10 @@
+import { createSelector } from 'reselect'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { ExpState } from '../experience/ExpState'
 import { selectPlayerExp, selectPlayerLevel } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
-import { myMemoize } from '../utils/myMemoize'
-import { myMemoizeOne } from '../utils/myMemoizeOne'
+import { selectSelectedCharId } from '../ui/state/uiSelectors'
 import { PerksData } from './Perk'
 import { PerkState } from './PerkState'
 import { PerksEnum } from './perksEnum'
@@ -18,22 +18,21 @@ export const hasPerk =
     (s: GameState) =>
         (s.characters.entries[charId]?.perks[perk] ?? 0) > 0
 
-const isPerkEnabledInt = myMemoize((perkEnum: PerksEnum) =>
-    myMemoizeOne((perks: PerkState, skills: ExpState) => {
-        const perkData = PerksData[perkEnum]
-        if (perkData.requiredExp?.some((r) => r.level > (skills[r.skill] ?? 0))) return false
-        if (perkData.requiredPerks?.some((r) => !hasPerkInt(r, perks))) return false
-        return true
-    })
-)
+const isPerkEnabledInt = (perks: PerkState, skills: ExpState, perkEnum: PerksEnum) => {
+    const perkData = PerksData[perkEnum]
+    if (perkData.requiredExp?.some((r) => r.level > (skills[r.skill] ?? 0))) return false
+    if (perkData.requiredPerks?.some((r) => !hasPerkInt(r, perks))) return false
+    return true
+}
 
-export const isPerkEnabled =
-    (perkEnum: PerksEnum, charId: string = PLAYER_ID) =>
-    (state: GameState) =>
-        isPerkEnabledInt(perkEnum)(
-            CharacterAdapter.selectEx(state.characters, charId).perks,
-            selectPlayerExp(state, PLAYER_ID)
-        )
+export const isPerkEnabled = createSelector(
+    [
+        (state: GameState) => CharacterAdapter.selectEx(state.characters, selectSelectedCharId(state)).perks,
+        (state: GameState) => selectPlayerExp(state, selectSelectedCharId(state)),
+        (_state: GameState, perkEnum: PerksEnum) => perkEnum,
+    ],
+    isPerkEnabledInt
+)
 
 export const selectMaxPerks =
     (charId: string = PLAYER_ID) =>
@@ -56,36 +55,28 @@ export const selectPerkCompleted =
 
 const perksValues = Object.values(PerksEnum)
 
-const selectPerksInt = myMemoizeOne(function selectPerksInt(
-    perks: PerkState,
-    skills: ExpState,
-    available: boolean,
-    unavailable: boolean,
-    owned: boolean
-): PerksEnum[] {
-    if (available && unavailable && owned) return perksValues
-    if (!available && !unavailable && !owned) return []
+export const selectPerks = createSelector(
+    [
+        (state: GameState) => CharacterAdapter.selectEx(state.characters, selectSelectedCharId(state)).perks,
+        (state: GameState) => selectPlayerExp(state, selectSelectedCharId(state)),
+        (state: GameState) => state.ui.showAvailablePerks,
+        (state: GameState) => state.ui.showUnavailablePerks,
+        (state: GameState) => state.ui.showOwnedPerks,
+    ],
+    (perks, skills, available, unavailable, owned) => {
+        if (available && unavailable && owned) return perksValues
+        if (!available && !unavailable && !owned) return []
 
-    return perksValues.filter((perk) => {
-        const data = PerksData[perk]
-        const isOwned = (perks[perk] ?? 0) >= (data.max ?? 1)
-        if (owned && isOwned) return true
+        return perksValues.filter((perk) => {
+            const data = PerksData[perk]
+            const isOwned = (perks[perk] ?? 0) >= (data.max ?? 1)
+            if (owned && isOwned) return true
 
-        const isAvailable = isPerkEnabledInt(perk)(perks, skills)
-        if (available && isAvailable && !isOwned) return true
-        if (unavailable && !isAvailable) return true
+            const isAvailable = isPerkEnabledInt(perks, skills, perk)
+            if (available && isAvailable && !isOwned) return true
+            if (unavailable && !isAvailable) return true
 
-        return false
-    })
-})
-
-export const selectPerks =
-    (charId: string = PLAYER_ID) =>
-    (state: GameState) =>
-        selectPerksInt(
-            CharacterAdapter.selectEx(state.characters, charId).perks,
-            selectPlayerExp(state, charId),
-            state.ui.showAvailablePerks,
-            state.ui.showUnavailablePerks,
-            state.ui.showOwnedPerks
-        )
+            return false
+        })
+    }
+)

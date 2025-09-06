@@ -1,29 +1,24 @@
+import { createSelector } from 'reselect'
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { bonusFromItem, getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
-import { Item } from '../../items/Item'
-import { myMemoizeOne } from '../../utils/myMemoizeOne'
-import { selectAxe } from '../../wood/selectors/WoodcuttingSelectors'
 import { DEF_PICKAXE } from '../miningSelectors'
-import { PickaxeBase } from './miningSelectors'
+import { PickaxeBase, selectPickaxe } from './miningSelectors'
 
 const DAMAGE_BASE: Bonus = {
     id: 'base',
     add: DEF_PICKAXE.damage,
     ...PickaxeBase,
 }
-const selectMiningDamageInt = myMemoizeOne((pickaxe: Item | undefined) => {
+export const selectMiningDamageAll = createSelector([selectPickaxe], (pickaxe) => {
     const ret: BonusResult = { total: DEF_PICKAXE.damage, bonuses: [] }
 
-    if (pickaxe && pickaxe.woodAxeData) ret.bonuses.push(bonusFromItem(pickaxe, { add: pickaxe.woodAxeData.damage }))
+    if (pickaxe && pickaxe.pickaxeData) ret.bonuses.push(bonusFromItem(pickaxe, { add: pickaxe.pickaxeData.damage }))
     else ret.bonuses.push(DAMAGE_BASE)
 
     ret.total = getTotal(ret.bonuses)
 
     return ret
 })
-export const selectMiningDamageAll = (state: GameState) => {
-    return selectMiningDamageInt(selectAxe(state))
-}
 
 export const selectMiningDamage = (state: GameState) => selectMiningDamageAll(state).total
