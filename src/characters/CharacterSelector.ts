@@ -50,7 +50,7 @@ export interface CharacterSelector {
     AttackSpeedList: (state: GameState) => BonusResult
     AttackSpeed: (state: GameState) => number
 
-    EquippedItem: (slot: EquipSlotsEnum) => (state: GameState) => Item | undefined
+    EquippedItem: (state: GameState, slot: EquipSlotsEnum) => Item | undefined
     MainWeapon: (state: GameState) => Item | undefined
 
     AllCharInventory: (state: GameState) => Partial<Record<EquipSlotsEnum, Item>>

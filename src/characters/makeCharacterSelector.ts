@@ -7,7 +7,6 @@ import { bonusFromItem, getTotal } from '../bonus/BonusFunctions'
 import { DamageData, DamageTypes, Item } from '../items/Item'
 import { Icons } from '../icons/Icons'
 import { createInventoryNoQta, selectGameItem, selectGameItemFromCraft } from '../storage/StorageSelectors'
-import { myMemoize } from '../utils/myMemoize'
 import { createDeepEqualSelector } from '../utils/createDeepEqualSelector'
 import { myMemoizeOne } from '../utils/myMemoizeOne'
 import { CharacterAdapter } from './characterAdapter'
@@ -62,14 +61,14 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const MaxMana = (state: GameState) => MaxManaList(state).total
     const MaxStamina = (state: GameState) => MaxStaminaList(state).total
 
-    const EquippedItem = myMemoize((slot: EquipSlotsEnum) => (s: GameState) => {
+    const EquippedItem = (s: GameState, slot: EquipSlotsEnum) => {
         const equipped = selChar(s).inventory[slot]
         if (!equipped) return
         return selectGameItem(equipped.itemId)(s)
-    })
+    }
 
     const MainWeapon = (s: GameState) =>
-        EquippedItem(EquipSlotsEnum.MainHand)(s) ?? EquippedItem(EquipSlotsEnum.TwoHand)(s)
+        EquippedItem(s, EquipSlotsEnum.MainHand) ?? EquippedItem(s, EquipSlotsEnum.TwoHand)
 
     const selectInventoryNoQta = createSelector([(s: GameState) => selChar(s).inventory], (inventory) =>
         createInventoryNoQta(inventory)

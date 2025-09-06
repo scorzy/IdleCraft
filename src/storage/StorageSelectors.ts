@@ -8,7 +8,6 @@ import { selectTranslations } from '../msg/useTranslations'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
-import { myMemoize } from '../utils/myMemoize'
 import { Translations } from '../msg/Msg'
 import { createDeepEqualSelector } from '../utils/createDeepEqualSelector'
 import { useGameStore } from '../game/state'
@@ -197,7 +196,7 @@ export const selectItemsByType = (itemType: ItemTypes | undefined) => {
     return selector
 }
 
-export const createInventoryNoQta = myMemoize((inventory: CharInventory) => {
+export const createInventoryNoQta = (inventory: CharInventory) => {
     const ret: InventoryNoQta = {}
 
     Object.entries(inventory)
@@ -209,7 +208,7 @@ export const createInventoryNoQta = myMemoize((inventory: CharInventory) => {
         })
 
     return ret
-})
+}
 
 export const selectFilteredItems = createMemoizeLatestSelector(
     [
