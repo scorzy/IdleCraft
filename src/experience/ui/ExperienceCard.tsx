@@ -8,6 +8,7 @@ import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { Badge } from '../../components/ui/badge'
 import { useTranslations } from '../../msg/useTranslations'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
+import { MyLabel } from '../../ui/myCard/MyLabel'
 
 export const ExperienceCard = memo(function ExperienceCard(props: { expType: ExpEnum; charId: string }) {
     const { expType, charId } = props
@@ -40,14 +41,14 @@ export const ExperienceCardUi = memo(function ExperienceCardUi(props: {
         <Card>
             <CardHeader>
                 <CardTitle className="gap-y-0">
-                    {title}
                     <Badge className="w-min text-sm font-medium">{f(level)}</Badge>
+                    {title}
                 </CardTitle>
-                <CardDescription>
-                    {t.XP} {f(xp)} / {f(nextLevelXp)}
-                </CardDescription>
             </CardHeader>
-            <CardContent className="pt-1">
+            <CardContent>
+                <MyLabel className="text-muted-foreground">
+                    {t.XP} {f(xp)} / {f(nextLevelXp)}
+                </MyLabel>
                 <ProgressBar value={percent} key={title} color="primary" />
             </CardContent>
         </Card>
