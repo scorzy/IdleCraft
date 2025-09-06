@@ -1,6 +1,5 @@
 import { memo, useCallback } from 'react'
 import { LuHourglass } from 'react-icons/lu'
-import { myMemoize } from '../../utils/myMemoize'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
 import { recipes } from '../Recipes'
 import { useGameStore } from '../../game/state'
@@ -39,12 +38,18 @@ import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
 
-const selectRecipes: (t: RecipeTypes) => Recipe[] = myMemoize((t: RecipeTypes) => {
+const recipesByType: Partial<Record<RecipeTypes, Recipe[]>> = {}
+
+const selectRecipes = (t: RecipeTypes) => {
+    const ret1 = recipesByType[t]
+    if (ret1) return ret1
+
     const ret: Recipe[] = []
     const recipeValues = recipes.values()
     for (const recipe of recipeValues) if (recipe.type === t) ret.push(recipe)
+    recipesByType[t] = ret
     return ret
-})
+}
 
 export const CraftingUi = memo(function CraftingUi() {
     const result = useGameStore(selectRecipeResult)
