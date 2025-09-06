@@ -3,7 +3,7 @@ import { TbAlertTriangle } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
 import { selectOreType } from '../../ui/state/uiSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { isOreEnabled, selectDefaultMine, selectMining, selectOre } from '../miningSelectors'
+import { isOreEnabled, selectDefaultMine, selectMiningId, selectOre } from '../miningSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 import { Button } from '../../components/ui/button'
@@ -77,10 +77,8 @@ const MiningOre = memo(function MiningOre() {
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
 
-    const selectOreMemo = useCallback((state: GameState) => selectOre(oreType)(state), [oreType])
-    const selectMiningMemo = useCallback((state: GameState) => selectMining(oreType)(state), [oreType])
-    const ore = useGameStore(selectOreMemo)
-    const act = useGameStore(selectMiningMemo)
+    const ore = useGameStore(useCallback((state: GameState) => selectOre(state, oreType), [oreType]))
+    const act = useGameStore(useCallback((state: GameState) => selectMiningId(state, oreType), [oreType]))
     const damage = useGameStore(selectMiningDamage)
     const time = useGameStore(selectMiningTime)
 
@@ -120,8 +118,7 @@ const MiningOre = memo(function MiningOre() {
 const MiningButton = memo(function CuttingButton() {
     const { t } = useTranslations()
     const oreType = useGameStore(selectOreType)
-    const selectMiningMemo = useCallback((state: GameState) => selectMining(oreType)(state), [oreType])
-    const act = useGameStore(selectMiningMemo)
+    const act = useGameStore(useCallback((state: GameState) => selectMiningId(state, oreType), [oreType]))
     const onClickStart = useCallback(() => addMining(oreType), [oreType])
     const onClickRemove = useCallback(() => removeActivity(act), [act])
 
@@ -140,8 +137,7 @@ const OreUi = memo(function MiningOre() {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const oreType = useGameStore(selectOreType)
-    const selectOreMemo = useCallback((state: GameState) => selectOre(oreType)(state), [oreType])
-    const ore = useGameStore(selectOreMemo)
+    const ore = useGameStore(useCallback((state: GameState) => selectOre(state, oreType), [oreType]))
     const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
     const hpPercent = Math.floor((100 * ore.qta) / def.qta)
     const oreData = OreData[oreType]
