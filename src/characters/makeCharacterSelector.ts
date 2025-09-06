@@ -189,6 +189,7 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
 
         return ret
     })
+
     const AttackSpeedList = createDeepEqualSelector([(s: GameState) => MainWeapon(s)], (weapon) => {
         const bonuses: Bonus[] = []
 
