@@ -6,6 +6,7 @@ import { advanceTimers } from './advanceTimers'
 
 export function loadGame(state: GameState): GameState {
     const start = Date.now()
+    const start = Date.now()
     let lastReport = 0
 
     if (TEST_DIF !== 0) {
@@ -40,8 +41,8 @@ export function loadGame(state: GameState): GameState {
     }
     state.loading = false
     state.loadingData = undefined
-    const endDate = Date.now()
-    console.log(`Load time: ${endDate - start}ms`)
+    const endLoad = Date.now()
+    console.log(`Load time: ${endLoad - start}ms`)
 
     return state
 }

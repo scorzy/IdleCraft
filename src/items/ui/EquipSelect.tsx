@@ -36,7 +36,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     const slotData = SlotsData[slot]
 
     const equipped = useGameStore(
-        useCallback((s: GameState) => getCharacterSelector(charId).EquippedItem(slot)(s), [slot, charId])
+        useCallback((s: GameState) => getCharacterSelector(charId).EquippedItem(s, slot), [slot, charId])
     )
     const itemId = useGameStore(useCallback((s: GameState) => selectEquipId(slot, charId)(s), [slot, charId]))
 

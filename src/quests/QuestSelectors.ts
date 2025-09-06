@@ -3,17 +3,17 @@ import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { selectTranslations } from '../msg/useTranslations'
 import { selectItemQta, selectTotalFilteredQta } from '../storage/StorageSelectors'
-import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
+import { createDeepEqualSelector } from '../utils/createDeepEqualSelector'
 import { QuestData } from './QuestData'
 import { QuestRequestSelectors } from './QuestRequestSelectors'
 import { QuestTemplate } from './QuestTemplate'
 import { ItemsReward, QuestAdapter, QuestOutcomeAdapter, QuestStatus } from './QuestTypes'
 
-export const selectAcceptedQuests = createMemoizeLatestSelector([(state: GameState) => state.quests], (quests) =>
+export const selectAcceptedQuests = createDeepEqualSelector([(state: GameState) => state.quests], (quests) =>
     QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.ACCEPTED)
 )
 
-export const selectAvailableQuests = createMemoizeLatestSelector([(state: GameState) => state.quests], (quests) =>
+export const selectAvailableQuests = createDeepEqualSelector([(state: GameState) => state.quests], (quests) =>
     QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.AVAILABLE)
 )
 
@@ -37,7 +37,7 @@ export const selectQuestStatus = (questId: string | null) => (state: GameState) 
     return QuestAdapter.selectEx(state.quests, questId).state
 }
 
-export const selectOutcomeIds = createMemoizeLatestSelector(
+export const selectOutcomeIds = createDeepEqualSelector(
     [selectQuestId, (s: GameState) => s.quests],
     (questId, quests) => {
         if (!questId) return []

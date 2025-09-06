@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { TbCheck, TbLock, TbX } from 'react-icons/tb'
 import { useMediaQuery } from 'usehooks-ts'
 import { PerksEnum } from '../perksEnum'
@@ -60,7 +60,7 @@ export const PerksSidebar = memo(function PerksSidebar() {
     const charId = useGameStore(selectSelectedCharId)
     const maxPerks = useGameStore(selectMaxPerks(charId))
     const usedPerks = useGameStore(selectUsedPerks(charId))
-    const perks = useGameStore(selectPerks(charId))
+    const perks = useGameStore(selectPerks)
     const collapsed = useGameStore(isCollapsed(CollapsedEnum.Perk))
     const readonly = useGameStore(isCharReadonly)
 
@@ -120,7 +120,7 @@ export const PerkLink = memo(function PerkLink(props: { perk: PerksEnum }) {
     const { perk } = props
     const { t } = useTranslations()
     const selected = useGameStore(isPerkSelected(perk))
-    const enabled = useGameStore(isPerkEnabled(perk))
+    const enabled = useGameStore(useCallback((s) => isPerkEnabled(s, perk), [perk]))
     const ownPerk = useGameStore(hasPerk(perk))
 
     const data = PerksData[perk]
@@ -223,7 +223,7 @@ const PerkButton = memo(function PerkButton(props: { perk: PerksEnum }) {
     const { t } = useTranslations()
     const charId = useGameStore(selectSelectedCharId)
 
-    const enabled = useGameStore(isPerkEnabled(perk))
+    const enabled = useGameStore(useCallback((s) => isPerkEnabled(s, perk), [perk]))
     const completed = useGameStore(selectPerkCompleted(perk))
     const canSpend = useGameStore(selectCanSpendPerks(charId))
     return (

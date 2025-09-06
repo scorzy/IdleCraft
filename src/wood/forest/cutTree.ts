@@ -21,7 +21,7 @@ export function cutTree(
     let qta: number
     let curHp: number
 
-    const def = selectDefaultForest(woodType)
+    const def = selectDefaultForest(state, woodType)
     if (forest) {
         qta = forest.qta
         curHp = forest.hp

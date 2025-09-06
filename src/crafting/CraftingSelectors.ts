@@ -1,13 +1,11 @@
 import equal from 'react-fast-compare'
+import { createSelector } from 'reselect'
 import { GameState } from '../game/GameState'
-import { myMemoizeOne } from '../utils/myMemoizeOne'
-import { myMemoize } from '../utils/myMemoize'
 import { selectItemQta } from '../storage/StorageSelectors'
 import { selectCraftItemId } from '../storage/storageFunctions'
-import { ActivityAdapter, ActivityState } from '../activities/ActivityState'
-import { RecipeItem, RecipeParameterValue } from './RecipeInterfaces'
+import { ActivityAdapter } from '../activities/ActivityState'
+import { RecipeItem } from './RecipeInterfaces'
 import { isCrafting } from './CraftingIterfaces'
-import { InitialState } from '@/entityAdapter/InitialState'
 
 export const getCraftingActivity = (s: GameState, id: string) => {
     const act = ActivityAdapter.selectEx(s.activities, id)
@@ -27,25 +25,21 @@ export const canCraft = (s: GameState) => s.craftingForm.result !== undefined &&
 
 export const selectCraftTime = (s: GameState) => s.craftingForm.result?.time
 
-const compareCrafting = myMemoizeOne((crafting: InitialState<ActivityState>, recipeId: string) => {
-    const compare = myMemoize((values: RecipeParameterValue[]) => {
-        const len = values.length
+export const selectCurrentCrafting = createSelector(
+    [(s: GameState) => s.activities, (s: GameState) => s.recipeId, (s: GameState) => s.craftingForm.paramsValue],
+    (crafting, recipeId, paramsValue) => {
+        const len = paramsValue.length
 
         const ret = ActivityAdapter.find(crafting, (e) => {
             if (!isCrafting(e)) return false
             if (e.recipeId !== recipeId) return false
             if (len !== e.paramsValue.length) return false
-            if (equal(e.paramsValue, values)) return true
+            if (equal(e.paramsValue, paramsValue)) return true
             return false
         })
         return ret?.id ?? null
-    })
-    return compare
-})
-
-export function selectCurrentCrafting(s: GameState): string | null {
-    return compareCrafting(s.activities, s.recipeId)(s.craftingForm.paramsValue)
-}
+    }
+)
 
 export const selectResultQta = (result?: RecipeItem) => (s: GameState) => {
     if (!result) return 0

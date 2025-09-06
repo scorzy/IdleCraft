@@ -5,7 +5,7 @@ import { ForestsType, ForestsState } from '../ForestsState'
 import { selectDefaultForest } from './forestSelectors'
 
 export function addTree(state: GameState, woodType: WoodTypes, qta: number, location: GameLocations): GameState {
-    const def = selectDefaultForest(woodType)
+    const def = selectDefaultForest(state, woodType)
 
     const cur = state.locations[location].forests[woodType]
     if (cur === undefined) return state

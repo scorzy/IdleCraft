@@ -5,8 +5,17 @@ import { test } from 'vitest'
 import svgr from 'vite-plugin-svgr'
 import tailwindcss from '@tailwindcss/vite'
 
+const isDevelopment = process.env.NODE_ENV === 'development'
+
 const ReactCompilerConfig = {
-    /* ... */
+    panicThreshold: isDevelopment ? 'critical_errors' : 'none',
+    logger: {
+        logEvent(filename, event) {
+            if (isDevelopment && event.kind === 'CompileError') {
+                console.log(filename, event)
+            }
+        },
+    },
 }
 
 // https://vitejs.dev/config/

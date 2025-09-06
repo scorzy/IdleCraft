@@ -8,13 +8,11 @@ import { selectTranslations } from '../msg/useTranslations'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
-import { myMemoize } from '../utils/myMemoize'
 import { Translations } from '../msg/Msg'
-import { createDeepEqualSelector } from '../utils/createDeepEqualSelector'
 import { useGameStore } from '../game/state'
 import { selectStorageOrder } from '../ui/state/uiSelectors'
 import { filterItem } from '../items/itemSelectors'
-import { createMemoizeLatestSelector } from '../utils/createMemoizeLatestSelector'
+import { createDeepEqualSelector } from '../utils/createDeepEqualSelector'
 import { ItemAdapter } from './ItemAdapter'
 import { InventoryNoQta, StorageState } from './storageTypes'
 import { isCrafted } from './storageFunctions'
@@ -28,10 +26,10 @@ const selectStorageLocationsInt = myMemoizeOne((locations: Record<GameLocations,
     return res
 })
 
-const selectStorageIds = myMemoizeOne((storage: StorageState) => Object.keys(storage).sort())
-
-export const selectCurrentLocationStorageIds = (state: GameState) =>
-    selectStorageIds(state.locations[state.location].storage)
+export const selectCurrentLocationStorageIds = createDeepEqualSelector(
+    [(state: GameState) => state.locations[state.location].storage],
+    (storage: StorageState) => Object.keys(storage).sort()
+)
 
 export const selectGameItemFromCraft = (itemId: string, craftedItems: InitialState<Item>) => {
     if (!isCrafted(itemId)) return StdItems[itemId]
@@ -197,7 +195,7 @@ export const selectItemsByType = (itemType: ItemTypes | undefined) => {
     return selector
 }
 
-export const createInventoryNoQta = myMemoize((inventory: CharInventory) => {
+export const createInventoryNoQta = (inventory: CharInventory) => {
     const ret: InventoryNoQta = {}
 
     Object.entries(inventory)
@@ -209,9 +207,9 @@ export const createInventoryNoQta = myMemoize((inventory: CharInventory) => {
         })
 
     return ret
-})
+}
 
-export const selectFilteredItems = createMemoizeLatestSelector(
+export const selectFilteredItems = createDeepEqualSelector(
     [
         (s: GameState) => selectCurrentLocationStorageIds(s),
         (s: GameState) => s.craftedItems,
@@ -230,7 +228,7 @@ export const selectFilteredItems = createMemoizeLatestSelector(
     }
 )
 
-export const selectTotalFilteredQta = createMemoizeLatestSelector(
+export const selectTotalFilteredQta = createDeepEqualSelector(
     [
         (s: GameState, location: GameLocations) => s.locations[location].storage,
 
