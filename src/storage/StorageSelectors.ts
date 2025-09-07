@@ -242,3 +242,6 @@ export const selectTotalFilteredQta = createDeepEqualSelector(
         return ret
     }
 )
+
+export const selectFilteredItemsNumber = (state: GameState, itemFilter: ItemFilter) =>
+    selectFilteredItems(state, itemFilter).length

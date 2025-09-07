@@ -242,6 +242,8 @@ export interface Msg {
     mediumPriority: string
     lowPriority: string
     selectPlaceholder: string
+
+    collectConsume: string
 }
 export interface MsgFunctions {
     // Time

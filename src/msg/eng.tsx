@@ -219,6 +219,8 @@ export const engMsg: Msg = {
     mediumPriority: 'Medium Priority',
     lowPriority: 'Low Priority',
     selectPlaceholder: '-- Select --',
+
+    collectConsume: 'The following items will be consumed: ',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

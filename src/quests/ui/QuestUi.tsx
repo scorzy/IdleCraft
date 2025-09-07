@@ -1,8 +1,6 @@
 import { memo, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { Popover, PopoverTrigger, PopoverContent, Portal } from '@radix-ui/react-popover'
-import { useShallow } from 'zustand/react/shallow'
-import { TbCircleCheck, TbXboxX } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
@@ -10,16 +8,10 @@ import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { sidebarOpen } from '../../ui/state/uiFunctions'
 import {
-    isCollectReq,
-    isKillingReq,
     isOutcomeCompleted,
     isQuestSelected,
-    KillQuestRequestSelectors,
     selectAcceptedQuests,
     selectAvailableQuests,
-    selectCollectQuestItemValue,
-    selectCollectQuestTotalQta,
-    selectItemReq,
     selectOutcomeDescription,
     selectOutcomeGoldReward,
     selectOutcomeIds,
@@ -27,13 +19,13 @@ import {
     selectQuestDescription,
     selectQuestIcon,
     selectQuestId,
-    selectQuestItemsReqIds,
     selectQuestName,
     selectQuestStatus,
-    selectQuestTargets,
-} from '../QuestSelectors'
+} from '../selectors/QuestSelectors'
+import { KillQuestRequestSelectors, selectQuestTargets, isKillingReq } from '../killRequest/killSelectors'
+
 import { IconsData } from '../../icons/Icons'
-import { acceptClick, completeQuest, makeOnCollectQuestItemSelect, selectQuest } from '../QuestFunctions'
+import { acceptClick, completeQuest, selectQuest } from '../QuestFunctions'
 import { GameState } from '../../game/GameState'
 import { Button } from '../../components/ui/button'
 import { QuestStatus } from '../QuestTypes'
@@ -46,14 +38,12 @@ import { MyLabel } from '../../ui/myCard/MyLabel'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
-import { Card, CardContent } from '../../components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { Badge } from '../../components/ui/badge'
-import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
-import { ItemsSelect } from '../../storage/ui/ItemsSelect'
-import { Label } from '../../components/ui/label'
-import { InputContainer } from '../../components/ui/inputContainer'
-import classes from './QuestUi.module.css'
+import { isCollectReq } from '../collectRequest/collectSelectors'
+import { ItemIconName } from '../../items/ui/ItemIconName'
+import { CollectRequestUi } from '../collectRequest/CollectRequestUi'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -143,11 +133,19 @@ const QuestDetailUi = () => {
 
     return (
         <>
-            <TitleH1>
-                {IconsData[iconId]}
-                {nameId}
-            </TitleH1>
-            <TypographyP>{description}</TypographyP>
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        <TitleH1>
+                            {IconsData[iconId]}
+                            {nameId}
+                        </TitleH1>
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <TypographyP>{description}</TypographyP>
+                </CardContent>
+            </Card>
             <div className="mt-4 grid gap-4">
                 {outcomeIds.map((outcomeId) => (
                     <QuestOutcomeUi questId={id} outcomeId={outcomeId} key={outcomeId} />
@@ -243,8 +241,8 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
 
 export function ItemRewardUi(props: { itemId: string; quantity: number }) {
     const { itemId, quantity } = props
-    const { t } = useTranslations()
     const { f } = useNumberFormatter()
+    const { t } = useTranslations()
 
     const item = useGameStore(
         useCallback(
@@ -264,7 +262,7 @@ export function ItemRewardUi(props: { itemId: string; quantity: number }) {
         <Popover>
             <PopoverTrigger asChild>
                 <Badge variant="secondary">
-                    {f(quantity)} {icon} {name}
+                    {f(quantity)} <ItemIconName itemId={itemId} />
                 </Badge>
             </PopoverTrigger>
 
@@ -321,131 +319,5 @@ const KillOutcomeProgress = (props: { target: KillQuestTarget }) => {
             </MyLabel>
             <ProgressBar value={percent} color="primary" />
         </>
-    )
-}
-
-const CollectRequestUi = (props: { questId: string; outcomeId: string }) => {
-    const { questId, outcomeId } = props
-
-    const itemsReq = useGameStore(
-        useShallow(useCallback((s: GameState) => selectQuestItemsReqIds(s, questId, outcomeId), [questId, outcomeId]))
-    )
-
-    if (!itemsReq) return
-
-    return (
-        <div>
-            {itemsReq.map((req) => (
-                <CollectRequest questId={questId} outcomeId={outcomeId} reqId={req} key={req}></CollectRequest>
-            ))}
-        </div>
-    )
-}
-const CollectRequest = (props: { questId: string; outcomeId: string; reqId: string }) => {
-    const { questId, outcomeId, reqId } = props
-
-    const { fun } = useTranslations()
-
-    const status = useGameStore(useCallback((s: GameState) => selectQuestStatus(questId)(s), [questId]))
-
-    const req = useGameStore(
-        useCallback((s: GameState) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
-    )
-
-    const totalQta = useGameStore(
-        useCallback(
-            (s: GameState) => selectCollectQuestTotalQta(s, questId, outcomeId, reqId),
-            [questId, outcomeId, reqId]
-        )
-    )
-
-    if (!req) return null
-    if (!req.itemFilter) return null
-
-    return (
-        <div>
-            {fun.collectN(req.itemCount)}
-            <ItemFilterDescription itemFilter={req.itemFilter} />
-            <br />
-            <div className="grid grow basis-0 grid-flow-col items-center justify-start gap-1">
-                {req.itemCount <= totalQta && <TbCircleCheck color="var(--color-success)" />}
-                {req.itemCount > totalQta && <TbXboxX />}
-                {fun.collectItemsTotal(totalQta)}
-            </div>
-            {status === QuestStatus.ACCEPTED && (
-                <CollectRequestSelection questId={questId} outcomeId={outcomeId} reqId={reqId} />
-            )}
-        </div>
-    )
-}
-
-const CollectRequestSelection = (props: { questId: string; outcomeId: string; reqId: string }) => {
-    const { questId, outcomeId, reqId } = props
-
-    const { t } = useTranslations()
-
-    const req = useGameStore(
-        useCallback((s: GameState) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
-    )
-
-    const selectedValue = useGameStore(
-        useCallback(
-            (s: GameState) => selectCollectQuestItemValue(s, questId, outcomeId, reqId, 0),
-            [questId, outcomeId, reqId]
-        )
-    )
-    const onValueChange = useCallback(
-        (value: string) => makeOnCollectQuestItemSelect(questId, outcomeId, reqId, 0, value),
-        [questId, outcomeId, reqId]
-    )
-
-    const selectedValue2 = useGameStore(
-        useCallback(
-            (s: GameState) => selectCollectQuestItemValue(s, questId, outcomeId, reqId, 1),
-            [questId, outcomeId, reqId]
-        )
-    )
-    const onValueChange2 = useCallback(
-        (value: string) => makeOnCollectQuestItemSelect(questId, outcomeId, reqId, 1, value),
-        [questId, outcomeId, reqId]
-    )
-
-    const selectedValue3 = useGameStore(
-        useCallback(
-            (s: GameState) => selectCollectQuestItemValue(s, questId, outcomeId, reqId, 2),
-            [questId, outcomeId, reqId]
-        )
-    )
-    const onValueChange3 = useCallback(
-        (value: string) => makeOnCollectQuestItemSelect(questId, outcomeId, reqId, 2, value),
-        [questId, outcomeId, reqId]
-    )
-
-    if (!req) return null
-    if (!req.itemFilter) return null
-
-    return (
-        <div className={classes.CollectSelects}>
-            <InputContainer>
-                <Label>{t.hightPriority}</Label>
-                <ItemsSelect itemFilter={req.itemFilter} selectedValue={selectedValue} onValueChange={onValueChange} />
-            </InputContainer>
-            <InputContainer>
-                <Label>{t.mediumPriority}</Label>
-                <ItemsSelect
-                    itemFilter={req.itemFilter}
-                    selectedValue={selectedValue2}
-                    onValueChange={onValueChange2}
-                />
-            </InputContainer>
-            <InputContainer>
-                <Label>{t.lowPriority}</Label>
-                <ItemsSelect
-                    itemFilter={req.itemFilter}
-                    selectedValue={selectedValue3}
-                    onValueChange={onValueChange3}
-                />
-            </InputContainer>
-        </div>
     )
 }

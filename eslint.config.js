@@ -86,18 +86,18 @@ export default defineConfig([
             'import/no-cycle': 'error',
             'import/no-unresolved': 'error',
 
-            // '@typescript-eslint/no-unused-vars': [
-            //     'error',
-            //     {
-            //         args: 'all',
-            //         argsIgnorePattern: '^_',
-            //         caughtErrors: 'all',
-            //         caughtErrorsIgnorePattern: '^_',
-            //         destructuredArrayIgnorePattern: '^_',
-            //         varsIgnorePattern: '^_',
-            //         ignoreRestSiblings: true,
-            //     },
-            // ],
+            '@typescript-eslint/no-unused-vars': [
+                'warn',
+                {
+                    args: 'all',
+                    argsIgnorePattern: '^_',
+                    caughtErrors: 'all',
+                    caughtErrorsIgnorePattern: '^_',
+                    destructuredArrayIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                    ignoreRestSiblings: true,
+                },
+            ],
 
             'import/order': 'error',
             'import/newline-after-import': 'error',

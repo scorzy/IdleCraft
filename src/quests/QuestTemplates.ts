@@ -62,7 +62,17 @@ export class TestQuestTemplate implements QuestTemplate {
                     reqItems: [
                         {
                             id: '1',
-                            itemCount: 5,
+                            itemCount: 2,
+                            itemFilter: {
+                                itemType: ItemTypes.Plank,
+                                minStats: {
+                                    value: 10,
+                                },
+                            },
+                        },
+                        {
+                            id: '2',
+                            itemCount: 4,
                             itemFilter: {
                                 itemType: ItemTypes.Plank,
                                 minStats: {

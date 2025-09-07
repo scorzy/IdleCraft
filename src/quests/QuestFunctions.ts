@@ -13,7 +13,7 @@ import {
     selectAvailableQuests,
     selectOutcome,
     selectQuestTemplate,
-} from './QuestSelectors'
+} from './selectors/QuestSelectors'
 import { QuestAdapter, QuestOutcome, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
 
 export const selectQuest = (id: string) =>
@@ -50,6 +50,7 @@ export const acceptQuest = (state: GameState, questId: string) => {
 }
 
 export const acceptClick = (questId: string) => useGameStore.setState((state: GameState) => acceptQuest(state, questId))
+
 export const questOnKillListener = (state: GameState, killedCharId: string): GameState => {
     QuestAdapter.forEach(state.quests, (quest) => {
         if (quest.state !== QuestStatus.ACCEPTED) return
@@ -99,6 +100,7 @@ export const questOnKillListener = (state: GameState, killedCharId: string): Gam
 
     return state
 }
+
 export const completeQuest = (state: GameState, questId: string, outcomeId: string) => {
     const quest = QuestAdapter.selectEx(state.quests, questId)
     if (!quest) return state
@@ -144,7 +146,7 @@ export const makeOnCollectQuestItemSelect = (
     value: string | undefined
 ) =>
     useGameStore.setState((state: GameState) => {
-        const outcome = selectOutcome(questId, outcomeId)(state)
+        const outcome = selectOutcome(state, questId, outcomeId)
         const reqItems = outcome?.reqItems
         if (!reqItems) return state
 
