@@ -6,7 +6,7 @@ import { ItemTypes } from '../items/Item'
 import { selectTranslations } from '../msg/useTranslations'
 import { getUniqueId } from '../utils/getUniqueId'
 import { QuestTemplate } from './QuestTemplate'
-import { QuestAdapter, QuestOutcomeAdapter, QuestStatus } from './QuestTypes'
+import { QuestAdapter, QuestOutcome, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
 
 export class TestQuestTemplate implements QuestTemplate {
     nextQuestId?: string | undefined
@@ -36,53 +36,71 @@ export class TestQuestTemplate implements QuestTemplate {
         return outcome.itemsRewards ?? []
     }
 
-    generateQuestData = (_state: GameState) => ({
-        id: getUniqueId(),
-        state: QuestStatus.AVAILABLE,
-        templateId: 'kill-n',
-        parameters: { 'param-1': 'Test' },
-        outcomeData: {
-            ids: ['k'],
-            entries: {
-                k: {
-                    id: 'k',
-                    location: GameLocations.StartVillage,
-                    goldReward: 100,
-                    itemsRewards: [
-                        { itemId: 'TinOre', quantity: 1 },
-                        { itemId: 'DeadBoar', quantity: 1 },
-                    ],
-                    targets: [
-                        {
-                            targetId: CharTemplateEnum.Boar,
-                            targetCount: 5,
-                            killedCount: 0,
+    generateQuestData = (_state: GameState) => {
+        const kill: QuestOutcome = {
+            id: 'k',
+            location: GameLocations.StartVillage,
+            goldReward: 100,
+            itemsRewards: [
+                { itemId: 'TinOre', quantity: 1 },
+                { itemId: 'DeadBoar', quantity: 1 },
+            ],
+            targets: [
+                {
+                    targetId: CharTemplateEnum.Boar,
+                    targetCount: 5,
+                    killedCount: 0,
+                },
+            ],
+        }
+
+        const collect: QuestOutcome = {
+            id: 'c',
+            location: GameLocations.StartVillage,
+            goldReward: 100,
+            itemsRewards: [
+                { itemId: 'TinOre', quantity: 1 },
+                { itemId: 'DeadBoar', quantity: 1 },
+            ],
+            reqItems: [
+                {
+                    id: '1',
+                    itemCount: 2,
+                    itemFilter: {
+                        itemType: ItemTypes.Plank,
+                        minStats: {
+                            value: 10,
                         },
-                    ],
-                    reqItems: [
-                        {
-                            id: '1',
-                            itemCount: 2,
-                            itemFilter: {
-                                itemType: ItemTypes.Plank,
-                                minStats: {
-                                    value: 10,
-                                },
-                            },
+                    },
+                },
+                {
+                    id: '2',
+                    itemCount: 4,
+                    itemFilter: {
+                        itemType: ItemTypes.Plank,
+                        minStats: {
+                            value: 10,
                         },
-                        {
-                            id: '2',
-                            itemCount: 4,
-                            itemFilter: {
-                                itemType: ItemTypes.Plank,
-                                minStats: {
-                                    value: 10,
-                                },
-                            },
-                        },
-                    ],
+                    },
+                },
+            ],
+        }
+
+        const quest: QuestState = {
+            id: getUniqueId(),
+            state: QuestStatus.AVAILABLE,
+            templateId: 'kill-n',
+            parameters: { 'param-1': 'Test' },
+            expandedOutcome: 'k',
+            outcomeData: {
+                ids: ['k', 'c'],
+                entries: {
+                    k: kill,
+                    c: collect,
                 },
             },
-        },
-    })
+        }
+
+        return quest
+    }
 }

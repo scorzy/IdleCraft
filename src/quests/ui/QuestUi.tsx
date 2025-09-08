@@ -12,6 +12,7 @@ import {
     isQuestSelected,
     selectAcceptedQuests,
     selectAvailableQuests,
+    selectExpandedOutcomeId,
     selectOutcomeDescription,
     selectOutcomeGoldReward,
     selectOutcomeIds,
@@ -25,7 +26,7 @@ import {
 import { KillQuestRequestSelectors, selectQuestTargets, isKillingReq } from '../killRequest/killSelectors'
 
 import { IconsData } from '../../icons/Icons'
-import { acceptClick, completeQuest, selectQuest } from '../QuestFunctions'
+import { acceptClick, completeQuest, selectQuest, setExpandedOutcome } from '../QuestFunctions'
 import { GameState } from '../../game/GameState'
 import { Button } from '../../components/ui/button'
 import { QuestStatus } from '../QuestTypes'
@@ -44,6 +45,8 @@ import { Badge } from '../../components/ui/badge'
 import { isCollectReq } from '../collectRequest/collectSelectors'
 import { ItemIconName } from '../../items/ui/ItemIconName'
 import { CollectRequestUi } from '../collectRequest/CollectRequestUi'
+import { ChevronsUpDownIcon } from '../../icons/IconsMemo'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -129,6 +132,11 @@ const QuestDetailUi = () => {
     const outcomeIds = useGameStore(selectOutcomeIds)
     const state = useGameStore(useCallback((s: GameState) => selectQuestStatus(id)(s), [id]))
 
+    const onExpOutcomeChange = useCallback((outcomeId: string) => setExpandedOutcome(id, outcomeId), [id])
+    const expOutcomeId = useGameStore(
+        useCallback((s: GameState) => (id ? selectExpandedOutcomeId(s, id) : undefined), [id])
+    )
+
     if (!id || id === '') return <></>
 
     return (
@@ -147,9 +155,17 @@ const QuestDetailUi = () => {
                 </CardContent>
             </Card>
             <div className="mt-4 grid gap-4">
-                {outcomeIds.map((outcomeId) => (
-                    <QuestOutcomeUi questId={id} outcomeId={outcomeId} key={outcomeId} />
-                ))}
+                <Accordion
+                    type="single"
+                    collapsible
+                    className="grid w-full gap-4"
+                    value={expOutcomeId}
+                    onValueChange={onExpOutcomeChange}
+                >
+                    {outcomeIds.map((outcomeId) => (
+                        <QuestOutcomeUi questId={id} outcomeId={outcomeId} key={outcomeId} />
+                    ))}
+                </Accordion>
                 {state === QuestStatus.AVAILABLE && <QuestButtons id={id} />}
             </div>
         </>
@@ -194,21 +210,31 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     )
 
     return (
-        <Card>
-            <CardContent className="flex flex-col gap-4">
-                <TypographyP>{description}</TypographyP>
+        <AccordionItem value={outcomeId}>
+            <Card>
+                <CardHeader>
+                    <AccordionTrigger className="p-0">
+                        <CardTitle>{ChevronsUpDownIcon} Title</CardTitle>
+                    </AccordionTrigger>
+                </CardHeader>
 
-                {isKilling && <KillRequestUi questId={questId} outcomeId={outcomeId} />}
-                {isCollecting && <CollectRequestUi questId={questId} outcomeId={outcomeId} />}
+                <AccordionContent>
+                    <CardContent className="flex flex-col gap-4">
+                        <TypographyP>{description}</TypographyP>
 
-                <OutcomeReward questId={questId} outcomeId={outcomeId} />
-                {status === QuestStatus.ACCEPTED && (
-                    <Button onClick={completeClick} disabled={!completed} className="self-start">
-                        {t.Complete}
-                    </Button>
-                )}
-            </CardContent>
-        </Card>
+                        {isKilling && <KillRequestUi questId={questId} outcomeId={outcomeId} />}
+                        {isCollecting && <CollectRequestUi questId={questId} outcomeId={outcomeId} />}
+
+                        <OutcomeReward questId={questId} outcomeId={outcomeId} />
+                        {status === QuestStatus.ACCEPTED && (
+                            <Button onClick={completeClick} disabled={!completed} className="self-start">
+                                {t.Complete}
+                            </Button>
+                        )}
+                    </CardContent>
+                </AccordionContent>
+            </Card>
+        </AccordionItem>
     )
 }
 

@@ -2,7 +2,6 @@ import { Label } from '@radix-ui/react-label'
 import { Fragment, useCallback } from 'react'
 import { TbCircleCheck, TbXboxX } from 'react-icons/tb'
 import { useShallow } from 'zustand/react/shallow'
-import { makeOnCollectQuestItemSelect } from '../QuestFunctions'
 import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { selectFilteredItemsNumber } from '../../storage/StorageSelectors'
 import { useTranslations } from '../../msg/useTranslations'
@@ -24,6 +23,7 @@ import {
     selectQuestItemsReqIds,
 } from './collectSelectors'
 import classes from './QuestUi.module.css'
+import { onCollectQuestItemSelect } from './onCollectQuestItemSelect'
 
 export const CollectRequestUi = (props: { questId: string; outcomeId: string }) => {
     const { questId, outcomeId } = props
@@ -154,7 +154,7 @@ const CollectRequestSelectionP = (props: { questId: string; outcomeId: string; r
         )
     )
     const onValueChange = useCallback(
-        (value: string) => makeOnCollectQuestItemSelect(questId, outcomeId, reqId, priority, value),
+        (value: string) => onCollectQuestItemSelect(questId, outcomeId, reqId, priority, value),
         [questId, outcomeId, reqId, priority]
     )
 

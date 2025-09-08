@@ -1,13 +1,18 @@
 import { ReactNode, memo } from 'react'
 import { CardHeader, CardTitle } from '@/components/ui/card'
 
-export const MyCardHeaderTitle = memo(function MyCardHeaderTitle(props: { title?: string; icon?: ReactNode }) {
-    const { title, icon } = props
+export const MyCardHeaderTitle = memo(function MyCardHeaderTitle(props: {
+    title?: string
+    icon?: ReactNode
+    rightSlot?: ReactNode
+    onClick?: () => void
+}) {
+    const { title, icon, rightSlot, onClick } = props
 
     return (
         <CardHeader>
-            <CardTitle>
-                {icon} {title}
+            <CardTitle onClick={onClick}>
+                {icon} {title} {rightSlot}
             </CardTitle>
         </CardHeader>
     )

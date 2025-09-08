@@ -1,7 +1,7 @@
 import { GameState } from '../../game/GameState'
 import { selectTranslations } from '../../msg/useTranslations'
 import { QuestRequestSelectors } from '../selectors/QuestRequestSelectors'
-import { selectOutcome } from '../selectors/QuestSelectors'
+import { selectOutcome } from '../selectors/selectOutcome'
 
 export const KillQuestRequestSelectors: QuestRequestSelectors = {
     getDescription: (_questId: string, _outcomeId: string) => (state: GameState) =>

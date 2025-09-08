@@ -12,7 +12,7 @@ const ReactCompilerConfig = {
     logger: {
         logEvent(filename, event) {
             if (isDevelopment && event.kind === 'CompileError') {
-                console.log(filename, event)
+                // console.log(filename, event)
             }
         },
     },

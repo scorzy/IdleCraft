@@ -4,7 +4,8 @@ import { selectTranslations } from '../../msg/useTranslations'
 import { selectTotalFilteredQta } from '../../storage/StorageSelectors'
 import { createDeepEqualSelector } from '../../utils/createDeepEqualSelector'
 import { StorageState } from '../../storage/storageTypes'
-import { selectOutcome, selectOutcomeEx } from '../selectors/QuestSelectors'
+import { selectOutcomeEx } from '../selectors/selectOutcomeEx'
+import { selectOutcome } from '../selectors/selectOutcome'
 import { QuestRequestSelectors } from '../selectors/QuestRequestSelectors'
 
 export const selectQuestItemsReqIds = (state: GameState, questId: string, outcomeId: string) => {
@@ -49,7 +50,6 @@ export const selectCollectQuestTotalQta = (state: GameState, questId: string, ou
     return selectTotalFilteredQta(state, outcome.location, req.itemFilter)
 }
 export const CollectQuestRequestSelectors: QuestRequestSelectors = {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getDescription: (_questId: string, _outcomeId: string) => (state: GameState) =>
         selectTranslations(state).t.collectReqDesc,
 

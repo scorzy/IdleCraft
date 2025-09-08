@@ -40,9 +40,10 @@ import { handleRecipe } from '../wood/recipes/HandleRecipe'
 import { plankRecipe } from '../wood/recipes/PlankRecipe'
 import { onKillListeners } from '../characters/functions/onKillListeners'
 import { addKillBattleLog } from '../battleLog/functions/addBattleLog'
-import { questOnItemRemove, questOnKillListener } from '../quests/QuestFunctions'
 import { onItemRemovedListeners } from '../storage/storageEvents'
 import { recipeOnItemRemove } from '../crafting/RecipeFunctions'
+import { questOnKillListener } from '../quests/killRequest/questOnKillListener'
+import { questOnItemRemove } from '../quests/collectRequest/questOnItemRemove'
 import { activityIcons, activityRemovers, activityStarters, activityTitles, activityExecutors } from './globals'
 
 export function initialize() {

@@ -3,16 +3,17 @@ import { GetInitialGameState } from '../game/InitialGameState'
 import { CharTemplateEnum } from '../characters/templates/characterTemplateEnum'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { ItemTypes } from '../items/Item'
-import { QuestAdapter, QuestStatus } from './QuestTypes'
-import { questOnItemRemove } from './QuestFunctions'
+import { QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
+import { questOnItemRemove } from './collectRequest/questOnItemRemove'
 
 describe('Quest Functions', () => {
     test('questOnItemRemove 1', () => {
         const state = GetInitialGameState()
 
-        const questState = {
+        const questState: QuestState = {
             id: 'questId',
             state: QuestStatus.AVAILABLE,
+            expandedOutcome: 'k',
             templateId: 'kill-n',
             parameters: { 'param-1': 'Test' },
             outcomeData: {
@@ -72,6 +73,7 @@ describe('Quest Functions', () => {
             id: 'questId',
             state: QuestStatus.AVAILABLE,
             templateId: 'kill-n',
+            expandedOutcome: 'k',
             parameters: { 'param-1': 'Test' },
             outcomeData: {
                 ids: ['k'],

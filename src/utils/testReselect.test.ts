@@ -18,12 +18,9 @@ describe('Reselect', () => {
             memoizeOptions: { resultEqualityCheck: deepEqual },
         })
 
-        let n = 0
         const selector = creator(
             [(s: GameState) => s.locations[s.location].storage, (_s: GameState, id: string) => id],
             (storage, id) => {
-                n++
-                console.log(`test ${n} ${JSON.stringify(storage)}`)
                 return {
                     qta: storage[id] ?? 0,
                 }

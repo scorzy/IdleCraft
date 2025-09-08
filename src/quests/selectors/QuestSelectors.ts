@@ -5,6 +5,7 @@ import { QuestData } from '../QuestData'
 import { QuestTemplate } from '../QuestTemplate'
 import { ItemsReward, QuestAdapter, QuestOutcomeAdapter, QuestStatus } from '../QuestTypes'
 import { QuestReqSelectors } from './QuestReqSelectors'
+import { selectOutcome } from './selectOutcome'
 
 export const selectAcceptedQuests = createDeepEqualSelector([(state: GameState) => state.quests], (quests) =>
     QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.ACCEPTED)
@@ -54,16 +55,6 @@ export const selectOutcomeDescription = (questId: string | null, outcomeId: stri
     return data.getOutcomeDescription(questId, outcomeId)(state)
 }
 
-export const selectOutcome = (state: GameState, questId: string, outcomeId: string) => {
-    if (!questId || !outcomeId) return null
-    const quest = QuestAdapter.selectEx(state.quests, questId)
-    return QuestOutcomeAdapter.select(quest.outcomeData, outcomeId) || null
-}
-export const selectOutcomeEx = (state: GameState, questId: string, outcomeId: string) => {
-    const outcome = selectOutcome(state, questId, outcomeId)
-    if (!outcome) throw new Error(`[selectOutcomeEx]: not found questId:${questId} outcomeId:${outcomeId}`)
-    return outcome
-}
 export const isOutcomeCompleted = (questId: string, outcomeId: string) => (state: GameState) => {
     const questState = QuestAdapter.selectEx(state.quests, questId)
     if (questState.state !== QuestStatus.ACCEPTED) return false
@@ -84,3 +75,6 @@ export function selectOutcomeItemReward(state: GameState, questId: string, outco
 
 export const selectOutcomeLocation = (state: GameState, questId: string, outcomeId: string) =>
     selectOutcome(state, questId, outcomeId)?.location
+
+export const selectExpandedOutcomeId = (state: GameState, questId: string) =>
+    QuestAdapter.selectEx(state.quests, questId).expandedOutcome
