@@ -10,6 +10,7 @@ import {
     selectQuestTemplate,
 } from './selectors/QuestSelectors'
 import { QuestAdapter, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
+import { onCollectQuestComplete } from './collectRequest/onCollectQuestComplete'
 
 export const selectQuest = (id: string) =>
     useGameStore.setState((state: GameState) => {
@@ -64,6 +65,8 @@ export const completeQuest = (state: GameState, questId: string, outcomeId: stri
     if (quest.state !== QuestStatus.ACCEPTED) return state
     const questTemplate = selectQuestTemplate(state, questId)
     if (!isOutcomeCompleted(questId, outcomeId)(state)) return state
+
+    state = onCollectQuestComplete(state, questId, outcomeId)
 
     const outcome = QuestOutcomeAdapter.selectEx(quest.outcomeData, outcomeId)
     if (!outcome) return state
