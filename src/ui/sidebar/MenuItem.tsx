@@ -114,7 +114,6 @@ export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
     const { t } = useTranslations()
 
     const collapsed = useGameStore(isCollapsed(collapsedId))
-    const parentCollapsed = useUiTempStore(getSidebarWidth(parentCollapsedId)) < 240
     const collapseClick = useCallback(() => collapse(collapsedId), [collapsedId])
 
     const [created, setCreated] = useState(false)
@@ -134,7 +133,7 @@ export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
                 onClick={collapseClick}
             />
             <CollapsibleContent className="CollapsibleContent">
-                <div className={clsx(created ? classes.myListTransition : '', { 'pl-4': !parentCollapsed })}>
+                <div className={clsx({ [classes.myListTransition!]: created }, 'CollapsibleMenu__Items')}>
                     {children}
                 </div>
             </CollapsibleContent>

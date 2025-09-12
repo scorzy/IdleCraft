@@ -40,6 +40,7 @@
 
 .CollapsibleContent {
     overflow: hidden;
+    container-type: inline-size;
 }
 .CollapsibleContent[data-state='open'] {
     animation: slideDown 300ms ease-out;
@@ -75,4 +76,8 @@
 }
 .inlineSize {
     container-type: inline-size;
+}
+
+.SidebarContainer__Full .CollapsibleMenu__Items {
+    padding-left: 1rem;
 }

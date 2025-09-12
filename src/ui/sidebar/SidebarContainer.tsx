@@ -32,7 +32,12 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
     return (
         <nav
             ref={containerRef}
-            className={clsx(classes.collapseContainer, { [classes.collapsedContainer!]: collapsed }, className)}
+            className={clsx(
+                classes.collapseContainer,
+                { [classes.collapsedContainer!]: collapsed },
+                { SidebarContainer__Full: !collapsed },
+                className
+            )}
         >
             <div className={clsx(classes.sidebarContainer, { [classes.collapsed!]: collapsed })}>{children}</div>
 
