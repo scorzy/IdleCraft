@@ -38,7 +38,7 @@ export const ExperienceCardUi = memo(function ExperienceCardUi(props: {
     const percent = Math.floor((100 * (xp - levelXp)) / (nextLevelXp - levelXp))
 
     return (
-        <Card>
+        <Card gap="sm">
             <CardHeader>
                 <CardTitle className="gap-y-0">
                     <Badge className="w-min text-sm font-medium">{f(level)}</Badge>

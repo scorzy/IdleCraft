@@ -28,9 +28,9 @@
     grid-template-rows: auto;
     grid-template-areas:
         'head'
-        'side'
         'main'
-        'info';
+        'info'
+        'side';
 }
 
 .page__info-side {

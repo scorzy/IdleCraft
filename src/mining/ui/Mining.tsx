@@ -33,7 +33,7 @@ export const Mining = memo(function Mining() {
     return (
         <MyPageAll
             sidebar={<MiningSidebar />}
-            info={
+            header={
                 <div className="page__info">
                     <ExperienceCard expType={ExpEnum.Mining} charId={PLAYER_ID} />
                     <EquipItemUi slot={EquipSlotsEnum.Pickaxe} />

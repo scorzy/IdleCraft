@@ -52,7 +52,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     }
 
     return (
-        <Card>
+        <Card gap="sm">
             <MyCardHeaderTitle title={t[slotData.ItemType as keyof Msg]} />
             <CardContent>
                 <Select value={itemId ?? '-'} onValueChange={handleEquipChange}>

@@ -1,18 +1,11 @@
 import * as React from 'react'
 
+import { VariantProps } from 'class-variance-authority'
+import { cardVariants } from './cardVariants'
 import { cn } from '@/lib/utils'
 
-function Card({ className, ...props }: React.ComponentProps<'div'>) {
-    return (
-        <div
-            data-slot="card"
-            className={cn(
-                'bg-card text-card-foreground flex flex-col gap-3 rounded-xl border py-3 shadow-sm',
-                className
-            )}
-            {...props}
-        />
-    )
+function Card({ className, gap, ...props }: React.ComponentProps<'div'> & VariantProps<typeof cardVariants>) {
+    return <div data-slot="card" className={cn(cardVariants({ gap }), className)} {...props} />
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<'div'>) {
