@@ -1,10 +1,10 @@
-import { createSelector } from 'reselect'
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { getTotal } from '../../bonus/BonusFunctions'
 import { Icons } from '../../icons/Icons'
 import { CharacterState } from '../characterState'
 
-export const selectMaxManaFromChar = createSelector([(char: CharacterState) => char.manaPoints], (points) => {
+export const selectMaxManaFromChar = (char: CharacterState) => {
+    const points = char.manaPoints
     const bonuses: Bonus[] = []
     bonuses.push({
         id: 'baseMana',
@@ -27,4 +27,4 @@ export const selectMaxManaFromChar = createSelector([(char: CharacterState) => c
     }
 
     return bonusList
-})
+}

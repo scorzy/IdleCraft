@@ -1,5 +1,4 @@
 import equal from 'react-fast-compare'
-import { createSelector } from 'reselect'
 import { GameState } from '../game/GameState'
 import { selectItemQta } from '../storage/StorageSelectors'
 import { selectCraftItemId } from '../storage/storageFunctions'
@@ -25,21 +24,22 @@ export const canCraft = (s: GameState) => s.craftingForm.result !== undefined &&
 
 export const selectCraftTime = (s: GameState) => s.craftingForm.result?.time
 
-export const selectCurrentCrafting = createSelector(
-    [(s: GameState) => s.activities, (s: GameState) => s.recipeId, (s: GameState) => s.craftingForm.paramsValue],
-    (crafting, recipeId, paramsValue) => {
-        const len = paramsValue.length
+export const selectCurrentCrafting = (s: GameState) => {
+    const crafting = s.activities
+    const recipeId = s.recipeId
+    const paramsValue = s.craftingForm.paramsValue
 
-        const ret = ActivityAdapter.find(crafting, (e) => {
-            if (!isCrafting(e)) return false
-            if (e.recipeId !== recipeId) return false
-            if (len !== e.paramsValue.length) return false
-            if (equal(e.paramsValue, paramsValue)) return true
-            return false
-        })
-        return ret?.id ?? null
-    }
-)
+    const len = paramsValue.length
+
+    const ret = ActivityAdapter.find(crafting, (e) => {
+        if (!isCrafting(e)) return false
+        if (e.recipeId !== recipeId) return false
+        if (len !== e.paramsValue.length) return false
+        if (equal(e.paramsValue, paramsValue)) return true
+        return false
+    })
+    return ret?.id ?? null
+}
 
 export const selectResultQta = (result?: RecipeItem) => (s: GameState) => {
     if (!result) return 0

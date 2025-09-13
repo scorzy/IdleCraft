@@ -4,7 +4,7 @@ import { CaretSortIcon } from '@radix-ui/react-icons'
 import { Virtuoso } from 'react-virtuoso'
 import { MyPage } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
-import { selectTeams } from '../../characters/selectors/selectTeams'
+import { selectTeamsMemo } from '../../characters/selectors/selectTeams'
 import {
     selectCharMainAttack,
     selectCharMainAttackIcon,
@@ -46,8 +46,9 @@ export const CombatUi = memo(function CombatUi() {
         </MyPage>
     )
 })
+
 const CombatChars = memo(function CombatChars() {
-    const ids = useGameStore(selectTeams)
+    const ids = useGameStore(selectTeamsMemo)
 
     return (
         <div className={classes.team}>

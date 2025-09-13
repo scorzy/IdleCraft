@@ -1,10 +1,10 @@
-import { createSelector } from 'reselect'
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { getTotal } from '../../bonus/BonusFunctions'
 import { Icons } from '../../icons/Icons'
 import { CharacterState } from '../characterState'
 
-export const selectMaxStaminaFromChar = createSelector([(char: CharacterState) => char.staminaPoints], (points) => {
+export const selectMaxStaminaFromChar = (char: CharacterState) => {
+    const points = char.staminaPoints
     const bonuses: Bonus[] = []
     bonuses.push({
         id: 'baseStamina',
@@ -28,4 +28,4 @@ export const selectMaxStaminaFromChar = createSelector([(char: CharacterState) =
     }
 
     return bonusList
-})
+}

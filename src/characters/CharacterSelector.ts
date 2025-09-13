@@ -28,6 +28,9 @@ export interface CharacterSelector {
     MaxHealthList: (state: GameState) => BonusResult
     MaxManaList: (state: GameState) => BonusResult
     MaxStaminaList: (state: GameState) => BonusResult
+    MaxHealthListMemo: (state: GameState) => BonusResult
+    MaxManaListMemo: (state: GameState) => BonusResult
+    MaxStaminaListMemo: (state: GameState) => BonusResult
 
     armour: Record<
         DamageTypes,

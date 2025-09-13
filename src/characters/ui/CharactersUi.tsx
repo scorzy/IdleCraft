@@ -193,15 +193,15 @@ const StatsInfo = memo(function StatsInfo() {
 
     const health = useGameStore(useCallback((s: GameState) => charSel.Health(s), [charSel]))
     const maxH = useGameStore(useCallback((s: GameState) => charSel.MaxHealth(s), [charSel]))
-    const maxHB = charSel.MaxHealthList.bind(charSel)
+    const maxHB = charSel.MaxHealthListMemo.bind(charSel)
 
     const stamina = useGameStore(useCallback((s: GameState) => charSel.Stamina(s), [charSel]))
     const maxS = useGameStore(useCallback((s: GameState) => charSel.MaxStamina(s), [charSel]))
-    const maxSB = charSel.MaxStaminaList.bind(charSel)
+    const maxSB = charSel.MaxStaminaListMemo.bind(charSel)
 
     const mana = useGameStore(useCallback((s: GameState) => charSel.Mana(s), [charSel]))
     const maxM = useGameStore(useCallback((s: GameState) => charSel.MaxMana(s), [charSel]))
-    const maxMB = charSel.MaxManaList.bind(charSel)
+    const maxMB = charSel.MaxManaListMemo.bind(charSel)
 
     const healthClick = useCallback(() => addHealthPointClick(charId), [charId])
     const staminaClick = useCallback(() => addStaminaPointClick(charId), [charId])

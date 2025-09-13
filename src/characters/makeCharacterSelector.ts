@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+import { memoize } from 'es-toolkit/compat'
 import { GameState } from '../game/GameState'
 import { getCharLevelExp } from '../experience/expSelectors'
 import { selectTranslations } from '../msg/useTranslations'
@@ -7,7 +7,6 @@ import { bonusFromItem, getTotal } from '../bonus/BonusFunctions'
 import { DamageData, DamageTypes, Item } from '../items/Item'
 import { Icons } from '../icons/Icons'
 import { createInventoryNoQta, selectGameItem, selectGameItemFromCraft } from '../storage/StorageSelectors'
-import { createDeepEqualSelector } from '../utils/createDeepEqualSelector'
 import { myMemoizeOne } from '../utils/myMemoizeOne'
 import { CharacterAdapter } from './characterAdapter'
 import { CharacterSelector } from './CharacterSelector'
@@ -53,9 +52,9 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const Stamina = (s: GameState) => selChar(s).stamina
     const Mana = (s: GameState) => selChar(s).mana
 
-    const MaxHealthList = createSelector([(s: GameState) => selChar(s)], (char) => selectMaxHealthFromChar(char))
-    const MaxManaList = createSelector([(s: GameState) => selChar(s)], (char) => selectMaxManaFromChar(char))
-    const MaxStaminaList = createSelector([(s: GameState) => selChar(s)], (char) => selectMaxStaminaFromChar(char))
+    const MaxHealthList = (s: GameState) => selectMaxHealthFromChar(selChar(s))
+    const MaxManaList = (s: GameState) => selectMaxManaFromChar(selChar(s))
+    const MaxStaminaList = (s: GameState) => selectMaxStaminaFromChar(selChar(s))
 
     const MaxHealth = (state: GameState) => MaxHealthList(state).total
     const MaxMana = (state: GameState) => MaxManaList(state).total
@@ -70,27 +69,27 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const MainWeapon = (s: GameState) =>
         EquippedItem(s, EquipSlotsEnum.MainHand) ?? EquippedItem(s, EquipSlotsEnum.TwoHand)
 
-    const selectInventoryNoQta = createSelector([(s: GameState) => selChar(s).inventory], (inventory) =>
-        createInventoryNoQta(inventory)
-    )
+    const selectInventoryNoQta = (s: GameState) => createInventoryNoQta(selChar(s).inventory)
 
-    const AllCharInventory = createDeepEqualSelector(
-        [(s: GameState) => selectInventoryNoQta(s), (s: GameState) => s.craftedItems],
-        (inventory, crafted) => {
-            const ret: Partial<Record<EquipSlotsEnum, Item>> = {}
-            Object.entries(inventory).forEach((kv) => {
-                const slot = kv[0] as EquipSlotsEnum
-                const itemIds = kv[1]
-                const item = selectGameItemFromCraft(itemIds.itemId, crafted)
-                if (item) ret[slot] = item
-            })
-            return ret
-        }
-    )
+    const AllCharInventory = (s: GameState) => {
+        const inventory = selectInventoryNoQta(s)
+        const crafted = s.craftedItems
+
+        const ret: Partial<Record<EquipSlotsEnum, Item>> = {}
+        Object.entries(inventory).forEach((kv) => {
+            const slot = kv[0] as EquipSlotsEnum
+            const itemIds = kv[1]
+            const item = selectGameItemFromCraft(itemIds.itemId, crafted)
+            if (item) ret[slot] = item
+        })
+        return ret
+    }
 
     const makeArmourSelectors = (type: DamageTypes) => {
-        const ArmourList = createDeepEqualSelector([(s: GameState) => AllCharInventory(s)], (inventory) => {
+        const ArmourList = (s: GameState) => {
             const bonuses: Bonus[] = []
+
+            const inventory = AllCharInventory(s)
 
             Object.entries(inventory).forEach((kv) => {
                 const item = kv[1]
@@ -109,14 +108,11 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
                 total: getTotal(bonuses),
             }
             return bonusList
-        })
+        }
 
         const Armour = (state: GameState) => ArmourList(state).total
 
-        return {
-            ArmourList,
-            Armour,
-        }
+        return { ArmourList, Armour }
     }
 
     const armour: Record<
@@ -132,8 +128,9 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     }
 
     const makeDamageSelectors = (type: DamageTypes) => {
-        const DamageList = createDeepEqualSelector([(s: GameState) => MainWeapon(s)], (weapon) => {
+        const DamageList = (s: GameState) => {
             const bonuses: Bonus[] = []
+            const weapon = MainWeapon(s)
 
             if (weapon && weapon.weaponData) {
                 const add = weapon.weaponData.damage[type]
@@ -158,13 +155,10 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
             }
 
             return bonusList
-        })
+        }
         const Damage = (state: GameState) => DamageList(state).total
 
-        return {
-            DamageList,
-            Damage,
-        }
+        return { DamageList, Damage }
     }
 
     const damage: Record<
@@ -190,8 +184,9 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         return ret
     })
 
-    const AttackSpeedList = createDeepEqualSelector([(s: GameState) => MainWeapon(s)], (weapon) => {
+    const AttackSpeedList = (s: GameState) => {
         const bonuses: Bonus[] = []
+        const weapon = MainWeapon(s)
 
         if (weapon && weapon.weaponData) {
             bonuses.push({
@@ -214,7 +209,7 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         }
 
         return bonusList
-    })
+    }
 
     const AttackSpeed = (s: GameState) => AttackSpeedList(s).total
 
@@ -241,6 +236,9 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         MaxHealthList,
         MaxManaList,
         MaxStaminaList,
+        MaxHealthListMemo: memoize(MaxHealthList),
+        MaxManaListMemo: memoize(MaxManaList),
+        MaxStaminaListMemo: memoize(MaxStaminaList),
         armour,
         damage,
         AllAttackDamage,
