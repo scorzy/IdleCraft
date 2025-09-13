@@ -3,45 +3,25 @@ import { GameState } from '../../game/GameState'
 import { ActiveAbilityData } from '../ActiveAbilityData'
 import { AbilitiesEnum } from '../abilitiesEnum'
 
-export function tryCast(
-    state: GameState,
-    characterId: string,
-    abilityId: AbilitiesEnum
-): { cast: boolean; state: GameState } {
+export function tryCast(state: GameState, characterId: string, abilityId: AbilitiesEnum): boolean {
     const ability = ActiveAbilityData.get(abilityId)
     if (!ability) throw new Error(`[execAbility] ability ${abilityId} not found`)
 
     const character = CharacterAdapter.selectEx(state.characters, characterId)
 
     const hCost = ability.getHealthCost({ state, characterId })
-    if (hCost > character.health + 1)
-        return {
-            cast: false,
-            state,
-        }
+    if (hCost > character.health + 1) return false
 
     const sCost = ability.getStaminaCost({ state, characterId })
-    if (sCost > character.stamina)
-        return {
-            cast: false,
-            state,
-        }
+    if (sCost > character.stamina) return false
 
     const mCost = ability.getManaCost({ state, characterId })
-    if (mCost > character.mana)
-        return {
-            cast: false,
-            state,
-        }
+    if (mCost > character.mana) return false
 
     const char = CharacterAdapter.selectEx(state.characters, characterId)
     const charUp = { health: char.health - hCost, stamina: char.stamina - sCost, mana: char.mana - mCost }
 
-    return {
-        cast: true,
-        state: {
-            ...state,
-            characters: CharacterAdapter.update(state.characters, characterId, charUp),
-        },
-    }
+    CharacterAdapter.update(state.characters, characterId, charUp)
+
+    return true
 }

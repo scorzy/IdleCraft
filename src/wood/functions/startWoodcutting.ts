@@ -11,13 +11,13 @@ export const startWoodcutting = makeStartActivity((state: GameState, id: string)
     const data = ActivityAdapter.selectEx(state.activities, id) as Woodcutting
 
     if (!hasTrees(state, data.woodType)) {
-        state = { ...state, waitingTrees: id }
-        return { state, result: ActivityStartResult.Started }
+        state.waitingTrees = id
+        return ActivityStartResult.Started
     }
 
-    state = { ...state, waitingTrees: null }
+    state.waitingTrees = null
     const time = selectWoodcuttingTime(state)
-    state = startTimer(state, time, ActivityTypes.Woodcutting, id)
+    startTimer(state, time, ActivityTypes.Woodcutting, id)
 
-    return { state, result: ActivityStartResult.Started }
+    return ActivityStartResult.Started
 })

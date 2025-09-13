@@ -1,9 +1,8 @@
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
-import { ItemRequest } from '../ItemRequest'
-import { QuestAdapter, QuestOutcome, QuestOutcomeAdapter } from '../QuestTypes'
+import { QuestAdapter, QuestOutcome } from '../QuestTypes'
 
-export const questOnItemRemove = (state: GameState, itemId: string, location: GameLocations): GameState => {
+export const questOnItemRemove = (state: GameState, itemId: string, location: GameLocations): void => {
     QuestAdapter.forEach(state.quests, (quest) => {
         Object.values(quest.outcomeData.entries).forEach((outcome: QuestOutcome) => {
             if (outcome.location !== location) return
@@ -16,45 +15,26 @@ export const questOnItemRemove = (state: GameState, itemId: string, location: Ga
             )
                 return
 
-            let updated = false
-            let newReqItems: ItemRequest[] = [...outcome.reqItems]
+            const reqItems = outcome.reqItems
 
-            let index = newReqItems.findIndex(
+            let index = reqItems.findIndex(
                 (r) => r.selectedItem1 === itemId || r.selectedItem2 === itemId || r.selectedItem3 === itemId
             )
 
             let n = 0
             while (index > -1 && n < 1e3) {
                 n++
-                const req = newReqItems[index]
+                const req = reqItems[index]
                 if (req) {
-                    updated = true
-                    const newReq = {
-                        ...req,
-                        selectedItem1: req.selectedItem1 === itemId ? undefined : req.selectedItem1,
-                        selectedItem2: req.selectedItem2 === itemId ? undefined : req.selectedItem2,
-                        selectedItem3: req.selectedItem3 === itemId ? undefined : req.selectedItem3,
-                    }
-
-                    newReqItems = newReqItems.with(index, newReq)
+                    if (req.selectedItem1 === itemId) req.selectedItem1 = undefined
+                    if (req.selectedItem2 === itemId) req.selectedItem2 = undefined
+                    if (req.selectedItem3 === itemId) req.selectedItem3 = undefined
                 }
 
-                index = newReqItems.findIndex(
+                index = reqItems.findIndex(
                     (r) => r.selectedItem1 === itemId || r.selectedItem2 === itemId || r.selectedItem3 === itemId
                 )
             }
-
-            if (updated)
-                state = {
-                    ...state,
-                    quests: QuestAdapter.update(state.quests, quest.id, {
-                        outcomeData: QuestOutcomeAdapter.update(quest.outcomeData, outcome.id, {
-                            reqItems: newReqItems,
-                        }),
-                    }),
-                }
         })
     })
-
-    return state
 }

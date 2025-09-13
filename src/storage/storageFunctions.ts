@@ -2,7 +2,7 @@ import moize from 'moize'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GameState } from '../game/GameState'
-import { useGameStore } from '../game/state'
+import { setState } from '../game/state'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
 import { getUniqueId } from '../utils/getUniqueId'
@@ -12,44 +12,37 @@ import { StorageState } from './storageTypes'
 import { onItemRemovedListeners } from './storageEvents'
 import { InitialState } from '@/entityAdapter/InitialState'
 
-export function addGold(state: GameState, amount: number): GameState {
-    return { ...state, gold: Math.max(0, state.gold + amount) }
+export function addGold(state: GameState, amount: number): void {
+    state.gold = Math.max(0, state.gold + amount)
 }
 
 function subHasItem(state: StorageState, id: string, qta: number): boolean {
     return (state[id] ?? 0) >= qta
 }
 
-export function addItem(state: GameState, itemId: string, qta: number, location?: GameLocations): GameState {
+export function addItem(state: GameState, itemId: string, qta: number, location?: GameLocations): void {
     location = location ?? state.location
-    let storage = state.locations[location].storage
+    const storage = state.locations[location].storage
 
     const old = storage[itemId]
     const newQta = Math.max(qta + (old ?? 0), 0)
 
     if (Math.abs(newQta) < Number.EPSILON) {
-        for (const event of onItemRemovedListeners) state = event(state, itemId, location)
+        for (const event of onItemRemovedListeners) event(state, itemId, location)
 
-        const { [itemId]: _, ...newSubState } = storage
-        storage = newSubState
-    } else storage = { ...storage, [itemId]: newQta }
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete storage[itemId]
+    } else storage[itemId] = newQta
 
-    state = { ...state, locations: { ...state.locations, [location]: { ...state.locations[location], storage } } }
-
-    if (isCrafted(itemId) && !isCraftItemUsed(state, itemId))
-        state = { ...state, craftedItems: removeCraftItem(state.craftedItems, itemId) }
-
-    return state
+    if (isCrafted(itemId) && !isCraftItemUsed(state, itemId)) removeCraftItem(state.craftedItems, itemId)
 }
 
 export function isCrafted(itemId: string): boolean {
     return itemId.startsWith(CRAFTED_ITEM_PREFIX)
 }
 
-export function removeItem(state: GameState, itemId: string, qta: number, location?: GameLocations): GameState {
-    state = addItem(state, itemId, qta * -1, location)
-
-    return state
+export function removeItem(state: GameState, itemId: string, qta: number, location?: GameLocations): void {
+    addItem(state, itemId, qta * -1, location)
 }
 
 function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
@@ -73,13 +66,10 @@ export function hasItem(state: GameState, stdItemId: string, qta: number, locati
 }
 
 export const setSelectedItem = (itemId: string | null, location: GameLocations) =>
-    useGameStore.setState((s) => ({
-        ui: {
-            ...s.ui,
-            selectedItemId: itemId ?? null,
-            selectedItemLocation: location,
-        },
-    }))
+    setState((s) => {
+        s.ui.selectedItemId = itemId ?? null
+        s.ui.selectedItemLocation = location
+    })
 
 export const selectCraftItemId = moize(
     (state: InitialState<Item>, item: Item) => ItemAdapter.find(state, (i) => myCompare(i, item))?.id ?? null,
@@ -88,19 +78,19 @@ export const selectCraftItemId = moize(
     }
 )
 
-export function saveCraftItem(state: InitialState<Item>, item: Item): { id: string; state: InitialState<Item> } {
+export function saveCraftItem(state: InitialState<Item>, item: Item): { id: string } {
     const id = selectCraftItemId(state, item)
-    if (id) return { id, state }
+    if (id) return { id }
 
     const newItem = { ...item, id: CRAFTED_ITEM_PREFIX + getUniqueId() }
-    state = ItemAdapter.create(state, newItem)
+    ItemAdapter.create(state, newItem)
 
-    return { id: newItem.id, state }
+    return { id: newItem.id }
 }
 
-function removeCraftItem(state: InitialState<Item>, id: string): InitialState<Item> {
+function removeCraftItem(state: InitialState<Item>, id: string): void {
     const item = ItemAdapter.select(state, id)
-    if (!item) return state
+    if (!item) return
 
-    return ItemAdapter.remove(state, id)
+    ItemAdapter.remove(state, id)
 }

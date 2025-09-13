@@ -3,6 +3,5 @@ import { makeRemoveActivity } from '../../activities/functions/makeRemoveActivit
 import { GameState } from '../../game/GameState'
 
 export const removeBattle = makeRemoveActivity((state: GameState, activityId: string) => {
-    if (state.activityId === activityId) state = endBattle(state)
-    return state
+    if (state.activityId === activityId) endBattle(state)
 })

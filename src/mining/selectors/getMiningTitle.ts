@@ -1,7 +1,7 @@
 import { GameState } from '../../game/GameState'
 import { selectTranslations } from '../../msg/useTranslations'
 import { OreData } from '../OreData'
-import { getMiningActivity } from '../selectors/getMiningActivity'
+import { getMiningActivity } from './getMiningActivity'
 
 export function getMiningTitle(state: GameState, id: string) {
     const activity = getMiningActivity(state.activities, id)

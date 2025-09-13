@@ -3,23 +3,11 @@ import { GameState } from '../../game/GameState'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { Loot } from '../storageTypes'
 
-export function addLoot(state: GameState, loot: Loot[]) {
-    let locLoot = state.locations[state.location].loot
+export function addLoot(state: GameState, loot: Loot[]): void {
+    const locLoot = state.locations[state.location].loot
 
-    for (const l of loot) locLoot = [{ id: getUniqueId(), ...l }, ...locLoot]
-
-    if (locLoot.length > MAX_LOOT) locLoot = locLoot.filter((_l, i) => i < MAX_LOOT)
-
-    state = {
-        ...state,
-        locations: {
-            ...state.locations,
-            [state.location]: {
-                ...state.locations[state.location],
-                loot: locLoot,
-            },
-        },
+    for (const l of loot) {
+        if (locLoot.length > MAX_LOOT) return
+        locLoot.unshift({ id: getUniqueId(), ...l })
     }
-
-    return state
 }

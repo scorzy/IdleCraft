@@ -3,17 +3,16 @@ import { activityExecutors } from '../game/globals'
 import { regenerate } from '../game/regenerate'
 import { TimerAdapter } from './Timer'
 
-export function onTimer(state: GameState, timerId: string) {
+export function onTimer(state: GameState, timerId: string): void {
     const timer = state.timers.entries[timerId]
-    if (!timer) return state
+    if (!timer) return
 
-    state = { ...state, now: Math.max(state.now, timer.to), timers: TimerAdapter.remove(state.timers, timerId) }
+    state.now = Math.max(state.now, timer.to)
+    TimerAdapter.remove(state.timers, timerId)
 
     const actId = timer.actId
-    if (!actId) return state
+    if (!actId) return
 
-    state = regenerate(state, state.now)
-    state = activityExecutors.getEx(timer.type)(state, timer)
-
-    return state
+    regenerate(state, state.now)
+    activityExecutors.getEx(timer.type)(state, timer)
 }

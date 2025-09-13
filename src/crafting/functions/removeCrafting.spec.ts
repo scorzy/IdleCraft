@@ -31,8 +31,8 @@ const crafting: Crafting = {
 
 describe('removeCrafting', () => {
     it('should remove the specified activity from the game state', () => {
-        const initialState: GameState = GetInitialGameState()
-        initialState.activities = {
+        const state: GameState = GetInitialGameState()
+        state.activities = {
             entries: {
                 'activity-1': { ...crafting },
                 'activity-2': { ...crafting, id: 'activity-2' },
@@ -40,12 +40,12 @@ describe('removeCrafting', () => {
             ids: ['activity-1', 'activity-2'],
         }
 
-        const updatedState = removeCrafting(initialState, 'activity-1')
+        removeCrafting(state, 'activity-1')
 
-        expect(updatedState.activities.entries).not.toHaveProperty('activity-1')
-        expect(updatedState.activities.ids).not.toContain('activity-1')
-        expect(updatedState.activities.entries).toHaveProperty('activity-2')
-        expect(updatedState.activities.ids).toContain('activity-2')
+        expect(state.activities.entries).not.toHaveProperty('activity-1')
+        expect(state.activities.ids).not.toContain('activity-1')
+        expect(state.activities.entries).toHaveProperty('activity-2')
+        expect(state.activities.ids).toContain('activity-2')
     })
 
     it('should not modify the state if the activity ID does not exist', () => {

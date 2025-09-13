@@ -1,3 +1,6 @@
-import { useGameStore } from '../../game/state'
+import { setState } from '../../game/state'
 
-export const closeDeadDialog = () => useGameStore.setState((s) => ({ ...s, ui: { ...s.ui, deadDialog: false } }))
+export const closeDeadDialog = () =>
+    setState((s) => {
+        s.ui.deadDialog = false
+    })

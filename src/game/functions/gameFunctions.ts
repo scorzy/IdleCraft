@@ -3,7 +3,7 @@ import { GetInitialGameState } from '../InitialGameState'
 import { loadData } from '../loadData'
 import { WorkerMessage } from '../loadWorkerTypes'
 import { regenerate } from '../regenerate'
-import { useGameStore } from '../state'
+import { setState, useGameStore } from '../state'
 import { advanceTimers } from './advanceTimers'
 
 // eslint-disable-next-line import/default
@@ -19,21 +19,20 @@ function killWorker() {
     }
 }
 
-function start(state: GameState): GameState {
+function start(state: GameState): void {
     const diff = Date.now() - state.now
-    if (diff > 0) state = advanceTimers(state, diff)
-    state = regenerate(state, state.now)
+    if (diff > 0) advanceTimers(state, diff)
+    regenerate(state, state.now)
     state.loading = false
     state.loadingData = undefined
-    state = startTimers(state)
-    return state
+    startTimers(state)
 }
 
 export const load = (data: object) => {
     worker = new LoadWorker()
     worker.onmessage = (e: MessageEvent<WorkerMessage>) => {
-        let state: GameState = e.data.state
-        if (!state.loading) state = start(state)
+        const state: GameState = e.data.state
+        if (!state.loading) start(state)
         useGameStore.setState(state)
     }
     const state = loadData(data)
@@ -48,5 +47,5 @@ export const stopLoad = () => {
 }
 export const startAnyway = () => {
     killWorker()
-    useGameStore.setState((state) => start(state))
+    setState((state) => start(state))
 }

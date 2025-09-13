@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { Popover, PopoverTrigger, PopoverContent, Portal } from '@radix-ui/react-popover'
-import { useGameStore } from '../../game/state'
+import { setState, useGameStore } from '../../game/state'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
@@ -195,7 +195,7 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
         useCallback((s: GameState) => isOutcomeCompleted(questId, outcomeId)(s), [questId, outcomeId])
     )
     const completeClick = useCallback(() => {
-        useGameStore.setState((s: GameState) => completeQuest(s, questId, outcomeId))
+        setState((s: GameState) => completeQuest(s, questId, outcomeId))
     }, [questId, outcomeId])
 
     const description = useGameStore(

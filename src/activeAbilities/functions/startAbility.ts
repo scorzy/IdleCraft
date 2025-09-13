@@ -7,29 +7,22 @@ import { AbilitiesEnum } from '../abilitiesEnum'
 import { CastCharAbilityAdapter } from '../abilityAdapters'
 import { tryCast } from './tryCast'
 
-export function startAbility(
-    state: GameState,
-    characterId: string,
-    abilityId: AbilitiesEnum
-): { state: GameState; done: boolean } {
+export function startAbility(state: GameState, characterId: string, abilityId: AbilitiesEnum): boolean {
     const ability = ActiveAbilityData.getEx(abilityId)
 
-    const castRes = tryCast(state, characterId, abilityId)
-    state = castRes.state
-    if (!castRes.cast) return { done: false, state }
+    const done = tryCast(state, characterId, abilityId)
+
+    if (!done) return false
 
     const id = getUniqueId()
-    state = {
-        ...state,
-        castCharAbility: CastCharAbilityAdapter.create(state.castCharAbility, {
-            id,
-            abilityId,
-            characterId,
-        }),
-    }
+    CastCharAbilityAdapter.create(state.castCharAbility, {
+        id,
+        abilityId,
+        characterId,
+    })
 
     const time = ability.getChargeTime({ state, characterId })
-    state = startTimer(state, time, ActivityTypes.Ability, id)
+    startTimer(state, time, ActivityTypes.Ability, id)
 
-    return { done: true, state }
+    return true
 }

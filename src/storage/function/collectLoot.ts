@@ -1,27 +1,19 @@
 import { GameState } from '../../game/GameState'
-import { useGameStore } from '../../game/state'
+import { setState } from '../../game/state'
 import { addItem } from '../storageFunctions'
 
-export function collectLoot(state: GameState, lootId: string): GameState {
+export function collectLoot(state: GameState, lootId: string): void {
     const loot = state.locations[state.location].loot.find((l) => l.id === lootId)
-    if (!loot) throw new Error(`Loot with id ${lootId} not found`)
+    if (!loot) throw new Error(`[collectLoot]: Loot with id ${lootId} not found`)
 
-    state = addItem(state, loot.itemId, loot.quantity)
+    addItem(state, loot.itemId, loot.quantity)
 
-    const lootArr = state.locations[state.location].loot.filter((l) => l.id !== lootId)
+    const lottArr = state.locations[state.location].loot
+    const index = lottArr.findIndex((l) => l.id === lootId)
 
-    state = {
-        ...state,
-        locations: {
-            ...state.locations,
-            [state.location]: {
-                ...state.locations[state.location],
-                loot: lootArr,
-            },
-        },
-    }
+    if (index === -1) return
 
-    return state
+    lottArr.splice(index, 1)
 }
 
-export const collectLootUi = (lootId: string) => useGameStore.setState((state) => collectLoot(state, lootId))
+export const collectLootUi = (lootId: string) => setState((state) => collectLoot(state, lootId))

@@ -1,7 +1,7 @@
 import { ActivityTypes } from '../../activities/ActivityState'
 import { makeAddActivity } from '../../activities/functions/makeAddActivity'
 import { GameState } from '../../game/GameState'
-import { useGameStore } from '../../game/state'
+import { setState } from '../../game/state'
 import { RecipeParameterValue, RecipeResult } from '../RecipeInterfaces'
 
 interface CraftingData {
@@ -21,7 +21,7 @@ const addCrafting = (state: GameState) => {
         result: state.craftingForm.result,
     }
 
-    return makeCrafting(data)(state)
+    makeCrafting(data)(state)
 }
 
-export const addCraftingClick = () => useGameStore.setState(addCrafting)
+export const addCraftingClick = () => setState(addCrafting)

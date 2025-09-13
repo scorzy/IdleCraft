@@ -4,6 +4,7 @@ import { loadGame } from './loadGame'
 
 onmessage = (e) => {
     initialize()
-    const state = loadGame(e.data as GameState)
+    const state = e.data as GameState
+    loadGame(state)
     postMessage({ state })
 }

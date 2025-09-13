@@ -4,7 +4,7 @@ import { Timer } from '../../timers/Timer'
 import { growTree } from './growTree'
 
 export function execTreeGrow(state: GameState, timer: Timer) {
-    state = growTree(state, timer.actId)
-    if (state.waitingTrees === state.activityId) state = startNextActivity(state)
+    growTree(state, timer.actId)
+    if (state.waitingTrees === state.activityId) startNextActivity(state)
     return state
 }

@@ -1,6 +1,6 @@
 import { GameState } from '../../game/GameState'
 import { OreData } from '../OreData'
-import { getMiningActivity } from '../selectors/getMiningActivity'
+import { getMiningActivity } from './getMiningActivity'
 
 export function getMiningIcon(state: GameState, id: string) {
     const activity = getMiningActivity(state.activities, id)

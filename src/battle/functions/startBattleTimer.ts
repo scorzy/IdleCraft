@@ -8,15 +8,13 @@ import { Timer } from '../../timers/Timer'
 import { BattleZones } from '../BattleZones'
 import { getBattleActivity } from '../selectors/battleSelectors'
 
-export function startBattleTimer(state: GameState, timer: Timer): GameState {
+export function startBattleTimer(state: GameState, timer: Timer): void {
     const data = getBattleActivity(state, timer.actId)
     const battleZone = BattleZones[data.battleZoneEnum]
 
-    state = createEnemies(state, battleZone.enemies)
-    state = addBattleLog(state, { type: BattleLogType.Start })
+    createEnemies(state, battleZone.enemies)
+    addBattleLog(state, { type: BattleLogType.Start })
 
     const charIds = CharacterAdapter.getIds(state.characters)
-    for (const charId of charIds) state = startNextAbility(state, charId)
-
-    return state
+    for (const charId of charIds) startNextAbility(state, charId)
 }

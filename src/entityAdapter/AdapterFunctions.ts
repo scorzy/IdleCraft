@@ -1,30 +1,38 @@
 import { InitialState } from './InitialState'
 
-export function createImmutable<T>(state: InitialState<T>, id: string, data: T): InitialState<T> {
-    return { entries: { ...state.entries, [id]: data }, ids: [...state.ids, id] }
+export function createMutable<T>(state: InitialState<T>, id: string, data: T): InitialState<T> {
+    state.ids.push(id)
+    state.entries[id] = data
+    return state
 }
 
-export function removeImmutable<T>(state: InitialState<T>, id: string): InitialState<T> {
-    const { [id]: _, ...newEntries } = state.entries
-    return { entries: newEntries, ids: state.ids.filter((e) => e !== id) }
+export function removeMutable<T>(state: InitialState<T>, id: string) {
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+    delete state.entries[id]
+    const index = state.ids.indexOf(id)
+    state.ids.splice(index, 1)
+    return state
 }
 
-export function updateImmutable<T>(state: InitialState<T>, id: string, data: Partial<T>): InitialState<T> {
+export function updateMutable<T>(state: InitialState<T>, id: string, data: Partial<T>) {
     const existing = state.entries[id]
-    if (!existing) throw new Error(`[updateImmutable] ${id} doesn't exists`)
-    return { ids: state.ids, entries: { ...state.entries, [id]: { ...existing, ...data } } }
+    if (!existing) throw new Error(`${id} doesn't exists`)
+    const complete: T = { ...existing, ...data }
+    state.entries[id] = complete
+    return state
 }
 
-export function replaceImmutable<T>(state: InitialState<T>, id: string, data: T): InitialState<T> {
+export function replaceMutable<T>(state: InitialState<T>, id: string, data: T) {
     const existing = state.entries[id]
-    if (!existing) throw new Error(`[replaceImmutable] ${id} doesn't exists`)
-    return { ids: state.ids, entries: { ...state.entries, [id]: data } }
+    if (existing === undefined) throw new Error(`${id} doesn't exists`)
+    state.entries[id] = data
+    return state
 }
 export class AdapterFunctions {
-    create = createImmutable
-    remove = removeImmutable
-    update = updateImmutable
-    replace = replaceImmutable
+    create = createMutable
+    remove = removeMutable
+    update = updateMutable
+    replace = replaceMutable
 }
 
 export const adapterFunctions = new AdapterFunctions()

@@ -21,20 +21,18 @@ export const execWoodcutting = makeExecActivity((state: GameState, timer: Timer)
     if (!data) throw new Error(`[onWoodcuttingExec] data not found ${id}`)
     if (!isWoodcutting(data)) throw new Error(`[onWoodcuttingExec] wrong type ${data.type}`)
 
-    if (!hasTrees(state, data.woodType)) return { state, result: ActivityStartResult.NotPossible }
+    if (!hasTrees(state, data.woodType)) return ActivityStartResult.NotPossible
 
     const damage = selectWoodcuttingDamage(state)
     const res = cutTree(state, data.woodType, damage, state.location)
-    state = res.state
-    state = addExp(state, ExpEnum.Woodcutting, damage * 0.1)
+
+    addExp(state, ExpEnum.Woodcutting, damage * 0.1)
     if (res.cut) {
-        state = addItem(state, `${data.woodType}Log`, 1)
+        addItem(state, `${data.woodType}Log`, 1)
     } else {
         const time = selectWoodcuttingTime(state)
-        state = startTimer(state, time, ActivityTypes.Woodcutting, id)
+        startTimer(state, time, ActivityTypes.Woodcutting, id)
     }
 
-    const result = res.cut ? ActivityStartResult.Ended : ActivityStartResult.Started
-
-    return { state, result }
+    return res.cut ? ActivityStartResult.Ended : ActivityStartResult.Started
 })

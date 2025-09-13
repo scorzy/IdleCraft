@@ -8,26 +8,10 @@ import { selectDefaultMine } from './miningSelectors'
 export function hasOre(state: GameState, oreType: OreTypes, location?: GameLocations): boolean {
     return (state.locations[location ?? state.location].ores[oreType]?.qta ?? 1) > 0
 }
-export function resetOre(state: GameState, oreType: OreTypes, location: GameLocations): GameState {
+export function resetOre(state: GameState, oreType: OreTypes, location: GameLocations): void {
     const def = selectDefaultMine(state, oreType)
 
-    state = {
-        ...state,
-        locations: {
-            ...state.locations,
-            [location]: {
-                ...state.locations[location],
-                ores: {
-                    ...state.locations[location].ores,
-                    [oreType]: {
-                        ...def,
-                    },
-                },
-            },
-        },
-    }
-
-    return state
+    state.locations[location].ores[oreType] = structuredClone(def)
 }
 export function mineOre(
     state: GameState,
@@ -35,7 +19,6 @@ export function mineOre(
     damage: number,
     location: GameLocations
 ): {
-    state: GameState
     mined: boolean
 } {
     const mine = state.locations[location].ores[oreType]
@@ -63,27 +46,12 @@ export function mineOre(
         if (hp <= 0) hp = 0
     }
 
-    state = {
-        ...state,
-        locations: {
-            ...state.locations,
-            [location]: {
-                ...state.locations[location],
-                ores: {
-                    ...state.locations[location].ores,
-                    [oreType]: {
-                        hp,
-                        qta,
-                    },
-                },
-            },
-        },
+    state.locations[location].ores[oreType] = {
+        hp,
+        qta,
     }
 
-    return {
-        state,
-        mined,
-    }
+    return { mined }
 }
 
 export function loadOre(data: unknown): OreType {

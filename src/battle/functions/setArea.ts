@@ -1,5 +1,7 @@
-import { useGameStore } from '../../game/state'
+import { setState } from '../../game/state'
 import { BattleZoneEnum } from '../BattleZoneEnum'
 
 export const setArea = (battleZone: BattleZoneEnum) =>
-    useGameStore.setState((s) => ({ ...s, ui: { ...s.ui, battleZone } }))
+    setState((s) => {
+        s.ui.battleZone = battleZone
+    })

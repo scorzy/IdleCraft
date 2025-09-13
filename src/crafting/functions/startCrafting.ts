@@ -1,27 +1,22 @@
-import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
+import { ActivityTypes } from '../../activities/ActivityState'
 import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { makeStartActivity } from '../../activities/functions/makeStartActivity'
 import { GameState } from '../../game/GameState'
 import { startTimer } from '../../timers/startTimer'
-import { Crafting } from '../CraftingIterfaces'
 import { getCraftingActivity } from '../CraftingSelectors'
 import { recipes } from '../Recipes'
-import { isCraftable } from './canCraft'
+import { isCraftable } from '../selectors/canCraft'
 
 export const startCrafting = makeStartActivity((state: GameState, id: string) => {
     const data = getCraftingActivity(state, id)
     const recipe = recipes.getEx(data.recipeId)
     const craftResult = recipe.getResult(state, data.paramsValue)
-    if (!craftResult) return { state, result: ActivityStartResult.NotPossible }
-    if (!isCraftable(state, craftResult)) return { state, result: ActivityStartResult.NotPossible }
+    if (!craftResult) return ActivityStartResult.NotPossible
+    if (!isCraftable(state, craftResult)) return ActivityStartResult.NotPossible
 
-    const up: Partial<Crafting> = { result: craftResult }
-    state = {
-        ...state,
-        activities: ActivityAdapter.update(state.activities, id, up),
-    }
+    data.result = craftResult
 
-    state = startTimer(state, craftResult.time, ActivityTypes.Crafting, id)
+    startTimer(state, craftResult.time, ActivityTypes.Crafting, id)
 
-    return { state, result: ActivityStartResult.Started }
+    return ActivityStartResult.Started
 })

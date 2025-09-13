@@ -13,7 +13,6 @@ export function cutTree(
     damage: number,
     location: GameLocations
 ): {
-    state: GameState
     cut: boolean
 } {
     const forest = state.locations[location].forests[woodType]
@@ -44,29 +43,14 @@ export function cutTree(
             location,
             woodType,
         }
-        state = { ...state, treeGrowth: TreeGrowthAdapter.create(state.treeGrowth, treeData) }
-        state = startTimer(state, growthTime, ActivityTypes.Tree, treeData.id)
+        TreeGrowthAdapter.create(state.treeGrowth, treeData)
+        startTimer(state, growthTime, ActivityTypes.Tree, treeData.id)
     }
 
-    state = {
-        ...state,
-        locations: {
-            ...state.locations,
-            [location]: {
-                ...state.locations[location],
-                forests: {
-                    ...state.locations[location].forests,
-                    [woodType]: {
-                        hp,
-                        qta,
-                    },
-                },
-            },
-        },
+    state.locations[location].forests[woodType] = {
+        hp,
+        qta,
     }
 
-    return {
-        state,
-        cut,
-    }
+    return { cut }
 }

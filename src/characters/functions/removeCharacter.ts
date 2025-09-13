@@ -7,12 +7,13 @@ import { removeTimer } from '../../timers/removeTimer'
 import { CharacterAdapter } from '../characterAdapter'
 import { PLAYER_ID } from '../charactersConst'
 
-export function removeCharacter(state: GameState, characterId: string): GameState {
+export function removeCharacter(state: GameState, characterId: string): void {
     const character = CharacterAdapter.selectEx(state.characters, characterId)
 
-    if (character.id === PLAYER_ID) return killPlayer(state)
+    if (character.id === PLAYER_ID) killPlayer(state)
 
-    state = { ...state, characters: CharacterAdapter.remove(state.characters, characterId) }
+    CharacterAdapter.remove(state.characters, characterId)
+
     const toRemove: string[] = []
     CastCharAbilityAdapter.forEach(state.castCharAbility, (ability) => {
         if (ability.characterId !== characterId) return
@@ -20,26 +21,18 @@ export function removeCharacter(state: GameState, characterId: string): GameStat
     })
 
     TimerAdapter.forEach(state.timers, (tim) => {
-        if (toRemove.some((r) => r === tim.actId)) state = removeTimer(state, tim.id)
+        if (toRemove.some((r) => r === tim.actId)) removeTimer(state, tim.id)
     })
 
-    let castCharAbility = state.castCharAbility
     toRemove.forEach((cca) => {
-        castCharAbility = CastCharAbilityAdapter.remove(castCharAbility, cca)
+        CastCharAbilityAdapter.remove(state.castCharAbility, cca)
     })
-    state = { ...state, castCharAbility }
-
-    return state
 }
-function killPlayer(state: GameState): GameState {
+function killPlayer(state: GameState): void {
     const activities = ActivityAdapter.getIds(state.activities)
-    for (const actId of activities) state = removeActivityInt(state, actId)
+    for (const actId of activities) removeActivityInt(state, actId)
 
-    state = {
-        ...state,
-        ui: { ...state.ui, deadDialog: true },
-        characters: CharacterAdapter.update(state.characters, PLAYER_ID, { health: 1 }),
-    }
+    state.ui.deadDialog = true
 
-    return state
+    CharacterAdapter.selectEx(state.characters, PLAYER_ID).health = 1
 }

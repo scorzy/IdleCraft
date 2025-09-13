@@ -42,13 +42,13 @@ export class NormalAttack implements ActiveAbility {
         return getCharacterSelector(characterId).AllAttackDamage(state)
     }
 
-    exec(params: AbilityParams): GameState {
+    exec(params: AbilityParams): void {
         const { characterId } = params
-        let { state } = params
+        const { state } = params
 
         const caster = CharacterAdapter.selectEx(state.characters, characterId)
         const enemyId = selectRandomEnemy(state, caster.isEnemy)
-        if (!enemyId) return state
+        if (!enemyId) return
 
         const damage = this.getDamage(characterId, state)
 
@@ -58,17 +58,14 @@ export class NormalAttack implements ActiveAbility {
         if (!caster.isEnemy) {
             const weapon = getCharacterSelector(characterId).MainWeapon(state)
             if (weapon && weapon.weaponData)
-                state = addExp(state, weapon.weaponData.expType, sumDamage(damage) * DAMAGE_EXP_MULTI)
+                addExp(state, weapon.weaponData.expType, sumDamage(damage) * DAMAGE_EXP_MULTI)
         }
 
-        const { state: gameState } = dealDamage(state, enemyId, damage, {
+        dealDamage(state, enemyId, damage, {
             iconId: this.getIconId(params),
             abilityId: this.nameId,
             source,
             targets,
         })
-        state = gameState
-
-        return state
     }
 }

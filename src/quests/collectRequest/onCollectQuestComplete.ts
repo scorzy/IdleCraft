@@ -14,7 +14,7 @@ export function onCollectQuestComplete(state: GameState, questId: string, outcom
 
     const outcomeLocation = outcome.location
 
-    for (const item of items.usedItems) state = removeItem(state, item.itemId, item.quantity, outcomeLocation)
+    for (const item of items.usedItems) removeItem(state, item.itemId, item.quantity, outcomeLocation)
 
     return state
 }

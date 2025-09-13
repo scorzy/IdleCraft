@@ -2,8 +2,8 @@ import { GameState } from '../game/GameState'
 import { copyValues } from '../utils/copyValues'
 import { CollapsedEnum } from './sidebar/CollapsedEnum'
 
-export function loadUi(data: object, state: GameState): GameState {
-    if (!('ui' in data && data.ui)) return state
+export function loadUi(data: object, state: GameState): void {
+    if (!('ui' in data && data.ui)) return
 
     copyValues(state.ui, data.ui)
 
@@ -18,5 +18,4 @@ export function loadUi(data: object, state: GameState): GameState {
             if (key in CollapsedEnum) state.ui.collapsed[key as CollapsedEnum] = !!kv[1]
         })
     }
-    return state
 }

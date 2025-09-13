@@ -1,6 +1,6 @@
 import { GameState } from '../../game/GameState'
 import { BattleZones } from '../BattleZones'
-import { getBattleActivity } from '../selectors/battleSelectors'
+import { getBattleActivity } from './battleSelectors'
 
 export function getBattleIcon(state: GameState, id: string) {
     const data = getBattleActivity(state, id)

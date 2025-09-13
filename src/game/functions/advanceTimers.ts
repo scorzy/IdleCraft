@@ -1,6 +1,6 @@
 import { GameState } from '../GameState'
 
-export function advanceTimers(state: GameState, diff: number): GameState {
+export function advanceTimers(state: GameState, diff: number): void {
     state.now += diff
     for (const id of state.timers.ids) {
         const timer = state.timers.entries[id]
@@ -9,5 +9,4 @@ export function advanceTimers(state: GameState, diff: number): GameState {
             timer.to += diff
         }
     }
-    return state
 }

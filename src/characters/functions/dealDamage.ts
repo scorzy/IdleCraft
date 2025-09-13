@@ -12,7 +12,7 @@ export function dealDamage(
     targetId: string,
     damageData: DamageData,
     abilityLog: AbilityLog
-): { state: GameState; killed: boolean; damageDone: number } {
+): { killed: boolean; damageDone: number } {
     let killed = false
     const target = CharacterAdapter.selectEx(state.characters, targetId)
     let damageDone = 0
@@ -29,11 +29,14 @@ export function dealDamage(
         const damageTaken = damage * multi
         damageDone += damageTaken
 
-        const health = Math.max(0, Math.floor(target.health - damageTaken))
+        let health = Math.max(0, Math.floor(target.health - damageTaken))
 
-        if (health < 0.0001) killed = true
+        if (health < 0.0001) {
+            killed = true
+            health = 0
+        }
 
-        state = { ...state, characters: CharacterAdapter.update(state.characters, targetId, { health }) }
+        target.health = health
     })
 
     const addLog: AddDamageBattleLog = {
@@ -41,9 +44,9 @@ export function dealDamage(
         ...abilityLog,
         damageDone,
     }
-    state = addBattleLog(state, addLog)
+    addBattleLog(state, addLog)
 
-    if (killed) state = kill(state, targetId)
+    if (killed) kill(state, targetId)
 
-    return { state, killed, damageDone }
+    return { killed, damageDone }
 }

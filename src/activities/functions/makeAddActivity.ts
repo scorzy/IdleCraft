@@ -17,20 +17,15 @@ export const makeAddActivity =
             ...data,
         }
 
-        state = {
-            ...state,
-            activities: ActivityAdapter.create(state.activities, activity),
-            orderedActivities: [...state.orderedActivities, id],
-        }
+        state.activities = ActivityAdapter.create(state.activities, activity)
+        state.orderedActivities.push(id)
 
-        if (add) state = add(state, id)
+        if (add) add(state, id)
 
         const title = activityTitles.getEx(type)(state, id)
         const iconId = activityIcons.getEx(type)(state, id)
 
-        state = { ...state, notifications: addNotification(state.notifications, { title, iconId }) }
+        addNotification(state.notifications, { title, iconId })
 
-        if (state.orderedActivities.length === 1) state = startNextActivity(state)
-
-        return state
+        if (state.orderedActivities.length === 1) startNextActivity(state)
     }

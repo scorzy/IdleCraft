@@ -1,7 +1,7 @@
 import { TbAlertTriangle } from 'react-icons/tb'
 import { throttle } from 'es-toolkit/compat'
 import { Start } from './game/Start'
-import { useGameStore } from './game/state'
+import { setState, useGameStore } from './game/state'
 import { ToasterProvider } from './notification/ToasterProvider'
 import { selectGameId, selectLoading } from './game/gameSelectors'
 import { AppShell } from './ui/shell/AppShell'
@@ -15,7 +15,7 @@ setInterval(() => {
     if (gameId === '') return
     const loading = useGameStore.getState().loading
     if (loading) return
-    useGameStore.setState((s) => regenerate(s, Date.now()))
+    setState((s) => regenerate(s, Date.now()))
 }, 1e3)
 
 if ('indexedDB' in window) {

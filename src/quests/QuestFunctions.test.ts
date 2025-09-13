@@ -55,13 +55,13 @@ describe('Quest Functions', () => {
 
         state.quests = QuestAdapter.create(state.quests, questState)
 
-        const newState = questOnItemRemove(state, 'item', state.location)
+        questOnItemRemove(state, 'item', state.location)
 
         expect(
-            newState!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem1
+            state!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem1
         ).toBeUndefined()
 
-        expect(newState!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem2).toEqual(
+        expect(state!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem2).toEqual(
             'otherItem'
         )
     })
@@ -114,13 +114,13 @@ describe('Quest Functions', () => {
 
         state.quests = QuestAdapter.create(state.quests, questState)
 
-        const newState = questOnItemRemove(state, 'item', state.location)
+        questOnItemRemove(state, 'item', state.location)
 
-        expect(newState!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem1).toEqual(
+        expect(state!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem1).toEqual(
             'item'
         )
 
-        expect(newState!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem2).toEqual(
+        expect(state!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem2).toEqual(
             'otherItem'
         )
     })

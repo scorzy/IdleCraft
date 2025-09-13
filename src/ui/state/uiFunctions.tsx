@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { TbLock } from 'react-icons/tb'
-import { useGameStore } from '../../game/state'
+import { setState } from '../../game/state'
 import { WoodTypes } from '../../wood/WoodTypes'
 import { GameState } from '../../game/GameState'
 import { OreTypes } from '../../mining/OreTypes'
@@ -13,60 +13,85 @@ import { useUiTempStore } from './uiTempStore'
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'health' | 'stamina' | 'mana'
 type StorageOrder = 'name' | 'quantity' | 'value'
 
-export const setTheme = (theme: string) => useGameStore.setState((s) => ({ ui: { ...s.ui, theme } }))
-export const setThemeColor = (themeColor: string) => useGameStore.setState((s) => ({ ui: { ...s.ui, themeColor } }))
+export const setTheme = (theme: string) =>
+    setState((s) => {
+        s.ui.theme = theme
+    })
+export const setThemeColor = (themeColor: string) =>
+    setState((s) => {
+        s.ui.themeColor = themeColor
+    })
 export const sidebarOpen = (s: GameState) => s.ui.open
-export const toggle = () => useGameStore.setState((s) => ({ ui: { ...s.ui, open: !s.ui.open } }))
+export const toggle = () =>
+    setState((s) => {
+        s.ui.open = !s.ui.open
+    })
 export const setPage = (page: UiPages) =>
-    useGameStore.setState((s) => {
+    setState((s) => {
         const data = UiPagesData[page]
 
-        if (s.ui.recipeType !== data.recipeType) s = changeRecipeState(s, '')
+        if (s.ui.recipeType !== data.recipeType) changeRecipeState(s, '')
 
-        return { ...s, ui: { ...s.ui, page, open: false, recipeType: data.recipeType } }
+        s.ui.page = page
+        s.ui.open = false
+        s.ui.recipeType = data.recipeType
     })
-export const setWood = (woodType: WoodTypes) => useGameStore.setState((s) => ({ ui: { ...s.ui, woodType } }))
-export const setOre = (oreType: OreTypes) => useGameStore.setState((s) => ({ ui: { ...s.ui, oreType } }))
+export const setWood = (woodType: WoodTypes) =>
+    setState((s) => {
+        s.ui.woodType = woodType
+    })
+export const setOre = (oreType: OreTypes) =>
+    setState((s) => {
+        s.ui.oreType = oreType
+    })
 
 export const setStorageOrder = (order: StorageOrder, asc: boolean) => () =>
-    useGameStore.setState((s) => ({ ui: { ...s.ui, storageOrder: order, storageAsc: asc } }))
+    setState((s) => {
+        s.ui.storageOrder = order
+        s.ui.storageAsc = asc
+    })
 
 export const clickStorageHeader = (order: StorageOrder) => () =>
-    useGameStore.setState((s: GameState) => {
+    setState((s: GameState) => {
         let storageAsc = s.ui.storageAsc
         if (s.ui.storageOrder === order) storageAsc = !s.ui.storageAsc
-        return { ...s, ui: { ...s.ui, storageOrder: order, storageAsc } }
+
+        s.ui.storageOrder = order
+        s.ui.storageAsc = storageAsc
     })
 
 export const toggleShowAvailablePerks = () =>
-    useGameStore.setState((s) => ({ ui: { ...s.ui, showAvailablePerks: !s.ui.showAvailablePerks } }))
+    setState((s) => {
+        s.ui.showAvailablePerks = !s.ui.showAvailablePerks
+    })
+
 export const toggleShowUnavailablePerks = () =>
-    useGameStore.setState((s) => ({ ui: { ...s.ui, showUnavailablePerks: !s.ui.showUnavailablePerks } }))
+    setState((s) => {
+        s.ui.showUnavailablePerks = !s.ui.showUnavailablePerks
+    })
+
 export const toggleCompletedPerks = () =>
-    useGameStore.setState((s) => ({ ui: { ...s.ui, showOwnedPerks: !s.ui.showOwnedPerks } }))
+    setState((s) => {
+        s.ui.showOwnedPerks = !s.ui.showOwnedPerks
+    })
 
 export const setSelectedChar = (selectedCharId: string) =>
-    useGameStore.setState((s) => ({ ui: { ...s.ui, selectedCharId } }))
+    setState((s) => {
+        s.ui.selectedCharId = selectedCharId
+    })
 
-export const collapse = (id: CollapsedEnum) => useGameStore.setState(collapseInt(id))
+export const collapse = (id: CollapsedEnum) => setState(collapseInt(id))
 
 export const collapseInt = (id: CollapsedEnum) => (s: GameState) => {
     if (id in s.ui.collapsed) {
-        const { [id]: _, ...collapsed } = s.ui.collapsed
-        s = { ...s, ui: { ...s.ui, collapsed } }
-    } else s = { ...s, ui: { ...s.ui, collapsed: { ...s.ui.collapsed, [id]: true } } }
-
-    return s
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete s.ui.collapsed[id]
+    } else s.ui.collapsed[id] = true
 }
 export const setCollapseInt = (id: CollapsedEnum, open: boolean) => (s: GameState) => {
-    if (open === (s.ui.collapsed[id] ?? false)) return s
+    if (open === (s.ui.collapsed[id] ?? false)) return
 
-    if (id in s.ui.collapsed) {
-        const { [id]: _, ...collapsed } = s.ui.collapsed
-        s = { ...s, ui: { ...s.ui, collapsed } }
-    } else s = { ...s, ui: { ...s.ui, collapsed: { ...s.ui.collapsed, [id]: true } } }
-
-    return s
+    collapseInt(id)(s)
 }
 export const lockedIcon = (icon: ReactNode, enabled: boolean) => (enabled ? icon : <TbLock />)
 

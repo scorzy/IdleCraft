@@ -4,12 +4,11 @@ import { CharacterAdapter } from '../characterAdapter'
 import { onKillListeners } from './onKillListeners'
 import { removeCharacter } from './removeCharacter'
 
-export function kill(state: GameState, targetId: string): GameState {
+export function kill(state: GameState, targetId: string): void {
     const loot = CharacterAdapter.selectEx(state.characters, targetId).loot
-    if (loot) state = addLoot(state, loot)
+    if (loot) addLoot(state, loot)
 
-    for (const listener of onKillListeners) state = listener(state, targetId)
+    for (const listener of onKillListeners) listener(state, targetId)
 
-    state = removeCharacter(state, targetId)
-    return state
+    removeCharacter(state, targetId)
 }

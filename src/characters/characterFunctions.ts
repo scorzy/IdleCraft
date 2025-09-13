@@ -1,5 +1,5 @@
 import { GameState } from '../game/GameState'
-import { useGameStore } from '../game/state'
+import { setState } from '../game/state'
 import { addItem, removeItem } from '../storage/storageFunctions'
 import { CharacterAdapter } from './characterAdapter'
 import { getCharacterSelector } from './getCharacterSelector'
@@ -12,86 +12,58 @@ export function equipItem(
     slot: EquipSlotsEnum,
     itemId: string | null = null,
     quantity = 1
-): GameState {
+): void {
     let char = CharacterAdapter.selectEx(state.characters, charId)
 
     const equipped = char.inventory[slot]
-    if (equipped && itemId) state = addItem(state, itemId, equipped.quantity ?? 1)
+    if (equipped && itemId) addItem(state, itemId, equipped.quantity ?? 1)
 
     char = CharacterAdapter.selectEx(state.characters, charId)
 
     if (itemId) {
-        state = {
-            ...state,
-            characters: CharacterAdapter.update(state.characters, charId, {
-                inventory: { ...char.inventory, [slot]: { itemId, quantity } },
-            }),
-        }
-        state = removeItem(state, itemId, quantity)
+        char.inventory[slot] = { itemId, quantity }
+        removeItem(state, itemId, quantity)
     } else {
-        const { [slot]: _, ...inventory } = char.inventory
-        state = {
-            ...state,
-            characters: CharacterAdapter.update(state.characters, charId, {
-                inventory,
-            }),
-        }
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete char.inventory[slot]
     }
-
-    return state
 }
 export const equipClick = (charId: string, slot: EquipSlotsEnum, itemId: string | null = null, quantity = 1) =>
-    useGameStore.setState((s) => equipItem(s, charId, slot, itemId, quantity))
+    setState((s) => equipItem(s, charId, slot, itemId, quantity))
 
 const addHealthPoints = (state: GameState, charId: string) => {
     const av = getCharacterSelector(charId).AvailableAttributes(state)
-    if (av < 1) return state
+    if (av < 1) return
 
     const charSel = getCharacterSelector(charId)
 
     const maxPrev = charSel.MaxHealth(state)
     const char = CharacterAdapter.selectEx(state.characters, charId)
-    const healthPoints = char.healthPoints + 1
-    state = {
-        ...state,
-        characters: CharacterAdapter.update(state.characters, charId, { healthPoints }),
-    }
+    char.healthPoints = char.healthPoints + 1
     const maxNow = charSel.MaxHealth(state)
     const diff = Math.max(maxNow - maxPrev, 0)
     if (diff > 0) {
         const health = Math.min(maxNow, char.health + diff)
-        state = {
-            ...state,
-            characters: CharacterAdapter.update(state.characters, charId, { health }),
-        }
+        char.health = health
     }
-    return state
 }
-export const addHealthPointClick = (charId: string) => useGameStore.setState((s) => addHealthPoints(s, charId))
+export const addHealthPointClick = (charId: string) => setState((s) => addHealthPoints(s, charId))
 
 const addStaminaPoint = (state: GameState, charId: string) => {
     const av = getCharacterSelector(charId).AvailableAttributes(state)
-    if (av < 1) return state
+    if (av < 1) return
     const charSel = getCharacterSelector(charId)
     const maxPrev = charSel.MaxStamina(state)
     const char = CharacterAdapter.selectEx(state.characters, PLAYER_ID)
-    const staminaPoints = char.staminaPoints + 1
-    state = {
-        ...state,
-        characters: CharacterAdapter.update(state.characters, PLAYER_ID, { staminaPoints }),
-    }
+    char.staminaPoints = char.staminaPoints + 1
     const maxNow = charSel.MaxStamina(state)
     const diff = Math.max(maxNow - maxPrev, 0)
     if (diff > 0) {
         const stamina = Math.min(maxNow, char.health + diff)
-        state = {
-            ...state,
-            characters: CharacterAdapter.update(state.characters, charId, { stamina }),
-        }
+        char.stamina = stamina
     }
-    return state
 }
-export const addStaminaPointClick = (charId: string) => useGameStore.setState((s) => addStaminaPoint(s, charId))
+export const addStaminaPointClick = (charId: string) => setState((s) => addStaminaPoint(s, charId))
 
 const addManaPoint = (state: GameState, charId: string) => {
     const av = getCharacterSelector(charId).AvailableAttributes(state)
@@ -99,20 +71,12 @@ const addManaPoint = (state: GameState, charId: string) => {
     const charSel = getCharacterSelector(charId)
     const maxPrev = charSel.MaxMana(state)
     const char = CharacterAdapter.selectEx(state.characters, PLAYER_ID)
-    const manaPoints = char.manaPoints + 1
-    state = {
-        ...state,
-        characters: CharacterAdapter.update(state.characters, PLAYER_ID, { manaPoints }),
-    }
+    char.manaPoints = char.manaPoints + 1
     const maxNow = charSel.MaxMana(state)
     const diff = Math.max(maxNow - maxPrev, 0)
     if (diff > 0) {
         const mana = Math.min(maxNow, char.health + diff)
-        state = {
-            ...state,
-            characters: CharacterAdapter.update(state.characters, charId, { mana }),
-        }
+        char.mana = mana
     }
-    return state
 }
-export const addManaPointClick = (charId: string) => useGameStore.setState((s) => addManaPoint(s, charId))
+export const addManaPointClick = (charId: string) => setState((s) => addManaPoint(s, charId))

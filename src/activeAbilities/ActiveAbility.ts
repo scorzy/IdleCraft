@@ -23,5 +23,5 @@ export interface ActiveAbility {
     getStaminaCost(params: AbilityParams): number
     getManaCost(params: AbilityParams): number
 
-    exec(params: AbilityParams): GameState
+    exec(params: AbilityParams): void
 }

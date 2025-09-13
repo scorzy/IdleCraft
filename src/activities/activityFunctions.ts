@@ -1,29 +1,29 @@
 import { GameState } from '../game/GameState'
 import { activityStarters } from '../game/globals'
-import { useGameStore } from '../game/state'
+import { setState } from '../game/state'
 import { ActivityAdapter } from './ActivityState'
 import { ActivityStartResult } from './activityInterfaces'
 import { removeActivityInt } from './functions/removeActivity'
 
-export function startNextActivity(state: GameState): GameState {
-    if (state.orderedActivities.length < 1) return state
+export function startNextActivity(state: GameState): void {
+    if (state.orderedActivities.length < 1) return
 
     if (state.activityId) {
         const currentAct = ActivityAdapter.select(state.activities, state.activityId)
         if (currentAct === undefined) {
-            state = { ...state, activityId: null }
+            state.activityId = null
         } else if (currentAct.max > state.activityDone) {
             const actId = state.activityId
             const start = activityStarters.getEx(currentAct.type)
-            const { state: gameState, result } = start(state, actId)
-            state = gameState
-            if (result === ActivityStartResult.NotPossible) state = removeActivityInt(state, actId)
+            const result = start(state, actId)
 
-            if (result === ActivityStartResult.Started) return state
+            if (result === ActivityStartResult.NotPossible) removeActivityInt(state, actId)
+
+            if (result === ActivityStartResult.Started) return
         }
     }
 
-    state = { ...state, activityDone: 0 }
+    state.activityDone = 0
 
     const start = state.lastActivityDone
     let i = start + 1
@@ -35,44 +35,40 @@ export function startNextActivity(state: GameState): GameState {
         const activity = ActivityAdapter.select(state.activities, activityId)
         if (!activity) return false
         const start = activityStarters.getEx(activity.type)
-        const { state: gameState, result } = start(state, activityId)
-        state = gameState
-        if (result === ActivityStartResult.NotPossible) state = removeActivityInt(state, activityId)
+        const result = start(state, activityId)
+
+        if (result === ActivityStartResult.NotPossible) removeActivityInt(state, activityId)
 
         return result === ActivityStartResult.Started
     }
 
-    for (i = start + 1; i < state.orderedActivities.length; i++) if (tryStart()) return state
-    for (i = 0; i <= start; i++) if (tryStart()) return state
+    for (i = start + 1; i < state.orderedActivities.length; i++) if (tryStart()) return
+    for (i = 0; i <= start; i++) if (tryStart()) return
 
-    state = { ...state, activityId: null }
-
-    return state
+    state.activityId = null
 }
 
 export const moveActivityNext = (id: string) =>
-    useGameStore.setState((s) => {
+    setState((s) => {
         const index = s.activities.ids.indexOf(id)
-        if (index < 0) return s
+        if (index < 0) return
         if (index >= s.activities.ids.length - 1) return s
-        const ids = [...s.activities.ids]
+        const ids = s.activities.ids
         const tmp = ids[index + 1]
         if (!tmp) return s
         ids[index + 1] = id
         ids[index] = tmp
-        s = { ...s, activities: { ...s.activities, ids } }
-        return s
+        return
     })
 export const moveActivityPrev = (id: string) =>
-    useGameStore.setState((s) => {
+    setState((s) => {
         const index = s.activities.ids.indexOf(id)
-        if (index < 0) return s
-        if (index < 1) return s
-        const ids = [...s.activities.ids]
+        if (index < 0) return
+        if (index < 1) return
+        const ids = s.activities.ids
         const tmp = ids[index - 1]
-        if (!tmp) return s
+        if (!tmp) return
         ids[index - 1] = id
         ids[index] = tmp
-        s = { ...s, activities: { ...s.activities, ids } }
-        return s
+        return
     })

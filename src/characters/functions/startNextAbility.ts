@@ -3,7 +3,7 @@ import { startAbility } from '../../activeAbilities/functions/startAbility'
 import { GameState } from '../../game/GameState'
 import { CharacterAdapter } from '../characterAdapter'
 
-export function startNextAbility(state: GameState, charId: string): GameState {
+export function startNextAbility(state: GameState, charId: string): void {
     const char = CharacterAdapter.selectEx(state.characters, charId)
 
     let done = false
@@ -14,25 +14,15 @@ export function startNextAbility(state: GameState, charId: string): GameState {
 
     if (combatAbilityId) {
         const combatAbility = char.allCombatAbilities.entries[combatAbilityId]
-        if (combatAbility) {
-            const { state: gameState, done: doneRes } = startAbility(state, charId, combatAbility.abilityId)
-            state = gameState
-            if (doneRes) {
-                done = true
-                state = {
-                    ...state,
-                    characters: CharacterAdapter.update(state.characters, charId, {
-                        lastCombatAbilityNum: pointer,
-                        lastCombatAbilityId: combatAbilityId,
-                    }),
-                }
-            }
+        if (combatAbility && startAbility(state, charId, combatAbility.abilityId)) {
+            done = true
+
+            char.lastCombatAbilityNum = pointer
+            char.lastCombatAbilityId = combatAbilityId
         }
     }
 
-    if (done) return state
+    if (done) return
 
-    const { state: gameState } = startAbility(state, charId, AbilitiesEnum.NormalAttack)
-    state = gameState
-    return state
+    startAbility(state, charId, AbilitiesEnum.NormalAttack)
 }

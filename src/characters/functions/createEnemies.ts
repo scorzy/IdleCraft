@@ -14,14 +14,14 @@ export function createEnemies(
         quantity: number
         template: CharTemplateEnum
     }[]
-): GameState {
+): void {
     enemies.forEach((enemyData) => {
         const enemy = generateCharacter(CharTemplatesData[enemyData.template])
         enemy.isEnemy = true
         for (let i = 0; i < enemyData.quantity; i++) {
             const enemyToAdd = structuredClone(enemy)
             enemyToAdd.id = getUniqueId()
-            state = { ...state, characters: CharacterAdapter.create(state.characters, enemyToAdd) }
+            CharacterAdapter.create(state.characters, enemyToAdd)
         }
     })
 
@@ -29,10 +29,8 @@ export function createEnemies(
     ids.forEach((id) => {
         const char = CharacterAdapter.selectEx(state.characters, id)
         if (!char.isEnemy) return
-        state = resetHealth(state, id)
-        state = resetMana(state, id)
-        state = resetStamina(state, id)
+        resetHealth(state, id)
+        resetMana(state, id)
+        resetStamina(state, id)
     })
-
-    return state
 }

@@ -4,18 +4,18 @@ import { GameState } from '../GameState'
 import { TEST_DIF, MAX_LOAD } from '../const'
 import { advanceTimers } from './advanceTimers'
 
-export function loadGame(state: GameState): GameState {
+export function loadGame(state: GameState): void {
     const start = Date.now()
     let lastReport = 0
 
     if (TEST_DIF !== 0) {
-        state = advanceTimers(state, TEST_DIF)
+        advanceTimers(state, TEST_DIF)
         state.lastRegen += TEST_DIF
     }
 
     state.loading = true
     const diff = Date.now() - state.now - MAX_LOAD
-    if (diff > 0) state = advanceTimers(state, diff)
+    if (diff > 0) advanceTimers(state, diff)
 
     const gameStart = state.now
     const end = Math.min(state.now + MAX_LOAD, Date.now())
@@ -27,7 +27,7 @@ export function loadGame(state: GameState): GameState {
 
     let timer = getFirstTimer(state.timers, end)
     while (timer) {
-        state = onTimer(state, timer.id)
+        onTimer(state, timer.id)
         state.now = timer.to
         timer = getFirstTimer(state.timers, end)
 
@@ -35,13 +35,11 @@ export function loadGame(state: GameState): GameState {
             lastReport = Date.now()
             const percent = Math.floor((100 * (state.now - gameStart)) / (end - gameStart))
             state.loadingData = { loading: true, start: gameStart, now: state.now, end, percent }
-            postMessage({ state })
+            postMessage({ state }) // todo: return only progress
         }
     }
     state.loading = false
     state.loadingData = undefined
     const endLoad = Date.now()
     console.log(`Load time: ${endLoad - start}ms`)
-
-    return state
 }
