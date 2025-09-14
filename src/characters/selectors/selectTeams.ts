@@ -1,4 +1,4 @@
-import { memoize } from 'es-toolkit/compat'
+import { memoize } from 'proxy-memoize'
 import { GameState } from '../../game/GameState'
 import { CharacterAdapter } from '../characterAdapter'
 
