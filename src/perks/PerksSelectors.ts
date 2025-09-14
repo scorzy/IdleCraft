@@ -1,3 +1,4 @@
+import { memoize } from 'proxy-memoize'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { selectPlayerExp, selectPlayerLevel } from '../experience/expSelectors'
@@ -68,3 +69,4 @@ export const selectPerks = (state: GameState) => {
         return false
     })
 }
+export const selectPerksMemo = memoize(selectPerks)

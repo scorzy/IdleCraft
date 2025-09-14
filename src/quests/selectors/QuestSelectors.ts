@@ -1,3 +1,4 @@
+import { EMPTY_ARRAY } from '../../const'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { QuestData } from '../QuestData'
@@ -34,9 +35,9 @@ export const selectQuestStatus = (questId: string | null) => (state: GameState) 
 
 export const selectOutcomeIds = (s: GameState) => {
     const questId = selectQuestId(s)
-    if (!questId) return []
+    if (!questId) return EMPTY_ARRAY
     const outcomes = QuestAdapter.selectEx(s.quests, questId).outcomeData
-    if (!outcomes) return []
+    if (!outcomes) return EMPTY_ARRAY
     return outcomes.ids
 }
 

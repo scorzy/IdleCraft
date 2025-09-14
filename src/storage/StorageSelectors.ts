@@ -1,3 +1,5 @@
+import { memoize } from 'proxy-memoize'
+import { useMemo } from 'react'
 import { GameState, LocationState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { StdItems } from '../items/stdItems'
@@ -94,7 +96,13 @@ const selectLocationItemsSelector = (location: GameLocations, storageOrder: stri
 
 export const useLocationItems = (location: GameLocations) => {
     const storageOrder = useGameStore(selectStorageOrder)
-    return useGameStore(selectLocationItemsSelector(location, storageOrder))
+
+    const selectLocationItemsSelectorMemo = useMemo(
+        () => memoize(selectLocationItemsSelector(location, storageOrder)),
+        [location, storageOrder]
+    )
+
+    return useGameStore(selectLocationItemsSelectorMemo)
 }
 
 export const selectItemQta = (location: GameLocations | null, itemId: string) => (state: GameState) => {
@@ -128,11 +136,12 @@ type ItemIdValue = ItemId & { value: number }
 
 export const selectItemsByType = (itemType: ItemTypes | undefined) => (state: GameState) => {
     if (!itemType) return EMPTY_ARRAY
-    const ret: ItemIdValue[] = []
+    const ret: string[] = []
     for (const id of Object.keys(state.locations[state.location].storage).sort()) {
         const item = selectGameItemFromCraft(id, state.craftedItems)
-        if (item && item.type === itemType) ret.push({ id, value: item.value })
+        if (item && item.type === itemType) ret.push(id)
     }
+    if (ret.length === 0) return EMPTY_ARRAY
     return ret
 }
 

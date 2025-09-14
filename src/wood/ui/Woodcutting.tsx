@@ -82,10 +82,11 @@ const Cutting = memo(function Cutting() {
     const { t, fun } = useTranslations()
 
     const woodType = useGameStore(selectWoodType)
-    const forest = useGameStore(useCallback((s) => selectForest(s, woodType), [woodType]))
+    const selectForestMemo = useMemo(() => memoize((s: GameState) => selectForest(s, woodType)), [woodType])
+    const forest = useGameStore(selectForestMemo)
     const act = useGameStore(useCallback((s) => selectWoodcuttingId(s, woodType), [woodType]))
-    const def = useGameStore(useShallow(useCallback((state) => selectDefaultForest(state, woodType), [woodType])))
-    const hpPercent = Math.floor((100 * forest.hp) / def.hp)
+    const defHp = useGameStore(useShallow(useCallback((state) => selectDefaultForest(state, woodType).hp, [woodType])))
+    const hpPercent = Math.floor((100 * forest.hp) / defHp)
     const time = useGameStore(selectWoodcuttingTime)
     const damage = useGameStore(selectWoodcuttingDamage)
 
@@ -98,7 +99,7 @@ const Cutting = memo(function Cutting() {
                         <span>
                             {t.TreeHP} {f(forest.hp)}
                         </span>
-                        <span className="text-muted-foreground">/ {f(def.hp)}</span>
+                        <span className="text-muted-foreground">/ {f(defHp)}</span>
                     </MyLabel>
                     <MyLabel>
                         {t.Damage} {f(damage)}

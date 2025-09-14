@@ -14,8 +14,8 @@ import {
     selectPerk,
     selectPerkCompleted,
     selectUsedPerks,
-    selectPerks,
     isPerkEnabled,
+    selectPerksMemo,
 } from '../PerksSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { Button } from '../../components/ui/button'
@@ -60,7 +60,7 @@ export const PerksSidebar = memo(function PerksSidebar() {
     const charId = useGameStore(selectSelectedCharId)
     const maxPerks = useGameStore(selectMaxPerks(charId))
     const usedPerks = useGameStore(selectUsedPerks(charId))
-    const perks = useGameStore(selectPerks)
+    const perks = useGameStore(selectPerksMemo)
     const collapsed = useGameStore(isCollapsed(CollapsedEnum.Perk))
     const readonly = useGameStore(isCharReadonly)
 

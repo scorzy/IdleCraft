@@ -1,5 +1,6 @@
 import { Fragment, memo, ReactNode, useCallback } from 'react'
 import { GiRock } from 'react-icons/gi'
+import { useShallow } from 'zustand/react/shallow'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
@@ -40,7 +41,9 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     )
     const itemId = useGameStore(useCallback((s: GameState) => selectEquipId(slot, charId)(s), [slot, charId]))
 
-    const itemsId = useGameStore(useCallback((s: GameState) => selectItemsByType(slotData.ItemType)(s), [slotData]))
+    const itemsId = useGameStore(
+        useShallow(useCallback((s: GameState) => selectItemsByType(slotData.ItemType)(s), [slotData]))
+    )
 
     const handleEquipChange = useCallback((value: string) => changeEquip(slot, value, charId), [slot, charId])
 
@@ -71,9 +74,9 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
                         </SelectItem>
                         {itemsId.length > 0 && <SelectSeparator />}
                         {itemsId.map((t, index) => (
-                            <Fragment key={t.id}>
+                            <Fragment key={t}>
                                 {index !== 0 && <SelectSeparator />}
-                                <OptionItem itemId={t.id} slot={slot} />
+                                <OptionItem itemId={t} slot={slot} />
                             </Fragment>
                         ))}
                     </SelectContent>

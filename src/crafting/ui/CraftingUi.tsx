@@ -202,9 +202,9 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
                     </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                    {itemsId.map((t) => {
-                        return <ParamItem itemId={t.id} key={t.id} />
-                    })}
+                    {itemsId.map((t) => (
+                        <ParamItem itemId={t} key={t} />
+                    ))}
                 </SelectContent>
             </Select>
         </div>

@@ -1,6 +1,6 @@
-import { memo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { TbInfoCircle } from 'react-icons/tb'
-import { useShallow } from 'zustand/react/shallow'
+import { memoize } from 'proxy-memoize'
 import { Bonus, BonusResult } from '../Bonus'
 import { IconsData } from '../../icons/Icons'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -25,7 +25,10 @@ const BonusListUi = memo(function BonusListUi(props: {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
     const format = isTime ? fun.formatTime : f
-    const bonusRes = useGameStore(useShallow(selectBonusResult))
+
+    const selectBonusResultMemo = useMemo(() => memoize(selectBonusResult), [selectBonusResult])
+
+    const bonusRes = useGameStore(selectBonusResultMemo)
 
     return (
         <Table>

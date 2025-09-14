@@ -1,7 +1,8 @@
 import { Label } from '@radix-ui/react-label'
-import { Fragment, useCallback } from 'react'
+import { Fragment, useCallback, useMemo } from 'react'
 import { TbCircleCheck, TbXboxX } from 'react-icons/tb'
 import { useShallow } from 'zustand/react/shallow'
+import { memoize } from 'proxy-memoize'
 import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { selectFilteredItemsNumber } from '../../storage/StorageSelectors'
 import { useTranslations } from '../../msg/useTranslations'
@@ -48,11 +49,12 @@ const CollectRequestItemsUi = (props: { questId: string; outcomeId: string }) =>
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
 
-    const reqItems = useGameStore(
-        useShallow(
-            useCallback((s: GameState) => selectCollectQuestChosenItems(s, questId, outcomeId), [questId, outcomeId])
-        )
+    const selectCollectQuestChosenItemsMemo = useMemo(
+        () => memoize((s: GameState) => selectCollectQuestChosenItems(s, questId, outcomeId)),
+        [questId, outcomeId]
     )
+
+    const reqItems = useGameStore(selectCollectQuestChosenItemsMemo)
 
     if (reqItems.usedItems.length < 1) return
 
