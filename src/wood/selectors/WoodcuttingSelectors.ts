@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { GameState } from '../../game/GameState'
@@ -40,12 +39,9 @@ export const isSelectedWoodEnabled = (state: GameState) => {
     const data = WoodData[woodType]
     return woodLevel >= data.requiredLevel
 }
-export const selectWoodcuttingId = createSelector(
-    [(s: GameState) => s.activities, (_s: GameState, woodType: WoodTypes) => woodType],
-    (activities, woodType) => {
-        for (const id of activities.ids) {
-            const act = activities.entries[id]
-            if (act && isWoodcutting(act) && act?.woodType === woodType) return act.id
-        }
+export const selectWoodcuttingId = (s: GameState, woodType: WoodTypes) => {
+    for (const id of s.activities.ids) {
+        const act = s.activities.entries[id]
+        if (act && isWoodcutting(act) && act?.woodType === woodType) return act.id
     }
-)
+}

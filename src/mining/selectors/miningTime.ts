@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+import { memoize } from 'proxy-memoize'
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { bonusFromPerk, bonusFromItem, getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
@@ -15,19 +15,23 @@ const TIME_BASE: Bonus = {
 }
 const PERK_FAST: Bonus = bonusFromPerk(PerksEnum.FAST_MINING, { multi: -1 * FAST_MINING_PERK })
 
-export const selectMiningTimeAll = createSelector(
-    [selectPickaxe, (s: GameState) => hasPerk(PerksEnum.FAST_MINING)(s)],
-    (pickaxe, fastMiningPerk) => {
-        const ret: BonusResult = { total: DEF_PICKAXE.time, bonuses: [] }
+export const selectMiningTimeAll = (s: GameState) => {
+    const pickaxe = selectPickaxe(s)
+    const fastMiningPerk = hasPerk(PerksEnum.FAST_MINING)(s)
 
-        if (pickaxe && pickaxe.pickaxeData) ret.bonuses.push(bonusFromItem(pickaxe, { add: pickaxe.pickaxeData.time }))
-        else ret.bonuses.push(TIME_BASE)
+    const ret: BonusResult = { total: DEF_PICKAXE.time, bonuses: [] }
 
-        if (fastMiningPerk) ret.bonuses.push(PERK_FAST)
+    if (pickaxe && pickaxe.pickaxeData) ret.bonuses.push(bonusFromItem(pickaxe, { add: pickaxe.pickaxeData.time }))
+    else ret.bonuses.push(TIME_BASE)
 
-        ret.total = getTotal(ret.bonuses)
-        return ret
-    }
-)
+    if (fastMiningPerk) ret.bonuses.push(PERK_FAST)
+
+    ret.total = getTotal(ret.bonuses)
+    return ret
+}
 
 export const selectMiningTime = (state: GameState) => selectMiningTimeAll(state).total
+
+export const selectMiningTimeAllMemo = memoize(selectMiningTimeAll)
+
+export const selectMiningTimeMemo = (state: GameState) => selectMiningTimeAllMemo(state).total

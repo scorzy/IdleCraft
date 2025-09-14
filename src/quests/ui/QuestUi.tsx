@@ -1,6 +1,7 @@
 import { memo, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { Popover, PopoverTrigger, PopoverContent, Portal } from '@radix-ui/react-popover'
+import { useShallow } from 'zustand/react/shallow'
 import { setState, useGameStore } from '../../game/state'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
@@ -68,7 +69,7 @@ const QuestLink = (props: { id: string }) => {
 
 const SidebarQuestAccepted = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
-    const ids = useGameStore(selectAcceptedQuests)
+    const ids = useGameStore(useShallow(selectAcceptedQuests))
 
     return (
         <CollapsibleMenu
@@ -87,7 +88,7 @@ const SidebarQuestAccepted = memo(function SidebarGathering() {
 
 const SidebarQuestAvailable = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
-    const ids = useGameStore(selectAvailableQuests)
+    const ids = useGameStore(useShallow(selectAvailableQuests))
 
     return (
         <CollapsibleMenu

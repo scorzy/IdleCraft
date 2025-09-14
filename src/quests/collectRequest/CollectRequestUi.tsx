@@ -49,7 +49,9 @@ const CollectRequestItemsUi = (props: { questId: string; outcomeId: string }) =>
     const { t } = useTranslations()
 
     const reqItems = useGameStore(
-        useCallback((s: GameState) => selectCollectQuestChosenItems(s, questId, outcomeId), [questId, outcomeId])
+        useShallow(
+            useCallback((s: GameState) => selectCollectQuestChosenItems(s, questId, outcomeId), [questId, outcomeId])
+        )
     )
 
     if (reqItems.usedItems.length < 1) return

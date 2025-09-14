@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react'
 import { LuHourglass } from 'react-icons/lu'
+import { useShallow } from 'zustand/react/shallow'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
 import { recipes } from '../Recipes'
 import { useGameStore } from '../../game/state'
@@ -174,7 +175,7 @@ const RecipeParamUi = memo(function RecipeParamUi(props: { recipeParam: RecipePa
 const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipeParam: RecipeParameter }) {
     const { recipeParam } = props
     const { t } = useTranslations()
-    const itemsId = useGameStore(selectItemsByType(recipeParam.itemType))
+    const itemsId = useGameStore(useShallow(selectItemsByType(recipeParam.itemType)))
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
     const selectedValue = selected?.itemId
     const selectedItem = useGameStore((s: GameState) => {

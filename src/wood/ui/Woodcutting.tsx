@@ -1,5 +1,7 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import { TbAlertTriangle } from 'react-icons/tb'
+import { useShallow } from 'zustand/react/shallow'
+import { memoize } from 'proxy-memoize'
 import { useGameStore } from '../../game/state'
 import { selectWoodType } from '../../ui/state/uiSelectors'
 import { addWoodcutting } from '../functions/addWoodcutting'
@@ -82,7 +84,7 @@ const Cutting = memo(function Cutting() {
     const woodType = useGameStore(selectWoodType)
     const forest = useGameStore(useCallback((s) => selectForest(s, woodType), [woodType]))
     const act = useGameStore(useCallback((s) => selectWoodcuttingId(s, woodType), [woodType]))
-    const def = useGameStore(useCallback((state) => selectDefaultForest(state, woodType), [woodType]))
+    const def = useGameStore(useShallow(useCallback((state) => selectDefaultForest(state, woodType), [woodType])))
     const hpPercent = Math.floor((100 * forest.hp) / def.hp)
     const time = useGameStore(selectWoodcuttingTime)
     const damage = useGameStore(selectWoodcuttingDamage)
@@ -152,7 +154,7 @@ const Forest = memo(function Forest() {
 const ForestQta = memo(function ForestQta() {
     const woodType = useGameStore(selectWoodType)
     const qta = useGameStore(useCallback((s) => selectForestQta(s, woodType), [woodType]))
-    const def = useGameStore(useCallback((state) => selectDefaultForest(state, woodType), [woodType]))
+    const def = useGameStore(useShallow(useCallback((state) => selectDefaultForest(state, woodType), [woodType])))
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const treePercent = Math.floor((100 * qta) / def.qta)
@@ -169,7 +171,8 @@ const ForestQta = memo(function ForestQta() {
 
 const Trees = memo(function Trees() {
     const woodType = useGameStore(selectWoodType)
-    const trees = useGameStore((s: GameState) => selectGrowingTrees(s, woodType))
+    const selectGrowingTreesMemo = useMemo(() => memoize((s: GameState) => selectGrowingTrees(s, woodType)), [woodType])
+    const trees = useGameStore(selectGrowingTreesMemo)
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     return (

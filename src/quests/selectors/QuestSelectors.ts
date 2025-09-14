@@ -1,19 +1,16 @@
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { createDeepEqualSelector } from '../../utils/createDeepEqualSelector'
 import { QuestData } from '../QuestData'
 import { QuestTemplate } from '../QuestTemplate'
 import { ItemsReward, QuestAdapter, QuestOutcomeAdapter, QuestStatus } from '../QuestTypes'
 import { QuestReqSelectors } from './QuestReqSelectors'
 import { selectOutcome } from './selectOutcome'
 
-export const selectAcceptedQuests = createDeepEqualSelector([(state: GameState) => state.quests], (quests) =>
-    QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.ACCEPTED)
-)
+export const selectAcceptedQuests = (s: GameState) =>
+    QuestAdapter.findManyIds(s.quests, (quest) => quest.state === QuestStatus.ACCEPTED)
 
-export const selectAvailableQuests = createDeepEqualSelector([(state: GameState) => state.quests], (quests) =>
-    QuestAdapter.findManyIds(quests, (quest) => quest.state === QuestStatus.AVAILABLE)
-)
+export const selectAvailableQuests = (s: GameState) =>
+    QuestAdapter.findManyIds(s.quests, (quest) => quest.state === QuestStatus.AVAILABLE)
 
 export const selectQuestName = (questId: string | null) => (state: GameState) => {
     if (!questId) return ''
@@ -35,15 +32,13 @@ export const selectQuestStatus = (questId: string | null) => (state: GameState) 
     return QuestAdapter.selectEx(state.quests, questId).state
 }
 
-export const selectOutcomeIds = createDeepEqualSelector(
-    [selectQuestId, (s: GameState) => s.quests],
-    (questId, quests) => {
-        if (!questId) return []
-        const outcomes = QuestAdapter.selectEx(quests, questId).outcomeData
-        if (!outcomes) return []
-        return outcomes.ids
-    }
-)
+export const selectOutcomeIds = (s: GameState) => {
+    const questId = selectQuestId(s)
+    if (!questId) return []
+    const outcomes = QuestAdapter.selectEx(s.quests, questId).outcomeData
+    if (!outcomes) return []
+    return outcomes.ids
+}
 
 export const selectOutcomeDescription = (questId: string | null, outcomeId: string | null) => (state: GameState) => {
     if (!questId || !outcomeId) return ''

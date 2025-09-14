@@ -17,9 +17,9 @@ import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { addMining } from '../functions/addMining'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { Icons, IconsData } from '../../icons/Icons'
-import { selectMiningTime, selectMiningTimeAll } from '../selectors/miningTime'
+import { selectMiningTimeAllMemo, selectMiningTimeMemo } from '../selectors/miningTime'
 import { BonusDialog } from '../../bonus/ui/BonusUi'
-import { selectMiningDamage, selectMiningDamageAll } from '../selectors/miningDamage'
+import { selectMiningDamageAllMemo, selectMiningDamageMemo } from '../selectors/miningDamage'
 import { GameState } from '../../game/GameState'
 import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
@@ -79,8 +79,8 @@ const MiningOre = memo(function MiningOre() {
 
     const ore = useGameStore(useCallback((state: GameState) => selectOre(state, oreType), [oreType]))
     const act = useGameStore(useCallback((state: GameState) => selectMiningId(state, oreType), [oreType]))
-    const damage = useGameStore(selectMiningDamage)
-    const time = useGameStore(selectMiningTime)
+    const damage = useGameStore(selectMiningDamageMemo)
+    const time = useGameStore(selectMiningTimeMemo)
 
     const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
     const hpPercent = Math.floor((100 * ore.hp) / def.hp)
@@ -100,13 +100,13 @@ const MiningOre = memo(function MiningOre() {
                     </MyLabel>
                     <MyLabel>
                         {t.Damage} {f(damage)}
-                        <BonusDialog title={t.MiningDamage} selectBonusResult={selectMiningDamageAll} />
+                        <BonusDialog title={t.MiningDamage} selectBonusResult={selectMiningDamageAllMemo} />
                     </MyLabel>
                 </MyLabelContainer>
                 <RestartProgress value={hpPercent} color="health" className="mb-2" />
                 <MyLabel>
                     {t.Time} {fun.formatTime(time)}
-                    <BonusDialog title={t.MiningTime} selectBonusResult={selectMiningTimeAll} isTime={true} />
+                    <BonusDialog title={t.MiningTime} selectBonusResult={selectMiningTimeAllMemo} isTime={true} />
                 </MyLabel>
                 <GameTimerProgress actionId={act} color="primary" className="mb-2" />
             </CardContent>

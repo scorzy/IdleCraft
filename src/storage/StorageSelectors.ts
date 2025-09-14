@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect'
 import { GameState, LocationState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { StdItems } from '../items/stdItems'
@@ -12,9 +11,8 @@ import { Translations } from '../msg/Msg'
 import { useGameStore } from '../game/state'
 import { selectStorageOrder } from '../ui/state/uiSelectors'
 import { filterItem } from '../items/itemSelectors'
-import { createDeepEqualSelector } from '../utils/createDeepEqualSelector'
 import { ItemAdapter } from './ItemAdapter'
-import { InventoryNoQta, StorageState } from './storageTypes'
+import { InventoryNoQta } from './storageTypes'
 import { isCrafted } from './storageFunctions'
 import { InitialState } from '@/entityAdapter/InitialState'
 
@@ -26,10 +24,8 @@ const selectStorageLocationsInt = myMemoizeOne((locations: Record<GameLocations,
     return res
 })
 
-export const selectCurrentLocationStorageIds = createDeepEqualSelector(
-    [(state: GameState) => state.locations[state.location].storage],
-    (storage: StorageState) => Object.keys(storage).sort()
-)
+export const selectCurrentLocationStorageIds = (state: GameState) =>
+    Object.keys(state.locations[state.location].storage).sort()
 
 export const selectGameItemFromCraft = (itemId: string, craftedItems: InitialState<Item>) => {
     if (!isCrafted(itemId)) return StdItems[itemId]
@@ -44,27 +40,6 @@ interface ItemId {
 type ItemOrdQta = ItemId & { qta: number }
 type ItemOrdName = ItemId & { name: string }
 type ItemOrdValue = ItemId & { value: number }
-
-const locationItemIdSelectors = new Map<GameLocations, (state: GameState) => ItemId[]>()
-const locationItemsSelectors: {
-    location: GameLocations
-    storageOrder: string
-    selector: (state: GameState) => ItemId[]
-}[] = []
-
-export const selectLocationItemIds = (location: GameLocations) => {
-    let selector = locationItemIdSelectors.get(location)
-    if (!selector) {
-        selector = createDeepEqualSelector(
-            [(state: GameState) => state.locations[location].storage],
-            (storage: Record<string, number>) => {
-                return Object.keys(storage).map<ItemId>((id) => ({ id }))
-            }
-        )
-        locationItemIdSelectors.set(location, selector)
-    }
-    return selector
-}
 
 const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialState<Item>, storageAsc: boolean) => {
     const ord: ItemOrdName[] = []
@@ -100,43 +75,20 @@ const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[], stora
 }
 
 const selectLocationItemsSelector = (location: GameLocations, storageOrder: string) => {
-    let selector = locationItemsSelectors.find(
-        (e) => e.location === location && e.storageOrder === storageOrder
-    )?.selector
+    let selector: (state: GameState) => ItemId[]
+    const selectLocationItemIds = (state: GameState) =>
+        Object.keys(state.locations[location].storage).map<ItemId>((id) => ({ id }))
 
-    if (!selector) {
-        if (storageOrder === 'name')
-            selector = createSelector(
-                [
-                    selectTranslations,
-                    selectLocationItemIds(location),
-                    (state: GameState) => state.craftedItems,
-                    (state: GameState) => state.ui.storageAsc,
-                ],
-                (translations, items, craftedItems, storageAsc) =>
-                    reorderByName(translations, items, craftedItems, storageAsc)
-            )
-        else if (storageOrder === 'quantity')
-            selector = createSelector(
-                [
-                    (state: GameState) => state.locations[location].storage,
-                    selectLocationItemIds(location),
-                    (state: GameState) => state.ui.storageAsc,
-                ],
-                reorderByQta
-            )
-        else if (storageOrder === 'value')
-            selector = createSelector(
-                [
-                    (state: GameState) => state.craftedItems,
-                    selectLocationItemIds(location),
-                    (state: GameState) => state.ui.storageAsc,
-                ],
-                reorderByValue
-            )
-        else throw new Error(`Unknown storage order ${storageOrder}`)
-    }
-    locationItemsSelectors.push({ location, storageOrder, selector })
+    if (storageOrder === 'name')
+        selector = (s: GameState) =>
+            reorderByName(selectTranslations(s), selectLocationItemIds(s), s.craftedItems, s.ui.storageAsc)
+    else if (storageOrder === 'quantity')
+        selector = (s: GameState) =>
+            reorderByQta(s.locations[location].storage, selectLocationItemIds(s), s.ui.storageAsc)
+    else if (storageOrder === 'value')
+        selector = (s: GameState) => reorderByValue(s.craftedItems, selectLocationItemIds(s), s.ui.storageAsc)
+    else throw new Error(`Unknown storage order ${storageOrder}`)
+
     return selector
 }
 
@@ -174,25 +126,14 @@ export const getSelectedItemQta = (state: GameState) => {
 }
 type ItemIdValue = ItemId & { value: number }
 
-const itemTypeSelectors = new Map<ItemTypes, (state: GameState) => ItemIdValue[]>()
-export const selectItemsByType = (itemType: ItemTypes | undefined) => {
-    if (!itemType) return (_state: GameState) => EMPTY_ARRAY
-    let selector = itemTypeSelectors.get(itemType)
-    if (!selector) {
-        selector = createDeepEqualSelector(
-            [(state: GameState) => state.locations[state.location].storage, (state: GameState) => state.craftedItems],
-            (storage, craftedItems) => {
-                const ret: ItemIdValue[] = []
-                for (const id of Object.keys(storage).sort()) {
-                    const item = selectGameItemFromCraft(id, craftedItems)
-                    if (item && item.type === itemType) ret.push({ id, value: item.value })
-                }
-                return ret
-            }
-        )
+export const selectItemsByType = (itemType: ItemTypes | undefined) => (state: GameState) => {
+    if (!itemType) return EMPTY_ARRAY
+    const ret: ItemIdValue[] = []
+    for (const id of Object.keys(state.locations[state.location].storage).sort()) {
+        const item = selectGameItemFromCraft(id, state.craftedItems)
+        if (item && item.type === itemType) ret.push({ id, value: item.value })
     }
-    itemTypeSelectors.set(itemType, selector)
-    return selector
+    return ret
 }
 
 export const createInventoryNoQta = (inventory: CharInventory) => {
@@ -209,39 +150,29 @@ export const createInventoryNoQta = (inventory: CharInventory) => {
     return ret
 }
 
-export const selectFilteredItems = createDeepEqualSelector(
-    [
-        (s: GameState) => selectCurrentLocationStorageIds(s),
-        (s: GameState) => s.craftedItems,
-        (_s: GameState, itemFilter: ItemFilter) => itemFilter,
-    ],
-    (storageIds, craftedItems, itemFilter) => {
-        if (!itemFilter) return EMPTY_ARRAY
+export const selectFilteredItems = (s: GameState, itemFilter: ItemFilter) => {
+    if (!itemFilter) return EMPTY_ARRAY
 
-        const ret: string[] = []
-        for (const id of storageIds) {
-            const item = selectGameItemFromCraft(id, craftedItems)
-            if (item && filterItem(item, itemFilter)) ret.push(id)
-        }
+    const storageIds = selectCurrentLocationStorageIds(s)
 
-        return ret
+    const ret: string[] = []
+    for (const id of storageIds) {
+        const item = selectGameItemFromCraft(id, s.craftedItems)
+        if (item && filterItem(item, itemFilter)) ret.push(id)
     }
-)
 
-export const selectTotalFilteredQta = createDeepEqualSelector(
-    [
-        (s: GameState, location: GameLocations) => s.locations[location].storage,
+    return ret
+}
 
-        (s: GameState, _location: GameLocations, itemFilter: ItemFilter) => selectFilteredItems(s, itemFilter),
-    ],
-    (storage, itemFilter) => {
-        let ret = 0
+export const selectTotalFilteredQta = (s: GameState, location: GameLocations, itemFilter: ItemFilter) => {
+    let ret = 0
 
-        for (const itemId of itemFilter) ret += storage[itemId] ?? 0
+    const itemFilterIds = selectFilteredItems(s, itemFilter)
 
-        return ret
-    }
-)
+    for (const itemId of itemFilterIds) ret += s.locations[location].storage[itemId] ?? 0
+
+    return ret
+}
 
 export const selectFilteredItemsNumber = (state: GameState, itemFilter: ItemFilter) =>
     selectFilteredItems(state, itemFilter).length

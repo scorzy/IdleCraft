@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+import moize from 'moize'
 import { ActivityAdapter } from '../activities/ActivityState'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { selectLevelExp } from '../experience/expSelectors'
@@ -17,16 +17,22 @@ export const DEF_PICKAXE: PickaxeData = {
 
 export const isOreSelected = (oreType: OreTypes) => (state: GameState) => state.ui.oreType === oreType
 
-export const selectDefaultMine = createSelector(
-    [(_s: GameState, oreType: OreTypes) => oreType],
+const makeDefaultMine = moize(
     (oreType: OreTypes) => {
         const data = OreData[oreType]
         return {
             hp: data.hp,
             qta: data.qta,
         }
+    },
+    {
+        maxSize: 15,
     }
 )
+
+export const selectDefaultMine = (_s: GameState, oreType: OreTypes) => {
+    return makeDefaultMine(oreType)
+}
 
 export const selectOre = (state: GameState, oreType: OreTypes) => {
     const ore = state.locations[state.location].ores[oreType]

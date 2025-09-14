@@ -1,7 +1,5 @@
-import { createSelector } from 'reselect'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
-import { ExpState } from '../experience/ExpState'
 import { selectPlayerExp, selectPlayerLevel } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
 import { selectSelectedCharId } from '../ui/state/uiSelectors'
@@ -18,21 +16,15 @@ export const hasPerk =
     (s: GameState) =>
         (s.characters.entries[charId]?.perks[perk] ?? 0) > 0
 
-const isPerkEnabledInt = (perks: PerkState, skills: ExpState, perkEnum: PerksEnum) => {
+export const isPerkEnabled = (state: GameState, perkEnum: PerksEnum) => {
+    const perks = CharacterAdapter.selectEx(state.characters, selectSelectedCharId(state)).perks
+    const skills = selectPlayerExp(state, selectSelectedCharId(state))
+
     const perkData = PerksData[perkEnum]
     if (perkData.requiredExp?.some((r) => r.level > (skills[r.skill] ?? 0))) return false
     if (perkData.requiredPerks?.some((r) => !hasPerkInt(r, perks))) return false
     return true
 }
-
-export const isPerkEnabled = createSelector(
-    [
-        (state: GameState) => CharacterAdapter.selectEx(state.characters, selectSelectedCharId(state)).perks,
-        (state: GameState) => selectPlayerExp(state, selectSelectedCharId(state)),
-        (_state: GameState, perkEnum: PerksEnum) => perkEnum,
-    ],
-    isPerkEnabledInt
-)
 
 export const selectMaxPerks =
     (charId: string = PLAYER_ID) =>
@@ -53,30 +45,26 @@ export const selectPerkCompleted =
         return (CharacterAdapter.selectEx(state.characters, charId).perks[perkEnum] ?? 0) >= (data.max ?? 1)
     }
 
-const perksValues = Object.values(PerksEnum)
+const perksValues = Object.values(PerksEnum) as PerksEnum[]
 
-export const selectPerks = createSelector(
-    [
-        (state: GameState) => CharacterAdapter.selectEx(state.characters, selectSelectedCharId(state)).perks,
-        (state: GameState) => selectPlayerExp(state, selectSelectedCharId(state)),
-        (state: GameState) => state.ui.showAvailablePerks,
-        (state: GameState) => state.ui.showUnavailablePerks,
-        (state: GameState) => state.ui.showOwnedPerks,
-    ],
-    (perks, skills, available, unavailable, owned) => {
-        if (available && unavailable && owned) return perksValues
-        if (!available && !unavailable && !owned) return []
+export const selectPerks = (state: GameState) => {
+    const perks = CharacterAdapter.selectEx(state.characters, selectSelectedCharId(state)).perks
+    const available = state.ui.showAvailablePerks
+    const unavailable = state.ui.showUnavailablePerks
+    const owned = state.ui.showOwnedPerks
 
-        return perksValues.filter((perk) => {
-            const data = PerksData[perk]
-            const isOwned = (perks[perk] ?? 0) >= (data.max ?? 1)
-            if (owned && isOwned) return true
+    if (available && unavailable && owned) return perksValues
+    if (!available && !unavailable && !owned) return []
 
-            const isAvailable = isPerkEnabledInt(perks, skills, perk)
-            if (available && isAvailable && !isOwned) return true
-            if (unavailable && !isAvailable) return true
+    return perksValues.filter((perk) => {
+        const data = PerksData[perk]
+        const isOwned = (perks[perk] ?? 0) >= (data.max ?? 1)
+        if (owned && isOwned) return true
 
-            return false
-        })
-    }
-)
+        const isAvailable = isPerkEnabled(state, perk)
+        if (available && isAvailable && !isOwned) return true
+        if (unavailable && !isAvailable) return true
+
+        return false
+    })
+}

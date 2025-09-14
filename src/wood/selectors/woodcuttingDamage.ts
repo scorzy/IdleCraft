@@ -1,7 +1,6 @@
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { bonusFromItem, getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
-import { createDeepEqualSelector } from '../../utils/createDeepEqualSelector'
 import { DEF_WOOD_AXE, WoodBase, selectAxe } from './WoodcuttingSelectors'
 
 const DAMAGE_BASE: Bonus = {
@@ -9,7 +8,8 @@ const DAMAGE_BASE: Bonus = {
     add: DEF_WOOD_AXE.damage,
     ...WoodBase,
 }
-export const selectWoodcuttingDamageAll = createDeepEqualSelector([selectAxe], (axe) => {
+export const selectWoodcuttingDamageAll = (s: GameState) => {
+    const axe = selectAxe(s)
     const ret: BonusResult = { total: DEF_WOOD_AXE.damage, bonuses: [] }
 
     if (axe && axe.woodAxeData) ret.bonuses.push(bonusFromItem(axe, { add: axe.woodAxeData.damage }))
@@ -18,6 +18,6 @@ export const selectWoodcuttingDamageAll = createDeepEqualSelector([selectAxe], (
     ret.total = getTotal(ret.bonuses)
 
     return ret
-})
+}
 
 export const selectWoodcuttingDamage = (state: GameState) => selectWoodcuttingDamageAll(state).total

@@ -8,7 +8,6 @@ import { ExpReq, PerksData } from '../Perk'
 import { setPerk, acquirePerkClick, setPerksOpen } from '../PerksFunctions'
 import {
     hasPerk,
-    isPerkEnabled,
     isPerkSelected,
     selectCanSpendPerks,
     selectMaxPerks,
@@ -16,6 +15,7 @@ import {
     selectPerkCompleted,
     selectUsedPerks,
     selectPerks,
+    isPerkEnabled,
 } from '../PerksSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { Button } from '../../components/ui/button'
