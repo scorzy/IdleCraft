@@ -18,7 +18,6 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
     const { result } = props
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
-    const have = useGameStore(selectResultQta(result))
 
     if (!result) return null
 
@@ -34,7 +33,7 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
                         {t.Quantity} {f(result.qta)}
                     </MyLabel>
                     <MyLabel>
-                        {t.YouHave} {f(have)}
+                        {t.YouHave} <CraftingResultHaveQta result={result} />
                     </MyLabel>
                     <ItemInfo item={item} />
                 </div>
@@ -42,6 +41,15 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
         </>
     )
 })
+
+export const CraftingResultHaveQta = memo(function CraftingResultHaveQta(props: { result: RecipeItem | undefined }) {
+    const { result } = props
+    const { f } = useNumberFormatter()
+    const have = useGameStore(selectResultQta(result))
+
+    return f(have)
+})
+
 export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq[] | undefined }) {
     const { req } = props
 
@@ -62,7 +70,6 @@ const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeItemReq 
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     const item = useGameStore(selectGameItem(req.itemId))
-    const qtaStorage = useGameStore(selectItemQta(null, req.itemId))
     if (!item) return null
     return (
         <TableRow>
@@ -71,9 +78,17 @@ const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeItemReq 
             <TableCell>
                 <span className="text-nowrap">
                     {f(req.qta)}
-                    <span className="text-muted-foreground"> / {f(qtaStorage)}</span>
+                    <span className="text-muted-foreground">
+                        / <CraftingReqRowHaveQta itemId={req.itemId} />
+                    </span>
                 </span>
             </TableCell>
         </TableRow>
     )
+})
+const CraftingReqRowHaveQta = memo(function CraftingReqRowHaveQta(props: { itemId: string }) {
+    const { itemId } = props
+    const { f } = useNumberFormatter()
+    const qtaStorage = useGameStore(selectItemQta(null, itemId))
+    return f(qtaStorage)
 })

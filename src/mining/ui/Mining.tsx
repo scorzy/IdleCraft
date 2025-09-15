@@ -137,9 +137,9 @@ const OreUi = memo(function MiningOre() {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const oreType = useGameStore(selectOreType)
-    const ore = useGameStore(useCallback((state: GameState) => selectOre(state, oreType), [oreType]))
+    const oreQta = useGameStore(useCallback((state: GameState) => selectOre(state, oreType).qta, [oreType]))
     const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
-    const hpPercent = Math.floor((100 * ore.qta) / def.qta)
+    const hpPercent = Math.floor((100 * oreQta) / def.qta)
     const oreData = OreData[oreType]
 
     return (
@@ -147,7 +147,7 @@ const OreUi = memo(function MiningOre() {
             <MyCardHeaderTitle title={t.OreVein} icon={IconsData[oreData.iconId]} />
             <CardContent>
                 <MyLabel>
-                    {t.OreQta} {f(ore.qta)}/{f(def.qta)}
+                    {t.OreQta} {f(oreQta)}/{f(def.qta)}
                 </MyLabel>
                 <RestartProgress value={hpPercent} color="health" />
             </CardContent>
