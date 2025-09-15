@@ -1,5 +1,5 @@
 import { CharacterAdapter } from '../../characters/characterAdapter'
-import { setState } from '../../game/state'
+import { setState } from '../../game/setState'
 
 export const removeRotation = (index: number) =>
     setState((state) => {

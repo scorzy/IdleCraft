@@ -1,6 +1,6 @@
 import { GameState } from '../game/GameState'
-import { setState } from '../game/state'
 import { addItem, removeItem } from '../storage/storageFunctions'
+import { setState } from '../game/setState'
 import { CharacterAdapter } from './characterAdapter'
 import { getCharacterSelector } from './getCharacterSelector'
 import { PLAYER_ID } from './charactersConst'

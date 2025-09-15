@@ -1,4 +1,4 @@
-import { setState } from '../../game/state'
+import { setState } from '../../game/setState'
 
 export const closeDeadDialog = () =>
     setState((s) => {

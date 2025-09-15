@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { Popover, PopoverTrigger, PopoverContent, Portal } from '@radix-ui/react-popover'
 import { useShallow } from 'zustand/react/shallow'
-import { setState, useGameStore } from '../../game/state'
+import { useGameStore } from '../../game/state'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
@@ -48,6 +48,7 @@ import { ItemIconName } from '../../items/ui/ItemIconName'
 import { CollectRequestUi } from '../collectRequest/CollectRequestUi'
 import { ChevronsUpDownIcon } from '../../icons/IconsMemo'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
+import { setState } from '../../game/setState'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props

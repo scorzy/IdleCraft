@@ -1,6 +1,6 @@
 import { MAX_AVAILABLE_QUESTS } from '../const'
 import { GameState } from '../game/GameState'
-import { setState } from '../game/state'
+import { setState } from '../game/setState'
 import { addGold, addItem } from '../storage/storageFunctions'
 import { QuestData } from './QuestData'
 import {

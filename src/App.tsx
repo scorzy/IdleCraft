@@ -1,7 +1,7 @@
 import { TbAlertTriangle } from 'react-icons/tb'
 import { throttle } from 'es-toolkit/compat'
 import { Start } from './game/Start'
-import { setState, useGameStore } from './game/state'
+import { useGameStore } from './game/state'
 import { ToasterProvider } from './notification/ToasterProvider'
 import { selectGameId, selectLoading } from './game/gameSelectors'
 import { AppShell } from './ui/shell/AppShell'
@@ -9,6 +9,7 @@ import { ThemeProvider } from './ui/themeProvider'
 import { GameState } from './game/GameState'
 import { regenerate } from './game/regenerate'
 import { Alert, AlertTitle, AlertDescription } from './components/ui/alert'
+import { setState } from './game/setState'
 
 setInterval(() => {
     const gameId = useGameStore.getState().gameId

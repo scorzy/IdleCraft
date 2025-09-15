@@ -1,4 +1,4 @@
-import { setState } from '../../game/state'
+import { setState } from '../../game/setState'
 import { BattleZoneEnum } from '../BattleZoneEnum'
 
 export const setArea = (battleZone: BattleZoneEnum) =>

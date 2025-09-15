@@ -1,6 +1,6 @@
 import { GameState } from '../../game/GameState'
 import { activityRemovers } from '../../game/globals'
-import { setState } from '../../game/state'
+import { setState } from '../../game/setState'
 import { ActivityAdapter } from '../ActivityState'
 
 export function removeActivityInt(state: GameState, activityId: string) {

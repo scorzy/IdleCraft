@@ -1,5 +1,5 @@
 import { GameState } from '../../game/GameState'
-import { setState } from '../../game/state'
+import { setState } from '../../game/setState'
 import { ItemRequest } from '../ItemRequest'
 import { selectOutcome } from '../selectors/selectOutcome'
 

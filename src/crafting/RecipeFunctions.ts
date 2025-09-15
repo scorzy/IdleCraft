@@ -1,5 +1,5 @@
 import { GameState } from '../game/GameState'
-import { setState } from '../game/state'
+import { setState } from '../game/setState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { RecipeParameterValue } from './RecipeInterfaces'
 import { recipes } from './Recipes'

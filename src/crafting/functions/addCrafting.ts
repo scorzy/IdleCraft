@@ -1,7 +1,7 @@
 import { ActivityTypes } from '../../activities/ActivityState'
 import { makeAddActivity } from '../../activities/functions/makeAddActivity'
 import { GameState } from '../../game/GameState'
-import { setState } from '../../game/state'
+import { setState } from '../../game/setState'
 import { RecipeParameterValue, RecipeResult } from '../RecipeInterfaces'
 
 interface CraftingData {

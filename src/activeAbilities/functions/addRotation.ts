@@ -1,5 +1,5 @@
 import { CharacterAdapter } from '../../characters/characterAdapter'
-import { setState } from '../../game/state'
+import { setState } from '../../game/setState'
 import { AbilitiesEnum } from '../abilitiesEnum'
 
 export const addRotation = () =>

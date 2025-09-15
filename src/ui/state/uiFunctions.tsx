@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { TbLock } from 'react-icons/tb'
-import { setState } from '../../game/state'
+import { setState } from '../../game/setState'
 import { WoodTypes } from '../../wood/WoodTypes'
 import { GameState } from '../../game/GameState'
 import { OreTypes } from '../../mining/OreTypes'

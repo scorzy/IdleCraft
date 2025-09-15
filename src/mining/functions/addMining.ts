@@ -1,4 +1,4 @@
-import { setState } from '../../game/state'
+import { setState } from '../../game/setState'
 import { OreTypes } from '../OreTypes'
 import { makeMining } from './makeMining'
 

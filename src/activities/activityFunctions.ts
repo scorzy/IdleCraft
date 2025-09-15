@@ -1,6 +1,6 @@
 import { GameState } from '../game/GameState'
 import { activityStarters } from '../game/globals'
-import { setState } from '../game/state'
+import { setState } from '../game/setState'
 import { ActivityAdapter } from './ActivityState'
 import { ActivityStartResult } from './activityInterfaces'
 import { removeActivityInt } from './functions/removeActivity'

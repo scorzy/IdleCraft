@@ -3,7 +3,8 @@ import { GetInitialGameState } from '../InitialGameState'
 import { loadData } from '../loadData'
 import { WorkerMessage } from '../loadWorkerTypes'
 import { regenerate } from '../regenerate'
-import { setState, useGameStore } from '../state'
+import { setState } from '../setState'
+import { useGameStore } from '../state'
 import { advanceTimers } from './advanceTimers'
 
 // eslint-disable-next-line import/default
