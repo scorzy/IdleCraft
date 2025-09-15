@@ -7,7 +7,7 @@ import { selectWoodType } from '../../ui/state/uiSelectors'
 import { addWoodcutting } from '../functions/addWoodcutting'
 import { GameTimerProgress, TimerProgressFromId } from '../../ui/progress/TimerProgress'
 import { GameState } from '../../game/GameState'
-import { selectDefaultForest, selectForest, selectForestQta, selectGrowingTrees } from '../forest/forestSelectors'
+import { selectDefaultForest, selectForest, selectForestQta, selectGrowingTreesMemo } from '../forest/forestSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { RestartProgress } from '../../ui/progress/RestartProgress'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
@@ -171,11 +171,12 @@ const ForestQta = memo(function ForestQta() {
 })
 
 const Trees = memo(function Trees() {
-    const woodType = useGameStore(selectWoodType)
-    const selectGrowingTreesMemo = useMemo(() => memoize((s: GameState) => selectGrowingTrees(s, woodType)), [woodType])
-    const trees = useGameStore(selectGrowingTreesMemo)
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
+
+    const woodType = useGameStore(selectWoodType)
+    const trees = useGameStore(useShallow(selectGrowingTreesMemo(woodType)))
+
     return (
         <>
             <MyLabel>

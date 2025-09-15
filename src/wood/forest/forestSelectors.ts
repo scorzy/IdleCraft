@@ -1,3 +1,5 @@
+import moize from 'moize'
+import { memoize } from 'proxy-memoize'
 import { ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
 import { WoodData } from '../WoodData'
@@ -32,3 +34,9 @@ export const selectGrowingTrees = (s: GameState, woodType: WoodTypes) => {
     }
     return ret
 }
+
+export const selectGrowingTreesMemo = (woodType: WoodTypes) =>
+    moize(
+        memoize((s: GameState) => selectGrowingTrees(s, woodType)),
+        { maxSize: 10 }
+    )
