@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { FC, memo, PropsWithChildren, ReactNode, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { Popover, PopoverTrigger, PopoverContent, Portal } from '@radix-ui/react-popover'
 import { useShallow } from 'zustand/react/shallow'
@@ -106,16 +106,7 @@ const SidebarQuestAvailable = memo(function SidebarGathering() {
     )
 })
 
-const QUestSidebar = () => {
-    return (
-        <SidebarContainer collapsedId={CollapsedEnum.Quest}>
-            <SidebarQuestAccepted />
-            <SidebarQuestAvailable />
-        </SidebarContainer>
-    )
-}
-
-export const QuestUi = () => {
+export const QuestUi = memo(function QuestUi() {
     return (
         <MyPageAll sidebar={<QUestSidebar />}>
             <MyPage>
@@ -125,52 +116,79 @@ export const QuestUi = () => {
             </MyPage>
         </MyPageAll>
     )
+})
+
+const QUestSidebar = () => {
+    return (
+        <SidebarContainer collapsedId={CollapsedEnum.Quest}>
+            <SidebarQuestAccepted />
+            <SidebarQuestAvailable />
+        </SidebarContainer>
+    )
 }
-const QuestDetailUi = () => {
+
+const QuestDetailUi = memo(function QuestDetailUi() {
     const id = useGameStore(selectQuestId)
-    const nameId = useGameStore(useCallback((s: GameState) => selectQuestName(id)(s), [id]))
-    const iconId = useGameStore(useCallback((s: GameState) => selectQuestIcon(id)(s), [id]))
-    const description = useGameStore(useCallback((s: GameState) => selectQuestDescription(id)(s), [id]))
+
     const outcomeIds = useGameStore(selectOutcomeIds)
     const state = useGameStore(useCallback((s: GameState) => selectQuestStatus(id)(s), [id]))
-
-    const onExpOutcomeChange = useCallback((outcomeId: string) => setExpandedOutcome(id, outcomeId), [id])
-    const expOutcomeId = useGameStore(
-        useCallback((s: GameState) => (id ? selectExpandedOutcomeId(s, id) : undefined), [id])
-    )
 
     if (!id || id === '') return <></>
 
     return (
         <>
-            <Card>
-                <CardHeader>
-                    <CardTitle>
-                        <TitleH1>
-                            {IconsData[iconId]}
-                            {nameId}
-                        </TitleH1>
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <TypographyP>{description}</TypographyP>
-                </CardContent>
-            </Card>
+            <QuestTitle />
+
             <div className="mt-4 grid gap-4">
-                <Accordion
-                    type="single"
-                    collapsible
-                    className="grid w-full gap-4"
-                    value={expOutcomeId}
-                    onValueChange={onExpOutcomeChange}
-                >
+                <QuestAccordion>
                     {outcomeIds.map((outcomeId) => (
                         <QuestOutcomeUi questId={id} outcomeId={outcomeId} key={outcomeId} />
                     ))}
-                </Accordion>
+                </QuestAccordion>
                 {state === QuestStatus.AVAILABLE && <QuestButtons id={id} />}
             </div>
         </>
+    )
+})
+
+export const QuestTitle = () => {
+    const id = useGameStore(selectQuestId)
+    const nameId = useGameStore(useCallback((s: GameState) => selectQuestName(id)(s), [id]))
+    const iconId = useGameStore(useCallback((s: GameState) => selectQuestIcon(id)(s), [id]))
+    const description = useGameStore(useCallback((s: GameState) => selectQuestDescription(id)(s), [id]))
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>
+                    <TitleH1>
+                        {IconsData[iconId]}
+                        {nameId}
+                    </TitleH1>
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <TypographyP>{description}</TypographyP>
+            </CardContent>
+        </Card>
+    )
+}
+
+export const QuestAccordion = ({ children }: { children: ReactNode[] }) => {
+    const id = useGameStore(selectQuestId)
+    const onExpOutcomeChange = useCallback((outcomeId: string) => setExpandedOutcome(id, outcomeId), [id])
+    const expOutcomeId = useGameStore(
+        useCallback((s: GameState) => (id ? selectExpandedOutcomeId(s, id) : undefined), [id])
+    )
+    return (
+        <Accordion
+            type="single"
+            collapsible
+            className="grid w-full gap-4"
+            value={expOutcomeId}
+            onValueChange={onExpOutcomeChange}
+        >
+            {children}
+        </Accordion>
     )
 }
 
