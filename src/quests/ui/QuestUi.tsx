@@ -1,4 +1,4 @@
-import { FC, memo, PropsWithChildren, ReactNode, useCallback } from 'react'
+import { memo, ReactNode, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { Popover, PopoverTrigger, PopoverContent, Portal } from '@radix-ui/react-popover'
 import { useShallow } from 'zustand/react/shallow'
