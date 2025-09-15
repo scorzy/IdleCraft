@@ -28,17 +28,7 @@ export const AppShell = memo(function AppShell() {
 
     return (
         <div className={clsx(classes.container, { sideOpen: open }, { contentOpen: !open })}>
-            <header className={classes.header}>
-                <div className={classes.headerLeft}>
-                    <Button onClick={toggle} className={classes.menu} variant="outline">
-                        <LuMenu />
-                    </Button>
-                    <Header />
-                </div>
-                <div>
-                    <ModeToggle />
-                </div>
-            </header>
+            <Header />
 
             <div className={classes.side}>
                 <Sidebar />
@@ -52,6 +42,22 @@ export const AppShell = memo(function AppShell() {
 })
 
 const Header = memo(function Header() {
+    return (
+        <header className={classes.header}>
+            <div className={classes.headerLeft}>
+                <Button onClick={toggle} className={classes.menu} variant="outline">
+                    <LuMenu />
+                </Button>
+                <HeaderTitle />
+            </div>
+            <div>
+                <ModeToggle />
+            </div>
+        </header>
+    )
+})
+
+const HeaderTitle = memo(function Header() {
     const page = useGameStore(selectPage)
     const { t } = useTranslations()
 
