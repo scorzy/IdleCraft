@@ -132,7 +132,6 @@ export const getSelectedItemQta = (state: GameState) => {
     if (!state.ui.selectedItemId) return 0
     return selectItemQta(state.ui.selectedItemLocation, state.ui.selectedItemId)(state)
 }
-type ItemIdValue = ItemId & { value: number }
 
 export const selectItemsByType = (itemType: ItemTypes | undefined) => (state: GameState) => {
     if (!itemType) return EMPTY_ARRAY
