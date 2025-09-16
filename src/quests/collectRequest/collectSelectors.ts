@@ -2,10 +2,10 @@ import { uniq } from 'es-toolkit/compat'
 import { GameState } from '../../game/GameState'
 import { selectTranslations } from '../../msg/useTranslations'
 import { selectTotalFilteredQta } from '../../storage/StorageSelectors'
-import { StorageState } from '../../storage/storageTypes'
 import { selectOutcomeEx } from '../selectors/selectOutcomeEx'
 import { selectOutcome } from '../selectors/selectOutcome'
 import { QuestRequestSelectors } from '../selectors/QuestRequestSelectors'
+import { StorageAdapter } from '../../storage/storageAdapter'
 
 export const selectQuestItemsReqIds = (state: GameState, questId: string, outcomeId: string) => {
     const reqItems = selectOutcome(state, questId, outcomeId)?.reqItems
@@ -69,7 +69,7 @@ export const selectCollectQuestChosenItems = (state: GameState, questId: string,
     }
     if (!reqItems) return ret
 
-    const usedItems: StorageState = {}
+    const usedItems: Record<string, number> = {}
 
     for (const reqItem of reqItems) {
         const itemIds = uniq([reqItem.selectedItem1, reqItem.selectedItem2, reqItem.selectedItem3]).filter(
@@ -79,7 +79,9 @@ export const selectCollectQuestChosenItems = (state: GameState, questId: string,
 
         for (const selectedItem of itemIds) {
             if (remaining < Number.EPSILON) continue
-            const available = (storage[selectedItem] ?? 0) - (usedItems[selectedItem] ?? 0)
+
+            const available =
+                (StorageAdapter.select(storage, selectedItem)?.quantity ?? 0) - (usedItems[selectedItem] ?? 0)
             if (available < Number.EPSILON) continue
 
             const maxUsed = Math.min(remaining, available)

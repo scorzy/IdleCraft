@@ -13,11 +13,12 @@ import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
 import { RecipeTypes } from '../crafting/RecipeInterfaces'
 import { QuestAdapter } from '../quests/QuestTypes'
+import { StorageAdapter } from '../storage/storageAdapter'
 import { GameState, LocationState } from './GameState'
 
 const getInitialVillageState: () => LocationState = () => {
     return {
-        storage: {},
+        storage: StorageAdapter.getInitialState(),
         forests: {},
         ores: {},
         loot: [],

@@ -1,6 +1,9 @@
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 
-export type StorageState = Record<string, number>
+export interface StorageState {
+    itemId: string
+    quantity: number
+}
 
 export type InventoryNoQta = Partial<Record<EquipSlotsEnum, { itemId: string }>>
 export interface Loot {

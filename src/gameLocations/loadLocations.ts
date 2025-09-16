@@ -1,5 +1,6 @@
 import { GameState } from '../game/GameState'
 import { loadOre } from '../mining/miningFunctions'
+import { StorageAdapter } from '../storage/storageAdapter'
 import { loadForest } from '../wood/forest/forestFunctions'
 import { GameLocations } from './GameLocations'
 
@@ -12,14 +13,7 @@ export function loadLocation(state: GameState, data: object) {
         const locationData = dataLoc[loc] as Record<string, unknown>
         const location = state.locations[loc as GameLocations]
 
-        if ('storage' in locationData) {
-            const storage = locationData.storage as Record<string, unknown>
-
-            const stdEntries = Object.entries(storage)
-            for (const entryStd of stdEntries)
-                if (typeof entryStd[1] === 'number') location.storage[entryStd[0]] = entryStd[1]
-        }
-
+        if ('storage' in locationData) StorageAdapter.load(locationData.storage)
         if ('forests' in locationData) location.forests = loadForest(locationData.forests)
         if ('ores' in locationData) location.ores = loadOre(locationData.forests)
     })

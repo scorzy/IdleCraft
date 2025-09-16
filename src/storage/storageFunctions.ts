@@ -8,31 +8,30 @@ import { Item } from '../items/Item'
 import { getUniqueId } from '../utils/getUniqueId'
 import { myCompare } from '../utils/myCompare'
 import { ItemAdapter } from './ItemAdapter'
-import { StorageState } from './storageTypes'
 import { onItemRemovedListeners } from './storageEvents'
+import { StorageAdapter } from './storageAdapter'
 import { InitialState } from '@/entityAdapter/InitialState'
 
 export function addGold(state: GameState, amount: number): void {
     state.gold = Math.max(0, state.gold + amount)
 }
 
-function subHasItem(state: StorageState, id: string, qta: number): boolean {
-    return (state[id] ?? 0) >= qta
-}
-
 export function addItem(state: GameState, itemId: string, qta: number, location?: GameLocations): void {
+    if (Math.abs(qta) < 0.00001) return
+
     location = location ?? state.location
     const storage = state.locations[location].storage
 
-    const old = storage[itemId]
-    const newQta = Math.max(qta + (old ?? 0), 0)
+    const old = StorageAdapter.select(storage, itemId)
+    const newQta = Math.max(qta + (old?.quantity ?? 0), 0)
 
     if (Math.abs(newQta) < Number.EPSILON) {
+        if (!old) return
         for (const event of onItemRemovedListeners) event(state, itemId, location)
 
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        delete storage[itemId]
-    } else storage[itemId] = newQta
+        StorageAdapter.remove(storage, itemId)
+    } else if (old) old.quantity = newQta
+    else StorageAdapter.upsertMerge(storage, { itemId, quantity: newQta })
 
     if (isCrafted(itemId) && !isCraftItemUsed(state, itemId)) removeCraftItem(state.craftedItems, itemId)
 }
@@ -54,7 +53,7 @@ function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
     if (equipped) return true
 
     const locations = Object.values(state.locations)
-    for (const loc of locations) if (loc.storage[craftItemId] ?? 0 > 0) return true
+    for (const loc of locations) if (StorageAdapter.select(loc.storage, craftItemId)?.quantity ?? 0 > 0) return true
 
     return false
 }
@@ -62,7 +61,7 @@ function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
 export function hasItem(state: GameState, stdItemId: string, qta: number, location?: GameLocations): boolean {
     location = location ?? state.location
     const storage = state.locations[location].storage
-    return subHasItem(storage, stdItemId, qta)
+    return (StorageAdapter.select(storage, stdItemId)?.quantity ?? 0) >= qta
 }
 
 export const setSelectedItem = (itemId: string | null, location: GameLocations) =>

@@ -16,7 +16,7 @@ import { QuestState } from '../quests/QuestTypes'
 import { InitialState } from '@/entityAdapter/InitialState'
 
 export interface LocationState {
-    storage: StorageState
+    storage: InitialState<StorageState>
     forests: ForestsType
     ores: OreType
     loot: LootId[]
