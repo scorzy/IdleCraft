@@ -33,6 +33,7 @@
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "deepmerge-ts": "^7.1.5",
     "es-toolkit": "^1.39.10",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "fast-equals": "^5.2.2",
