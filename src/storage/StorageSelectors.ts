@@ -1,9 +1,8 @@
 import { memoize } from 'proxy-memoize'
 import { useMemo } from 'react'
-import { GameState, LocationState } from '../game/GameState'
+import { GameState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { StdItems } from '../items/stdItems'
-import { myMemoizeOne } from '../utils/myMemoizeOne'
 import { Item, ItemFilter, ItemTypes } from '../items/Item'
 import { selectTranslations } from '../msg/useTranslations'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
@@ -19,14 +18,6 @@ import { isCrafted } from './storageFunctions'
 import { StorageAdapter } from './storageAdapter'
 import { InitialState } from '@/entityAdapter/InitialState'
 
-const selectStorageLocationsInt = myMemoizeOne((locations: Record<GameLocations, LocationState>) => {
-    const res: GameLocations[] = []
-    const locationsEntries = Object.entries(locations)
-    for (const loc of locationsEntries) if (loc[1].storage.ids.length > 0) res.push(loc[0] as GameLocations)
-
-    return res
-})
-
 export const selectCurrentLocationStorageIds = (state: GameState) =>
     StorageAdapter.getIds(state.locations[state.location].storage)
 
@@ -35,7 +26,13 @@ export const selectGameItemFromCraft = (itemId: string, craftedItems: InitialSta
     else return ItemAdapter.select(craftedItems, itemId)
 }
 
-export const selectStorageLocations = (state: GameState) => selectStorageLocationsInt(state.locations)
+export const selectStorageLocationsMemo = memoize((state: GameState) => {
+    const res: GameLocations[] = []
+    const locationsEntries = Object.entries(state.locations)
+    for (const loc of locationsEntries) if (loc[1].storage.ids.length > 0) res.push(loc[0] as GameLocations)
+
+    return res
+})
 
 interface ItemId {
     id: string

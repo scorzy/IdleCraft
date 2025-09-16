@@ -6,7 +6,7 @@ import { GameLocations } from '../../gameLocations/GameLocations'
 import {
     selectGameItem,
     selectItemQta,
-    selectStorageLocations,
+    selectStorageLocationsMemo,
     isSelected,
     useLocationItems,
 } from '../StorageSelectors'
@@ -40,7 +40,7 @@ const breakpoints: QueryBreakpoints = {
 }
 
 export function UiStorage() {
-    const locations = useGameStore(selectStorageLocations)
+    const locations = useGameStore(selectStorageLocationsMemo)
 
     const { ref, active } = useContainerQueries({ breakpoints })
     const [show, setShow] = useState(false)
