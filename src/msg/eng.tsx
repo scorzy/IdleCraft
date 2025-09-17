@@ -221,6 +221,9 @@ export const engMsg: Msg = {
     selectPlaceholder: '-- Select --',
 
     collectConsume: 'The following items will be consumed: ',
+    deleteSaveTitle: 'Are you absolutely sure?',
+    deleteSaveDesc: 'This action cannot be undone. This will permanently delete your save',
+    cancel: 'Cancel',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

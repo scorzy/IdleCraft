@@ -244,6 +244,9 @@ export interface Msg {
     selectPlaceholder: string
 
     collectConsume: string
+    deleteSaveTitle: string
+    deleteSaveDesc: string
+    cancel: string
 }
 export interface MsgFunctions {
     // Time

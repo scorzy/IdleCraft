@@ -1,5 +1,5 @@
 import { SetStateAction, memo, useCallback, useEffect, useState } from 'react'
-import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog'
+
 import { Button } from '../components/ui/button'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { TrashIcon } from '../icons/IconsMemo'
@@ -7,6 +7,17 @@ import { useTranslations } from '../msg/useTranslations'
 import { getUniqueId } from '../utils/getUniqueId'
 import { ProgressBar } from '../ui/progress/ProgressBar'
 import { useUiTempStore } from '../ui/state/uiTempStore'
+import {
+    AlertDialogHeader,
+    AlertDialogFooter,
+    AlertDialog,
+    AlertDialogTrigger,
+    AlertDialogContent,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from '../components/ui/alert-dialog'
 import { useGameStore } from './state'
 import { GetInitialGameState } from './InitialGameState'
 import { load, startAnyway, stopLoad } from './functions/gameFunctions'
@@ -21,7 +32,15 @@ import {
 } from './gameSelectors'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from '@/components/ui/dialog'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog'
 
 const startGame = (name: string) => () => {
     if (name === '') return
@@ -145,9 +164,23 @@ const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Di
             <span className="text-muted-foreground min-w-20 text-right text-sm">
                 <TimeAgo date={item.state.now} /> {t.Ago}
             </span>
-            <Button onClick={deleteGame} variant="ghost" title={t.Delete} className="text-muted-foreground">
-                {TrashIcon}
-            </Button>
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <Button variant="ghost" title={t.Delete} className="text-muted-foreground">
+                        {TrashIcon}
+                    </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>{t.deleteSaveTitle}</AlertDialogTitle>
+                        <AlertDialogDescription>{t.deleteSaveDesc}</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
+                        <AlertDialogAction onClick={deleteGame}>{t.Delete}</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     )
 })
