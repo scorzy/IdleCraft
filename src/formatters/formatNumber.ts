@@ -43,7 +43,7 @@ export function getFormatter(
     const groupSep = parts.find((p) => p.type === 'group')?.value ?? ''
     const decimalSep = parts.find((p) => p.type === 'decimal')?.value ?? '.'
 
-    const parseIntl = (str: string) => {
+    const parseIntl = myMemoize((str: string) => {
         str = str.replace(groupSep, '').toUpperCase()
         let i = n - 1
         for (; i >= 0; i--) {
@@ -67,7 +67,7 @@ export function getFormatter(
         const num = Number(numStr)
         if (!isFinite(num)) return 0
         return num * multi
-    }
+    })
 
     let formatter: (value: number) => string
 
