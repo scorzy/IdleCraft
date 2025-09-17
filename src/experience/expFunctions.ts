@@ -6,9 +6,8 @@ import { ExpEnum } from './ExpEnum'
 import { getCharLevel } from './expSelectors'
 
 export function addExp(state: GameState, expType: ExpEnum, expQta: number, characterId: string = PLAYER_ID): void {
-    if (characterId !== PLAYER_ID) return
-
     const char = CharacterAdapter.selectEx(state.characters, characterId)
+    if (char.isEnemy) return
 
     const currentExp = char.skillsExp[expType] ?? 0
     const currentLevel = char.skillsLevel[expType] ?? -1
