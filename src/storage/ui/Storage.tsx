@@ -131,7 +131,6 @@ const LocationStorage = memo(function LocationStorage(props: {
     const items = useLocationItems(location)
     const [open, setOpen] = useState(true)
     const handleClick = () => setOpen(!open)
-    const { ref, active } = useContainerQueries({ breakpoints })
 
     return (
         <Collapsible open={open}>
@@ -144,8 +143,8 @@ const LocationStorage = memo(function LocationStorage(props: {
                 <span className="sr-only">{location}</span>
             </CollapsibleTrigger>
             <CollapsibleContent className="CollapsibleContent">
-                <Table ref={ref}>
-                    {active === 'med' && <StorageHeader />}
+                <Table>
+                    {!small && <StorageHeader />}
                     {show && (
                         <TableBody>
                             {items.map((i) => (
@@ -181,7 +180,7 @@ const StorageHeaderName = memo(function StorageHeaderName() {
     const { t } = useTranslations()
     return (
         <TableHead>
-            <Button variant="ghost" size="sm" className="gap-1" onClick={nameClick}>
+            <Button variant="ghost" size="sm" className="w-full justify-start gap-1" onClick={nameClick}>
                 {t.Name} {order && <StorageHeaderArrow />}
             </Button>
         </TableHead>
@@ -192,7 +191,7 @@ const StorageHeaderQuantity = memo(function StorageHeaderQuantity() {
     const { t } = useTranslations()
     return (
         <TableHead className="w-28 text-right">
-            <Button variant="ghost" size="sm" className="gap-1" onClick={quantityClick}>
+            <Button variant="ghost" size="sm" className="w-full justify-start gap-1" onClick={quantityClick}>
                 {t.Quantity} {order && <StorageHeaderArrow />}
             </Button>
         </TableHead>
@@ -203,7 +202,7 @@ const StorageHeaderValue = memo(function StorageHeaderValue() {
     const { t } = useTranslations()
     return (
         <TableHead className="w-28 text-right">
-            <Button variant="ghost" size="sm" className="gap-1" onClick={valueClick}>
+            <Button variant="ghost" size="sm" className="w-full justify-start gap-1" onClick={valueClick}>
                 {t.Value}
                 {order && <StorageHeaderArrow />}
             </Button>
