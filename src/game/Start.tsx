@@ -6,6 +6,7 @@ import { TrashIcon } from '../icons/IconsMemo'
 import { useTranslations } from '../msg/useTranslations'
 import { getUniqueId } from '../utils/getUniqueId'
 import { ProgressBar } from '../ui/progress/ProgressBar'
+import { useUiTempStore } from '../ui/state/uiTempStore'
 import { useGameStore } from './state'
 import { GetInitialGameState } from './InitialGameState'
 import { load, startAnyway, stopLoad } from './functions/gameFunctions'
@@ -172,10 +173,10 @@ const TimeAgo = memo(function TimeAgo(props: { date: number }) {
 const Loading = memo(function Loading() {
     const { t, fun } = useTranslations()
     const loading = useGameStore(selectLoading)
-    const percent = useGameStore(selectLoadingProgress)
-    const start = useGameStore(selectLoadingStart)
-    const end = useGameStore(selectLoadingEnd)
-    const now = useGameStore(selectLoadingNow)
+    const percent = useUiTempStore(selectLoadingProgress)
+    const start = useUiTempStore(selectLoadingStart)
+    const end = useUiTempStore(selectLoadingEnd)
+    const now = useUiTempStore(selectLoadingNow)
     const total = end - start
     const done = now - start
 

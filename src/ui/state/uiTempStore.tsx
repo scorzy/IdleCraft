@@ -1,10 +1,17 @@
 import { create } from 'zustand'
 import { CollapsedEnum } from '../sidebar/CollapsedEnum'
 
-export interface uiTempStore {
+export interface UiTempStore {
     sidebarWidths: Partial<Record<CollapsedEnum, number>>
+    loadingData?: {
+        loading: boolean
+        start: number
+        now: number
+        end: number
+        percent: number
+    }
 }
-const initialUiTempStore: uiTempStore = {
+const initialUiTempStore: UiTempStore = {
     sidebarWidths: {},
 }
-export const useUiTempStore = create<uiTempStore>()(() => initialUiTempStore)
+export const useUiTempStore = create<UiTempStore>()(() => initialUiTempStore)

@@ -34,12 +34,11 @@ export function loadGame(state: GameState): void {
         if (Date.now() - lastReport > 100) {
             lastReport = Date.now()
             const percent = Math.floor((100 * (state.now - gameStart)) / (end - gameStart))
-            state.loadingData = { loading: true, start: gameStart, now: state.now, end, percent }
-            postMessage({ state }) // todo: return only progress
+            const loadingData = { loading: true, start: gameStart, now: state.now, end, percent }
+            postMessage({ loadingData })
         }
     }
     state.loading = false
-    state.loadingData = undefined
     const endLoad = Date.now()
     console.log(`Load time: ${endLoad - start}ms`)
 }

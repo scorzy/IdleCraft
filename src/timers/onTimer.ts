@@ -1,6 +1,6 @@
 import { GameState } from '../game/GameState'
 import { activityExecutors } from '../game/globals'
-import { regenerate } from '../game/regenerate'
+import { regenerate } from '../game/functions/regenerate'
 import { TimerAdapter } from './Timer'
 
 export function onTimer(state: GameState, timerId: string): void {

@@ -1,10 +1,11 @@
+import { useUiTempStore } from '../../ui/state/uiTempStore'
 import { GameState } from '../GameState'
 import { GetInitialGameState } from '../InitialGameState'
 import { loadData } from '../loadData'
 import { WorkerMessage } from '../loadWorkerTypes'
-import { regenerate } from '../regenerate'
 import { setState } from '../setState'
 import { useGameStore } from '../state'
+import { regenerate } from './regenerate'
 import { advanceTimers } from './advanceTimers'
 
 // eslint-disable-next-line import/default
@@ -25,20 +26,20 @@ function start(state: GameState): void {
     if (diff > 0) advanceTimers(state, diff)
     regenerate(state, state.now)
     state.loading = false
-    state.loadingData = undefined
     startTimers(state)
+    useGameStore.setState(structuredClone(state))
 }
 
 export const load = (data: object) => {
     worker = new LoadWorker()
     worker.onmessage = (e: MessageEvent<WorkerMessage>) => {
-        const state: GameState = e.data.state
-        if (!state.loading) start(state)
-        useGameStore.setState(state)
+        console.log(e.data)
+        if (e.data.state) start(e.data.state)
+        if (e.data.loadingData) useUiTempStore.setState({ loadingData: e.data.loadingData })
     }
     const state = loadData(data)
     state.loading = true
-    state.loadingData = undefined
+    useUiTempStore.setState({ loadingData: undefined })
     useGameStore.setState(structuredClone(state))
     worker.postMessage(state)
 }

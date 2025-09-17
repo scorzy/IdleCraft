@@ -7,7 +7,7 @@ import { selectGameId, selectLoading } from './game/gameSelectors'
 import { AppShell } from './ui/shell/AppShell'
 import { ThemeProvider } from './ui/themeProvider'
 import { GameState } from './game/GameState'
-import { regenerate } from './game/regenerate'
+import { regenerate } from './game/functions/regenerate'
 import { Alert, AlertTitle, AlertDescription } from './components/ui/alert'
 import { setState } from './game/setState'
 

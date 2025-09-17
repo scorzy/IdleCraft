@@ -1,5 +1,5 @@
 import { GameState } from '../GameState'
-import { initialize } from '../initialize'
+import { initialize } from './initialize'
 import { loadGame } from './loadGame'
 
 onmessage = (e) => {

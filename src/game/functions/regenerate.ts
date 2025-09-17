@@ -1,6 +1,6 @@
-import { regenerateChars } from '../characters/functions/regenerateChars'
-import { updateQuests } from '../quests/QuestFunctions'
-import { GameState } from './GameState'
+import { regenerateChars } from '../../characters/functions/regenerateChars'
+import { updateQuests } from '../../quests/QuestFunctions'
+import { GameState } from '../GameState'
 
 export function regenerate(state: GameState, now: number): void {
     if (!state.lastRegen || state.lastRegen < 1) state.lastRegen = now

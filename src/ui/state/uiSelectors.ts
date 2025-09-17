@@ -2,7 +2,7 @@ import { CharacterAdapter } from '../../characters/characterAdapter'
 import { GameState } from '../../game/GameState'
 import { WoodTypes } from '../../wood/WoodTypes'
 import { CollapsedEnum } from '../sidebar/CollapsedEnum'
-import { uiTempStore } from './uiTempStore'
+import { UiTempStore } from './uiTempStore'
 
 export const selectUi = (state: GameState) => state.ui
 export const selectTheme = (state: GameState) => state.ui.theme
@@ -29,4 +29,4 @@ export const selectStorageAsc = (s: GameState) => s.ui.storageAsc
 export const selectIsStorageOrderName = (s: GameState) => s.ui.storageOrder === 'name'
 export const selectIsStorageOrderQuantity = (s: GameState) => s.ui.storageOrder === 'quantity'
 export const selectIsStorageOrderValue = (s: GameState) => s.ui.storageOrder === 'value'
-export const getSidebarWidth = (id?: CollapsedEnum) => (s: uiTempStore) => (id ? (s.sidebarWidths[id] ?? 0) : -1)
+export const getSidebarWidth = (id?: CollapsedEnum) => (s: UiTempStore) => (id ? (s.sidebarWidths[id] ?? 0) : -1)
