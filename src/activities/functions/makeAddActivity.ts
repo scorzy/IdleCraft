@@ -17,7 +17,7 @@ export const makeAddActivity =
             ...data,
         }
 
-        state.activities = ActivityAdapter.create(state.activities, activity)
+        ActivityAdapter.create(state.activities, activity)
         state.orderedActivities.push(id)
 
         if (add) add(state, id)

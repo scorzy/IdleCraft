@@ -29,7 +29,7 @@ const acquirePerk =
                 abilityId: perkData.abilityUnlock,
                 perkSource: perk,
             }
-            char.allCombatAbilities = CharAbilityAdapter.upsertMerge(allCombatAbilities, charAbility)
+            CharAbilityAdapter.upsertMerge(allCombatAbilities, charAbility)
         }
     }
 export const acquirePerkClick = (perk: PerksEnum) => () => setState(acquirePerk(perk))

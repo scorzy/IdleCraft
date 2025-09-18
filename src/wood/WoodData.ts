@@ -15,7 +15,7 @@ interface WoodDataType {
 export const WoodData: Record<WoodTypes, WoodDataType> = {
     [WoodTypes.DeadTree]: {
         maxHp: 100,
-        maxQta: 10,
+        maxQta: 30,
         iconId: Icons.DeadWood,
         nameId: 'DeadTree',
         logId: 'DeadTreeLog',
@@ -25,7 +25,7 @@ export const WoodData: Record<WoodTypes, WoodDataType> = {
     },
     [WoodTypes.Oak]: {
         maxHp: 200,
-        maxQta: 5,
+        maxQta: 20,
         iconId: Icons.Oak,
         nameId: 'Oak',
         logId: 'OakLog',

@@ -1,11 +1,8 @@
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { WoodTypes } from '../WoodTypes'
-import { getUniqueId } from '../../utils/getUniqueId'
-import { startTimer } from '../../timers/startTimer'
-import { ActivityTypes } from '../../activities/ActivityState'
-import { selectDefaultForest, selectTreeGrowthTime } from './forestSelectors'
-import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
+import { selectDefaultForest } from './forestSelectors'
+import { checkGrowTrees } from './checkGrowTrees'
 
 export function cutTree(
     state: GameState,
@@ -37,14 +34,7 @@ export function cutTree(
         qta = Math.max(0, qta - 1)
         cut = true
 
-        const growthTime = selectTreeGrowthTime()
-        const treeData: TreeGrowth = {
-            id: getUniqueId(),
-            location,
-            woodType,
-        }
-        TreeGrowthAdapter.create(state.treeGrowth, treeData)
-        startTimer(state, growthTime, ActivityTypes.Tree, treeData.id)
+        checkGrowTrees(state, woodType, location)
     }
 
     state.locations[location].forests[woodType] = {

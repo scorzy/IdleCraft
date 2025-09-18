@@ -6,5 +6,4 @@ import { growTree } from './growTree'
 export function execTreeGrow(state: GameState, timer: Timer) {
     growTree(state, timer.actId)
     if (state.waitingTrees === state.activityId) startNextActivity(state)
-    return state
 }

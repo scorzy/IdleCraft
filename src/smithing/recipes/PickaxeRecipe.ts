@@ -57,7 +57,7 @@ export const PickaxeRecipe = makeRecipe({
         const craftedAxe: Item = {
             id: '',
             nameId: 'Pickaxe',
-            icon: Icons.Axe,
+            icon: Icons.Pickaxe,
             type: ItemTypes.Pickaxe,
             equipSlot: EquipSlotsEnum.Pickaxe,
             value: getItemValue(components, true),

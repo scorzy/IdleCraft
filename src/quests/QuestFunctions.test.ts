@@ -53,7 +53,7 @@ describe('Quest Functions', () => {
             },
         }
 
-        state.quests = QuestAdapter.create(state.quests, questState)
+        QuestAdapter.create(state.quests, questState)
 
         questOnItemRemove(state, 'item', state.location)
 
@@ -112,7 +112,7 @@ describe('Quest Functions', () => {
             },
         }
 
-        state.quests = QuestAdapter.create(state.quests, questState)
+        QuestAdapter.create(state.quests, questState)
 
         questOnItemRemove(state, 'item', state.location)
 

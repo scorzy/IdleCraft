@@ -4,6 +4,7 @@ import { ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
 import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
+import { GameLocations } from '../../gameLocations/GameLocations'
 import { TreeGrowthAdapter } from './forestGrowth'
 
 export const selectDefaultForest = (_s: GameState, woodType: WoodTypes) => {
@@ -20,7 +21,7 @@ export const selectForest = (state: GameState, woodType: WoodTypes) => {
     return selectDefaultForest(state, woodType)
 }
 
-export const selectTreeGrowthTime = () => 60e3
+export const selectTreeGrowthTime = () => 3 * 60e3
 export const selectForestQta = (state: GameState, woodType: WoodTypes) => selectForest(state, woodType).qta
 
 export const selectGrowingTrees = (s: GameState, woodType: WoodTypes) => {
@@ -40,3 +41,6 @@ export const selectGrowingTreesMemo = (woodType: WoodTypes) =>
         memoize((s: GameState) => selectGrowingTrees(s, woodType)),
         { maxSize: 10 }
     )
+
+export const selectGrowTreeNumber = (state: GameState, woodType: WoodTypes, location: GameLocations) =>
+    TreeGrowthAdapter.count(state.treeGrowth, (t) => t.woodType === woodType && t.location === location)

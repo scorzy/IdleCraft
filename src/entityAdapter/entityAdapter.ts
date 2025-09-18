@@ -11,26 +11,26 @@ export abstract class AbstractEntityAdapter<T> {
         }
     }
     create(state: InitialState<T>, data: T) {
-        return adapterFunctions.create(state, this.getId(data), data)
+        adapterFunctions.create(state, this.getId(data), data)
     }
     update(state: InitialState<T>, id: string, data: Partial<T>) {
-        return adapterFunctions.update(state, id, data)
+        adapterFunctions.update(state, id, data)
     }
     replace(state: InitialState<T>, id: string, data: T) {
-        return adapterFunctions.replace(state, id, data)
+        adapterFunctions.replace(state, id, data)
     }
     upsertMerge(state: InitialState<T>, data: T) {
         const id = this.getId(data)
         const existing = state.entries[id]
 
-        if (!existing) return this.create(state, data)
-        else return this.update(state, id, data)
+        if (!existing) this.create(state, data)
+        else this.update(state, id, data)
     }
     remove(state: InitialState<T>, id: string) {
         const existing = state.entries[id]
         if (!existing) throw new Error(`${id} doesn't exists`)
 
-        return adapterFunctions.remove(state, id)
+        adapterFunctions.remove(state, id)
     }
     getIds(state: InitialState<T>): string[] {
         return state.ids
@@ -63,8 +63,15 @@ export abstract class AbstractEntityAdapter<T> {
     findManyIds(state: InitialState<T>, fun: (entity: T) => boolean): string[] {
         return this.findMany(state, fun)?.map((el) => this.getId(el)) ?? []
     }
+    count(state: InitialState<T>, fun: (entity: T) => boolean): number {
+        let ret = 0
+        this.forEach(state, (e) => {
+            if (fun(e)) ret++
+        })
+        return ret
+    }
     load(data: unknown): InitialState<T> {
-        let state = this.getInitialState()
+        const state = this.getInitialState()
         if (
             data &&
             typeof data === 'object' &&
@@ -79,7 +86,7 @@ export abstract class AbstractEntityAdapter<T> {
                 if (typeof id !== 'string') continue
                 const data2 = entryFix[id]
                 const entry = this.complete(data2)
-                if (entry) state = this.create(state, entry)
+                if (entry) this.create(state, entry)
             }
         }
         return state

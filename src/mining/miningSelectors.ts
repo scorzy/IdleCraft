@@ -11,7 +11,7 @@ import { ExpEnum } from '@/experience/ExpEnum'
 
 export const DEF_PICKAXE: PickaxeData = {
     damage: 10,
-    time: 4e3,
+    time: 6e3,
     armourPen: 0,
 }
 

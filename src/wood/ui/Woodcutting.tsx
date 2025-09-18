@@ -27,6 +27,7 @@ import { Alert, AlertTitle, AlertDescription } from '../../components/ui/alert'
 import { isSelectedWoodEnabled, selectWoodcuttingId } from '../selectors/WoodcuttingSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
+import { MAX_GROWING_TREES } from '../WoodConst'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { ExpEnum } from '@/experience/ExpEnum'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
@@ -181,6 +182,7 @@ const Trees = memo(function Trees() {
         <>
             <MyLabel>
                 {t.GrowingTrees} {f(trees.length)}
+                <span className="text-muted-foreground">/ {f(MAX_GROWING_TREES)}</span>
             </MyLabel>
 
             {trees.map((t) => (

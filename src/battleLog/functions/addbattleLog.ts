@@ -9,11 +9,11 @@ const MAX_LOGS = 100
 export function addBattleLog(state: GameState, addLog: AddBattleLog): void {
     const battleLog: BattleLog = { ...addLog, id: getUniqueId(), date: state.now }
 
-    let battleLogs = BattleLogAdapter.create(state.battleLogs, battleLog)
+    BattleLogAdapter.create(state.battleLogs, battleLog)
 
-    while (battleLogs.ids.length > MAX_LOGS) {
-        const id = battleLogs.ids[0]
-        if (id) battleLogs = BattleLogAdapter.remove(battleLogs, id)
+    while (state.battleLogs.ids.length > MAX_LOGS) {
+        const id = state.battleLogs.ids[0]
+        if (id) BattleLogAdapter.remove(state.battleLogs, id)
     }
 }
 export function addKillBattleLog(state: GameState, targetId: string): void {

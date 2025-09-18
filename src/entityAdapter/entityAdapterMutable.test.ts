@@ -18,28 +18,25 @@ describe('EntityAdapter Mutable', () => {
 
     it('create first', () => {
         const state = adapter.getInitialState()
-        const newState = adapter.create(state, { name: 'first' })
-        expect(newState).toEqual({ entries: { first: { name: 'first' } }, ids: ['first'] })
-        expect(adapter.getIds(newState)).toEqual(['first'])
-        expect(state).toBe(newState)
+        adapter.create(state, { name: 'first' })
+        expect(state).toEqual({ entries: { first: { name: 'first' } }, ids: ['first'] })
+        expect(adapter.getIds(state)).toEqual(['first'])
     })
     it('create second', () => {
         const state = { entries: { first: { name: 'first' } }, ids: ['first'] }
-        const newState = adapter.create(state, { name: 'second' })
-        expect(newState).toEqual({
+        adapter.create(state, { name: 'second' })
+        expect(state).toEqual({
             entries: {
                 first: { name: 'first' },
                 second: { name: 'second' },
             },
             ids: ['first', 'second'],
         })
-        expect(state).toBe(newState)
     })
     it('update', () => {
         const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }
-        const newState = adapter2.update(state, 'first', { name: 'second' })
-        expect(newState).toEqual({ entries: { first: { id: 'first', name: 'second' } }, ids: ['first'] })
-        expect(state).toBe(newState)
+        adapter2.update(state, 'first', { name: 'second' })
+        expect(state).toEqual({ entries: { first: { id: 'first', name: 'second' } }, ids: ['first'] })
     })
     it('update not exists', () => {
         const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }
@@ -47,18 +44,16 @@ describe('EntityAdapter Mutable', () => {
     })
     it('upsertMerge', () => {
         const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }
-        const newState = adapter2.upsertMerge(state, { id: 'first', name: 'name2' })
-        expect(newState).toEqual({ entries: { first: { id: 'first', name: 'name2' } }, ids: ['first'] })
-        expect(state).toBe(newState)
+        adapter2.upsertMerge(state, { id: 'first', name: 'name2' })
+        expect(state).toEqual({ entries: { first: { id: 'first', name: 'name2' } }, ids: ['first'] })
     })
     it('upsertMerge', () => {
         const state = { entries: { first: { id: 'first', name: 'name1' } }, ids: ['first'] }
-        const newState = adapter2.upsertMerge(state, { id: 'second', name: 'name2' })
-        expect(newState).toEqual({
+        adapter2.upsertMerge(state, { id: 'second', name: 'name2' })
+        expect(state).toEqual({
             entries: { first: { id: 'first', name: 'name1' }, second: { id: 'second', name: 'name2' } },
             ids: ['first', 'second'],
         })
-        expect(state).toBe(newState)
     })
     it('remove by id', () => {
         const state = {
@@ -68,14 +63,13 @@ describe('EntityAdapter Mutable', () => {
             },
             ids: ['first', 'second'],
         }
-        const newState = adapter2.remove(state, 'second')
-        expect(newState).toEqual({
+        adapter2.remove(state, 'second')
+        expect(state).toEqual({
             entries: {
                 first: { id: 'first', name: 'name1' },
             },
             ids: ['first'],
         })
-        expect(state).toBe(newState)
     })
     it('remove by id not exists', () => {
         const state = {
