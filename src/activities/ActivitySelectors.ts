@@ -2,7 +2,7 @@ import { GameState } from '../game/GameState'
 import { activityIcons, activityTitles } from '../game/globals'
 import { ActivityAdapter } from './ActivityState'
 
-export const selectActivityId = (state: GameState) => state.activities.ids
+export const selectActivityIds = (state: GameState) => state.orderedActivities
 export const selectActivityTitle = (id: string) => (state: GameState) => {
     const act = ActivityAdapter.selectEx(state.activities, id)
     return activityTitles.getEx(act.type)(state, id)
