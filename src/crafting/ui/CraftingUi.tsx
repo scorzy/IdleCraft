@@ -6,6 +6,7 @@ import { recipes } from '../Recipes'
 import { useGameStore } from '../../game/state'
 import {
     canCraft,
+    selectCraftingIds,
     selectCraftTime,
     selectCurrentCrafting,
     selectRecipeId,
@@ -25,7 +26,7 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { RecipeData } from '../RecipeData'
 import { setRecipeItemParamUi } from '../RecipeFunctions'
 import { Recipe } from '../Recipe'
-import { MyPage } from '../../ui/pages/MyPage'
+import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { addCraftingClick } from '../functions/addCrafting'
 import { handleRecipeChange } from '../CraftingFunctions'
@@ -35,6 +36,7 @@ import { IconsData } from '../../icons/Icons'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { GameState } from '../../game/GameState'
+import { ActivitiesList } from '../../activities/ui/Activities'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
@@ -61,31 +63,46 @@ export const CraftingUi = memo(function CraftingUi() {
     if (!recipeType) return
 
     return (
-        <MyPage className="page__main" key={recipeType}>
-            <RecipeUi />
+        <MyPageAll
+            header={
+                <div className="page__info">
+                    <ExperienceCard expType={RecipeData[recipeType].expType} charId={PLAYER_ID} />
+                </div>
+            }
+        >
+            <MyPage className="page__main" key={recipeType}>
+                <RecipeUi />
 
-            <Card>
-                <MyCardHeaderTitle title={t.Results} />
-                <CardContent>{result && result?.map((r) => <CraftingResult key={r.id} result={r} />)}</CardContent>
-            </Card>
+                <Card>
+                    <MyCardHeaderTitle title={t.Results} />
+                    <CardContent>{result && result?.map((r) => <CraftingResult key={r.id} result={r} />)}</CardContent>
+                </Card>
 
-            <Card>
-                <MyCardHeaderTitle title={t.Requirements} />
-                <CardContent>
-                    <CraftingReq req={req} />
-                </CardContent>
-            </Card>
+                <Card>
+                    <MyCardHeaderTitle title={t.Requirements} />
+                    <CardContent>
+                        <CraftingReq req={req} />
+                    </CardContent>
+                </Card>
 
-            <ExperienceCard expType={RecipeData[recipeType].expType} charId={PLAYER_ID} />
-        </MyPage>
+                <CraftingQueue />
+            </MyPage>
+        </MyPageAll>
     )
 })
+
+const CraftingQueue = memo(function CraftingQueue() {
+    const ids = useGameStore(selectCraftingIds)
+    return <ActivitiesList ids={ids} filtered={true} />
+})
+
 const RecipeUi = memo(function RecipeUi() {
     const recipeType = useGameStore(selectRecipeType)
     const params = useGameStore(selectRecipeParams)
     const { t } = useTranslations()
 
     if (!recipeType) return null
+
     return (
         <Card>
             <MyCardHeaderTitle title={t.Recipe} />

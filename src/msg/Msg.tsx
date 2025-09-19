@@ -247,6 +247,8 @@ export interface Msg {
     deleteSaveTitle: string
     deleteSaveDesc: string
     cancel: string
+    Active: string
+    InQueue: string
 }
 export interface MsgFunctions {
     // Time

@@ -1,10 +1,12 @@
 import equal from 'react-fast-compare'
+import { memoize } from 'proxy-memoize'
 import { GameState } from '../game/GameState'
 import { selectItemQta } from '../storage/StorageSelectors'
 import { selectCraftItemId } from '../storage/storageFunctions'
 import { ActivityAdapter } from '../activities/ActivityState'
 import { RecipeItem } from './RecipeInterfaces'
 import { isCrafting } from './CraftingIterfaces'
+import { recipes } from './Recipes'
 
 export const getCraftingActivity = (s: GameState, id: string) => {
     const act = ActivityAdapter.selectEx(s.activities, id)
@@ -52,3 +54,6 @@ export const selectResultQta = (result?: RecipeItem) => (s: GameState) => {
     }
     return 0
 }
+export const selectCraftingIds = memoize((s: GameState) =>
+    ActivityAdapter.findManyIds(s.activities, (a) => isCrafting(a) && recipes.get(a.recipeId)?.type === s.ui.recipeType)
+)

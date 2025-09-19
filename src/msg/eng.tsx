@@ -224,6 +224,8 @@ export const engMsg: Msg = {
     deleteSaveTitle: 'Are you absolutely sure?',
     deleteSaveDesc: 'This action cannot be undone. This will permanently delete your save',
     cancel: 'Cancel',
+    Active: 'Active',
+    InQueue: 'In Queue',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
