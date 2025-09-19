@@ -1,5 +1,5 @@
 import { GameState } from '../game/GameState'
-import { activityIcons, activityTitles } from '../game/globals'
+import { activityIcons, activityTitles, activityViewers } from '../game/globals'
 import { ActivityAdapter } from './ActivityState'
 
 export const selectActivityIds = (state: GameState) => state.orderedActivities
@@ -16,4 +16,9 @@ export const selectActivityNum = (state: GameState) => {
 }
 export const selectActivityMax = (id: string) => (state: GameState) => {
     return ActivityAdapter.selectEx(state.activities, id).max
+}
+export const selectActivityCanView = (id: string) => (s: GameState) => {
+    const activity = ActivityAdapter.select(s.activities, id)
+    if (!activity) return
+    return activityViewers.get(activity.type) !== undefined
 }

@@ -44,7 +44,17 @@ import { questOnKillListener } from '../../quests/killRequest/questOnKillListene
 import { questOnItemRemove } from '../../quests/collectRequest/questOnItemRemove'
 import { getCraftingIcon } from '../../crafting/selectors/getCraftingIcon'
 import { getCraftingTitle } from '../../crafting/selectors/getCraftingTitle'
-import { activityIcons, activityRemovers, activityStarters, activityTitles, activityExecutors } from '../globals'
+import {
+    activityIcons,
+    activityRemovers,
+    activityStarters,
+    activityTitles,
+    activityExecutors,
+    activityViewers,
+} from '../globals'
+import { viewCrafting } from '../../crafting/functions/viewCrafting'
+import { viewWoodcutting } from '../../wood/functions/viewWoodcutting'
+import { viewMining } from '../../mining/functions/viewMining'
 
 export function initialize() {
     initActivities()
@@ -60,18 +70,21 @@ function initActivities() {
     activityStarters.set(ActivityTypes.Woodcutting, startWoodcutting)
     activityTitles.set(ActivityTypes.Woodcutting, getWoodcuttingTitle)
     activityIcons.set(ActivityTypes.Woodcutting, getWoodcuttingIcon)
+    activityViewers.set(ActivityTypes.Woodcutting, viewWoodcutting)
 
     activityExecutors.set(ActivityTypes.Mining, execMining)
     activityRemovers.set(ActivityTypes.Mining, removeMining)
     activityStarters.set(ActivityTypes.Mining, startMining)
     activityTitles.set(ActivityTypes.Mining, getMiningTitle)
     activityIcons.set(ActivityTypes.Mining, getMiningIcon)
+    activityViewers.set(ActivityTypes.Mining, viewMining)
 
     activityExecutors.set(ActivityTypes.Crafting, execCrafting)
     activityRemovers.set(ActivityTypes.Crafting, removeCrafting)
     activityStarters.set(ActivityTypes.Crafting, startCrafting)
     activityTitles.set(ActivityTypes.Crafting, getCraftingTitle)
     activityIcons.set(ActivityTypes.Crafting, getCraftingIcon)
+    activityViewers.set(ActivityTypes.Crafting, viewCrafting)
 
     activityRemovers.set(ActivityTypes.Battle, removeBattle)
     activityStarters.set(ActivityTypes.Battle, startBattle)

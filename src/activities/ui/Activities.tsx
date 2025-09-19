@@ -1,7 +1,13 @@
 import { memo, useCallback } from 'react'
 import { LuArrowDown, LuArrowUp, LuInfo } from 'react-icons/lu'
 import { useGameStore } from '../../game/state'
-import { selectActivityIcon, selectActivityIds, selectActivityMax, selectActivityTitle } from '../ActivitySelectors'
+import {
+    selectActivityCanView,
+    selectActivityIcon,
+    selectActivityIds,
+    selectActivityMax,
+    selectActivityTitle,
+} from '../ActivitySelectors'
 import { moveActivityNext, moveActivityPrev } from '../activityFunctions'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -11,9 +17,10 @@ import { removeActivity } from '../functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
 import { Input } from '../../components/ui/input'
 import { setActivityNum } from '../functions/setActivityNum'
-import { TrashIcon } from '../../icons/IconsMemo'
+import { Eye, TrashIcon } from '../../icons/IconsMemo'
 import { Card, CardContent } from '../../components/ui/card'
 import { GameState } from '../../game/GameState'
+import { viewActivity } from '../functions/viewActivity'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -72,10 +79,12 @@ export const ActivityCard = memo(function ActivityCard({
     const title = useGameStore(useCallback((s: GameState) => selectActivityTitle(id)(s), [id]))
     const icon = useGameStore(useCallback((s: GameState) => selectActivityIcon(id)(s), [id]))
     const max = useGameStore(useCallback((s: GameState) => selectActivityMax(id)(s), [id]))
+    const view = useGameStore(useCallback((s: GameState) => selectActivityCanView(id)(s), [id]))
 
     const onClickPrev = useCallback(() => moveActivityPrev(id), [id])
     const onClickNext = useCallback(() => moveActivityNext(id), [id])
     const onClickRemove = useCallback(() => removeActivity(id), [id])
+    const onClickView = useCallback(() => viewActivity(id), [id])
 
     const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
@@ -102,6 +111,17 @@ export const ActivityCard = memo(function ActivityCard({
                 {!filtered && !isLast && (
                     <Button aria-label={t.MoveDown} onClick={onClickNext} variant="ghost">
                         {ArrowDown}
+                    </Button>
+                )}
+                {view && (
+                    <Button
+                        aria-label={t.Remove}
+                        color="error"
+                        onClick={onClickView}
+                        variant="ghost"
+                        className="text-muted-foreground"
+                    >
+                        {Eye}
                     </Button>
                 )}
                 <Input

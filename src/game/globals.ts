@@ -1,4 +1,4 @@
-import { ActivityTypes } from '../activities/ActivityState'
+import { ActivityState, ActivityTypes } from '../activities/ActivityState'
 import { Timer } from '../timers/Timer'
 import { ActivityStartResult } from '../activities/activityInterfaces'
 import { MapEx } from '../utils/MapEx'
@@ -13,3 +13,4 @@ export const activityStarters = new MapEx<
 >()
 export const activityTitles = new MapEx<ActivityTypes, (state: GameState, activityId: string) => string>()
 export const activityIcons = new MapEx<ActivityTypes, (state: GameState, activityId: string) => Icons>()
+export const activityViewers = new MapEx<ActivityTypes, (state: GameState, activity: ActivityState) => void>()
