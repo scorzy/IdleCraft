@@ -6,10 +6,17 @@ import { getUniqueId } from '../../utils/getUniqueId'
 import { MAX_GROWING_TREES } from '../WoodConst'
 import { WoodTypes } from '../WoodTypes'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
-import { selectGrowTreeNumber, selectTreeGrowthTime } from './forestSelectors'
+import { selectDefaultForest, selectGrowTreeNumber, selectTreeGrowthTime } from './forestSelectors'
 
 export const checkGrowTrees = (state: GameState, woodType: WoodTypes, location: GameLocations) => {
-    if (selectGrowTreeNumber(state, woodType, location) >= MAX_GROWING_TREES) return
+    const number = selectGrowTreeNumber(state, woodType, location)
+    if (number >= MAX_GROWING_TREES) return
+
+    const forest = state.locations[state.location].forests[woodType]
+    if (!forest) return
+
+    const def = selectDefaultForest(state, woodType)
+    if (forest.qta + number >= def.qta) return
 
     const growthTime = selectTreeGrowthTime()
     const treeData: TreeGrowth = { id: getUniqueId(), location, woodType }
