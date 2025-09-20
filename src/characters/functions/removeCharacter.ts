@@ -8,9 +8,10 @@ import { CharacterAdapter } from '../characterAdapter'
 import { PLAYER_ID } from '../charactersConst'
 
 export function removeCharacter(state: GameState, characterId: string): void {
-    const character = CharacterAdapter.selectEx(state.characters, characterId)
-
-    if (character.id === PLAYER_ID) killPlayer(state)
+    if (characterId === PLAYER_ID) {
+        killPlayer(state)
+        return
+    }
 
     CharacterAdapter.remove(state.characters, characterId)
 
@@ -28,6 +29,7 @@ export function removeCharacter(state: GameState, characterId: string): void {
         CastCharAbilityAdapter.remove(state.castCharAbility, cca)
     })
 }
+
 function killPlayer(state: GameState): void {
     const activities = ActivityAdapter.getIds(state.activities)
     for (const actId of activities) removeActivityInt(state, actId)
