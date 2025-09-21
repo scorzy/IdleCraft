@@ -6,5 +6,5 @@ onmessage = (e) => {
     initialize()
     const state = e.data as GameState
     loadGame(state)
-    postMessage({ state })
+    postMessage({ state, loadingData: undefined })
 }

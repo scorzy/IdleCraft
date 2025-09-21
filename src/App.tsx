@@ -34,7 +34,7 @@ if ('indexedDB' in window) {
         putRes.onerror = () => {
             console.log(`Save failed`)
         }
-    }, 1e3)
+    }, 500)
 
     open.onupgradeneeded = () => {
         const db = open.result

@@ -26,11 +26,12 @@ export function loadGame(state: GameState): void {
         state.now = timer.to
         timer = getFirstTimer(state.timers, end)
 
-        if (Date.now() - lastReport > 100) {
-            lastReport = Date.now()
+        const now = Date.now()
+        if (now - lastReport > 150) {
+            lastReport = now
             const percent = Math.floor((100 * (state.now - gameStart)) / (end - gameStart))
             const loadingData = { loading: true, start: gameStart, now: state.now, end, percent }
-            postMessage({ loadingData })
+            postMessage({ state, loadingData })
         }
     }
     state.loading = false
