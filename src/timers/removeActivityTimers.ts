@@ -6,9 +6,6 @@ export function removeActivityTimers(state: GameState, activityId: string): void
 
     for (const id of timers.ids) {
         const timer = TimerAdapter.select(timers, id)
-        if (timer && activityId === timer.actId) {
-            TimerAdapter.remove(timers, id)
-            if (timer.intervalId) clearInterval(timer.intervalId)
-        }
+        if (timer && activityId === timer.actId) TimerAdapter.remove(timers, id)
     }
 }

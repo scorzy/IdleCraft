@@ -10,7 +10,6 @@ import { advanceTimers } from './advanceTimers'
 
 // eslint-disable-next-line import/default
 import LoadWorker from './loadWorker?worker'
-import { startTimers } from './startTimers'
 
 let worker: Worker | undefined
 
@@ -26,7 +25,6 @@ function start(state: GameState): void {
     if (diff > 0) advanceTimers(state, diff)
     regenerate(state, state.now)
     state.loading = false
-    startTimers(state)
     useGameStore.setState(structuredClone(state))
 }
 
