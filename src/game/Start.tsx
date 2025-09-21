@@ -1,5 +1,4 @@
 import { SetStateAction, memo, useCallback, useEffect, useState } from 'react'
-
 import { Button } from '../components/ui/button'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { TrashIcon } from '../icons/IconsMemo'
@@ -204,14 +203,8 @@ const TimeAgo = memo(function TimeAgo(props: { date: number }) {
 })
 
 const Loading = memo(function Loading() {
-    const { t, fun } = useTranslations()
+    const { t } = useTranslations()
     const loading = useGameStore(selectLoading)
-    const percent = useUiTempStore(selectLoadingProgress)
-    const start = useUiTempStore(selectLoadingStart)
-    const end = useUiTempStore(selectLoadingEnd)
-    const now = useUiTempStore(selectLoadingNow)
-    const total = end - start
-    const done = now - start
 
     return (
         <Dialog open={loading} onOpenChange={stopLoad}>
@@ -220,8 +213,7 @@ const Loading = memo(function Loading() {
                     <DialogTitle>{t.Loading}</DialogTitle>
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
-                {fun.formatTimePrecise(done)} / {fun.formatTimePrecise(total)}
-                <ProgressBar value={percent} color="primary" />
+                <LoadingProgress />
                 <DialogFooter className="sm:justify-start">
                     <Button type="button" variant="destructive" onClick={startAnyway}>
                         {t.StartNow}
@@ -229,5 +221,24 @@ const Loading = memo(function Loading() {
                 </DialogFooter>
             </DialogContent>
         </Dialog>
+    )
+})
+const LoadingProgress = memo(function LoadingProgress() {
+    const { fun } = useTranslations()
+    const percent = useUiTempStore(selectLoadingProgress)
+    const start = useUiTempStore(selectLoadingStart)
+    const end = useUiTempStore(selectLoadingEnd)
+    const now = useUiTempStore(selectLoadingNow)
+    const total = end - start
+    const done = now - start
+
+    return (
+        <>
+            <span>
+                <span className="inline-block min-w-24">{fun.formatTimePrecise(done)} </span>/{' '}
+                {fun.formatTimePrecise(total)}
+            </span>
+            <ProgressBar value={percent} color="primary" />
+        </>
     )
 })

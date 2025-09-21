@@ -5,6 +5,7 @@ import { loadData } from '../loadData'
 import { WorkerMessage } from '../loadWorkerTypes'
 import { setState } from '../setState'
 import { useGameStore } from '../state'
+import { MAX_LOAD } from '../const'
 import { regenerate } from './regenerate'
 import { advanceTimers } from './advanceTimers'
 
@@ -37,7 +38,9 @@ export const load = (data: object) => {
     }
     const state = loadData(data)
     state.loading = true
-    useUiTempStore.setState({ loadingData: undefined })
+    const end = Math.min(state.now + MAX_LOAD, Date.now())
+    const loadingData = { loading: true, start: state.now, now: state.now, end, percent: 0 }
+    useUiTempStore.setState({ loadingData })
     useGameStore.setState(structuredClone(state))
     worker.postMessage(state)
 }

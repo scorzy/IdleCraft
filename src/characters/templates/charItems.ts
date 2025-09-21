@@ -10,7 +10,7 @@ export const CharItems: Record<string, Item> = {
         type: ItemTypes.TwoHands,
         value: 0,
         weaponData: {
-            attackSpeed: 3e3,
+            attackSpeed: 6e3,
             expType: ExpEnum.TwoHanded,
             damage: {
                 Piercing: 10,
