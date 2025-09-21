@@ -69,7 +69,6 @@
     "@eslint/js": "^9.35.0",
     "@tailwindcss/postcss": "^4.1.13",
     "@types/lodash-es": "^4.17.12",
-    "@types/node": "^22.18.4",
     "@types/react": "19.1.5",
     "@types/react-dom": "19.1.5",
     "@typescript-eslint/eslint-plugin": "^8.44.0",

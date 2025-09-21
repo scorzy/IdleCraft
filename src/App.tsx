@@ -10,6 +10,7 @@ import { GameState } from './game/GameState'
 import { regenerate } from './game/functions/regenerate'
 import { Alert, AlertTitle, AlertDescription } from './components/ui/alert'
 import { setState } from './game/setState'
+import { updateTimers } from './timers/updateTimers'
 
 setInterval(() => {
     const gameId = useGameStore.getState().gameId
@@ -43,6 +44,8 @@ if ('indexedDB' in window) {
         useGameStore.subscribe(save)
     }
 }
+
+useGameStore.subscribe(updateTimers)
 
 function App() {
     ThemeProvider()

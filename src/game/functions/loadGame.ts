@@ -20,11 +20,6 @@ export function loadGame(state: GameState): void {
     const gameStart = state.now
     const end = Math.min(state.now + MAX_LOAD, Date.now())
 
-    for (const id of state.timers.ids) {
-        const timer = state.timers.entries[id]
-        if (timer) timer.intervalId = undefined
-    }
-
     let timer = getFirstTimer(state.timers, end)
     while (timer) {
         onTimer(state, timer.id)

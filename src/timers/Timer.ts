@@ -6,7 +6,6 @@ export interface Timer {
     id: string
     from: number
     to: number
-    intervalId?: number
     type: ActivityTypes
     actId: string
 }
