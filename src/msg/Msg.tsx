@@ -249,6 +249,7 @@ export interface Msg {
     cancel: string
     Active: string
     InQueue: string
+    BoarTusk: string
 }
 export interface MsgFunctions {
     // Time

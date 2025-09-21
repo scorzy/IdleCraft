@@ -1,4 +1,4 @@
-import { DeadAnimals } from '../characters/templates/charItems'
+import { DeadAnimals } from '../characters/templates/DeadAnimals'
 import { makeRecipe } from '../crafting/makeRecipe'
 import {
     RecipeParameter,

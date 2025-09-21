@@ -1,46 +1,22 @@
-import { RecipeItem } from '../../crafting/RecipeInterfaces'
+import { ExpEnum } from '../../experience/ExpEnum'
 import { Icons } from '../../icons/Icons'
 import { Item, ItemTypes } from '../../items/Item'
 
-export type Butchering = { stdItem: string; qta: number }[]
-
-export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> = {
-    DeadBoar: {
-        id: 'DeadBoar',
+export const CharItems: Record<string, Item> = {
+    BoarTusk: {
+        id: 'BoarTusk',
+        nameId: 'BoarTusk',
         icon: Icons.Boar,
-        nameId: 'DeadBoar',
-        type: ItemTypes.Corpse,
-        value: 5,
-        butchering: [
-            {
-                id: 'BoarMeat',
-                stdItemId: 'BoarMeat',
-                qta: 1,
+        type: ItemTypes.TwoHands,
+        value: 0,
+        weaponData: {
+            attackSpeed: 3e3,
+            expType: ExpEnum.TwoHanded,
+            damage: {
+                Piercing: 10,
+                Bludgeoning: 0,
+                Slashing: 0,
             },
-            {
-                id: 'BoarSkin',
-                stdItemId: 'BoarSkin',
-                qta: 1,
-            },
-        ],
-    },
-    DeadWolf: {
-        id: 'DeadWolf',
-        icon: Icons.Boar,
-        nameId: 'DeadWolf',
-        type: ItemTypes.Corpse,
-        value: 8,
-        butchering: [
-            {
-                id: 'BoarMeat',
-                stdItemId: 'BoarMeat',
-                qta: 1,
-            },
-            {
-                id: 'BoarSkin',
-                stdItemId: 'BoarSkin',
-                qta: 1,
-            },
-        ],
+        },
     },
 }

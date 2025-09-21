@@ -1,5 +1,6 @@
 import { ButcheringItems } from '../butchering/ButcheringItems'
-import { DeadAnimals } from '../characters/templates/charItems'
+import { CharItems } from '../characters/templates/CharItems'
+import { DeadAnimals } from '../characters/templates/DeadAnimals'
 import { MiningItems } from '../mining/MiningItems'
 import { SmithingItems } from '../smithing/SmithingItems'
 import { WoodItems } from '../wood/WoodItems'
@@ -11,5 +12,6 @@ export const StdItems: Record<string, Item> = Object.freeze({
     ...SmithingItems,
     ...DeadAnimals,
     ...ButcheringItems,
+    ...CharItems,
 })
 export const StdItemsEntries = Object.values(StdItems)

@@ -7,12 +7,16 @@ export const CharTemplatesData: Record<CharTemplateEnum, CharTemplate> = {
         id: CharTemplateEnum.Boar,
         nameId: 'Boar',
         iconId: Icons.Boar,
-        inventory: {},
+        inventory: {
+            TwoHand: {
+                itemId: 'BoarTusk',
+            },
+        },
         skillsExp: {},
         skillsLevel: {},
         level: 1,
         healthPoints: -9,
-        staminaPoints: 1,
+        staminaPoints: -9,
         manaPoints: 0,
         loot: [
             {

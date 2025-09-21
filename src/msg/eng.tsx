@@ -226,6 +226,8 @@ export const engMsg: Msg = {
     cancel: 'Cancel',
     Active: 'Active',
     InQueue: 'In Queue',
+
+    BoarTusk: 'Boar Tusk',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
