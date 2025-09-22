@@ -209,6 +209,8 @@ export interface Msg {
 
     Results: string
     YouHave: string
+    Search: string
+    NoResults: string
 
     RawFood: string
     RawSkin: string

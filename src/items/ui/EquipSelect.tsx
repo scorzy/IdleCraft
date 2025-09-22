@@ -16,7 +16,7 @@ import { GameState } from '../../game/GameState'
 import { Msg } from '../../msg/Msg'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { Card, CardContent } from '../../components/ui/card'
-import { MyCardHeaderTitle } from '../../ui/myCard/myCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
@@ -108,8 +108,8 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
                     onValueChange={handleEquipChange}
                     options={options}
                     placeholder={t.None || 'None'}
-                    searchPlaceholder={`${t.Search || 'Search'}...`}
-                    emptyMessage={t.NoResults || 'No results found.'}
+                    searchPlaceholder={`${t.Search}...`}
+                    emptyMessage={t.NoResults}
                 >
                     <span className="grid grid-flow-col items-center gap-2">
                         {icon}

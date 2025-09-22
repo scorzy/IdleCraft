@@ -185,6 +185,8 @@ export const engMsg: Msg = {
 
     Results: 'Results',
     YouHave: 'You have',
+    Search: 'Search',
+    NoResults: 'No results found',
 
     RawFood: 'Raw Food',
     RawSkin: 'Raw Skin',

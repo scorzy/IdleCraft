@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import { CaretSortIcon, CheckIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import { ReactNode, useState, useMemo, useCallback } from 'react'
 import { cn } from '@/lib/utils'
@@ -28,6 +27,132 @@ export interface ComboBoxProps {
     className?: string
     size?: 'sm' | 'default'
     children?: ReactNode // For custom trigger content
+}
+
+interface ComboBoxTriggerProps {
+    selectedOption?: ComboBoxOption
+    placeholder: string
+    children?: ReactNode
+    open: boolean
+    disabled: boolean
+    className?: string
+    size: 'sm' | 'default'
+}
+
+function ComboBoxTrigger({ 
+    selectedOption, 
+    placeholder, 
+    children, 
+    open, 
+    disabled, 
+    className, 
+    size 
+}: ComboBoxTriggerProps) {
+    return (
+        <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className={cn(
+                'w-full justify-between font-normal',
+                size === 'sm' ? 'h-8' : 'h-9',
+                !selectedOption && 'text-muted-foreground',
+                className
+            )}
+            disabled={disabled}
+        >
+            {children || (
+                <span className="flex items-center gap-2">
+                    {selectedOption?.icon}
+                    <span className="truncate">
+                        {selectedOption?.label || placeholder}
+                    </span>
+                </span>
+            )}
+            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+    )
+}
+
+interface ComboBoxSearchProps {
+    searchValue: string
+    onSearchChange: (value: string) => void
+    searchPlaceholder: string
+}
+
+function ComboBoxSearch({ searchValue, onSearchChange, searchPlaceholder }: ComboBoxSearchProps) {
+    return (
+        <div className="border-b border-border px-3 py-2">
+            <div className="relative">
+                <MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                    placeholder={searchPlaceholder}
+                    value={searchValue}
+                    onChange={(e) => onSearchChange(e.target.value)}
+                    className="pl-8"
+                />
+            </div>
+        </div>
+    )
+}
+
+interface ComboBoxOptionItemProps {
+    option: ComboBoxOption
+    isSelected: boolean
+    onSelect: (value: string) => void
+}
+
+function ComboBoxOptionItem({ option, isSelected, onSelect }: ComboBoxOptionItemProps) {
+    return (
+        <div
+            className={cn(
+                'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground',
+                isSelected && 'bg-accent text-accent-foreground'
+            )}
+            onClick={() => onSelect(option.value)}
+        >
+            {option.content || (
+                <>
+                    <span className="flex items-center gap-2 flex-1">
+                        {option.icon && <span className="shrink-0">{option.icon}</span>}
+                        <span className="truncate">{option.label}</span>
+                    </span>
+                    {option.rightSlot && <span className="shrink-0">{option.rightSlot}</span>}
+                </>
+            )}
+            {isSelected && (
+                <CheckIcon className="ml-auto h-4 w-4 shrink-0" />
+            )}
+        </div>
+    )
+}
+
+interface ComboBoxContentProps {
+    filteredOptions: ComboBoxOption[]
+    selectedValue?: string
+    onSelect: (value: string) => void
+    emptyMessage: string
+}
+
+function ComboBoxContent({ filteredOptions, selectedValue, onSelect, emptyMessage }: ComboBoxContentProps) {
+    return (
+        <div className="max-h-[300px] overflow-y-auto">
+            {filteredOptions.length === 0 ? (
+                <div className="py-6 text-center text-sm text-muted-foreground">{emptyMessage}</div>
+            ) : (
+                <div className="p-1">
+                    {filteredOptions.map((option) => (
+                        <ComboBoxOptionItem
+                            key={option.value}
+                            option={option}
+                            isSelected={option.value === selectedValue}
+                            onSelect={onSelect}
+                        />
+                    ))}
+                </div>
+            )}
+        </div>
+    )
 }
 
 function ComboBox({
@@ -79,70 +204,34 @@ function ComboBox({
     return (
         <Popover open={open} onOpenChange={handleOpenChange}>
             <PopoverTrigger asChild>
-                <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={open}
-                    className={cn(
-                        'justify-between font-normal',
-                        size === 'sm' ? 'h-8' : 'h-9',
-                        !selectedOption && 'text-muted-foreground',
-                        className
-                    )}
+                <ComboBoxTrigger
+                    selectedOption={selectedOption}
+                    placeholder={placeholder}
+                    open={open}
                     disabled={disabled}
+                    className={className}
+                    size={size}
                 >
-                    {children || (
-                        <span className="flex items-center gap-2">
-                            {selectedOption?.icon}
-                            {selectedOption?.label || placeholder}
-                        </span>
-                    )}
-                    <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
+                    {children}
+                </ComboBoxTrigger>
             </PopoverTrigger>
-            <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
-                <div className="border-b border-border px-3 py-2">
-                    <div className="relative">
-                        <MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input
-                            placeholder={searchPlaceholder}
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
-                            className="pl-8"
-                        />
-                    </div>
-                </div>
-                <div className="max-h-[300px] overflow-y-auto">
-                    {filteredOptions.length === 0 ? (
-                        <div className="py-6 text-center text-sm text-muted-foreground">{emptyMessage}</div>
-                    ) : (
-                        <div className="p-1">
-                            {filteredOptions.map((option) => (
-                                <div
-                                    key={option.value}
-                                    className={cn(
-                                        'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground',
-                                        option.value === value && 'bg-accent text-accent-foreground'
-                                    )}
-                                    onClick={() => handleSelect(option.value)}
-                                >
-                                    {option.content || (
-                                        <>
-                                            <span className="flex items-center gap-2 flex-1">
-                                                {option.icon && <span className="shrink-0">{option.icon}</span>}
-                                                <span className="truncate">{option.label}</span>
-                                            </span>
-                                            {option.rightSlot && <span className="shrink-0">{option.rightSlot}</span>}
-                                        </>
-                                    )}
-                                    {option.value === value && (
-                                        <CheckIcon className="ml-auto h-4 w-4 shrink-0" />
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+            <PopoverContent 
+                className="w-[--radix-popover-trigger-width] p-0" 
+                align="start"
+                side="bottom"
+                sideOffset={4}
+            >
+                <ComboBoxSearch
+                    searchValue={searchValue}
+                    onSearchChange={setSearchValue}
+                    searchPlaceholder={searchPlaceholder}
+                />
+                <ComboBoxContent
+                    filteredOptions={filteredOptions}
+                    selectedValue={value}
+                    onSelect={handleSelect}
+                    emptyMessage={emptyMessage}
+                />
             </PopoverContent>
         </Popover>
     )

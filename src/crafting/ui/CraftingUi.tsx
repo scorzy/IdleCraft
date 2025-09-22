@@ -34,7 +34,7 @@ import { Card, CardContent } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { IconsData } from '../../icons/Icons'
 import { ComboBox, ComboBoxOption } from '../../components/ui/combobox'
-import { MyCardHeaderTitle } from '../../ui/myCard/myCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { GameState } from '../../game/GameState'
 import { ActivitiesList } from '../../activities/ui/Activities'
 import { CraftingReq, CraftingResult } from './CraftingResult'
@@ -141,8 +141,8 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
             onValueChange={handleRecipeChange}
             options={options}
             placeholder={t.SelectARecipe}
-            searchPlaceholder={`${t.Search || 'Search'}...`}
-            emptyMessage={t.NoResults || 'No results found.'}
+            searchPlaceholder={`${t.Search}...`}
+            emptyMessage={t.NoResults}
         >
             {selected && (
                 <span className="flex items-center gap-2">
@@ -234,8 +234,8 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
                 onValueChange={handleRecipeChange}
                 options={options}
                 placeholder={`-- ${t[recipeParam.nameId]} --`}
-                searchPlaceholder={`${t.Search || 'Search'}...`}
-                emptyMessage={t.NoResults || 'No results found.'}
+                searchPlaceholder={`${t.Search}...`}
+                emptyMessage={t.NoResults}
             >
                 {selectedItem && (
                     <span className="flex items-center gap-2">
