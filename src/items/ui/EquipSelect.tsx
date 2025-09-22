@@ -1,30 +1,22 @@
-import { Fragment, memo, ReactNode, useCallback } from 'react'
+import { memo, ReactNode, useCallback, useMemo } from 'react'
 import { GiRock } from 'react-icons/gi'
 import { useShallow } from 'zustand/react/shallow'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { selectItemsByType, selectGameItem } from '../../storage/StorageSelectors'
-import { Item } from '../Item'
-import { SlotsData } from '../slotsData'
+import { SlotsData } from '../SlotsData'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { selectEquipId } from '../itemSelectors'
 import { changeEquip } from '../itemFunctions'
 import { DEF_PICKAXE } from '../../mining/miningSelectors'
 import { DEF_WOOD_AXE } from '../../wood/selectors/WoodcuttingSelectors'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectSeparator,
-    SelectTrigger,
-    SelectValue,
-} from '../../components/ui/select'
+import { ComboBox, ComboBoxOption } from '../../components/ui/combobox'
 import { GameState } from '../../game/GameState'
 import { Msg } from '../../msg/Msg'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { Card, CardContent } from '../../components/ui/card'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/myCard'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
@@ -54,63 +46,77 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
         icon = IconsData[equipped.icon]
     }
 
+    // Create options for ComboBox
+    const options: ComboBoxOption[] = useMemo(() => {
+        const opts: ComboBoxOption[] = [
+            {
+                value: '-',
+                label: 'None',
+                icon: <GiRock className="text-2xl" />,
+                searchText: 'None',
+                content: (
+                    <span className="flex items-center gap-2 flex-1">
+                        <span className="shrink-0"><GiRock className="text-2xl" /></span>
+                        <div>
+                            <span className="leading-none font-medium">None</span>
+                        </div>
+                    </span>
+                )
+            }
+        ]
+        
+        itemsId.forEach((itemId) => {
+            const state = useGameStore.getState()
+            const itemObj = selectGameItem(itemId)(state)
+            const text = itemObj ? t[itemObj.nameId] : t.None
+
+            let itemIcon: ReactNode
+            if (itemObj) itemIcon = <span className="text-2xl">{IconsData[itemObj.icon]}</span>
+
+            // Create detailed content for equipment with stats
+            const detailContent = (
+                <span className="flex items-center gap-2 flex-1">
+                    {itemIcon && <span className="shrink-0">{itemIcon}</span>}
+                    <div>
+                        <span className="leading-none font-medium">{text}</span>
+                        <div className="text-muted-foreground flex max-w-md flex-wrap gap-2 text-sm leading-none font-medium">
+                            {slot === EquipSlotsEnum.WoodAxe && <WoodAxeDataUi woodAxeData={itemObj?.woodAxeData ?? DEF_WOOD_AXE} />}
+                            {slot === EquipSlotsEnum.Pickaxe && <PickaxeDataUi pickaxeData={itemObj?.pickaxeData ?? DEF_PICKAXE} />}
+                        </div>
+                    </div>
+                </span>
+            )
+
+            opts.push({
+                value: itemId,
+                label: text,
+                icon: itemIcon,
+                searchText: text,
+                content: detailContent
+            })
+        })
+        
+        return opts
+    }, [itemsId, t, slot])
+
     return (
         <Card gap="sm">
             <MyCardHeaderTitle title={t[slotData.ItemType as keyof Msg]} />
             <CardContent>
-                <Select value={itemId ?? '-'} onValueChange={handleEquipChange}>
-                    <SelectTrigger>
-                        <SelectValue>
-                            <span className="grid grid-flow-col items-center gap-2">
-                                {icon}
-                                {name}
-                            </span>
-                        </SelectValue>
-                    </SelectTrigger>
-
-                    <SelectContent>
-                        <SelectItem value="-" icon={<GiRock className="text-2xl" />}>
-                            <OptionItemInt name={'None'} slot={slot} />
-                        </SelectItem>
-                        {itemsId.length > 0 && <SelectSeparator />}
-                        {itemsId.map((t, index) => (
-                            <Fragment key={t}>
-                                {index !== 0 && <SelectSeparator />}
-                                <OptionItem itemId={t} slot={slot} />
-                            </Fragment>
-                        ))}
-                    </SelectContent>
-                </Select>
+                <ComboBox
+                    value={itemId ?? '-'}
+                    onValueChange={handleEquipChange}
+                    options={options}
+                    placeholder={t.None || 'None'}
+                    searchPlaceholder={`${t.Search || 'Search'}...`}
+                    emptyMessage={t.NoResults || 'No results found.'}
+                >
+                    <span className="grid grid-flow-col items-center gap-2">
+                        {icon}
+                        {name}
+                    </span>
+                </ComboBox>
             </CardContent>
         </Card>
-    )
-})
-
-const OptionItem = memo(function ParamItem(props: { itemId: string; slot: EquipSlotsEnum }) {
-    const { itemId, slot } = props
-    const itemObj = useGameStore(selectGameItem(itemId))
-    const { t } = useTranslations()
-    const text = itemObj ? t[itemObj.nameId] : t.None
-
-    let icon: ReactNode | undefined
-    if (itemObj) icon = <span className="text-2xl">{IconsData[itemObj.icon]}</span>
-
-    return (
-        <SelectItem value={itemId} icon={icon}>
-            <OptionItemInt name={text} slot={slot} item={itemObj} />
-        </SelectItem>
-    )
-})
-const OptionItemInt = memo(function AxeItemInt(props: { name: string; slot: EquipSlotsEnum; item?: Item }) {
-    const { name, slot, item } = props
-
-    return (
-        <div>
-            <span className="leading-none font-medium">{name}</span>
-            <div className="text-muted-foreground flex max-w-md flex-wrap gap-2 text-sm leading-none font-medium">
-                {slot === EquipSlotsEnum.WoodAxe && <WoodAxeDataUi woodAxeData={item?.woodAxeData ?? DEF_WOOD_AXE} />}
-                {slot === EquipSlotsEnum.Pickaxe && <PickaxeDataUi pickaxeData={item?.pickaxeData ?? DEF_PICKAXE} />}
-            </div>
-        </div>
     )
 })

@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import { LuHourglass } from 'react-icons/lu'
 import { useShallow } from 'zustand/react/shallow'
 import { RecipeParamType, RecipeParameter, RecipeTypes } from '../RecipeInterfaces'
@@ -33,8 +33,8 @@ import { handleRecipeChange } from '../CraftingFunctions'
 import { Card, CardContent } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { IconsData } from '../../icons/Icons'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+import { ComboBox, ComboBoxOption } from '../../components/ui/combobox'
+import { MyCardHeaderTitle } from '../../ui/myCard/myCard'
 import { GameState } from '../../game/GameState'
 import { ActivitiesList } from '../../activities/ui/Activities'
 import { CraftingReq, CraftingResult } from './CraftingResult'
@@ -127,27 +127,29 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     if (!recipeType) return
     const recipesByType = selectRecipes(recipeType)
     const selected = recipes.get(recipeId)
-    const icon = selected && IconsData[selected.iconId]
+
+    const options: ComboBoxOption[] = recipesByType.map((r) => ({
+        value: r.id,
+        label: t[r.nameId],
+        icon: IconsData[r.iconId],
+        searchText: t[r.nameId]
+    }))
 
     return (
-        <Select value={recipeId ?? ''} onValueChange={handleRecipeChange}>
-            <SelectTrigger>
-                <SelectValue placeholder={t.SelectARecipe}>
-                    {selected && (
-                        <span className="select-trigger">
-                            {icon} {t[selected.nameId]}
-                        </span>
-                    )}
-                </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-                {recipesByType.map((r) => (
-                    <SelectItem key={r.id} value={r.id} icon={IconsData[r.iconId]}>
-                        {t[r.nameId]}
-                    </SelectItem>
-                ))}
-            </SelectContent>
-        </Select>
+        <ComboBox
+            value={recipeId ?? ''}
+            onValueChange={handleRecipeChange}
+            options={options}
+            placeholder={t.SelectARecipe}
+            searchPlaceholder={`${t.Search || 'Search'}...`}
+            emptyMessage={t.NoResults || 'No results found.'}
+        >
+            {selected && (
+                <span className="flex items-center gap-2">
+                    {IconsData[selected.iconId]} {t[selected.nameId]}
+                </span>
+            )}
+        </ComboBox>
     )
 })
 
@@ -192,6 +194,7 @@ const RecipeParamUi = memo(function RecipeParamUi(props: { recipeParam: RecipePa
 const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipeParam: RecipeParameter }) {
     const { recipeParam } = props
     const { t } = useTranslations()
+    const { f } = useNumberFormatter()
     const itemsId = useGameStore(useShallow(selectItemsByType(recipeParam.itemType)))
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
     const selectedValue = selected?.itemId
@@ -205,43 +208,41 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
         [recipeParam.id]
     )
 
+    // Create options with current state data
+    const options: ComboBoxOption[] = useMemo(() => {
+        return itemsId.map((itemId) => {
+            const state = useGameStore.getState()
+            const itemObj = selectGameItem(itemId)(state)
+            const qta = selectItemQta(null, itemId)(state)
+            const text = itemObj ? t[itemObj.nameId] : t.None
+
+            return {
+                value: itemId,
+                label: text,
+                icon: itemObj && IconsData[itemObj.icon],
+                rightSlot: <span className="text-muted-foreground">{f(qta)}</span>,
+                searchText: text
+            }
+        })
+    }, [itemsId, t, f])
+
     return (
         <div>
             <Label>{t[recipeParam.nameId]}</Label>
-            <Select value={selectedValue ?? ''} onValueChange={handleRecipeChange}>
-                <SelectTrigger>
-                    <SelectValue placeholder={`-- ${t[recipeParam.nameId]} --`}>
-                        {selectedItem && (
-                            <span className="select-trigger">
-                                {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
-                            </span>
-                        )}
-                    </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                    {itemsId.map((t) => (
-                        <ParamItem itemId={t} key={t} />
-                    ))}
-                </SelectContent>
-            </Select>
+            <ComboBox
+                value={selectedValue ?? ''}
+                onValueChange={handleRecipeChange}
+                options={options}
+                placeholder={`-- ${t[recipeParam.nameId]} --`}
+                searchPlaceholder={`${t.Search || 'Search'}...`}
+                emptyMessage={t.NoResults || 'No results found.'}
+            >
+                {selectedItem && (
+                    <span className="flex items-center gap-2">
+                        {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
+                    </span>
+                )}
+            </ComboBox>
         </div>
-    )
-})
-const ParamItem = memo(function ParamItem(props: { itemId: string }) {
-    const { itemId } = props
-    const { t } = useTranslations()
-    const { f } = useNumberFormatter()
-
-    const itemObj = useGameStore(selectGameItem(itemId))
-    const qta = useGameStore(selectItemQta(null, itemId))
-    const text = itemObj ? t[itemObj.nameId] : t.None
-
-    return (
-        <SelectItem value={itemId} icon={itemObj && IconsData[itemObj.icon]} className={classes.seleBtn}>
-            <span className={classes.item}>
-                <span className={classes.text}>{text}</span>
-                <span className="text-muted-foreground">{f(qta)}</span>
-            </span>
-        </SelectItem>
     )
 })
