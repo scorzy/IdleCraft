@@ -54,7 +54,7 @@ function ComboBoxTrigger({
             role="combobox"
             aria-expanded={open}
             className={cn(
-                'w-full justify-between font-normal',
+                'w-full justify-between font-normal min-w-0',
                 size === 'sm' ? 'h-8' : 'h-9',
                 !selectedOption && 'text-muted-foreground',
                 className
@@ -62,7 +62,7 @@ function ComboBoxTrigger({
             disabled={disabled}
         >
             {children || (
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 min-w-0 flex-1">
                     {selectedOption?.icon}
                     <span className="truncate">
                         {selectedOption?.label || placeholder}
@@ -84,12 +84,16 @@ function ComboBoxSearch({ searchValue, onSearchChange, searchPlaceholder }: Comb
     return (
         <div className="border-b border-border px-3 py-2">
             <div className="relative">
-                <MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
                 <Input
                     placeholder={searchPlaceholder}
                     value={searchValue}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    className="pl-8"
+                    className="pl-8 h-8"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck={false}
                 />
             </div>
         </div>
@@ -136,7 +140,7 @@ interface ComboBoxContentProps {
 
 function ComboBoxContent({ filteredOptions, selectedValue, onSelect, emptyMessage }: ComboBoxContentProps) {
     return (
-        <div className="max-h-[300px] overflow-y-auto">
+        <div className="max-h-[50vh] min-h-0 overflow-y-auto">
             {filteredOptions.length === 0 ? (
                 <div className="py-6 text-center text-sm text-muted-foreground">{emptyMessage}</div>
             ) : (
@@ -216,10 +220,12 @@ function ComboBox({
                 </ComboBoxTrigger>
             </PopoverTrigger>
             <PopoverContent 
-                className="w-[--radix-popover-trigger-width] p-0" 
+                className="w-[--radix-popover-trigger-width] min-w-[8rem] max-w-[95vw] p-0" 
                 align="start"
                 side="bottom"
                 sideOffset={4}
+                avoidCollisions={true}
+                collisionPadding={8}
             >
                 <ComboBoxSearch
                     searchValue={searchValue}
