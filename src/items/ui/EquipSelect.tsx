@@ -12,20 +12,14 @@ import { selectEquipId } from '../itemSelectors'
 import { changeEquip } from '../itemFunctions'
 import { DEF_PICKAXE } from '../../mining/miningSelectors'
 import { DEF_WOOD_AXE } from '../../wood/selectors/WoodcuttingSelectors'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectSeparator,
-    SelectTrigger,
-    SelectValue,
-} from '../../components/ui/select'
+import { SelectSeparator } from '../../components/ui/select'
 import { GameState } from '../../game/GameState'
 import { Msg } from '../../msg/Msg'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { Card, CardContent } from '../../components/ui/card'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
+import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
 const noIcon = <GiRock />
@@ -45,7 +39,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
         useShallow(useCallback((s: GameState) => selectItemsByType(slotData.ItemType)(s), [slotData]))
     )
 
-    const handleEquipChange = useCallback((value: string) => changeEquip(slot, value, charId), [slot, charId])
+    const handleEquipChange = useCallback(() => changeEquip(slot, '-', charId), [slot, charId])
 
     let name = t.None
     let icon: ReactNode = noIcon
@@ -58,59 +52,67 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
         <Card gap="sm">
             <MyCardHeaderTitle title={t[slotData.ItemType as keyof Msg]} />
             <CardContent>
-                <Select value={itemId ?? '-'} onValueChange={handleEquipChange}>
-                    <SelectTrigger>
-                        <SelectValue>
-                            <span className="grid grid-flow-col items-center gap-2">
-                                {icon}
-                                {name}
-                            </span>
-                        </SelectValue>
-                    </SelectTrigger>
-
-                    <SelectContent>
-                        <SelectItem value="-" icon={<GiRock className="text-2xl" />}>
-                            <OptionItemInt name={'None'} slot={slot} />
-                        </SelectItem>
-                        {itemsId.length > 0 && <SelectSeparator />}
-                        {itemsId.map((t, index) => (
-                            <Fragment key={t}>
-                                {index !== 0 && <SelectSeparator />}
-                                <OptionItem itemId={t} slot={slot} />
-                            </Fragment>
-                        ))}
-                    </SelectContent>
-                </Select>
+                <ComboBoxResponsive
+                    selectedId={itemId ?? '-'}
+                    triggerContent={
+                        <span className="grid grid-flow-col items-center gap-2">
+                            {icon}
+                            {name}
+                        </span>
+                    }
+                >
+                    <OptionItem itemId="-" slot={slot} charId={charId} defIcon={<GiRock />} />
+                    {itemsId.length > 0 && <SelectSeparator />}
+                    {itemsId.map((t, index) => (
+                        <Fragment key={t}>
+                            {index !== 0 && <SelectSeparator />}
+                            <OptionItem itemId={t} slot={slot} charId={charId} />
+                        </Fragment>
+                    ))}
+                </ComboBoxResponsive>
             </CardContent>
         </Card>
     )
 })
 
-const OptionItem = memo(function ParamItem(props: { itemId: string; slot: EquipSlotsEnum }) {
-    const { itemId, slot } = props
+const OptionItem = memo(function ParamItem({
+    itemId,
+    slot,
+    charId,
+    defIcon,
+}: {
+    itemId: string
+    slot: EquipSlotsEnum
+    charId: string
+    defIcon?: ReactNode
+}) {
     const itemObj = useGameStore(selectGameItem(itemId))
     const { t } = useTranslations()
     const text = itemObj ? t[itemObj.nameId] : t.None
 
     let icon: ReactNode | undefined
-    if (itemObj) icon = <span className="text-2xl">{IconsData[itemObj.icon]}</span>
+    if (!itemObj) icon = defIcon
+    else if (itemObj) icon = IconsData[itemObj.icon]
+
+    const handleEquipChange = useCallback(() => changeEquip(slot, itemId, charId), [slot, itemId, charId])
 
     return (
-        <SelectItem value={itemId} icon={icon}>
-            <OptionItemInt name={text} slot={slot} item={itemObj} />
-        </SelectItem>
+        <ComboBoxItem
+            value={itemId}
+            icon={<span className="text-2xl">{icon}</span>}
+            onSelect={handleEquipChange}
+            bottomSlot={<OptionItemInt name={text} slot={slot} item={itemObj} />}
+        >
+            <span className="leading-none font-medium">{text}</span>
+        </ComboBoxItem>
     )
 })
-const OptionItemInt = memo(function AxeItemInt(props: { name: string; slot: EquipSlotsEnum; item?: Item }) {
-    const { name, slot, item } = props
 
+const OptionItemInt = memo(function AxeItemInt({ slot, item }: { name: string; slot: EquipSlotsEnum; item?: Item }) {
     return (
-        <div>
-            <span className="leading-none font-medium">{name}</span>
-            <div className="text-muted-foreground flex max-w-md flex-wrap gap-2 text-sm leading-none font-medium">
-                {slot === EquipSlotsEnum.WoodAxe && <WoodAxeDataUi woodAxeData={item?.woodAxeData ?? DEF_WOOD_AXE} />}
-                {slot === EquipSlotsEnum.Pickaxe && <PickaxeDataUi pickaxeData={item?.pickaxeData ?? DEF_PICKAXE} />}
-            </div>
+        <div className="flex max-w-md flex-wrap gap-2 leading-none">
+            {slot === EquipSlotsEnum.WoodAxe && <WoodAxeDataUi woodAxeData={item?.woodAxeData ?? DEF_WOOD_AXE} />}
+            {slot === EquipSlotsEnum.Pickaxe && <PickaxeDataUi pickaxeData={item?.pickaxeData ?? DEF_PICKAXE} />}
         </div>
     )
 })

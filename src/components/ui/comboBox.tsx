@@ -114,7 +114,7 @@ export const ComboBoxItem = ({
             {icon && <span className="mr-2">{icon}</span>}
             <div className="flex flex-col">
                 {children}
-                {bottomSlot && <div className="text-muted-foreground text-sm">{bottomSlot}</div>}
+                {bottomSlot && <div className="text-muted-foreground mt-2 text-sm leading-none">{bottomSlot}</div>}
             </div>
             <span className="ml-auto flex items-center gap-2">
                 {rightSlot}
