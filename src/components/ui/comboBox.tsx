@@ -1,6 +1,7 @@
-import { createContext, use, useCallback, useState } from 'react'
+import { createContext, use, useCallback, useEffect, useRef, useState } from 'react'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import { Label } from '@radix-ui/react-label'
+import { useMeasure, useRaf } from 'react-use'
 import { useTranslations } from '../../msg/useTranslations'
 import { cn } from '../../lib/utils'
 import { DrawerTrigger, DrawerContent, Drawer } from './drawer'
@@ -24,6 +25,8 @@ export function ComboBoxResponsive({ children, triggerContent, selectedId, label
     const isDesktop = useMediaQuery('(min-width: 768px)')
     const { t } = useTranslations()
 
+    const [ref, { width }] = useMeasure<HTMLDivElement>()
+
     const trigger = (
         <Button variant="outline" className="text-muted-foreground w-full justify-start">
             {triggerContent || t.selectPlaceholder}
@@ -43,11 +46,11 @@ export function ComboBoxResponsive({ children, triggerContent, selectedId, label
 
     if (isDesktop) {
         return (
-            <div>
+            <div ref={ref}>
                 {labelUi}
                 <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-                    <PopoverContent className="w-[300px] p-0" align="start">
+                    <PopoverContent style={{ width }} className="p-0" align="start">
                         {items}
                     </PopoverContent>
                 </Popover>
