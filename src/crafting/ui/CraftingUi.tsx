@@ -33,14 +33,12 @@ import { handleRecipeChange } from '../CraftingFunctions'
 import { Card, CardContent } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { IconsData } from '../../icons/Icons'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
 import { GameState } from '../../game/GameState'
 import { ActivitiesList } from '../../activities/ui/Activities'
 import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
-import { Label } from '@/components/ui/label'
 
 const recipesByType: Partial<Record<RecipeTypes, Recipe[]>> = {}
 
@@ -132,6 +130,8 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
 
     return (
         <ComboBoxResponsive
+            label={t.Recipe}
+            selectedId={selected?.id ?? null}
             triggerContent={
                 selected ? (
                     <span className="select-trigger">
@@ -147,8 +147,6 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
                     key={r.id}
                     value={r.id}
                     icon={IconsData[r.iconId]}
-                    rightSlot={'X'}
-                    bottomSlot={t[r.nameId]}
                     onSelect={() => handleRecipeChange(r)}
                     selected={r.id === recipeId}
                 >
@@ -202,54 +200,57 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
     const { t } = useTranslations()
     const itemsId = useGameStore(useShallow(selectItemsByType(recipeParam.itemType)))
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
-    const selectedValue = selected?.itemId
+
     const selectedItem = useGameStore((s: GameState) => {
         if (!selected) return null
-        return selectGameItem(selected.id)(s)
+        return selectGameItem(selected.itemId)(s)
     })
 
-    const handleRecipeChange = useCallback(
-        (value: string) => setRecipeItemParamUi(recipeParam.id, value),
-        [recipeParam.id]
-    )
-
     return (
-        <div>
-            <Label>{t[recipeParam.nameId]}</Label>
-            <Select value={selectedValue ?? ''} onValueChange={handleRecipeChange}>
-                <SelectTrigger>
-                    <SelectValue placeholder={`-- ${t[recipeParam.nameId]} --`}>
-                        {selectedItem && (
-                            <span className="select-trigger">
-                                {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
-                            </span>
-                        )}
-                    </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                    {itemsId.map((t) => (
-                        <ParamItem itemId={t} key={t} />
-                    ))}
-                </SelectContent>
-            </Select>
-        </div>
+        <ComboBoxResponsive
+            label={t[recipeParam.nameId]}
+            selectedId={selected?.itemId ?? null}
+            triggerContent={
+                selectedItem ? (
+                    <span className="select-trigger">
+                        {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
+                    </span>
+                ) : (
+                    `-- ${t[recipeParam.nameId]} --`
+                )
+            }
+        >
+            {itemsId.map((t) => (
+                <ParamItem itemId={t} key={t} recipeParamId={recipeParam.id} />
+            ))}
+        </ComboBoxResponsive>
     )
 })
-const ParamItem = memo(function ParamItem(props: { itemId: string }) {
-    const { itemId } = props
+const ParamItem = memo(function ParamItem({ itemId, recipeParamId }: { itemId: string; recipeParamId: string }) {
     const { t } = useTranslations()
-    const { f } = useNumberFormatter()
 
     const itemObj = useGameStore(selectGameItem(itemId))
-    const qta = useGameStore(selectItemQta(null, itemId))
     const text = itemObj ? t[itemObj.nameId] : t.None
 
+    const handleRecipeChange = useCallback(() => setRecipeItemParamUi(recipeParamId, itemId), [recipeParamId, itemId])
+
     return (
-        <SelectItem value={itemId} icon={itemObj && IconsData[itemObj.icon]} className={classes.seleBtn}>
+        <ComboBoxItem
+            value={itemId}
+            icon={itemObj && IconsData[itemObj.icon]}
+            className={classes.seleBtn}
+            onSelect={handleRecipeChange}
+            rightSlot={<ParamItemQta itemId={itemId} />}
+        >
             <span className={classes.item}>
                 <span className={classes.text}>{text}</span>
-                <span className="text-muted-foreground">{f(qta)}</span>
             </span>
-        </SelectItem>
+        </ComboBoxItem>
     )
+})
+const ParamItemQta = memo(function ParamItemQta({ itemId }: { itemId: string }) {
+    const { f } = useNumberFormatter()
+    const qta = useGameStore(selectItemQta(null, itemId))
+
+    return <Badge variant="secondary">{f(qta)}</Badge>
 })
