@@ -1,5 +1,5 @@
 import { ButcheringItems } from '../butchering/ButcheringItems'
-import { CharItems } from '../characters/templates/CharItems'
+import { CharItems } from '../characters/templates/charItems'
 import { DeadAnimals } from '../characters/templates/DeadAnimals'
 import { MiningItems } from '../mining/MiningItems'
 import { SmithingItems } from '../smithing/SmithingItems'
