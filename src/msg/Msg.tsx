@@ -294,6 +294,8 @@ export interface Msg {
     BoarTusk: string
     DeadTreeHandle: string
     OakHandle: string
+
+    NoResults: string
 }
 export interface MsgFunctions {
     // Time

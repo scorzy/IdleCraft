@@ -34,9 +34,10 @@ import { Card, CardContent } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { IconsData } from '../../icons/Icons'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { GameState } from '../../game/GameState'
 import { ActivitiesList } from '../../activities/ui/Activities'
+import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 import { Label } from '@/components/ui/label'
@@ -130,24 +131,31 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     const icon = selected && IconsData[selected.iconId]
 
     return (
-        <Select value={recipeId ?? ''} onValueChange={handleRecipeChange}>
-            <SelectTrigger>
-                <SelectValue placeholder={t.SelectARecipe}>
-                    {selected && (
-                        <span className="select-trigger">
-                            {icon} {t[selected.nameId]}
-                        </span>
-                    )}
-                </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-                {recipesByType.map((r) => (
-                    <SelectItem key={r.id} value={r.id} icon={IconsData[r.iconId]}>
-                        {t[r.nameId]}
-                    </SelectItem>
-                ))}
-            </SelectContent>
-        </Select>
+        <ComboBoxResponsive
+            triggerContent={
+                selected ? (
+                    <span className="select-trigger">
+                        {icon} {t[selected.nameId]}
+                    </span>
+                ) : (
+                    `-- ${t.SelectARecipe} --`
+                )
+            }
+        >
+            {recipesByType.map((r) => (
+                <ComboBoxItem
+                    key={r.id}
+                    value={r.id}
+                    icon={IconsData[r.iconId]}
+                    rightSlot={'X'}
+                    bottomSlot={t[r.nameId]}
+                    onSelect={() => handleRecipeChange(r)}
+                    selected={r.id === recipeId}
+                >
+                    {t[r.nameId]}
+                </ComboBoxItem>
+            ))}
+        </ComboBoxResponsive>
     )
 })
 
