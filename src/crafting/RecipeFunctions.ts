@@ -4,10 +4,10 @@ import { GameLocations } from '../gameLocations/GameLocations'
 import { RecipeParameterValue } from './RecipeInterfaces'
 import { recipes } from './Recipes'
 
-export function changeRecipeState(state: GameState, recipeId: string): void {
+export function changeRecipeState(state: GameState, recipeId: string | null): void {
     if (state.recipeId === recipeId) return
 
-    state.recipeId = recipeId
+    state.recipeId = recipeId ?? ''
     state.craftingForm = {
         paramsValue: [],
         params: [],
@@ -26,7 +26,7 @@ export function changeRecipeState(state: GameState, recipeId: string): void {
         result,
     }
 }
-export const changeRecipe = (recipeId: string) => setState((state) => changeRecipeState(state, recipeId))
+export const changeRecipe = (recipeId: string | null) => setState((state) => changeRecipeState(state, recipeId))
 
 export const setRecipeItemParam = (state: GameState, id: string, paramValue: string) => {
     const paramsValue: RecipeParameterValue[] = state.craftingForm.paramsValue.filter((p) => p.id !== id)

@@ -269,6 +269,8 @@ export const engMsg: Msg = {
     Quantity: 'Quantity',
     Value: 'Value',
     Handle: 'Handle',
+
+    NoResults: 'No results found.',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
