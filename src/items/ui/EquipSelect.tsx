@@ -12,7 +12,6 @@ import { selectEquipId } from '../itemSelectors'
 import { changeEquip } from '../itemFunctions'
 import { DEF_PICKAXE } from '../../mining/miningSelectors'
 import { DEF_WOOD_AXE } from '../../wood/selectors/WoodcuttingSelectors'
-import { SelectSeparator } from '../../components/ui/select'
 import { GameState } from '../../game/GameState'
 import { Msg } from '../../msg/Msg'
 import { PLAYER_ID } from '../../characters/charactersConst'
@@ -60,10 +59,9 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
                     }
                 >
                     <OptionItem itemId="-" slot={slot} charId={charId} defIcon={<GiRock />} />
-                    {itemsId.length > 0 && <SelectSeparator />}
-                    {itemsId.map((t, index) => (
+
+                    {itemsId.map((t) => (
                         <Fragment key={t}>
-                            {index !== 0 && <SelectSeparator />}
                             <OptionItem itemId={t} slot={slot} charId={charId} />
                         </Fragment>
                     ))}
