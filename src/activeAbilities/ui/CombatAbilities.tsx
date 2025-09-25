@@ -16,7 +16,7 @@ import { removeRotation } from '../functions/removeRotation'
 import { TrashIcon } from '../../icons/IconsMemo'
 import { Card, CardContent } from '../../components/ui/card'
 import { isCharReadonly } from '../../ui/state/uiSelectors'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
+import { ComboBoxResponsive, ComboBoxItem } from '../../components/ui/comboBox'
 import classes from './combatAbilities.module.css'
 
 export const CombatAbilities = memo(function CombatAbilities() {
@@ -72,18 +72,14 @@ const CombatAbility = memo(function CombatAbility(props: { index: number }) {
 
     return (
         <div className={classes.abilityRow}>
-            <Select value={selectedCharAbility} onValueChange={onChange}>
-                <SelectTrigger>
-                    <SelectValue placeholder={' - '}>
-                        {selectedId && <SelectedAbility selectedId={selectedId} />}
-                    </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                    {allCombatAbilities.map((r) => (
-                        <Ability key={r} id={r} />
-                    ))}
-                </SelectContent>
-            </Select>
+            <ComboBoxResponsive
+                selectedId={selectedCharAbility ?? null}
+                triggerContent={selectedId ? <SelectedAbility selectedId={selectedId} /> : undefined}
+            >
+                {allCombatAbilities.map((r) => (
+                    <Ability key={r} id={r} onSelect={() => onChange(r)} selected={selectedCharAbility === r} />
+                ))}
+            </ComboBoxResponsive>
             <Button variant="ghost" title={t.Remove} onClick={onClick}>
                 {TrashIcon}
             </Button>
@@ -91,8 +87,8 @@ const CombatAbility = memo(function CombatAbility(props: { index: number }) {
     )
 })
 
-const Ability = memo(function Ability(props: { id: string }) {
-    const { id } = props
+const Ability = memo(function Ability(props: { id: string; onSelect: () => void; selected: boolean }) {
+    const { id, onSelect, selected } = props
     const { t } = useTranslations()
     const charAbility = useGameStore(selectCombatAbilityById(id))
     const ability = ActiveAbilityData.getEx(charAbility.abilityId)
@@ -101,9 +97,9 @@ const Ability = memo(function Ability(props: { id: string }) {
     )
 
     return (
-        <SelectItem value={id} icon={IconsData[iconId]}>
+        <ComboBoxItem value={id} icon={IconsData[iconId]} onSelect={onSelect} selected={selected}>
             {t[ability.nameId]}
-        </SelectItem>
+        </ComboBoxItem>
     )
 })
 
