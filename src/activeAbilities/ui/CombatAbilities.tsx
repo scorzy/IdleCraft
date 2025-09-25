@@ -77,7 +77,7 @@ const CombatAbility = memo(function CombatAbility(props: { index: number }) {
                 triggerContent={selectedId ? <SelectedAbility selectedId={selectedId} /> : undefined}
             >
                 {allCombatAbilities.map((r) => (
-                    <Ability key={r} id={r} onSelect={() => onChange(r)} selected={selectedCharAbility === r} />
+                    <Ability key={r} id={r} onSelect={onChange} selected={selectedCharAbility === r} />
                 ))}
             </ComboBoxResponsive>
             <Button variant="ghost" title={t.Remove} onClick={onClick}>
@@ -87,7 +87,7 @@ const CombatAbility = memo(function CombatAbility(props: { index: number }) {
     )
 })
 
-const Ability = memo(function Ability(props: { id: string; onSelect: () => void; selected: boolean }) {
+const Ability = memo(function Ability(props: { id: string; onSelect: (value: string) => void; selected: boolean }) {
     const { id, onSelect, selected } = props
     const { t } = useTranslations()
     const charAbility = useGameStore(selectCombatAbilityById(id))
@@ -95,9 +95,10 @@ const Ability = memo(function Ability(props: { id: string; onSelect: () => void;
     const iconId = useGameStore((state: GameState) =>
         ability.getIconId({ state, characterId: state.ui.selectedCharId })
     )
+    const onClick = useCallback(() => onSelect(id), [id])
 
     return (
-        <ComboBoxItem value={id} icon={IconsData[iconId]} onSelect={onSelect} selected={selected}>
+        <ComboBoxItem value={id} icon={IconsData[iconId]} onSelect={onClick} selected={selected}>
             {t[ability.nameId]}
         </ComboBoxItem>
     )

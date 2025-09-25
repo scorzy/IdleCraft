@@ -1,7 +1,7 @@
-import { createContext, use, useCallback, useEffect, useRef, useState } from 'react'
+import { createContext, use, useCallback, useState } from 'react'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import { Label } from '@radix-ui/react-label'
-import { useMeasure, useRaf } from 'react-use'
+import { useMeasure } from 'react-use'
 import { useTranslations } from '../../msg/useTranslations'
 import { cn } from '../../lib/utils'
 import { DrawerTrigger, DrawerContent, Drawer } from './drawer'
@@ -28,7 +28,7 @@ export function ComboBoxResponsive({ children, triggerContent, selectedId, label
     const [ref, { width }] = useMeasure<HTMLDivElement>()
 
     const trigger = (
-        <Button variant="outline" className="text-muted-foreground w-full justify-start">
+        <Button variant="outline" className="w-full justify-start">
             {triggerContent || t.selectPlaceholder}
             <ChevronDownIcon className="ml-auto size-4 opacity-50" />
         </Button>

@@ -8,15 +8,19 @@ import { useTranslations } from '../../msg/useTranslations'
 import { selectGameItem, selectItemQta, selectFilteredItems } from '../StorageSelectors'
 import { ItemFilter } from '../../items/Item'
 import { Badge } from '../../components/ui/badge'
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
+import { ComboBoxResponsive, ComboBoxItem } from '../../components/ui/comboBox'
 
-export const ItemsSelect = memo(function ItemsSelect(props: {
+export const ItemsSelect = memo(function ItemsSelect({
+    itemFilter,
+    onValueChange,
+    selectedValue,
+    placeholderText,
+}: {
     itemFilter: ItemFilter
     placeholderText?: string
     onValueChange: (value: string) => void
     selectedValue: string | undefined
 }) {
-    const { itemFilter, onValueChange, selectedValue, placeholderText } = props
     const { t } = useTranslations()
     const selectedItem = useGameStore((s: GameState) => {
         if (!selectedValue) return null
@@ -28,26 +32,36 @@ export const ItemsSelect = memo(function ItemsSelect(props: {
     )
 
     return (
-        <Select value={selectedValue ?? ''} onValueChange={onValueChange}>
-            <SelectTrigger>
-                <SelectValue placeholder={placeholderText ?? t.selectPlaceholder}>
-                    {selectedItem && (
-                        <span className="select-trigger">
-                            {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
-                        </span>
-                    )}
-                </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-                {itemsId.map((t) => {
-                    return <ParamItem itemId={t} key={t} />
-                })}
-            </SelectContent>
-        </Select>
+        <ComboBoxResponsive
+            selectedId={selectedValue ?? null}
+            triggerContent={
+                selectedItem ? (
+                    <span className="select-trigger">
+                        {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
+                    </span>
+                ) : (
+                    (placeholderText ?? t.selectPlaceholder)
+                )
+            }
+        >
+            {itemsId.map((t) => {
+                return (
+                    <ItemComboBoxItem itemId={t} key={t} selected={selectedValue === t} onValueChange={onValueChange} />
+                )
+            })}
+        </ComboBoxResponsive>
     )
 })
-export const ParamItem = memo(function ParamItem(props: { itemId: string }) {
-    const { itemId } = props
+
+const ItemComboBoxItem = memo(function ItemComboBoxItem({
+    itemId,
+    selected,
+    onValueChange,
+}: {
+    itemId: string
+    selected: boolean
+    onValueChange: (value: string) => void
+}) {
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
 
@@ -55,13 +69,17 @@ export const ParamItem = memo(function ParamItem(props: { itemId: string }) {
     const qta = useGameStore(selectItemQta(null, itemId))
     const text = itemObj ? t[itemObj.nameId] : t.None
 
+    const handleSelect = useCallback(() => onValueChange(itemId), [onValueChange, itemId])
+
     return (
-        <SelectItem
+        <ComboBoxItem
             value={itemId}
             icon={itemObj && IconsData[itemObj.icon]}
             rightSlot={<Badge variant="secondary">{f(qta)}</Badge>}
+            onSelect={handleSelect}
+            selected={selected}
         >
             {text}
-        </SelectItem>
+        </ComboBoxItem>
     )
 })
