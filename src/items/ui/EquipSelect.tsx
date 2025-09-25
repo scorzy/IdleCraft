@@ -39,8 +39,6 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
         useShallow(useCallback((s: GameState) => selectItemsByType(slotData.ItemType)(s), [slotData]))
     )
 
-    const handleEquipChange = useCallback(() => changeEquip(slot, '-', charId), [slot, charId])
-
     let name = t.None
     let icon: ReactNode = noIcon
     if (equipped) {
