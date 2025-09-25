@@ -47,7 +47,6 @@ export interface Msg {
     Quantity: string
     Value: string
     Handle: string
-    // Handles moved below
     Ore: string
     Bar: string
     CopperOre: string
@@ -65,61 +64,18 @@ export interface Msg {
     //  Wood
     DeadTree: string
     Oak: string
-    Pine: string
-    Birch: string
-    Maple: string
-    Willow: string
-    Cedar: string
-    Redwood: string
-    Spruce: string
-    Mahogany: string
 
     //  Logs
     DeadTreeLog: string
     OakLog: string
-    PineLog: string
-    BirchLog: string
-    MapleLog: string
-    WillowLog: string
-    CedarLog: string
-    RedwoodLog: string
-    SpruceLog: string
-    MahoganyLog: string
 
     //  Planks
     DeadTreePlank: string
     OakPlank: string
-    PinePlank: string
-    BirchPlank: string
-    MaplePlank: string
-    WillowPlank: string
-    CedarPlank: string
-    RedwoodPlank: string
-    SprucePlank: string
-    MahoganyPlank: string
-
-    //  Handles
-    // (already declared above)
-    PineHandle: string
-    BirchHandle: string
-    MapleHandle: string
-    WillowHandle: string
-    CedarHandle: string
-    RedwoodHandle: string
-    SpruceHandle: string
-    MahoganyHandle: string
 
     //  Forest
     DeadTreeForest: string
     OakForest: string
-    PineForest: string
-    BirchForest: string
-    MapleForest: string
-    WillowForest: string
-    CedarForest: string
-    RedwoodForest: string
-    SpruceForest: string
-    MahoganyForest: string
 
     //  Mining
     Mining: string
