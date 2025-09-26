@@ -271,16 +271,18 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
     )
 
     return (
-        <div className="mt-2 flex flex-wrap gap-2">
-            <TypographyP>{t.Rewards}</TypographyP>
-            {gold > 0 && (
-                <Badge variant="secondary">
-                    {t.Gold}: {f(gold)}
-                </Badge>
-            )}
-            {items.map((r) => (
-                <ItemRewardUi itemId={r.itemId} quantity={r.quantity} key={questId + r.itemId + r.quantity} />
-            ))}
+        <div>
+            <CardTitle>{t.Rewards}</CardTitle>
+            <div className="mt-2 flex flex-wrap gap-2">
+                {gold > 0 && (
+                    <Badge variant="default" className="text-base">
+                        {t.Gold}: {f(gold)}
+                    </Badge>
+                )}
+                {items.map((r) => (
+                    <ItemRewardUi itemId={r.itemId} quantity={r.quantity} key={questId + r.itemId + r.quantity} />
+                ))}
+            </div>
         </div>
     )
 }
@@ -307,7 +309,7 @@ export function ItemRewardUi(props: { itemId: string; quantity: number }) {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Badge variant="secondary">
+                <Badge variant="default" className="text-base">
                     {f(quantity)} <ItemIconName itemId={itemId} />
                 </Badge>
             </PopoverTrigger>
@@ -316,7 +318,7 @@ export function ItemRewardUi(props: { itemId: string; quantity: number }) {
                 <PopoverContent side="top">
                     <Card className="min-w-50">
                         <MyCardHeaderTitle title={`${f(quantity)} ${name}`} icon={icon} />
-                        <CardContent className="text-sm">
+                        <CardContent>
                             <ItemInfo item={item} />
                         </CardContent>
                     </Card>
