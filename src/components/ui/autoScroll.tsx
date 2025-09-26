@@ -1,4 +1,4 @@
-import { useRef, useEffect, JSX } from 'react'
+import { useRef, useEffect, useLayoutEffect, useState, JSX } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { cn } from '../../lib/utils'
 import classes from './autoScroll.module.css'
@@ -20,7 +20,11 @@ export const AutoScroll = ({
 }) => {
     // eslint-disable-next-line react-compiler/react-compiler
     'use no memo'
+
     const parentRef = useRef<HTMLDivElement>(null)
+    const prevScrollHeight = useRef<number>(0)
+    const [wasAtBottom, setWasAtBottom] = useState(true)
+
     const virtualizer = useVirtualizer({
         count: totalCount,
         getScrollElement: () => parentRef.current,
@@ -28,10 +32,24 @@ export const AutoScroll = ({
         overscan: 5,
     })
 
-    //Auto-scroll to bottom when new items are added
+    // Track if user was at bottom before update
+    useLayoutEffect(() => {
+        const el = parentRef.current
+        if (!el) return
+        // Allow a small threshold for "at bottom"
+        const threshold = 2
+        setWasAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < threshold)
+        prevScrollHeight.current = el.scrollHeight
+    }, [lastId, totalCount, virtualizer.getTotalSize()])
+
+    // Scroll to bottom only if user was at bottom before update
     useEffect(() => {
-        if (autoscroll && parentRef.current) parentRef.current.scrollTop = parentRef.current.scrollHeight
-    }, [lastId, autoscroll])
+        const el = parentRef.current
+        if (!el) return
+        if (autoscroll && wasAtBottom) {
+            el.scrollTop = el.scrollHeight
+        }
+    }, [lastId, autoscroll, wasAtBottom, virtualizer.getTotalSize()])
 
     return (
         <div ref={parentRef} className={cn(classes.container, className)}>
