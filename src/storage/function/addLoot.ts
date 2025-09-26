@@ -7,7 +7,7 @@ export function addLoot(state: GameState, loot: Loot[]): void {
     const locLoot = state.locations[state.location].loot
 
     for (const l of loot) {
-        if (locLoot.length > MAX_LOOT) return
+        if (locLoot.length >= MAX_LOOT) return
         locLoot.unshift({ id: getUniqueId(), ...l })
     }
 }

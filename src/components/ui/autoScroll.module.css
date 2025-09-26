@@ -1,5 +1,15 @@
-.lastSpan {
-    height: 1px;
-    display: block;
-    margin-top: -1rem;
+.container {
+    overflow: auto;
+    width: 100%;
+}
+.container2 {
+    position: relative;
+    width: 100%;
+}
+
+.row {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
 }

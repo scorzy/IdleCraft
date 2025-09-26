@@ -1,51 +1,54 @@
-import { memo, useState, useRef, JSX, useLayoutEffect, useCallback } from 'react'
-import { Virtuoso, VirtuosoHandle } from 'react-virtuoso'
+import { useRef, useEffect, JSX } from 'react'
+import { useVirtualizer } from '@tanstack/react-virtual'
+import { cn } from '../../lib/utils'
+import classes from './autoScroll.module.css'
 
-export const AutoScroll = memo(function AutoScroll(props: {
+export const AutoScroll = ({
+    totalCount,
+    itemContent,
+    className,
+    autoscroll,
+    estimateSize,
+    lastId,
+}: {
     className?: string
     totalCount: number
+    estimateSize: (index: number) => number
     itemContent: (index: number) => JSX.Element | null
-}) {
-    const { totalCount, itemContent, className } = props
-    const [lastVisible, setLastVisible] = useState<boolean>(true)
-    const virtuosoRef = useRef<VirtuosoHandle>(null)
-    const [visibleRange, setVisibleRange] = useState({
-        startIndex: 0,
-        endIndex: 0,
+    autoscroll?: boolean
+    lastId?: string
+}) => {
+    // eslint-disable-next-line react-compiler/react-compiler
+    'use no memo'
+    const parentRef = useRef<HTMLDivElement>(null)
+    const virtualizer = useVirtualizer({
+        count: totalCount,
+        getScrollElement: () => parentRef.current,
+        estimateSize,
+        overscan: 5,
     })
 
-    const onScroll = useCallback(
-        (e: React.UIEvent<HTMLDivElement>) => {
-            const scrollTop = e.currentTarget.scrollTop
-            const scrollHeight = e.currentTarget.scrollHeight
-            const clientHeight = e.currentTarget.clientHeight
-            const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1
-            setLastVisible(isAtBottom)
-        },
-        [setLastVisible]
-    )
-
-    useLayoutEffect(() => {
-        let timeout = null
-        if (lastVisible && virtuosoRef.current)
-            timeout = setTimeout(() => {
-                virtuosoRef.current?.scrollToIndex(totalCount)
-            }, 0)
-
-        return () => {
-            if (timeout) clearTimeout(timeout)
-        }
-    }, [lastVisible, visibleRange, totalCount])
+    //Auto-scroll to bottom when new items are added
+    useEffect(() => {
+        if (autoscroll && parentRef.current) parentRef.current.scrollTop = parentRef.current.scrollHeight
+    }, [lastId, autoscroll])
 
     return (
-        <Virtuoso
-            onScroll={onScroll}
-            ref={virtuosoRef}
-            className={className}
-            style={{ height: '100%' }}
-            totalCount={totalCount}
-            rangeChanged={setVisibleRange}
-            itemContent={itemContent}
-        />
+        <div ref={parentRef} className={cn(classes.container, className)}>
+            <div className={classes.container2} style={{ height: `${virtualizer.getTotalSize()}px` }}>
+                {virtualizer.getVirtualItems().map((virtualRow) => (
+                    <div
+                        key={virtualRow.key}
+                        className={classes.row}
+                        style={{
+                            height: `${virtualRow.size}px`,
+                            transform: `translateY(${virtualRow.start}px)`,
+                        }}
+                    >
+                        {itemContent(virtualRow.index)}
+                    </div>
+                ))}
+            </div>
+        </div>
     )
-})
+}

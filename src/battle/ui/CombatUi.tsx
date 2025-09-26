@@ -1,7 +1,6 @@
 import { memo, useCallback, useState } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
 import { CaretSortIcon } from '@radix-ui/react-icons'
-import { Virtuoso } from 'react-virtuoso'
 import { MyPage } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
 import { selectTeamsMemo } from '../../characters/selectors/selectTeams'
@@ -32,6 +31,7 @@ import { collectLootUi } from '../../storage/function/collectLoot'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
+import { AutoScroll } from '../../components/ui/autoScroll'
 import classes from './combat.module.css'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
@@ -228,26 +228,36 @@ const CombatAbilityBadge = memo(function CombatAbilitiesList(props: {
     )
 })
 const BAG_ICON = <GiSwapBag />
-const BattleLootUi = memo(function BattleLootUi() {
+
+const estimateLootSize = () => 24
+
+function BattleLootUi() {
     const { t } = useTranslations()
     const loots = useGameStore(selectLoot)
+
+    const LootUiFromIndex = useCallback(
+        (index: number) => {
+            const loot = loots[index]
+            if (!loot) return null
+            return <LootRow loot={loot} key={loot.id} />
+        },
+        [loots]
+    )
+
     return (
         <Card className={classes.loot}>
             <MyCardHeaderTitle title={t.Loot} icon={BAG_ICON} />
-            <CardContent className="h-full">
-                <Virtuoso
-                    style={{ height: '100%' }}
+            <CardContent className="grid h-80 grid-cols-1 pr-0">
+                <AutoScroll
                     totalCount={loots.length}
-                    itemContent={(index) => {
-                        const loot = loots[index]
-                        if (!loot) return null
-                        return <LootRow loot={loot} key={loot.id} />
-                    }}
+                    estimateSize={estimateLootSize}
+                    autoscroll={true}
+                    itemContent={LootUiFromIndex}
                 />
             </CardContent>
         </Card>
     )
-})
+}
 
 const LootRow = memo(function LootRow(props: { loot: LootId }) {
     const { loot } = props

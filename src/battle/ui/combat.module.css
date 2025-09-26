@@ -43,11 +43,9 @@
 
 .log {
     grid-area: log;
-    height: 20rem;
 }
 .loot {
     grid-area: loot;
-    height: 20rem;
 }
 @container (min-width: 900px) {
     .mainContainer {
