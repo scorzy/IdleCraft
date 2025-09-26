@@ -230,15 +230,15 @@ const StorageItem = memo(function StorageItem(props: { small: boolean; location:
             <TableRow onClick={onClick} className={cn(classes.row, { 'bg-muted': selected })}>
                 <TableCell>
                     <span className={classes.smallRow}>
-                        {IconsData[item.icon]}
+                        <span className="pr-2 text-right align-middle">{IconsData[item.icon]}</span>
                         <span>{t[item.nameId]}</span>
                     </span>
                     <span className={classes.smallRow}>
-                        <span className="text-muted-foreground text-left align-middle font-medium">{t.Quantity}</span>
+                        <span className={classes.smallRowHeader}>{t.Quantity}</span>
                         {f(qta)}
                     </span>
                     <span className={classes.smallRow}>
-                        <span className="text-muted-foreground text-left align-middle font-medium">{t.Value}</span>
+                        <span className={classes.smallRowHeader}>{t.Value}</span>
                         {f(item.value)}
                     </span>
                 </TableCell>

@@ -20,6 +20,14 @@
         font-size: 1.25rem;
     }
 }
+.smallRowHeader {
+    color: var(--muted-foreground);
+    --tw-font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium);
+    vertical-align: middle;
+    text-align: right;
+    padding-right: calc(var(--spacing) * 2);
+}
 .cardList {
     display: grid;
     gap: var(--gap);
