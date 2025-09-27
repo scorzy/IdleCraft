@@ -51,6 +51,9 @@
     --color-stamina-foreground: var(--stamina-foreground);
     --color-mana: var(--mana);
     --color-mana-foreground: var(--mana-foreground);
+
+    --color-money: var(--money);
+    --color-money-foreground: var(--money-foreground);
 }
 
 :root {
@@ -86,6 +89,8 @@
     --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
     --sidebar-border: oklch(0.92 0.004 286.32);
     --sidebar-ring: oklch(0.623 0.214 259.815);
+    --money: oklch(0.97 0.07 103);
+    --money-foreground: oklch(0.68 0.14 76);
 
     color-scheme: light;
 }
@@ -143,6 +148,9 @@
     --mana: oklch(0.623 0.214 259.815);
     --mana-bg: oklch(0.623 0.214 259.815/25%);
     --mana-foreground: oklch(0.97 0.014 254.604);
+
+    --money: oklch(0.29 0.06 54);
+    --money-foreground: oklch(0.86 0.17 92);
 
     color-scheme: dark;
 }

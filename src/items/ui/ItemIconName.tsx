@@ -25,7 +25,8 @@ export const ItemIconName = (props: { itemId: string }) => {
 
     return (
         <span className="flex items-center gap-1">
-            {icon} {name}
+            <span className="text-lg">{icon}</span>
+            {name}
         </span>
     )
 }

@@ -46,7 +46,7 @@ import { Badge } from '../../components/ui/badge'
 import { isCollectReq } from '../collectRequest/collectSelectors'
 import { ItemIconName } from '../../items/ui/ItemIconName'
 import { CollectRequestUi } from '../collectRequest/CollectRequestUi'
-import { ChevronsUpDownIcon } from '../../icons/IconsMemo'
+import { ChevronsUpDownIcon, Coins } from '../../icons/IconsMemo'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
 import { setState } from '../../game/setState'
 
@@ -275,8 +275,9 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
             <CardTitle>{t.Rewards}</CardTitle>
             <div className="mt-2 flex flex-wrap gap-2">
                 {gold > 0 && (
-                    <Badge variant="default" className="text-base">
-                        {t.Gold}: {f(gold)}
+                    <Badge variant="secondary" size="base">
+                        {Coins}
+                        {f(gold)}
                     </Badge>
                 )}
                 {items.map((r) => (
@@ -309,7 +310,7 @@ export function ItemRewardUi(props: { itemId: string; quantity: number }) {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Badge variant="default" className="text-base">
+                <Badge variant="secondary" size="base">
                     {f(quantity)} <ItemIconName itemId={itemId} />
                 </Badge>
             </PopoverTrigger>
