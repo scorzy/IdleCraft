@@ -51,7 +51,7 @@ const AccordionContent = ({
         className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden"
         {...props}
     >
-        <div className={cn('pt-0 pb-4', className)}>{children}</div>
+        <div className={cn('pt-0 pb-0', className)}>{children}</div>
     </AccordionPrimitive.Content>
 )
 AccordionContent.displayName = AccordionPrimitive.Content.displayName

@@ -1,6 +1,7 @@
-import { memo, useCallback, useEffect, useState } from 'react'
+import { createContext, memo, use, useCallback, useEffect, useState } from 'react'
 import { clsx } from 'clsx'
 import { useContainerQueries, QueryBreakpoints } from 'use-container-queries'
+import { L } from 'vitest/dist/chunks/reporters.d.BFLkQcL6.js'
 import { useGameStore } from '../../game/state'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import {
@@ -20,16 +21,17 @@ import { cn } from '../../lib/utils'
 import { clickStorageHeader, setStorageOrder } from '../../ui/state/uiFunctions'
 import { MyPage } from '../../ui/pages/MyPage'
 import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDownIcon, InfoIcon } from '../../icons/IconsMemo'
-import { Card, CardContent } from '../../components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import {
     selectIsStorageOrderName,
     selectIsStorageOrderQuantity,
     selectIsStorageOrderValue,
     selectStorageAsc,
 } from '../../ui/state/uiSelectors'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
+import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerTrigger } from '../../components/ui/drawer'
 import classes from './storage.module.css'
 import { buttonVariants } from '@/components/ui/buttonVariants'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -38,11 +40,20 @@ const breakpoints: QueryBreakpoints = {
     small: [0, 400],
     med: [401],
 }
+const breakpointsD: QueryBreakpoints = {
+    small: [0, 500],
+    med: [501],
+}
+
+const UiStorageContext = createContext<((open: boolean) => void) | null>(null)
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocationsMemo)
+    const [open, setOpen] = useState(true)
 
     const { ref, active } = useContainerQueries({ breakpoints })
+    const { ref: refD, active: activeD } = useContainerQueries({ breakpoints: breakpointsD })
+
     const [show, setShow] = useState(false)
     useEffect(() => {
         const id = setTimeout(() => setShow(true), 0)
@@ -51,25 +62,60 @@ export function UiStorage() {
         }
     }, [])
     const small = active === 'small'
+    const drawer = activeD === 'small'
 
     if (locations.length === 0) return <NoItems />
     return (
         <MyPage>
-            <div className={clsx(classes.cardList)}>
-                <Card ref={ref}>
-                    <CardContent>
-                        {small && <SortDropdown />}
-                        {locations.map((l) => (
-                            <LocationStorage key={l} small={small} show={show} location={GameLocations.StartVillage} />
-                        ))}
-                    </CardContent>
-                </Card>
+            <div className={clsx(classes.cardList)} ref={refD}>
+                <Accordion type="single" collapsible className="mb-4 w-full" defaultValue={locations[0]}>
+                    {locations.map((l) => (
+                        <AccordionItem key={l} value={l} className="w-full">
+                            <Card ref={ref}>
+                                <CardHeader>
+                                    <AccordionTrigger className="p-0">
+                                        <CardTitle>
+                                            {ChevronsUpDownIcon} {l}
+                                        </CardTitle>
+                                    </AccordionTrigger>
+                                </CardHeader>
+
+                                <AccordionContent>
+                                    <CardContent>
+                                        {small && <SortDropdown />}
+                                        <UiStorageContext value={setOpen}>
+                                            <LocationStorage
+                                                small={small}
+                                                show={show}
+                                                location={GameLocations.StartVillage}
+                                            />
+                                        </UiStorageContext>
+                                    </CardContent>
+                                </AccordionContent>
+                            </Card>
+                        </AccordionItem>
+                    ))}
+                </Accordion>
+
                 <SelectedItem />
+
+                {drawer && (
+                    <Drawer open={open} onOpenChange={setOpen}>
+                        <DrawerContent>
+                            <SelectedItem />
+
+                            <DrawerFooter>
+                                <DrawerClose>
+                                    <Button variant="outline">Close</Button>
+                                </DrawerClose>
+                            </DrawerFooter>
+                        </DrawerContent>
+                    </Drawer>
+                )}
             </div>
         </MyPage>
     )
 }
-
 const NoItems = memo(function NoItems() {
     const { t } = useTranslations()
     return (
@@ -129,32 +175,18 @@ const LocationStorage = memo(function LocationStorage(props: {
 }) {
     const { location, small, show } = props
     const items = useLocationItems(location)
-    const [open, setOpen] = useState(true)
-    const handleClick = () => setOpen(!open)
 
     return (
-        <Collapsible open={open}>
-            <CollapsibleTrigger
-                onClick={handleClick}
-                className={clsx('w-full', buttonVariants({ variant: 'ghost', size: 'sm' }))}
-            >
-                {location}
-                {ChevronsUpDownIcon}
-                <span className="sr-only">{location}</span>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="CollapsibleContent">
-                <Table>
-                    {!small && <StorageHeader />}
-                    {show && (
-                        <TableBody>
-                            {items.map((i) => (
-                                <StorageItem small={small} key={i.id} itemId={i.id} location={location} />
-                            ))}
-                        </TableBody>
-                    )}
-                </Table>
-            </CollapsibleContent>
-        </Collapsible>
+        <Table>
+            {!small && <StorageHeader />}
+            {show && (
+                <TableBody>
+                    {items.map((i) => (
+                        <StorageItem small={small} key={i.id} itemId={i.id} location={location} />
+                    ))}
+                </TableBody>
+            )}
+        </Table>
     )
 })
 
@@ -222,7 +254,11 @@ const StorageItem = memo(function StorageItem(props: { small: boolean; location:
     const item = useGameStore(selectGameItem(itemId))
     const selected = useGameStore(isSelected(itemId))
 
-    const onClick = useCallback(() => setSelectedItem(itemId, location), [itemId, location])
+    const setOpen = use(UiStorageContext)
+    const onClick = useCallback(() => {
+        setSelectedItem(itemId, location)
+        if (setOpen) setOpen(true)
+    }, [itemId, location])
 
     if (!item) return
     if (small)
