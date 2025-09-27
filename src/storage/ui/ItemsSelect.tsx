@@ -15,11 +15,13 @@ export const ItemsSelect = memo(function ItemsSelect({
     onValueChange,
     selectedValue,
     placeholderText,
+    label,
 }: {
     itemFilter: ItemFilter
     placeholderText?: string
     onValueChange: (value: string) => void
     selectedValue: string | undefined
+    label?: string
 }) {
     const { t } = useTranslations()
     const selectedItem = useGameStore((s: GameState) => {
@@ -33,15 +35,16 @@ export const ItemsSelect = memo(function ItemsSelect({
 
     return (
         <ComboBoxResponsive
+            label={label}
             selectedId={selectedValue ?? null}
             triggerContent={
                 selectedItem ? (
                     <span className="select-trigger">
                         {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
                     </span>
-                ) : (
-                    (placeholderText ?? t.selectPlaceholder)
-                )
+                ) : placeholderText ? (
+                    <span className="text-muted-foreground">{placeholderText}</span>
+                ) : null
             }
         >
             {itemsId.map((t) => {

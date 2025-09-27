@@ -67,7 +67,6 @@ export class TestQuestTemplate implements QuestTemplate {
                     id: '1',
                     itemCount: 2,
                     itemFilter: {
-                        itemType: ItemTypes.Plank,
                         minStats: {
                             value: 10,
                         },

@@ -1,6 +1,5 @@
-import { Label } from '@radix-ui/react-label'
 import { Fragment, useCallback, useMemo } from 'react'
-import { TbCircleCheck, TbXboxX } from 'react-icons/tb'
+import { TbXboxX } from 'react-icons/tb'
 import { useShallow } from 'zustand/react/shallow'
 import { memoize } from 'proxy-memoize'
 import { ItemsSelect } from '../../storage/ui/ItemsSelect'
@@ -8,7 +7,6 @@ import { selectFilteredItemsNumber } from '../../storage/StorageSelectors'
 import { useTranslations } from '../../msg/useTranslations'
 import { useGameStore } from '../../game/state'
 import { GameState } from '../../game/GameState'
-import { InputContainer } from '../../components/ui/inputContainer'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
 import { ItemIconName } from '../../items/ui/ItemIconName'
@@ -16,6 +14,7 @@ import { TypographyP } from '../../ui/typography'
 import { QuestStatus } from '../QuestTypes'
 import { selectQuestStatus } from '../selectors/QuestSelectors'
 import { Badge } from '../../components/ui/badge'
+import { Check } from '../../icons/IconsMemo'
 import {
     selectItemReq,
     selectCollectQuestItemValue,
@@ -36,9 +35,13 @@ export const CollectRequestUi = (props: { questId: string; outcomeId: string }) 
 
     return (
         <div className="flex flex-col gap-5">
-            {itemsReq.map((req) => (
-                <CollectRequest questId={questId} outcomeId={outcomeId} reqId={req} key={req}></CollectRequest>
-            ))}
+            <div className="@container grid">
+                <div className={classes.CollectContainer}>
+                    {itemsReq.map((req) => (
+                        <CollectRequest questId={questId} outcomeId={outcomeId} reqId={req} key={req} />
+                    ))}
+                </div>
+            </div>
             <CollectRequestItemsUi questId={questId} outcomeId={outcomeId} />
         </div>
     )
@@ -63,7 +66,7 @@ const CollectRequestItemsUi = (props: { questId: string; outcomeId: string }) =>
             {t.collectConsume}
             {reqItems.usedItems.map((i, index) => (
                 <Fragment key={i.itemId}>
-                    <Badge variant="secondary">
+                    <Badge variant="secondary" size="base">
                         {f(i.quantity)}
                         <ItemIconName itemId={i.itemId} />
                     </Badge>
@@ -74,22 +77,14 @@ const CollectRequestItemsUi = (props: { questId: string; outcomeId: string }) =>
     )
 }
 
-const CollectRequest = (props: { questId: string; outcomeId: string; reqId: string }) => {
-    const { questId, outcomeId, reqId } = props
-
+const CollectRequest = ({ questId, outcomeId, reqId }: { questId: string; outcomeId: string; reqId: string }) => {
     const { fun } = useTranslations()
-
-    const status = useGameStore(useCallback((s: GameState) => selectQuestStatus(questId)(s), [questId]))
-
+    const status = useGameStore(useCallback((s) => selectQuestStatus(questId)(s), [questId]))
     const req = useGameStore(
-        useCallback((s: GameState) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
+        useCallback((s) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
     )
-
     const totalQta = useGameStore(
-        useCallback(
-            (s: GameState) => selectCollectQuestTotalQta(s, questId, outcomeId, reqId),
-            [questId, outcomeId, reqId]
-        )
+        useCallback((s) => selectCollectQuestTotalQta(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
     )
 
     if (!req) return null
@@ -102,7 +97,7 @@ const CollectRequest = (props: { questId: string; outcomeId: string; reqId: stri
                 <ItemFilterDescription itemFilter={req.itemFilter} />
             </TypographyP>
             <div className="grid grow basis-0 grid-flow-col items-center justify-start gap-1">
-                {req.itemCount <= totalQta && <TbCircleCheck color="var(--color-success)" />}
+                {req.itemCount <= totalQta && Check}
                 {req.itemCount > totalQta && <TbXboxX />}
                 {fun.collectItemsTotal(totalQta)}
             </div>
@@ -143,8 +138,18 @@ const CollectRequestSelection = (props: { questId: string; outcomeId: string; re
         </div>
     )
 }
-const CollectRequestSelectionP = (props: { questId: string; outcomeId: string; reqId: string; priority: number }) => {
-    const { questId, outcomeId, reqId, priority } = props
+
+const CollectRequestSelectionP = ({
+    questId,
+    outcomeId,
+    reqId,
+    priority,
+}: {
+    questId: string
+    outcomeId: string
+    reqId: string
+    priority: number
+}) => {
     const { t } = useTranslations()
 
     const req = useGameStore(
@@ -165,10 +170,16 @@ const CollectRequestSelectionP = (props: { questId: string; outcomeId: string; r
     if (!req) return null
     if (!req.itemFilter) return null
 
+    let label = t.highPriority
+    if (priority === 1) label = t.mediumPriority
+    else if (priority === 2) label = t.lowPriority
+
     return (
-        <InputContainer>
-            <Label>{t.lowPriority}</Label>
-            <ItemsSelect itemFilter={req.itemFilter} selectedValue={selectedValue} onValueChange={onValueChange} />
-        </InputContainer>
+        <ItemsSelect
+            itemFilter={req.itemFilter}
+            selectedValue={selectedValue}
+            onValueChange={onValueChange}
+            label={label}
+        />
     )
 }

@@ -29,7 +29,7 @@ export function ComboBoxResponsive({ children, triggerContent, selectedId, label
 
     const trigger = (
         <Button variant="outline" className="w-full justify-start">
-            {triggerContent || t.selectPlaceholder}
+            {triggerContent || <span className="text-muted-foreground">{t.selectPlaceholder}</span>}
             <ChevronDownIcon className="ml-auto size-4 opacity-50" />
         </Button>
     )

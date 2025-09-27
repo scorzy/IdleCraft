@@ -236,7 +236,7 @@ export interface Msg {
 
     with1: string
     withProps: string
-    hightPriority: string
+    highPriority: string
     mediumPriority: string
     lowPriority: string
     selectPlaceholder: string

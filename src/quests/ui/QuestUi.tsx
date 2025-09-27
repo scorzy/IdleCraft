@@ -36,7 +36,6 @@ import { TitleH1, TypographyP } from '../../ui/typography'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { useTranslations } from '../../msg/useTranslations'
 import { CharTemplatesData } from '../../characters/templates/charTemplateData'
-import { MyLabel } from '../../ui/myCard/MyLabel'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
@@ -46,9 +45,10 @@ import { Badge } from '../../components/ui/badge'
 import { isCollectReq } from '../collectRequest/collectSelectors'
 import { ItemIconName } from '../../items/ui/ItemIconName'
 import { CollectRequestUi } from '../collectRequest/CollectRequestUi'
-import { ChevronsUpDownIcon, Coins } from '../../icons/IconsMemo'
+import { Check, ChevronsUpDownIcon, Coins } from '../../icons/IconsMemo'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
 import { setState } from '../../game/setState'
+import classes from './QuestUi.module.css'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -110,7 +110,7 @@ export const QuestUi = memo(function QuestUi() {
     return (
         <MyPageAll sidebar={<QUestSidebar />}>
             <MyPage>
-                <div className="mx-auto max-w-5xl">
+                <div className="mx-auto max-w-6xl">
                     <QuestDetailUi />
                 </div>
             </MyPage>
@@ -343,12 +343,16 @@ const KillRequestUi = (props: { questId: string; outcomeId: string }) => {
     if (!targets) return <></>
 
     return (
-        <div>
+        <div className="@container">
             <TypographyP>{description}</TypographyP>
-
-            {targets.map((target: KillQuestTarget) => (
-                <KillOutcomeProgress key={questId + outcomeId + target.targetId} target={target} />
-            ))}
+            <div className={classes.killContainer}>
+                {targets.map((target: KillQuestTarget) => (
+                    <KillOutcomeProgress key={questId + outcomeId + target.targetId} target={target} />
+                ))}
+                {targets.map((target: KillQuestTarget) => (
+                    <KillOutcomeProgress key={questId + outcomeId + target.targetId} target={target} />
+                ))}
+            </div>
         </div>
     )
 }
@@ -362,11 +366,12 @@ const KillOutcomeProgress = (props: { target: KillQuestTarget }) => {
     if (targetCount <= 0) return <></>
     const percent = Math.round((killedCount / targetCount) * 100)
     return (
-        <>
-            <MyLabel>
-                {IconsData[charTemplate.iconId]} {t[charTemplate.nameId]} {f(killedCount)}/{f(targetCount)}
-            </MyLabel>
+        <div>
+            <Badge variant="secondary" className="mb-1" size="base">
+                {killedCount >= targetCount && Check} {IconsData[charTemplate.iconId]} {t[charTemplate.nameId]}{' '}
+                {f(killedCount)}/{f(targetCount)}
+            </Badge>
             <ProgressBar value={percent} color="primary" />
-        </>
+        </div>
     )
 }

@@ -73,7 +73,7 @@ export interface Item {
 export interface ItemFilter {
     itemId?: string
     nameId?: keyof Msg
-    itemType: ItemTypes
+    itemType?: ItemTypes
     itemSubType?: ItemSubType
     minStats?: Partial<Item>
     equipSlot?: EquipSlotsEnum

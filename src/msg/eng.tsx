@@ -210,12 +210,12 @@ export const engMsg: Msg = {
     KillRequestDesc: 'Kill the following targets:',
     collectReqDesc: 'Collect the following items',
 
-    Rewards: 'Rewards:',
+    Rewards: 'Rewards',
     items: 'items',
     with1: 'with',
     withProps: 'with the following properties:',
 
-    hightPriority: 'Hight Priority',
+    highPriority: 'Hight Priority',
     mediumPriority: 'Medium Priority',
     lowPriority: 'Low Priority',
     selectPlaceholder: '-- Select --',
