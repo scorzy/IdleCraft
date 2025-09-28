@@ -130,7 +130,10 @@ export const getSelectedItemQta = (state: GameState) => {
     if (!state.ui.selectedItemId) return 0
     return selectItemQta(state.ui.selectedItemLocation, state.ui.selectedItemId)(state)
 }
-
+export const isSelectedItemCurrentLocation = (state: GameState) => {
+    if (!state.ui.selectedItemLocation) return false
+    return state.ui.selectedItemLocation === state.location
+}
 export const selectItemsByType = (itemType: ItemTypes | undefined) => (state: GameState) => {
     if (!itemType) return EMPTY_ARRAY
     const ret: string[] = []

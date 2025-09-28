@@ -12,7 +12,7 @@ export const MyCardHeaderTitle = memo(function MyCardHeaderTitle(props: {
     return (
         <CardHeader>
             <CardTitle onClick={onClick}>
-                {icon} {title} {rightSlot}
+                {icon && <span className="text-lg">{icon}</span>} {title} {rightSlot}
             </CardTitle>
         </CardHeader>
     )

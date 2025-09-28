@@ -2,11 +2,16 @@ import { ReactNode, memo } from 'react'
 import { clsx } from 'clsx'
 import './myPage.css'
 
-export const MyPage = memo(function MyPage(props: { children: ReactNode; className?: string }) {
+export const MyPage = memo(function MyPage({
+    ref,
+    ...props
+}: { children: ReactNode; className?: string } & { ref?: React.RefObject<HTMLDivElement | null> }) {
     const { children, className } = props
     return (
         <main className={clsx('page__container')}>
-            <div className={clsx('p-4', className)}>{children}</div>
+            <div ref={ref} className={clsx('p-4', className)}>
+                {children}
+            </div>
         </main>
     )
 })

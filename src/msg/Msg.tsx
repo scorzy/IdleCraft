@@ -252,6 +252,7 @@ export interface Msg {
     OakHandle: string
 
     NoResults: string
+    Close: string
 }
 export interface MsgFunctions {
     // Time

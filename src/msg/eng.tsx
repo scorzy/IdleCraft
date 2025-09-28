@@ -230,6 +230,7 @@ export const engMsg: Msg = {
     BoarTusk: 'Boar Tusk',
 
     NoResults: 'No results found.',
+    Close: 'Close',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

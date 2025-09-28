@@ -1,7 +1,5 @@
-import { createContext, memo, use, useCallback, useEffect, useState } from 'react'
-import { clsx } from 'clsx'
+import { createContext, memo, use, useCallback, useLayoutEffect, useRef, useState } from 'react'
 import { useContainerQueries, QueryBreakpoints } from 'use-container-queries'
-import { L } from 'vitest/dist/chunks/reporters.d.BFLkQcL6.js'
 import { useGameStore } from '../../game/state'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import {
@@ -14,7 +12,7 @@ import {
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { IconsData } from '../../icons/Icons'
 import { setSelectedItem } from '../storageFunctions'
-import { SelectedItem } from '../../items/ui/SelectedItem'
+import { SelectedItem, SelectedItemTitle } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
 import { Button } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
@@ -29,7 +27,15 @@ import {
     selectStorageAsc,
 } from '../../ui/state/uiSelectors'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
-import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerTrigger } from '../../components/ui/drawer'
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+} from '../../components/ui/drawer'
 import classes from './storage.module.css'
 import { buttonVariants } from '@/components/ui/buttonVariants'
 import { Alert, AlertTitle } from '@/components/ui/alert'
@@ -40,10 +46,6 @@ const breakpoints: QueryBreakpoints = {
     small: [0, 400],
     med: [401],
 }
-const breakpointsD: QueryBreakpoints = {
-    small: [0, 500],
-    med: [501],
-}
 
 const UiStorageContext = createContext<((open: boolean) => void) | null>(null)
 
@@ -51,68 +53,50 @@ export function UiStorage() {
     const locations = useGameStore(selectStorageLocationsMemo)
     const [open, setOpen] = useState(true)
 
-    const { ref, active } = useContainerQueries({ breakpoints })
-    const { ref: refD, active: activeD } = useContainerQueries({ breakpoints: breakpointsD })
+    const accordionRef = useRef<HTMLDivElement>(null)
+    const selectedItemRef = useRef<HTMLDivElement>(null)
+    const pageRef = useRef<HTMLDivElement>(null)
 
-    const [show, setShow] = useState(false)
-    useEffect(() => {
-        const id = setTimeout(() => setShow(true), 0)
+    const [sameRow, setSameRow] = useState(false)
+
+    useLayoutEffect(() => {
+        function updateSameRow() {
+            if (accordionRef.current && selectedItemRef.current) {
+                const isSameRow = accordionRef.current.offsetTop === selectedItemRef.current.offsetTop
+                setSameRow(isSameRow)
+            }
+        }
+        updateSameRow()
+        window.addEventListener('resize', updateSameRow)
+        let resize: ResizeObserver
+        if (pageRef.current) {
+            resize = new ResizeObserver(updateSameRow)
+            resize.observe(pageRef.current)
+        }
         return () => {
-            if (id) clearTimeout(id)
+            window.removeEventListener('resize', updateSameRow)
+            if (resize) resize.disconnect()
         }
     }, [])
-    const small = active === 'small'
-    const drawer = activeD === 'small'
 
     if (locations.length === 0) return <NoItems />
     return (
-        <MyPage>
-            <div className={clsx(classes.cardList)} ref={refD}>
-                <Accordion type="single" collapsible className="mb-4 w-full" defaultValue={locations[0]}>
-                    {locations.map((l) => (
-                        <AccordionItem key={l} value={l} className="w-full">
-                            <Card ref={ref}>
-                                <CardHeader>
-                                    <AccordionTrigger className="p-0">
-                                        <CardTitle>
-                                            {ChevronsUpDownIcon} {l}
-                                        </CardTitle>
-                                    </AccordionTrigger>
-                                </CardHeader>
+        <MyPage className={classes.cardList} ref={pageRef}>
+            <UiStorageContext value={setOpen}>
+                <div ref={accordionRef}>
+                    <StorageAccordion />
+                </div>
 
-                                <AccordionContent>
-                                    <CardContent>
-                                        {small && <SortDropdown />}
-                                        <UiStorageContext value={setOpen}>
-                                            <LocationStorage
-                                                small={small}
-                                                show={show}
-                                                location={GameLocations.StartVillage}
-                                            />
-                                        </UiStorageContext>
-                                    </CardContent>
-                                </AccordionContent>
-                            </Card>
-                        </AccordionItem>
-                    ))}
-                </Accordion>
+                <div ref={selectedItemRef}>
+                    <SelectedItem showTitle={true} />
+                </div>
 
-                <SelectedItem />
-
-                {drawer && (
+                {!sameRow && (
                     <Drawer open={open} onOpenChange={setOpen}>
-                        <DrawerContent>
-                            <SelectedItem />
-
-                            <DrawerFooter>
-                                <DrawerClose>
-                                    <Button variant="outline">Close</Button>
-                                </DrawerClose>
-                            </DrawerFooter>
-                        </DrawerContent>
+                        <StorageDrawerContent />
                     </Drawer>
                 )}
-            </div>
+            </UiStorageContext>
         </MyPage>
     )
 }
@@ -130,6 +114,54 @@ const NoItems = memo(function NoItems() {
     )
 })
 
+const StorageAccordion = memo(function StorageAccordion() {
+    const locations = useGameStore(selectStorageLocationsMemo)
+
+    const { ref, active } = useContainerQueries({ breakpoints })
+    const small = active === 'small'
+    return (
+        <Accordion type="single" collapsible className="mb-4 w-full" defaultValue={locations[0]}>
+            {locations.map((l) => (
+                <AccordionItem key={l} value={l} className="w-full">
+                    <Card ref={ref}>
+                        <CardHeader>
+                            <AccordionTrigger className="p-0">
+                                <CardTitle>
+                                    {ChevronsUpDownIcon} {l}
+                                </CardTitle>
+                            </AccordionTrigger>
+                        </CardHeader>
+
+                        <AccordionContent>
+                            <CardContent>
+                                {small && <SortDropdown />}
+
+                                <LocationStorage small={small} show={true} location={GameLocations.StartVillage} />
+                            </CardContent>
+                        </AccordionContent>
+                    </Card>
+                </AccordionItem>
+            ))}
+        </Accordion>
+    )
+})
+const StorageDrawerContent = memo(function StorageDrawerContent() {
+    const { t } = useTranslations()
+    return (
+        <DrawerContent>
+            <DrawerHeader>
+                <DrawerTitle>
+                    <SelectedItemTitle />
+                    <DrawerDescription></DrawerDescription>
+                </DrawerTitle>
+            </DrawerHeader>
+            <SelectedItem />
+            <DrawerFooter>
+                <DrawerClose>{t.Close}</DrawerClose>
+            </DrawerFooter>
+        </DrawerContent>
+    )
+})
 const clickNameAsc = setStorageOrder('name', true)
 const clickNameDesc = setStorageOrder('name', false)
 

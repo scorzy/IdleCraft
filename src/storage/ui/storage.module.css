@@ -33,9 +33,11 @@
     gap: var(--gap);
     align-items: start;
     grid-template-columns: 1fr;
+    max-width: 1300px;
+    margin: 0 auto;
 }
-@container (min-width: 600px) {
+@container (min-width: 890px) {
     .cardList {
-        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+        grid-template-columns: minmax(450px, 1fr) 380px;
     }
 }
