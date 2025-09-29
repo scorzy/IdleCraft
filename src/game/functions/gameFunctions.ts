@@ -3,13 +3,14 @@ import { GetInitialGameState } from '../InitialGameState'
 import { loadData } from '../loadData'
 import { WorkerMessage } from '../loadWorkerTypes'
 import { useGameStore } from '../state'
-import { MAX_LOAD, TEST_DIF } from '../const'
+import { MAX_LOAD, TEST_DIF, WORKER_MIN_TIME } from '../const'
 import { GameState } from '../GameState'
 import { regenerate } from './regenerate'
 import { advanceTimers } from './advanceTimers'
 
 // eslint-disable-next-line import/default
 import LoadWorker from './loadWorker?worker'
+import { loadGame } from './loadGame'
 
 let worker = new LoadWorker()
 let tempState: GameState
@@ -42,12 +43,23 @@ function start(state: GameState): void {
 export const load = (data: object) => {
     const state = loadData(data)
     state.loading = true
-    const now = state.now + TEST_DIF
+    let now = state.now
+
+    if (import.meta.env.DEV && TEST_DIF !== 0) {
+        now = state.now + TEST_DIF
+        advanceTimers(state, TEST_DIF)
+        state.lastRegen += TEST_DIF
+    }
+
     const end = Math.min(now + MAX_LOAD, Date.now())
     const loadingData = { loading: true, start: now, now: now, end, percent: 0 }
     useUiTempStore.setState({ loadingData })
     useGameStore.setState(structuredClone(state))
-    worker.postMessage(state)
+
+    if (end - now < WORKER_MIN_TIME) {
+        loadGame(state)
+        start(structuredClone(state))
+    } else worker.postMessage(state)
 }
 export const stopLoad = () => {
     killWorker()

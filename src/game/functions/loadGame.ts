@@ -1,17 +1,12 @@
 import { onTimer } from '../../timers/onTimer'
 import { getFirstTimer } from '../../timers/getFirstTimer'
 import { GameState } from '../GameState'
-import { TEST_DIF, MAX_LOAD } from '../const'
+import { MAX_LOAD } from '../const'
 import { advanceTimers } from './advanceTimers'
 
 export function loadGame(state: GameState): void {
     const start = Date.now()
-    let lastReport = 0
-
-    if (TEST_DIF !== 0) {
-        advanceTimers(state, TEST_DIF)
-        state.lastRegen += TEST_DIF
-    }
+    let lastReport = start
 
     state.loading = true
     const diff = Date.now() - state.now - MAX_LOAD
