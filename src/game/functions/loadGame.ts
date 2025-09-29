@@ -5,7 +5,7 @@ import { TEST_DIF, MAX_LOAD } from '../const'
 import { advanceTimers } from './advanceTimers'
 
 export function loadGame(state: GameState): void {
-    // const start = Date.now()
+    const start = Date.now()
     let lastReport = 0
 
     if (TEST_DIF !== 0) {
@@ -35,6 +35,6 @@ export function loadGame(state: GameState): void {
         }
     }
     state.loading = false
-    // const endLoad = Date.now()
-    // console.log(`Load time: ${endLoad - start}ms`)
+    const endLoad = Date.now()
+    if (import.meta.env.DEV) console.log(`Load time: ${endLoad - start}ms`)
 }
