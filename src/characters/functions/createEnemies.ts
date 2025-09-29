@@ -1,5 +1,4 @@
 import { GameState } from '../../game/GameState'
-import { getUniqueId } from '../../utils/getUniqueId'
 import { CharacterAdapter } from '../characterAdapter'
 import { CharTemplatesData } from '../templates/charTemplateData'
 import { CharTemplateEnum } from '../templates/characterTemplateEnum'
@@ -16,12 +15,10 @@ export function createEnemies(
     }[]
 ): void {
     enemies.forEach((enemyData) => {
-        const enemy = generateCharacter(CharTemplatesData[enemyData.template])
-        enemy.isEnemy = true
         for (let i = 0; i < enemyData.quantity; i++) {
-            const enemyToAdd = structuredClone(enemy)
-            enemyToAdd.id = getUniqueId()
-            CharacterAdapter.create(state.characters, enemyToAdd)
+            const enemy = generateCharacter(CharTemplatesData[enemyData.template])
+            enemy.isEnemy = true
+            CharacterAdapter.create(state.characters, enemy)
         }
     })
 
