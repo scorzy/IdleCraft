@@ -1,25 +1,30 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
 import { makeRecipe } from '../../crafting/makeRecipe'
-import { RecipeTypes, RecipeParameter, RecipeParameterValue, RecipeParamType } from '../../crafting/RecipeInterfaces'
+import {
+    RecipeTypes,
+    RecipeParameterValue,
+    RecipeParamType,
+    RecipeParameterItemFilter,
+} from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { Item, ItemSubType, ItemTypes } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
-const woodAxeParam: RecipeParameter[] = [
+const woodAxeParam: RecipeParameterItemFilter[] = [
     {
         id: 'bar',
         nameId: 'Bar',
         type: RecipeParamType.ItemType,
-        itemType: ItemTypes.Bar,
+        itemFilter: { itemType: ItemTypes.Bar },
     },
     {
         id: 'handle',
         nameId: 'Handle',
         type: RecipeParamType.ItemType,
-        itemType: ItemTypes.Handle,
+        itemFilter: { itemType: ItemTypes.Handle },
     },
 ]
 

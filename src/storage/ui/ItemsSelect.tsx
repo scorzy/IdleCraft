@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, ReactElement, useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
@@ -21,7 +21,7 @@ export const ItemsSelect = memo(function ItemsSelect({
     placeholderText?: string
     onValueChange: (value: string) => void
     selectedValue: string | undefined
-    label?: string
+    label?: ReactElement | ReactElement[] | string
 }) {
     const { t } = useTranslations()
     const selectedItem = useGameStore((s: GameState) => {

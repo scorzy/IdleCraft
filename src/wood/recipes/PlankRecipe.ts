@@ -1,7 +1,7 @@
 import { makeRecipe } from '../../crafting/makeRecipe'
 import {
     RecipeParamType,
-    RecipeParameter,
+    RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeResult,
     RecipeTypes,
@@ -14,12 +14,12 @@ import { WoodData } from '../WoodData'
 export const LogToPlank = new Map<string, string>()
 Object.values(WoodData).forEach((w) => LogToPlank.set(w.logId, w.plankId))
 
-export const plankParam: RecipeParameter[] = [
+export const plankParam: RecipeParameterItemFilter[] = [
     {
         id: 'log',
         nameId: 'Log',
         type: RecipeParamType.ItemType,
-        itemType: ItemTypes.Log,
+        itemFilter: { itemType: ItemTypes.Log },
     },
 ]
 

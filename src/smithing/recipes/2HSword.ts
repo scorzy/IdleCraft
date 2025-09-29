@@ -7,7 +7,7 @@ import {
     RecipeParameterValue,
     RecipeResult,
     RecipeParamType,
-    RecipeParameter,
+    RecipeParameterItemFilter,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
@@ -16,12 +16,12 @@ import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { ExpEnum } from '@/experience/ExpEnum'
 
-const twoHSwordParams: RecipeParameter[] = [
+const twoHSwordParams: RecipeParameterItemFilter[] = [
     {
         id: 'bar',
         nameId: 'Bar',
         type: RecipeParamType.ItemType,
-        itemType: ItemTypes.Bar,
+        itemFilter: { itemType: ItemTypes.Bar },
     },
 ]
 

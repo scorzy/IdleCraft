@@ -1,4 +1,4 @@
-import { createContext, use, useCallback, useState } from 'react'
+import { createContext, ReactElement, use, useCallback, useId, useState } from 'react'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import { Label } from '@radix-ui/react-label'
 import { useMeasure } from 'react-use'
@@ -17,7 +17,7 @@ interface ComboBoxResponsiveProps {
     children?: React.ReactNode
     triggerContent?: React.ReactNode
     selectedId: string | null
-    label?: string
+    label?: ReactElement | ReactElement[] | string
 }
 
 export function ComboBoxResponsive({ children, triggerContent, selectedId, label }: ComboBoxResponsiveProps) {
@@ -26,6 +26,8 @@ export function ComboBoxResponsive({ children, triggerContent, selectedId, label
     const { t } = useTranslations()
 
     const [ref, { width }] = useMeasure<HTMLDivElement>()
+
+    const id = useId()
 
     const trigger = (
         <Button variant="outline" className="w-full justify-start">
@@ -42,14 +44,20 @@ export function ComboBoxResponsive({ children, triggerContent, selectedId, label
         </ComboBoxResponsiveContext>
     )
 
-    const labelUi = label ? <Label className="mb-1 block">{label}</Label> : null
+    const labelUi = label ? (
+        <Label htmlFor={id} className="mb-1 block">
+            {label}
+        </Label>
+    ) : null
 
     if (isDesktop) {
         return (
             <div ref={ref}>
                 {labelUi}
                 <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+                    <PopoverTrigger asChild id={id}>
+                        {trigger}
+                    </PopoverTrigger>
                     <PopoverContent style={{ width }} className="p-0" align="start">
                         {items}
                     </PopoverContent>

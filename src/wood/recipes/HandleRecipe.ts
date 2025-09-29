@@ -1,10 +1,10 @@
 import { makeRecipe } from '../../crafting/makeRecipe'
 import {
-    RecipeParameter,
     RecipeParamType,
     RecipeTypes,
     RecipeParameterValue,
     RecipeResult,
+    RecipeParameterItemFilter,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
@@ -14,12 +14,12 @@ import { WoodData } from '../WoodData'
 export const PlankToHandle = new Map<string, string>()
 Object.values(WoodData).forEach((w) => PlankToHandle.set(w.plankId, w.handleId))
 
-export const handleParam: RecipeParameter[] = [
+export const handleParam: RecipeParameterItemFilter[] = [
     {
         id: 'plank',
         nameId: 'Plank',
         type: RecipeParamType.ItemType,
-        itemType: ItemTypes.Plank,
+        itemFilter: { itemType: ItemTypes.Plank },
     },
 ]
 

@@ -1,4 +1,4 @@
-import { Item, ItemTypes } from '../items/Item'
+import { Item, ItemFilter } from '../items/Item'
 import { Msg } from '../msg/Msg'
 
 export enum RecipeTypes {
@@ -14,9 +14,23 @@ export interface RecipeParameter {
     id: string
     nameId: keyof Msg
     type: RecipeParamType
-    itemType?: ItemTypes
-    stdItem?: string
 }
+
+export interface RecipeParameterItemFilter extends RecipeParameter {
+    itemFilter: ItemFilter
+}
+
+export function isRecipeParameterItemFilter(param: RecipeParameter): param is RecipeParameterItemFilter {
+    return param.type === RecipeParamType.ItemType
+}
+
+export interface RecipeParameterItemStd extends RecipeParameter {
+    stdItem: string
+}
+export function isRecipeParameterItemStd(param: RecipeParameter): param is RecipeParameterItemStd {
+    return param.type === RecipeParamType.ItemType
+}
+
 export interface RecipeParameterValue {
     id: string
     itemId: string

@@ -9,8 +9,7 @@ import { Msg } from '../../msg/Msg'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { DamageTypesData } from '../damageTypes'
 
-export function ItemFilterDescription(props: { itemFilter: ItemFilter }) {
-    const { itemFilter } = props
+export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }) {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
 

@@ -2,7 +2,12 @@ import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BASE_SWORD_SPEED, BASE_SWORD_DAMAGE } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
 import { makeRecipe } from '../../crafting/makeRecipe'
-import { RecipeTypes, RecipeParameter, RecipeParameterValue, RecipeParamType } from '../../crafting/RecipeInterfaces'
+import {
+    RecipeTypes,
+    RecipeParameterValue,
+    RecipeParamType,
+    RecipeParameterItemFilter,
+} from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'
@@ -10,12 +15,12 @@ import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { ExpEnum } from '@/experience/ExpEnum'
 
-const daggerParams: RecipeParameter[] = [
+const daggerParams: RecipeParameterItemFilter[] = [
     {
         id: 'bar',
         nameId: 'Bar',
         type: RecipeParamType.ItemType,
-        itemType: ItemTypes.Bar,
+        itemFilter: { itemType: ItemTypes.Bar },
     },
 ]
 

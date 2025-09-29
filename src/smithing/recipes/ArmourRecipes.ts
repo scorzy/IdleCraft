@@ -3,10 +3,10 @@ import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
 import { makeRecipe } from '../../crafting/makeRecipe'
 import {
     RecipeTypes,
-    RecipeParameter,
     RecipeParameterValue,
     RecipeResult,
     RecipeParamType,
+    RecipeParameterItemFilter,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
@@ -14,12 +14,12 @@ import { DamageData, DamageTypes, Item, ItemSubType, ItemTypes } from '../../ite
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
-const armourParams: RecipeParameter[] = [
+const armourParams: RecipeParameterItemFilter[] = [
     {
         id: 'bar',
         nameId: 'Bar',
         type: RecipeParamType.ItemType,
-        itemType: ItemTypes.Bar,
+        itemFilter: { itemType: ItemTypes.Bar },
     },
 ]
 

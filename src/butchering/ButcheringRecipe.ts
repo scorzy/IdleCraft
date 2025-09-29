@@ -1,7 +1,7 @@
 import { DeadAnimals } from '../characters/templates/DeadAnimals'
 import { makeRecipe } from '../crafting/makeRecipe'
 import {
-    RecipeParameter,
+    RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeParamType,
     RecipeResult,
@@ -11,12 +11,12 @@ import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { ItemSubType, ItemTypes } from '../items/Item'
 
-export const butcheringRecipeParam: RecipeParameter[] = [
+export const butcheringRecipeParam: RecipeParameterItemFilter[] = [
     {
         id: 'corpse',
         nameId: 'Corpse',
         type: RecipeParamType.ItemType,
-        itemType: ItemTypes.Corpse,
+        itemFilter: { itemType: ItemTypes.Corpse },
     },
 ]
 

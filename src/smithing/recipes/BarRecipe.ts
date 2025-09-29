@@ -1,10 +1,10 @@
 import { makeRecipe } from '../../crafting/makeRecipe'
 import {
     RecipeTypes,
-    RecipeParameter,
     RecipeParameterValue,
     RecipeResult,
     RecipeParamType,
+    RecipeParameterItemFilter,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
@@ -14,12 +14,12 @@ import { OreData } from '../../mining/OreData'
 export const OreToBar = new Map<string, string>()
 Object.values(OreData).forEach((w) => OreToBar.set(w.oreId, w.barId))
 
-const barParam: RecipeParameter[] = [
+const barParam: RecipeParameterItemFilter[] = [
     {
         id: 'ore',
         nameId: 'Ore',
         type: RecipeParamType.ItemType,
-        itemType: ItemTypes.Ore,
+        itemFilter: { itemType: ItemTypes.Ore },
     },
 ]
 
