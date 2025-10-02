@@ -59,48 +59,88 @@ export const MyListItem = memo(function MyListItem(props: {
     if (enabled === undefined) enabled = true
 
     if (!collapsed || text === '') {
-        let arrow = <></>
-        if (arrowOpen !== undefined)
-            arrow = <TbChevronRight className={clsx(classes.arrow, { [classes.arrowDown!]: arrowOpen })} />
-
         return (
-            <button
-                title={text}
-                type="button"
+            <MyListItemBtn
+                active={active}
+                text={text}
+                icon={icon}
+                onClick={onClick}
+                arrowOpen={arrowOpen}
+                right={right}
+                enabled={enabled}
+            />
+        )
+    } else
+        return <MyListItemBtnTooltip active={active} text={text} onClick={onClick} icon={icon} collapsed={collapsed} />
+})
+
+const MyListItemBtn = memo(function MyListItemBtn(props: {
+    active: boolean
+    text: string
+    onClick?: () => void
+    icon: ReactNode
+    arrowOpen?: boolean
+    right?: ReactNode
+    enabled: boolean
+}) {
+    const { text, onClick, active, icon, arrowOpen, right } = props
+
+    let arrow = <></>
+    if (arrowOpen !== undefined)
+        arrow = <TbChevronRight className={clsx(classes.arrow, { [classes.arrowDown!]: arrowOpen })} />
+
+    return (
+        <button
+            title={text}
+            type="button"
+            onClick={onClick}
+            className={cn(
+                buttonVariants({ variant: 'ghost' }),
+                { 'bg-muted hover:bg-muted': active },
+                { 'text-muted-foreground hover:bg-muted': !active },
+                'mt-1 justify-start gap-4 text-nowrap',
+                classes.item
+            )}
+        >
+            {icon}
+            {text}
+            {right}
+            {arrow}
+        </button>
+    )
+})
+
+const MyListItemBtnTooltip = memo(function MyListItemBtnTooltip({
+    active,
+    text,
+    onClick,
+    icon,
+    collapsed,
+}: {
+    active: boolean
+    text: string
+    onClick?: () => void
+    icon: ReactNode
+    collapsed: boolean
+}) {
+    return (
+        <Tooltip>
+            <TooltipTrigger
                 onClick={onClick}
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     { 'bg-muted hover:bg-muted': active },
                     { 'text-muted-foreground hover:bg-muted': !active },
-                    'mt-1 justify-start gap-4 text-nowrap',
-                    classes.item
+                    'mt-1 justify-start gap-4',
+                    classes.item,
+                    collapsed ? classes.itemCollapsed : ''
                 )}
             >
                 {icon}
-                {text}
-                {right}
-                {arrow}
-            </button>
-        )
-    } else
-        return (
-            <Tooltip>
-                <TooltipTrigger
-                    onClick={onClick}
-                    className={cn(
-                        buttonVariants({ variant: 'ghost' }),
-                        { 'bg-muted hover:bg-muted': active },
-                        { 'text-muted-foreground hover:bg-muted': !active },
-                        'mt-1 justify-start gap-4',
-                        classes.item,
-                        collapsed ? classes.itemCollapsed : ''
-                    )}
-                >
-                    {icon}
-                </TooltipTrigger>
-                <TooltipContent side="right">{text}</TooltipContent>
-            </Tooltip>
-        )
+            </TooltipTrigger>
+            <TooltipContent side="right">{text}</TooltipContent>
+        </Tooltip>
+    )
 })
 
 export const CollapsibleMenu = memo(function CollapsibleMenu(props: {
