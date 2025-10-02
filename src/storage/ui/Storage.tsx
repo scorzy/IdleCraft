@@ -1,4 +1,4 @@
-import { createContext, memo, use, useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { createContext, memo, use, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useContainerQueries, QueryBreakpoints } from 'use-container-queries'
 import { useGameStore } from '../../game/state'
 import { GameLocations } from '../../gameLocations/GameLocations'
@@ -119,6 +119,15 @@ const StorageAccordion = memo(function StorageAccordion() {
 
     const { ref, active } = useContainerQueries({ breakpoints })
     const small = active === 'small'
+
+    const [show, setShow] = useState(false)
+    useEffect(() => {
+        const id = setTimeout(() => setShow(true), 0)
+        return () => {
+            if (id) clearTimeout(id)
+        }
+    }, [])
+
     return (
         <Accordion type="single" collapsible className="mb-4 w-full" defaultValue={locations[0]}>
             {locations.map((l) => (
@@ -136,7 +145,7 @@ const StorageAccordion = memo(function StorageAccordion() {
                             <CardContent>
                                 {small && <SortDropdown />}
 
-                                <LocationStorage small={small} show={true} location={GameLocations.StartVillage} />
+                                {show && <LocationStorage small={small} location={GameLocations.StartVillage} />}
                             </CardContent>
                         </AccordionContent>
                     </Card>
@@ -200,24 +209,24 @@ const SortDropdown = memo(function SortDropdown() {
     )
 })
 
-const LocationStorage = memo(function LocationStorage(props: {
+const LocationStorage = memo(function LocationStorage({
+    location,
+    small,
+}: {
     small: boolean
-    show: boolean
     location: GameLocations
 }) {
-    const { location, small, show } = props
     const items = useLocationItems(location)
 
     return (
         <Table>
             {!small && <StorageHeader />}
-            {show && (
-                <TableBody>
-                    {items.map((i) => (
-                        <StorageItem small={small} key={i.id} itemId={i.id} location={location} />
-                    ))}
-                </TableBody>
-            )}
+
+            <TableBody>
+                {items.map((i) => (
+                    <StorageItem small={small} key={i.id} itemId={i.id} location={location} />
+                ))}
+            </TableBody>
         </Table>
     )
 })
