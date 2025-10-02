@@ -87,16 +87,16 @@ export function UiStorage() {
                     <StorageAccordion />
                 </div>
 
-                <div ref={selectedItemRef}>
-                    <SelectedItem showTitle={true} />
-                </div>
-
                 {!sameRow && (
                     <Drawer open={open} onOpenChange={setOpen}>
                         <StorageDrawerContent />
                     </Drawer>
                 )}
             </UiStorageContext>
+
+            <div ref={selectedItemRef}>
+                <SelectedItem showTitle={true} />
+            </div>
         </MyPage>
     )
 }
