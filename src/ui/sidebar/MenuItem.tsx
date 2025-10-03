@@ -58,7 +58,7 @@ export const MyListItem = memo(function MyListItem(props: {
 
     if (enabled === undefined) enabled = true
 
-    if (!collapsed || text === '') {
+    if (!collapsed || text === '')
         return (
             <MyListItemBtn
                 active={active}
@@ -70,8 +70,7 @@ export const MyListItem = memo(function MyListItem(props: {
                 enabled={enabled}
             />
         )
-    } else
-        return <MyListItemBtnTooltip active={active} text={text} onClick={onClick} icon={icon} collapsed={collapsed} />
+    else return <MyListItemBtnTooltip active={active} text={text} onClick={onClick} icon={icon} collapsed={collapsed} />
 })
 
 const MyListItemBtn = memo(function MyListItemBtn(props: {
