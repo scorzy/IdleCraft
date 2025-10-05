@@ -1,4 +1,4 @@
-import { IngredientData } from '../alchemy/alchemyTypes'
+import { IngredientData, PotionFlaskData, SolventData } from '../alchemy/alchemyTypes'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ExpEnum } from '../experience/ExpEnum'
 import { Icons } from '../icons/Icons'
@@ -24,6 +24,7 @@ export enum ItemSubType {
     Armour = 'Armour',
     Tool = 'Tool',
     Crafting = 'Crafting',
+    Potion = 'Potion',
 }
 
 export enum DamageTypes {
@@ -70,13 +71,16 @@ export interface Item {
     pickaxeData?: PickaxeData
     weaponData?: WeaponData
     armourData?: DamageData
-    IngredientData?: IngredientData
+    ingredientData?: IngredientData
+    solventData?: SolventData
+    flaskData?: PotionFlaskData
 }
 export interface ItemFilter {
     itemId?: string
     nameId?: keyof Msg
     itemType?: ItemTypes
     itemSubType?: ItemSubType
+    has?: (keyof Item)[]
     minStats?: Partial<Item>
     equipSlot?: EquipSlotsEnum
     craftingData?: Partial<CraftingData>
@@ -86,5 +90,7 @@ export interface ItemFilter {
     pickaxeData?: Partial<PickaxeData>
     weaponData?: Partial<WeaponData>
     armourData?: Partial<DamageData>
-    IngredientData?: Partial<IngredientData>
+    ingredientData?: Partial<IngredientData>
+    solventData?: Partial<SolventData>
+    flaskData?: Partial<PotionFlaskData>
 }

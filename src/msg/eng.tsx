@@ -231,6 +231,10 @@ export const engMsg: Msg = {
 
     NoResults: 'No results found.',
     Close: 'Close',
+    Potion: 'Potion',
+    Solvent: 'Solvent',
+    Flask: 'Flask',
+    Ingredient: 'Ingredient',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

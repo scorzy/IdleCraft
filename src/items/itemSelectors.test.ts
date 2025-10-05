@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { Icons } from '../icons/Icons'
+import { ExpEnum } from '../experience/ExpEnum'
 import { filterItem } from './itemSelectors'
 import { Item, ItemFilter, ItemSubType, ItemTypes } from './Item'
 
@@ -61,5 +62,38 @@ describe('filterItem', () => {
     it('returns false if item is missing required data for filter', () => {
         const item = { ...baseItem, weaponData: undefined }
         expect(filterItem(item, { weaponData: { attackSpeed: 1 } } as ItemFilter)).toBe(false)
+    })
+    it('filters by has: true if item has all specified keys', () => {
+        const itemWithWeaponData: Item = {
+            ...baseItem,
+            weaponData: {
+                expType: ExpEnum.OneHanded,
+                damage: {},
+                attackSpeed: 1,
+            },
+        }
+        expect(filterItem(itemWithWeaponData, { has: ['weaponData'] } as ItemFilter)).toBe(true)
+        expect(filterItem(baseItem, { has: ['weaponData'] } as ItemFilter)).toBe(false)
+    })
+    it('filters by has: multiple', () => {
+        const itemWithMultiple: Item = {
+            ...baseItem,
+            weaponData: {
+                expType: ExpEnum.OneHanded,
+                damage: {},
+                attackSpeed: 1,
+            },
+            armourData: {},
+        }
+        const itemWithWeaponData: Item = {
+            ...baseItem,
+            weaponData: {
+                expType: ExpEnum.OneHanded,
+                damage: {},
+                attackSpeed: 1,
+            },
+        }
+        expect(filterItem(itemWithMultiple, { has: ['weaponData', 'armourData'] } as ItemFilter)).toBe(true)
+        expect(filterItem(itemWithWeaponData, { has: ['weaponData', 'armourData'] } as ItemFilter)).toBe(false)
     })
 })

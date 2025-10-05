@@ -1,9 +1,14 @@
-import { RecipeResult } from '../crafting/RecipeInterfaces'
-
 export enum AlchemyPotency {
     Low = 'Low',
     Medium = 'Medium',
     High = 'High',
+}
+export enum PotionResult {
+    Stable = 'Stable',
+    Unstable = 'Unstable',
+    Chaotic = 'Chaotic',
+    Unknown = 'Unknown',
+    NotPotion = 'NotPotion',
 }
 export enum AlchemyEffects {
     Health = 'Health',
@@ -25,7 +30,7 @@ export enum IngredientTypes {
     Animal = 'Animal',
 }
 export interface IngredientEffect {
-    efficiency: AlchemyPotency
+    potency: AlchemyPotency
     effect: AlchemyEffects
 }
 
@@ -34,11 +39,8 @@ export interface IngredientData {
     effects: IngredientEffect[]
 }
 export interface SolventData {
-    efficiency: AlchemyPotency
+    potency: AlchemyPotency
 }
 export interface PotionFlaskData {
     reusePercent: number
-}
-export interface PotionCraftingResult extends RecipeResult {
-    stability: number
 }

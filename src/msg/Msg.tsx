@@ -253,6 +253,10 @@ export interface Msg {
 
     NoResults: string
     Close: string
+    Potion: string
+    Solvent: string
+    Flask: string
+    Ingredient: string
 }
 export interface MsgFunctions {
     // Time

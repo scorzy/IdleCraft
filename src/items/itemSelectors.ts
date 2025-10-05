@@ -25,51 +25,17 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
             if (item[itemKey] === undefined || item[itemKey] < kv[1]) return false
         }
 
-    ;[
-        filter.craftingData,
-        filter.woodAxeData,
-        filter.craftingWoodAxeData,
-        filter.craftingPickaxeData,
-        filter.pickaxeData,
-        filter.weaponData,
-        filter.armourData,
-        filter.alchemyData,
-    ].forEach((dataFilter) => {
-        if (!dataFilter) return true
-        for (const kv of Object.entries(dataFilter)) {
-            const itemKey = kv[0] as keyof Item
-            if (item[itemKey] === undefined || item[itemKey] < kv[1]) return false
-        }
-    })
+    if (filter.has) for (const key of filter.has) if (item[key] === undefined) return false
 
-    const dataFilter = [
-        (a: Item | ItemFilter) => a.craftingData,
-        (a: Item | ItemFilter) => a.woodAxeData,
-        (a: Item | ItemFilter) => a.craftingWoodAxeData,
-        (a: Item | ItemFilter) => a.craftingPickaxeData,
-        (a: Item | ItemFilter) => a.pickaxeData,
-        (a: Item | ItemFilter) => a.weaponData,
-        (a: Item | ItemFilter) => a.armourData,
-        (a: Item | ItemFilter) => a.alchemyData,
-    ]
-    if (
-        !filter.craftingData &&
-        !filter.woodAxeData &&
-        !filter.craftingWoodAxeData &&
-        !filter.craftingPickaxeData &&
-        !filter.pickaxeData &&
-        !filter.weaponData &&
-        !filter.armourData &&
-        !filter.alchemyData
-    ) {
-        return true
-    }
+    for (const kv of Object.entries(filter)) {
+        if (kv[0] === 'minStats' || kv[0] === 'has') continue
 
-    for (const fn of dataFilter) {
-        const filterData = fn(filter)
-        if (!filterData) continue
-        const itemData = fn(item)
+        const filterData = kv[1]
+        if (typeof filterData !== 'object') continue
+        const key = kv[0]
+        const itemData = item[key as keyof Item] as object | undefined
         if (!itemData) return false
+        if (typeof itemData !== 'object') continue
 
         for (const kv of Object.entries(filterData)) {
             const filterValue = kv[1]

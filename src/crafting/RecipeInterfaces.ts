@@ -5,6 +5,7 @@ export enum RecipeTypes {
     Woodworking = 'Woodworking',
     Smithing = 'Smithing',
     Butchering = 'Butchering',
+    Alchemy = 'Alchemy',
 }
 export enum RecipeParamType {
     ItemType = 'ItemType',

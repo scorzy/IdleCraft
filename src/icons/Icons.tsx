@@ -29,6 +29,7 @@ import {
     GiCrossedSwords,
     GiDeathSkull,
     GiTwoCoins,
+    GiFizzingFlask,
 } from 'react-icons/gi'
 
 export enum Icons {
@@ -61,6 +62,7 @@ export enum Icons {
     CrossedSwords = 'CrossedSwords',
     Skull = 'Skull',
     Coins = 'Coins',
+    Potion = 'Potion',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -92,4 +94,5 @@ export const IconsData: Record<Icons, ReactNode> = {
     CrossedSwords: <GiCrossedSwords />,
     Skull: <GiDeathSkull />,
     Coins: <GiTwoCoins />,
+    Potion: <GiFizzingFlask />,
 }

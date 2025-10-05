@@ -8,4 +8,5 @@ export enum ExpEnum {
     TwoHanded = 'TwoHanded ',
     Block = 'Block',
     Butchering = 'Butchering',
+    Alchemy = 'Alchemy',
 }
