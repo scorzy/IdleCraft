@@ -1,6 +1,6 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { makeRecipe } from '../../crafting/makeRecipe'
+import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeTypes,
     RecipeParameterValue,
@@ -23,7 +23,7 @@ const armourParams: RecipeParameterItemFilter[] = [
     },
 ]
 
-export const armourRecipe = makeRecipe({
+export const armourRecipe = makeMemoizedRecipe({
     id: 'ArmourRecipe',
     nameId: 'Armour' as keyof Msg,
     iconId: Icons.Breastplate,

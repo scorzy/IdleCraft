@@ -38,6 +38,7 @@ export const AutoScroll = ({
         if (!el) return
         // Allow a small threshold for "at bottom"
         const threshold = 2
+        // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
         setWasAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < threshold)
         prevScrollHeight.current = el.scrollHeight
     }, [lastId, totalCount, virtualizer.getTotalSize()])

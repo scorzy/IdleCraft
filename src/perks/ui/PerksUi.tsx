@@ -152,8 +152,12 @@ export const PerkPage = () => {
             {requirements && <span>{t.Requirements}</span>}
             {requirements && (
                 <ul>
-                    {data.requiredExp?.map((r) => <PerkExpReq req={r} key={r.skill} />)}
-                    {data.requiredPerks?.map((r) => <PerkPerkReq perk={r} key={r} />)}
+                    {data.requiredExp?.map((r) => (
+                        <PerkExpReq req={r} key={r.skill} />
+                    ))}
+                    {data.requiredPerks?.map((r) => (
+                        <PerkPerkReq perk={r} key={r} />
+                    ))}
                 </ul>
             )}
         </div>

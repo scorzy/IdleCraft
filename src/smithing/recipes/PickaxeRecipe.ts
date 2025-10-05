@@ -1,6 +1,6 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { makeRecipe } from '../../crafting/makeRecipe'
+import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeTypes,
     RecipeParameter,
@@ -29,7 +29,7 @@ const pickaxeParam: RecipeParameterItemFilter[] = [
     },
 ]
 
-export const PickaxeRecipe = makeRecipe({
+export const PickaxeRecipe = makeMemoizedRecipe({
     id: 'Pickaxe',
     type: RecipeTypes.Smithing,
     nameId: 'Pickaxe',

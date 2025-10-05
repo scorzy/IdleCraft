@@ -1,5 +1,5 @@
 import { DeadAnimals } from '../characters/templates/DeadAnimals'
-import { makeRecipe } from '../crafting/makeRecipe'
+import { makeMemoizedRecipe } from '../crafting/makeMemoizedRecipe'
 import {
     RecipeParameterItemFilter,
     RecipeParameterValue,
@@ -20,7 +20,7 @@ export const butcheringRecipeParam: RecipeParameterItemFilter[] = [
     },
 ]
 
-export const butcheringRecipe = makeRecipe({
+export const butcheringRecipe = makeMemoizedRecipe({
     id: 'butcheringRecipe',
     type: RecipeTypes.Butchering,
     nameId: 'Butchering',

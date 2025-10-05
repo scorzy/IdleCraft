@@ -69,7 +69,7 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
     const name = useGameStore(useCallback((s: GameState) => charSel.Name(s), [charSel]))
     const icon = useGameStore(useCallback((s: GameState) => charSel.Icon(s), [charSel]))
 
-    const [isAttOpen, setAttIsOpen] = useState(false)
+    const [isAttOpen, setIsAttOpen] = useState(false)
 
     return (
         <Card>
@@ -83,7 +83,7 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
                     <MainAttack charId={charId} />
                     <CombatAbilitiesList charId={charId} />
 
-                    <Collapsible open={isAttOpen} onOpenChange={setAttIsOpen} className="text-sm">
+                    <Collapsible open={isAttOpen} onOpenChange={setIsAttOpen} className="text-sm">
                         <CollapsibleTrigger asChild>
                             <Button variant="ghost" className="w-full">
                                 {t.Stats}

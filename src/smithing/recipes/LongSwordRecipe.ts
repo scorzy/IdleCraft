@@ -1,7 +1,7 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BASE_SWORD_SPEED, BASE_SWORD_DAMAGE } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { makeRecipe } from '../../crafting/makeRecipe'
+import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeTypes,
     RecipeParameterValue,
@@ -24,7 +24,7 @@ const longSwordParams: RecipeParameterItemFilter[] = [
     },
 ]
 
-export const longSwordRecipe = makeRecipe({
+export const longSwordRecipe = makeMemoizedRecipe({
     id: 'LongSwordRecipe',
     nameId: 'LongSword' as keyof Msg,
     iconId: Icons.Sword,

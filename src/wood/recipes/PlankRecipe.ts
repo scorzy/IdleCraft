@@ -1,4 +1,4 @@
-import { makeRecipe } from '../../crafting/makeRecipe'
+import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeParamType,
     RecipeParameterItemFilter,
@@ -23,7 +23,7 @@ export const plankParam: RecipeParameterItemFilter[] = [
     },
 ]
 
-export const plankRecipe = makeRecipe({
+export const plankRecipe = makeMemoizedRecipe({
     id: 'PlankRecipe',
     type: RecipeTypes.Woodworking,
     nameId: 'Plank',
