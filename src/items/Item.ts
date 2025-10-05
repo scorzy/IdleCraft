@@ -1,3 +1,4 @@
+import { IngredientData } from '../alchemy/alchemyTypes'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ExpEnum } from '../experience/ExpEnum'
 import { Icons } from '../icons/Icons'
@@ -69,6 +70,7 @@ export interface Item {
     pickaxeData?: PickaxeData
     weaponData?: WeaponData
     armourData?: DamageData
+    IngredientData?: IngredientData
 }
 export interface ItemFilter {
     itemId?: string
@@ -84,4 +86,5 @@ export interface ItemFilter {
     pickaxeData?: Partial<PickaxeData>
     weaponData?: Partial<WeaponData>
     armourData?: Partial<DamageData>
+    IngredientData?: Partial<IngredientData>
 }

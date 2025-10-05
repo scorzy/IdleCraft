@@ -33,6 +33,7 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
         filter.pickaxeData,
         filter.weaponData,
         filter.armourData,
+        filter.alchemyData,
     ].forEach((dataFilter) => {
         if (!dataFilter) return true
         for (const kv of Object.entries(dataFilter)) {
@@ -49,6 +50,7 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
         (a: Item | ItemFilter) => a.pickaxeData,
         (a: Item | ItemFilter) => a.weaponData,
         (a: Item | ItemFilter) => a.armourData,
+        (a: Item | ItemFilter) => a.alchemyData,
     ]
     if (
         !filter.craftingData &&
@@ -57,7 +59,8 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
         !filter.craftingPickaxeData &&
         !filter.pickaxeData &&
         !filter.weaponData &&
-        !filter.armourData
+        !filter.armourData &&
+        !filter.alchemyData
     ) {
         return true
     }
