@@ -1,4 +1,4 @@
-import { makeRecipe } from '../../crafting/makeRecipe'
+import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeTypes,
     RecipeParameterValue,
@@ -23,7 +23,7 @@ const barParam: RecipeParameterItemFilter[] = [
     },
 ]
 
-export const barRecipe = makeRecipe({
+export const barRecipe = makeMemoizedRecipe({
     id: 'BarRecipe',
     type: RecipeTypes.Smithing,
     nameId: 'Bar',
