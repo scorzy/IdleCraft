@@ -63,6 +63,7 @@ export function UiStorage() {
         function updateSameRow() {
             if (accordionRef.current && selectedItemRef.current) {
                 const isSameRow = accordionRef.current.offsetTop === selectedItemRef.current.offsetTop
+                // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
                 setSameRow(isSameRow)
             }
         }
