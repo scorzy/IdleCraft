@@ -184,7 +184,7 @@ export const engMsg: Msg = {
     ButcheringExp: 'Butchering Level',
 
     Results: 'Results',
-    YouHave: 'You have',
+    YouHave: 'you have',
 
     RawFood: 'Raw Food',
     RawSkin: 'Raw Skin',
@@ -238,6 +238,8 @@ export const engMsg: Msg = {
     OppositeEffects: 'Opposite Effects',
     MultipleEffects: 'Multiple Effects',
     IngredientsStability: 'Ingredients Stability',
+    Alchemy: 'Alchemy',
+    Stability: 'Stability',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

@@ -55,6 +55,7 @@ import {
 import { viewCrafting } from '../../crafting/functions/viewCrafting'
 import { viewWoodcutting } from '../../wood/functions/viewWoodcutting'
 import { viewMining } from '../../mining/functions/viewMining'
+import { potionRecipe } from '../../alchemy/PotionRecipe'
 
 export function initialize() {
     initActivities()
@@ -107,6 +108,7 @@ function initRecipes() {
     recipes.set(twoHSwordRecipe.id, twoHSwordRecipe)
     recipes.set(armourRecipe.id, armourRecipe)
     recipes.set(butcheringRecipe.id, butcheringRecipe)
+    recipes.set(potionRecipe.id, potionRecipe)
 }
 function initAbilities() {
     ActiveAbilityData.set(AbilitiesEnum.NormalAttack, new NormalAttack())

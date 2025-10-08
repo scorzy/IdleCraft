@@ -2,6 +2,7 @@ import { GiAnvil, GiCrossedSwords, GiMeatCleaver, GiMining, GiTiedScroll, GiWood
 import { LuBox, LuLayoutList } from 'react-icons/lu'
 import { TbUsers } from 'react-icons/tb'
 import { RecipeTypes } from '../../crafting/RecipeInterfaces'
+import { IconsData, Icons } from '../../icons/Icons'
 import { UiPages, UiPageData } from './UiPages'
 
 export const UiPagesData: Record<UiPages, UiPageData> = {
@@ -47,6 +48,11 @@ export const UiPagesData: Record<UiPages, UiPageData> = {
         nameId: 'Butchering',
         icon: <GiMeatCleaver />,
         recipeType: RecipeTypes.Butchering,
+    },
+    [UiPages.Alchemy]: {
+        nameId: 'Alchemy',
+        icon: IconsData[Icons.Potion],
+        recipeType: RecipeTypes.Alchemy,
     },
     [UiPages.Quest]: {
         nameId: 'Quests',

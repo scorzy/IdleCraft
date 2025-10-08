@@ -14,6 +14,7 @@ export enum UiPages {
     Characters = 'Characters',
     Butchering = 'Butchering',
     Quest = 'Quest',
+    Alchemy = 'Alchemy',
 }
 export interface UiPageData {
     nameId: keyof Msg

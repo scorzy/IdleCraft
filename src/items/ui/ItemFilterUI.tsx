@@ -13,6 +13,8 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
 
+    if (itemFilter.descriptionId) return t[itemFilter.descriptionId]
+
     if (itemFilter.itemId !== undefined) return <ItemFilterUiItemId itemId={itemFilter.itemId} />
 
     let pre: React.ReactElement = <></>

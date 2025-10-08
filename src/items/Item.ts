@@ -1,3 +1,4 @@
+import { Key } from 'react'
 import { IngredientData, PotionData, PotionFlaskData, SolventData } from '../alchemy/alchemyTypes'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ExpEnum } from '../experience/ExpEnum'
@@ -78,6 +79,7 @@ export interface Item {
     potionData?: PotionData
 }
 export interface ItemFilter {
+    descriptionId?: keyof Msg
     itemId?: string
     nameId?: keyof Msg
     itemType?: ItemTypes

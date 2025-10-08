@@ -77,7 +77,12 @@ export const CraftingUi = memo(function CraftingUi() {
 
                 <Card>
                     <MyCardHeaderTitle title={t.Results} />
-                    <CardContent>{result && result?.map((r) => <CraftingResult key={r.id} result={r} />)}</CardContent>
+                    {result &&
+                        result?.map((r) => (
+                            <CardContent key={r.id}>
+                                <CraftingResult result={r} />
+                            </CardContent>
+                        ))}
                 </Card>
 
                 <Card>

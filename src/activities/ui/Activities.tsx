@@ -43,7 +43,7 @@ export const ActivitiesList = memo(function ActivitiesList({ filtered, ids }: { 
 
     if (ids.length === 0)
         return (
-            <Alert variant="primary" className="max-w-md">
+            <Alert variant="warning" className="max-w-md">
                 {InfoIcon}
                 <AlertTitle>{t.NoActivities}</AlertTitle>
             </Alert>

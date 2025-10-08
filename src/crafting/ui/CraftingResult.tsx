@@ -11,17 +11,23 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { selectResultQta } from '../CraftingSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
 import { CardContent } from '../../components/ui/card'
+import { isPotionItem } from '../../alchemy/PotionCraftingResult'
+import { PotionResultUi } from '../../alchemy/PotionResultUi'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
-export const CraftingResult = memo(function CraftingResult(props: { result: RecipeItem | undefined }) {
-    const { result } = props
+export const CraftingResult = memo(function CraftingResult({ result }: { result: RecipeItem | undefined }) {
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
 
     if (!result) return null
 
-    const item: Item | undefined = result.craftedItem ?? StdItems[result.stdItemId ?? '']
+    let item: Item | undefined = undefined
+    const isPotion = isPotionItem(result)
+    if (isPotion) item = result.uiCraftedItem
+    else if (result.craftedItem) item = result.craftedItem
+    else if (result.stdItemId) item = StdItems[result.stdItemId]
+
     if (!item) return null
 
     return (
@@ -30,11 +36,13 @@ export const CraftingResult = memo(function CraftingResult(props: { result: Reci
             <CardContent>
                 <div className="text-sm">
                     <MyLabel>
-                        {t.Quantity} {f(result.qta)}
+                        {t.Quantity} {f(result.qta)}{' '}
+                        <span className="text-muted-foreground">
+                            {t.YouHave} <CraftingResultHaveQta result={result} />
+                        </span>
                     </MyLabel>
-                    <MyLabel>
-                        {t.YouHave} <CraftingResultHaveQta result={result} />
-                    </MyLabel>
+
+                    {isPotion && <PotionResultUi result={result} />}
                     <ItemInfo item={item} />
                 </div>
             </CardContent>
@@ -46,13 +54,10 @@ export const CraftingResultHaveQta = memo(function CraftingResultHaveQta(props: 
     const { result } = props
     const { f } = useNumberFormatter()
     const have = useGameStore(selectResultQta(result))
-
     return f(have)
 })
 
-export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq[] | undefined }) {
-    const { req } = props
-
+export const CraftingReq = memo(function CraftingReq({ req }: { req: RecipeItemReq[] | undefined }) {
     if (!req) return null
 
     return (
@@ -65,8 +70,7 @@ export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq
         </Table>
     )
 })
-const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeItemReq }) {
-    const { req } = props
+const CraftingReqRow = memo(function CraftingReqRow({ req }: { req: RecipeItemReq }) {
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     const item = useGameStore(selectGameItem(req.itemId))

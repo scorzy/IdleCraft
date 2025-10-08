@@ -1,3 +1,4 @@
+import { makeMemoizedRecipe } from '../crafting/makeMemoizedRecipe'
 import { Recipe } from '../crafting/Recipe'
 import {
     RecipeParameter,
@@ -17,26 +18,30 @@ import { PotionCraftingResult } from './PotionCraftingResult'
 
 const PotionRecipeParameters: RecipeParameterItemFilter[] = [
     {
-        id: 'Solvent',
-        nameId: 'Solvent',
-        type: RecipeParamType.ItemType,
-        itemFilter: {
-            has: ['solventData'],
-        },
-    },
-    {
         id: 'Flask',
         nameId: 'Flask',
         type: RecipeParamType.ItemType,
         itemFilter: {
+            descriptionId: 'Flask',
             has: ['flaskData'],
         },
     },
+    {
+        id: 'Solvent',
+        nameId: 'Solvent',
+        type: RecipeParamType.ItemType,
+        itemFilter: {
+            descriptionId: 'Solvent',
+            has: ['solventData'],
+        },
+    },
+
     {
         id: 'Ingredient1',
         nameId: 'Ingredient',
         type: RecipeParamType.ItemType,
         itemFilter: {
+            descriptionId: 'Ingredient',
             has: ['ingredientData'],
         },
     },
@@ -45,11 +50,12 @@ const PotionRecipeParameters: RecipeParameterItemFilter[] = [
         nameId: 'Ingredient',
         type: RecipeParamType.ItemType,
         itemFilter: {
+            descriptionId: 'Ingredient',
             has: ['ingredientData'],
         },
     },
 ]
-export const PotionRecipe: Recipe = {
+export const potionRecipe: Recipe = makeMemoizedRecipe({
     id: 'Potion',
     nameId: 'Potion',
     iconId: Icons.Potion,
@@ -118,4 +124,4 @@ export const PotionRecipe: Recipe = {
 
         return result
     },
-}
+})

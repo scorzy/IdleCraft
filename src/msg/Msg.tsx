@@ -260,6 +260,8 @@ export interface Msg {
     OppositeEffects: string
     MultipleEffects: string
     IngredientsStability: string
+    Alchemy: string
+    Stability: string
 }
 export interface MsgFunctions {
     // Time

@@ -14,3 +14,6 @@ export interface PotionItem extends RecipeItem {
 export interface PotionCraftingResult extends RecipeResult {
     results: PotionItem[]
 }
+export function isPotionItem(item: RecipeItem | PotionItem): item is PotionItem {
+    return 'stability' in item
+}

@@ -11,4 +11,5 @@ export const ExpData: Record<ExpEnum, { nameId: keyof Msg }> = {
     [ExpEnum.TwoHanded]: { nameId: 'TwoHanded' },
     [ExpEnum.Block]: { nameId: 'Block' },
     [ExpEnum.Butchering]: { nameId: 'ButcheringExp' },
+    [ExpEnum.Alchemy]: { nameId: 'Alchemy' },
 }

@@ -94,6 +94,7 @@ const PageContent = memo(function PageContent() {
         case UiPages.Woodworking:
         case UiPages.Smithing:
         case UiPages.Butchering:
+        case UiPages.Alchemy:
             return <CraftingUi />
     }
 })

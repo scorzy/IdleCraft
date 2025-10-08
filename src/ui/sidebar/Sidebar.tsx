@@ -77,6 +77,7 @@ const SidebarCraft = memo(function SidebarCraft() {
             <MenuItem page={UiPages.Woodworking} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Smithing} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Butchering} collapsedId={CollapsedEnum.Sidebar} />
+            <MenuItem page={UiPages.Alchemy} collapsedId={CollapsedEnum.Sidebar} />
         </CollapsibleMenu>
     )
 })
