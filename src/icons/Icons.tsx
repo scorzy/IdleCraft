@@ -30,7 +30,9 @@ import {
     GiDeathSkull,
     GiTwoCoins,
     GiFizzingFlask,
+    GiDroplets,
 } from 'react-icons/gi'
+import { LuArrowDown, LuArrowDownUp, LuArrowUp } from 'react-icons/lu'
 
 export enum Icons {
     Axe = 'Axe',
@@ -63,6 +65,10 @@ export enum Icons {
     Skull = 'Skull',
     Coins = 'Coins',
     Potion = 'Potion',
+    OppositeIngredient = 'OppositeIngredient',
+    MultipleEffects = 'MultipleEffects',
+    ArrowUp = 'ArrowUp',
+    ArrowDown = 'ArrowDown',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -95,4 +101,8 @@ export const IconsData: Record<Icons, ReactNode> = {
     Skull: <GiDeathSkull />,
     Coins: <GiTwoCoins />,
     Potion: <GiFizzingFlask />,
+    OppositeIngredient: <LuArrowDownUp />,
+    MultipleEffects: <GiDroplets />,
+    ArrowUp: <LuArrowUp />,
+    ArrowDown: <LuArrowDown />,
 }

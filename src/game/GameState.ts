@@ -13,6 +13,7 @@ import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
 import { BattleLog } from '../battleLog/battleLogInterfaces'
 import { UiState } from '../ui/UiState'
 import { QuestState } from '../quests/QuestTypes'
+import { AlchemyEffects } from '../alchemy/alchemyTypes'
 import { InitialState } from '@/entityAdapter/InitialState'
 
 export interface LocationState {
@@ -51,4 +52,5 @@ export interface GameState {
     castCharAbility: InitialState<CastCharAbility>
     battleLogs: InitialState<BattleLog>
     quests: InitialState<QuestState>
+    discoveredEffects: Record<string, AlchemyEffects[]>
 }

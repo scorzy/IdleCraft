@@ -257,6 +257,9 @@ export interface Msg {
     Solvent: string
     Flask: string
     Ingredient: string
+    OppositeEffects: string
+    MultipleEffects: string
+    IngredientsStability: string
 }
 export interface MsgFunctions {
     // Time

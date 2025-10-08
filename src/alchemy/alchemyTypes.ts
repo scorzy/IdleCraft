@@ -37,10 +37,21 @@ export interface IngredientEffect {
 export interface IngredientData {
     type: IngredientTypes
     effects: IngredientEffect[]
+    stability?: number
 }
 export interface SolventData {
     potency: AlchemyPotency
 }
 export interface PotionFlaskData {
     reusePercent: number
+}
+
+export interface PotionEffect {
+    effect: AlchemyEffects
+    value: number
+    duration: number
+}
+
+export interface PotionData {
+    effects: PotionEffect[]
 }

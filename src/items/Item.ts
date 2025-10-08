@@ -1,4 +1,4 @@
-import { IngredientData, PotionFlaskData, SolventData } from '../alchemy/alchemyTypes'
+import { IngredientData, PotionData, PotionFlaskData, SolventData } from '../alchemy/alchemyTypes'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ExpEnum } from '../experience/ExpEnum'
 import { Icons } from '../icons/Icons'
@@ -18,6 +18,7 @@ export enum ItemTypes {
     Corpse = 'Corpse',
     RawFood = 'RawFood',
     RawSkin = 'RawSkin',
+    Potion = 'Potion',
 }
 export enum ItemSubType {
     Weapon = 'Weapon',
@@ -74,6 +75,7 @@ export interface Item {
     ingredientData?: IngredientData
     solventData?: SolventData
     flaskData?: PotionFlaskData
+    potionData?: PotionData
 }
 export interface ItemFilter {
     itemId?: string
@@ -93,4 +95,5 @@ export interface ItemFilter {
     ingredientData?: Partial<IngredientData>
     solventData?: Partial<SolventData>
     flaskData?: Partial<PotionFlaskData>
+    potionData?: Partial<PotionData>
 }

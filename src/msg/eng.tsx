@@ -235,6 +235,9 @@ export const engMsg: Msg = {
     Solvent: 'Solvent',
     Flask: 'Flask',
     Ingredient: 'Ingredient',
+    OppositeEffects: 'Opposite Effects',
+    MultipleEffects: 'Multiple Effects',
+    IngredientsStability: 'Ingredients Stability',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

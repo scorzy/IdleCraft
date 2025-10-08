@@ -87,6 +87,7 @@ export const InitialGameState: GameState = {
     castCharAbility: CastCharAbilityAdapter.getInitialState(),
     battleLogs: BattleLogAdapter.getInitialState(),
     quests: QuestAdapter.getInitialState(),
+    discoveredEffects: {},
 }
 
 export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)

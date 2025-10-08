@@ -1,0 +1,160 @@
+import { BonusResult } from '../bonus/Bonus'
+import { getTotal } from '../bonus/BonusFunctions'
+import { GameState } from '../game/GameState'
+import { Icons } from '../icons/Icons'
+import { Item, ItemTypes } from '../items/Item'
+import {
+    CHAOTIC_POTENCY_PERCENT,
+    MULTIPLE_EFFECTS_STABILITY,
+    NEGATIVE_EFFECT_STABILITY_PENALTY,
+    STABILITY_STABLE,
+    STABILITY_UNSTABLE,
+    UNSTABLE_POTENCY_PERCENT,
+} from './alchemyConst'
+import { oppositeEffects } from './alchemyData'
+import { isEffectDiscovered, getPotionEffect } from './alchemySelectors'
+import { AlchemyEffects, AlchemyPotency, PotionData, PotionResult } from './alchemyTypes'
+
+export function generatePotion(
+    state: GameState,
+    includeUnknownEffects: boolean,
+    ingredients: Item[]
+):
+    | {
+          item: Item | undefined
+          stability: number
+          potionResult: PotionResult
+          unknownEffects: boolean
+          potionResultBonusList: BonusResult
+      }
+    | undefined {
+    if (ingredients.length < 2) return
+
+    const allEffects = new Map<AlchemyEffects, { potency: AlchemyPotency }[]>()
+    let unknownEffects = false
+
+    for (const ingredient of ingredients)
+        for (const effect of ingredient.ingredientData!.effects) {
+            const isKnown = isEffectDiscovered(state, ingredient, effect.effect)
+            unknownEffects ||= !isKnown
+            if (!includeUnknownEffects && !isKnown) continue
+            if (!allEffects.has(effect.effect)) allEffects.set(effect.effect, [])
+            allEffects.get(effect.effect)!.push({ potency: effect.potency })
+        }
+
+    allEffects.forEach((potencies, effect) => {
+        if (potencies.length < 2) allEffects.delete(effect)
+    })
+
+    const potionData: PotionData = { effects: [] }
+
+    for (const [effect, potencies] of allEffects.entries()) {
+        const effects = getPotionEffect(
+            state,
+            effect,
+            potencies.map((p) => p.potency)
+        )
+        if (effects) potionData!.effects.push(effects)
+    }
+
+    potionData.effects.sort((a, b) => b.value - a.value)
+
+    const potionResultBonusList: BonusResult = { total: 0, bonuses: [] }
+    potionResultBonusList.bonuses.push({
+        id: `Base`,
+        nameId: 'Base',
+        iconId: Icons.OppositeIngredient,
+        add: 100,
+    })
+
+    const effects = potionData.effects
+    let stability = 100
+    let potionResult: PotionResult = PotionResult.Chaotic
+
+    if (effects.length === 0) {
+        if (unknownEffects) potionResult = PotionResult.Unknown
+        else potionResult = PotionResult.NotPotion
+    } else {
+        for (const effect of effects) {
+            const negatives = oppositeEffects.get(effect.effect)
+            if (!negatives) continue
+
+            for (const negative of negatives) {
+                const negativeEffect = effects.find((e) => e.effect === negative)
+                if (negativeEffect) {
+                    potionResultBonusList.bonuses.push({
+                        id: `Opp_${effect.effect}_${negative}`,
+                        nameId: 'OppositeEffects',
+                        iconId: Icons.OppositeIngredient,
+                        add: (effect.value + negativeEffect.value) * NEGATIVE_EFFECT_STABILITY_PENALTY,
+                    })
+                }
+            }
+        }
+
+        if (potionData.effects.length >= 2) {
+            potionResultBonusList.bonuses.push({
+                id: `MultiEffects`,
+                nameId: 'MultipleEffects',
+                iconId: Icons.MultipleEffects,
+                add: MULTIPLE_EFFECTS_STABILITY * (potionData.effects.length - 1),
+            })
+        }
+
+        const stabilityFromIngredients = ingredients.reduce(
+            (sum, ingredient) => sum + (ingredient.ingredientData?.stability || 0),
+            0
+        )
+
+        if (Math.abs(stabilityFromIngredients) > 0.1)
+            potionResultBonusList.bonuses.push({
+                id: `IngredientsStability`,
+                nameId: 'IngredientsStability',
+                iconId: stabilityFromIngredients > 0 ? Icons.ArrowUp : Icons.ArrowDown,
+                add: stabilityFromIngredients,
+            })
+
+        potionResultBonusList.total = getTotal(potionResultBonusList.bonuses)
+        stability = potionResultBonusList.total
+
+        if (stability > STABILITY_STABLE) potionResult = PotionResult.Stable
+        else if (stability > STABILITY_UNSTABLE) potionResult = PotionResult.Unstable
+        else if (stability > 0) potionResult = PotionResult.Chaotic
+        else potionResult = PotionResult.NotPotion
+
+        alterEffects(potionData, stability)
+    }
+
+    let item: Item | undefined = undefined
+    if (PotionResult.NotPotion !== potionResult)
+        item = {
+            id: '',
+            nameId: 'Potion',
+            icon: Icons.Potion,
+            type: ItemTypes.Potion,
+            value: 0,
+            potionData,
+        }
+
+    return {
+        item,
+        stability,
+        potionResult,
+        unknownEffects,
+        potionResultBonusList,
+    }
+}
+
+function alterEffects(potionData: PotionData, stability: number) {
+    if (stability >= STABILITY_STABLE) return
+    if (stability >= STABILITY_UNSTABLE) {
+        // Unstable: reduce all effects
+        for (const effect of potionData.effects) effect.value = Math.floor(effect.value * UNSTABLE_POTENCY_PERCENT)
+    } else {
+        // Chaotic: reduce all effects and remove one random effect
+        for (const effect of potionData.effects) effect.value = Math.floor(effect.value * CHAOTIC_POTENCY_PERCENT)
+        if (potionData.effects.length <= 1) return
+        const toRemove = Math.floor(Math.random() * potionData.effects.length)
+        potionData.effects.splice(toRemove, 1)
+    }
+}

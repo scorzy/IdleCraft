@@ -4,7 +4,6 @@ import {
     RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeParamType,
-    RecipeResult,
     RecipeTypes,
 } from '../crafting/RecipeInterfaces'
 import { GameState } from '../game/GameState'
@@ -12,7 +11,9 @@ import { Icons } from '../icons/Icons'
 import { ItemSubType } from '../items/Item'
 import { selectGameItem } from '../storage/StorageSelectors'
 import { MAX_INGREDIENTS } from './alchemyConst'
-import { AlchemyEffects, AlchemyPotency } from './alchemyTypes'
+import { generatePotion } from './alchemyFunctions'
+import { PotionResult } from './alchemyTypes'
+import { PotionCraftingResult } from './PotionCraftingResult'
 
 const PotionRecipeParameters: RecipeParameterItemFilter[] = [
     {
@@ -57,7 +58,7 @@ export const PotionRecipe: Recipe = {
     getParameters: function (_state: GameState): RecipeParameter[] {
         return PotionRecipeParameters
     },
-    getResult: function (state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
+    getResult: function (state: GameState, params: RecipeParameterValue[]): PotionCraftingResult | undefined {
         const solventId = params.find((p) => p.id === 'Solvent')?.itemId
         if (!solventId) return
 
@@ -82,29 +83,39 @@ export const PotionRecipe: Recipe = {
 
         if (ingredients.length < 2) return
 
-        const allEffects = new Map<AlchemyEffects, AlchemyPotency[]>()
+        const realPotion = generatePotion(state, false, ingredients)
+        const uiPotion = generatePotion(state, false, ingredients)
 
-        for (const ingredient of ingredients) {
-            for (const effect of ingredient.ingredientData!.effects) {
-                if (!allEffects.has(effect.effect)) allEffects.set(effect.effect, [])
-                allEffects.get(effect.effect)!.push(effect.potency)
-            }
+        const result: PotionCraftingResult = {
+            time: 0,
+            requirements: [
+                {
+                    itemId: solventId,
+                    qta: 1,
+                },
+                {
+                    itemId: flaskId,
+                    qta: 1,
+                },
+                ...ingredients.map((i) => ({
+                    itemId: i.id,
+                    qta: 1,
+                })),
+            ],
+            results: [
+                {
+                    id: 'craftedPotion',
+                    qta: 1,
+                    stability: uiPotion?.stability ?? 0,
+                    potionResult: uiPotion?.potionResult ?? PotionResult.NotPotion,
+                    craftedItem: realPotion?.item,
+                    uiCraftedItem: uiPotion?.item,
+                    unknownEffects: uiPotion?.unknownEffects ?? false,
+                    potionResultBonusList: uiPotion?.potionResultBonusList,
+                },
+            ],
         }
 
-        allEffects.forEach((potencies, effect) => {
-            if (potencies.length < 2) {
-                allEffects.delete(effect)
-                return
-            }
-        })
-
-        if (allEffects.size === 0) return
-
-        const result: RecipeResult = {
-            time: 3e3,
-            requirements: [],
-            results: [],
-        }
         return result
     },
 }
