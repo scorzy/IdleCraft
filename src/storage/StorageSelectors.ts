@@ -46,7 +46,7 @@ const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialSt
     for (const e of items) {
         const item = selectGameItemFromCraft(e.id, craftedItems)
         let name = ''
-        if (item) name = selectItemNameMemoized(item.nameFunc, item.nameId, item.params, t)
+        if (item) name = selectItemNameMemoized(item.nameFunc, item.nameId, item.nameParams, t)
         ord.push({ ...e, name })
     }
     return ord.sort((a, b) => a.name.localeCompare(b.name))

@@ -1,6 +1,7 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BASE_SWORD_SPEED, BASE_SWORD_DAMAGE } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
+import { getNameParams } from '../../crafting/functions/getNameParams'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeTypes,
@@ -43,6 +44,7 @@ export const longSwordRecipe = makeMemoizedRecipe({
         const craftedSword: Item = {
             id: '',
             nameId: 'LongSword',
+            nameParams: getNameParams(components),
             icon: Icons.Sword,
             type: ItemTypes.OneHand,
             equipSlot: EquipSlotsEnum.MainHand,

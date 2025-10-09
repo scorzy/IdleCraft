@@ -121,11 +121,10 @@ export const selectItemNameMemoized = moize(
         params: Record<string, unknown> | undefined,
         t: ReturnType<typeof selectTranslations>
     ) => {
-        if (nameFunc) {
-            const fn = t.fun[nameFunc] as (...args: unknown[]) => string
-            if (fn) return fn(itemNameId, params)
-        }
-        return t.t[itemNameId]
+        const fn = t.fun[nameFunc ?? 'getItemName'] as (...args: unknown[]) => string
+
+        if (fn) return fn(itemNameId, params)
+        return t.t[itemNameId] ?? itemNameId
     },
     { maxSize: 100 }
 )

@@ -60,6 +60,7 @@ export interface Item {
     nameFunc?: keyof MsgFunctions
     icon: Icons
     color?: string
+    nameParams?: Record<string, unknown>
     params?: Record<string, unknown>
     type: ItemTypes
     subType?: ItemSubType

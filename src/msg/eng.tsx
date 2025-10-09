@@ -4,6 +4,8 @@ import { QuestParams } from '../quests/QuestParams'
 import { sameNumber } from '../utils/sameNumber'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
 import { Msg, MsgFunctions } from './Msg'
+import { PREFIX, SUFFIX } from './msgConst'
+import { removeUnusedParams } from './removeUnusedParams'
 
 export const engMsg: Msg = {
     LevelToLow: 'Level to low',
@@ -71,13 +73,12 @@ export const engMsg: Msg = {
     TinBar: 'Tin Bar',
     CopperBar: 'Copper Bar',
     Smithing: 'Smithing',
-    WoodAxe: 'Wood Axe',
+
     Crafting: 'Crafting',
     Gathering: 'Gathering',
     ItemType: 'Type',
     Damage: 'Damage',
     AttackSpeed: 'Attack Speed',
-    Pickaxe: 'Pickaxe',
     ArmourPen: 'Armour Pen.',
     WoodcuttingDamage: 'Woodcutting Damage',
     WoodcuttingTime: 'Woodcutting  Time',
@@ -124,12 +125,11 @@ export const engMsg: Msg = {
     Boar: 'Boar',
     Wolves: 'Wolves',
     Combat: 'Combat',
+    Pickaxe: 'Pickaxe',
 
     Unharmed: 'Unharmed',
-    Armour: 'Armour',
-    Stats: 'Stats',
 
-    LongSword: 'Long Sword',
+    Stats: 'Stats',
 
     BludgeoningArmour: 'Bludgeoning Armour',
     BludgeoningDamage: 'Bludgeoning Damage',
@@ -159,8 +159,12 @@ export const engMsg: Msg = {
     Delete: 'Delete',
     SavedGames: 'Saved Games',
 
-    Dagger: 'Dagger',
-    TwoHSword: '2H Sword',
+    //  Smithing
+    Dagger: '{material} Dagger',
+    TwoHSword: '{material} 2H Sword',
+    LongSword: '{material} Long Sword',
+    WoodAxe: '{material} Wood Axe',
+    Armour: '{material} Armour',
 
     OffensiveInfo: 'Offensive Info',
     DefensiveInfo: 'Defensive Info',
@@ -276,7 +280,7 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
 
         //
         cutting: (woodName: keyof Msg) => `Cutting ${msg[woodName]}`,
-        crafting: (itemNameId: keyof Msg) => `Crafting ${msg[itemNameId]}`,
+        crafting: (itemName: string) => `Crafting ${itemName}`,
         mining: (oreNameId: keyof Msg) => `Mining ${msg[oreNameId]}`,
         speedBonusPercent: (bonus: string) => `Speed bonus +${bonus}%`,
         prestigePercent: (bonus: string) => `Value bonus +${bonus}%`,
@@ -295,6 +299,25 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
             if (n < Number.EPSILON) return "You don't have any item that can be used to complete the quest"
             if (sameNumber(n, 1)) return 'You have one item that can be used to complete the quest'
             return `You have ${f(n)} items that can be used to complete the quest`
+        },
+
+        getItemName: (itemNameId: keyof Msg, nameParams?: Record<string, unknown>) => {
+            let name = msg[itemNameId]
+            if (nameParams) {
+                Object.entries(nameParams).forEach(([key, value]) => {
+                    if (key === PREFIX && typeof value === 'string' && value in msg) {
+                        const prefix = msg[value as keyof Msg]
+                        if (prefix) name = `${prefix} ${name}`
+                        return
+                    } else if (key === SUFFIX && typeof value === 'string' && value in msg) {
+                        const suffix = msg[value as keyof Msg]
+                        if (suffix) name = `${name} ${suffix}`
+                        return
+                    }
+                    name = name.replace(`{${key}}`, String(value))
+                })
+            }
+            return removeUnusedParams(name)
         },
     }
 }

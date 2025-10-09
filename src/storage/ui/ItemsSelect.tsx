@@ -9,6 +9,7 @@ import { selectGameItem, selectItemQta, selectFilteredItems } from '../StorageSe
 import { ItemFilter } from '../../items/Item'
 import { Badge } from '../../components/ui/badge'
 import { ComboBoxResponsive, ComboBoxItem } from '../../components/ui/comboBox'
+import { useItemName } from '../../items/itemSelectors'
 
 export const ItemsSelect = memo(function ItemsSelect({
     itemFilter,
@@ -70,7 +71,11 @@ const ItemComboBoxItem = memo(function ItemComboBoxItem({
 
     const itemObj = useGameStore(selectGameItem(itemId))
     const qta = useGameStore(selectItemQta(null, itemId))
-    const text = itemObj ? t[itemObj.nameId] : t.None
+
+    const itemName = useItemName(itemObj)
+
+    const text = itemObj ? itemName : t.None
+    console.log({ itemObj, itemName, text })
 
     const handleSelect = useCallback(() => onValueChange(itemId), [onValueChange, itemId])
 

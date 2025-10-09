@@ -1,5 +1,6 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
+import { getNameParams } from '../../crafting/functions/getNameParams'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeTypes,
@@ -55,6 +56,7 @@ export const axeRecipe = makeMemoizedRecipe({
         const craftedAxe: Item = {
             id: '',
             nameId: 'WoodAxe',
+            nameParams: getNameParams(components),
             icon: Icons.Axe,
             type: ItemTypes.WoodAxe,
             equipSlot: EquipSlotsEnum.WoodAxe,

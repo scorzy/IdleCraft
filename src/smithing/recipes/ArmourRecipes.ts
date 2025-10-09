@@ -1,5 +1,6 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
+import { getNameParams } from '../../crafting/functions/getNameParams'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeTypes,
@@ -50,6 +51,7 @@ export const armourRecipe = makeMemoizedRecipe({
         const craftedItem: Item = {
             id: '',
             nameId: 'Armour',
+            nameParams: getNameParams(components),
             icon: Icons.Breastplate,
             type: ItemTypes.Body,
             subType: ItemSubType.Armour,

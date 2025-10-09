@@ -9,5 +9,5 @@ export const selectItemName = (state: GameState, item: Item | string | undefined
     if (typeof item === 'string') item = selectGameItem(item)(state)
     if (!item) return ''
 
-    return selectItemNameMemoized(item.nameFunc, item.nameId, item.params, selectTranslations(state))
+    return selectItemNameMemoized(item.nameFunc, item.nameId, item.nameParams, selectTranslations(state))
 }

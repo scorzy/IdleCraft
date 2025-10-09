@@ -8,6 +8,7 @@ export const SmithingItems: Record<string, Item> = {
         nameId: 'CopperBar',
         type: ItemTypes.Bar,
         value: 10,
+        params: { material: 'Copper' },
         craftingData: {
             prestige: 1.05,
             speedBonus: 1.1,
@@ -38,6 +39,7 @@ export const SmithingItems: Record<string, Item> = {
         nameId: 'TinBar',
         type: ItemTypes.Bar,
         value: 20,
+        params: { material: 'Tin' },
         craftingData: {
             prestige: 1.1,
             speedBonus: 1,
