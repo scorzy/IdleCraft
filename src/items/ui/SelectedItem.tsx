@@ -13,13 +13,14 @@ import { Button } from '../../components/ui/button'
 import { equipClick } from '../../characters/characterFunctions'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
+import { useItemName } from '../itemSelectors'
 import { ItemInfo } from './ItemInfo'
 import classes from './selectItem.module.css'
 
 export const SelectedItem = memo(function SelectedItem({ showTitle }: { showTitle?: boolean }) {
     const qta = useGameStore(getSelectedItemQta)
     const item = useGameStore(getSelectedItem)
-    const { t } = useTranslations()
+    const itemName = useItemName(item)
 
     if (qta <= 0) return
     if (item === undefined) return
@@ -28,7 +29,7 @@ export const SelectedItem = memo(function SelectedItem({ showTitle }: { showTitl
         <div className="grid gap-3">
             {showTitle && (
                 <Card>
-                    <MyCardHeaderTitle title={t[item.nameId]} icon={IconsData[item.icon]} />
+                    <MyCardHeaderTitle title={itemName} icon={IconsData[item.icon]} />
                 </Card>
             )}
             <SelectedItemInfo />
@@ -37,11 +38,11 @@ export const SelectedItem = memo(function SelectedItem({ showTitle }: { showTitl
 })
 export const SelectedItemTitle = memo(function SelectedItemTitle() {
     const item = useGameStore(getSelectedItem)
-    const { t } = useTranslations()
+    const itemName = useItemName(item)
 
     if (item === undefined) return
 
-    return <MyCardHeaderTitle title={t[item.nameId]} icon={IconsData[item.icon]} />
+    return <MyCardHeaderTitle title={itemName} icon={IconsData[item.icon]} />
 })
 export const SelectedItemInfo = memo(function SelectedItemInfo() {
     const qta = useGameStore(getSelectedItemQta)

@@ -4,6 +4,7 @@ import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { useTranslations } from '../../msg/useTranslations'
+import { useItemName } from '../itemSelectors'
 
 export const ItemIconName = (props: { itemId: string }) => {
     const { itemId } = props
@@ -18,9 +19,11 @@ export const ItemIconName = (props: { itemId: string }) => {
             [itemId]
         )
     )
+
+    const name = useItemName(item)
+
     if (!item) return <></>
 
-    const name = t[item.nameId]
     const icon = IconsData[item.icon]
 
     return (

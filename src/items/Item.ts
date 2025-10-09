@@ -1,7 +1,7 @@
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ExpEnum } from '../experience/ExpEnum'
 import { Icons } from '../icons/Icons'
-import { Msg } from '../msg/Msg'
+import { Msg, MsgFunctions } from '../msg/Msg'
 
 export enum ItemTypes {
     Log = 'Log',
@@ -57,7 +57,10 @@ export interface WeaponData {
 export interface Item {
     id: string
     nameId: keyof Msg
+    nameFunc?: keyof MsgFunctions
     icon: Icons
+    color?: string
+    params?: Record<string, unknown>
     type: ItemTypes
     subType?: ItemSubType
     value: number

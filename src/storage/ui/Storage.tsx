@@ -36,6 +36,7 @@ import {
     DrawerHeader,
     DrawerTitle,
 } from '../../components/ui/drawer'
+import { useItemName } from '../../items/itemSelectors'
 import classes from './storage.module.css'
 import { buttonVariants } from '@/components/ui/buttonVariants'
 import { Alert, AlertTitle } from '@/components/ui/alert'
@@ -302,6 +303,7 @@ const StorageItem = memo(function StorageItem(props: { small: boolean; location:
         if (setOpen) setOpen(true)
     }, [itemId, location])
 
+    const itemName = useItemName(item)
     if (!item) return
     if (small)
         return (
@@ -309,7 +311,7 @@ const StorageItem = memo(function StorageItem(props: { small: boolean; location:
                 <TableCell>
                     <span className={classes.smallRow}>
                         <span className="pr-2 text-right align-middle">{IconsData[item.icon]}</span>
-                        <span>{t[item.nameId]}</span>
+                        <span>{itemName}</span>
                     </span>
                     <span className={classes.smallRow}>
                         <span className={classes.smallRowHeader}>{t.Quantity}</span>
@@ -326,7 +328,7 @@ const StorageItem = memo(function StorageItem(props: { small: boolean; location:
         return (
             <TableRow onClick={onClick} className={cn(classes.row, { 'bg-muted': selected })}>
                 <TableCell>{IconsData[item.icon]}</TableCell>
-                <TableCell>{t[item.nameId]}</TableCell>
+                <TableCell>{itemName}</TableCell>
                 <TableCell className="text-right">{f(item.value)}</TableCell>
                 <TableCell className="text-right">{f(qta)}</TableCell>
             </TableRow>

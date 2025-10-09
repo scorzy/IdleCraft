@@ -11,22 +11,28 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { selectResultQta } from '../CraftingSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
 import { CardContent } from '../../components/ui/card'
+import { useItemName } from '../../items/itemSelectors'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
 export const CraftingResult = memo(function CraftingResult(props: { result: RecipeItem | undefined }) {
     const { result } = props
-    const { t } = useTranslations()
-    const { f } = useNumberFormatter()
-
     if (!result) return null
-
     const item: Item | undefined = result.craftedItem ?? StdItems[result.stdItemId ?? '']
     if (!item) return null
 
+    return <CraftingResult2 result={result} item={item} />
+})
+
+export const CraftingResult2 = memo(function CraftingResult2(props: { result: RecipeItem; item: Item }) {
+    const { result, item } = props
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    const itemName = useItemName(item)
+
     return (
         <>
-            <MyCardHeaderTitle title={t[item.nameId]} icon={IconsData[item.icon]} />
+            <MyCardHeaderTitle title={itemName} icon={IconsData[item.icon]} />
             <CardContent>
                 <div className="text-sm">
                     <MyLabel>
@@ -67,14 +73,14 @@ export const CraftingReq = memo(function CraftingReq(props: { req: RecipeItemReq
 })
 const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeItemReq }) {
     const { req } = props
-    const { t } = useTranslations()
     const { f } = useNumberFormatter()
     const item = useGameStore(selectGameItem(req.itemId))
+    const itemName = useItemName(item)
     if (!item) return null
     return (
         <TableRow>
             <TableCell className="text-lg">{IconsData[item.icon]}</TableCell>
-            <TableCell width={'100%'}>{t[item.nameId]}</TableCell>
+            <TableCell width={'100%'}>{itemName}</TableCell>
             <TableCell>
                 <span className="text-nowrap">
                     {f(req.qta)}

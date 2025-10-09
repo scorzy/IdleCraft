@@ -266,6 +266,8 @@ export interface MsgFunctions {
     formatTime: (time: number) => string
     formatTimePrecise: (time: number) => string
 
+    getItemName: (itemNameId: keyof Msg, params?: Record<string, unknown>) => string
+
     //
     cutting: (woodName: keyof Msg) => string
     crafting: (itemNameId: keyof Msg) => string

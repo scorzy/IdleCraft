@@ -1,9 +1,14 @@
 import moize from 'moize'
+import { useCallback } from 'react'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { GameState } from '../game/GameState'
+import { selectTranslations } from '../msg/useTranslations'
+import { Msg, MsgFunctions } from '../msg/Msg'
+import { useGameStore } from '../game/state'
 import { Item, ItemFilter } from './Item'
+import { selectItemName } from './selectItemName'
 
 export const selectEquipId =
     (slot: EquipSlotsEnum, characterId = PLAYER_ID) =>
@@ -108,3 +113,22 @@ export const selectItemFilterProps = moize(
         maxSize: 30,
     }
 )
+
+export const selectItemNameMemoized = moize(
+    (
+        nameFunc: keyof MsgFunctions | undefined,
+        itemNameId: keyof Msg,
+        params: Record<string, unknown> | undefined,
+        t: ReturnType<typeof selectTranslations>
+    ) => {
+        if (nameFunc) {
+            const fn = t.fun[nameFunc] as (...args: unknown[]) => string
+            if (fn) return fn(itemNameId, params)
+        }
+        return t.t[itemNameId]
+    },
+    { maxSize: 100 }
+)
+export const useItemName = (item: Item | undefined | string | null) => {
+    return useGameStore(useCallback((state: GameState) => selectItemName(state, item), [item]))
+}

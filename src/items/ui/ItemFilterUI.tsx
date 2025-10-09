@@ -8,6 +8,7 @@ import { IconsData } from '../../icons/Icons'
 import { Msg } from '../../msg/Msg'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { DamageTypesData } from '../damageTypes'
+import { useItemName } from '../itemSelectors'
 
 export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }) {
     const { f } = useNumberFormatter()
@@ -98,14 +99,14 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
 function ItemFilterUiItemId(props: { itemId: string }) {
     const { itemId } = props
 
-    const { t } = useTranslations()
     const item = useGameStore(useCallback((s: GameState) => selectGameItem(itemId)(s), [itemId]))
+    const itemName = useItemName(item)
 
     if (!item) return
 
     return (
         <span>
-            {IconsData[item.icon]} {t[item.nameId]}
+            {IconsData[item.icon]} {itemName}
         </span>
     )
 }

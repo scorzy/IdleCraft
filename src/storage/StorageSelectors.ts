@@ -11,7 +11,7 @@ import { EMPTY_ARRAY } from '../const'
 import { Translations } from '../msg/Msg'
 import { useGameStore } from '../game/state'
 import { selectStorageOrder } from '../ui/state/uiSelectors'
-import { filterItem } from '../items/itemSelectors'
+import { filterItem, selectItemNameMemoized } from '../items/itemSelectors'
 import { ItemAdapter } from './ItemAdapter'
 import { InventoryNoQta, StorageState } from './storageTypes'
 import { isCrafted } from './storageFunctions'
@@ -46,7 +46,7 @@ const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialSt
     for (const e of items) {
         const item = selectGameItemFromCraft(e.id, craftedItems)
         let name = ''
-        if (item) name = t.t[item.nameId]
+        if (item) name = selectItemNameMemoized(item.nameFunc, item.nameId, item.params, t)
         ord.push({ ...e, name })
     }
     if (!storageAsc) return ord.sort((a, b) => b.name.localeCompare(a.name))
