@@ -218,15 +218,15 @@ const LocationStorage = memo(function LocationStorage({
     small: boolean
     location: GameLocations
 }) {
-    const items = useLocationItems(location)
+    const itemsIds = useLocationItems(location)
 
     return (
         <Table>
             {!small && <StorageHeader />}
 
             <TableBody>
-                {items.map((i) => (
-                    <StorageItem small={small} key={i.id} itemId={i.id} location={location} />
+                {itemsIds.map((id) => (
+                    <StorageItem small={small} key={id} itemId={id} location={location} />
                 ))}
             </TableBody>
         </Table>
