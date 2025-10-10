@@ -9,7 +9,7 @@ import { selectGameItem, selectItemQta, selectFilteredItems } from '../StorageSe
 import { ItemFilter } from '../../items/Item'
 import { Badge } from '../../components/ui/badge'
 import { ComboBoxResponsive, ComboBoxItem } from '../../components/ui/comboBox'
-import { useItemName } from '../../items/itemSelectors'
+import { useItemName } from '@/items/useItemName'
 
 export const ItemsSelect = memo(function ItemsSelect({
     itemFilter,

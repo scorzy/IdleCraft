@@ -1,7 +1,6 @@
 import { memo, useCallback } from 'react'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
-import { useTranslations } from '../../msg/useTranslations'
 import {
     getSelectedItem,
     getSelectedItemQta,
@@ -13,7 +12,7 @@ import { Button } from '../../components/ui/button'
 import { equipClick } from '../../characters/characterFunctions'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
-import { useItemName } from '../itemSelectors'
+import { useItemName } from '../useItemName'
 import { ItemInfo } from './ItemInfo'
 import classes from './selectItem.module.css'
 

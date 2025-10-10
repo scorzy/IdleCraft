@@ -11,7 +11,7 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { selectResultQta } from '../CraftingSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
 import { CardContent } from '../../components/ui/card'
-import { useItemName } from '../../items/itemSelectors'
+import { useItemName } from '@/items/useItemName'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 

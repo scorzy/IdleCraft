@@ -36,8 +36,8 @@ import {
     DrawerHeader,
     DrawerTitle,
 } from '../../components/ui/drawer'
-import { useItemName } from '../../items/itemSelectors'
 import classes from './storage.module.css'
+import { useItemName } from '@/items/useItemName'
 import { buttonVariants } from '@/components/ui/buttonVariants'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'

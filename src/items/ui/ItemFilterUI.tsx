@@ -8,7 +8,7 @@ import { IconsData } from '../../icons/Icons'
 import { Msg } from '../../msg/Msg'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { DamageTypesData } from '../damageTypes'
-import { useItemName } from '../itemSelectors'
+import { useItemName } from '../useItemName'
 
 export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }) {
     const { f } = useNumberFormatter()

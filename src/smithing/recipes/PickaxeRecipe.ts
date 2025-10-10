@@ -1,6 +1,5 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { getNameParams } from '../../crafting/functions/getNameParams'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeTypes,
@@ -13,6 +12,7 @@ import {
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { Item, ItemSubType, ItemTypes } from '../../items/Item'
+import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
 const pickaxeParam: RecipeParameterItemFilter[] = [
@@ -56,10 +56,16 @@ export const PickaxeRecipe = makeMemoizedRecipe({
 
         const components = [barItem, handleItem]
 
+        const primaryMat = barItem.materials?.primary
+        const materials: ItemsMaterials = {}
+        if (primaryMat) materials.primary = primaryMat
+        const handleMat = handleItem.materials?.primary
+        if (handleMat) materials.secondary = handleMat
+
         const craftedAxe: Item = {
             id: '',
             nameId: 'Pickaxe',
-            nameParams: getNameParams(components),
+            materials,
             icon: Icons.Pickaxe,
             type: ItemTypes.Pickaxe,
             equipSlot: EquipSlotsEnum.Pickaxe,

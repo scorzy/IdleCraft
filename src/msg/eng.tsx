@@ -3,9 +3,10 @@ import { FAST_MINING_PERK } from '../mining/MiningCost'
 import { QuestParams } from '../quests/QuestParams'
 import { sameNumber } from '../utils/sameNumber'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
-import { Msg, MsgFunctions } from './Msg'
-import { PREFIX, SUFFIX } from './msgConst'
-import { removeUnusedParams } from './removeUnusedParams'
+import { GetItemNameParams } from './GetItemNameParams'
+import { Msg } from './Msg'
+import { MsgFunctions } from './MsgFunctions'
+import { selectPrimaryMaterialName } from './selectors/selectPrimaryMaterialName'
 
 export const engMsg: Msg = {
     LevelToLow: 'Level to low',
@@ -26,10 +27,6 @@ export const engMsg: Msg = {
     CraftingUnknown: 'Crafting ??',
     DeadTree: 'Dead Tree',
     Oak: 'Oak',
-    DeadTreeLog: 'Dead Tree Log',
-    OakLog: 'Oak Log',
-    DeadTreePlank: 'Dead Tree Plank',
-    OakPlank: 'Oak Plank',
     DeadTreeForest: 'Dead Tree Forest',
     OakForest: 'Oak Forest',
     Cutting: 'Cutting',
@@ -55,8 +52,6 @@ export const engMsg: Msg = {
     Handle: 'Handle',
     DeadTreeHandle: 'Dead Tree Handle',
     OakHandle: 'Oak Handle',
-    CopperOre: 'Copper Ore',
-    TinOre: 'Tin Ore',
     Mining: 'Mining',
     OreHp: 'Ore Hp',
     Mine: 'Mine',
@@ -70,8 +65,6 @@ export const engMsg: Msg = {
     SmithingExp: 'Smithing Level',
     Ore: 'Ore',
     Bar: 'Bar',
-    TinBar: 'Tin Bar',
-    CopperBar: 'Copper Bar',
     Smithing: 'Smithing',
 
     Crafting: 'Crafting',
@@ -160,11 +153,11 @@ export const engMsg: Msg = {
     SavedGames: 'Saved Games',
 
     //  Smithing
-    Dagger: '{material} Dagger',
-    TwoHSword: '{material} 2H Sword',
-    LongSword: '{material} Long Sword',
-    WoodAxe: '{material} Wood Axe',
-    Armour: '{material} Armour',
+    Dagger: 'Dagger',
+    TwoHSword: '2H Sword',
+    LongSword: 'Long Sword',
+    WoodAxe: 'Wood Axe',
+    Armour: 'Armour',
 
     OffensiveInfo: 'Offensive Info',
     DefensiveInfo: 'Defensive Info',
@@ -235,6 +228,11 @@ export const engMsg: Msg = {
 
     NoResults: 'No results found.',
     Close: 'Close',
+
+    CopperMat: 'Copper',
+    TinMat: 'Tin',
+    DeadWoodMat: 'Dead Wood',
+    OakMat: 'Oak',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
@@ -301,23 +299,14 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
             return `You have ${f(n)} items that can be used to complete the quest`
         },
 
-        getItemName: (itemNameId: keyof Msg, nameParams?: Record<string, unknown>) => {
-            let name = msg[itemNameId]
-            if (nameParams) {
-                Object.entries(nameParams).forEach(([key, value]) => {
-                    if (key === PREFIX && typeof value === 'string' && value in msg) {
-                        const prefix = msg[value as keyof Msg]
-                        if (prefix) name = `${prefix} ${name}`
-                        return
-                    } else if (key === SUFFIX && typeof value === 'string' && value in msg) {
-                        const suffix = msg[value as keyof Msg]
-                        if (suffix) name = `${name} ${suffix}`
-                        return
-                    }
-                    name = name.replace(`{${key}}`, String(value))
-                })
+        getItemName: (params: GetItemNameParams) => {
+            let name = msg[params.itemNameId] || params.itemNameId
+
+            if (params.materials) {
+                const primaryMatId = selectPrimaryMaterialName(params.materials)
+                if (primaryMatId) name = `${msg[primaryMatId]} ${name}`
             }
-            return removeUnusedParams(name)
+            return name
         },
     }
 }

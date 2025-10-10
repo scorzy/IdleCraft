@@ -3,12 +3,10 @@ import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { selectGameItem } from '../../storage/StorageSelectors'
-import { useTranslations } from '../../msg/useTranslations'
-import { useItemName } from '../itemSelectors'
+import { useItemName } from '../useItemName'
 
 export const ItemIconName = (props: { itemId: string }) => {
     const { itemId } = props
-    const { t } = useTranslations()
 
     const item = useGameStore(
         useCallback(

@@ -32,8 +32,8 @@ import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
 import { AutoScroll } from '../../components/ui/autoScroll'
-import { useItemName } from '../../items/itemSelectors'
 import classes from './combat.module.css'
+import { useItemName } from '@/items/useItemName'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 export const CombatUi = memo(function CombatUi() {

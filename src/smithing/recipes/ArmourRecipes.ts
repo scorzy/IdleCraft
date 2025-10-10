@@ -1,6 +1,5 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { getNameParams } from '../../crafting/functions/getNameParams'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeTypes,
@@ -12,6 +11,7 @@ import {
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageData, DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'
+import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
@@ -48,10 +48,14 @@ export const armourRecipe = makeMemoizedRecipe({
             armourData[kv[0] as DamageTypes] = kv[1]
         })
 
+        const primaryMat = barItem.materials?.primary
+        const materials: ItemsMaterials = {}
+        if (primaryMat) materials.primary = primaryMat
+
         const craftedItem: Item = {
             id: '',
             nameId: 'Armour',
-            nameParams: getNameParams(components),
+            materials,
             icon: Icons.Breastplate,
             type: ItemTypes.Body,
             subType: ItemSubType.Armour,

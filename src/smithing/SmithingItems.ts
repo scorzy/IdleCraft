@@ -1,14 +1,15 @@
 import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
+import { Materials } from '../items/materials/materials'
 
 export const SmithingItems: Record<string, Item> = {
     CopperBar: {
         id: 'CopperBar',
         icon: Icons.Bar,
-        nameId: 'CopperBar',
+        nameId: 'Bar',
         type: ItemTypes.Bar,
         value: 10,
-        params: { material: 'Copper' },
+        materials: { primary: Materials.Copper },
         craftingData: {
             prestige: 1.05,
             speedBonus: 1.1,
@@ -36,10 +37,10 @@ export const SmithingItems: Record<string, Item> = {
     TinBar: {
         id: 'TinBar',
         icon: Icons.Bar,
-        nameId: 'TinBar',
+        nameId: 'Bar',
         type: ItemTypes.Bar,
         value: 20,
-        params: { material: 'Tin' },
+        materials: { primary: Materials.Tin },
         craftingData: {
             prestige: 1.1,
             speedBonus: 1,

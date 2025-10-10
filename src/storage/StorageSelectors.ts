@@ -8,14 +8,15 @@ import { selectTranslations } from '../msg/useTranslations'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
-import { Translations } from '../msg/Msg'
 import { useGameStore } from '../game/state'
 import { selectStorageOrder } from '../ui/state/uiSelectors'
 import { filterItem, selectItemNameMemoized } from '../items/itemSelectors'
+import { GetItemNameParamsMemoized } from '../items/GetItemNameParamsMemoized'
 import { ItemAdapter } from './ItemAdapter'
 import { InventoryNoQta, StorageState } from './storageTypes'
 import { isCrafted } from './storageFunctions'
 import { StorageAdapter } from './storageAdapter'
+import { Translations } from '@/msg/Translations'
 import { InitialState } from '@/entityAdapter/InitialState'
 
 export const selectCurrentLocationStorageIds = (state: GameState) =>
@@ -45,8 +46,9 @@ const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialSt
     const ord: ItemOrdName[] = []
     for (const e of items) {
         const item = selectGameItemFromCraft(e.id, craftedItems)
-        let name = ''
-        if (item) name = selectItemNameMemoized(item.nameFunc, item.nameId, item.nameParams, t)
+        if (!item) continue
+        const params = GetItemNameParamsMemoized(item.nameId, item.materials)
+        const name = selectItemNameMemoized(item.nameFunc, params, t)
         ord.push({ ...e, name })
     }
     return ord.sort((a, b) => a.name.localeCompare(b.name))

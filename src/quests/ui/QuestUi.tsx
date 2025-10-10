@@ -48,8 +48,8 @@ import { CollectRequestUi } from '../collectRequest/CollectRequestUi'
 import { Check, ChevronsUpDownIcon, Coins } from '../../icons/IconsMemo'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
 import { setState } from '../../game/setState'
-import { useItemName } from '../../items/itemSelectors'
 import classes from './QuestUi.module.css'
+import { useItemName } from '@/items/useItemName'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props

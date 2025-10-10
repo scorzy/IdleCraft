@@ -1,7 +1,6 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BASE_SWORD_SPEED, BASE_SWORD_DAMAGE } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
-import { getNameParams } from '../../crafting/functions/getNameParams'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeTypes,
@@ -13,6 +12,7 @@ import {
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'
+import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { ExpEnum } from '@/experience/ExpEnum'
@@ -42,10 +42,14 @@ export const twoHSwordRecipe = makeMemoizedRecipe({
 
         const components = [barItem, barItem, barItem, barItem]
 
+        const primaryMat = barItem.materials?.primary
+        const materials: ItemsMaterials = {}
+        if (primaryMat) materials.primary = primaryMat
+
         const crafted2HSword: Item = {
             id: '',
             nameId: 'TwoHSword',
-            nameParams: getNameParams(components),
+            materials,
             icon: Icons.Broadsword,
             type: ItemTypes.TwoHands,
             equipSlot: EquipSlotsEnum.TwoHand,

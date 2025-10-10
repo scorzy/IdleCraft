@@ -1,14 +1,12 @@
 import moize from 'moize'
-import { useCallback } from 'react'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { GameState } from '../game/GameState'
 import { selectTranslations } from '../msg/useTranslations'
-import { Msg, MsgFunctions } from '../msg/Msg'
-import { useGameStore } from '../game/state'
+import { GetItemNameParams } from '../msg/GetItemNameParams'
 import { Item, ItemFilter } from './Item'
-import { selectItemName } from './selectItemName'
+import { MsgFunctions } from '@/msg/MsgFunctions'
 
 export const selectEquipId =
     (slot: EquipSlotsEnum, characterId = PLAYER_ID) =>
@@ -115,19 +113,11 @@ export const selectItemFilterProps = moize(
 )
 
 export const selectItemNameMemoized = moize(
-    (
-        nameFunc: keyof MsgFunctions | undefined,
-        itemNameId: keyof Msg,
-        params: Record<string, unknown> | undefined,
-        t: ReturnType<typeof selectTranslations>
-    ) => {
+    (nameFunc: keyof MsgFunctions | undefined, params: GetItemNameParams, t: ReturnType<typeof selectTranslations>) => {
         const fn = t.fun[nameFunc ?? 'getItemName'] as (...args: unknown[]) => string
 
-        if (fn) return fn(itemNameId, params)
-        return t.t[itemNameId] ?? itemNameId
+        if (fn) return fn(params)
+        return t.t[params.itemNameId] ?? params.itemNameId
     },
     { maxSize: 100 }
 )
-export const useItemName = (item: Item | undefined | string | null) => {
-    return useGameStore(useCallback((state: GameState) => selectItemName(state, item), [item]))
-}
