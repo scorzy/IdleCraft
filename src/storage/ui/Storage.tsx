@@ -10,7 +10,6 @@ import {
     useLocationItems,
 } from '../StorageSelectors'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { IconsData } from '../../icons/Icons'
 import { setSelectedItem } from '../storageFunctions'
 import { SelectedItem, SelectedItemTitle } from '../../items/ui/SelectedItem'
 import { useTranslations } from '../../msg/useTranslations'
@@ -36,6 +35,7 @@ import {
     DrawerHeader,
     DrawerTitle,
 } from '../../components/ui/drawer'
+import { ItemIcon } from '../../items/ui/ItemIcon'
 import classes from './storage.module.css'
 import { useItemName } from '@/items/useItemName'
 import { buttonVariants } from '@/components/ui/buttonVariants'
@@ -310,7 +310,9 @@ const StorageItem = memo(function StorageItem(props: { small: boolean; location:
             <TableRow onClick={onClick} className={cn(classes.row, { 'bg-muted': selected })}>
                 <TableCell>
                     <span className={classes.smallRow}>
-                        <span className="pr-2 text-right align-middle">{IconsData[item.icon]}</span>
+                        <span className="pr-2 text-right align-middle">
+                            <ItemIcon itemId={itemId} />
+                        </span>
                         <span>{itemName}</span>
                     </span>
                     <span className={classes.smallRow}>
@@ -327,7 +329,9 @@ const StorageItem = memo(function StorageItem(props: { small: boolean; location:
     else
         return (
             <TableRow onClick={onClick} className={cn(classes.row, { 'bg-muted': selected })}>
-                <TableCell>{IconsData[item.icon]}</TableCell>
+                <TableCell>
+                    <ItemIcon itemId={itemId} />
+                </TableCell>
                 <TableCell>{itemName}</TableCell>
                 <TableCell className="text-right">{f(item.value)}</TableCell>
                 <TableCell className="text-right">{f(qta)}</TableCell>

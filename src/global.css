@@ -57,6 +57,9 @@
 
     --color-tin-foreground: var(--tin-foreground);
     --color-copper-foreground: var(--copper-foreground);
+
+    --color-dead-tree-foreground: var(--dead-tree-foreground);
+    --color-oak-foreground: var(--oak-foreground);
 }
 
 :root {
@@ -95,8 +98,12 @@
     --money: oklch(0.97 0.07 103);
     --money-foreground: oklch(0.68 0.14 76);
 
-    --tin-foreground: oklch(0.8695 0.0018 247.84);
+    --tin-foreground: oklch(0.334 0.0018 247.84);
     --copper-foreground: oklch(0.5024 0.1171 60.4);
+
+    --dead-tree-foreground: oklch(0.3127 0 72.88);
+    --oak-foreground: oklch(0.4146 0.0711 72.88);
+
     color-scheme: light;
 }
 
@@ -159,6 +166,9 @@
 
     --tin-foreground: oklch(0.8695 0.0018 247.84);
     --copper-foreground: oklch(0.618 0.1171 60.4);
+
+    --dead-tree-foreground: oklch(0.602 0 72.88);
+    --oak-foreground: oklch(0.7933 0.0711 72.88);
 
     color-scheme: dark;
 }

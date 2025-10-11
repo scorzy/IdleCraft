@@ -56,7 +56,6 @@ export const engMsg: Msg = {
     OreHp: 'Ore Hp',
     Mine: 'Mine',
     OreQta: 'Quantity',
-    OreVein: 'Ore Vein',
     Level: 'Level',
     XP: 'XP',
     MiningExp: 'Mining Level',
@@ -285,6 +284,8 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
         fighting: (enemy: keyof Msg) => `Fighting ${msg[enemy]}`,
         requireWoodcuttingLevel: (formattedQta: string) => `Require woodcutting level ${formattedQta}`,
         requireMiningLevel: (formattedQta: string) => `Require mining level ${formattedQta}`,
+
+        OreVein: (oreName: string) => `${oreName} Vein`,
 
         testQuestName: (_questParams: QuestParams) => 'testQuestName',
         testQuestDesc: (_questParams: QuestParams) => 'testQuestDesc',

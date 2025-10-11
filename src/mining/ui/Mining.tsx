@@ -24,6 +24,8 @@ import { GameState } from '../../game/GameState'
 import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
+import { ItemIcon } from '../../items/ui/ItemIcon'
+import { useItemName } from '../../items/useItemName'
 import { MiningSidebar } from './MiningSidebar'
 import { ExpEnum } from '@/experience/ExpEnum'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
@@ -135,16 +137,17 @@ const MiningButton = memo(function CuttingButton() {
 })
 const OreUi = memo(function MiningOre() {
     const { f } = useNumberFormatter()
-    const { t } = useTranslations()
+    const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
     const oreQta = useGameStore(useCallback((state: GameState) => selectOre(state, oreType).qta, [oreType]))
     const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
     const hpPercent = Math.floor((100 * oreQta) / def.qta)
     const oreData = OreData[oreType]
+    const name = useItemName(oreData.oreId)
 
     return (
         <Card>
-            <MyCardHeaderTitle title={t.OreVein} icon={IconsData[oreData.iconId]} />
+            <MyCardHeaderTitle title={fun.OreVein(name)} icon={<ItemIcon itemId={oreData.oreId} />} />
             <CardContent>
                 <MyLabel>
                     {t.OreQta} {f(oreQta)}/{f(def.qta)}

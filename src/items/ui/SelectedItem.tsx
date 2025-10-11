@@ -1,6 +1,5 @@
 import { memo, useCallback } from 'react'
 import { useGameStore } from '../../game/state'
-import { IconsData } from '../../icons/Icons'
 import {
     getSelectedItem,
     getSelectedItemQta,
@@ -15,6 +14,7 @@ import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { useItemName } from '../useItemName'
 import { ItemInfo } from './ItemInfo'
 import classes from './selectItem.module.css'
+import { ItemIcon } from './ItemIcon'
 
 export const SelectedItem = memo(function SelectedItem({ showTitle }: { showTitle?: boolean }) {
     const qta = useGameStore(getSelectedItemQta)
@@ -28,7 +28,7 @@ export const SelectedItem = memo(function SelectedItem({ showTitle }: { showTitl
         <div className="grid gap-3">
             {showTitle && (
                 <Card>
-                    <MyCardHeaderTitle title={itemName} icon={IconsData[item.icon]} />
+                    <MyCardHeaderTitle title={itemName} icon={<ItemIcon itemId={item} />} />
                 </Card>
             )}
             <SelectedItemInfo />
@@ -39,9 +39,9 @@ export const SelectedItemTitle = memo(function SelectedItemTitle() {
     const item = useGameStore(getSelectedItem)
     const itemName = useItemName(item)
 
-    if (item === undefined) return
+    if (!item) return
 
-    return <MyCardHeaderTitle title={itemName} icon={IconsData[item.icon]} />
+    return <MyCardHeaderTitle title={itemName} icon={<ItemIcon itemId={item} />} />
 })
 export const SelectedItemInfo = memo(function SelectedItemInfo() {
     const qta = useGameStore(getSelectedItemQta)

@@ -22,6 +22,8 @@ export interface MsgFunctions {
     crafting: (itemName: string) => string
     mining: (woodName: keyof Msg) => string
 
+    OreVein: (oreName: string) => string
+
     //
     prestigePercent: (bonus: string) => string
     speedBonusPercent: (bonus: string) => string

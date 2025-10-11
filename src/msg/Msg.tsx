@@ -64,7 +64,6 @@ export interface Msg {
     OreHp: string
     Mine: string
     OreQta: string
-    OreVein: string
     MiningTime: string
     MiningDamage: string
 

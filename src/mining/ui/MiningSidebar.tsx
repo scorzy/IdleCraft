@@ -1,5 +1,4 @@
 import { memo, useCallback } from 'react'
-import { useTranslations } from '../../msg/useTranslations'
 import { useGameStore } from '../../game/state'
 import { lockedIcon, setOre } from '../../ui/state/uiFunctions'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
@@ -7,9 +6,10 @@ import { OreTypes } from '../OreTypes'
 import { OreData } from '../OreData'
 import { isOreEnabled, isOreSelected } from '../miningSelectors'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
-import { IconsData } from '../../icons/Icons'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { GameState } from '../../game/GameState'
+import { useItemName } from '../../items/useItemName'
+import { ItemIcon } from '../../items/ui/ItemIcon'
 
 const ores = Object.values(OreTypes)
 
@@ -25,7 +25,6 @@ export const MiningSidebar = memo(function MiningSidebar() {
 
 const MiningLink = memo(function MiningLink(props: { oreType: OreTypes }) {
     const { oreType } = props
-    const { t } = useTranslations()
 
     const isSelected = useCallback((state: GameState) => isOreSelected(oreType)(state), [oreType])
     const isEnabled = useCallback((state: GameState) => isOreEnabled(oreType)(state), [oreType])
@@ -35,11 +34,13 @@ const MiningLink = memo(function MiningLink(props: { oreType: OreTypes }) {
 
     const data = OreData[oreType]
 
+    const text = useItemName(data.oreId)
+    const icon = <ItemIcon itemId={data.oreId} />
     return (
         <MyListItem
-            text={t[data.nameId]}
+            text={text}
             collapsedId={CollapsedEnum.Mining}
-            icon={lockedIcon(IconsData[data.iconId], enabled)}
+            icon={lockedIcon(icon, enabled)}
             active={selected}
             onClick={onClick}
         />

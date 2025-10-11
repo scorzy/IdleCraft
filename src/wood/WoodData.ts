@@ -11,6 +11,7 @@ interface WoodDataType {
     plankId: string
     handleId: string
     requiredLevel: number
+    color: string
 }
 export const WoodData: Record<WoodTypes, WoodDataType> = {
     [WoodTypes.DeadTree]: {
@@ -22,6 +23,7 @@ export const WoodData: Record<WoodTypes, WoodDataType> = {
         plankId: 'DeadTreePlank',
         handleId: 'DeadTreeHandle',
         requiredLevel: 0,
+        color: 'text-dead-tree-foreground',
     },
     [WoodTypes.Oak]: {
         maxHp: 200,
@@ -32,5 +34,6 @@ export const WoodData: Record<WoodTypes, WoodDataType> = {
         plankId: 'OakPlank',
         handleId: 'OakHandle',
         requiredLevel: 10,
+        color: 'text-oak-foreground',
     },
 }
