@@ -1,18 +1,17 @@
-import { useCallback } from 'react'
 import { clsx } from 'clsx'
+import { useCallback } from 'react'
 import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
-import { selectGameItem } from '../../storage/StorageSelectors'
-import { useItemName } from '../useItemName'
 import { GameIcon } from '../../icons/GameIcon'
+import { selectGameItem } from '../../storage/StorageSelectors'
 import { selectPrimaryMaterial } from '../selectPrimaryMaterial'
+import { Item } from '../Item'
 
-export const ItemIconName = (props: { itemId: string }) => {
-    const { itemId } = props
-
+export const ItemIcon = ({ itemId }: { itemId: string | Item }) => {
     const item = useGameStore(
         useCallback(
             (s: GameState) => {
+                if (typeof itemId !== 'string') return itemId
                 if (!itemId) return null
                 return selectGameItem(itemId)(s)
             },
@@ -20,17 +19,9 @@ export const ItemIconName = (props: { itemId: string }) => {
         )
     )
 
-    const name = useItemName(item)
-
     if (!item) return <></>
 
     const material = selectPrimaryMaterial(item)
 
-    return (
-        <span className="flex items-center gap-1">
-            <GameIcon icon={item.icon} className={clsx('text-lg', material?.color)} />
-
-            {name}
-        </span>
-    )
+    return <GameIcon icon={item.icon} className={clsx('text-lg', material?.color)} />
 }

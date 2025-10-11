@@ -1,7 +1,6 @@
 import { memo } from 'react'
 import { StdItems } from '../../items/stdItems'
 import { Item } from '../../items/Item'
-import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { RecipeItem, RecipeItemReq } from '../RecipeInterfaces'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -11,6 +10,8 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { selectResultQta } from '../CraftingSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
 import { CardContent } from '../../components/ui/card'
+import { GameIcon } from '../../icons/GameIcon'
+import { ItemIcon } from '../../items/ui/ItemIcon'
 import { useItemName } from '@/items/useItemName'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
@@ -32,7 +33,7 @@ export const CraftingResult2 = memo(function CraftingResult2(props: { result: Re
 
     return (
         <>
-            <MyCardHeaderTitle title={itemName} icon={IconsData[item.icon]} />
+            <MyCardHeaderTitle title={itemName} icon={<GameIcon icon={item.icon} />} />
             <CardContent>
                 <div className="text-sm">
                     <MyLabel>
@@ -79,7 +80,7 @@ const CraftingReqRow = memo(function CraftingReqRow(props: { req: RecipeItemReq 
     if (!item) return null
     return (
         <TableRow>
-            <TableCell className="text-lg">{IconsData[item.icon]}</TableCell>
+            <TableCell>{<ItemIcon itemId={item.id} />}</TableCell>
             <TableCell width={'100%'}>{itemName}</TableCell>
             <TableCell>
                 <span className="text-nowrap">

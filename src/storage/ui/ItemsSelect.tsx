@@ -3,12 +3,13 @@ import { useShallow } from 'zustand/react/shallow'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
-import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { selectGameItem, selectItemQta, selectFilteredItems } from '../StorageSelectors'
 import { ItemFilter } from '../../items/Item'
 import { Badge } from '../../components/ui/badge'
 import { ComboBoxResponsive, ComboBoxItem } from '../../components/ui/comboBox'
+import { ItemIconName } from '../../items/ui/ItemIconName'
+import { ItemIcon } from '../../items/ui/ItemIcon'
 import { useItemName } from '@/items/useItemName'
 
 export const ItemsSelect = memo(function ItemsSelect({
@@ -24,12 +25,6 @@ export const ItemsSelect = memo(function ItemsSelect({
     selectedValue: string | undefined
     label?: ReactElement | ReactElement[] | string
 }) {
-    const { t } = useTranslations()
-    const selectedItem = useGameStore((s: GameState) => {
-        if (!selectedValue) return null
-        return selectGameItem(selectedValue)(s)
-    })
-
     const itemsId = useGameStore(
         useShallow(useCallback((s: GameState) => selectFilteredItems(s, itemFilter), [itemFilter]))
     )
@@ -39,9 +34,9 @@ export const ItemsSelect = memo(function ItemsSelect({
             label={label}
             selectedId={selectedValue ?? null}
             triggerContent={
-                selectedItem ? (
+                selectedValue ? (
                     <span className="select-trigger">
-                        {IconsData[selectedItem.icon]} {t[selectedItem.nameId]}
+                        <ItemIconName itemId={selectedValue} />
                     </span>
                 ) : placeholderText ? (
                     <span className="text-muted-foreground">{placeholderText}</span>
@@ -75,14 +70,13 @@ const ItemComboBoxItem = memo(function ItemComboBoxItem({
     const itemName = useItemName(itemObj)
 
     const text = itemObj ? itemName : t.None
-    console.log({ itemObj, itemName, text })
 
     const handleSelect = useCallback(() => onValueChange(itemId), [onValueChange, itemId])
 
     return (
         <ComboBoxItem
             value={itemId}
-            icon={itemObj && IconsData[itemObj.icon]}
+            icon={itemObj && <ItemIcon itemId={itemId} />}
             rightSlot={<Badge variant="secondary">{f(qta)}</Badge>}
             onSelect={handleSelect}
             selected={selected}

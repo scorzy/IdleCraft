@@ -12,8 +12,8 @@ export interface Material {
     color: string
 }
 export const MaterialsData: Record<Materials, Material> = {
-    [Materials.Copper]: { id: Materials.Copper, color: '#b87333', nameId: 'CopperMat' },
-    [Materials.Tin]: { id: Materials.Tin, color: '#d2d2d2', nameId: 'TinMat' },
-    [Materials.DeadWood]: { id: Materials.Tin, color: '#d2d2d2', nameId: 'DeadWoodMat' },
-    [Materials.Oak]: { id: Materials.Tin, color: '#d2d2d2', nameId: 'OakMat' },
+    [Materials.Copper]: { id: Materials.Copper, color: 'text-copper-foreground', nameId: 'CopperMat' },
+    [Materials.Tin]: { id: Materials.Tin, color: 'text-copper-foreground', nameId: 'TinMat' },
+    [Materials.DeadWood]: { id: Materials.Tin, color: 'text-primary-foreground', nameId: 'DeadWoodMat' },
+    [Materials.Oak]: { id: Materials.Tin, color: 'text-primary-foreground', nameId: 'OakMat' },
 }
