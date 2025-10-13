@@ -33,7 +33,7 @@ export const CraftingResult2 = memo(function CraftingResult2(props: { result: Re
 
     return (
         <>
-            <MyCardHeaderTitle title={itemName} icon={<GameIcon icon={item.icon} />} />
+            <MyCardHeaderTitle title={itemName} icon={<ItemIcon itemId={item} />} />
             <CardContent>
                 <div className="text-sm">
                     <MyLabel>
