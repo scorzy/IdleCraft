@@ -7,10 +7,10 @@ import { isWoodSelected } from '../../ui/state/uiSelectors'
 import { lockedIcon, setWood } from '../../ui/state/uiFunctions'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
-import { IconsData } from '../../icons/Icons'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { isWoodEnabled } from '../selectors/WoodcuttingSelectors'
 import { GameState } from '../../game/GameState'
+import { GameIcon } from '../../icons/GameIcon'
 
 const trees = Object.values(WoodTypes)
 
@@ -37,10 +37,12 @@ export const TreeLink = memo(function TreeLink(props: { woodType: WoodTypes }) {
 
     const onClick = useCallback(() => setWood(woodType), [woodType])
 
+    const icon = <GameIcon icon={data.iconId} className={data.color} />
+
     return (
         <MyListItem
             text={t[data.nameId]}
-            icon={lockedIcon(IconsData[data.iconId], enabled)}
+            icon={lockedIcon(icon, enabled)}
             active={selected}
             onClick={onClick}
             enabled={enabled}

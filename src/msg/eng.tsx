@@ -3,7 +3,10 @@ import { FAST_MINING_PERK } from '../mining/MiningCost'
 import { QuestParams } from '../quests/QuestParams'
 import { sameNumber } from '../utils/sameNumber'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
-import { Msg, MsgFunctions } from './Msg'
+import { GetItemNameParams } from './GetItemNameParams'
+import { Msg } from './Msg'
+import { MsgFunctions } from './MsgFunctions'
+import { selectPrimaryMaterialName } from './selectors/selectPrimaryMaterialName'
 
 export const engMsg: Msg = {
     LevelToLow: 'Level to low',
@@ -24,10 +27,6 @@ export const engMsg: Msg = {
     CraftingUnknown: 'Crafting ??',
     DeadTree: 'Dead Tree',
     Oak: 'Oak',
-    DeadTreeLog: 'Dead Tree Log',
-    OakLog: 'Oak Log',
-    DeadTreePlank: 'Dead Tree Plank',
-    OakPlank: 'Oak Plank',
     DeadTreeForest: 'Dead Tree Forest',
     OakForest: 'Oak Forest',
     Cutting: 'Cutting',
@@ -53,13 +52,10 @@ export const engMsg: Msg = {
     Handle: 'Handle',
     DeadTreeHandle: 'Dead Tree Handle',
     OakHandle: 'Oak Handle',
-    CopperOre: 'Copper Ore',
-    TinOre: 'Tin Ore',
     Mining: 'Mining',
     OreHp: 'Ore Hp',
     Mine: 'Mine',
     OreQta: 'Quantity',
-    OreVein: 'Ore Vein',
     Level: 'Level',
     XP: 'XP',
     MiningExp: 'Mining Level',
@@ -68,16 +64,13 @@ export const engMsg: Msg = {
     SmithingExp: 'Smithing Level',
     Ore: 'Ore',
     Bar: 'Bar',
-    TinBar: 'Tin Bar',
-    CopperBar: 'Copper Bar',
     Smithing: 'Smithing',
-    WoodAxe: 'Wood Axe',
+
     Crafting: 'Crafting',
     Gathering: 'Gathering',
     ItemType: 'Type',
     Damage: 'Damage',
     AttackSpeed: 'Attack Speed',
-    Pickaxe: 'Pickaxe',
     ArmourPen: 'Armour Pen.',
     WoodcuttingDamage: 'Woodcutting Damage',
     WoodcuttingTime: 'Woodcutting  Time',
@@ -124,12 +117,11 @@ export const engMsg: Msg = {
     Boar: 'Boar',
     Wolves: 'Wolves',
     Combat: 'Combat',
+    Pickaxe: 'Pickaxe',
 
     Unharmed: 'Unharmed',
-    Armour: 'Armour',
-    Stats: 'Stats',
 
-    LongSword: 'Long Sword',
+    Stats: 'Stats',
 
     BludgeoningArmour: 'Bludgeoning Armour',
     BludgeoningDamage: 'Bludgeoning Damage',
@@ -159,8 +151,12 @@ export const engMsg: Msg = {
     Delete: 'Delete',
     SavedGames: 'Saved Games',
 
+    //  Smithing
     Dagger: 'Dagger',
     TwoHSword: '2H Sword',
+    LongSword: 'Long Sword',
+    WoodAxe: 'Wood Axe',
+    Armour: 'Armour',
 
     OffensiveInfo: 'Offensive Info',
     DefensiveInfo: 'Defensive Info',
@@ -231,6 +227,11 @@ export const engMsg: Msg = {
 
     NoResults: 'No results found.',
     Close: 'Close',
+
+    CopperMat: 'Copper',
+    TinMat: 'Tin',
+    DeadWoodMat: 'Dead Wood',
+    OakMat: 'Oak',
     Potion: 'Potion',
     Solvent: 'Solvent',
     Flask: 'Flask',
@@ -285,13 +286,15 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
 
         //
         cutting: (woodName: keyof Msg) => `Cutting ${msg[woodName]}`,
-        crafting: (itemNameId: keyof Msg) => `Crafting ${msg[itemNameId]}`,
+        crafting: (itemName: string) => `Crafting ${itemName}`,
         mining: (oreNameId: keyof Msg) => `Mining ${msg[oreNameId]}`,
         speedBonusPercent: (bonus: string) => `Speed bonus +${bonus}%`,
         prestigePercent: (bonus: string) => `Value bonus +${bonus}%`,
         fighting: (enemy: keyof Msg) => `Fighting ${msg[enemy]}`,
         requireWoodcuttingLevel: (formattedQta: string) => `Require woodcutting level ${formattedQta}`,
         requireMiningLevel: (formattedQta: string) => `Require mining level ${formattedQta}`,
+
+        OreVein: (oreName: string) => `${oreName} Vein`,
 
         testQuestName: (_questParams: QuestParams) => 'testQuestName',
         testQuestDesc: (_questParams: QuestParams) => 'testQuestDesc',
@@ -304,6 +307,16 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
             if (n < Number.EPSILON) return "You don't have any item that can be used to complete the quest"
             if (sameNumber(n, 1)) return 'You have one item that can be used to complete the quest'
             return `You have ${f(n)} items that can be used to complete the quest`
+        },
+
+        getItemName: (params: GetItemNameParams) => {
+            let name = msg[params.itemNameId] || params.itemNameId
+
+            if (params.materials) {
+                const primaryMatId = selectPrimaryMaterialName(params.materials)
+                if (primaryMatId) name = `${msg[primaryMatId]} ${name}`
+            }
+            return name
         },
     }
 }

@@ -11,6 +11,7 @@ import {
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'
+import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { ExpEnum } from '@/experience/ExpEnum'
@@ -40,9 +41,14 @@ export const daggerRecipe = makeMemoizedRecipe({
 
         const components = [barItem]
 
+        const primaryMat = barItem.materials?.primary
+        const materials: ItemsMaterials = {}
+        if (primaryMat) materials.primary = primaryMat
+
         const craftedDagger: Item = {
             id: '',
             nameId: 'Dagger',
+            materials,
             icon: Icons.Dagger,
             type: ItemTypes.OneHand,
             equipSlot: EquipSlotsEnum.MainHand,

@@ -40,6 +40,7 @@ import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
+import { removeUnusedParams } from '../../msg/removeUnusedParams'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 
@@ -143,7 +144,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
             triggerContent={
                 selected ? (
                     <span className="select-trigger">
-                        {icon} {t[selected.nameId]}
+                        {icon} {removeUnusedParams(t[selected.nameId])}
                     </span>
                 ) : (
                     `-- ${t.SelectARecipe} --`
@@ -158,7 +159,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
                     onSelect={() => handleRecipeChange(r)}
                     selected={r.id === recipeId}
                 >
-                    {t[r.nameId]}
+                    {removeUnusedParams(t[r.nameId])}
                 </ComboBoxItem>
             ))}
         </ComboBoxResponsive>

@@ -1,11 +1,3 @@
-import { ReactNode } from 'react'
-import { QuestParams } from '../quests/QuestParams'
-
-export interface Translations {
-    t: Msg
-    fun: MsgFunctions
-}
-
 export interface Msg {
     LevelToLow: string
     Activities: string
@@ -49,8 +41,6 @@ export interface Msg {
     Handle: string
     Ore: string
     Bar: string
-    CopperOre: string
-    TinOre: string
 
     //  Trees
     Cutting: string
@@ -65,14 +55,6 @@ export interface Msg {
     DeadTree: string
     Oak: string
 
-    //  Logs
-    DeadTreeLog: string
-    OakLog: string
-
-    //  Planks
-    DeadTreePlank: string
-    OakPlank: string
-
     //  Forest
     DeadTreeForest: string
     OakForest: string
@@ -82,7 +64,6 @@ export interface Msg {
     OreHp: string
     Mine: string
     OreQta: string
-    OreVein: string
     MiningTime: string
     MiningDamage: string
 
@@ -91,10 +72,6 @@ export interface Msg {
     WoodcuttingExp: string
     WoodworkingExp: string
     SmithingExp: string
-
-    // Bars
-    TinBar: string
-    CopperBar: string
 
     Smithing: string
     WoodAxe: string
@@ -262,39 +239,9 @@ export interface Msg {
     IngredientsStability: string
     Alchemy: string
     Stability: string
-}
-export interface MsgFunctions {
-    // Time
-    years: (qta: number, formattedQta: string) => string
-    months: (qta: number, formattedQta: string) => string
-    days: (qta: number, formattedQta: string) => string
-    h: (qta: number, formattedQta: string) => string
-    m: (qta: number, formattedQta: string) => string
-    s: (qta: number, formattedQta: string) => string
 
-    formatTime: (time: number) => string
-    formatTimePrecise: (time: number) => string
-
-    //
-    cutting: (woodName: keyof Msg) => string
-    crafting: (itemNameId: keyof Msg) => string
-    mining: (woodName: keyof Msg) => string
-
-    //
-    prestigePercent: (bonus: string) => string
-    speedBonusPercent: (bonus: string) => string
-
-    fighting: (enemy: keyof Msg) => string
-
-    requireWoodcuttingLevel: (formattedQta: string) => string
-    requireMiningLevel: (formattedQta: string) => string
-
-    testQuestName: (questParams: QuestParams) => string
-    testQuestDesc: (questParams: QuestParams) => string
-    testOutcomeDesc: (questParams: QuestParams) => string
-    testOutcome2Desc: (questParams: QuestParams) => string
-
-    collectN: (n: number) => string
-
-    collectItemsTotal: (n: number) => ReactNode
+    CopperMat: string
+    TinMat: string
+    DeadWoodMat: string
+    OakMat: string
 }

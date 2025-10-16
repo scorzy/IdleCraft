@@ -3,7 +3,10 @@ import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { GameState } from '../game/GameState'
+import { selectTranslations } from '../msg/useTranslations'
+import { GetItemNameParams } from '../msg/GetItemNameParams'
 import { Item, ItemFilter } from './Item'
+import { MsgFunctions } from '@/msg/MsgFunctions'
 
 export const selectEquipId =
     (slot: EquipSlotsEnum, characterId = PLAYER_ID) =>
@@ -76,4 +79,14 @@ export const selectItemFilterProps = moize(
         isDeepEqual: true,
         maxSize: 30,
     }
+)
+
+export const selectItemNameMemoized = moize(
+    (nameFunc: keyof MsgFunctions | undefined, params: GetItemNameParams, t: ReturnType<typeof selectTranslations>) => {
+        const fn = t.fun[nameFunc ?? 'getItemName'] as (...args: unknown[]) => string
+
+        if (fn) return fn(params)
+        return t.t[params.itemNameId] ?? params.itemNameId
+    },
+    { maxSize: 100 }
 )

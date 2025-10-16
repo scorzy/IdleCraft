@@ -8,14 +8,15 @@ import { selectTranslations } from '../msg/useTranslations'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
-import { Translations } from '../msg/Msg'
 import { useGameStore } from '../game/state'
 import { selectStorageOrder } from '../ui/state/uiSelectors'
-import { filterItem } from '../items/itemSelectors'
+import { filterItem, selectItemNameMemoized } from '../items/itemSelectors'
+import { GetItemNameParamsMemoized } from '../items/GetItemNameParamsMemoized'
 import { ItemAdapter } from './ItemAdapter'
 import { InventoryNoQta, StorageState } from './storageTypes'
 import { isCrafted } from './storageFunctions'
 import { StorageAdapter } from './storageAdapter'
+import { Translations } from '@/msg/Translations'
 import { InitialState } from '@/entityAdapter/InitialState'
 
 export const selectCurrentLocationStorageIds = (state: GameState) =>
@@ -41,52 +42,57 @@ type ItemOrdQta = ItemId & { qta: number }
 type ItemOrdName = ItemId & { name: string }
 type ItemOrdValue = ItemId & { value: number }
 
-const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialState<Item>, storageAsc: boolean) => {
+const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialState<Item>) => {
     const ord: ItemOrdName[] = []
     for (const e of items) {
         const item = selectGameItemFromCraft(e.id, craftedItems)
-        let name = ''
-        if (item) name = t.t[item.nameId]
+        if (!item) continue
+        const params = GetItemNameParamsMemoized(item.nameId, item.materials)
+        const name = selectItemNameMemoized(item.nameFunc, params, t)
         ord.push({ ...e, name })
     }
-    if (!storageAsc) return ord.sort((a, b) => b.name.localeCompare(a.name))
     return ord.sort((a, b) => a.name.localeCompare(b.name))
 }
 
-const reorderByQta = (storage: InitialState<StorageState>, items: ItemId[], storageAsc: boolean) => {
+const reorderByQta = (storage: InitialState<StorageState>, items: ItemId[]) => {
     const ord: ItemOrdQta[] = []
     for (const e of items) {
         let qta = 0
         qta = storage.entries[e.id]?.quantity ?? 0
         ord.push({ ...e, qta })
     }
-    if (!storageAsc) return ord.sort((a, b) => b.qta - a.qta)
     return ord.sort((a, b) => a.qta - b.qta)
 }
 
-const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[], storageAsc: boolean) => {
+const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[]) => {
     const ord: ItemOrdValue[] = []
     for (const e of items) {
         const item = selectGameItemFromCraft(e.id, craftedItems)
         ord.push({ ...e, value: item?.value ?? 0 })
     }
-    if (!storageAsc) return ord.sort((a, b) => b.value - a.value)
     return ord.sort((a, b) => a.value - b.value)
 }
 
 const selectLocationItemsSelector = (location: GameLocations, storageOrder: string) => {
-    let selector: (state: GameState) => ItemId[]
+    let selector: (state: GameState) => string[]
     const selectLocationItemIds = (state: GameState) =>
         StorageAdapter.getIds(state.locations[location].storage).map<ItemId>((id) => ({ id }))
 
+    const sortFunc = (sel: (state: GameState) => ItemId[]) => (s: GameState) => {
+        const items = sel(s)
+        if (items.length === 0) return EMPTY_ARRAY
+        if (!s.ui.storageAsc) items.reverse()
+        return items.map((i) => i.id)
+    }
+
     if (storageOrder === 'name')
-        selector = (s: GameState) =>
-            reorderByName(selectTranslations(s), selectLocationItemIds(s), s.craftedItems, s.ui.storageAsc)
+        selector = sortFunc((s: GameState) =>
+            reorderByName(selectTranslations(s), selectLocationItemIds(s), s.craftedItems)
+        )
     else if (storageOrder === 'quantity')
-        selector = (s: GameState) =>
-            reorderByQta(s.locations[location].storage, selectLocationItemIds(s), s.ui.storageAsc)
+        selector = sortFunc((s: GameState) => reorderByQta(s.locations[location].storage, selectLocationItemIds(s)))
     else if (storageOrder === 'value')
-        selector = (s: GameState) => reorderByValue(s.craftedItems, selectLocationItemIds(s), s.ui.storageAsc)
+        selector = sortFunc((s: GameState) => reorderByValue(s.craftedItems, selectLocationItemIds(s)))
     else throw new Error(`Unknown storage order ${storageOrder}`)
 
     return selector

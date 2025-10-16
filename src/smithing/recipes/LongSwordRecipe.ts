@@ -11,6 +11,7 @@ import {
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'
+import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { ExpEnum } from '@/experience/ExpEnum'
@@ -40,9 +41,14 @@ export const longSwordRecipe = makeMemoizedRecipe({
 
         const components = [barItem, barItem]
 
+        const primaryMat = barItem.materials?.primary
+        const materials: ItemsMaterials = {}
+        if (primaryMat) materials.primary = primaryMat
+
         const craftedSword: Item = {
             id: '',
             nameId: 'LongSword',
+            materials,
             icon: Icons.Sword,
             type: ItemTypes.OneHand,
             equipSlot: EquipSlotsEnum.MainHand,

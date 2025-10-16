@@ -33,6 +33,7 @@ import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
 import { AutoScroll } from '../../components/ui/autoScroll'
 import classes from './combat.module.css'
+import { useItemName } from '@/items/useItemName'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 export const CombatUi = memo(function CombatUi() {
@@ -266,13 +267,14 @@ const LootRow = memo(function LootRow(props: { loot: LootId }) {
     const item = useGameStore(selectGameItem(loot.itemId))
 
     const onClick = useCallback(() => collectLootUi(loot.id), [loot])
+    const itemName = useItemName(item)
 
     if (!item) return
 
     return (
         <div className={classes.lootRow}>
             <span className={classes.svgIcon}>{IconsData[item.icon]}</span>
-            <div>{t[item.nameId]}</div>
+            <div>{itemName}</div>
             <div className="text-right">{f(loot.quantity)}</div>
             <Button variant="ghost" size="xs" title={t.Collect} onClick={onClick}>
                 <GiSwapBag />

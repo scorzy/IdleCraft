@@ -1,9 +1,10 @@
-import { Key } from 'react'
 import { IngredientData, PotionData, PotionFlaskData, SolventData } from '../alchemy/alchemyTypes'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ExpEnum } from '../experience/ExpEnum'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
+import { ItemsMaterials } from './materials/ItemsMaterials'
+import { MsgFunctions } from '@/msg/MsgFunctions'
 
 export enum ItemTypes {
     Log = 'Log',
@@ -61,7 +62,9 @@ export interface WeaponData {
 export interface Item {
     id: string
     nameId: keyof Msg
+    nameFunc?: keyof MsgFunctions
     icon: Icons
+    materials?: ItemsMaterials
     type: ItemTypes
     subType?: ItemSubType
     value: number

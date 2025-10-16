@@ -1,7 +1,6 @@
-import { memo } from 'react'
+import { memo, ReactNode } from 'react'
 import { StdItems } from '../../items/stdItems'
 import { Item } from '../../items/Item'
-import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { RecipeItem, RecipeItemReq } from '../RecipeInterfaces'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -11,17 +10,15 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { selectResultQta } from '../CraftingSelectors'
 import { ItemInfo } from '../../items/ui/ItemInfo'
 import { CardContent } from '../../components/ui/card'
-import { isPotionItem } from '../../alchemy/PotionCraftingResult'
+import { isPotionItem, PotionItem } from '../../alchemy/PotionCraftingResult'
 import { PotionResultUi } from '../../alchemy/PotionResultUi'
+import { ItemIcon } from '../../items/ui/ItemIcon'
+import { useItemName } from '@/items/useItemName'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
 export const CraftingResult = memo(function CraftingResult({ result }: { result: RecipeItem | undefined }) {
-    const { t } = useTranslations()
-    const { f } = useNumberFormatter()
-
     if (!result) return null
-
     let item: Item | undefined = undefined
     const isPotion = isPotionItem(result)
     if (isPotion) item = result.uiCraftedItem
@@ -30,9 +27,24 @@ export const CraftingResult = memo(function CraftingResult({ result }: { result:
 
     if (!item) return null
 
+    const info = isPotion ? <></> : <PotionResultUi result={result as PotionItem} />
+
+    return <CraftingResult2 result={result} item={item} info={info} />
+})
+
+export const CraftingResult2 = memo(function CraftingResult2(props: {
+    result: RecipeItem
+    info?: ReactNode
+    item: Item
+}) {
+    const { result, info, item } = props
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    const itemName = useItemName(item)
+
     return (
         <>
-            <MyCardHeaderTitle title={t[item.nameId]} icon={IconsData[item.icon]} />
+            <MyCardHeaderTitle title={itemName} icon={<ItemIcon itemId={item} />} />
             <CardContent>
                 <div className="text-sm">
                     <MyLabel>
@@ -41,8 +53,7 @@ export const CraftingResult = memo(function CraftingResult({ result }: { result:
                             {t.YouHave} <CraftingResultHaveQta result={result} />
                         </span>
                     </MyLabel>
-
-                    {isPotion && <PotionResultUi result={result} />}
+                    {info}
                     <ItemInfo item={item} />
                 </div>
             </CardContent>
@@ -71,14 +82,14 @@ export const CraftingReq = memo(function CraftingReq({ req }: { req: RecipeItemR
     )
 })
 const CraftingReqRow = memo(function CraftingReqRow({ req }: { req: RecipeItemReq }) {
-    const { t } = useTranslations()
     const { f } = useNumberFormatter()
     const item = useGameStore(selectGameItem(req.itemId))
+    const itemName = useItemName(item)
     if (!item) return null
     return (
         <TableRow>
-            <TableCell className="text-lg">{IconsData[item.icon]}</TableCell>
-            <TableCell width={'100%'}>{t[item.nameId]}</TableCell>
+            <TableCell>{<ItemIcon itemId={item.id} />}</TableCell>
+            <TableCell width={'100%'}>{itemName}</TableCell>
             <TableCell>
                 <span className="text-nowrap">
                     {f(req.qta)}

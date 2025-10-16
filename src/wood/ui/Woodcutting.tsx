@@ -28,6 +28,7 @@ import { isSelectedWoodEnabled, selectWoodcuttingId } from '../selectors/Woodcut
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { MAX_GROWING_TREES } from '../WoodConst'
+import { GameIcon } from '../../icons/GameIcon'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { ExpEnum } from '@/experience/ExpEnum'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
@@ -144,7 +145,10 @@ const Forest = memo(function Forest() {
 
     return (
         <Card>
-            <MyCardHeaderTitle title={t[`${woodType}Forest`]} icon={IconsData[data.iconId]} />
+            <MyCardHeaderTitle
+                title={t[`${woodType}Forest`]}
+                icon={<GameIcon icon={data.iconId} className={data.color} />}
+            />
             <CardContent>
                 <ForestQta />
                 <Trees />

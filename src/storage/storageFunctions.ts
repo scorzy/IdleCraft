@@ -1,4 +1,3 @@
-import moize from 'moize'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GameState } from '../game/GameState'
@@ -70,12 +69,8 @@ export const setSelectedItem = (itemId: string | null, location: GameLocations) 
         s.ui.selectedItemLocation = location
     })
 
-export const selectCraftItemId = moize(
-    (state: InitialState<Item>, item: Item) => ItemAdapter.find(state, (i) => myCompare(i, item))?.id ?? null,
-    {
-        maxSize: 5,
-    }
-)
+export const selectCraftItemId = (state: InitialState<Item>, item: Item) =>
+    ItemAdapter.find(state, (i) => myCompare(i, item))?.id ?? null
 
 export function saveCraftItem(state: InitialState<Item>, item: Item): { id: string } {
     const id = selectCraftItemId(state, item)

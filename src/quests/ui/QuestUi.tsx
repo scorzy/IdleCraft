@@ -49,6 +49,7 @@ import { Check, ChevronsUpDownIcon, Coins } from '../../icons/IconsMemo'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
 import { setState } from '../../game/setState'
 import classes from './QuestUi.module.css'
+import { useItemName } from '@/items/useItemName'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -291,7 +292,6 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
 export function ItemRewardUi(props: { itemId: string; quantity: number }) {
     const { itemId, quantity } = props
     const { f } = useNumberFormatter()
-    const { t } = useTranslations()
 
     const item = useGameStore(
         useCallback(
@@ -302,9 +302,10 @@ export function ItemRewardUi(props: { itemId: string; quantity: number }) {
             [itemId]
         )
     )
-    if (!item) return <></>
 
-    const name = t[item.nameId]
+    const name = useItemName(item)
+
+    if (!item) return <></>
     const icon = IconsData[item.icon]
 
     return (
