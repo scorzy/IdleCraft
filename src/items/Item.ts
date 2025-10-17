@@ -64,6 +64,7 @@ export interface Item {
     nameId: keyof Msg
     nameFunc?: keyof MsgFunctions
     icon: Icons
+    color?: string
     materials?: ItemsMaterials
     type: ItemTypes
     subType?: ItemSubType

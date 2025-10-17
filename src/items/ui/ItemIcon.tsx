@@ -21,7 +21,7 @@ export const ItemIcon = ({ itemId }: { itemId: string | Item }) => {
 
     if (!item) return <></>
 
-    const material = selectPrimaryMaterial(item)
+    const color = item.color ?? selectPrimaryMaterial(item)?.color
 
-    return <GameIcon icon={item.icon} className={clsx('text-lg', material?.color)} />
+    return <GameIcon icon={item.icon} className={clsx('text-lg', color)} />
 }
