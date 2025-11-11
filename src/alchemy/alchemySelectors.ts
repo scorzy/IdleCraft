@@ -36,11 +36,11 @@ export function getPotionEffect(
     const duration = potencies.reduce((sum, potency) => {
         switch (potency) {
             case AlchemyPotency.Low:
-                return sum + 5
+                return sum + 5 * 1e3
             case AlchemyPotency.Medium:
-                return sum + 15
+                return sum + 15 * 1e3
             case AlchemyPotency.High:
-                return sum + 30
+                return sum + 30 * 1e3
         }
     }, 0)
 

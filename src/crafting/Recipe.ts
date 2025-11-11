@@ -12,4 +12,5 @@ export interface Recipe {
     itemSubType: ItemSubType
     getParameters: (state: GameState) => RecipeParameter[]
     getResult: (state: GameState, params: RecipeParameterValue[]) => RecipeResult | undefined
+    afterCrafting?: (state: GameState, params: RecipeParameterValue[], result: RecipeResult) => void
 }

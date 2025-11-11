@@ -241,6 +241,35 @@ export const engMsg: Msg = {
     IngredientsStability: 'Ingredients Stability',
     Alchemy: 'Alchemy',
     Stability: 'Stability',
+
+    GlassFlask: 'Glass Flask',
+    Water: 'Water',
+
+    RedFlower: 'Red Flower',
+    GreenFlower: 'Green Flower',
+    BlueFlower: 'Blue Flower',
+
+    Restore: 'Restore',
+    for: 'for',
+    RegenHealth: 'Regen Health',
+    RegenMana: 'Regen Mana',
+    RegenStamina: 'Regen Stamina',
+    DamageHealth: 'Damage Health',
+    DamageMana: 'Damage Mana',
+    DamageStamina: 'Damage Stamina',
+    DamageRegenHealth: 'Damage Regen Health',
+    DamageRegenMana: 'Damage Regen Mana',
+    DamageRegenStamina: 'Damage Regen Stamina',
+    RestoreHealth: 'Restore Health',
+    RestoreMana: 'Restore Mana',
+    RestoreStamina: 'Restore Stamina',
+
+    CraftingIngredient: 'Ingredient',
+    AlchemyIngredient: 'Alchemy Ingredient:',
+    UnknownProperty: 'Unknown Property',
+
+    LowStabilityNotCraftable: 'Not Craftable',
+    LowStabilityNotCraftableDesc: 'Stability is too low.',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

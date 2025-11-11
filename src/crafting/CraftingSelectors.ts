@@ -22,7 +22,8 @@ export const selectRecipeItemValue = (recipeParamId: string) => (state: GameStat
 export const selectRecipeResult = (state: GameState) => state.craftingForm.result?.results
 export const selectRecipeReq = (state: GameState) => state.craftingForm.result?.requirements
 export const selectRecipeType = (s: GameState) => s.ui.recipeType
-export const canCraft = (s: GameState) => s.craftingForm.result !== undefined && s.craftingForm.result
+export const canCraft = (s: GameState) =>
+    s.craftingForm.result !== undefined && s.craftingForm.result.results.some((r) => r.craftedItem || r.stdItemId)
 
 export const selectCraftTime = (s: GameState) => s.craftingForm.result?.time
 

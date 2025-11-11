@@ -5,16 +5,17 @@ import {
     RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeParamType,
+    RecipeResult,
     RecipeTypes,
 } from '../crafting/RecipeInterfaces'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
-import { ItemSubType } from '../items/Item'
+import { Item, ItemSubType } from '../items/Item'
 import { selectGameItem } from '../storage/StorageSelectors'
 import { MAX_INGREDIENTS } from './alchemyConst'
 import { generatePotion } from './alchemyFunctions'
-import { PotionResult } from './alchemyTypes'
-import { PotionCraftingResult } from './PotionCraftingResult'
+import { AlchemyEffects, PotionResult } from './alchemyTypes'
+import { isPotionItem, PotionCraftingResult } from './PotionCraftingResult'
 
 const PotionRecipeParameters: RecipeParameterItemFilter[] = [
     {
@@ -77,11 +78,12 @@ export const potionRecipe: Recipe = makeMemoizedRecipe({
         const flask = selectGameItem(flaskId)(state)
         if (!flask?.flaskData) return
 
-        const ingredients = []
+        const ingredients: Item[] = []
 
         for (let i = 1; i <= MAX_INGREDIENTS; i++) {
             const ingredientId = params.find((p) => p.id === `Ingredient${i}`)?.itemId
             if (!ingredientId) continue
+            if (ingredients.some((i) => i.id === ingredientId)) continue
             const ingredient = selectGameItem(ingredientId)(state)
             if (!ingredient?.ingredientData) return
             ingredients.push(ingredient)
@@ -89,11 +91,11 @@ export const potionRecipe: Recipe = makeMemoizedRecipe({
 
         if (ingredients.length < 2) return
 
-        const realPotion = generatePotion(state, false, ingredients)
+        const realPotion = generatePotion(state, true, ingredients)
         const uiPotion = generatePotion(state, false, ingredients)
 
         const result: PotionCraftingResult = {
-            time: 0,
+            time: 5e3,
             requirements: [
                 {
                     itemId: solventId,
@@ -124,4 +126,34 @@ export const potionRecipe: Recipe = makeMemoizedRecipe({
 
         return result
     },
+    afterCrafting: (state: GameState, _params: RecipeParameterValue[], result: RecipeResult) => {
+        const effects: AlchemyEffects[] = []
+        for (const res of result.results) {
+            if (!isPotionItem(res)) continue
+            if (res.potionResult === PotionResult.NotPotion) continue
+
+            res.craftedItem?.potionData?.effects?.forEach((e) => {
+                if (!effects.includes(e.effect)) effects.push(e.effect)
+            })
+        }
+
+        result.requirements.forEach((req) => {
+            const item = selectGameItem(req.itemId)(state)
+            if (!item) return
+            if (item?.ingredientData) discoverAlchemyEffects(state, item, effects)
+        })
+    },
 })
+
+export const discoverAlchemyEffects = (state: GameState, item: Item, effects: AlchemyEffects[]) => {
+    if (!effects.length) return
+    if (!state.discoveredEffects[item.id]) state.discoveredEffects[item.id] = []
+
+    const itemEffects = selectGameItem(item.id)(state)?.ingredientData?.effects
+    if (!itemEffects) return
+
+    effects.forEach((effect) => {
+        if (itemEffects.some((pf) => pf.effect === effect) && !state.discoveredEffects[item.id]?.includes(effect))
+            state.discoveredEffects[item.id]!.push(effect)
+    })
+}

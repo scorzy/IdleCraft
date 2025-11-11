@@ -21,6 +21,8 @@ export enum ItemTypes {
     RawFood = 'RawFood',
     RawSkin = 'RawSkin',
     Potion = 'Potion',
+    Flask = 'Flask',
+    CraftingIngredient = 'CraftingIngredient',
 }
 export enum ItemSubType {
     Weapon = 'Weapon',

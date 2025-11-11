@@ -21,7 +21,7 @@ export enum AlchemyEffects {
     DamageMana = 'DamageMana',
     DamageStamina = 'DamageStamina',
     DamageRegenHealth = 'DamageRegenHealth',
-    DamageRegenMana = 'vRegenMana',
+    DamageRegenMana = 'DamageRegenMana',
     DamageRegenStamina = 'DamageRegenStamina',
 }
 export enum IngredientTypes {

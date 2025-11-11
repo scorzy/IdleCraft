@@ -25,10 +25,13 @@ export const CraftingResult = memo(function CraftingResult({ result }: { result:
     else if (result.craftedItem) item = result.craftedItem
     else if (result.stdItemId) item = StdItems[result.stdItemId]
 
-    if (!item) return null
+    const info = isPotion ? <PotionResultUi result={result as PotionItem} /> : null
 
-    const info = isPotion ? <></> : <PotionResultUi result={result as PotionItem} />
+    if (!item) {
+        if (info) return <>{info}</>
 
+        return null
+    }
     return <CraftingResult2 result={result} item={item} info={info} />
 })
 

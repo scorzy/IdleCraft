@@ -244,4 +244,33 @@ export interface Msg {
     TinMat: string
     DeadWoodMat: string
     OakMat: string
+
+    GlassFlask: string
+    Water: string
+    RedFlower: string
+    GreenFlower: string
+    BlueFlower: string
+
+    Restore: string
+    for: string
+
+    RegenHealth: string
+    RestoreHealth: string
+    RegenMana: string
+    RestoreMana: string
+    RegenStamina: string
+    RestoreStamina: string
+    DamageHealth: string
+    DamageMana: string
+    DamageStamina: string
+    DamageRegenHealth: string
+    DamageRegenMana: string
+    DamageRegenStamina: string
+
+    CraftingIngredient: string
+    AlchemyIngredient: string
+    UnknownProperty: string
+
+    LowStabilityNotCraftable: string
+    LowStabilityNotCraftableDesc: string
 }

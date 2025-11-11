@@ -64,7 +64,7 @@ export function generatePotion(
         id: `Base`,
         nameId: 'Base',
         iconId: Icons.OppositeIngredient,
-        add: 100,
+        add: -50,
     })
 
     const effects = potionData.effects
@@ -122,7 +122,7 @@ export function generatePotion(
         else if (stability > 0) potionResult = PotionResult.Chaotic
         else potionResult = PotionResult.NotPotion
 
-        alterEffects(potionData, stability)
+        alterEffects(potionData, potionResult)
     }
 
     let item: Item | undefined = undefined
@@ -145,12 +145,11 @@ export function generatePotion(
     }
 }
 
-function alterEffects(potionData: PotionData, stability: number) {
-    if (stability >= STABILITY_STABLE) return
-    if (stability >= STABILITY_UNSTABLE) {
+function alterEffects(potionData: PotionData, potionResult: PotionResult) {
+    if (potionResult === PotionResult.Unstable) {
         // Unstable: reduce all effects
         for (const effect of potionData.effects) effect.value = Math.floor(effect.value * UNSTABLE_POTENCY_PERCENT)
-    } else {
+    } else if (potionResult === PotionResult.Chaotic) {
         // Chaotic: reduce all effects and remove one random effect
         for (const effect of potionData.effects) effect.value = Math.floor(effect.value * CHAOTIC_POTENCY_PERCENT)
         if (potionData.effects.length <= 1) return

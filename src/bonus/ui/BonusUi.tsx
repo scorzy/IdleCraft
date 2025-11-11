@@ -18,7 +18,7 @@ import {
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
 const BonusListUi = memo(function BonusListUi(props: {
-    selectBonusResult: (state: GameState) => BonusResult
+    selectBonusResult: BonusResult | ((state: GameState) => BonusResult)
     isTime?: boolean
 }) {
     const { selectBonusResult, isTime } = props
@@ -26,7 +26,10 @@ const BonusListUi = memo(function BonusListUi(props: {
     const { t, fun } = useTranslations()
     const format = isTime ? fun.formatTime : f
 
-    const selectBonusResultMemo = useMemo(() => memoize(selectBonusResult), [selectBonusResult])
+    const selectBonusResultMemo = useMemo(() => {
+        if (typeof selectBonusResult === 'function') return memoize(selectBonusResult)
+        return () => selectBonusResult
+    }, [selectBonusResult])
 
     const bonusRes = useGameStore(selectBonusResultMemo)
 
@@ -71,7 +74,7 @@ const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boolean })
 
 export const BonusDialog = memo(function BonusDialog(props: {
     title: string
-    selectBonusResult: (state: GameState) => BonusResult
+    selectBonusResult: BonusResult | ((state: GameState) => BonusResult)
     isTime?: boolean
 }) {
     const { selectBonusResult, title, isTime } = props
