@@ -1,6 +1,5 @@
 import { memo } from 'react'
 import { AlertCircleIcon, CheckCircle2Icon } from 'lucide-react'
-import { TbAlertCircle } from 'react-icons/tb'
 import { useTranslations } from '../msg/useTranslations'
 import { useNumberFormatter } from '../formatters/selectNumberFormatter'
 import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert'
