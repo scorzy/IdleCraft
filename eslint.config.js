@@ -64,7 +64,7 @@ export default defineConfig([
                 ecmaVersion: 'latest',
                 sourceType: 'module',
                 projectService: true,
-                project: 'tsconfig.json',
+                // project: 'tsconfig.json',
             },
             globals: {
                 ...globals.serviceworker,
