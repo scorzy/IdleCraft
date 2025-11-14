@@ -81,12 +81,12 @@ export function ComboBoxResponsive({ children, triggerContent, selectedId, label
 
 function ItemList({ children }: { children?: React.ReactNode }) {
     const { t } = useTranslations()
-    // const itemCount = Array.isArray(children) ? children.length : children ? 1 : 0
-    // const filter = itemCount > 3
+    const itemCount = Array.isArray(children) ? children.length : children ? 1 : 0
+    const filter = itemCount > 1
 
     return (
         <Command>
-            <CommandInput placeholder={t.FilterDots} />
+            {filter && <CommandInput placeholder={t.FilterDots} />}
             <CommandList>
                 <CommandEmpty>{t.NoResults}</CommandEmpty>
                 <CommandGroup>{children}</CommandGroup>
