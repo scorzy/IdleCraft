@@ -29,3 +29,14 @@
         border-bottom: none;
     }
 }
+.enemyInfoUi {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.5rem;
+}
+@container (min-width: 350px) {
+    .enemyInfoUi {
+        grid-template-columns: auto 1fr auto;
+    }
+}

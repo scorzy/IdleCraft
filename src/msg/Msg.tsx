@@ -273,4 +273,7 @@ export interface Msg {
 
     LowStabilityNotCraftable: string
     LowStabilityNotCraftableDesc: string
+
+    Lv: string
+    Drops: string
 }

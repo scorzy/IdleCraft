@@ -270,6 +270,9 @@ export const engMsg: Msg = {
 
     LowStabilityNotCraftable: 'Not Craftable',
     LowStabilityNotCraftableDesc: 'Stability is too low.',
+
+    Lv: 'Lv.',
+    Drops: 'Drops',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

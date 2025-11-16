@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
+import { DialogTrigger } from '@radix-ui/react-dialog'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { BattleAreas, BattleAreasList } from '../battleAreas'
 import { useTranslations } from '../../msg/useTranslations'
@@ -21,6 +21,10 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { addBattle } from '../functions/addBattle'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../components/ui/dialog'
+import { ItemInfo } from '../../items/ui/ItemInfo'
+import { ItemRewardUi } from '../../quests/ui/QuestUi'
+import { ItemIconName } from '../../items/ui/ItemIconName'
 import classes from './battleZone.module.css'
 
 export const CombatPage = memo(function CombatPage() {
@@ -73,8 +77,7 @@ const BattleZoneInfoUi = memo(function BattleZoneInfoUi({ battleZoneEnum }: { ba
     const battleZone = BattleZones[battleZoneEnum]
     return (
         <Card>
-            <MyCardHeaderTitle title={t.Enemies} />
-            <CardContent>
+            <CardContent className="container">
                 {battleZone.enemies.map((e) => (
                     <EnemyInfoUi key={e.id} quantity={e.quantity} templateEnum={e.template} />
                 ))}
@@ -94,19 +97,22 @@ const EnemyInfoUi = memo(function EnemyInfoUi({
 }) {
     const template = CharTemplatesData[templateEnum]
     const enemy = generateCharacter(template)
-
+    const { t } = useTranslations()
     const { f } = useNumberFormatter()
     return (
-        <div className="flex items-center">
+        <div className={classes.enemyInfoUi}>
             <span className="relative flex h-9 w-9 shrink-0 overflow-hidden text-4xl">
                 <span className="aspect-square h-full w-full">{IconsData[enemy.iconId]}</span>
             </span>
-            <div className="ml-4 space-y-1">
+            <div className="space-y-1">
                 <p className="text-sm leading-none font-medium">
-                    {enemy.nameId} X {f(quantity)}
+                    {t[enemy.nameId as keyof typeof t]}
+                    {quantity > 1 && <span className="text-muted-foreground"> X {f(quantity)}</span>}
                 </p>
-                <p className="grid grid-flow-col gap-2 text-sm">
-                    <span>Lv. {f(enemy.level)}</span>
+                <p className="grid grid-flow-col items-center justify-start gap-2 text-sm">
+                    <span>
+                        {t.Lv} {f(enemy.level)}
+                    </span>
                     <span className="text-health">
                         <GiHearts className="inline" />
                         {f(enemy.health)}
@@ -121,6 +127,39 @@ const EnemyInfoUi = memo(function EnemyInfoUi({
                     </span>
                 </p>
             </div>
+            <div>
+                <EnemyDropsUi templateEnum={templateEnum} />
+            </div>
         </div>
+    )
+})
+const EnemyDropsUi = memo(function EnemyDropsUi({ templateEnum }: { templateEnum: CharTemplateEnum }) {
+    const template = CharTemplatesData[templateEnum]
+    const enemy = generateCharacter(template)
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button size="xs" variant="secondary">
+                    {t.Drops}
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>
+                        {IconsData[enemy.iconId]} {t[enemy.nameId as keyof typeof t]} {t.Drops}
+                    </DialogTitle>
+                </DialogHeader>
+                <DialogDescription>
+                    {template.loot.map((loot) => (
+                        <div key={loot.itemId} className="flex justify-start gap-2 align-middle">
+                            <ItemIconName itemId={loot.itemId} />
+                            {loot.quantity > 1 && <span> x {f(loot.quantity)}</span>}
+                        </div>
+                    ))}
+                </DialogDescription>
+            </DialogContent>
+        </Dialog>
     )
 })
