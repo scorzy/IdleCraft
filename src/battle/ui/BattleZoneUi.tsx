@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
+import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { BattleAreas, BattleAreasList } from '../battleAreas'
 import { useTranslations } from '../../msg/useTranslations'
 import { IconsData } from '../../icons/Icons'
@@ -24,10 +24,13 @@ import { addBattle } from '../functions/addBattle'
 import classes from './battleZone.module.css'
 
 export const CombatPage = memo(function CombatPage() {
+    const btId = useGameStore(selectBattleZone)
+    const bt = BattleAreasList.find((ba) => ba.id === btId)
+
     return (
         <MyPageAll sidebar={<CombatSidebar />}>
             <MyPage className={classes.areaCards}>
-                <BattleZoneInfoUi />
+                {bt && bt.zones.map((z) => <BattleZoneInfoUi key={z} battleZoneEnum={z} />)}
             </MyPage>
         </MyPageAll>
     )
@@ -43,44 +46,24 @@ const CombatSidebar = memo(function CombatSidebar() {
     )
 })
 
-const BattleAreasListUi = memo(function BattleAreasList(props: { bt: BattleAreas }) {
-    const { bt } = props
-
-    return (
-        <CollapsibleMenu
-            key={bt.id}
-            collapsedId={bt.collapsedId}
-            name={bt.nameId}
-            parentCollapsedId={CollapsedEnum.Combat}
-            icon={IconsData[bt.iconId]}
-        >
-            {bt.zones.map((z) => (
-                <BattleZoneUi key={z} battleZoneEnum={z} />
-            ))}
-        </CollapsibleMenu>
-    )
-})
-const BattleZoneUi = memo(function BattleZoneUi(props: { battleZoneEnum: BattleZoneEnum }) {
-    const { battleZoneEnum } = props
+const BattleAreasListUi = memo(function BattleAreasList({ bt }: { bt: BattleAreas }) {
     const { t } = useTranslations()
-    const battleZone = BattleZones[battleZoneEnum]
-
-    const set = useCallback(() => setArea(battleZoneEnum), [battleZoneEnum])
-    const active = useGameStore(isBattleZoneSelected(battleZoneEnum))
+    const set = useCallback(() => setArea(bt.id), [bt.id])
+    const active = useGameStore(isBattleZoneSelected(bt.id))
 
     return (
         <MyListItem
             collapsedId={CollapsedEnum.Combat}
             active={active}
-            text={t[battleZone.nameId]}
-            icon={IconsData[battleZone.iconId]}
+            text={t[bt.nameId]}
+            icon={IconsData[bt.iconId]}
             onClick={set}
         />
     )
 })
-const BattleZoneInfoUi = memo(function BattleZoneInfoUi() {
+
+const BattleZoneInfoUi = memo(function BattleZoneInfoUi({ battleZoneEnum }: { battleZoneEnum: BattleZoneEnum }) {
     const { t } = useTranslations()
-    const battleZoneEnum = useGameStore(selectBattleZone)
 
     const onAddClick = useCallback(() => {
         if (battleZoneEnum) addBattle(battleZoneEnum)
@@ -102,8 +85,13 @@ const BattleZoneInfoUi = memo(function BattleZoneInfoUi() {
         </Card>
     )
 })
-const EnemyInfoUi = memo(function EnemyInfoUi(props: { quantity: number; templateEnum: CharTemplateEnum }) {
-    const { quantity, templateEnum } = props
+const EnemyInfoUi = memo(function EnemyInfoUi({
+    quantity,
+    templateEnum,
+}: {
+    quantity: number
+    templateEnum: CharTemplateEnum
+}) {
     const template = CharTemplatesData[templateEnum]
     const enemy = generateCharacter(template)
 

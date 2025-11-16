@@ -1,7 +1,6 @@
 import { setState } from '../../game/setState'
-import { BattleZoneEnum } from '../BattleZoneEnum'
 
-export const setArea = (battleZone: BattleZoneEnum) =>
+export const setArea = (battleZone: string) =>
     setState((s) => {
         s.ui.battleZone = battleZone
     })
