@@ -33,7 +33,7 @@ export abstract class AbstractEntityAdapter<T> {
         adapterFunctions.remove(state, id)
     }
     getIds(state: InitialState<T>): string[] {
-        return state.ids
+        return state.ids.slice()
     }
 
     select(state: InitialState<T>, id: string): T | undefined {
