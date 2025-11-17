@@ -9,6 +9,11 @@ export type InventoryNoQta = Partial<Record<EquipSlotsEnum, { itemId: string }>>
 export interface Loot {
     itemId: string
     quantity: number
+    probability?: number
 }
 
-export type LootId = { id: string } & Loot
+export interface LootId {
+    id: string
+    itemId: string
+    quantity: number
+}

@@ -22,8 +22,6 @@ import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { addBattle } from '../functions/addBattle'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../components/ui/dialog'
-import { ItemInfo } from '../../items/ui/ItemInfo'
-import { ItemRewardUi } from '../../quests/ui/QuestUi'
 import { ItemIconName } from '../../items/ui/ItemIconName'
 import classes from './battleZone.module.css'
 
