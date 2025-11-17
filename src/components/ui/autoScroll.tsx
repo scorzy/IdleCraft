@@ -1,4 +1,4 @@
-import { useRef, useEffect, useLayoutEffect, useState, JSX } from 'react'
+import { useRef, useLayoutEffect, useEffect, JSX } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { cn } from '../../lib/utils'
 import classes from './autoScroll.module.css'
@@ -7,7 +7,7 @@ export const AutoScroll = ({
     totalCount,
     itemContent,
     className,
-    autoscroll,
+    autoscroll = true,
     estimateSize,
     lastId,
 }: {
@@ -22,8 +22,8 @@ export const AutoScroll = ({
     'use no memo'
 
     const parentRef = useRef<HTMLDivElement>(null)
-    const prevScrollHeight = useRef<number>(0)
-    const [wasAtBottom, setWasAtBottom] = useState(true)
+    const prevWasAtBottomRef = useRef<boolean>(false)
+    const prevLastIdRef = useRef<string | undefined>(undefined)
 
     const virtualizer = useVirtualizer({
         count: totalCount,
@@ -32,25 +32,47 @@ export const AutoScroll = ({
         overscan: 5,
     })
 
-    // Track if user was at bottom before update
-    useLayoutEffect(() => {
-        const el = parentRef.current
-        if (!el) return
-        // Allow a small threshold for "at bottom"
-        const threshold = 2
-        // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
-        setWasAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < threshold)
-        prevScrollHeight.current = el.scrollHeight
-    }, [lastId, totalCount, virtualizer.getTotalSize()])
-
-    // Scroll to bottom only if user was at bottom before update
+    // keep `prevWasAtBottomRef` updated from user actions (scroll/resize)
     useEffect(() => {
         const el = parentRef.current
         if (!el) return
-        if (autoscroll && wasAtBottom) {
+        const threshold = 2
+        const update = () => {
+            prevWasAtBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < threshold
+        }
+        // initial measurement
+        update()
+        el.addEventListener('scroll', update, { passive: true })
+        window.addEventListener('resize', update)
+        return () => {
+            el.removeEventListener('scroll', update)
+            window.removeEventListener('resize', update)
+        }
+    }, [])
+
+    // initialize prevLastIdRef whenever lastId changes; do not treat undefined -> defined as "change"
+    useEffect(() => {
+        prevLastIdRef.current = lastId
+    }, [lastId])
+
+    // After DOM updates, decide whether to autoscroll based on the previous "was at bottom" flag.
+    useLayoutEffect(() => {
+        const el = parentRef.current
+        if (!el) return
+
+        const hadPrev = prevLastIdRef.current !== undefined
+        const lastIdChanged = hadPrev && prevLastIdRef.current !== lastId
+        const wasAtBottomBefore = prevWasAtBottomRef.current
+
+        if (autoscroll && lastIdChanged && wasAtBottomBefore) {
+            // scroll to bottom after virtualizer/layout update
             el.scrollTop = el.scrollHeight
         }
-    }, [lastId, autoscroll, wasAtBottom, virtualizer.getTotalSize()])
+
+        // store current lastId for next comparison (already handled by effect above, but keep for clarity)
+        prevLastIdRef.current = lastId
+        // Note: do NOT update prevWasAtBottomRef here — it's updated by the scroll handler above
+    }, [lastId, autoscroll, virtualizer.getTotalSize(), totalCount])
 
     return (
         <div ref={parentRef} className={cn(classes.container, className)}>
