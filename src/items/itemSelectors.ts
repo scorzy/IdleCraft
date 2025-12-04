@@ -1,4 +1,4 @@
-import moize from 'moize'
+import { memoize } from 'micro-memoize'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
@@ -60,7 +60,7 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
 
     return true
 }
-export const selectItemFilterObjects = moize(
+export const selectItemFilterObjects = memoize(
     (itemFilter: ItemFilter) =>
         Object.entries(itemFilter)
             .filter((f) => typeof f[1] === 'object')
@@ -70,7 +70,7 @@ export const selectItemFilterObjects = moize(
         maxSize: 30,
     }
 )
-export const selectItemFilterProps = moize(
+export const selectItemFilterProps = memoize(
     (minStats: object) =>
         Object.entries(minStats)
             .filter((f) => typeof f[1] === 'number')
@@ -81,7 +81,7 @@ export const selectItemFilterProps = moize(
     }
 )
 
-export const selectItemNameMemoized = moize(
+export const selectItemNameMemoized = memoize(
     (nameFunc: keyof MsgFunctions | undefined, params: GetItemNameParams, t: ReturnType<typeof selectTranslations>) => {
         const fn = t.fun[nameFunc ?? 'getItemName'] as (...args: unknown[]) => string
 

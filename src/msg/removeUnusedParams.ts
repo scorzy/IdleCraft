@@ -1,6 +1,6 @@
-import moize from 'moize'
+import { memoize } from 'micro-memoize'
 
-export const removeUnusedParams = moize(
+export const removeUnusedParams = memoize(
     (name: string) => {
         return name
             .replace(/(\{[a-zA-Z0-9_]+\})/g, '')

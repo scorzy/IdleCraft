@@ -232,18 +232,16 @@ const BAG_ICON = <GiSwapBag />
 
 const estimateLootSize = () => 24
 
+const LootUiFromIndex = memo(function LootUiFromIndex({ index }: { index: number }) {
+    const loots = useGameStore(selectLoot)
+    const loot = loots[index]
+    if (!loot) return null
+    return <LootRow loot={loot} key={loot.id} />
+})
+
 function BattleLootUi() {
     const { t } = useTranslations()
     const loots = useGameStore(selectLoot)
-
-    const LootUiFromIndex = useCallback(
-        (index: number) => {
-            const loot = loots[index]
-            if (!loot) return null
-            return <LootRow loot={loot} key={loot.id} />
-        },
-        [loots]
-    )
 
     return (
         <Card className={classes.loot}>
@@ -253,7 +251,7 @@ function BattleLootUi() {
                     totalCount={loots.length}
                     estimateSize={estimateLootSize}
                     autoscroll={true}
-                    itemContent={LootUiFromIndex}
+                    itemContent={(index) => <LootUiFromIndex index={index} />}
                 />
             </CardContent>
         </Card>

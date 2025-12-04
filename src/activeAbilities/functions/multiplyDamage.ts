@@ -1,7 +1,7 @@
-import moize from 'moize'
+import { memoize } from 'micro-memoize'
 import { DamageData, DamageTypes } from '../../items/Item'
 
-export const multiplyDamage = moize(
+export const multiplyDamage = memoize(
     function multiplyDamage(damage: DamageData, multi: number): DamageData {
         const ret: DamageData = {}
         Object.entries(damage).forEach((kv) => {

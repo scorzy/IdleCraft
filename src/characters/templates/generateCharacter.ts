@@ -1,4 +1,4 @@
-import moize from 'moize'
+import { memoize } from 'micro-memoize'
 import { CharAbilityAdapter } from '../../activeAbilities/abilityAdapters'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { CharacterState } from '../characterState'
@@ -7,7 +7,7 @@ import { selectMaxManaFromChar } from '../selectors/manaSelectors'
 import { selectMaxStaminaFromChar } from '../selectors/staminaSelectors'
 import { CharTemplate } from './charTemplates'
 
-const generateCharacterInt = moize(
+const generateCharacterInt = memoize(
     (template: CharTemplate) => {
         const char: CharacterState = {
             id: getUniqueId(),

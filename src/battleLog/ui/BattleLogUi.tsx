@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo } from 'react'
 import { TbList } from 'react-icons/tb'
 import { Card, CardContent } from '../../components/ui/card'
 import { useGameStore } from '../../game/state'
@@ -33,17 +33,16 @@ export const BattleLogUi = memo(function BattleLogUi(props: { className?: string
 
 const estimateLogSize = () => 20
 
-const BattleLogs = memo(function BattleLogs() {
+const LogUiFromIndex = memo(function LogUiFromIndex({ index }: { index: number }) {
     const ids = useGameStore(selectBattleLogsIds)
 
-    const LogUiFromIndex = useCallback(
-        (index: number) => {
-            const id = ids[index]
-            if (!id) return null
-            return <LogUi id={id} />
-        },
-        [ids]
-    )
+    const id = ids[index]
+    if (!id) return null
+    return <LogUi id={id} />
+})
+
+const BattleLogs = memo(function BattleLogs() {
+    const ids = useGameStore(selectBattleLogsIds)
 
     return (
         <AutoScroll
@@ -51,7 +50,7 @@ const BattleLogs = memo(function BattleLogs() {
             totalCount={ids.length}
             estimateSize={estimateLogSize}
             autoscroll={true}
-            itemContent={LogUiFromIndex}
+            itemContent={(index) => <LogUiFromIndex index={index} />}
             lastId={ids[ids.length - 1]}
         />
     )

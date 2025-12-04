@@ -1,5 +1,7 @@
-import moize from 'moize'
+import { memoize } from 'micro-memoize'
 
 const options = { maxSize: 30 }
 
-export const myMemoize = moize(options)
+export function myMemoize<T>(fn: T): T {
+    return memoize(fn as (...args: unknown[]) => unknown, options) as T
+}

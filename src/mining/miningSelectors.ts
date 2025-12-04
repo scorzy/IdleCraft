@@ -1,4 +1,4 @@
-import moize from 'moize'
+import { memoize } from 'micro-memoize'
 import { ActivityAdapter } from '../activities/ActivityState'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { selectLevelExp } from '../experience/expSelectors'
@@ -17,7 +17,7 @@ export const DEF_PICKAXE: PickaxeData = {
 
 export const isOreSelected = (oreType: OreTypes) => (state: GameState) => state.ui.oreType === oreType
 
-const makeDefaultMine = moize(
+const makeDefaultMine = memoize(
     (oreType: OreTypes) => {
         const data = OreData[oreType]
         return {

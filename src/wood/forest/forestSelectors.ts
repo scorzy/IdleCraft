@@ -1,4 +1,4 @@
-import moize from 'moize'
+import { memoize as microMemoize } from 'micro-memoize'
 import { memoize } from 'proxy-memoize'
 import { ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
@@ -37,7 +37,7 @@ export const selectGrowingTrees = (s: GameState, woodType: WoodTypes) => {
 }
 
 export const selectGrowingTreesMemo = (woodType: WoodTypes) =>
-    moize(
+    microMemoize(
         memoize((s: GameState) => selectGrowingTrees(s, woodType)),
         { maxSize: 10 }
     )
