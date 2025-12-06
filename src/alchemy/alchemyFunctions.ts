@@ -64,7 +64,7 @@ export function generatePotion(
         id: `Base`,
         nameId: 'Base',
         iconId: Icons.OppositeIngredient,
-        add: -50,
+        add: 50,
     })
 
     const effects = potionData.effects
