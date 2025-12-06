@@ -276,4 +276,14 @@ export interface Msg {
 
     Lv: string
     Drops: string
+
+    IncreaseMaxHealthBy: string
+    IncreaseMaxManaBy: string
+    IncreaseMaxStaminaBy: string
+    IncreaseMaxHealthBy2: string
+    IncreaseMaxManaBy2: string
+    IncreaseMaxStaminaBy2: string
+    IncreaseMaxHealth: string
+    IncreaseMaxMana: string
+    IncreaseMaxStamina: string
 }

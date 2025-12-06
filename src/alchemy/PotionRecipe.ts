@@ -14,7 +14,8 @@ import { Item, ItemSubType } from '../items/Item'
 import { selectGameItem } from '../storage/StorageSelectors'
 import { MAX_INGREDIENTS } from './alchemyConst'
 import { generatePotion } from './alchemyFunctions'
-import { AlchemyEffects, PotionResult } from './alchemyTypes'
+import { PotionResult } from './alchemyTypes'
+import { Effects } from '../effects/types/Effects'
 import { isPotionItem, PotionCraftingResult } from './PotionCraftingResult'
 
 const PotionRecipeParameters: RecipeParameterItemFilter[] = [
@@ -127,7 +128,7 @@ export const potionRecipe: Recipe = makeMemoizedRecipe({
         return result
     },
     afterCrafting: (state: GameState, _params: RecipeParameterValue[], result: RecipeResult) => {
-        const effects: AlchemyEffects[] = []
+        const effects: Effects[] = []
         for (const res of result.results) {
             if (!isPotionItem(res)) continue
             if (res.potionResult === PotionResult.NotPotion) continue
@@ -145,7 +146,7 @@ export const potionRecipe: Recipe = makeMemoizedRecipe({
     },
 })
 
-export const discoverAlchemyEffects = (state: GameState, item: Item, effects: AlchemyEffects[]) => {
+export const discoverAlchemyEffects = (state: GameState, item: Item, effects: Effects[]) => {
     if (!effects.length) return
     if (!state.discoveredEffects[item.id]) state.discoveredEffects[item.id] = []
 

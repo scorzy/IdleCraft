@@ -3,6 +3,8 @@ import { getTotal } from '../bonus/BonusFunctions'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
+import { EffectPotency } from '../effects/types/EffectPotency'
+import { Effects } from '../effects/types/Effects'
 import {
     CHAOTIC_POTENCY_PERCENT,
     MULTIPLE_EFFECTS_STABILITY,
@@ -13,7 +15,7 @@ import {
 } from './alchemyConst'
 import { oppositeEffects } from './alchemyData'
 import { isEffectDiscovered, getPotionEffect } from './alchemySelectors'
-import { AlchemyEffects, AlchemyPotency, PotionData, PotionResult } from './alchemyTypes'
+import { PotionData, PotionResult } from './alchemyTypes'
 
 export function generatePotion(
     state: GameState,
@@ -30,7 +32,7 @@ export function generatePotion(
     | undefined {
     if (ingredients.length < 2) return
 
-    const allEffects = new Map<AlchemyEffects, { potency: AlchemyPotency }[]>()
+    const allEffects = new Map<Effects, { potency: EffectPotency }[]>()
     let unknownEffects = false
 
     for (const ingredient of ingredients)
@@ -76,7 +78,10 @@ export function generatePotion(
         else potionResult = PotionResult.NotPotion
     } else {
         for (const effect of effects) {
-            const negatives = oppositeEffects.get(effect.effect)
+            const negatives =
+                oppositeEffects.find((pair) => pair.first.includes(effect.effect))?.second ||
+                oppositeEffects.find((pair) => pair.second.includes(effect.effect))?.first
+
             if (!negatives) continue
 
             for (const negative of negatives) {

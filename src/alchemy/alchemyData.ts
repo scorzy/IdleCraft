@@ -1,20 +1,20 @@
 import { Msg } from '../msg/Msg'
-import { AlchemyEffects } from './alchemyTypes'
+import { Effects } from '../effects/types/Effects'
 
-export const oppositeEffects = new Map<AlchemyEffects, AlchemyEffects[]>([
-    [AlchemyEffects.Health, [AlchemyEffects.DamageHealth, AlchemyEffects.DamageRegenHealth]],
-    [AlchemyEffects.Mana, [AlchemyEffects.DamageMana, AlchemyEffects.DamageRegenMana]],
-    [AlchemyEffects.Stamina, [AlchemyEffects.DamageStamina, AlchemyEffects.DamageRegenStamina]],
-    [AlchemyEffects.RegenHealth, [AlchemyEffects.DamageRegenHealth, AlchemyEffects.DamageHealth]],
-    [AlchemyEffects.RegenMana, [AlchemyEffects.DamageRegenMana, AlchemyEffects.DamageMana]],
-    [AlchemyEffects.RegenStamina, [AlchemyEffects.DamageRegenStamina, AlchemyEffects.DamageStamina]],
-    [AlchemyEffects.DamageHealth, [AlchemyEffects.Health, AlchemyEffects.RegenHealth]],
-    [AlchemyEffects.DamageMana, [AlchemyEffects.Mana, AlchemyEffects.RegenMana]],
-    [AlchemyEffects.DamageStamina, [AlchemyEffects.Stamina, AlchemyEffects.RegenStamina]],
-    [AlchemyEffects.DamageRegenHealth, [AlchemyEffects.Health, AlchemyEffects.RegenHealth]],
-    [AlchemyEffects.DamageRegenMana, [AlchemyEffects.Mana, AlchemyEffects.RegenMana]],
-    [AlchemyEffects.DamageRegenStamina, [AlchemyEffects.Stamina, AlchemyEffects.RegenStamina]],
-])
+export const oppositeEffects: { first: Effects[]; second: Effects[] }[] = [
+    {
+        first: [Effects.Health, Effects.RegenHealth, Effects.MaxHealth],
+        second: [Effects.DamageHealth, Effects.DamageRegenHealth],
+    },
+    {
+        first: [Effects.Mana, Effects.RegenMana, Effects.MaxMana],
+        second: [Effects.DamageMana, Effects.DamageRegenMana],
+    },
+    {
+        first: [Effects.Stamina, Effects.RegenStamina, Effects.MaxStamina],
+        second: [Effects.DamageStamina, Effects.DamageRegenStamina],
+    },
+]
 
 export interface AlchemyEffectDataEntry {
     nameId1: keyof Msg
@@ -23,27 +23,45 @@ export interface AlchemyEffectDataEntry {
     instant: boolean
     descId: keyof Msg
 }
-export const alchemyEffectData: Record<AlchemyEffects, AlchemyEffectDataEntry> = {
-    [AlchemyEffects.Health]: { nameId1: 'Restore', nameId2: 'Health', instant: true, descId: 'RestoreHealth' },
-    [AlchemyEffects.RegenHealth]: { nameId1: 'Restore', nameId2: 'Health', instant: false, descId: 'RegenHealth' },
-    [AlchemyEffects.Mana]: { nameId1: 'Restore', nameId2: 'Mana', instant: true, descId: 'RestoreMana' },
-    [AlchemyEffects.RegenMana]: { nameId1: 'Restore', nameId2: 'Mana', instant: false, descId: 'RegenMana' },
-    [AlchemyEffects.Stamina]: { nameId1: 'Restore', nameId2: 'Stamina', instant: true, descId: 'RestoreStamina' },
-    [AlchemyEffects.RegenStamina]: { nameId1: 'Restore', nameId2: 'Stamina', instant: false, descId: 'RegenStamina' },
-    [AlchemyEffects.DamageHealth]: { nameId1: 'Damage', nameId2: 'Health', instant: true, descId: 'DamageHealth' },
-    [AlchemyEffects.DamageRegenHealth]: {
+export const alchemyEffectData: Record<Effects, AlchemyEffectDataEntry> = {
+    [Effects.Health]: { nameId1: 'Restore', nameId2: 'Health', instant: true, descId: 'RestoreHealth' },
+    [Effects.RegenHealth]: { nameId1: 'Restore', nameId2: 'Health', instant: false, descId: 'RegenHealth' },
+    [Effects.Mana]: { nameId1: 'Restore', nameId2: 'Mana', instant: true, descId: 'RestoreMana' },
+    [Effects.RegenMana]: { nameId1: 'Restore', nameId2: 'Mana', instant: false, descId: 'RegenMana' },
+    [Effects.Stamina]: { nameId1: 'Restore', nameId2: 'Stamina', instant: true, descId: 'RestoreStamina' },
+    [Effects.RegenStamina]: { nameId1: 'Restore', nameId2: 'Stamina', instant: false, descId: 'RegenStamina' },
+    [Effects.DamageHealth]: { nameId1: 'Damage', nameId2: 'Health', instant: true, descId: 'DamageHealth' },
+    [Effects.DamageRegenHealth]: {
         nameId1: 'Damage',
         nameId2: 'Health',
         instant: false,
         descId: 'DamageRegenHealth',
     },
-    [AlchemyEffects.DamageMana]: { nameId1: 'Damage', nameId2: 'Mana', instant: true, descId: 'DamageMana' },
-    [AlchemyEffects.DamageRegenMana]: { nameId1: 'Damage', nameId2: 'Mana', instant: false, descId: 'DamageRegenMana' },
-    [AlchemyEffects.DamageStamina]: { nameId1: 'Damage', nameId2: 'Stamina', instant: true, descId: 'DamageStamina' },
-    [AlchemyEffects.DamageRegenStamina]: {
+    [Effects.DamageMana]: { nameId1: 'Damage', nameId2: 'Mana', instant: true, descId: 'DamageMana' },
+    [Effects.DamageRegenMana]: { nameId1: 'Damage', nameId2: 'Mana', instant: false, descId: 'DamageRegenMana' },
+    [Effects.DamageStamina]: { nameId1: 'Damage', nameId2: 'Stamina', instant: true, descId: 'DamageStamina' },
+    [Effects.DamageRegenStamina]: {
         nameId1: 'Damage',
         nameId2: 'Stamina',
         instant: false,
         descId: 'DamageRegenStamina',
+    },
+    [Effects.MaxHealth]: {
+        nameId1: 'IncreaseMaxHealthBy',
+        nameId2: 'IncreaseMaxHealthBy2',
+        instant: false,
+        descId: 'IncreaseMaxHealth',
+    },
+    [Effects.MaxMana]: {
+        nameId1: 'IncreaseMaxManaBy',
+        nameId2: 'IncreaseMaxManaBy2',
+        instant: false,
+        descId: 'IncreaseMaxMana',
+    },
+    [Effects.MaxStamina]: {
+        nameId1: 'IncreaseMaxManaBy',
+        nameId2: 'IncreaseMaxManaBy2',
+        instant: false,
+        descId: 'IncreaseMaxMana',
     },
 }

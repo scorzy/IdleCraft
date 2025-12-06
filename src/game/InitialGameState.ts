@@ -14,6 +14,7 @@ import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
 import { RecipeTypes } from '../crafting/RecipeInterfaces'
 import { QuestAdapter } from '../quests/QuestTypes'
 import { StorageAdapter } from '../storage/storageAdapter'
+import { AppliedEffectAdapter } from '../effects/types/AppliedEffect'
 import { GameState, LocationState } from './GameState'
 
 const getInitialVillageState: () => LocationState = () => {
@@ -88,6 +89,7 @@ export const InitialGameState: GameState = {
     battleLogs: BattleLogAdapter.getInitialState(),
     quests: QuestAdapter.getInitialState(),
     discoveredEffects: {},
+    effects: AppliedEffectAdapter.getInitialState(),
 }
 
 export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)

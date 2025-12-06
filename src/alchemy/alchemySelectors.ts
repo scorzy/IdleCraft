@@ -1,10 +1,12 @@
 import { GameState } from '../game/GameState'
 import { Item } from '../items/Item'
-import { AlchemyEffects, AlchemyPotency, PotionEffect } from './alchemyTypes'
+import { PotionEffect } from './alchemyTypes'
+import { EffectPotency } from '../effects/types/EffectPotency'
+import { Effects } from '../effects/types/Effects'
 
 export const selectDiscoveredEffectsPosition = (_state: GameState) => 1
 
-export const isEffectDiscovered = (state: GameState, item: Item, effect: AlchemyEffects) => {
+export const isEffectDiscovered = (state: GameState, item: Item, effect: Effects) => {
     if (!item.ingredientData) return false
 
     const discoveredPos = selectDiscoveredEffectsPosition(state)
@@ -17,29 +19,29 @@ export const isEffectDiscovered = (state: GameState, item: Item, effect: Alchemy
 }
 export function getPotionEffect(
     _state: GameState,
-    effect: AlchemyEffects,
-    potencies: AlchemyPotency[]
+    effect: Effects,
+    potencies: EffectPotency[]
 ): PotionEffect | undefined {
     if (potencies.length < 2) return
 
     const value = potencies.reduce((sum, potency) => {
         switch (potency) {
-            case AlchemyPotency.Low:
+            case EffectPotency.Low:
                 return sum + 10
-            case AlchemyPotency.Medium:
+            case EffectPotency.Medium:
                 return sum + 25
-            case AlchemyPotency.High:
+            case EffectPotency.High:
                 return sum + 50
         }
     }, 0)
 
     const duration = potencies.reduce((sum, potency) => {
         switch (potency) {
-            case AlchemyPotency.Low:
+            case EffectPotency.Low:
                 return sum + 5 * 1e3
-            case AlchemyPotency.Medium:
+            case EffectPotency.Medium:
                 return sum + 15 * 1e3
-            case AlchemyPotency.High:
+            case EffectPotency.High:
                 return sum + 30 * 1e3
         }
     }, 0)

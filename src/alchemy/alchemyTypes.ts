@@ -1,8 +1,6 @@
-export enum AlchemyPotency {
-    Low = 'Low',
-    Medium = 'Medium',
-    High = 'High',
-}
+import { EffectPotency } from '../effects/types/EffectPotency'
+import { Effects } from '../effects/types/Effects'
+
 export enum PotionResult {
     Stable = 'Stable',
     Unstable = 'Unstable',
@@ -10,28 +8,14 @@ export enum PotionResult {
     Unknown = 'Unknown',
     NotPotion = 'NotPotion',
 }
-export enum AlchemyEffects {
-    Health = 'Health',
-    Mana = 'Mana',
-    Stamina = 'Stamina',
-    RegenHealth = 'RegenHealth',
-    RegenMana = 'RegenMana',
-    RegenStamina = 'RegenStamina',
-    DamageHealth = 'DamageHealth',
-    DamageMana = 'DamageMana',
-    DamageStamina = 'DamageStamina',
-    DamageRegenHealth = 'DamageRegenHealth',
-    DamageRegenMana = 'DamageRegenMana',
-    DamageRegenStamina = 'DamageRegenStamina',
-}
 export enum IngredientTypes {
     Herb = 'Herb',
     Mineral = 'Mineral',
     Animal = 'Animal',
 }
 export interface IngredientEffect {
-    potency: AlchemyPotency
-    effect: AlchemyEffects
+    potency: EffectPotency
+    effect: Effects
 }
 
 export interface IngredientData {
@@ -40,14 +24,14 @@ export interface IngredientData {
     stability?: number
 }
 export interface SolventData {
-    potency: AlchemyPotency
+    potency: EffectPotency
 }
 export interface PotionFlaskData {
     reusePercent: number
 }
 
 export interface PotionEffect {
-    effect: AlchemyEffects
+    effect: Effects
     value: number
     duration: number
 }

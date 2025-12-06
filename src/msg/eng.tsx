@@ -273,6 +273,16 @@ export const engMsg: Msg = {
 
     Lv: 'Lv.',
     Drops: 'Drops',
+
+    IncreaseMaxHealthBy: 'Increase max health by',
+    IncreaseMaxManaBy: 'Increase max mana by',
+    IncreaseMaxStaminaBy: 'Increase max stamina by',
+    IncreaseMaxHealthBy2: '',
+    IncreaseMaxManaBy2: '',
+    IncreaseMaxStaminaBy2: '',
+    IncreaseMaxHealth: 'Increase max health',
+    IncreaseMaxMana: 'Increase max mana',
+    IncreaseMaxStamina: 'Increase max stamina',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

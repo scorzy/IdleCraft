@@ -10,9 +10,9 @@ import { createInventoryNoQta, selectGameItem, selectGameItemFromCraft } from '.
 import { myMemoizeOne } from '../utils/myMemoizeOne'
 import { CharacterAdapter } from './characterAdapter'
 import { CharacterSelector } from './CharacterSelector'
-import { selectMaxHealthFromChar } from './selectors/healthSelectors'
-import { selectMaxManaFromChar } from './selectors/manaSelectors'
-import { selectMaxStaminaFromChar } from './selectors/staminaSelectors'
+import { selectHealthRegenList, selectMaxHealthList } from './selectors/healthSelectors'
+import { selectManaRegenList, selectMaxManaList } from './selectors/manaSelectors'
+import { selectMaxStaminaList, selectStaminaRegenList } from './selectors/staminaSelectors'
 import { EquipSlotsEnum } from './equipSlotsEnum'
 import { CharTemplateEnum } from './templates/characterTemplateEnum'
 
@@ -52,13 +52,21 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
     const Stamina = (s: GameState) => selChar(s).stamina
     const Mana = (s: GameState) => selChar(s).mana
 
-    const MaxHealthList = (s: GameState) => selectMaxHealthFromChar(selChar(s))
-    const MaxManaList = (s: GameState) => selectMaxManaFromChar(selChar(s))
-    const MaxStaminaList = (s: GameState) => selectMaxStaminaFromChar(selChar(s))
+    const MaxHealthList = (s: GameState) => selectMaxHealthList(s, charId)
+    const MaxManaList = (s: GameState) => selectMaxManaList(s, charId)
+    const MaxStaminaList = (s: GameState) => selectMaxStaminaList(s, charId)
 
     const MaxHealth = (state: GameState) => MaxHealthList(state).total
     const MaxMana = (state: GameState) => MaxManaList(state).total
     const MaxStamina = (state: GameState) => MaxStaminaList(state).total
+
+    const HealthRegenList = (s: GameState) => selectHealthRegenList(s, charId)
+    const StaminaRegenList = (s: GameState) => selectStaminaRegenList(s, charId)
+    const ManaRegenList = (s: GameState) => selectManaRegenList(s, charId)
+
+    const HealthRegen = (s: GameState) => HealthRegenList(s).total
+    const StaminaRegen = (s: GameState) => StaminaRegenList(s).total
+    const ManaRegen = (s: GameState) => ManaRegenList(s).total
 
     const EquippedItem = (s: GameState, slot: EquipSlotsEnum) => {
         const equipped = selChar(s).inventory[slot]
@@ -239,6 +247,14 @@ export const makeCharacterSelector: (charId: string) => CharacterSelector = (cha
         MaxHealthListMemo: memoize(MaxHealthList),
         MaxManaListMemo: memoize(MaxManaList),
         MaxStaminaListMemo: memoize(MaxStaminaList),
+
+        HealthRegenList,
+        StaminaRegenList,
+        ManaRegenList,
+        HealthRegen,
+        StaminaRegen,
+        ManaRegen,
+
         armour,
         damage,
         AllAttackDamage,

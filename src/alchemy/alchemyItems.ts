@@ -1,6 +1,8 @@
 import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
-import { AlchemyPotency, AlchemyEffects, IngredientTypes } from './alchemyTypes'
+import { IngredientTypes } from './alchemyTypes'
+import { EffectPotency } from '../effects/types/EffectPotency'
+import { Effects } from '../effects/types/Effects'
 
 export const AlchemyItems: Record<string, Item> = {
     GlassFlask: {
@@ -20,7 +22,7 @@ export const AlchemyItems: Record<string, Item> = {
         value: 1,
         type: ItemTypes.Flask,
         solventData: {
-            potency: AlchemyPotency.Low,
+            potency: EffectPotency.Low,
         },
     },
     RedFlower: {
@@ -34,8 +36,8 @@ export const AlchemyItems: Record<string, Item> = {
             stability: 10,
             type: IngredientTypes.Herb,
             effects: [
-                { potency: AlchemyPotency.Low, effect: AlchemyEffects.Health },
-                { potency: AlchemyPotency.Low, effect: AlchemyEffects.RegenHealth },
+                { potency: EffectPotency.Low, effect: Effects.Health },
+                { potency: EffectPotency.Low, effect: Effects.RegenHealth },
             ],
         },
     },
@@ -50,8 +52,8 @@ export const AlchemyItems: Record<string, Item> = {
             stability: 10,
             type: IngredientTypes.Herb,
             effects: [
-                { potency: AlchemyPotency.Low, effect: AlchemyEffects.Health },
-                { potency: AlchemyPotency.Low, effect: AlchemyEffects.RegenHealth },
+                { potency: EffectPotency.Low, effect: Effects.Health },
+                { potency: EffectPotency.Low, effect: Effects.RegenHealth },
             ],
         },
     },
@@ -66,8 +68,8 @@ export const AlchemyItems: Record<string, Item> = {
             stability: 10,
             type: IngredientTypes.Herb,
             effects: [
-                { potency: AlchemyPotency.Low, effect: AlchemyEffects.Health },
-                { potency: AlchemyPotency.Low, effect: AlchemyEffects.RegenHealth },
+                { potency: EffectPotency.Low, effect: Effects.Health },
+                { potency: EffectPotency.Low, effect: Effects.RegenHealth },
             ],
         },
     },
