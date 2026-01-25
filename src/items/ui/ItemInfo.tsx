@@ -125,7 +125,7 @@ export const PotionDataUi = memo(function PotionDataUi({ potionData }: { potionD
                         <span className="text-muted-foreground"> {t[data.nameId2]} </span>
                         {!data.instant && (
                             <>
-                                <span className="text-muted-foreground">{t[data.nameId3 ?? 'for']}</span>{' '}
+                                <span className="text-muted-foreground">{t[data.nameId3 ?? 'PerSecFor']}</span>{' '}
                                 {fun.formatTime(effect.duration)}
                             </>
                         )}

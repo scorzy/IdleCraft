@@ -252,7 +252,6 @@ export interface Msg {
     BlueFlower: string
 
     Restore: string
-    for: string
 
     RegenHealth: string
     RestoreHealth: string
@@ -286,4 +285,5 @@ export interface Msg {
     IncreaseMaxHealth: string
     IncreaseMaxMana: string
     IncreaseMaxStamina: string
+    PerSecFor: string
 }

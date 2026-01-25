@@ -250,7 +250,6 @@ export const engMsg: Msg = {
     BlueFlower: 'Blue Flower',
 
     Restore: 'Restore',
-    for: 'for',
     RegenHealth: 'Regen Health',
     RegenMana: 'Regen Mana',
     RegenStamina: 'Regen Stamina',
@@ -283,6 +282,7 @@ export const engMsg: Msg = {
     IncreaseMaxHealth: 'Increase max health',
     IncreaseMaxMana: 'Increase max mana',
     IncreaseMaxStamina: 'Increase max stamina',
+    PerSecFor: 'per sec for',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
