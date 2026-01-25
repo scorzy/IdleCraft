@@ -12,10 +12,10 @@ import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { Item, ItemSubType } from '../items/Item'
 import { selectGameItem } from '../storage/StorageSelectors'
+import { Effects } from '../effects/types/Effects'
 import { MAX_INGREDIENTS } from './alchemyConst'
 import { generatePotion } from './alchemyFunctions'
 import { PotionResult } from './alchemyTypes'
-import { Effects } from '../effects/types/Effects'
 import { isPotionItem, PotionCraftingResult } from './PotionCraftingResult'
 
 const PotionRecipeParameters: RecipeParameterItemFilter[] = [

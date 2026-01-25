@@ -1,8 +1,8 @@
 import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
-import { IngredientTypes } from './alchemyTypes'
 import { EffectPotency } from '../effects/types/EffectPotency'
 import { Effects } from '../effects/types/Effects'
+import { IngredientTypes } from './alchemyTypes'
 
 export const AlchemyItems: Record<string, Item> = {
     GlassFlask: {

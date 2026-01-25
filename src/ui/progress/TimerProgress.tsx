@@ -14,22 +14,22 @@ const TimerProgress = memo(function TimerProgress(props: {
     color: Colors
 }) {
     const { className, start, end, color } = props
-    const inputEl = useRef<HTMLDivElement>(null)
+    const inputElRef = useRef<HTMLDivElement>(null)
 
     useLayoutEffect(() => {
-        if (!inputEl.current) return
+        if (!inputElRef.current) return
         const now = Date.now()
         const time = end ? end - now : 0
         const progress = start && end ? `${-100 + (100 * (now - start)) / (end - start)}` : '-100'
 
-        inputEl.current.style.setProperty('--timer-progress', `${progress}%`)
-        inputEl.current.style.setProperty('--timer-time', `${time}ms`)
+        inputElRef.current.style.setProperty('--timer-progress', `${progress}%`)
+        inputElRef.current.style.setProperty('--timer-time', `${time}ms`)
     }, [start, end])
 
     const classes = className ?? ''
     return (
         <div className={`theme progress__root ${classes} ${color}`}>
-            {start !== undefined && <div ref={inputEl} className={`progress__bar ${styles.animate}`} />}
+            {start !== undefined && <div ref={inputElRef} className={`progress__bar ${styles.animate}`} />}
         </div>
     )
 })
