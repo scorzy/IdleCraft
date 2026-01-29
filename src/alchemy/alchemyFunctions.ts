@@ -7,6 +7,7 @@ import { EffectPotency } from '../effects/types/EffectPotency'
 import { Effects } from '../effects/types/Effects'
 import {
     CHAOTIC_POTENCY_PERCENT,
+    EFFECT_VALUE_BASE,
     MULTIPLE_EFFECTS_STABILITY,
     NEGATIVE_EFFECT_STABILITY_PENALTY,
     STABILITY_STABLE,
@@ -16,6 +17,12 @@ import {
 import { oppositeEffects } from './alchemyData'
 import { isEffectDiscovered, getPotionEffect } from './alchemySelectors'
 import { PotionData, PotionResult } from './alchemyTypes'
+
+function getPotionValue(potionData: PotionData): number {
+    let total = 0
+    for (const effect of potionData.effects) total += effect.value * EFFECT_VALUE_BASE
+    return Math.floor(total * (1 + potionData.effects.length / 4))
+}
 
 export function generatePotion(
     state: GameState,
@@ -137,7 +144,7 @@ export function generatePotion(
             nameId: 'Potion',
             icon: Icons.Potion,
             type: ItemTypes.Potion,
-            value: 0,
+            value: getPotionValue(potionData),
             potionData,
         }
 

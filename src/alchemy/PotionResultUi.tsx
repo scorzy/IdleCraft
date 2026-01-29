@@ -8,6 +8,8 @@ import { MyLabel } from '../ui/myCard/MyLabel'
 import { PotionItem } from './PotionCraftingResult'
 import { PotionResult } from './alchemyTypes'
 
+//ToDo: localize alert titles and descriptions
+
 export const PotionResultUi = memo(function PotionItem({ result }: { result: PotionItem }) {
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
