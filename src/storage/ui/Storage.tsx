@@ -301,7 +301,7 @@ const StorageItem = memo(function StorageItem(props: { small: boolean; location:
     const onClick = useCallback(() => {
         setSelectedItem(itemId, location)
         if (setOpen) setOpen(true)
-    }, [itemId, location])
+    }, [itemId, location, setOpen])
 
     const itemName = useItemName(item)
     if (!item) return

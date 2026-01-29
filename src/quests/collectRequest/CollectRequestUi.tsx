@@ -115,10 +115,7 @@ const CollectRequestSelection = (props: { questId: string; outcomeId: string; re
         useCallback((s: GameState) => selectItemReq(s, questId, outcomeId, reqId), [questId, outcomeId, reqId])
     )
     const itemNumber = useGameStore(
-        useCallback(
-            (s: GameState) => (req?.itemFilter ? selectFilteredItemsNumber(s, req.itemFilter) : 0),
-            [req?.itemFilter]
-        )
+        useCallback((s: GameState) => (req?.itemFilter ? selectFilteredItemsNumber(s, req.itemFilter) : 0), [req])
     )
 
     if (!req) return null

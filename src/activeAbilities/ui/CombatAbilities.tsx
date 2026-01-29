@@ -95,7 +95,7 @@ const Ability = memo(function Ability(props: { id: string; onSelect: (value: str
     const iconId = useGameStore((state: GameState) =>
         ability.getIconId({ state, characterId: state.ui.selectedCharId })
     )
-    const onClick = useCallback(() => onSelect(id), [id])
+    const onClick = useCallback(() => onSelect(id), [id, onSelect])
 
     return (
         <ComboBoxItem value={id} icon={IconsData[iconId]} onSelect={onClick} selected={selected}>
