@@ -15,6 +15,7 @@ export const viewCrafting = (state: GameState, activity: ActivityState) => {
 
     state.craftingForm.paramsValue = structuredClone(original(activity.paramsValue))
     state.craftingForm.result = structuredClone(original(activity.result))
+    state.craftingForm.params = recipe.getParameters(state)
 
     const page = Object.entries(UiPagesData).find((kv) => kv[1].recipeType && kv[1].recipeType === recipe.type)?.[0]
     if (page) state.ui.page = page as UiPages
