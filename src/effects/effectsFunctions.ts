@@ -18,34 +18,34 @@ export interface EffectData {
     value?: number
 }
 
-export function applyInstantEffect(state: GameState, data: EffectData): GameState {
+export function applyInstantEffect(state: GameState, data: EffectData): void {
+    if (!(data.target && data.value && data.value > 0)) return
+
     switch (data.effect) {
         case Effects.Health:
-            if (data.target && data.value && data.value > 0) addHealth(state, data.target, data.value)
+            addHealth(state, data.target, data.value)
             break
         case Effects.Stamina:
-            if (data.target && data.value && data.value > 0) addStamina(state, data.target, data.value)
+            addStamina(state, data.target, data.value)
             break
         case Effects.Mana:
-            if (data.target && data.value && data.value > 0) addMana(state, data.target, data.value)
+            addMana(state, data.target, data.value)
             break
         case Effects.DamageHealth:
-            if (data.target && data.value && data.value < 0) addHealth(state, data.target, data.value)
+            addHealth(state, data.target, data.value)
             break
         case Effects.DamageStamina:
-            if (data.target && data.value && data.value < 0) addStamina(state, data.target, data.value)
+            addStamina(state, data.target, data.value)
             break
         case Effects.DamageMana:
-            if (data.target && data.value && data.value < 0) addMana(state, data.target, data.value)
+            addMana(state, data.target, data.value)
             break
     }
-
-    return state
 }
-export function applyEffect(state: GameState, data: EffectData) {
+export function applyEffect(state: GameState, data: EffectData): void {
     if (!data.duration || data.duration <= 0) {
         applyInstantEffect(state, data)
-        return state
+        return
     }
 
     const appliedEffect: AppliedEffect = {
@@ -61,8 +61,6 @@ export function applyEffect(state: GameState, data: EffectData) {
     startTimer(state, data.duration, ActivityTypes.Effect, appliedEffect.id)
 
     AppliedEffectAdapter.create(state.effects, appliedEffect)
-
-    return state
 }
 export const onEffectEnd = (state: GameState, timer: Timer) => {
     const effect = AppliedEffectAdapter.select(state.effects, timer.actId)
