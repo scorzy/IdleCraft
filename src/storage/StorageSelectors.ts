@@ -110,6 +110,8 @@ export const useLocationItems = (location: GameLocations) => {
 }
 
 export const selectItemQta = (location: GameLocations | null, itemId: string) => (state: GameState) => {
+    if (!isCrafted(itemId) && StdItems[itemId]?.unlimited) return Number.POSITIVE_INFINITY
+
     location = location ?? state.location
     const storage = state.locations[location].storage
     return storage.entries[itemId]?.quantity ?? 0

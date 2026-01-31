@@ -23,6 +23,7 @@ export enum ItemTypes {
     Potion = 'Potion',
     Flask = 'Flask',
     CraftingIngredient = 'CraftingIngredient',
+    Solvent = 'Solvent',
 }
 export enum ItemSubType {
     Weapon = 'Weapon',
@@ -83,6 +84,7 @@ export interface Item {
     solventData?: SolventData
     flaskData?: PotionFlaskData
     potionData?: PotionData
+    unlimited?: boolean
 }
 export interface ItemFilter {
     descriptionId?: keyof Msg

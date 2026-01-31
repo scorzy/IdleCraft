@@ -28,7 +28,6 @@ export const execCrafting = makeExecActivity((state: GameState, timer: Timer) =>
         }
     }
 
-    //  ToDo: Different exp for different recipes
     addExp(state, RecipeData[recipe.type].expType, 10)
 
     if (recipe.afterCrafting) recipe.afterCrafting(state, data.paramsValue, data.result)

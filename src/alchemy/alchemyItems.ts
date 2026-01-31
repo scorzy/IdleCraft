@@ -19,8 +19,10 @@ export const AlchemyItems: Record<string, Item> = {
         id: 'Water',
         icon: Icons.RoundPotion,
         nameId: 'Water',
+        color: 'text-mana',
         value: 1,
-        type: ItemTypes.Flask,
+        type: ItemTypes.Solvent,
+        unlimited: true,
         solventData: {
             potency: EffectPotency.Low,
         },

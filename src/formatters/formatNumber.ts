@@ -74,6 +74,7 @@ export function getFormatter(
     switch (notation) {
         case NotationTypes.STANDARD:
             formatter = (value: number) => {
+                if (value >= Number.POSITIVE_INFINITY) return '∞'
                 if (isNaN(value)) return 'NaN'
                 if (value < 1e4) return compactFormatter.format(value)
 
@@ -91,6 +92,7 @@ export function getFormatter(
             break
         case NotationTypes.SCIENTIFIC:
             formatter = (value: number) => {
+                if (value >= Number.POSITIVE_INFINITY) return '∞'
                 if (isNaN(value)) return 'NaN'
                 if (value < 1e3) return compactFormatter.format(value)
                 value = floorSigfigs(value, DIGITS)
@@ -99,6 +101,7 @@ export function getFormatter(
             break
         case NotationTypes.ENGINEERING:
             formatter = (value: number) => {
+                if (value >= Number.POSITIVE_INFINITY) return '∞'
                 if (isNaN(value)) return 'NaN'
                 if (value < 1e4) return compactFormatter.format(value)
                 value = floorSigfigs(value, DIGITS)
