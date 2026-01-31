@@ -162,10 +162,10 @@ function alterEffects(potionData: PotionData, potionResult: PotionResult) {
         // Unstable: reduce all effects
         for (const effect of potionData.effects) effect.value = Math.floor(effect.value * UNSTABLE_POTENCY_PERCENT)
     } else if (potionResult === PotionResult.Chaotic) {
-        // Chaotic: reduce all effects and remove one random effect
+        // Chaotic: reduce all effects and remove last effect
         for (const effect of potionData.effects) effect.value = Math.floor(effect.value * CHAOTIC_POTENCY_PERCENT)
         if (potionData.effects.length <= 1) return
-        const toRemove = Math.floor(Math.random() * potionData.effects.length)
+        const toRemove = potionData.effects.length - 1
         potionData.effects.splice(toRemove, 1)
     }
 }

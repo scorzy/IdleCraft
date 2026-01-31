@@ -286,4 +286,14 @@ export interface Msg {
     IncreaseMaxMana: string
     IncreaseMaxStamina: string
     PerSecFor: string
+
+    Stable: string
+    Unstable: string
+    Unknown: string
+    Chaotic: string
+
+    NormalPotionDesc: string
+    UnstablePotionDesc: string
+    ChaoticPotionDesc: string
+    UnknownPotionDesc: string
 }

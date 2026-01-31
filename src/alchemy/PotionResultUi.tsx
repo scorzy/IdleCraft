@@ -8,8 +8,6 @@ import { MyLabel } from '../ui/myCard/MyLabel'
 import { PotionItem } from './PotionCraftingResult'
 import { PotionResult } from './alchemyTypes'
 
-//ToDo: localize alert titles and descriptions
-
 export const PotionResultUi = memo(function PotionItem({ result }: { result: PotionItem }) {
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
@@ -27,29 +25,29 @@ export const PotionResultUi = memo(function PotionItem({ result }: { result: Pot
             {result.potionResult === PotionResult.Stable && (
                 <Alert variant="success">
                     <CheckCircle2Icon />
-                    <AlertTitle>Stable</AlertTitle>
-                    <AlertDescription>Normal potion.</AlertDescription>
+                    <AlertTitle>{t.Stable}</AlertTitle>
+                    <AlertDescription>{t.NormalPotionDesc}</AlertDescription>
                 </Alert>
             )}
             {result.potionResult === PotionResult.Unstable && (
                 <Alert variant="warning">
                     <AlertCircleIcon />
-                    <AlertTitle>Unstable</AlertTitle>
-                    <AlertDescription>Reduced efficiency.</AlertDescription>
+                    <AlertTitle>{t.Unstable}</AlertTitle>
+                    <AlertDescription>{t.UnstablePotionDesc}</AlertDescription>
                 </Alert>
             )}
             {result.potionResult === PotionResult.Chaotic && (
                 <Alert variant="destructive">
                     <AlertCircleIcon />
-                    <AlertTitle>Chaotic</AlertTitle>
-                    <AlertDescription>This is an alert with icon, title and description.</AlertDescription>
+                    <AlertTitle>{t.Chaotic}</AlertTitle>
+                    <AlertDescription>{t.ChaoticPotionDesc}</AlertDescription>
                 </Alert>
             )}
             {result.potionResult === PotionResult.Unknown && (
                 <Alert variant="warning">
                     <AlertCircleIcon />
-                    <AlertTitle>Success! Your changes have been saved</AlertTitle>
-                    <AlertDescription>This is an alert with icon, title and description.</AlertDescription>
+                    <AlertTitle>{t.Unknown}</AlertTitle>
+                    <AlertDescription>{t.UnknownPotionDesc}</AlertDescription>
                 </Alert>
             )}
             {result.stability < 0 && (

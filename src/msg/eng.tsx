@@ -283,6 +283,16 @@ export const engMsg: Msg = {
     IncreaseMaxMana: 'Increase max mana',
     IncreaseMaxStamina: 'Increase max stamina',
     PerSecFor: 'per sec for',
+
+    Stable: 'Stable',
+    Unstable: 'Unstable',
+    Chaotic: 'Chaotic',
+    Unknown: 'Unknown',
+
+    NormalPotionDesc: 'Normal potion.',
+    UnstablePotionDesc: 'Reduced efficiency.',
+    ChaoticPotionDesc: 'Reduced efficiency and less effects.',
+    UnknownPotionDesc: 'Unknown potion.',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
