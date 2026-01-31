@@ -296,4 +296,9 @@ export interface Msg {
     UnstablePotionDesc: string
     ChaoticPotionDesc: string
     UnknownPotionDesc: string
+
+    startVillageName: string
+    startVillageDesc: string
+    testName: string
+    testDesc: string
 }

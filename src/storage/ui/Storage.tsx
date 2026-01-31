@@ -1,7 +1,7 @@
 import { createContext, memo, use, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useContainerQueries, QueryBreakpoints } from 'use-container-queries'
 import { useGameStore } from '../../game/state'
-import { GameLocations } from '../../gameLocations/GameLocations'
+import { GameLocationDataMap, GameLocations } from '../../gameLocations/GameLocations'
 import {
     selectGameItem,
     selectItemQta,
@@ -119,9 +119,6 @@ const NoItems = memo(function NoItems() {
 const StorageAccordion = memo(function StorageAccordion() {
     const locations = useGameStore(selectStorageLocationsMemo)
 
-    const { ref, active } = useContainerQueries({ breakpoints })
-    const small = active === 'small'
-
     const [show, setShow] = useState(false)
     useEffect(() => {
         const id = setTimeout(() => setShow(true), 0)
@@ -133,27 +130,38 @@ const StorageAccordion = memo(function StorageAccordion() {
     return (
         <Accordion type="single" collapsible className="mb-4 w-full" defaultValue={locations[0]}>
             {locations.map((l) => (
-                <AccordionItem key={l} value={l} className="w-full">
-                    <Card ref={ref}>
-                        <CardHeader>
-                            <AccordionTrigger className="p-0">
-                                <CardTitle>
-                                    {ChevronsUpDownIcon} {l}
-                                </CardTitle>
-                            </AccordionTrigger>
-                        </CardHeader>
-
-                        <AccordionContent>
-                            <CardContent>
-                                {small && <SortDropdown />}
-
-                                {show && <LocationStorage small={small} location={GameLocations.StartVillage} />}
-                            </CardContent>
-                        </AccordionContent>
-                    </Card>
-                </AccordionItem>
+                <AccordionItemLocation l={l} show={show} key={l} />
             ))}
         </Accordion>
+    )
+})
+const AccordionItemLocation = memo(function AccordionItemLocation({ l, show }: { l: string; show: boolean }) {
+    const { t } = useTranslations()
+    const { ref, active } = useContainerQueries({ breakpoints })
+    const small = active === 'small'
+    const locationData = GameLocationDataMap[l as GameLocations]
+    if (!locationData) return null
+
+    return (
+        <AccordionItem key={l} value={l} className="w-full">
+            <Card ref={ref}>
+                <CardHeader>
+                    <AccordionTrigger className="p-0">
+                        <CardTitle>
+                            {ChevronsUpDownIcon} {t[locationData.name]}
+                        </CardTitle>
+                    </AccordionTrigger>
+                </CardHeader>
+
+                <AccordionContent>
+                    <CardContent>
+                        {small && <SortDropdown />}
+
+                        {show && <LocationStorage small={small} location={GameLocations.StartVillage} />}
+                    </CardContent>
+                </AccordionContent>
+            </Card>
+        </AccordionItem>
     )
 })
 const StorageDrawerContent = memo(function StorageDrawerContent() {

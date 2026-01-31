@@ -293,6 +293,11 @@ export const engMsg: Msg = {
     UnstablePotionDesc: 'Reduced efficiency.',
     ChaoticPotionDesc: 'Reduced efficiency and less effects.',
     UnknownPotionDesc: 'Unknown potion.',
+
+    startVillageName: 'Start Village',
+    startVillageDesc: 'Peaceful village surrounded by nature.',
+    testName: 'testName',
+    testDesc: 'testDesc',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
