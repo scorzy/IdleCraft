@@ -6,3 +6,4 @@ export const UNSTABLE_POTENCY_PERCENT = 0.75
 export const CHAOTIC_POTENCY_PERCENT = 0.5
 export const MULTIPLE_EFFECTS_STABILITY = -5
 export const EFFECT_VALUE_BASE = 2
+export const BASE_STABILITY = 50

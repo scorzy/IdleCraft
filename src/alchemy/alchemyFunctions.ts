@@ -5,7 +5,12 @@ import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
 import { EffectPotency } from '../effects/types/EffectPotency'
 import { Effects } from '../effects/types/Effects'
+import { selectGameItem } from '../storage/StorageSelectors'
+import { applyEffect, EffectData } from '../effects/effectsFunctions'
+import { setState } from '../game/setState'
+import { removeItem } from '../storage/storageFunctions'
 import {
+    BASE_STABILITY,
     CHAOTIC_POTENCY_PERCENT,
     EFFECT_VALUE_BASE,
     MULTIPLE_EFFECTS_STABILITY,
@@ -73,58 +78,18 @@ export function generatePotion(
         id: `Base`,
         nameId: 'Base',
         iconId: Icons.OppositeIngredient,
-        add: 50,
+        add: BASE_STABILITY,
     })
 
     const effects = potionData.effects
-    let stability = 100
+    let stability = BASE_STABILITY
     let potionResult: PotionResult = PotionResult.Chaotic
 
     if (effects.length === 0) {
         if (unknownEffects) potionResult = PotionResult.Unknown
         else potionResult = PotionResult.NotPotion
     } else {
-        for (const effect of effects) {
-            const negatives =
-                oppositeEffects.find((pair) => pair.first.includes(effect.effect))?.second ||
-                oppositeEffects.find((pair) => pair.second.includes(effect.effect))?.first
-
-            if (!negatives) continue
-
-            for (const negative of negatives) {
-                const negativeEffect = effects.find((e) => e.effect === negative)
-                if (negativeEffect) {
-                    potionResultBonusList.bonuses.push({
-                        id: `Opp_${effect.effect}_${negative}`,
-                        nameId: 'OppositeEffects',
-                        iconId: Icons.OppositeIngredient,
-                        add: (effect.value + negativeEffect.value) * NEGATIVE_EFFECT_STABILITY_PENALTY,
-                    })
-                }
-            }
-        }
-
-        if (potionData.effects.length >= 2) {
-            potionResultBonusList.bonuses.push({
-                id: `MultiEffects`,
-                nameId: 'MultipleEffects',
-                iconId: Icons.MultipleEffects,
-                add: MULTIPLE_EFFECTS_STABILITY * (potionData.effects.length - 1),
-            })
-        }
-
-        const stabilityFromIngredients = ingredients.reduce(
-            (sum, ingredient) => sum + (ingredient.ingredientData?.stability || 0),
-            0
-        )
-
-        if (Math.abs(stabilityFromIngredients) > 0.1)
-            potionResultBonusList.bonuses.push({
-                id: `IngredientsStability`,
-                nameId: 'IngredientsStability',
-                iconId: stabilityFromIngredients > 0 ? Icons.ArrowUp : Icons.ArrowDown,
-                add: stabilityFromIngredients,
-            })
+        setStability(potionData, potionResultBonusList, ingredients)
 
         potionResultBonusList.total = getTotal(potionResultBonusList.bonuses)
         stability = potionResultBonusList.total
@@ -157,6 +122,52 @@ export function generatePotion(
     }
 }
 
+function setStability(potionData: PotionData, potionResultBonusList: BonusResult, ingredients: Item[]) {
+    const effects = potionData.effects
+
+    for (const effect of effects) {
+        const negatives =
+            oppositeEffects.find((pair) => pair.first.includes(effect.effect))?.second ||
+            oppositeEffects.find((pair) => pair.second.includes(effect.effect))?.first
+
+        if (!negatives) continue
+
+        for (const negative of negatives) {
+            const negativeEffect = effects.find((e) => e.effect === negative)
+            if (negativeEffect) {
+                potionResultBonusList.bonuses.push({
+                    id: `Opp_${effect.effect}_${negative}`,
+                    nameId: 'OppositeEffects',
+                    iconId: Icons.OppositeIngredient,
+                    add: (effect.value + negativeEffect.value) * NEGATIVE_EFFECT_STABILITY_PENALTY,
+                })
+            }
+        }
+    }
+
+    if (potionData.effects.length >= 2) {
+        potionResultBonusList.bonuses.push({
+            id: `MultiEffects`,
+            nameId: 'MultipleEffects',
+            iconId: Icons.MultipleEffects,
+            add: MULTIPLE_EFFECTS_STABILITY * (potionData.effects.length - 1),
+        })
+    }
+
+    const stabilityFromIngredients = ingredients.reduce(
+        (sum, ingredient) => sum + (ingredient.ingredientData?.stability || 0),
+        0
+    )
+
+    if (Math.abs(stabilityFromIngredients) > 0.1)
+        potionResultBonusList.bonuses.push({
+            id: `IngredientsStability`,
+            nameId: 'IngredientsStability',
+            iconId: stabilityFromIngredients > 0 ? Icons.ArrowUp : Icons.ArrowDown,
+            add: stabilityFromIngredients,
+        })
+}
+
 function alterEffects(potionData: PotionData, potionResult: PotionResult) {
     if (potionResult === PotionResult.Unstable) {
         // Unstable: reduce all effects
@@ -169,3 +180,23 @@ function alterEffects(potionData: PotionData, potionResult: PotionResult) {
         potionData.effects.splice(toRemove, 1)
     }
 }
+
+export function consumePotion(state: GameState, charId: string, itemId: string): void {
+    const item = selectGameItem(itemId)(state)
+    if (!item || !item.potionData) return
+
+    for (const effect of item.potionData.effects) {
+        const effectData: EffectData = {
+            effect: effect.effect,
+            nameId: item.nameId,
+            iconId: item.icon,
+            duration: effect.duration,
+            target: charId,
+            value: effect.value,
+        }
+        applyEffect(state, effectData)
+    }
+
+    removeItem(state, itemId, 1)
+}
+export const consumePotionClick = (charId: string, itemId: string) => setState((s) => consumePotion(s, charId, itemId))

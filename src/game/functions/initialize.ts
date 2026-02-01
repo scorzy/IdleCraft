@@ -56,6 +56,7 @@ import { viewCrafting } from '../../crafting/functions/viewCrafting'
 import { viewWoodcutting } from '../../wood/functions/viewWoodcutting'
 import { viewMining } from '../../mining/functions/viewMining'
 import { potionRecipe } from '../../alchemy/PotionRecipe'
+import { onEffectEnd } from '../../effects/effectsFunctions'
 
 export function initialize() {
     initActivities()
@@ -95,6 +96,8 @@ function initActivities() {
     activityExecutors.set(ActivityTypes.Tree, execTreeGrow)
     activityExecutors.set(ActivityTypes.Ability, execAbilityTimer)
     activityExecutors.set(ActivityTypes.StartBattle, startBattleTimer)
+
+    activityExecutors.set(ActivityTypes.Effect, onEffectEnd)
 }
 
 function initRecipes() {

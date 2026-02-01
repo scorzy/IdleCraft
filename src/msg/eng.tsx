@@ -298,6 +298,8 @@ export const engMsg: Msg = {
     startVillageDesc: 'Peaceful village surrounded by nature.',
     testName: 'testName',
     testDesc: 'testDesc',
+
+    Use: 'Use',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

@@ -301,4 +301,6 @@ export interface Msg {
     startVillageDesc: string
     testName: string
     testDesc: string
+
+    Use: string
 }

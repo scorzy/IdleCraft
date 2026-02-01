@@ -12,6 +12,7 @@ import { equipClick } from '../../characters/characterFunctions'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { useItemName } from '../useItemName'
+import { PotionItemUi } from '../../alchemy/PotionItemUi'
 import { ItemInfo } from './ItemInfo'
 import classes from './selectItem.module.css'
 import { ItemIcon } from './ItemIcon'
@@ -59,9 +60,11 @@ export const SelectedItemInfo = memo(function SelectedItemInfo() {
                 </CardContent>
             </Card>
             {isCurrentLocation && item.equipSlot && <EquipItem />}
+            {isCurrentLocation && item.potionData && <PotionItemUi />}
         </>
     )
 })
+
 const EquipItem = memo(function EquipItem() {
     const selectedItemId = useGameStore(selectSelectedItemId)
     const item = useGameStore(getSelectedItem)

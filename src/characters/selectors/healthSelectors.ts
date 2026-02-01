@@ -61,7 +61,12 @@ export const selectHealthRegenList = (state: GameState, charId: string) => {
     })
     AppliedEffectAdapter.findMany(
         state.effects,
-        (eff) => eff.effect === Effects.RegenHealth && eff.target === charId && eff.value !== undefined && eff.value > 0
+        (eff) =>
+            eff.effect === Effects.RegenHealth &&
+            eff.target !== undefined &&
+            eff.target === charId &&
+            eff.value !== undefined &&
+            eff.value > 0
     ).forEach((eff) => {
         bonuses.push({
             id: eff.id,
@@ -74,6 +79,7 @@ export const selectHealthRegenList = (state: GameState, charId: string) => {
         state.effects,
         (eff) =>
             eff.effect === Effects.DamageRegenHealth &&
+            eff.target !== undefined &&
             eff.target === charId &&
             eff.value !== undefined &&
             eff.value < 0

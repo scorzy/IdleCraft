@@ -84,6 +84,7 @@ export const CraftingReq = memo(function CraftingReq({ req }: { req: RecipeItemR
         </Table>
     )
 })
+
 const CraftingReqRow = memo(function CraftingReqRow({ req }: { req: RecipeItemReq }) {
     const { f } = useNumberFormatter()
     const item = useGameStore(selectGameItem(req.itemId))
