@@ -1,20 +1,26 @@
 .line {
-    display: grid;
+    display: flex;
     gap: 0.5rem;
-    grid-template-columns: auto 18ch auto auto;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: start;
+    flex-direction: column;
 }
+
 .stats {
     display: grid;
     gap: 0;
+    container-type: inline-size;
 }
 .stat {
-    /* color: hsl(var(--muted-foreground)); */
     min-width: 10ch;
     display: grid;
     grid-template-columns: 1fr auto;
 }
 .max {
     text-align: right;
+}
+@container (min-width: 380px) {
+    .line {
+        flex-direction: row;
+    }
 }

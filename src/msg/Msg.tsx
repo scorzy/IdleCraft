@@ -96,6 +96,9 @@ export interface Msg {
     Health: string
     Stamina: string
     Mana: string
+    HealthRegen: string
+    StaminaRegen: string
+    ManaRegen: string
 
     FastWoodcuttingPerk: string
     FastWoodcuttingPerkDesc: string
@@ -286,6 +289,7 @@ export interface Msg {
     IncreaseMaxMana: string
     IncreaseMaxStamina: string
     PerSecFor: string
+    PerSec: string
 
     Stable: string
     Unstable: string

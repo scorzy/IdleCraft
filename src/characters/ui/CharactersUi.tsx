@@ -29,6 +29,7 @@ import { CharSkills } from '../../experience/ui/CharSkills'
 import { ExperienceCardUi } from '../../experience/ui/ExperienceCard'
 import { getCharacterSelector } from '../getCharacterSelector'
 import { GameState } from '../../game/GameState'
+import { MyLabel } from '../../ui/myCard/MyLabel'
 import classes from './charactersUi.module.css'
 import { CharEquipments } from './CharEquipments'
 
@@ -191,32 +192,39 @@ const StatsInfo = memo(function StatsInfo() {
     const usedPoints = useGameStore(useCallback((s: GameState) => charSel.UsedAttributes(s), [charSel]))
     const maxPoints = useGameStore(useCallback((s: GameState) => charSel.MaxAttributes(s), [charSel]))
 
-    const health = useGameStore(useCallback((s: GameState) => charSel.Health(s), [charSel]))
-    const maxH = useGameStore(useCallback((s: GameState) => charSel.MaxHealth(s), [charSel]))
-    const maxHB = charSel.MaxHealthListMemo.bind(charSel)
-
-    const stamina = useGameStore(useCallback((s: GameState) => charSel.Stamina(s), [charSel]))
-    const maxS = useGameStore(useCallback((s: GameState) => charSel.MaxStamina(s), [charSel]))
-    const maxSB = charSel.MaxStaminaListMemo.bind(charSel)
-
-    const mana = useGameStore(useCallback((s: GameState) => charSel.Mana(s), [charSel]))
-    const maxM = useGameStore(useCallback((s: GameState) => charSel.MaxMana(s), [charSel]))
-    const maxMB = charSel.MaxManaListMemo.bind(charSel)
-
-    const healthClick = useCallback(() => addHealthPointClick(charId), [charId])
-    const staminaClick = useCallback(() => addStaminaPointClick(charId), [charId])
-    const manaClick = useCallback(() => addManaPointClick(charId), [charId])
-
-    const readonly = useGameStore(isCharReadonly)
-
-    const hasUnused = usedPoints < maxPoints
-
     return (
         <div className={clsx(classes.stats, 'text-sm')}>
             <span>
                 {t.Points} {f(usedPoints)}/{f(maxPoints)}
             </span>
-            <div className={classes.line}>
+            <HealthInfoUi />
+            <StaminaInfoUi />
+            <ManaInfoUi />
+        </div>
+    )
+})
+
+const HealthInfoUi = memo(function HealthInfoUi() {
+    const { f } = useNumberFormatter()
+    const { t } = useTranslations()
+    const charId = useGameStore(selectSelectedCharId)
+    const charSel = getCharacterSelector(charId)
+    const usedPoints = useGameStore(useCallback((s: GameState) => charSel.UsedAttributes(s), [charSel]))
+
+    const maxPoints = useGameStore(useCallback((s: GameState) => charSel.MaxAttributes(s), [charSel]))
+    const health = useGameStore(useCallback((s: GameState) => charSel.Health(s), [charSel]))
+    const maxH = useGameStore(useCallback((s: GameState) => charSel.MaxHealth(s), [charSel]))
+    const maxHB = charSel.MaxHealthListMemo.bind(charSel)
+    const healthRegen = useGameStore(useCallback((s: GameState) => charSel.HealthRegen(s), [charSel]))
+    const healthRegenB = charSel.HealthRegenList.bind(charSel)
+    const healthClick = useCallback(() => addHealthPointClick(charId), [charId])
+
+    const readonly = useGameStore(isCharReadonly)
+    const hasUnused = usedPoints < maxPoints
+
+    return (
+        <div className={classes.line}>
+            <MyLabel>
                 <GiHearts />
                 <span className={classes.stat}>
                     {t.Health}{' '}
@@ -225,13 +233,45 @@ const StatsInfo = memo(function StatsInfo() {
                     </span>
                 </span>
                 <BonusDialog title={t.Health} selectBonusResult={maxHB} />
-                {!readonly && (
-                    <Button variant="health" size="xs" disabled={!hasUnused} onClick={healthClick}>
-                        <TbPlus />
-                    </Button>
-                )}
-            </div>
-            <div className={classes.line}>
+            </MyLabel>
+
+            <MyLabel>
+                <span className={classes.stat}>
+                    <span className={classes.max}>
+                        {f(healthRegen)} {t.PerSec}
+                    </span>
+                </span>
+                <BonusDialog title={t.HealthRegen} selectBonusResult={healthRegenB} />
+            </MyLabel>
+
+            {!readonly && (
+                <Button variant="health" size="xs" disabled={!hasUnused} onClick={healthClick}>
+                    <TbPlus />
+                </Button>
+            )}
+        </div>
+    )
+})
+
+const StaminaInfoUi = memo(function HealthInfoUi() {
+    const { f } = useNumberFormatter()
+    const { t } = useTranslations()
+    const charId = useGameStore(selectSelectedCharId)
+    const charSel = getCharacterSelector(charId)
+    const usedPoints = useGameStore(useCallback((s: GameState) => charSel.UsedAttributes(s), [charSel]))
+    const maxPoints = useGameStore(useCallback((s: GameState) => charSel.MaxAttributes(s), [charSel]))
+    const stamina = useGameStore(useCallback((s: GameState) => charSel.Stamina(s), [charSel]))
+    const maxS = useGameStore(useCallback((s: GameState) => charSel.MaxStamina(s), [charSel]))
+    const maxSB = charSel.MaxStaminaListMemo.bind(charSel)
+    const staminaRegen = useGameStore(useCallback((s: GameState) => charSel.StaminaRegen(s), [charSel]))
+    const staminaRegenB = charSel.StaminaRegenList.bind(charSel)
+    const staminaClick = useCallback(() => addStaminaPointClick(charId), [charId])
+    const readonly = useGameStore(isCharReadonly)
+    const hasUnused = usedPoints < maxPoints
+
+    return (
+        <div className={classes.line}>
+            <MyLabel>
                 <GiStrong />
                 <span className={classes.stat}>
                     {t.Stamina}{' '}
@@ -240,13 +280,45 @@ const StatsInfo = memo(function StatsInfo() {
                     </span>
                 </span>
                 <BonusDialog title={t.Stamina} selectBonusResult={maxSB} />
-                {!readonly && (
-                    <Button variant="stamina" size="xs" disabled={!hasUnused} onClick={staminaClick}>
-                        <TbPlus />
-                    </Button>
-                )}
-            </div>
-            <div className={classes.line}>
+            </MyLabel>
+
+            <MyLabel>
+                <span className={classes.stat}>
+                    <span className={classes.max}>
+                        {f(staminaRegen)} {t.PerSec}
+                    </span>
+                </span>
+                <BonusDialog title={t.StaminaRegen} selectBonusResult={staminaRegenB} />
+            </MyLabel>
+
+            {!readonly && (
+                <Button variant="stamina" size="xs" disabled={!hasUnused} onClick={staminaClick}>
+                    <TbPlus />
+                </Button>
+            )}
+        </div>
+    )
+})
+
+const ManaInfoUi = memo(function HealthInfoUi() {
+    const { f } = useNumberFormatter()
+    const { t } = useTranslations()
+    const charId = useGameStore(selectSelectedCharId)
+    const charSel = getCharacterSelector(charId)
+    const usedPoints = useGameStore(useCallback((s: GameState) => charSel.UsedAttributes(s), [charSel]))
+    const maxPoints = useGameStore(useCallback((s: GameState) => charSel.MaxAttributes(s), [charSel]))
+    const mana = useGameStore(useCallback((s: GameState) => charSel.Mana(s), [charSel]))
+    const maxM = useGameStore(useCallback((s: GameState) => charSel.MaxMana(s), [charSel]))
+    const maxMB = charSel.MaxManaListMemo.bind(charSel)
+    const manaRegen = useGameStore(useCallback((s: GameState) => charSel.ManaRegen(s), [charSel]))
+    const manaRegenB = charSel.ManaRegenList.bind(charSel)
+    const manaClick = useCallback(() => addManaPointClick(charId), [charId])
+    const readonly = useGameStore(isCharReadonly)
+    const hasUnused = usedPoints < maxPoints
+
+    return (
+        <div className={classes.line}>
+            <MyLabel>
                 <GiMagicPalm />
                 <span className={classes.stat}>
                     {t.Mana}{' '}
@@ -255,12 +327,22 @@ const StatsInfo = memo(function StatsInfo() {
                     </span>
                 </span>
                 <BonusDialog title={t.Mana} selectBonusResult={maxMB} />
-                {!readonly && (
-                    <Button variant="mana" size="xs" disabled={!hasUnused} onClick={manaClick}>
-                        <TbPlus />
-                    </Button>
-                )}
-            </div>
+            </MyLabel>
+
+            <MyLabel>
+                <span className={classes.stat}>
+                    <span className={classes.max}>
+                        {f(manaRegen)} {t.PerSec}
+                    </span>
+                </span>
+                <BonusDialog title={t.ManaRegen} selectBonusResult={manaRegenB} />
+            </MyLabel>
+
+            {!readonly && (
+                <Button variant="mana" size="xs" disabled={!hasUnused} onClick={manaClick}>
+                    <TbPlus />
+                </Button>
+            )}
         </div>
     )
 })

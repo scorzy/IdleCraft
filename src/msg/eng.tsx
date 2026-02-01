@@ -94,6 +94,9 @@ export const engMsg: Msg = {
     Health: 'Health',
     Stamina: 'Stamina',
     Mana: 'Mana',
+    HealthRegen: 'Health Regen',
+    StaminaRegen: 'Stamina Regen',
+    ManaRegen: 'Mana Regen',
 
     FastWoodcuttingPerk: 'Faster Woodcutting',
     FastWoodcuttingPerkDesc: `Increase woodcutting speed by ${FAST_WOODCUTTING_PERK}%`,
@@ -283,6 +286,7 @@ export const engMsg: Msg = {
     IncreaseMaxMana: 'Increase max mana',
     IncreaseMaxStamina: 'Increase max stamina',
     PerSecFor: 'per sec for',
+    PerSec: 'per sec',
 
     Stable: 'Stable',
     Unstable: 'Unstable',

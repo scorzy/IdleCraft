@@ -49,7 +49,7 @@ function CardAction({ className, ...props }: React.ComponentProps<'div'>) {
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<'div'>) {
-    return <div data-slot="card-content" className={cn('px-3', className)} {...props} />
+    return <div data-slot="card-content" className={cn('container-type-inline-size px-3', className)} {...props} />
 }
 
 function CardFooter({ className, ...props }: React.ComponentProps<'div'>) {
