@@ -14,7 +14,7 @@ export function loadData(data: object): GameState {
     const state = deepmerge(initial, data) as GameState
     if (!CharacterAdapter.select(state.characters, PLAYER_ID)) CharacterAdapter.create(state.characters, PLAYER_CHAR)
 
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
         Object.keys(AlchemyItems).forEach((key) => {
             addItem(state, key, 20)
         })
