@@ -9,7 +9,7 @@ export const CharTemplatesData: Record<CharTemplateEnum, CharTemplate> = {
         iconId: Icons.Chicken,
         inventory: {
             TwoHand: {
-                itemId: 'BoarTusk',
+                itemId: 'ChickenBeak',
             },
         },
         skillsExp: {},
