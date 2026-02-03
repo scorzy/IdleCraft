@@ -307,4 +307,7 @@ export interface Msg {
     testDesc: string
 
     Use: string
+
+    TestSupplyQuest: string
+    TestSupplyQuestDesc: string
 }

@@ -18,6 +18,7 @@ import {
     selectOutcomeGoldReward,
     selectOutcomeIds,
     selectOutcomeItemReward,
+    selectOutcomeTitle,
     selectQuestDescription,
     selectQuestIcon,
     selectQuestId,
@@ -219,6 +220,10 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
         setState((s: GameState) => completeQuest(s, questId, outcomeId))
     }, [questId, outcomeId])
 
+    const title = useGameStore(
+        useCallback((s: GameState) => selectOutcomeTitle(questId, outcomeId)(s), [questId, outcomeId])
+    )
+
     const description = useGameStore(
         useCallback((s: GameState) => selectOutcomeDescription(questId, outcomeId)(s), [questId, outcomeId])
     )
@@ -235,7 +240,9 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
             <Card>
                 <CardHeader>
                     <AccordionTrigger className="p-0">
-                        <CardTitle>{ChevronsUpDownIcon} Title</CardTitle>
+                        <CardTitle>
+                            {ChevronsUpDownIcon} {title}
+                        </CardTitle>
                     </AccordionTrigger>
                 </CardHeader>
 

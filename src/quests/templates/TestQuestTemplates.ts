@@ -1,15 +1,15 @@
-import { CharTemplateEnum } from '../characters/templates/characterTemplateEnum'
-import { GameState } from '../game/GameState'
-import { GameLocations } from '../gameLocations/GameLocations'
-import { Icons } from '../icons/Icons'
-import { ItemTypes } from '../items/Item'
-import { selectTranslations } from '../msg/useTranslations'
-import { getUniqueId } from '../utils/getUniqueId'
-import { QuestTemplate } from './QuestTemplate'
-import { QuestAdapter, QuestOutcome, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
+import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
+import { GameState } from '../../game/GameState'
+import { GameLocations } from '../../gameLocations/GameLocations'
+import { Icons } from '../../icons/Icons'
+import { ItemTypes } from '../../items/Item'
+import { selectTranslations } from '../../msg/useTranslations'
+import { getUniqueId } from '../../utils/getUniqueId'
+import { QuestAdapter, QuestOutcome, QuestState, QuestStatus } from '../QuestTypes'
+import { BaseQuestTemplate } from './BaseQuestTemplate'
 
-export class TestQuestTemplate implements QuestTemplate {
-    nextQuestId?: string | undefined
+export class TestQuestTemplate extends BaseQuestTemplate {
+    nextQuestId = 'kill-n'
     id = 'kill-n'
     getName = (questId: string) => (state: GameState) =>
         selectTranslations(state).fun.testQuestName(QuestAdapter.selectEx(state.quests, questId).parameters)
@@ -18,22 +18,15 @@ export class TestQuestTemplate implements QuestTemplate {
         selectTranslations(state).fun.testQuestDesc(QuestAdapter.selectEx(state.quests, questId).parameters)
 
     getIcon = (_questId: string) => (_state: GameState) => Icons.Skull
+    getOutcomeTitle: (questId: string, outcomeId: string) => (state: GameState) => string =
+        (_questId, outcomeId) => (_state) => {
+            if (outcomeId === 'k') return 'Kill'
+            else return 'Collect'
+        }
     getOutcomeDescription = (questId: string, outcomeId: string) => (state: GameState) => {
         const f = selectTranslations(state).fun
         if (outcomeId === 'k') return f.testOutcomeDesc(QuestAdapter.selectEx(state.quests, questId).parameters)
         else return f.testOutcome2Desc(QuestAdapter.selectEx(state.quests, questId).parameters)
-    }
-    getOutcomeGoldReward = (questId: string, outcomeId: string) => (state: GameState) => {
-        const questState = QuestAdapter.selectEx(state.quests, questId)
-        const outcome = QuestOutcomeAdapter.selectEx(questState.outcomeData, outcomeId)
-        if (!outcome) return 0
-        return outcome.goldReward ?? 0
-    }
-    getOutcomeItemReward = (questId: string, outcomeId: string) => (state: GameState) => {
-        const questState = QuestAdapter.selectEx(state.quests, questId)
-        const outcome = QuestOutcomeAdapter.selectEx(questState.outcomeData, outcomeId)
-        if (!outcome) return []
-        return outcome.itemsRewards ?? []
     }
 
     generateQuestData = (_state: GameState) => {
@@ -41,10 +34,7 @@ export class TestQuestTemplate implements QuestTemplate {
             id: 'k',
             location: GameLocations.StartVillage,
             goldReward: 100,
-            itemsRewards: [
-                { itemId: 'TinOre', quantity: 1 },
-                { itemId: 'DeadBoar', quantity: 1 },
-            ],
+            itemsRewards: [{ itemId: 'DeadBoar', quantity: 10 }],
             targets: [
                 {
                     targetId: CharTemplateEnum.Boar,
@@ -54,31 +44,32 @@ export class TestQuestTemplate implements QuestTemplate {
             ],
         }
 
+        const value = 5 + Math.floor(Math.random() * 10)
+        const itemCount = 5 + Math.floor(Math.random() * 10)
+        const itemCount2 = 5 + Math.floor(Math.random() * 10)
+
         const collect: QuestOutcome = {
             id: 'c',
             location: GameLocations.StartVillage,
             goldReward: 100,
-            itemsRewards: [
-                { itemId: 'TinOre', quantity: 1 },
-                { itemId: 'DeadBoar', quantity: 1 },
-            ],
+            itemsRewards: [{ itemId: 'TinOre', quantity: 10 }],
             reqItems: [
                 {
                     id: '1',
-                    itemCount: 2,
+                    itemCount,
                     itemFilter: {
                         minStats: {
-                            value: 10,
+                            value,
                         },
                     },
                 },
                 {
                     id: '2',
-                    itemCount: 4,
+                    itemCount: itemCount2,
                     itemFilter: {
                         itemType: ItemTypes.Plank,
                         minStats: {
-                            value: 10,
+                            value,
                         },
                     },
                 },

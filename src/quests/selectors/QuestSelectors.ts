@@ -41,6 +41,16 @@ export const selectOutcomeIds = (s: GameState) => {
     return outcomes.ids
 }
 
+export const selectOutcomeTitle = (questId: string | null, outcomeId: string | null) => (state: GameState) => {
+    if (!questId || !outcomeId) return ''
+    const quest = QuestAdapter.selectEx(state.quests, questId)
+    const outcomeData = QuestOutcomeAdapter.selectEx(quest.outcomeData, outcomeId)
+    if (!outcomeData) return ''
+    const templateId = quest.templateId
+    const data = QuestData.getEx(templateId)
+    return data.getOutcomeTitle(questId, outcomeId)(state)
+}
+
 export const selectOutcomeDescription = (questId: string | null, outcomeId: string | null) => (state: GameState) => {
     if (!questId || !outcomeId) return ''
     const quest = QuestAdapter.selectEx(state.quests, questId)

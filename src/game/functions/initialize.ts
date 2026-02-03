@@ -20,7 +20,7 @@ import { getMiningTitle } from '../../mining/selectors/getMiningTitle'
 import { removeMining } from '../../mining/functions/removeMining'
 import { startMining } from '../../mining/functions/startMining'
 import { QuestData } from '../../quests/QuestData'
-import { TestQuestTemplate } from '../../quests/QuestTemplates'
+import { TestQuestTemplate } from '../../quests/templates/TestQuestTemplates'
 import { twoHSwordRecipe } from '../../smithing/recipes/2HSword'
 import { armourRecipe } from '../../smithing/recipes/ArmourRecipes'
 import { axeRecipe } from '../../smithing/recipes/AxeRecipe'
@@ -57,6 +57,7 @@ import { viewWoodcutting } from '../../wood/functions/viewWoodcutting'
 import { viewMining } from '../../mining/functions/viewMining'
 import { potionRecipe } from '../../alchemy/PotionRecipe'
 import { onEffectEnd } from '../../effects/effectsFunctions'
+import { SupplyQuestTemplate } from '../../quests/templates/SupplyQuestTemplate'
 
 export function initialize() {
     initActivities()
@@ -120,6 +121,7 @@ function initAbilities() {
 
 function initQuests() {
     QuestData.set('kill-n', new TestQuestTemplate())
+    QuestData.set('SupplyQuest', new SupplyQuestTemplate())
 }
 
 function initListeners() {

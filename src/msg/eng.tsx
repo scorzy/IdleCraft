@@ -304,6 +304,9 @@ export const engMsg: Msg = {
     testDesc: 'testDesc',
 
     Use: 'Use',
+
+    TestSupplyQuest: 'Test Supply Quest',
+    TestSupplyQuestDesc: 'Test Supply Quest',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
@@ -359,10 +362,10 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
 
         OreVein: (oreName: string) => `${oreName} Vein`,
 
-        testQuestName: (_questParams: QuestParams) => 'testQuestName',
-        testQuestDesc: (_questParams: QuestParams) => 'testQuestDesc',
-        testOutcomeDesc: (_questParams: QuestParams) => 'testOutcomeDesc',
-        testOutcome2Desc: (_questParams: QuestParams) => 'testOutcome2Desc',
+        testQuestName: (_questParams: QuestParams) => 'Kill or Collect',
+        testQuestDesc: (_questParams: QuestParams) => 'Kill or Collect, debug quest',
+        testOutcomeDesc: (_questParams: QuestParams) => 'Kill some boars',
+        testOutcome2Desc: (_questParams: QuestParams) => 'Collect some items',
 
         collectN: (n: number) => `Collect ${f(n)}`,
 

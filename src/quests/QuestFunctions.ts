@@ -25,9 +25,24 @@ function GenerateQuestState(state: GameState, templateId: string): QuestState {
 export function updateQuests(state: GameState): void {
     if (selectAvailableQuests(state).length > MAX_AVAILABLE_QUESTS) return
 
-    const newQuest: QuestState = GenerateQuestState(state, 'kill-n')
+    let nKillQuests = 0
+    let nCollectQuests = 0
 
-    QuestAdapter.create(state.quests, newQuest)
+    for (const questId of selectAvailableQuests(state)) {
+        const quest = QuestAdapter.selectEx(state.quests, questId)
+        if (quest.templateId === 'kill-n') nKillQuests++
+        if (quest.templateId === 'SupplyQuest') nCollectQuests++
+    }
+
+    if (nKillQuests < 3) {
+        const newQuest: QuestState = GenerateQuestState(state, 'kill-n')
+        QuestAdapter.create(state.quests, newQuest)
+    }
+
+    if (nCollectQuests < 3) {
+        const newQuest: QuestState = GenerateQuestState(state, 'SupplyQuest')
+        QuestAdapter.create(state.quests, newQuest)
+    }
 }
 export const acceptQuest = (state: GameState, questId: string) => {
     const quest = QuestAdapter.selectEx(state.quests, questId)
