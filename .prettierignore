@@ -1,0 +1,10 @@
+node_modules
+# Ignore artifacts:
+build
+coverage
+package.json
+yarn.lock
+*.svg 
+#src/components
+pnpm-lock.yaml
+public
