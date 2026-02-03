@@ -226,11 +226,9 @@ const HealthInfoUi = memo(function HealthInfoUi() {
         <div className={classes.line}>
             <MyLabel>
                 <GiHearts />
-                <span className={classes.stat}>
-                    {t.Health}{' '}
-                    <span className={classes.max}>
-                        {f(health)} / {f(maxH)}
-                    </span>
+                <span className={classes.stat}>{t.Health}</span>{' '}
+                <span className={classes.max}>
+                    {f(health)} / {f(maxH)}
                 </span>
                 <BonusDialog title={t.Health} selectBonusResult={maxHB} />
             </MyLabel>
@@ -273,11 +271,9 @@ const StaminaInfoUi = memo(function HealthInfoUi() {
         <div className={classes.line}>
             <MyLabel>
                 <GiStrong />
-                <span className={classes.stat}>
-                    {t.Stamina}{' '}
-                    <span className={classes.max}>
-                        {f(stamina)} / {f(maxS)}
-                    </span>
+                <span className={classes.stat}>{t.Stamina} </span>{' '}
+                <span className={classes.max}>
+                    {f(stamina)} / {f(maxS)}
                 </span>
                 <BonusDialog title={t.Stamina} selectBonusResult={maxSB} />
             </MyLabel>
@@ -320,11 +316,9 @@ const ManaInfoUi = memo(function HealthInfoUi() {
         <div className={classes.line}>
             <MyLabel>
                 <GiMagicPalm />
-                <span className={classes.stat}>
-                    {t.Mana}{' '}
-                    <span className={classes.max}>
-                        {f(mana)} / {f(maxM)}
-                    </span>
+                <span className={classes.stat}>{t.Mana} </span>{' '}
+                <span className={classes.max}>
+                    {f(mana)} / {f(maxM)}
                 </span>
                 <BonusDialog title={t.Mana} selectBonusResult={maxMB} />
             </MyLabel>
