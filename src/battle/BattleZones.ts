@@ -4,13 +4,24 @@ import { BattleZone } from './BattleZone'
 import { BattleZoneEnum } from './BattleZoneEnum'
 
 export const BattleZones: Record<BattleZoneEnum, BattleZone> = {
+    [BattleZoneEnum.Chicken]: {
+        nameId: 'Chicken',
+        iconId: Icons.Chicken,
+        enemies: [
+            {
+                id: 'Chicken',
+                quantity: 1,
+                template: CharTemplateEnum.Chicken,
+            },
+        ],
+    },
     [BattleZoneEnum.Boar]: {
         nameId: 'Boar',
         iconId: Icons.Boar,
         enemies: [
             {
-                id: 'boar-1',
-                quantity: 1,
+                id: 'boar-2',
+                quantity: 2,
                 template: CharTemplateEnum.Boar,
             },
         ],
@@ -20,8 +31,8 @@ export const BattleZones: Record<BattleZoneEnum, BattleZone> = {
         iconId: Icons.WolfHead,
         enemies: [
             {
-                id: 'wolf-1',
-                quantity: 2,
+                id: 'wolf-3',
+                quantity: 3,
                 template: CharTemplateEnum.Wolf,
             },
         ],

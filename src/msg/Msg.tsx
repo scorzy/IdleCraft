@@ -310,4 +310,10 @@ export interface Msg {
 
     TestSupplyQuest: string
     TestSupplyQuestDesc: string
+
+    Chicken: string
+    DeadChicken: string
+
+    RedMeat: string
+    WhiteMeat: string
 }

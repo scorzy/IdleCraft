@@ -33,6 +33,7 @@ import {
     GiDroplets,
     GiRoundBottomFlask,
     GiVanillaFlower,
+    GiChicken,
 } from 'react-icons/gi'
 import { LuArrowDown, LuArrowDownUp, LuArrowUp } from 'react-icons/lu'
 
@@ -73,6 +74,7 @@ export enum Icons {
     ArrowDown = 'ArrowDown',
     RoundPotion = 'RoundPotion',
     VanillaFlower = 'VanillaFlower',
+    Chicken = 'Chicken',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -111,4 +113,5 @@ export const IconsData: Record<Icons, ReactNode> = {
     ArrowDown: <LuArrowDown />,
     RoundPotion: <GiRoundBottomFlask />,
     VanillaFlower: <GiVanillaFlower />,
+    Chicken: <GiChicken />,
 }

@@ -3,6 +3,28 @@ import { CharTemplate } from './charTemplates'
 import { CharTemplateEnum } from './characterTemplateEnum'
 
 export const CharTemplatesData: Record<CharTemplateEnum, CharTemplate> = {
+    [CharTemplateEnum.Chicken]: {
+        id: CharTemplateEnum.Chicken,
+        nameId: 'Chicken',
+        iconId: Icons.Chicken,
+        inventory: {
+            TwoHand: {
+                itemId: 'BoarTusk',
+            },
+        },
+        skillsExp: {},
+        skillsLevel: {},
+        level: 1,
+        healthPoints: -9,
+        staminaPoints: -8,
+        manaPoints: -8,
+        loot: [
+            {
+                quantity: 1,
+                itemId: 'DeadChicken',
+            },
+        ],
+    },
     [CharTemplateEnum.Boar]: {
         id: CharTemplateEnum.Boar,
         nameId: 'Boar',
@@ -14,10 +36,10 @@ export const CharTemplatesData: Record<CharTemplateEnum, CharTemplate> = {
         },
         skillsExp: {},
         skillsLevel: {},
-        level: 1,
-        healthPoints: -9,
-        staminaPoints: -9,
-        manaPoints: 0,
+        level: 2,
+        healthPoints: -5,
+        staminaPoints: -3,
+        manaPoints: -8,
         loot: [
             {
                 quantity: 1,
@@ -32,10 +54,10 @@ export const CharTemplatesData: Record<CharTemplateEnum, CharTemplate> = {
         inventory: {},
         skillsExp: {},
         skillsLevel: {},
-        level: 2,
+        level: 3,
         healthPoints: 1,
         staminaPoints: 1,
-        manaPoints: 0,
+        manaPoints: -8,
         loot: [
             {
                 quantity: 1,

@@ -16,6 +16,6 @@ export const BattleAreasList: BattleAreas[] = [
         nameId: 'Forest',
         iconId: Icons.Forest,
         collapsedId: CollapsedEnum.Forest,
-        zones: [BattleZoneEnum.Boar, BattleZoneEnum.Wolf],
+        zones: [BattleZoneEnum.Chicken, BattleZoneEnum.Boar, BattleZoneEnum.Wolf],
     },
 ]

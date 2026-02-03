@@ -2,12 +2,19 @@ import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
 
 export const ButcheringItems: Record<string, Item> = {
-    BoarMeat: {
-        id: 'BoarMeat',
+    WhiteMeat: {
+        id: 'WhiteMeat',
         icon: Icons.Steak,
-        nameId: 'BoarMeat',
+        nameId: 'WhiteMeat',
         type: ItemTypes.RawFood,
         value: 5,
+    },
+    RedMeat: {
+        id: 'RedMeat',
+        icon: Icons.Steak,
+        nameId: 'RedMeat',
+        type: ItemTypes.RawFood,
+        value: 6,
     },
     BoarSkin: {
         id: 'BoarSkin',

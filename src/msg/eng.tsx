@@ -307,6 +307,12 @@ export const engMsg: Msg = {
 
     TestSupplyQuest: 'Test Supply Quest',
     TestSupplyQuestDesc: 'Test Supply Quest',
+
+    Chicken: 'Chicken',
+    DeadChicken: 'Dead Chicken',
+
+    RedMeat: 'Red Meat',
+    WhiteMeat: 'White Meat',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
