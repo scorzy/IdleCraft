@@ -20,6 +20,7 @@ const ReactCompilerConfig = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    base: '/IdleCraft/',
     plugins: [
         react({
             babel: {
