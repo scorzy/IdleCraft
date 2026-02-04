@@ -2,7 +2,7 @@ import { memoize } from 'proxy-memoize'
 import { useMemo } from 'react'
 import { GameState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
-import { StdItems } from '../items/stdItems'
+import { StdItems, StdItemsEntries, UnlimitedItems } from '../items/stdItems'
 import { Item, ItemFilter, ItemTypes } from '../items/Item'
 import { selectTranslations } from '../msg/useTranslations'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
@@ -179,6 +179,11 @@ export const selectFilteredItems = (s: GameState, itemFilter: ItemFilter) => {
         const item = selectGameItemFromCraft(id, s.craftedItems)
         if (item && filterItem(item, itemFilter)) ret.push(id)
     }
+
+    UnlimitedItems.forEach((item) => {
+        if (!item.unlimited) return
+        if (filterItem(item, itemFilter)) ret.push(item.id)
+    })
 
     return ret
 }

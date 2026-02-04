@@ -313,6 +313,14 @@ export const engMsg: Msg = {
 
     RedMeat: 'Red Meat',
     WhiteMeat: 'White Meat',
+
+    VitalHerb: 'Vital Herb',
+    ManaBloom: 'Mana Bloom',
+    StaminaLeaf: 'Stamina Leaf',
+    HealingFungus: 'Healing Fungus',
+    ManaSpore: 'Mana Spore',
+    HeartCrystalDust: 'Heart Crystal Dust',
+    ManaCrystalDust: 'Mana Crystal Dust',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

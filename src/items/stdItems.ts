@@ -17,3 +17,4 @@ export const StdItems: Record<string, Item> = Object.freeze({
     ...AlchemyItems,
 })
 export const StdItemsEntries = Object.values(StdItems)
+export const UnlimitedItems = Object.values(StdItems).filter((i) => i.unlimited)

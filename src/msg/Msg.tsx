@@ -316,4 +316,12 @@ export interface Msg {
 
     RedMeat: string
     WhiteMeat: string
+
+    VitalHerb: string
+    ManaBloom: string
+    StaminaLeaf: string
+    HealingFungus: string
+    ManaSpore: string
+    HeartCrystalDust: string
+    ManaCrystalDust: string
 }
