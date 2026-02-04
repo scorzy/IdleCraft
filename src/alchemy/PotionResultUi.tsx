@@ -17,7 +17,7 @@ export const PotionResultUi = memo(function PotionItem({ result }: { result: Pot
                 {t.Stability} {f(result.stability)}%
                 {result.potionResultBonusList && (
                     <BonusDialog
-                        title={`${t.Stability + f(result.stability)}%`}
+                        title={`${t.Stability} ${f(result.stability)}%`}
                         selectBonusResult={result.potionResultBonusList}
                     />
                 )}
