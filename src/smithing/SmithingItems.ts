@@ -19,9 +19,9 @@ export const SmithingItems: Record<string, Item> = {
                 Slashing: 1,
             },
             armour: {
-                Bludgeoning: 5,
-                Piercing: 5,
-                Slashing: 5,
+                Bludgeoning: 1,
+                Piercing: 1,
+                Slashing: 1,
             },
         },
         craftingWoodAxeData: {
@@ -45,14 +45,14 @@ export const SmithingItems: Record<string, Item> = {
             prestige: 1.1,
             speedBonus: 1,
             damage: {
-                Bludgeoning: 1.1,
-                Piercing: 1.1,
-                Slashing: 1.1,
+                Bludgeoning: 1.2,
+                Piercing: 1.2,
+                Slashing: 1.2,
             },
             armour: {
-                Bludgeoning: 10,
-                Piercing: 10,
-                Slashing: 10,
+                Bludgeoning: 1.2,
+                Piercing: 1.2,
+                Slashing: 1.2,
             },
         },
         craftingWoodAxeData: {

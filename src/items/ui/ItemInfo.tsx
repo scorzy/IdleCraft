@@ -59,7 +59,7 @@ export const ArmourDataUi = memo(function ArmourDataUi(props: { armourData: Dama
         <>
             {Object.entries(armourData).map((kv) => (
                 <div key={kv[0]}>
-                    {t[DamageTypesData[kv[0] as DamageTypes].DamageName]} {f(kv[1])}
+                    {t[DamageTypesData[kv[0] as DamageTypes].ArmourName]} {f(kv[1])}
                 </div>
             ))}
         </>

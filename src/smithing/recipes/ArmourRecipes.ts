@@ -45,7 +45,7 @@ export const armourRecipe = makeMemoizedRecipe({
 
         const armourData: DamageData = {}
         Object.entries(barArmourData).forEach((kv) => {
-            armourData[kv[0] as DamageTypes] = kv[1]
+            armourData[kv[0] as DamageTypes] = 10 * kv[1]
         })
 
         const primaryMat = barItem.materials?.primary

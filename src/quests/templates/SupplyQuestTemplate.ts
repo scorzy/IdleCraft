@@ -3,6 +3,7 @@ import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Icons } from '../../icons/Icons'
 import { MiningItems } from '../../mining/MiningItems'
+import { SmithingItems } from '../../smithing/SmithingItems'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { WoodItems } from '../../wood/WoodItems'
 import { QuestState, QuestOutcome, QuestStatus } from '../QuestTypes'
@@ -64,10 +65,17 @@ export class SupplyQuestTemplate extends BaseQuestTemplate {
             id: MINING_OUTCOME_ID,
             location: GameLocations.StartVillage,
             goldReward: 0,
-            itemsRewards: Object.entries(MiningItems).map(([itemId]) => ({
-                itemId,
-                quantity,
-            })),
+            itemsRewards: Object.entries(MiningItems)
+                .map(([itemId]) => ({
+                    itemId,
+                    quantity,
+                }))
+                .concat(
+                    Object.entries(SmithingItems).map(([itemId]) => ({
+                        itemId,
+                        quantity,
+                    }))
+                ),
         }
 
         const quest: QuestState = {
