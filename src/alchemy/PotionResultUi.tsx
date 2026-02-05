@@ -11,8 +11,11 @@ import { PotionResult } from './alchemyTypes'
 export const PotionResultUi = memo(function PotionItem({ result }: { result: PotionItem }) {
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
+
+    if (!result || result.potionResult === PotionResult.NotPotion) return null
+
     return (
-        <>
+        <div className="mb-2 flex flex-col gap-2">
             <MyLabel className="mb-1">
                 {t.Stability} {f(result.stability)}%
                 {result.potionResultBonusList && (
@@ -22,6 +25,7 @@ export const PotionResultUi = memo(function PotionItem({ result }: { result: Pot
                     />
                 )}
             </MyLabel>
+
             {result.potionResult === PotionResult.Stable && (
                 <Alert variant="success">
                     <CheckCircle2Icon />
@@ -57,6 +61,13 @@ export const PotionResultUi = memo(function PotionItem({ result }: { result: Pot
                     <AlertDescription>{t.LowStabilityNotCraftableDesc}</AlertDescription>
                 </Alert>
             )}
-        </>
+
+            {result.unknownEffects && (
+                <Alert variant="warning">
+                    <AlertCircleIcon />
+                    <AlertDescription>{t.UnknownEffects}</AlertDescription>
+                </Alert>
+            )}
+        </div>
     )
 })

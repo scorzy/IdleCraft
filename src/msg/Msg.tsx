@@ -324,4 +324,6 @@ export interface Msg {
     ManaSpore: string
     HeartCrystalDust: string
     ManaCrystalDust: string
+
+    UnknownEffects: string
 }

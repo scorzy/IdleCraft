@@ -321,6 +321,7 @@ export const engMsg: Msg = {
     ManaSpore: 'Mana Spore',
     HeartCrystalDust: 'Heart Crystal Dust',
     ManaCrystalDust: 'Mana Crystal Dust',
+    UnknownEffects: 'Unknown Effects, potion may have unexpected results',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
