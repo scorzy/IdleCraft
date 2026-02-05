@@ -1,7 +1,6 @@
 .page__container {
     overflow: auto;
     container-type: inline-size;
-    padding-bottom: 2rem;
 }
 .page__info {
     display: grid;
@@ -19,7 +18,6 @@
 .page__container-sidebar {
     overflow: auto;
     container-type: inline-size;
-    padding-bottom: 2rem;
 }
 .page__all {
     overflow: auto;
