@@ -52,7 +52,7 @@ const UiStorageContext = createContext<((open: boolean) => void) | null>(null)
 
 export function UiStorage() {
     const locations = useGameStore(selectStorageLocationsMemo)
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(false)
 
     const accordionRef = useRef<HTMLDivElement>(null)
     const selectedItemRef = useRef<HTMLDivElement>(null)
