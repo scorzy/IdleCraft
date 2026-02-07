@@ -70,3 +70,9 @@ export const moveActivityPrev = (id: string) =>
         ids[index - 1] = id
         ids[index] = tmp
     })
+export const setAutoRemove = (id: string, value: boolean) =>
+    setState((s) => {
+        const act = ActivityAdapter.select(s.activities, id)
+        if (!act) return
+        act.remove = value
+    })

@@ -44,3 +44,10 @@
         align-self: center;
     }
 }
+.autoRemove {
+    grid-column: 1 / span 3;
+    justify-self: end;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.25rem;
+}

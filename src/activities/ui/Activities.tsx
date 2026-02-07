@@ -2,13 +2,14 @@ import { memo, useCallback } from 'react'
 import { LuArrowDown, LuArrowUp, LuInfo } from 'react-icons/lu'
 import { useGameStore } from '../../game/state'
 import {
+    selectActivityAutoRemove,
     selectActivityCanView,
     selectActivityIcon,
     selectActivityIds,
     selectActivityMax,
     selectActivityTitle,
 } from '../ActivitySelectors'
-import { moveActivityNext, moveActivityPrev } from '../activityFunctions'
+import { moveActivityNext, moveActivityPrev, setAutoRemove } from '../activityFunctions'
 import { useTranslations } from '../../msg/useTranslations'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { Alert, AlertTitle } from '../../components/ui/alert'
@@ -21,9 +22,12 @@ import { Eye, TrashIcon } from '../../icons/IconsMemo'
 import { Card, CardContent } from '../../components/ui/card'
 import { GameState } from '../../game/GameState'
 import { viewActivity } from '../functions/viewActivity'
+import { Label } from '../../components/ui/label'
+import { cn } from '../../lib/utils'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const InfoIcon = <LuInfo className="h-4 w-4" />
 
@@ -80,11 +84,13 @@ export const ActivityCard = memo(function ActivityCard({
     const icon = useGameStore(useCallback((s: GameState) => selectActivityIcon(id)(s), [id]))
     const max = useGameStore(useCallback((s: GameState) => selectActivityMax(id)(s), [id]))
     const view = useGameStore(useCallback((s: GameState) => selectActivityCanView(id)(s), [id]))
+    const autoRemove = useGameStore(useCallback((s: GameState) => selectActivityAutoRemove(id)(s), [id]))
 
     const onClickPrev = useCallback(() => moveActivityPrev(id), [id])
     const onClickNext = useCallback(() => moveActivityNext(id), [id])
     const onClickRemove = useCallback(() => removeActivity(id), [id])
     const onClickView = useCallback(() => viewActivity(id), [id])
+    const onAutoRemove = useCallback((checked: boolean) => setAutoRemove(id, checked), [id])
 
     const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
@@ -94,6 +100,8 @@ export const ActivityCard = memo(function ActivityCard({
         [id]
     )
 
+    const checkId = `auto-remove-${id}`
+
     return (
         <div className={classes.container}>
             <div className={classes.icon}>{IconsData[icon]}</div>
@@ -101,7 +109,6 @@ export const ActivityCard = memo(function ActivityCard({
                 <div className="text-md leading-none font-medium">{title}</div>
                 <ActivityCardBadge id={id} />
             </div>
-
             <div className={classes.actions}>
                 {!filtered && !isFirst && (
                     <Button onClick={onClickPrev} variant="ghost">
@@ -142,6 +149,11 @@ export const ActivityCard = memo(function ActivityCard({
                 >
                     {TrashIcon}
                 </Button>
+            </div>
+
+            <div className={cn(classes.autoRemove, 'text-muted-foreground')}>
+                <Checkbox id={checkId} name={checkId} checked={autoRemove} onCheckedChange={onAutoRemove} />
+                <Label htmlFor={checkId}>Remove when completed</Label>
             </div>
         </div>
     )
