@@ -322,6 +322,15 @@ export const engMsg: Msg = {
     HeartCrystalDust: 'Heart Crystal Dust',
     ManaCrystalDust: 'Mana Crystal Dust',
     UnknownEffects: 'Unknown Effects, potion may have unexpected results',
+    RemoveWhenCompleted: 'Remove when completed',
+    RemoveOthers: 'Remove other activities',
+    Repetitions: 'Repetitions',
+    AddLast: 'Last',
+    AddFirst: 'First',
+    AddBeforeCurrent: 'Before current',
+    AddAfterCurrent: 'Next',
+    StartActNow: 'Start now',
+    AddOptions: 'Add activity options',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

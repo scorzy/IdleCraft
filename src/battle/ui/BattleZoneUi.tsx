@@ -23,6 +23,7 @@ import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { addBattle } from '../functions/addBattle'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../components/ui/dialog'
 import { ItemIconName } from '../../items/ui/ItemIconName'
+import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
 import classes from './battleZone.module.css'
 
 export const CombatPage = memo(function CombatPage() {
@@ -65,12 +66,6 @@ const BattleAreasListUi = memo(function BattleAreasList({ bt }: { bt: BattleArea
 })
 
 const BattleZoneInfoUi = memo(function BattleZoneInfoUi({ battleZoneEnum }: { battleZoneEnum: BattleZoneEnum }) {
-    const { t } = useTranslations()
-
-    const onAddClick = useCallback(() => {
-        if (battleZoneEnum) addBattle(battleZoneEnum)
-    }, [battleZoneEnum])
-
     if (!battleZoneEnum) return null
     const battleZone = BattleZones[battleZoneEnum]
     return (
@@ -81,11 +76,34 @@ const BattleZoneInfoUi = memo(function BattleZoneInfoUi({ battleZoneEnum }: { ba
                 ))}
             </CardContent>
             <CardFooter>
-                <Button onClick={onAddClick}>{t.Fight}</Button>
+                <AddBattleButton battleZoneEnum={battleZoneEnum} />
             </CardFooter>
         </Card>
     )
 })
+
+export const AddBattleButton = memo(function AddBattleButton({ battleZoneEnum }: { battleZoneEnum: BattleZoneEnum }) {
+    const { t } = useTranslations()
+    const onAddClick = useCallback(() => {
+        if (battleZoneEnum) addBattle(battleZoneEnum)
+    }, [battleZoneEnum])
+
+    if (!battleZoneEnum) return null
+    const battleZone = BattleZones[battleZoneEnum]
+
+    return (
+        <AddActivityDialog
+            addBtn={<Button onClick={onAddClick}>{t.Fight}</Button>}
+            title={
+                <>
+                    {IconsData[battleZone.iconId]} {t[battleZone.nameId]}
+                </>
+            }
+            openBtn={<Button>{t.Fight}</Button>}
+        />
+    )
+})
+
 const EnemyInfoUi = memo(function EnemyInfoUi({
     quantity,
     templateEnum,

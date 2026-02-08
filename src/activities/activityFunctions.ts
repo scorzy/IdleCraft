@@ -1,4 +1,4 @@
-import { GameState } from '../game/GameState'
+import { AddActivityTypes, GameState } from '../game/GameState'
 import { activityStarters } from '../game/globals'
 import { setState } from '../game/setState'
 import { ActivityAdapter } from './ActivityState'
@@ -75,4 +75,25 @@ export const setAutoRemove = (id: string, value: boolean) =>
         const act = ActivityAdapter.select(s.activities, id)
         if (!act) return
         act.remove = value
+    })
+
+export const setAddActType = (addActType: AddActivityTypes) =>
+    setState((s) => {
+        s.addActType = addActType
+    })
+export const setRemoveOtherActivities = (removeOtherActivities: boolean) =>
+    setState((s) => {
+        s.removeOtherActivities = removeOtherActivities
+    })
+export const setStartActNow = (startActNow: boolean) =>
+    setState((s) => {
+        s.startActNow = startActNow
+    })
+export const setActRepetitions = (actRepetitions: number) =>
+    setState((s) => {
+        s.actRepetitions = actRepetitions
+    })
+export const setActAutoRemove = (actAutoRemove: boolean) =>
+    setState((s) => {
+        s.actAutoRemove = actAutoRemove
     })

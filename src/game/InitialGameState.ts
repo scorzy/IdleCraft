@@ -15,7 +15,7 @@ import { RecipeTypes } from '../crafting/RecipeInterfaces'
 import { QuestAdapter } from '../quests/QuestTypes'
 import { StorageAdapter } from '../storage/storageAdapter'
 import { AppliedEffectAdapter } from '../effects/types/AppliedEffect'
-import { GameState, LocationState } from './GameState'
+import { AddActivityTypes, GameState, LocationState } from './GameState'
 
 const getInitialVillageState: () => LocationState = () => {
     return {
@@ -90,6 +90,11 @@ export const InitialGameState: GameState = {
     quests: QuestAdapter.getInitialState(),
     discoveredEffects: {},
     effects: AppliedEffectAdapter.getInitialState(),
+    addActType: AddActivityTypes.Last,
+    removeOtherActivities: false,
+    startActNow: false,
+    actRepetitions: 1,
+    actAutoRemove: false,
 }
 
 export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)

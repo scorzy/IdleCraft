@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react'
 import { LuArrowDown, LuArrowUp, LuInfo } from 'react-icons/lu'
+import { CheckedState } from '@radix-ui/react-checkbox'
 import { useGameStore } from '../../game/state'
 import {
     selectActivityAutoRemove,
@@ -22,8 +23,8 @@ import { Eye, TrashIcon } from '../../icons/IconsMemo'
 import { Card, CardContent } from '../../components/ui/card'
 import { GameState } from '../../game/GameState'
 import { viewActivity } from '../functions/viewActivity'
-import { Label } from '../../components/ui/label'
 import { cn } from '../../lib/utils'
+import { Field, FieldLabel } from '../../components/ui/field'
 import classes from './activities.module.css'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -90,7 +91,7 @@ export const ActivityCard = memo(function ActivityCard({
     const onClickNext = useCallback(() => moveActivityNext(id), [id])
     const onClickRemove = useCallback(() => removeActivity(id), [id])
     const onClickView = useCallback(() => viewActivity(id), [id])
-    const onAutoRemove = useCallback((checked: boolean) => setAutoRemove(id, checked), [id])
+    const onAutoRemove = useCallback((checked: CheckedState) => setAutoRemove(id, checked === true), [id])
 
     const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
@@ -151,10 +152,10 @@ export const ActivityCard = memo(function ActivityCard({
                 </Button>
             </div>
 
-            <div className={cn(classes.autoRemove, 'text-muted-foreground')}>
+            <Field className={cn(classes.autoRemove, 'text-muted-foreground')} orientation="horizontal">
                 <Checkbox id={checkId} name={checkId} checked={autoRemove} onCheckedChange={onAutoRemove} />
-                <Label htmlFor={checkId}>Remove when completed</Label>
-            </div>
+                <FieldLabel htmlFor={checkId}>{t.RemoveWhenCompleted}</FieldLabel>
+            </Field>
         </div>
     )
 })

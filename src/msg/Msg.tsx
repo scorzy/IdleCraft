@@ -326,4 +326,15 @@ export interface Msg {
     ManaCrystalDust: string
 
     UnknownEffects: string
+
+    RemoveWhenCompleted: string
+    RemoveOthers: string
+    Repetitions: string
+    StartActNow: string
+
+    AddLast: string
+    AddFirst: string
+    AddBeforeCurrent: string
+    AddAfterCurrent: string
+    AddOptions: string
 }

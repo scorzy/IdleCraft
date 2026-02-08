@@ -23,3 +23,9 @@ export const selectActivityCanView = (id: string) => (s: GameState) => {
 }
 export const selectActivityAutoRemove = (id: string) => (state: GameState) =>
     ActivityAdapter.selectEx(state.activities, id).remove ?? false
+
+export const selectAddActType = (state: GameState) => state.addActType
+export const selectRemoveOtherActivities = (state: GameState) => state.removeOtherActivities
+export const selectStartActNow = (state: GameState) => state.startActNow
+export const selectActRepetitions = (state: GameState) => state.actRepetitions
+export const selectActAutoRemove = (state: GameState) => state.actAutoRemove

@@ -41,6 +41,8 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
 import { removeUnusedParams } from '../../msg/removeUnusedParams'
+import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
+import { useItemName } from '../../items/useItemName'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 
@@ -181,9 +183,19 @@ const CraftingButtons = memo(function CraftingButtons() {
                 {time ? fun.formatTime(time) : '-'}
             </Badge>
             {id === null && (
-                <Button type="submit" className="w-min" onClick={addCraftingClick} disabled={!bntEnabled}>
-                    {t.Craft}
-                </Button>
+                <AddActivityDialog
+                    addBtn={
+                        <Button type="submit" className="w-min" onClick={addCraftingClick} disabled={!bntEnabled}>
+                            {t.Craft}
+                        </Button>
+                    }
+                    title={<>{t.Craft}</>}
+                    openBtn={
+                        <Button className="w-min" disabled={!bntEnabled}>
+                            {t.Craft}
+                        </Button>
+                    }
+                />
             )}
             {id !== null && (
                 <Button type="submit" className="w-min" variant="destructive" onClick={onClickRemove}>
