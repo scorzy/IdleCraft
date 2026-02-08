@@ -42,7 +42,6 @@ import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
 import { removeUnusedParams } from '../../msg/removeUnusedParams'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
-import { useItemName } from '../../items/useItemName'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 
