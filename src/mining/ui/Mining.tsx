@@ -26,6 +26,7 @@ import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { ItemIcon } from '../../items/ui/ItemIcon'
 import { useItemName } from '../../items/useItemName'
+import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
 import { MiningSidebar } from './MiningSidebar'
 import { ExpEnum } from '@/experience/ExpEnum'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
@@ -112,7 +113,9 @@ const MiningOre = memo(function MiningOre() {
                 </MyLabel>
                 <GameTimerProgress actionId={act} color="primary" className="mb-2" />
             </CardContent>
-            <MiningButton />
+            <CardFooter>
+                <MiningButton />
+            </CardFooter>
         </Card>
     )
 })
@@ -124,16 +127,24 @@ const MiningButton = memo(function CuttingButton() {
     const onClickStart = useCallback(() => addMining(oreType), [oreType])
     const onClickRemove = useCallback(() => removeActivity(act), [act])
 
-    let btn = <></>
-    if (!act) btn = <Button onClick={onClickStart}>{t.Mine}</Button>
-    else
-        btn = (
+    if (act)
+        return (
             <Button onClick={onClickRemove} variant="destructive">
                 {t.Stop}
             </Button>
         )
 
-    return <CardFooter>{btn}</CardFooter>
+    return (
+        <AddActivityDialog
+            addBtn={<Button onClick={onClickStart}>{t.Mine}</Button>}
+            title={
+                <>
+                    {IconsData.Pickaxe} {t.Mining}
+                </>
+            }
+            openBtn={<Button>{t.Mine}</Button>}
+        />
+    )
 })
 const OreUi = memo(function MiningOre() {
     const { f } = useNumberFormatter()

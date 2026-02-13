@@ -17,8 +17,12 @@ export const execWoodcutting = makeExecActivity((state: GameState, timer: Timer)
     const id = timer.actId
     if (!id) throw new Error(`[onWoodcuttingExec] data not found ${JSON.stringify(timer)}`)
 
-    const data = ActivityAdapter.selectEx(state.activities, id)
-    if (!data) throw new Error(`[onWoodcuttingExec] data not found ${id}`)
+    const data = ActivityAdapter.select(state.activities, id)
+    if (!data) {
+        console.error(`[onWoodcuttingExec] data not found ${id}`)
+        return ActivityStartResult.NotPossible
+    }
+
     if (!isWoodcutting(data)) throw new Error(`[onWoodcuttingExec] wrong type ${data.type}`)
 
     if (!hasTrees(state, data.woodType)) return ActivityStartResult.NotPossible
