@@ -44,3 +44,8 @@
         align-self: center;
     }
 }
+.autoRemove {
+    grid-column: 1 / span 3;
+    justify-self: end;
+    width: auto;
+}

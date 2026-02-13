@@ -14,5 +14,6 @@ export function onTimer(state: GameState, timerId: string): void {
     if (!actId) return
 
     regenerate(state, state.now)
+
     activityExecutors.getEx(timer.type)(state, timer)
 }

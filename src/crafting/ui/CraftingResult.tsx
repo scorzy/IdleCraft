@@ -20,6 +20,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 export const CraftingResult = memo(function CraftingResult({ result }: { result: RecipeItem | undefined }) {
     if (!result) return null
     let item: Item | undefined = undefined
+
     const isPotion = isPotionItem(result)
     if (isPotion) item = result.uiCraftedItem
     else if (result.craftedItem) item = result.craftedItem

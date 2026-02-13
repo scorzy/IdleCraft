@@ -29,6 +29,7 @@ import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { MAX_GROWING_TREES } from '../WoodConst'
 import { GameIcon } from '../../icons/GameIcon'
+import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { ExpEnum } from '@/experience/ExpEnum'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
@@ -127,14 +128,25 @@ const CuttingButton = memo(function CuttingButton() {
     const actId = useGameStore(useCallback((s) => selectWoodcuttingId(s, woodType), [woodType]))
     const onClickStart = useCallback(() => addWoodcutting(woodType), [woodType])
     const onClickRemove = useCallback(() => removeActivity(actId), [actId])
-    const { t } = useTranslations()
+    const { t, fun } = useTranslations()
 
-    if (actId === undefined) return <Button onClick={onClickStart}>{t.Cut}</Button>
+    if (actId)
+        return (
+            <Button onClick={onClickRemove} variant="destructive">
+                {t.Stop}
+            </Button>
+        )
 
     return (
-        <Button onClick={onClickRemove} variant="destructive">
-            {t.Stop}
-        </Button>
+        <AddActivityDialog
+            addBtn={<Button onClick={onClickStart}>{t.Cut}</Button>}
+            title={
+                <>
+                    {IconsData.Axe} {fun.cutting(woodType)}
+                </>
+            }
+            openBtn={<Button>{t.Cut}</Button>}
+        />
     )
 })
 

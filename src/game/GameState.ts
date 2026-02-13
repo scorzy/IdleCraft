@@ -17,6 +17,12 @@ import { AppliedEffect } from '../effects/types/AppliedEffect'
 import { Effects } from '@/effects/types/Effects'
 import { InitialState } from '@/entityAdapter/InitialState'
 
+export enum AddActivityTypes {
+    Last = 'Last',
+    First = 'First',
+    Before = 'Before',
+    Next = 'Next',
+}
 export interface LocationState {
     storage: InitialState<StorageState>
     forests: ForestsType
@@ -55,4 +61,9 @@ export interface GameState {
     quests: InitialState<QuestState>
     discoveredEffects: Record<string, Effects[]>
     effects: InitialState<AppliedEffect>
+    addActType: AddActivityTypes
+    removeOtherActivities: boolean
+    startActNow: boolean
+    actRepetitions: number
+    actAutoRemove: boolean
 }

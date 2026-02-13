@@ -12,7 +12,13 @@ import { selectMiningDamage } from '../selectors/miningDamage'
 import { startMiningOre } from './startMiningOre'
 
 export const execMining = makeExecActivity((state: GameState, timer: Timer) => {
-    const data = ActivityAdapter.selectEx(state.activities, timer.actId)
+    const data = ActivityAdapter.select(state.activities, timer.actId)
+
+    if (!data) {
+        console.error(`[execMining] data not found ${timer.actId}`)
+        return ActivityStartResult.NotPossible
+    }
+
     if (!isMining(data)) throw new Error('[makeExecActivity] Not a mining activity')
     const id = timer.actId
     let completed = false

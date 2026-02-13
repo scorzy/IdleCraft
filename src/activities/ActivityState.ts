@@ -14,6 +14,7 @@ export interface ActivityState {
     id: string
     type: ActivityTypes
     max: number
+    remove?: boolean
 }
 class ActivityAdapterInt<T extends ActivityState> extends AbstractEntityAdapter<T> {
     getId(data: ActivityState): string {
