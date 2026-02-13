@@ -37,25 +37,33 @@ export const Activities = memo(function Activities() {
 
     return (
         <MyPage>
-            <ActivitiesList ids={ids} filtered={false} />
+            <ActivitiesList ids={ids} filtered={false} className="m-auto" />
         </MyPage>
     )
 })
 
-export const ActivitiesList = memo(function ActivitiesList({ filtered, ids }: { filtered: boolean; ids: string[] }) {
+export const ActivitiesList = memo(function ActivitiesList({
+    filtered,
+    ids,
+    className,
+}: {
+    filtered: boolean
+    ids: string[]
+    className?: string
+}) {
     const max = ids.length - 1
     const { t } = useTranslations()
 
     if (ids.length === 0)
         return (
-            <Alert variant="warning" className="m-auto max-w-md">
+            <Alert variant="warning" className={cn('max-w-md', className)}>
                 {InfoIcon}
                 <AlertTitle>{t.NoActivities}</AlertTitle>
             </Alert>
         )
 
     return (
-        <Card className="m-auto max-w-lg">
+        <Card className={cn('max-w-lg', className)}>
             <CardContent>
                 {ids.map((i, index) => (
                     <ActivityCard id={i} key={i} isFirst={index === 0} isLast={index >= max} filtered={filtered} />
