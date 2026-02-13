@@ -43,14 +43,14 @@ export const ActivitiesList = memo(function ActivitiesList({ filtered, ids }: { 
 
     if (ids.length === 0)
         return (
-            <Alert variant="warning" className="max-w-md">
+            <Alert variant="warning" className="m-auto max-w-md">
                 {InfoIcon}
                 <AlertTitle>{t.NoActivities}</AlertTitle>
             </Alert>
         )
 
     return (
-        <Card className="max-w-lg">
+        <Card className="m-auto max-w-lg">
             <CardContent>
                 {ids.map((i, index) => (
                     <ActivityCard id={i} key={i} isFirst={index === 0} isLast={index >= max} filtered={filtered} />
