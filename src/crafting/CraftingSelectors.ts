@@ -4,6 +4,9 @@ import { GameState } from '../game/GameState'
 import { selectItemQta } from '../storage/StorageSelectors'
 import { selectCraftItemId } from '../storage/storageFunctions'
 import { ActivityAdapter } from '../activities/ActivityState'
+import { Item } from '../items/Item'
+import { isPotionItem } from '../alchemy/PotionCraftingResult'
+import { StdItems } from '../items/stdItems'
 import { RecipeItem } from './RecipeInterfaces'
 import { isCrafting } from './CraftingIterfaces'
 import { recipes } from './Recipes'
@@ -58,3 +61,20 @@ export const selectResultQta = (result?: RecipeItem) => (s: GameState) => {
 export const selectCraftingIds = memoize((s: GameState) =>
     ActivityAdapter.findManyIds(s.activities, (a) => isCrafting(a) && recipes.get(a.recipeId)?.type === s.ui.recipeType)
 )
+
+export const selectRecipeResultItem = (state: GameState) => {
+    const results = selectRecipeResult(state)
+    if (!results) return
+
+    const result = results[0]
+    if (!result) return
+
+    let item: Item | undefined = undefined
+
+    const isPotion = isPotionItem(result)
+    if (isPotion) item = result.uiCraftedItem
+    else if (result.craftedItem) item = result.craftedItem
+    else if (result.stdItemId) item = StdItems[result.stdItemId]
+
+    return item
+}

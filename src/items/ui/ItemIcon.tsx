@@ -7,7 +7,7 @@ import { selectGameItem } from '../../storage/StorageSelectors'
 import { selectPrimaryMaterial } from '../selectPrimaryMaterial'
 import { Item } from '../Item'
 
-export const ItemIcon = ({ itemId }: { itemId: string | Item }) => {
+export const ItemIcon = ({ itemId, className }: { itemId: string | Item; className?: string }) => {
     const item = useGameStore(
         useCallback(
             (s: GameState) => {
@@ -23,5 +23,5 @@ export const ItemIcon = ({ itemId }: { itemId: string | Item }) => {
 
     const color = item.color ?? selectPrimaryMaterial(item)?.color
 
-    return <GameIcon icon={item.icon} className={clsx('text-lg', color)} />
+    return <GameIcon icon={item.icon} className={clsx('text-lg', color, className)} />
 }

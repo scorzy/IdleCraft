@@ -18,6 +18,7 @@ import {
     selectRecipeParams,
     selectRecipeReq,
     selectRecipeResult,
+    selectRecipeResultItem,
     selectRecipeType,
 } from '../CraftingSelectors'
 import { useTranslations } from '../../msg/useTranslations'
@@ -42,6 +43,7 @@ import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
 import { removeUnusedParams } from '../../msg/removeUnusedParams'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
+import { ItemIconName } from '../../items/ui/ItemIconName'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 
@@ -172,7 +174,6 @@ const CraftingButtons = memo(function CraftingButtons() {
     const time = useGameStore(selectCraftTime)
 
     const id = useGameStore(selectCurrentCrafting)
-    const bntEnabled = useGameStore(canCraft)
     const onClickRemove = useCallback(() => removeActivity(id), [id])
 
     return (
@@ -181,21 +182,7 @@ const CraftingButtons = memo(function CraftingButtons() {
                 <LuHourglass />
                 {time ? fun.formatTime(time) : '-'}
             </Badge>
-            {id === null && (
-                <AddActivityDialog
-                    addBtn={
-                        <Button type="submit" className="w-min" onClick={addCraftingClick} disabled={!bntEnabled}>
-                            {t.Craft}
-                        </Button>
-                    }
-                    title={<>{t.Craft}</>}
-                    openBtn={
-                        <Button className="w-min" disabled={!bntEnabled}>
-                            {t.Craft}
-                        </Button>
-                    }
-                />
-            )}
+            {id === null && <AddCraftingDialog />}
             {id !== null && (
                 <Button type="submit" className="w-min" variant="destructive" onClick={onClickRemove}>
                     {t.Remove}
@@ -203,6 +190,29 @@ const CraftingButtons = memo(function CraftingButtons() {
             )}
             <GameTimerProgress actionId={id} color="primary" />
         </>
+    )
+})
+
+const AddCraftingDialog = memo(function AddCraftingDialog() {
+    const { t } = useTranslations()
+
+    const bntEnabled = useGameStore(canCraft)
+    const resultItem = useGameStore(selectRecipeResultItem)
+
+    return (
+        <AddActivityDialog
+            addBtn={
+                <Button type="submit" className="w-min" onClick={addCraftingClick} disabled={!bntEnabled}>
+                    {t.Craft}
+                </Button>
+            }
+            title={resultItem ? <ItemIconName itemId={resultItem} /> : t.Craft}
+            openBtn={
+                <Button className="w-min" disabled={!bntEnabled}>
+                    {t.Craft}
+                </Button>
+            }
+        />
     )
 })
 
