@@ -60,26 +60,6 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
 
     return true
 }
-export const selectItemFilterObjects = memoize(
-    (itemFilter: ItemFilter) =>
-        Object.entries(itemFilter)
-            .filter((f) => typeof f[1] === 'object')
-            .sort((a, b) => a[0].localeCompare(b[0])),
-    {
-        isDeepEqual: true,
-        maxSize: 30,
-    }
-)
-export const selectItemFilterProps = memoize(
-    (minStats: object) =>
-        Object.entries(minStats)
-            .filter((f) => typeof f[1] === 'number')
-            .sort((a, b) => a[0].localeCompare(b[0])),
-    {
-        isDeepEqual: true,
-        maxSize: 30,
-    }
-)
 
 export const selectItemNameMemoized = memoize(
     (nameFunc: keyof MsgFunctions | undefined, params: GetItemNameParams, t: ReturnType<typeof selectTranslations>) => {
