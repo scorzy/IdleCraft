@@ -2,35 +2,22 @@ import { getUniqueId } from '../utils/getUniqueId'
 import { getRandomNum } from '../utils/getRandomNum'
 import { GameState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
-import { OreData } from './OreData'
 import { hasPerk } from '../perks/PerksSelectors'
 import { PerksEnum } from '../perks/perksEnum'
-import { VEIN_MASTERY_ARMOUR_REDUCE, VEIN_MASTERY_GEM_BONUS, VEIN_MASTERY_HP_REDUCE, VEIN_MASTERY_QTA_BONUS } from './MiningCost'
-import { OreState, OreType, OreVeinState } from './OreState'
-import { OreTypes, OreTypesKeys } from './OreTypes'
+import { OreData } from './OreData'
+import {
+    VEIN_MASTERY_ARMOUR_REDUCE,
+    VEIN_MASTERY_GEM_BONUS,
+    VEIN_MASTERY_HP_REDUCE,
+    VEIN_MASTERY_QTA_BONUS,
+} from './MiningCost'
+import { OreVeinState } from './OreState'
+import { OreTypes } from './OreTypes'
 import { selectDefaultMine } from './miningSelectors'
 
 export const MAX_ORE_VEINS = 10
 
-function migrateVeinsIfNeeded(state: GameState, location: GameLocations): void {
-    const veinsData = state.locations[location].oreVeins as unknown
-    if (!Array.isArray(veinsData)) return
-
-    const migrated: Partial<Record<OreTypes, OreVeinState[]>> = {}
-    veinsData.forEach((vein) => {
-        if (!vein || typeof vein !== 'object' || !('oreType' in vein)) return
-        const oreType = vein.oreType as OreTypes
-        if (oreType !== OreTypes.Copper && oreType !== OreTypes.Tin) return
-        if (!migrated[oreType]) migrated[oreType] = []
-        migrated[oreType]?.push(vein as OreVeinState)
-    })
-
-    state.locations[location].oreVeins = migrated
-}
-
 export function getOreVeinsByType(state: GameState, location: GameLocations, oreType: OreTypes): OreVeinState[] {
-    migrateVeinsIfNeeded(state, location)
-
     const veinsMap = state.locations[location].oreVeins
     const veins = veinsMap[oreType]
     if (veins) return veins
@@ -106,9 +93,7 @@ export function searchOreVein(state: GameState, location: GameLocations, oreType
     const armour = veinMastery
         ? Math.max(0, Math.floor((armourRaw * (100 - VEIN_MASTERY_ARMOUR_REDUCE)) / 100))
         : armourRaw
-    const gemChance = veinMastery
-        ? Math.min(0.9, (gemChanceRaw * (100 + VEIN_MASTERY_GEM_BONUS)) / 100)
-        : gemChanceRaw
+    const gemChance = veinMastery ? Math.min(0.9, (gemChanceRaw * (100 + VEIN_MASTERY_GEM_BONUS)) / 100) : gemChanceRaw
 
     const vein: OreVeinState = {
         id: getUniqueId(),
@@ -202,30 +187,4 @@ export function mineOreVein(
     if (!completed) vein.hp = hp
 
     return { mined, completed, oreType: vein.oreType, gemDropped }
-}
-
-export function loadOre(data: unknown): OreType {
-    const res: OreType = {}
-    if (!data) return res
-    if (typeof data !== 'object') return res
-    const dataFix = data as Record<string, unknown>
-    Object.entries(dataFix).forEach((e) => {
-        const oreType = e[0]
-        if (typeof oreType === 'string' && OreTypesKeys.find((w) => w === oreType)) {
-            const forestDataState = e[1]
-            if (
-                forestDataState &&
-                typeof forestDataState === 'object' &&
-                'qta' in forestDataState &&
-                'hp' in forestDataState &&
-                typeof forestDataState.qta === 'number' &&
-                typeof forestDataState.hp === 'number'
-            ) {
-                const oreState: OreState = { qta: forestDataState.qta, hp: forestDataState.hp }
-                res[oreType as OreTypes] = oreState
-            }
-        }
-    })
-
-    return res
 }
