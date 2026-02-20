@@ -34,6 +34,10 @@ import { addMiningVeinSearch } from '../functions/addMiningVeinSearch'
 import { ActivityAdapter, ActivityTypes } from '@/activities/ActivityState'
 import { removeOreVein } from '../miningFunctions'
 import { setState } from '@/game/setState'
+import { isMining } from '../Mining'
+import { OreVeinState } from '../OreState'
+import { SEARCH_ORE_VEIN_TIME } from '../functions/startMiningVeinSearch'
+import { OreTypes } from '../OreTypes'
 
 export const Mining = memo(function Mining() {
     const oreType = useGameStore(selectOreType)
@@ -80,20 +84,33 @@ const MiningOreLock = memo(function MiningOreLock() {
     )
 })
 
+function selectActiveVein(state: GameState, oreType: OreTypes): OreVeinState | undefined {
+    const actId = selectMiningId(state, oreType)
+    if (!actId) return
+
+    const activity = ActivityAdapter.select(state.activities, actId)
+    if (!activity || !isMining(activity) || !activity.activeVeinId) return
+
+    return state.locations[state.location].oreVeins.find((w) => w.id === activity.activeVeinId)
+}
+
 const MiningOre = memo(function MiningOre() {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
 
     const ore = useGameStore(useCallback((state: GameState) => selectOre(state, oreType), [oreType]))
+    const activeVein = useGameStore(useCallback((state: GameState) => selectActiveVein(state, oreType), [oreType]))
     const act = useGameStore(useCallback((state: GameState) => selectMiningId(state, oreType), [oreType]))
     const damage = useGameStore(selectMiningDamageMemo)
     const time = useGameStore(selectMiningTimeMemo)
 
-    const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
-    const hpPercent = Math.floor((100 * ore.hp) / def.hp)
-
     const oreData = OreData[oreType]
+    const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
+    const hp = activeVein?.hp ?? ore.hp
+    const maxHp = activeVein?.maxHp ?? def.hp
+    const armour = activeVein?.armour ?? oreData.armour
+    const hpPercent = Math.floor((100 * hp) / Math.max(1, maxHp))
 
     return (
         <Card>
@@ -101,10 +118,10 @@ const MiningOre = memo(function MiningOre() {
             <CardContent>
                 <MyLabelContainer>
                     <MyLabel>
-                        {t.OreHp} {f(ore.hp)} <span className='text-muted-foreground'>/ {f(def.hp)}</span>
+                        {t.OreHp} {f(hp)} <span className='text-muted-foreground'>/ {f(maxHp)}</span>
                     </MyLabel>
                     <MyLabel>
-                        {t.Armour} {f(oreData.armour)}
+                        {t.Armour} {f(armour)}
                     </MyLabel>
                     <MyLabel>
                         {t.Damage} {f(damage)}
@@ -156,17 +173,21 @@ const OreUi = memo(function MiningOre() {
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
     const oreQta = useGameStore(useCallback((state: GameState) => selectOre(state, oreType).qta, [oreType]))
+    const activeVein = useGameStore(useCallback((state: GameState) => selectActiveVein(state, oreType), [oreType]))
     const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
-    const hpPercent = Math.floor((100 * oreQta) / def.qta)
-    const oreData = OreData[oreType]
+
+    const oreData = OreData[activeVein?.oreType ?? oreType]
     const name = useItemName(oreData.oreId)
+    const qta = activeVein?.qta ?? oreQta
+    const maxQta = activeVein?.maxQta ?? def.qta
+    const hpPercent = Math.floor((100 * qta) / Math.max(1, maxQta))
 
     return (
         <Card>
             <MyCardHeaderTitle title={fun.OreVein(name)} icon={<ItemIcon itemId={oreData.oreId} />} />
             <CardContent>
                 <MyLabel>
-                    {t.OreQta} {f(oreQta)}/{f(def.qta)}
+                    {t.OreQta} {f(qta)}/{f(maxQta)}
                 </MyLabel>
                 <RestartProgress value={hpPercent} color='health' />
             </CardContent>
@@ -175,7 +196,7 @@ const OreUi = memo(function MiningOre() {
 })
 
 const OreVeinsUi = memo(function OreVeinsUi() {
-    const { t } = useTranslations()
+    const { t, fun } = useTranslations()
     const { f } = useNumberFormatter()
     const veins = useGameStore((s) => s.locations[s.location].oreVeins)
     const searchActId = useGameStore(
@@ -198,9 +219,21 @@ const OreVeinsUi = memo(function OreVeinsUi() {
                             {t.Stop}
                         </Button>
                     ) : (
-                        <Button onClick={onSearch}>{t.SearchOreVein}</Button>
+                        <AddActivityDialog
+                            title={
+                                <>
+                                    {IconsData.Pickaxe} {t.SearchOreVein}
+                                </>
+                            }
+                            openBtn={<Button>{t.SearchOreVein}</Button>}
+                            addBtn={<Button onClick={onSearch}>{t.Add}</Button>}
+                        />
                     )}
                 </div>
+                <MyLabel>
+                    {t.Time} {fun.formatTime(SEARCH_ORE_VEIN_TIME)}
+                </MyLabel>
+                <GameTimerProgress actionId={searchActId} color='primary' className='mb-2' />
                 <MyLabel>{veins.length}/10</MyLabel>
                 {veins.map((vein) => (
                     <div key={vein.id} className='mb-2 rounded border p-2'>

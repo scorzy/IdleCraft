@@ -9,6 +9,7 @@ export interface OreVeinState {
     id: string
     oreType: OreTypes
     qta: number
+    maxQta: number
     hp: number
     maxHp: number
     armour: number

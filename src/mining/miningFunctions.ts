@@ -48,6 +48,7 @@ export function searchOreVein(state: GameState, location: GameLocations): OreVei
         id: getUniqueId(),
         oreType,
         qta,
+        maxQta: qta,
         hp,
         maxHp: hp,
         armour,
