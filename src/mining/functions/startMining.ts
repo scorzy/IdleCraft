@@ -3,14 +3,14 @@ import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { makeStartActivity } from '../../activities/functions/makeStartActivity'
 import { GameState } from '../../game/GameState'
 import { startTimer } from '../../timers/startTimer'
-import { hasOre, getCurrentOreVein } from '../miningFunctions'
+import { hasOre, getCurrentOreVeinByType } from '../miningFunctions'
 import { getMiningActivity } from '../selectors/getMiningActivity'
 import { selectMiningTime } from '../selectors/miningTime'
 import { startMiningOre } from './startMiningOre'
 
 export const startMining = makeStartActivity((state: GameState, id: string) => {
     const data = getMiningActivity(state.activities, id)
-    const vein = getCurrentOreVein(state, state.location)
+    const vein = getCurrentOreVeinByType(state, state.location, data.oreType)
 
     if (vein) {
         data.activeVeinId = vein.id

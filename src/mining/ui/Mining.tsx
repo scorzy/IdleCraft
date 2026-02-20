@@ -32,7 +32,7 @@ import { ExpEnum } from '@/experience/ExpEnum'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
 import { addMiningVeinSearch } from '../functions/addMiningVeinSearch'
 import { ActivityAdapter, ActivityTypes } from '@/activities/ActivityState'
-import { removeOreVein } from '../miningFunctions'
+import { getCurrentOreVeinByType, removeOreVein } from '../miningFunctions'
 import { setState } from '@/game/setState'
 import { isMining } from '../Mining'
 import { OreVeinState } from '../OreState'
@@ -86,12 +86,16 @@ const MiningOreLock = memo(function MiningOreLock() {
 
 function selectActiveVein(state: GameState, oreType: OreTypes): OreVeinState | undefined {
     const actId = selectMiningId(state, oreType)
-    if (!actId) return
+    if (!actId) return getCurrentOreVeinByType(state, state.location, oreType)
 
     const activity = ActivityAdapter.select(state.activities, actId)
-    if (!activity || !isMining(activity) || !activity.activeVeinId) return
+    if (!activity || !isMining(activity) || !activity.activeVeinId)
+        return getCurrentOreVeinByType(state, state.location, oreType)
 
-    return state.locations[state.location].oreVeins.find((w) => w.id === activity.activeVeinId)
+    const activeVein = state.locations[state.location].oreVeins.find((w) => w.id === activity.activeVeinId)
+    if (activeVein && activeVein.oreType === oreType) return activeVein
+
+    return getCurrentOreVeinByType(state, state.location, oreType)
 }
 
 const MiningOre = memo(function MiningOre() {
@@ -198,6 +202,7 @@ const OreUi = memo(function MiningOre() {
 const OreVeinsUi = memo(function OreVeinsUi() {
     const { t, fun } = useTranslations()
     const { f } = useNumberFormatter()
+    const oreType = useGameStore(selectOreType)
     const veins = useGameStore((s) => s.locations[s.location].oreVeins)
     const searchActId = useGameStore(
         (s) => ActivityAdapter.find(s.activities, (w) => w.type === ActivityTypes.MiningVeinSearch)?.id
@@ -234,8 +239,8 @@ const OreVeinsUi = memo(function OreVeinsUi() {
                     {t.Time} {fun.formatTime(SEARCH_ORE_VEIN_TIME)}
                 </MyLabel>
                 <GameTimerProgress actionId={searchActId} color='primary' className='mb-2' />
-                <MyLabel>{veins.length}/10</MyLabel>
-                {veins.map((vein) => (
+                <MyLabel>{veins.filter((w) => w.oreType === oreType).length}/10</MyLabel>
+                {veins.filter((w) => w.oreType === oreType).map((vein) => (
                     <div key={vein.id} className='mb-2 rounded border p-2'>
                         <MyLabel>
                             {vein.oreType} - {t.OreQta}: {f(vein.qta)}

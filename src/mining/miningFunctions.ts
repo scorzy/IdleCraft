@@ -22,6 +22,14 @@ export function getCurrentOreVein(state: GameState, location: GameLocations): Or
     return state.locations[location].oreVeins[0]
 }
 
+export function getCurrentOreVeinByType(
+    state: GameState,
+    location: GameLocations,
+    oreType: OreTypes
+): OreVeinState | undefined {
+    return state.locations[location].oreVeins.find((w) => w.oreType === oreType)
+}
+
 export function removeOreVein(state: GameState, location: GameLocations, veinId: string): void {
     const veins = state.locations[location].oreVeins
     const index = veins.findIndex((w) => w.id === veinId)
