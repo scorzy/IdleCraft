@@ -9,25 +9,7 @@ import { selectDefaultMine } from './miningSelectors'
 
 export const MAX_ORE_VEINS = 10
 
-function migrateVeinsIfNeeded(state: GameState, location: GameLocations): void {
-    const veinsData = state.locations[location].oreVeins as unknown
-    if (!Array.isArray(veinsData)) return
-
-    const migrated: Partial<Record<OreTypes, OreVeinState[]>> = {}
-    veinsData.forEach((vein) => {
-        if (!vein || typeof vein !== 'object' || !('oreType' in vein)) return
-        const oreType = vein.oreType as OreTypes
-        if (oreType !== OreTypes.Copper && oreType !== OreTypes.Tin) return
-        if (!migrated[oreType]) migrated[oreType] = []
-        migrated[oreType]?.push(vein as OreVeinState)
-    })
-
-    state.locations[location].oreVeins = migrated
-}
-
 export function getOreVeinsByType(state: GameState, location: GameLocations, oreType: OreTypes): OreVeinState[] {
-    migrateVeinsIfNeeded(state, location)
-
     const veinsMap = state.locations[location].oreVeins
     const veins = veinsMap[oreType]
     if (veins) return veins
