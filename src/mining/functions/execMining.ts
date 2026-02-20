@@ -28,7 +28,7 @@ export const execMining = makeExecActivity((state: GameState, timer: Timer) => {
     addExp(state, ExpEnum.Mining, damage * 0.1)
 
     if (data.activeVeinId) {
-        const veinRes = mineOreVein(state, state.location, data.activeVeinId, damage)
+        const veinRes = mineOreVein(state, state.location, data.oreType, data.activeVeinId, damage)
 
         if (!veinRes.oreType) return ActivityStartResult.NotPossible
         if (veinRes.mined) {

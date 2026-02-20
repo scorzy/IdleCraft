@@ -1,4 +1,5 @@
 import { memo, useCallback } from 'react'
+import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
 import { TbAlertTriangle } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
 import { selectOreType } from '../../ui/state/uiSelectors'
@@ -32,12 +33,18 @@ import { ExpEnum } from '@/experience/ExpEnum'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
 import { addMiningVeinSearch } from '../functions/addMiningVeinSearch'
 import { ActivityAdapter, ActivityTypes } from '@/activities/ActivityState'
-import { getCurrentOreVeinByType, removeOreVein } from '../miningFunctions'
+import { getCurrentOreVeinByType, moveOreVeinNext, moveOreVeinPrev, removeOreVein } from '../miningFunctions'
 import { setState } from '@/game/setState'
 import { isMining } from '../Mining'
 import { OreVeinState } from '../OreState'
 import { SEARCH_ORE_VEIN_TIME } from '../functions/startMiningVeinSearch'
 import { OreTypes } from '../OreTypes'
+import { TrashIcon } from '@/icons/IconsMemo'
+import { cn } from '@/lib/utils'
+import classes from './miningVeins.module.css'
+
+const ArrowUp = <LuArrowUp className='text-lg' />
+const ArrowDown = <LuArrowDown className='text-lg' />
 
 export const Mining = memo(function Mining() {
     const oreType = useGameStore(selectOreType)
@@ -92,8 +99,8 @@ function selectActiveVein(state: GameState, oreType: OreTypes): OreVeinState | u
     if (!activity || !isMining(activity) || !activity.activeVeinId)
         return getCurrentOreVeinByType(state, state.location, oreType)
 
-    const activeVein = state.locations[state.location].oreVeins.find((w) => w.id === activity.activeVeinId)
-    if (activeVein && activeVein.oreType === oreType) return activeVein
+    const activeVein = (state.locations[state.location].oreVeins[oreType] ?? []).find((w) => w.id === activity.activeVeinId)
+    if (activeVein) return activeVein
 
     return getCurrentOreVeinByType(state, state.location, oreType)
 }
@@ -172,6 +179,7 @@ const MiningButton = memo(function CuttingButton() {
         />
     )
 })
+
 const OreUi = memo(function MiningOre() {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
@@ -180,7 +188,7 @@ const OreUi = memo(function MiningOre() {
     const activeVein = useGameStore(useCallback((state: GameState) => selectActiveVein(state, oreType), [oreType]))
     const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
 
-    const oreData = OreData[activeVein?.oreType ?? oreType]
+    const oreData = OreData[oreType]
     const name = useItemName(oreData.oreId)
     const qta = activeVein?.qta ?? oreQta
     const maxQta = activeVein?.maxQta ?? def.qta
@@ -201,18 +209,14 @@ const OreUi = memo(function MiningOre() {
 
 const OreVeinsUi = memo(function OreVeinsUi() {
     const { t, fun } = useTranslations()
-    const { f } = useNumberFormatter()
     const oreType = useGameStore(selectOreType)
-    const veins = useGameStore((s) => s.locations[s.location].oreVeins)
+    const veins = useGameStore((s) => s.locations[s.location].oreVeins[oreType] ?? [])
     const searchActId = useGameStore(
-        (s) => ActivityAdapter.find(s.activities, (w) => w.type === ActivityTypes.MiningVeinSearch)?.id
+        (s) => ActivityAdapter.find(s.activities, (w) => w.type === ActivityTypes.MiningVeinSearch && 'oreType' in w && w.oreType === oreType)?.id
     )
 
-    const onSearch = useCallback(() => addMiningVeinSearch(), [])
+    const onSearch = useCallback(() => addMiningVeinSearch(oreType), [oreType])
     const onStopSearch = useCallback(() => removeActivity(searchActId), [searchActId])
-    const onRemoveVein = useCallback((id: string) => {
-        setState((s) => removeOreVein(s, s.location, id))
-    }, [])
 
     return (
         <Card>
@@ -239,24 +243,75 @@ const OreVeinsUi = memo(function OreVeinsUi() {
                     {t.Time} {fun.formatTime(SEARCH_ORE_VEIN_TIME)}
                 </MyLabel>
                 <GameTimerProgress actionId={searchActId} color='primary' className='mb-2' />
-                <MyLabel>{veins.filter((w) => w.oreType === oreType).length}/10</MyLabel>
-                {veins.filter((w) => w.oreType === oreType).map((vein) => (
-                    <div key={vein.id} className='mb-2 rounded border p-2'>
-                        <MyLabel>
-                            {vein.oreType} - {t.OreQta}: {f(vein.qta)}
-                        </MyLabel>
-                        <MyLabel>
-                            {t.OreHp}: {f(vein.hp)} / {f(vein.maxHp)}
-                        </MyLabel>
-                        <MyLabel>
-                            {t.VeinArmour}: {f(vein.armour)} - {t.VeinGemChance}: {f(vein.gemChance * 100)}%
-                        </MyLabel>
-                        <Button variant='destructive' onClick={() => onRemoveVein(vein.id)}>
-                            {t.Remove}
-                        </Button>
-                    </div>
+                <MyLabel>
+                    {veins.length}/10
+                </MyLabel>
+                {veins.map((vein, index) => (
+                    <VeinCard
+                        key={vein.id}
+                        vein={vein}
+                        oreType={oreType}
+                        isFirst={index === 0}
+                        isLast={index === veins.length - 1}
+                    />
                 ))}
             </CardContent>
         </Card>
+    )
+})
+
+const VeinCard = memo(function VeinCard({
+    vein,
+    oreType,
+    isFirst,
+    isLast,
+}: {
+    vein: OreVeinState
+    oreType: OreTypes
+    isFirst: boolean
+    isLast: boolean
+}) {
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+
+    const onClickPrev = useCallback(() => {
+        setState((s) => moveOreVeinPrev(s, s.location, oreType, vein.id))
+    }, [oreType, vein.id])
+    const onClickNext = useCallback(() => {
+        setState((s) => moveOreVeinNext(s, s.location, oreType, vein.id))
+    }, [oreType, vein.id])
+    const onRemoveVein = useCallback(() => {
+        setState((s) => removeOreVein(s, s.location, oreType, vein.id))
+    }, [oreType, vein.id])
+
+    return (
+        <div className={classes.container}>
+            <div>
+                <MyLabel>
+                    {vein.oreType} - {t.OreQta}: {f(vein.qta)}
+                </MyLabel>
+                <MyLabel>
+                    {t.OreHp}: {f(vein.hp)} / {f(vein.maxHp)}
+                </MyLabel>
+                <MyLabel>
+                    {t.VeinArmour}: {f(vein.armour)} - {t.VeinGemChance}: {f(vein.gemChance * 100)}%
+                </MyLabel>
+            </div>
+            <div className={cn(classes.actions, 'text-muted-foreground')}>
+                {!isFirst && (
+                    <Button onClick={onClickPrev} variant='ghost' aria-label={t.MoveUp}>
+                        {ArrowUp}
+                    </Button>
+                )}
+                {!isLast && (
+                    <Button onClick={onClickNext} variant='ghost' aria-label={t.MoveDown}>
+                        {ArrowDown}
+                    </Button>
+                )}
+                <Button variant='ghost' onClick={onRemoveVein} aria-label={t.Remove}>
+                    {TrashIcon}
+                </Button>
+            </div>
+        </div>
     )
 })
