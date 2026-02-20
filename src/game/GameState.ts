@@ -8,6 +8,7 @@ import { LootId, StorageState } from '../storage/storageTypes'
 import { InitialTimerState } from '../timers/Timer'
 import { ForestsType } from '../wood/ForestsState'
 import { TreeGrowth } from '../wood/forest/forestGrowth'
+import { GrowSpeedBonus } from '../wood/forest/growSpeedBonus'
 import { CharacterState } from '../characters/characterState'
 import { ToastState } from '../notification/toastState'
 import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
@@ -51,6 +52,7 @@ export interface GameState {
     waitingTrees: string | null
     locations: Record<GameLocations, LocationState>
     treeGrowth: InitialState<TreeGrowth>
+    growSpeedBonuses: InitialState<GrowSpeedBonus>
     recipeId: string
     craftingForm: {
         params: RecipeParameter[]

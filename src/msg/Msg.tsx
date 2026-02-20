@@ -51,6 +51,7 @@ export interface Msg {
     GrowingTrees: string
     WoodcuttingDamage: string
     WoodcuttingTime: string
+    IncreaseGrowSpeed: string
 
     //  Wood
     DeadTree: string
@@ -113,6 +114,8 @@ export interface Msg {
     VeinMasteryPerkDesc: string
     ChargedAttackPerk: string
     ChargedAttackPerkDesc: string
+    GrowSpeedMasteryPerk: string
+    GrowSpeedMasteryPerkDesc: string
 
     Base: string
     Total: string

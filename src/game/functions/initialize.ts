@@ -64,6 +64,13 @@ import { getMiningVeinSearchIcon } from '../../mining/selectors/getMiningVeinSea
 import { potionRecipe } from '../../alchemy/PotionRecipe'
 import { onEffectEnd } from '../../effects/effectsFunctions'
 import { SupplyQuestTemplate } from '../../quests/templates/SupplyQuestTemplate'
+import { execIncreaseGrowSpeed } from '../../wood/functions/execIncreaseGrowSpeed'
+import { getIncreaseGrowSpeedIcon } from '../../wood/functions/getIncreaseGrowSpeedIcon'
+import { getIncreaseGrowSpeedTitle } from '../../wood/functions/getIncreaseGrowSpeedTitle'
+import { onGrowSpeedBonusEnd } from '../../wood/functions/onGrowSpeedBonusEnd'
+import { removeIncreaseGrowSpeed } from '../../wood/functions/removeIncreaseGrowSpeed'
+import { startIncreaseGrowSpeed } from '../../wood/functions/startIncreaseGrowSpeed'
+import { viewIncreaseGrowSpeed } from '../../wood/functions/viewIncreaseGrowSpeed'
 
 export function initialize() {
     initActivities()
@@ -80,6 +87,13 @@ function initActivities() {
     activityTitles.set(ActivityTypes.Woodcutting, getWoodcuttingTitle)
     activityIcons.set(ActivityTypes.Woodcutting, getWoodcuttingIcon)
     activityViewers.set(ActivityTypes.Woodcutting, viewWoodcutting)
+
+    activityExecutors.set(ActivityTypes.IncreaseGrowSpeed, execIncreaseGrowSpeed)
+    activityRemovers.set(ActivityTypes.IncreaseGrowSpeed, removeIncreaseGrowSpeed)
+    activityStarters.set(ActivityTypes.IncreaseGrowSpeed, startIncreaseGrowSpeed)
+    activityTitles.set(ActivityTypes.IncreaseGrowSpeed, getIncreaseGrowSpeedTitle)
+    activityIcons.set(ActivityTypes.IncreaseGrowSpeed, getIncreaseGrowSpeedIcon)
+    activityViewers.set(ActivityTypes.IncreaseGrowSpeed, viewIncreaseGrowSpeed)
 
     activityExecutors.set(ActivityTypes.Mining, execMining)
     activityRemovers.set(ActivityTypes.Mining, removeMining)
@@ -112,6 +126,7 @@ function initActivities() {
     activityExecutors.set(ActivityTypes.StartBattle, startBattleTimer)
 
     activityExecutors.set(ActivityTypes.Effect, onEffectEnd)
+    activityExecutors.set(ActivityTypes.GrowSpeedBonus, onGrowSpeedBonusEnd)
 }
 
 function initRecipes() {

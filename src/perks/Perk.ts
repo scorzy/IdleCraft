@@ -39,6 +39,14 @@ export const PerksData: Record<PerksEnum, Perk> = {
         requiredPerks: [PerksEnum.FAST_MINING],
         requiredExp: [{ skill: ExpEnum.Mining, level: 8 }],
     },
+    [PerksEnum.GROW_SPEED_MASTERY]: {
+        id: PerksEnum.GROW_SPEED_MASTERY,
+        iconId: Icons.Forest,
+        nameId: 'GrowSpeedMasteryPerk',
+        descId: 'GrowSpeedMasteryPerkDesc',
+        requiredPerks: [PerksEnum.FAST_WOODCUTTING],
+        requiredExp: [{ skill: ExpEnum.Woodcutting, level: 8 }],
+    },
     [PerksEnum.CHARGED_ATTACK]: {
         id: PerksEnum.CHARGED_ATTACK,
         iconId: Icons.SaberSlash,

@@ -2,11 +2,13 @@ import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 
 export enum ActivityTypes {
     Woodcutting = 'Woodcutting',
+    IncreaseGrowSpeed = 'IncreaseGrowSpeed',
     Crafting = 'Crafting',
     Mining = 'Mining',
     MiningVeinSearch = 'MiningVeinSearch',
     Battle = 'Battle',
     Tree = 'Tree',
+    GrowSpeedBonus = 'GrowSpeedBonus',
     Ability = 'Ability',
     StartBattle = 'StartBattle',
     Effect = 'Effect',

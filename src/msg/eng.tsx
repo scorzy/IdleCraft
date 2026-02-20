@@ -81,6 +81,7 @@ export const engMsg: Msg = {
     ArmourPen: 'Armour Pen.',
     WoodcuttingDamage: 'Woodcutting Damage',
     WoodcuttingTime: 'Woodcutting  Time',
+    IncreaseGrowSpeed: 'Boost Growth',
     MiningTime: 'Mining Time',
     MiningDamage: 'Mining Damage',
     SearchOreVein: 'Search Ore Vein',
@@ -117,6 +118,8 @@ export const engMsg: Msg = {
     VeinMasteryPerkDesc: `Discovered veins: +${VEIN_MASTERY_QTA_BONUS}% quantity, -${VEIN_MASTERY_HP_REDUCE}% hp, -${VEIN_MASTERY_ARMOUR_REDUCE}% armour, +${VEIN_MASTERY_GEM_BONUS}% gem chance`,
     ChargedAttackPerk: 'Charged Attack',
     ChargedAttackPerkDesc: 'Unlock Charged Attack',
+    GrowSpeedMasteryPerk: 'Growth Mastery',
+    GrowSpeedMasteryPerkDesc: 'Increase Boost Growth effect to +40% for 3 minutes and raise max stacks to 5',
 
     ActivityAdded: 'Activity added',
     NormalAttack: 'Normal Attack',

@@ -7,6 +7,7 @@ import { MAX_GROWING_TREES } from '../WoodConst'
 import { WoodTypes } from '../WoodTypes'
 import { TreeGrowth, TreeGrowthAdapter } from './forestGrowth'
 import { selectDefaultForest, selectGrowTreeNumber, selectTreeGrowthTime } from './forestSelectors'
+import { selectGrowSpeedBonusMultiplier } from './growSpeedSelectors'
 
 export const checkGrowTrees = (state: GameState, woodType: WoodTypes, location: GameLocations) => {
     const number = selectGrowTreeNumber(state, woodType, location)
@@ -18,7 +19,7 @@ export const checkGrowTrees = (state: GameState, woodType: WoodTypes, location: 
     const def = selectDefaultForest(state, woodType)
     if (forest.qta + number >= def.qta) return
 
-    const growthTime = selectTreeGrowthTime()
+    const growthTime = Math.round(selectTreeGrowthTime() / selectGrowSpeedBonusMultiplier(state, woodType, location))
     const treeData: TreeGrowth = { id: getUniqueId(), location, woodType }
     TreeGrowthAdapter.create(state.treeGrowth, treeData)
     startTimer(state, growthTime, ActivityTypes.Tree, treeData.id)
