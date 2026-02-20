@@ -2,7 +2,7 @@ import { ActivityState } from '../activities/ActivityState'
 import { RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
-import { OreType } from '../mining/OreState'
+import { OreType, OreVeinState } from '../mining/OreState'
 import { LootId, StorageState } from '../storage/storageTypes'
 import { InitialTimerState } from '../timers/Timer'
 import { ForestsType } from '../wood/ForestsState'
@@ -27,6 +27,7 @@ export interface LocationState {
     storage: InitialState<StorageState>
     forests: ForestsType
     ores: OreType
+    oreVeins: OreVeinState[]
     loot: LootId[]
 }
 export interface GameState {

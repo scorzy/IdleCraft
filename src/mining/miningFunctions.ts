@@ -1,9 +1,13 @@
+import { getUniqueId } from '../utils/getUniqueId'
+import { getRandomNum } from '../utils/getRandomNum'
 import { GameState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { OreData } from './OreData'
-import { OreState, OreType } from './OreState'
+import { OreState, OreType, OreVeinState } from './OreState'
 import { OreTypes, OreTypesKeys } from './OreTypes'
 import { selectDefaultMine } from './miningSelectors'
+
+export const MAX_ORE_VEINS = 10
 
 export function hasOre(state: GameState, oreType: OreTypes, location?: GameLocations): boolean {
     return (state.locations[location ?? state.location].ores[oreType]?.qta ?? 1) > 0
@@ -13,6 +17,48 @@ export function resetOre(state: GameState, oreType: OreTypes, location: GameLoca
 
     state.locations[location].ores[oreType] = structuredClone(def)
 }
+
+export function getCurrentOreVein(state: GameState, location: GameLocations): OreVeinState | undefined {
+    return state.locations[location].oreVeins[0]
+}
+
+export function removeOreVein(state: GameState, location: GameLocations, veinId: string): void {
+    const veins = state.locations[location].oreVeins
+    const index = veins.findIndex((w) => w.id === veinId)
+    if (index >= 0) veins.splice(index, 1)
+}
+
+export function canSearchOreVein(state: GameState, location: GameLocations): boolean {
+    return state.locations[location].oreVeins.length < MAX_ORE_VEINS
+}
+
+export function searchOreVein(state: GameState, location: GameLocations): OreVeinState | undefined {
+    const veins = state.locations[location].oreVeins
+    if (veins.length >= MAX_ORE_VEINS) return
+
+    const oreType = getRandomNum(0, 1) ? OreTypes.Copper : OreTypes.Tin
+    const oreData = OreData[oreType]
+
+    const qta = Math.max(1, Math.floor((oreData.qta * getRandomNum(70, 130)) / 100))
+    const hp = Math.max(10, Math.floor((oreData.hp * getRandomNum(70, 130)) / 100))
+    const armour = Math.max(0, Math.floor((oreData.armour * getRandomNum(70, 130)) / 100))
+    const gemChance = getRandomNum(3, 20) / 100
+
+    const vein: OreVeinState = {
+        id: getUniqueId(),
+        oreType,
+        qta,
+        hp,
+        maxHp: hp,
+        armour,
+        gemChance,
+    }
+
+    veins.push(vein)
+
+    return vein
+}
+
 export function mineOre(
     state: GameState,
     oreType: OreTypes,
@@ -52,6 +98,42 @@ export function mineOre(
     }
 
     return { mined }
+}
+
+export function mineOreVein(
+    state: GameState,
+    location: GameLocations,
+    veinId: string,
+    damage: number
+): {
+    mined: boolean
+    completed: boolean
+    oreType?: OreTypes
+    gemDropped: boolean
+} {
+    const vein = state.locations[location].oreVeins.find((w) => w.id === veinId)
+    if (!vein) return { mined: false, completed: true, gemDropped: false }
+
+    let hp = vein.hp - Math.max(0, damage - vein.armour)
+    let mined = false
+    let completed = false
+    let gemDropped = false
+
+    if (hp <= 0) {
+        mined = true
+        hp = vein.maxHp
+        vein.qta = Math.max(0, vein.qta - 1)
+        gemDropped = Math.random() < vein.gemChance
+
+        if (vein.qta <= 0) {
+            completed = true
+            removeOreVein(state, location, veinId)
+        }
+    }
+
+    if (!completed) vein.hp = hp
+
+    return { mined, completed, oreType: vein.oreType, gemDropped }
 }
 
 export function loadOre(data: unknown): OreType {

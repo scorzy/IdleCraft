@@ -19,4 +19,25 @@ export const MiningItems = {
         materials: { primary: Materials.Tin },
         value: 10,
     },
+    Ruby: {
+        icon: Icons.Ore,
+        id: 'Ruby',
+        nameId: 'Ruby',
+        type: ItemTypes.Gem,
+        value: 65,
+    },
+    Sapphire: {
+        icon: Icons.Ore,
+        id: 'Sapphire',
+        nameId: 'Sapphire',
+        type: ItemTypes.Gem,
+        value: 75,
+    },
+    Emerald: {
+        icon: Icons.Ore,
+        id: 'Emerald',
+        nameId: 'Emerald',
+        type: ItemTypes.Gem,
+        value: 85,
+    },
 } satisfies Record<string, Item>

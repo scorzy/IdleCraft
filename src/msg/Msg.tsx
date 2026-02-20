@@ -40,6 +40,7 @@ export interface Msg {
     Value: string
     Handle: string
     Ore: string
+    Gem: string
     Bar: string
 
     //  Trees
@@ -66,6 +67,10 @@ export interface Msg {
     OreQta: string
     MiningTime: string
     MiningDamage: string
+    SearchOreVein: string
+    OreVeins: string
+    VeinArmour: string
+    VeinGemChance: string
 
     //  Exp
     MiningExp: string
@@ -253,6 +258,9 @@ export interface Msg {
     RedFlower: string
     GreenFlower: string
     BlueFlower: string
+    Ruby: string
+    Sapphire: string
+    Emerald: string
 
     Restore: string
 

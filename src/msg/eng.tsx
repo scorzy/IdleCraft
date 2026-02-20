@@ -63,6 +63,7 @@ export const engMsg: Msg = {
     WoodworkingExp: 'Woodworking Level',
     SmithingExp: 'Smithing Level',
     Ore: 'Ore',
+    Gem: 'Gem',
     Bar: 'Bar',
     Smithing: 'Smithing',
 
@@ -76,6 +77,10 @@ export const engMsg: Msg = {
     WoodcuttingTime: 'Woodcutting  Time',
     MiningTime: 'Mining Time',
     MiningDamage: 'Mining Damage',
+    SearchOreVein: 'Search Ore Vein',
+    OreVeins: 'Ore Veins',
+    VeinArmour: 'Vein Armour',
+    VeinGemChance: 'Gem Chance',
     SelectARecipe: 'Select a recipe',
     // Perks
     Perks: 'Perks',
@@ -251,6 +256,9 @@ export const engMsg: Msg = {
     RedFlower: 'Red Flower',
     GreenFlower: 'Green Flower',
     BlueFlower: 'Blue Flower',
+    Ruby: 'Ruby',
+    Sapphire: 'Sapphire',
+    Emerald: 'Emerald',
 
     Restore: 'Restore',
     RegenHealth: 'Regen Health',
