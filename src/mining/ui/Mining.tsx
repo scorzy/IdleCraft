@@ -28,23 +28,23 @@ import { PLAYER_ID } from '../../characters/charactersConst'
 import { ItemIcon } from '../../items/ui/ItemIcon'
 import { useItemName } from '../../items/useItemName'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
-import { MiningSidebar } from './MiningSidebar'
-import { ExpEnum } from '@/experience/ExpEnum'
-import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
 import { addMiningVeinSearch } from '../functions/addMiningVeinSearch'
-import { ActivityAdapter, ActivityTypes } from '@/activities/ActivityState'
 import { getCurrentOreVeinByType, moveOreVeinNext, moveOreVeinPrev, removeOreVein } from '../miningFunctions'
-import { setState } from '@/game/setState'
 import { isMining } from '../Mining'
 import { OreVeinState } from '../OreState'
 import { SEARCH_ORE_VEIN_TIME } from '../functions/startMiningVeinSearch'
 import { OreTypes } from '../OreTypes'
+import { MiningSidebar } from './MiningSidebar'
+import classes from './miningVeins.module.css'
+import { ExpEnum } from '@/experience/ExpEnum'
+import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
+import { ActivityAdapter, ActivityTypes } from '@/activities/ActivityState'
+import { setState } from '@/game/setState'
 import { TrashIcon } from '@/icons/IconsMemo'
 import { cn } from '@/lib/utils'
-import classes from './miningVeins.module.css'
 
-const ArrowUp = <LuArrowUp className='text-lg' />
-const ArrowDown = <LuArrowDown className='text-lg' />
+const ArrowUp = <LuArrowUp className="text-lg" />
+const ArrowDown = <LuArrowDown className="text-lg" />
 
 export const Mining = memo(function Mining() {
     const oreType = useGameStore(selectOreType)
@@ -52,13 +52,13 @@ export const Mining = memo(function Mining() {
         <MyPageAll
             sidebar={<MiningSidebar />}
             header={
-                <div className='page__info'>
+                <div className="page__info">
                     <ExperienceCard expType={ExpEnum.Mining} charId={PLAYER_ID} />
                     <EquipItemUi slot={EquipSlotsEnum.Pickaxe} />
                 </div>
             }
         >
-            <MyPage className='page__main' key={oreType}>
+            <MyPage className="page__main" key={oreType}>
                 <MiningOreLock />
                 <OreVeinsUi />
             </MyPage>
@@ -83,8 +83,8 @@ const MiningOreLock = memo(function MiningOreLock() {
         )
 
     return (
-        <Alert variant='destructive'>
-            <TbAlertTriangle className='h-4 w-4' />
+        <Alert variant="destructive">
+            <TbAlertTriangle className="h-4 w-4" />
             <AlertTitle>{t.LevelToLow}</AlertTitle>
             <AlertDescription>{fun.requireMiningLevel(f(data.requiredLevel))}</AlertDescription>
         </Alert>
@@ -99,7 +99,9 @@ function selectActiveVein(state: GameState, oreType: OreTypes): OreVeinState | u
     if (!activity || !isMining(activity) || !activity.activeVeinId)
         return getCurrentOreVeinByType(state, state.location, oreType)
 
-    const activeVein = (state.locations[state.location].oreVeins[oreType] ?? []).find((w) => w.id === activity.activeVeinId)
+    const activeVein = (state.locations[state.location].oreVeins[oreType] ?? []).find(
+        (w) => w.id === activity.activeVeinId
+    )
     if (activeVein) return activeVein
 
     return getCurrentOreVeinByType(state, state.location, oreType)
@@ -129,7 +131,7 @@ const MiningOre = memo(function MiningOre() {
             <CardContent>
                 <MyLabelContainer>
                     <MyLabel>
-                        {t.OreHp} {f(hp)} <span className='text-muted-foreground'>/ {f(maxHp)}</span>
+                        {t.OreHp} {f(hp)} <span className="text-muted-foreground">/ {f(maxHp)}</span>
                     </MyLabel>
                     <MyLabel>
                         {t.Armour} {f(armour)}
@@ -139,12 +141,12 @@ const MiningOre = memo(function MiningOre() {
                         <BonusDialog title={t.MiningDamage} selectBonusResult={selectMiningDamageAllMemo} />
                     </MyLabel>
                 </MyLabelContainer>
-                <RestartProgress value={hpPercent} color='health' className='mb-2' />
+                <RestartProgress value={hpPercent} color="health" className="mb-2" />
                 <MyLabel>
                     {t.Time} {fun.formatTime(time)}
                     <BonusDialog title={t.MiningTime} selectBonusResult={selectMiningTimeAllMemo} isTime={true} />
                 </MyLabel>
-                <GameTimerProgress actionId={act} color='primary' className='mb-2' />
+                <GameTimerProgress actionId={act} color="primary" className="mb-2" />
             </CardContent>
             <CardFooter>
                 <MiningButton />
@@ -162,7 +164,7 @@ const MiningButton = memo(function CuttingButton() {
 
     if (act)
         return (
-            <Button onClick={onClickRemove} variant='destructive'>
+            <Button onClick={onClickRemove} variant="destructive">
                 {t.Stop}
             </Button>
         )
@@ -201,7 +203,7 @@ const OreUi = memo(function MiningOre() {
                 <MyLabel>
                     {t.OreQta} {f(qta)}/{f(maxQta)}
                 </MyLabel>
-                <RestartProgress value={hpPercent} color='health' />
+                <RestartProgress value={hpPercent} color="health" />
             </CardContent>
         </Card>
     )
@@ -212,7 +214,11 @@ const OreVeinsUi = memo(function OreVeinsUi() {
     const oreType = useGameStore(selectOreType)
     const veins = useGameStore((s) => s.locations[s.location].oreVeins[oreType] ?? [])
     const searchActId = useGameStore(
-        (s) => ActivityAdapter.find(s.activities, (w) => w.type === ActivityTypes.MiningVeinSearch && 'oreType' in w && w.oreType === oreType)?.id
+        (s) =>
+            ActivityAdapter.find(
+                s.activities,
+                (w) => w.type === ActivityTypes.MiningVeinSearch && 'oreType' in w && w.oreType === oreType
+            )?.id
     )
 
     const onSearch = useCallback(() => addMiningVeinSearch(oreType), [oreType])
@@ -222,9 +228,9 @@ const OreVeinsUi = memo(function OreVeinsUi() {
         <Card>
             <MyCardHeaderTitle title={t.OreVeins} icon={IconsData[Icons.Ore]} />
             <CardContent>
-                <div className='mb-2'>
+                <div className="mb-2">
                     {searchActId ? (
-                        <Button variant='destructive' onClick={onStopSearch}>
+                        <Button variant="destructive" onClick={onStopSearch}>
                             {t.Stop}
                         </Button>
                     ) : (
@@ -242,10 +248,8 @@ const OreVeinsUi = memo(function OreVeinsUi() {
                 <MyLabel>
                     {t.Time} {fun.formatTime(SEARCH_ORE_VEIN_TIME)}
                 </MyLabel>
-                <GameTimerProgress actionId={searchActId} color='primary' className='mb-2' />
-                <MyLabel>
-                    {veins.length}/10
-                </MyLabel>
+                <GameTimerProgress actionId={searchActId} color="primary" className="mb-2" />
+                <MyLabel>{veins.length}/10</MyLabel>
                 {veins.map((vein, index) => (
                     <VeinCard
                         key={vein.id}
@@ -299,16 +303,16 @@ const VeinCard = memo(function VeinCard({
             </div>
             <div className={cn(classes.actions, 'text-muted-foreground')}>
                 {!isFirst && (
-                    <Button onClick={onClickPrev} variant='ghost' aria-label={t.MoveUp}>
+                    <Button onClick={onClickPrev} variant="ghost" aria-label={t.MoveUp}>
                         {ArrowUp}
                     </Button>
                 )}
                 {!isLast && (
-                    <Button onClick={onClickNext} variant='ghost' aria-label={t.MoveDown}>
+                    <Button onClick={onClickNext} variant="ghost" aria-label={t.MoveDown}>
                         {ArrowDown}
                     </Button>
                 )}
-                <Button variant='ghost' onClick={onRemoveVein} aria-label={t.Remove}>
+                <Button variant="ghost" onClick={onRemoveVein} aria-label={t.Remove}>
                     {TrashIcon}
                 </Button>
             </div>

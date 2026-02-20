@@ -1,5 +1,11 @@
 import { splitTime } from '../formatters/splitTime'
-import { FAST_MINING_PERK, VEIN_MASTERY_ARMOUR_REDUCE, VEIN_MASTERY_GEM_BONUS, VEIN_MASTERY_HP_REDUCE, VEIN_MASTERY_QTA_BONUS } from '../mining/MiningCost'
+import {
+    FAST_MINING_PERK,
+    VEIN_MASTERY_ARMOUR_REDUCE,
+    VEIN_MASTERY_GEM_BONUS,
+    VEIN_MASTERY_HP_REDUCE,
+    VEIN_MASTERY_QTA_BONUS,
+} from '../mining/MiningCost'
 import { QuestParams } from '../quests/QuestParams'
 import { sameNumber } from '../utils/sameNumber'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
