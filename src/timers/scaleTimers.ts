@@ -7,13 +7,21 @@ import { WoodTypes } from '../wood/WoodTypes'
 
 export const scaleTimerFromNow = (state: GameState, timerId: string, ratio: number) => {
     if (ratio <= 0 || ratio === 1) return
+
     const timer = TimerAdapter.select(state.timers, timerId)
     if (!timer) return
 
-    const remaining = Math.max(timer.to - state.now, 0)
-    const newRemaining = Math.max(Math.round(remaining / ratio), 0)
-    timer.from = state.now
-    timer.to = state.now + newRemaining
+    const full = Math.max(timer.to - timer.from, 0)
+    if (full <= 0) return
+
+    const elapsed = Math.min(Math.max(state.now - timer.from, 0), full)
+    const progress = elapsed / full
+
+    const newFull = Math.max(Math.round(full / ratio), 1)
+    const newElapsed = Math.max(Math.round(newFull * progress), 0)
+
+    timer.from = state.now - newElapsed
+    timer.to = timer.from + newFull
 }
 
 export const scaleTreeGrowthTimers = (
