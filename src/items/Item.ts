@@ -11,6 +11,7 @@ export enum ItemTypes {
     Plank = 'Plank',
     Handle = 'Handle',
     Ore = 'Ore',
+    Gem = 'Gem',
     Bar = 'Bar',
     WoodAxe = 'WoodAxe',
     Pickaxe = 'Pickaxe',

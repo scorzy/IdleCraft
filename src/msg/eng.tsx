@@ -1,5 +1,5 @@
 import { splitTime } from '../formatters/splitTime'
-import { FAST_MINING_PERK } from '../mining/MiningCost'
+import { FAST_MINING_PERK, VEIN_MASTERY_ARMOUR_REDUCE, VEIN_MASTERY_GEM_BONUS, VEIN_MASTERY_HP_REDUCE, VEIN_MASTERY_QTA_BONUS } from '../mining/MiningCost'
 import { QuestParams } from '../quests/QuestParams'
 import { sameNumber } from '../utils/sameNumber'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
@@ -63,6 +63,7 @@ export const engMsg: Msg = {
     WoodworkingExp: 'Woodworking Level',
     SmithingExp: 'Smithing Level',
     Ore: 'Ore',
+    Gem: 'Gem',
     Bar: 'Bar',
     Smithing: 'Smithing',
 
@@ -76,6 +77,10 @@ export const engMsg: Msg = {
     WoodcuttingTime: 'Woodcutting  Time',
     MiningTime: 'Mining Time',
     MiningDamage: 'Mining Damage',
+    SearchOreVein: 'Search Ore Vein',
+    OreVeins: 'Ore Veins',
+    VeinArmour: 'Vein Armour',
+    VeinGemChance: 'Gem Chance',
     SelectARecipe: 'Select a recipe',
     // Perks
     Perks: 'Perks',
@@ -102,6 +107,8 @@ export const engMsg: Msg = {
     FastWoodcuttingPerkDesc: `Increase woodcutting speed by ${FAST_WOODCUTTING_PERK}%`,
     FastMiningPerk: 'Faster Mining',
     FastMiningPerkDesc: `Increase mining speed by ${FAST_MINING_PERK}%`,
+    VeinMasteryPerk: 'Vein Mastery',
+    VeinMasteryPerkDesc: `Discovered veins: +${VEIN_MASTERY_QTA_BONUS}% quantity, -${VEIN_MASTERY_HP_REDUCE}% hp, -${VEIN_MASTERY_ARMOUR_REDUCE}% armour, +${VEIN_MASTERY_GEM_BONUS}% gem chance`,
     ChargedAttackPerk: 'Charged Attack',
     ChargedAttackPerkDesc: 'Unlock Charged Attack',
 
@@ -251,6 +258,9 @@ export const engMsg: Msg = {
     RedFlower: 'Red Flower',
     GreenFlower: 'Green Flower',
     BlueFlower: 'Blue Flower',
+    Ruby: 'Ruby',
+    Sapphire: 'Sapphire',
+    Emerald: 'Emerald',
 
     Restore: 'Restore',
     RegenHealth: 'Regen Health',

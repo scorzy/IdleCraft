@@ -22,6 +22,7 @@ const getInitialVillageState: () => LocationState = () => {
         storage: StorageAdapter.getInitialState(),
         forests: {},
         ores: {},
+        oreVeins: {},
         loot: [],
     }
 }

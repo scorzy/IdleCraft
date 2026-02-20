@@ -3,6 +3,8 @@ import { OreTypes } from './OreTypes'
 
 export interface Mining extends ActivityState {
     oreType: OreTypes
+    activeOreType?: OreTypes
+    activeVeinId?: string
     isMining: boolean
 }
 export function isMining(act: ActivityState | Mining): act is Mining {

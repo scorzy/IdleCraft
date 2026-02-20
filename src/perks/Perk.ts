@@ -31,6 +31,14 @@ export const PerksData: Record<PerksEnum, Perk> = {
         nameId: 'FastMiningPerk',
         descId: 'FastMiningPerkDesc',
     },
+    [PerksEnum.VEIN_MASTERY]: {
+        id: PerksEnum.VEIN_MASTERY,
+        iconId: Icons.Ore,
+        nameId: 'VeinMasteryPerk',
+        descId: 'VeinMasteryPerkDesc',
+        requiredPerks: [PerksEnum.FAST_MINING],
+        requiredExp: [{ skill: ExpEnum.Mining, level: 8 }],
+    },
     [PerksEnum.CHARGED_ATTACK]: {
         id: PerksEnum.CHARGED_ATTACK,
         iconId: Icons.SaberSlash,

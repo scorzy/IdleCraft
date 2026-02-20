@@ -55,6 +55,12 @@ import {
 import { viewCrafting } from '../../crafting/functions/viewCrafting'
 import { viewWoodcutting } from '../../wood/functions/viewWoodcutting'
 import { viewMining } from '../../mining/functions/viewMining'
+import { execMiningVeinSearch } from '../../mining/functions/execMiningVeinSearch'
+import { removeMiningVeinSearch } from '../../mining/functions/removeMiningVeinSearch'
+import { startMiningVeinSearch } from '../../mining/functions/startMiningVeinSearch'
+import { viewMiningVeinSearch } from '../../mining/functions/viewMiningVeinSearch'
+import { getMiningVeinSearchTitle } from '../../mining/selectors/getMiningVeinSearchTitle'
+import { getMiningVeinSearchIcon } from '../../mining/selectors/getMiningVeinSearchIcon'
 import { potionRecipe } from '../../alchemy/PotionRecipe'
 import { onEffectEnd } from '../../effects/effectsFunctions'
 import { SupplyQuestTemplate } from '../../quests/templates/SupplyQuestTemplate'
@@ -81,6 +87,13 @@ function initActivities() {
     activityTitles.set(ActivityTypes.Mining, getMiningTitle)
     activityIcons.set(ActivityTypes.Mining, getMiningIcon)
     activityViewers.set(ActivityTypes.Mining, viewMining)
+
+    activityExecutors.set(ActivityTypes.MiningVeinSearch, execMiningVeinSearch)
+    activityRemovers.set(ActivityTypes.MiningVeinSearch, removeMiningVeinSearch)
+    activityStarters.set(ActivityTypes.MiningVeinSearch, startMiningVeinSearch)
+    activityTitles.set(ActivityTypes.MiningVeinSearch, getMiningVeinSearchTitle)
+    activityIcons.set(ActivityTypes.MiningVeinSearch, getMiningVeinSearchIcon)
+    activityViewers.set(ActivityTypes.MiningVeinSearch, viewMiningVeinSearch)
 
     activityExecutors.set(ActivityTypes.Crafting, execCrafting)
     activityRemovers.set(ActivityTypes.Crafting, removeCrafting)

@@ -4,6 +4,7 @@ export enum ActivityTypes {
     Woodcutting = 'Woodcutting',
     Crafting = 'Crafting',
     Mining = 'Mining',
+    MiningVeinSearch = 'MiningVeinSearch',
     Battle = 'Battle',
     Tree = 'Tree',
     Ability = 'Ability',
