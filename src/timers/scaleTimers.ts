@@ -1,9 +1,9 @@
 import { ActivityTypes } from '../activities/ActivityState'
 import { GameState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
-import { TimerAdapter } from './Timer'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { WoodTypes } from '../wood/WoodTypes'
+import { TimerAdapter } from './Timer'
 
 export const scaleTimerFromNow = (state: GameState, timerId: string, ratio: number) => {
     if (ratio <= 0 || ratio === 1) return

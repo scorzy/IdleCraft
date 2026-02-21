@@ -4,6 +4,7 @@ import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Icons } from '../../icons/Icons'
 import { hasPerk } from '../../perks/PerksSelectors'
+import { Timer, TimerAdapter } from '../../timers/Timer'
 import {
     GROW_SPEED_BONUS_DURATION,
     GROW_SPEED_BONUS_MULTI,
@@ -89,3 +90,23 @@ export const selectIncreaseGrowSpeedMulti = (state: GameState) =>
 
 export const selectIncreaseGrowSpeedActiveCount = (state: GameState, woodType: WoodTypes, location: GameLocations) =>
     GrowSpeedBonusAdapter.count(state.growSpeedBonuses, (b) => b.woodType === woodType && b.location === location)
+
+export const selectFirstExpiringGrowSpeedTimer: (
+    state: GameState,
+    woodType: WoodTypes,
+    location: GameLocations
+) => Timer | undefined = (state: GameState, woodType: WoodTypes, location: GameLocations) => {
+    let timerToRemove: Timer | undefined = undefined
+
+    GrowSpeedBonusAdapter.forEach(state.growSpeedBonuses, (g) => {
+        if (g.woodType !== woodType) return
+        if (g.location !== location) return
+
+        const t = TimerAdapter.select(state.timers, g.id)
+        if (!t) return
+
+        if (!timerToRemove || timerToRemove.to > t.to) timerToRemove = t
+    })
+
+    return timerToRemove
+}

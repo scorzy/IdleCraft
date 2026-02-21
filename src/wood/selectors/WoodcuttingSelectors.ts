@@ -10,9 +10,9 @@ import { WoodTypes } from '../WoodTypes'
 import { selectLevelExp } from '../../experience/expSelectors'
 import { WoodData } from '../WoodData'
 import { isWoodcutting } from '../Woodcutting'
-import { ExpEnum } from '@/experience/ExpEnum'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { isIncreaseGrowSpeed } from '../IncreaseGrowSpeed'
+import { ExpEnum } from '@/experience/ExpEnum'
 
 export const DEF_WOOD_AXE: WoodAxeData = {
     damage: 10,
@@ -47,7 +47,6 @@ export const selectWoodcuttingId = (s: GameState, woodType: WoodTypes) => {
         if (act && isWoodcutting(act) && act?.woodType === woodType) return act.id
     }
 }
-
 
 export const selectIncreaseGrowSpeedId = (s: GameState, woodType: WoodTypes, location: GameLocations) => {
     for (const id of s.activities.ids) {

@@ -25,7 +25,11 @@ import { selectWoodcuttingDamage, selectWoodcuttingDamageAll } from '../selector
 import { addIncreaseGrowSpeed } from '../functions/addIncreaseGrowSpeed'
 import { selectWoodcuttingTime, selectWoodcuttingTimeAll } from '../selectors/woodcuttingTime'
 import { Alert, AlertTitle, AlertDescription } from '../../components/ui/alert'
-import { isSelectedWoodEnabled, selectIncreaseGrowSpeedId, selectWoodcuttingId } from '../selectors/WoodcuttingSelectors'
+import {
+    isSelectedWoodEnabled,
+    selectIncreaseGrowSpeedId,
+    selectWoodcuttingId,
+} from '../selectors/WoodcuttingSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { MAX_GROWING_TREES } from '../WoodConst'
@@ -102,7 +106,9 @@ const Cutting = memo(function Cutting() {
     const time = useGameStore(selectWoodcuttingTime)
     const damage = useGameStore(selectWoodcuttingDamage)
     const location = useGameStore((s) => s.location)
-    const activeBoost = useGameStore(useCallback((s) => selectGrowSpeedBonusMulti(s, woodType, location), [woodType, location]))
+    const activeBoost = useGameStore(
+        useCallback((s) => selectGrowSpeedBonusMulti(s, woodType, location), [woodType, location])
+    )
     const activeStacks = useGameStore(
         useCallback((s) => selectIncreaseGrowSpeedActiveCount(s, woodType, location), [woodType, location])
     )
@@ -179,8 +185,12 @@ const GrowSpeedButton = memo(function GrowSpeedButton() {
     const { t } = useTranslations()
     const woodType = useGameStore(selectWoodType)
     const location = useGameStore((s) => s.location)
-    const actId = useGameStore(useCallback((s) => selectIncreaseGrowSpeedId(s, woodType, location), [woodType, location]))
-    const active = useGameStore(useCallback((s) => selectIncreaseGrowSpeedActiveCount(s, woodType, location), [woodType, location]))
+    const actId = useGameStore(
+        useCallback((s) => selectIncreaseGrowSpeedId(s, woodType, location), [woodType, location])
+    )
+    const active = useGameStore(
+        useCallback((s) => selectIncreaseGrowSpeedActiveCount(s, woodType, location), [woodType, location])
+    )
     const cap = useGameStore(selectIncreaseGrowSpeedCap)
 
     const onClickStart = useCallback(() => addIncreaseGrowSpeed(woodType, location), [woodType, location])
@@ -195,13 +205,21 @@ const GrowSpeedButton = memo(function GrowSpeedButton() {
 
     return (
         <AddActivityDialog
-            addBtn={<Button onClick={onClickStart}>{t.IncreaseGrowSpeed} ({active}/{cap})</Button>}
+            addBtn={
+                <Button onClick={onClickStart}>
+                    {t.IncreaseGrowSpeed} ({active}/{cap})
+                </Button>
+            }
             title={
                 <>
                     {IconsData.Forest} {t.IncreaseGrowSpeed}
                 </>
             }
-            openBtn={<Button>{t.IncreaseGrowSpeed} ({active}/{cap})</Button>}
+            openBtn={
+                <Button>
+                    {t.IncreaseGrowSpeed} ({active}/{cap})
+                </Button>
+            }
         />
     )
 })
@@ -209,7 +227,9 @@ const GrowSpeedButton = memo(function GrowSpeedButton() {
 const GrowSpeedProgress = memo(function GrowSpeedProgress() {
     const woodType = useGameStore(selectWoodType)
     const location = useGameStore((s) => s.location)
-    const actId = useGameStore(useCallback((s) => selectIncreaseGrowSpeedId(s, woodType, location), [woodType, location]))
+    const actId = useGameStore(
+        useCallback((s) => selectIncreaseGrowSpeedId(s, woodType, location), [woodType, location])
+    )
 
     return <GameTimerProgress actionId={actId} color="success" className="mb-2" />
 })
@@ -251,7 +271,6 @@ const ForestQta = memo(function ForestQta() {
         </>
     )
 })
-
 
 const ForestRespawn = memo(function ForestRespawn() {
     const woodType = useGameStore(selectWoodType)
