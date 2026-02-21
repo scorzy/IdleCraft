@@ -371,6 +371,11 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
         m,
         s,
         formatTime: (time: number) => {
+            let negative = false
+            if (time < 0) {
+                time = time * -1
+                negative = true
+            }
             const split = splitTime(time)
             if (split.years > 0) return years(split.years)
             if (split.months > 0) return months(split.months)
@@ -379,9 +384,14 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
             if (split.minutes > 0) return m(split.minutes)
             if (split.seconds >= 10) return s(Math.floor(split.seconds))
             if (split.seconds > 10) return s(Math.floor(split.seconds))
-            return s(Math.floor(split.seconds * 10) / 10)
+            return (negative ? '-' : '') + s(Math.floor(split.seconds * 10) / 10)
         },
         formatTimePrecise: (time: number) => {
+            let negative = false
+            if (time < 0) {
+                time = time * -1
+                negative = true
+            }
             const split = splitTime(time)
             if (split.years > 0) return years(split.years)
             if (split.months > 0) return months(split.months)
@@ -390,7 +400,7 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
             if (split.minutes > 0) return `${m(split.minutes)} ${s(Math.floor(split.seconds))}`
             if (split.seconds >= 10) return s(Math.floor(split.seconds))
             if (split.seconds > 10) return s(Math.floor(split.seconds))
-            return s(Math.floor(split.seconds * 10) / 10)
+            return (negative ? '-' : '') + s(Math.floor(split.seconds * 10) / 10)
         },
 
         //
