@@ -8,6 +8,7 @@ import { TimerAdapter } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
 import { WoodTypes } from '../wood/WoodTypes'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
+import { GrowSpeedBonusAdapter } from '../wood/forest/growSpeedBonus'
 import { PLAYER_CHAR, PLAYER_ID } from '../characters/charactersConst'
 import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
@@ -74,6 +75,7 @@ export const InitialGameState: GameState = {
         [GameLocations.Test]: getInitialVillageState(),
     },
     treeGrowth: TreeGrowthAdapter.getInitialState(),
+    growSpeedBonuses: GrowSpeedBonusAdapter.getInitialState(),
     recipeId: '',
     craftingForm: {
         params: [],

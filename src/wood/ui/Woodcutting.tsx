@@ -22,12 +22,25 @@ import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { IconsData } from '../../icons/Icons'
 import { selectWoodcuttingDamage, selectWoodcuttingDamageAll } from '../selectors/woodcuttingDamage'
+import { addIncreaseGrowSpeed } from '../functions/addIncreaseGrowSpeed'
 import { selectWoodcuttingTime, selectWoodcuttingTimeAll } from '../selectors/woodcuttingTime'
 import { Alert, AlertTitle, AlertDescription } from '../../components/ui/alert'
-import { isSelectedWoodEnabled, selectWoodcuttingId } from '../selectors/WoodcuttingSelectors'
+import {
+    isSelectedWoodEnabled,
+    selectIncreaseGrowSpeedId,
+    selectWoodcuttingId,
+} from '../selectors/WoodcuttingSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { MAX_GROWING_TREES } from '../WoodConst'
+import {
+    selectIncreaseGrowSpeedActiveCount,
+    selectIncreaseGrowSpeedBonusAll,
+    selectIncreaseGrowSpeedCap,
+    selectGrowSpeedBonusMulti,
+    selectTreeRespawnTime,
+    selectTreeRespawnTimeAll,
+} from '../forest/growSpeedSelectors'
 import { GameIcon } from '../../icons/GameIcon'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
@@ -92,6 +105,18 @@ const Cutting = memo(function Cutting() {
     const hpPercent = Math.floor((100 * forest.hp) / defHp)
     const time = useGameStore(selectWoodcuttingTime)
     const damage = useGameStore(selectWoodcuttingDamage)
+    const location = useGameStore((s) => s.location)
+    const activeBoost = useGameStore(
+        useCallback((s) => selectGrowSpeedBonusMulti(s, woodType, location), [woodType, location])
+    )
+    const activeStacks = useGameStore(
+        useCallback((s) => selectIncreaseGrowSpeedActiveCount(s, woodType, location), [woodType, location])
+    )
+    const maxStacks = useGameStore(selectIncreaseGrowSpeedCap)
+    const selectGrowSpeedBonusAllMemo = useMemo(
+        () => memoize((s: GameState) => selectIncreaseGrowSpeedBonusAll(s, woodType, location)),
+        [woodType, location]
+    )
 
     return (
         <Card>
@@ -114,10 +139,16 @@ const Cutting = memo(function Cutting() {
                     {t.Time} {fun.formatTime(time)}
                     <BonusDialog title={t.WoodcuttingTime} selectBonusResult={selectWoodcuttingTimeAll} isTime={true} />
                 </MyLabel>
+                <MyLabel>
+                    {t.IncreaseGrowSpeed} +{f(activeBoost)}% ({f(activeStacks)}/{f(maxStacks)})
+                    <BonusDialog title={t.IncreaseGrowSpeed} selectBonusResult={selectGrowSpeedBonusAllMemo} />
+                </MyLabel>
                 <GameTimerProgress actionId={act} color="primary" className="mb-2" />
+                <GrowSpeedProgress />
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex gap-2">
                 <CuttingButton />
+                <GrowSpeedButton />
             </CardFooter>
         </Card>
     )
@@ -150,6 +181,59 @@ const CuttingButton = memo(function CuttingButton() {
     )
 })
 
+const GrowSpeedButton = memo(function GrowSpeedButton() {
+    const { t } = useTranslations()
+    const woodType = useGameStore(selectWoodType)
+    const location = useGameStore((s) => s.location)
+    const actId = useGameStore(
+        useCallback((s) => selectIncreaseGrowSpeedId(s, woodType, location), [woodType, location])
+    )
+    const active = useGameStore(
+        useCallback((s) => selectIncreaseGrowSpeedActiveCount(s, woodType, location), [woodType, location])
+    )
+    const cap = useGameStore(selectIncreaseGrowSpeedCap)
+
+    const onClickStart = useCallback(() => addIncreaseGrowSpeed(woodType, location), [woodType, location])
+    const onClickRemove = useCallback(() => removeActivity(actId), [actId])
+
+    if (actId)
+        return (
+            <Button onClick={onClickRemove} variant="destructive">
+                {t.Stop}
+            </Button>
+        )
+
+    return (
+        <AddActivityDialog
+            addBtn={
+                <Button onClick={onClickStart}>
+                    {t.IncreaseGrowSpeed} ({active}/{cap})
+                </Button>
+            }
+            title={
+                <>
+                    {IconsData.Forest} {t.IncreaseGrowSpeed}
+                </>
+            }
+            openBtn={
+                <Button>
+                    {t.IncreaseGrowSpeed} ({active}/{cap})
+                </Button>
+            }
+        />
+    )
+})
+
+const GrowSpeedProgress = memo(function GrowSpeedProgress() {
+    const woodType = useGameStore(selectWoodType)
+    const location = useGameStore((s) => s.location)
+    const actId = useGameStore(
+        useCallback((s) => selectIncreaseGrowSpeedId(s, woodType, location), [woodType, location])
+    )
+
+    return <GameTimerProgress actionId={actId} color="success" className="mb-2" />
+})
+
 const Forest = memo(function Forest() {
     const woodType = useGameStore(selectWoodType)
     const { t } = useTranslations()
@@ -163,6 +247,7 @@ const Forest = memo(function Forest() {
             />
             <CardContent>
                 <ForestQta />
+                <ForestRespawn />
                 <Trees />
             </CardContent>
         </Card>
@@ -184,6 +269,25 @@ const ForestQta = memo(function ForestQta() {
             </MyLabel>
             <ProgressBar value={treePercent} color="success" className="mb-2" />
         </>
+    )
+})
+
+const ForestRespawn = memo(function ForestRespawn() {
+    const woodType = useGameStore(selectWoodType)
+    const location = useGameStore((s) => s.location)
+    const { t, fun } = useTranslations()
+
+    const respawn = useGameStore(useCallback((s) => selectTreeRespawnTime(s, woodType, location), [woodType, location]))
+    const selectTreeRespawnTimeAllMemo = useMemo(
+        () => memoize((s: GameState) => selectTreeRespawnTimeAll(s, woodType, location)),
+        [woodType, location]
+    )
+
+    return (
+        <MyLabel>
+            {t.Time} {fun.formatTime(respawn)}
+            <BonusDialog title={t.IncreaseGrowSpeed} selectBonusResult={selectTreeRespawnTimeAllMemo} isTime={true} />
+        </MyLabel>
     )
 })
 
