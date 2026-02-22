@@ -147,18 +147,21 @@ export const PerkPage = () => {
     const requirements = data.requiredExp ?? data.requiredPerks
 
     const content = (
-        <div className="text-sm">
-            {t[data.descId]}
-            {requirements && <span>{t.Requirements}</span>}
+        <div>
+            <p>{t[data.descId]}</p>
             {requirements && (
-                <ul>
-                    {data.requiredExp?.map((r) => (
-                        <PerkExpReq req={r} key={r.skill} />
-                    ))}
-                    {data.requiredPerks?.map((r) => (
-                        <PerkPerkReq perk={r} key={r} />
-                    ))}
-                </ul>
+                <>
+                    <span className="mt-2 block">{t.Requirements}</span>
+
+                    <ul>
+                        {data.requiredExp?.map((r) => (
+                            <PerkExpReq req={r} key={r.skill} />
+                        ))}
+                        {data.requiredPerks?.map((r) => (
+                            <PerkPerkReq perk={r} key={r} />
+                        ))}
+                    </ul>
+                </>
             )}
         </div>
     )
@@ -195,16 +198,25 @@ export const PerkPage = () => {
         </Card>
     )
 }
+
+const CheckIcon = memo(function CheckIcon({ ok }: { ok: boolean }) {
+    if (ok) return <TbCheck className="text-success" />
+    else return <TbX className="text-destructive" />
+})
+
 const PerkExpReq = memo(function PerkExpReq(props: { req: ExpReq }) {
     const { req } = props
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     const level = useGameStore(selectLevel(req.skill, PLAYER_ID))
     const skill = ExpData[req.skill]
+    const ok = level >= req.level
 
     return (
-        <li>
-            {t[skill.nameId]} {f(req.level)}/{f(level)}
+        <li className={classes.perkLi}>
+            <CheckIcon ok={ok} />
+            {t[skill.nameId]} {f(req.level)}
+            <span className="text-muted-foreground">/{f(level)}</span>
         </li>
     )
 })
@@ -216,7 +228,7 @@ const PerkPerkReq = memo(function PerkPerkReq(props: { perk: PerksEnum }) {
 
     return (
         <li className={classes.perkLi}>
-            {ownPerk ? <TbCheck /> : <TbX />}
+            <CheckIcon ok={ownPerk} />
             {t[perkData.nameId]}
         </li>
     )
