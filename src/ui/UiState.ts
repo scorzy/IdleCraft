@@ -4,6 +4,7 @@ import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { WoodTypes } from '../wood/WoodTypes'
 import { OreTypes } from '../mining/OreTypes'
+import { GatheringZone } from '../gathering/gatheringZones'
 import { UiPages } from './state/UiPages'
 import { CollapsedEnum } from './sidebar/CollapsedEnum'
 
@@ -17,6 +18,7 @@ export interface UiState {
     lang: string
     woodType: WoodTypes
     oreType: OreTypes
+    gatheringZone: GatheringZone
     selectedItemId: string | null
     selectedItemLocation: GameLocations | null
     recipeType?: RecipeTypes
