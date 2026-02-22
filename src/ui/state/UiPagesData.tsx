@@ -27,6 +27,10 @@ export const UiPagesData: Record<UiPages, UiPageData> = {
         nameId: 'Mining',
         icon: <GiMining />,
     },
+    [UiPages.Gathering]: {
+        nameId: 'Gathering',
+        icon: IconsData[Icons.Forest],
+    },
     [UiPages.Smithing]: {
         nameId: 'Smithing',
         icon: <GiAnvil />,

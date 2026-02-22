@@ -12,6 +12,7 @@ export enum ActivityTypes {
     Ability = 'Ability',
     StartBattle = 'StartBattle',
     Effect = 'Effect',
+    Gathering = 'Gathering',
 }
 export interface ActivityState {
     id: string

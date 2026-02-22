@@ -71,6 +71,12 @@ import { onGrowSpeedBonusEnd } from '../../wood/functions/onGrowSpeedBonusEnd'
 import { removeIncreaseGrowSpeed } from '../../wood/functions/removeIncreaseGrowSpeed'
 import { startIncreaseGrowSpeed } from '../../wood/functions/startIncreaseGrowSpeed'
 import { viewIncreaseGrowSpeed } from '../../wood/functions/viewIncreaseGrowSpeed'
+import { execGathering } from '../../gathering/functions/execGathering'
+import { removeGathering } from '../../gathering/functions/removeGathering'
+import { startGathering } from '../../gathering/functions/startGathering'
+import { getGatheringTitle } from '../../gathering/functions/getGatheringTitle'
+import { getGatheringIcon } from '../../gathering/functions/getGatheringIcon'
+import { viewGathering } from '../../gathering/functions/viewGathering'
 
 export function initialize() {
     initActivities()
@@ -115,6 +121,13 @@ function initActivities() {
     activityTitles.set(ActivityTypes.Crafting, getCraftingTitle)
     activityIcons.set(ActivityTypes.Crafting, getCraftingIcon)
     activityViewers.set(ActivityTypes.Crafting, viewCrafting)
+
+    activityExecutors.set(ActivityTypes.Gathering, execGathering)
+    activityRemovers.set(ActivityTypes.Gathering, removeGathering)
+    activityStarters.set(ActivityTypes.Gathering, startGathering)
+    activityTitles.set(ActivityTypes.Gathering, getGatheringTitle)
+    activityIcons.set(ActivityTypes.Gathering, getGatheringIcon)
+    activityViewers.set(ActivityTypes.Gathering, viewGathering)
 
     activityRemovers.set(ActivityTypes.Battle, removeBattle)
     activityStarters.set(ActivityTypes.Battle, startBattle)

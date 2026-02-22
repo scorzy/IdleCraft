@@ -21,6 +21,7 @@ import { CharactersUi } from '../../characters/ui/CharactersUi'
 import { DeadDialog } from '../../characters/ui/DeadDialog'
 import { selectPage } from '../uiSelectors'
 import { QuestUi } from '../../quests/ui/QuestUi'
+import { Gathering } from '../../gathering/ui/Gathering'
 import classes from './appShell.module.css'
 
 export const AppShell = memo(function AppShell() {
@@ -82,6 +83,8 @@ const PageContent = memo(function PageContent() {
             return <Activities />
         case UiPages.Mining:
             return <Mining />
+        case UiPages.Gathering:
+            return <Gathering />
         case UiPages.CombatZones:
             return <CombatPage />
         case UiPages.Combat:

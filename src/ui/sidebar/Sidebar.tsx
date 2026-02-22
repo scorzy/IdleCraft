@@ -60,6 +60,7 @@ const SidebarGathering = memo(function SidebarGathering() {
         >
             <MenuItem page={UiPages.Woodcutting} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Mining} collapsedId={CollapsedEnum.Sidebar} />
+            <MenuItem page={UiPages.Gathering} collapsedId={CollapsedEnum.Sidebar} />
         </CollapsibleMenu>
     )
 })

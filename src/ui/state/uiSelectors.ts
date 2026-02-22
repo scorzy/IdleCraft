@@ -13,6 +13,7 @@ export const selectLang = (state: GameState) => state.ui.lang
 export const isWoodSelected = (woodType: WoodTypes) => (state: GameState) => state.ui.woodType === woodType
 export const selectWoodType = (state: GameState) => state.ui.woodType
 export const selectOreType = (state: GameState) => state.ui.oreType
+export const selectGatheringZone = (state: GameState) => state.ui.gatheringZone
 
 export const selectShowAvailablePerks = (state: GameState) => state.ui.showAvailablePerks
 export const selectShowUnavailablePerks = (state: GameState) => state.ui.showUnavailablePerks
