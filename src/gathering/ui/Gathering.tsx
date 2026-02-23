@@ -17,9 +17,11 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { removeActivity } from '../../activities/functions/removeActivity'
+import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { addGathering } from '../functions/addGathering'
-import { GatheringData, RarityLabel, selectZoneLootTable } from '../gatheringData'
+import { RarityLabel, selectZoneLootTable } from '../gatheringData'
 import { GatheringZone } from '../gatheringZones'
+import { selectGatheringTime, selectGatheringTimeAllMemo } from '../selectors/gatheringTime'
 import { GatheringSidebar } from './GatheringSidebar'
 
 export const Gathering = memo(function Gathering() {
@@ -43,10 +45,10 @@ export const Gathering = memo(function Gathering() {
 })
 
 const GatheringAction = memo(function GatheringAction() {
-    const { t } = useTranslations()
+    const { t, fun } = useTranslations()
     const zone = useGameStore((s) => s.ui.gatheringZone)
-    const zoneData = GatheringData[zone]
     const actId = useGameStore(useCallback((s: GameState) => selectGatheringActivityId(s, zone), [zone]))
+    const time = useGameStore(selectGatheringTime)
 
     const onAdd = useCallback(() => addGathering(zone), [zone])
     const onStop = useCallback(() => removeActivity(actId), [actId])
@@ -68,7 +70,10 @@ const GatheringAction = memo(function GatheringAction() {
                         />
                     )}
                 </div>
-                <div className="text-muted-foreground mb-2 text-sm">{t[zoneData.nameId]}</div>
+                <div className="text-muted-foreground mb-2 text-sm">
+                    {t.Time} {fun.formatTime(time)}
+                    <BonusDialog title={t.Time} selectBonusResult={selectGatheringTimeAllMemo} isTime={true} />
+                </div>
                 <GameTimerProgress actionId={actId} color="success" />
             </CardContent>
         </Card>
