@@ -3,7 +3,7 @@ import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { Button } from '../../components/ui/button'
-import { Card, CardContent } from '../../components/ui/card'
+import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table'
 import { ExpEnum } from '../../experience/ExpEnum'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
@@ -22,6 +22,7 @@ import { addGathering } from '../functions/addGathering'
 import { RarityLabel, selectZoneLootTable } from '../gatheringData'
 import { GatheringZone } from '../gatheringZones'
 import { selectGatheringTime, selectGatheringTimeAllMemo } from '../selectors/gatheringTime'
+import { MyLabel } from '../../ui/myCard/MyLabel'
 import { GatheringSidebar } from './GatheringSidebar'
 
 export const Gathering = memo(function Gathering() {
@@ -57,25 +58,25 @@ const GatheringAction = memo(function GatheringAction() {
         <Card>
             <MyCardHeaderTitle title={t.Gathering} icon={IconsData.Forest} />
             <CardContent>
-                <div className="mb-2">
-                    {actId ? (
-                        <Button variant="destructive" onClick={onStop}>
-                            {t.Stop}
-                        </Button>
-                    ) : (
-                        <AddActivityDialog
-                            title={t.Gathering}
-                            openBtn={<Button>{t.Gathering}</Button>}
-                            addBtn={<Button onClick={onAdd}>{t.Add}</Button>}
-                        />
-                    )}
-                </div>
-                <div className="text-muted-foreground mb-2 text-sm">
+                <MyLabel>
                     {t.Time} {fun.formatTime(time)}
                     <BonusDialog title={t.Time} selectBonusResult={selectGatheringTimeAllMemo} isTime={true} />
-                </div>
+                </MyLabel>
                 <GameTimerProgress actionId={actId} color="success" />
             </CardContent>
+            <CardFooter className="flex gap-2">
+                {actId ? (
+                    <Button variant="destructive" onClick={onStop}>
+                        {t.Stop}
+                    </Button>
+                ) : (
+                    <AddActivityDialog
+                        title={t.Gathering}
+                        openBtn={<Button>{t.Gathering}</Button>}
+                        addBtn={<Button onClick={onAdd}>{t.Add}</Button>}
+                    />
+                )}
+            </CardFooter>
         </Card>
     )
 })
