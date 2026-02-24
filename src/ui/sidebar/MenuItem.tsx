@@ -8,7 +8,7 @@ import { UiPagesData } from '../state/UiPagesData'
 import { collapse, setPage } from '../state/uiFunctions'
 import { Collapsible, CollapsibleContent } from '../../components/ui/collapsible'
 import { Msg } from '../../msg/Msg'
-import { getSidebarWidth, isCollapsed } from '../state/uiSelectors'
+import { isCollapsed } from '../state/uiSelectors'
 import { useUiTempStore } from '../state/uiTempStore'
 import classes from './menuItem.module.css'
 import { CollapsedEnum } from './CollapsedEnum'
@@ -52,7 +52,7 @@ export const MyListItem = memo(function MyListItem(props: {
     const { text, onClick, active, icon, arrowOpen, right, collapsedId } = props
     let { enabled } = props
 
-    const parentWidth = useUiTempStore(getSidebarWidth(collapsedId))
+    const parentWidth = useUiTempStore(useCallback((s) => s.sidebarWidths[collapsedId] ?? 0, [collapsedId]))
 
     const collapsed = parentWidth < 47
 
