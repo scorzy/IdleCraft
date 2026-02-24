@@ -1,8 +1,8 @@
 import { ActivityState, ActivityTypes } from '../activities/ActivityState'
-import { GatheringZone } from './gatheringZones'
+import { GatheringSubZone } from './gatheringZones'
 
 export interface Gathering extends ActivityState {
-    zone: GatheringZone
+    zone: GatheringSubZone
 }
 
 export function isGathering(act: ActivityState | Gathering): act is Gathering {

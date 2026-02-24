@@ -1,5 +1,5 @@
 import { setState } from '../../game/setState'
-import { GatheringZone } from '../gatheringZones'
+import { GatheringSubZone } from '../gatheringZones'
 import { makeGathering } from './makeGathering'
 
-export const addGathering = (zone: GatheringZone) => setState((s) => makeGathering(zone)(s))
+export const addGathering = (zone: GatheringSubZone) => setState((s) => makeGathering(zone)(s))

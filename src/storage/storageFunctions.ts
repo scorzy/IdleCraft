@@ -26,11 +26,13 @@ export function addItem(state: GameState, itemId: string, qta: number, location?
 
     if (Math.abs(newQta) < Number.EPSILON) {
         if (!old) return
-        for (const event of onItemRemovedListeners) event(state, itemId, location)
+        for (const event of onItemRemovedListeners) event(state, itemId, location, old?.quantity ?? Math.abs(qta))
 
         StorageAdapter.remove(storage, itemId)
-    } else if (old) old.quantity = newQta
-    else StorageAdapter.upsertMerge(storage, { itemId, quantity: newQta })
+    } else if (old) {
+        if (qta < 0) for (const event of onItemRemovedListeners) event(state, itemId, location, Math.abs(qta))
+        old.quantity = newQta
+    } else StorageAdapter.upsertMerge(storage, { itemId, quantity: newQta })
 
     if (isCrafted(itemId) && !isCraftItemUsed(state, itemId)) removeCraftItem(state.craftedItems, itemId)
 }

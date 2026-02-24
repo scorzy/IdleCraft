@@ -42,6 +42,7 @@ import { onItemRemovedListeners } from '../../storage/storageEvents'
 import { recipeOnItemRemove } from '../../crafting/RecipeFunctions'
 import { questOnKillListener } from '../../quests/killRequest/questOnKillListener'
 import { questOnItemRemove } from '../../quests/collectRequest/questOnItemRemove'
+import { gatheringOnItemRemoved, gatheringOnKillListener } from '../../gathering/zoneListeners'
 import { getCraftingIcon } from '../../crafting/selectors/getCraftingIcon'
 import { getCraftingTitle } from '../../crafting/selectors/getCraftingTitle'
 import {
@@ -168,7 +169,9 @@ function initQuests() {
 function initListeners() {
     onKillListeners.push(addKillBattleLog)
     onKillListeners.push(questOnKillListener)
+    onKillListeners.push(gatheringOnKillListener)
 
     onItemRemovedListeners.push(questOnItemRemove)
     onItemRemovedListeners.push(recipeOnItemRemove)
+    onItemRemovedListeners.push(gatheringOnItemRemoved)
 }

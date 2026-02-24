@@ -16,7 +16,8 @@ import { RecipeTypes } from '../crafting/RecipeInterfaces'
 import { QuestAdapter } from '../quests/QuestTypes'
 import { StorageAdapter } from '../storage/storageAdapter'
 import { AppliedEffectAdapter } from '../effects/types/AppliedEffect'
-import { GatheringZone } from '../gathering/gatheringZones'
+import { GatheringSubZone } from '../gathering/gatheringZones'
+import { InitialGatheringZoneProgress } from '../gathering/gatheringData'
 import { AddActivityTypes, GameState, LocationState } from './GameState'
 
 const getInitialVillageState: () => LocationState = () => {
@@ -48,7 +49,7 @@ export const InitialGameState: GameState = {
         storageOrder: 'name',
         storageAsc: true,
         oreType: OreTypes.Copper,
-        gatheringZone: GatheringZone.Forest,
+        gatheringZone: GatheringSubZone.ForestNormal,
         showAvailablePerks: true,
         showOwnedPerks: true,
         showUnavailablePerks: true,
@@ -100,6 +101,12 @@ export const InitialGameState: GameState = {
     startActNow: false,
     actRepetitions: 1,
     actAutoRemove: false,
+    gatheringZones: structuredClone(InitialGatheringZoneProgress),
+    requirementProgress: {
+        kills: {},
+        consumed: {},
+        delivered: {},
+    },
 }
 
 export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)

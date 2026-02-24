@@ -2,15 +2,15 @@ import { memoize } from 'proxy-memoize'
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { GatheringData } from '../gatheringData'
+import { GatheringSubZoneData } from '../gatheringData'
 
 export const selectGatheringTimeAll = (state: GameState): BonusResult => {
     const zone = state.ui.gatheringZone
-    const zoneData = GatheringData[zone]
+    const zoneData = GatheringSubZoneData[zone]
 
     const baseBonus: Bonus = {
         id: `base-${zone}`,
-        nameId: zoneData.nameId,
+        nameId: zoneData.zone,
         iconId: Icons.Forest,
         add: zoneData.gatheringTime,
     }

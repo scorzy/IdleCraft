@@ -1,14 +1,15 @@
 import { memo, useCallback } from 'react'
-import { useGameStore } from '../../game/state'
+import { TbLock } from 'react-icons/tb'
 import { GameState } from '../../game/GameState'
-import { useTranslations } from '../../msg/useTranslations'
-import { setGatheringZone } from '../../ui/state/uiFunctions'
-import { MyListItem } from '../../ui/sidebar/MenuItem'
-import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
-import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
+import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
-import { GatheringData } from '../gatheringData'
-import { GatheringZone } from '../gatheringZones'
+import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
+import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
+import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
+import { setGatheringZone } from '../../ui/state/uiFunctions'
+import { GatheringSubZoneData, GatheringZoneSubZones } from '../gatheringData'
+import { GatheringSubZone, GatheringZone } from '../gatheringZones'
+import { isSubZoneUnlocked } from '../zoneProgression'
 
 const zones = Object.values(GatheringZone)
 
@@ -16,27 +17,46 @@ export const GatheringSidebar = memo(function GatheringSidebar() {
     return (
         <SidebarContainer collapsedId={CollapsedEnum.Gathering}>
             {zones.map((zone) => (
-                <GatheringZoneLink key={zone} zone={zone} />
+                <GatheringZoneMenu key={zone} zone={zone} />
             ))}
         </SidebarContainer>
     )
 })
 
-const GatheringZoneLink = memo(function GatheringZoneLink({ zone }: { zone: GatheringZone }) {
-    const { t } = useTranslations()
-    const isSelected = useCallback((state: GameState) => state.ui.gatheringZone === zone, [zone])
-    const onClick = useCallback(() => setGatheringZone(zone), [zone])
+const GatheringZoneMenu = memo(function GatheringZoneMenu({ zone }: { zone: GatheringZone }) {
+    const open = useGameStore((s) => !s.ui.collapsed[CollapsedEnum.GatheringForest])
 
-    const selected = useGameStore(isSelected)
-    const data = GatheringData[zone]
+    return (
+        <CollapsibleMenu
+            key={open ? 'open' : 'close'}
+            name={zone}
+            icon={IconsData.Forest}
+            collapsedId={CollapsedEnum.GatheringForest}
+            parentCollapsedId={CollapsedEnum.Gathering}
+        >
+            {GatheringZoneSubZones[zone].map((subZone) => (
+                <GatheringSubZoneLink key={subZone} subZone={subZone} />
+            ))}
+        </CollapsibleMenu>
+    )
+})
+
+const GatheringSubZoneLink = memo(function GatheringSubZoneLink({ subZone }: { subZone: GatheringSubZone }) {
+    const selected = useGameStore((state: GameState) => state.ui.gatheringZone === subZone)
+    const unlocked = useGameStore((state: GameState) => isSubZoneUnlocked(state, subZone))
+    const onClick = useCallback(() => {
+        if (!unlocked) return
+        setGatheringZone(subZone)
+    }, [subZone, unlocked])
 
     return (
         <MyListItem
-            text={t[data.nameId]}
+            text={GatheringSubZoneData[subZone].name}
             collapsedId={CollapsedEnum.Gathering}
-            icon={IconsData.Forest}
+            icon={unlocked ? IconsData.Forest : <TbLock />}
             active={selected}
             onClick={onClick}
+            enabled={unlocked}
         />
     )
 })

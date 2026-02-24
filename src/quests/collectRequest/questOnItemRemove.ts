@@ -2,7 +2,12 @@ import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { QuestAdapter, QuestOutcome } from '../QuestTypes'
 
-export const questOnItemRemove = (state: GameState, itemId: string, location: GameLocations): void => {
+export const questOnItemRemove = (
+    state: GameState,
+    itemId: string,
+    location: GameLocations,
+    _quantity?: number
+): void => {
     QuestAdapter.forEach(state.quests, (quest) => {
         Object.values(quest.outcomeData.entries).forEach((outcome: QuestOutcome) => {
             if (outcome.location !== location) return

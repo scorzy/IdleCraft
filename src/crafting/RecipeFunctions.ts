@@ -45,7 +45,12 @@ export const setRecipeItemParam = (state: GameState, id: string, paramValue: str
 export const setRecipeItemParamUi = (id: string, paramValue: string) =>
     setState((state) => setRecipeItemParam(state, id, paramValue))
 
-export const recipeOnItemRemove = (state: GameState, itemId: string, location: GameLocations): void => {
+export const recipeOnItemRemove = (
+    state: GameState,
+    itemId: string,
+    location: GameLocations,
+    _quantity: number
+): void => {
     if (state.location !== location) return
 
     let toRemove = state.craftingForm.paramsValue.find((p) => p.itemId === itemId)

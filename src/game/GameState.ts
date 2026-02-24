@@ -16,6 +16,8 @@ import { BattleLog } from '../battleLog/battleLogInterfaces'
 import { UiState } from '../ui/UiState'
 import { QuestState } from '../quests/QuestTypes'
 import { AppliedEffect } from '../effects/types/AppliedEffect'
+import { GatheringZoneProgressState } from '../gathering/zoneProgressionTypes'
+import { RequirementProgress } from '../requirements/RequirementTypes'
 import { Effects } from '@/effects/types/Effects'
 import { InitialState } from '@/entityAdapter/InitialState'
 
@@ -70,4 +72,6 @@ export interface GameState {
     startActNow: boolean
     actRepetitions: number
     actAutoRemove: boolean
+    gatheringZones: GatheringZoneProgressState
+    requirementProgress: RequirementProgress
 }

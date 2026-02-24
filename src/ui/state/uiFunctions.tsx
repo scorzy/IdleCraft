@@ -6,7 +6,7 @@ import { GameState } from '../../game/GameState'
 import { OreTypes } from '../../mining/OreTypes'
 import { changeRecipeState } from '../../crafting/RecipeFunctions'
 import { CollapsedEnum } from '../sidebar/CollapsedEnum'
-import { GatheringZone } from '../../gathering/gatheringZones'
+import { GatheringSubZone } from '../../gathering/gatheringZones'
 import { UiPagesData } from './UiPagesData'
 import { UiPages } from './UiPages'
 import { useUiTempStore } from './uiTempStore'
@@ -46,7 +46,7 @@ export const setOre = (oreType: OreTypes) =>
         s.ui.oreType = oreType
     })
 
-export const setGatheringZone = (gatheringZone: GatheringZone) =>
+export const setGatheringZone = (gatheringZone: GatheringSubZone) =>
     setState((s) => {
         s.ui.gatheringZone = gatheringZone
     })
