@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react'
 import { TbLock } from 'react-icons/tb'
+import { memoize } from 'proxy-memoize'
 import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
@@ -37,7 +38,7 @@ import { GatheringSidebar } from './GatheringSidebar'
 export const Gathering = memo(function Gathering() {
     const subZone = useGameStore((s) => s.ui.gatheringZone)
     const zone = getSubZoneMainZone(subZone)
-    const zoneProgress = useGameStore((s) => selectZoneProgress(s, zone))
+    const zoneProgress = useGameStore(memoize((s) => selectZoneProgress(s, zone)))
 
     return (
         <MyPageAll sidebar={<GatheringSidebar />}>
