@@ -1,6 +1,6 @@
 import { GameState } from '../game/GameState'
-import { Requirement, RequirementType } from './RequirementTypes'
 import { GatheringZone } from '../gathering/gatheringZones'
+import { Requirement, RequirementType } from './RequirementTypes'
 
 export function getRequirementProgress(state: GameState, req: Requirement): number {
     if (req.type === RequirementType.KillMonster) return state.requirementProgress.kills[req.targetId] ?? 0

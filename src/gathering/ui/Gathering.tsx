@@ -14,7 +14,7 @@ import { ItemIcon } from '../../items/ui/ItemIcon'
 import { useItemName } from '../../items/useItemName'
 import { useTranslations } from '../../msg/useTranslations'
 import { RequirementType } from '../../requirements/RequirementTypes'
-import { getRequirementProgress, isRequirementCompleted } from '../../requirements/requirementFunctions'
+import { getRequirementProgress } from '../../requirements/requirementFunctions'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyLabel } from '../../ui/myCard/MyLabel'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
@@ -209,20 +209,28 @@ const RequirementsList = memo(function RequirementsList({
 }: {
     reqs: import('../../requirements/RequirementTypes').Requirement[]
 }) {
-    const state = useGameStore((s) => s)
     return (
         <ul className="list-disc pl-5 text-sm">
-            {reqs.map((req) => {
-                const progress = getRequirementProgress(state, req)
-                const done = isRequirementCompleted(state, req)
-                return (
-                    <li key={req.id}>
-                        {done ? '✅' : '🔒'} {requirementLabel(req.type)} {req.targetId}:{' '}
-                        {Math.min(progress, req.quantity)}/{req.quantity}
-                    </li>
-                )
-            })}
+            {reqs.map((req) => (
+                <RequirementRow key={req.id} req={req} />
+            ))}
         </ul>
+    )
+})
+
+const RequirementRow = memo(function RequirementRow({
+    req,
+}: {
+    req: import('../../requirements/RequirementTypes').Requirement
+}) {
+    const progress = useGameStore((state) => getRequirementProgress(state, req))
+    const done = progress >= req.quantity
+
+    return (
+        <li>
+            {done ? '✅' : '🔒'} {requirementLabel(req.type)} {req.targetId}: {Math.min(progress, req.quantity)}/
+            {req.quantity}
+        </li>
     )
 })
 
