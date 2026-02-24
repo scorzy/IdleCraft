@@ -16,6 +16,7 @@ import { RecipeTypes } from '../crafting/RecipeInterfaces'
 import { QuestAdapter } from '../quests/QuestTypes'
 import { StorageAdapter } from '../storage/storageAdapter'
 import { AppliedEffectAdapter } from '../effects/types/AppliedEffect'
+import { GatheringZone } from '../gathering/gatheringZones'
 import { AddActivityTypes, GameState, LocationState } from './GameState'
 
 const getInitialVillageState: () => LocationState = () => {
@@ -47,6 +48,7 @@ export const InitialGameState: GameState = {
         storageOrder: 'name',
         storageAsc: true,
         oreType: OreTypes.Copper,
+        gatheringZone: GatheringZone.Forest,
         showAvailablePerks: true,
         showOwnedPerks: true,
         showUnavailablePerks: true,
