@@ -14,74 +14,66 @@ import { IconsData } from '../../icons/Icons'
 import { ItemIcon } from '../../items/ui/ItemIcon'
 import { useItemName } from '../../items/useItemName'
 import { useTranslations } from '../../msg/useTranslations'
-import { RequirementType } from '../../requirements/RequirementTypes'
+import { Requirement, RequirementType } from '../../requirements/RequirementTypes'
 import { getRequirementProgress } from '../../requirements/requirementFunctions'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyLabel } from '../../ui/myCard/MyLabel'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
-import { setGatheringZone } from '../../ui/state/uiFunctions'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { selectGatheringTime, selectGatheringTimeAllMemo } from '../selectors/gatheringTime'
 import { addGathering } from '../functions/addGathering'
-import {
-    GatheringSubZoneData,
-    GatheringZoneSubZones,
-    RarityLabel,
-    ZoneImprovementsData,
-    selectSubZoneLootTable,
-} from '../gatheringData'
+import { GatheringSubZoneData, RarityLabel, ZoneImprovementsData, selectSubZoneLootTable } from '../gatheringData'
 import { GatheringSubZone } from '../gatheringZones'
 import { completeZoneImprovement, getSubZoneMainZone, isSubZoneUnlocked, selectZoneProgress } from '../zoneProgression'
+import { PLAYER_ID } from '../../characters/charactersConst'
+import { ExpEnum } from '../../experience/ExpEnum'
+import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { GatheringSidebar } from './GatheringSidebar'
 
 export const Gathering = memo(function Gathering() {
     const subZone = useGameStore((s) => s.ui.gatheringZone)
     const zone = getSubZoneMainZone(subZone)
     const zoneProgress = useGameStore(memoize((s) => selectZoneProgress(s, zone)))
+    const unlocked = useGameStore((s) => isSubZoneUnlocked(s, subZone))
 
     return (
         <MyPageAll sidebar={<GatheringSidebar />}>
-            <MyPage className="page__main" key={subZone}>
-                <Card>
-                    <MyCardHeaderTitle title={`${zone} Level ${zoneProgress.level}`} icon={IconsData.Forest} />
-                    <CardContent>
-                        <MyLabel>
-                            XP {zoneProgress.currentLevelExp} / {zoneProgress.nextLevelExp}
-                        </MyLabel>
-                        <ProgressBar
-                            color="success"
-                            value={(zoneProgress.currentLevelExp / Math.max(zoneProgress.nextLevelExp, 1)) * 100}
-                        />
-                    </CardContent>
-                </Card>
-                <SubZonesSection zoneSubZone={subZone} />
-                <GatheringAction />
-                <GatheringLootTable />
-                <ZoneImprovements />
-            </MyPage>
+            <MyPageAll
+                key={subZone}
+                header={
+                    <div className="page__info">
+                        <ExperienceCard expType={ExpEnum.Gathering} charId={PLAYER_ID} />
+                        <Card>
+                            <MyCardHeaderTitle title={`${zone} Level ${zoneProgress.level}`} icon={IconsData.Forest} />
+                            <CardContent>
+                                <MyLabel>
+                                    XP {zoneProgress.currentLevelExp} / {zoneProgress.nextLevelExp}
+                                </MyLabel>
+                                <ProgressBar
+                                    color="success"
+                                    value={
+                                        (zoneProgress.currentLevelExp / Math.max(zoneProgress.nextLevelExp, 1)) * 100
+                                    }
+                                />
+                            </CardContent>
+                        </Card>
+                    </div>
+                }
+            >
+                <MyPage className="page__main">
+                    {!unlocked && <LockedZone subZone={subZone} />}
+                    {unlocked && <GatheringAction />}
+                    <GatheringLootTable />
+                    {unlocked && <ZoneImprovements />}
+                </MyPage>
+            </MyPageAll>
         </MyPageAll>
     )
 })
 
-const SubZonesSection = memo(function SubZonesSection({ zoneSubZone }: { zoneSubZone: GatheringSubZone }) {
-    const zone = getSubZoneMainZone(zoneSubZone)
-    return (
-        <Card>
-            <MyCardHeaderTitle title="SubZones" icon={IconsData.Forest} />
-            <CardContent className="space-y-3">
-                {GatheringZoneSubZones[zone].map((subZone) => (
-                    <SubZoneRow key={subZone} subZone={subZone} />
-                ))}
-            </CardContent>
-        </Card>
-    )
-})
-
-const SubZoneRow = memo(function SubZoneRow({ subZone }: { subZone: GatheringSubZone }) {
+const LockedZone = memo(function LockedZone({ subZone }: { subZone: GatheringSubZone }) {
     const unlocked = useGameStore((s) => isSubZoneUnlocked(s, subZone))
-    const selected = useGameStore((s) => s.ui.gatheringZone === subZone)
-    const onSelect = useCallback(() => unlocked && setGatheringZone(subZone), [subZone, unlocked])
     return (
         <div className="rounded border p-2">
             <div className="mb-2 flex items-center gap-2">
@@ -89,11 +81,6 @@ const SubZoneRow = memo(function SubZoneRow({ subZone }: { subZone: GatheringSub
                 <strong>{GatheringSubZoneData[subZone].name}</strong>
             </div>
             {!unlocked && <RequirementsList reqs={GatheringSubZoneData[subZone].unlockRequirements} />}
-            {unlocked && (
-                <Button variant={selected ? 'secondary' : 'outline'} onClick={onSelect}>
-                    Enter
-                </Button>
-            )}
         </div>
     )
 })
@@ -187,7 +174,7 @@ const ZoneImprovements = memo(function ZoneImprovements() {
             <MyCardHeaderTitle title="Zone Improvements" icon={IconsData.Forest} />
             <CardContent className="space-y-2">
                 {ZoneImprovementsData[zone].map((improvement) => (
-                    <div key={improvement.id} className="rounded border p-2">
+                    <div key={improvement.id}>
                         <div className="font-semibold">{improvement.name}</div>
                         <div className="text-muted-foreground text-sm">{improvement.description}</div>
                         <RequirementsList reqs={improvement.requirements} />
@@ -205,11 +192,7 @@ const ZoneImprovements = memo(function ZoneImprovements() {
     )
 })
 
-const RequirementsList = memo(function RequirementsList({
-    reqs,
-}: {
-    reqs: import('../../requirements/RequirementTypes').Requirement[]
-}) {
+const RequirementsList = memo(function RequirementsList({ reqs }: { reqs: Requirement[] }) {
     return (
         <ul className="list-disc pl-5 text-sm">
             {reqs.map((req) => (

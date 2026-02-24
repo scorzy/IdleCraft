@@ -24,11 +24,8 @@ export const GatheringSidebar = memo(function GatheringSidebar() {
 })
 
 const GatheringZoneMenu = memo(function GatheringZoneMenu({ zone }: { zone: GatheringZone }) {
-    const open = useGameStore((s) => !s.ui.collapsed[CollapsedEnum.GatheringForest])
-
     return (
         <CollapsibleMenu
-            key={open ? 'open' : 'close'}
             name={zone}
             icon={IconsData.Forest}
             collapsedId={CollapsedEnum.GatheringForest}
@@ -45,7 +42,6 @@ const GatheringSubZoneLink = memo(function GatheringSubZoneLink({ subZone }: { s
     const selected = useGameStore((state: GameState) => state.ui.gatheringZone === subZone)
     const unlocked = useGameStore((state: GameState) => isSubZoneUnlocked(state, subZone))
     const onClick = useCallback(() => {
-        if (!unlocked) return
         setGatheringZone(subZone)
     }, [subZone, unlocked])
 
@@ -56,7 +52,6 @@ const GatheringSubZoneLink = memo(function GatheringSubZoneLink({ subZone }: { s
             icon={unlocked ? IconsData.Forest : <TbLock />}
             active={selected}
             onClick={onClick}
-            enabled={unlocked}
         />
     )
 })
