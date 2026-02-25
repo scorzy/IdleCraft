@@ -12,7 +12,3 @@ export function gatheringOnKillListener(state: GameState, killedCharId: string):
     const zone = getSubZoneMainZone(state.ui.gatheringZone)
     addZoneExp(state, zone, killedLevel * GatheringZoneExpConfig.monsterLevelMultiplier)
 }
-
-export function gatheringOnItemRemoved(state: GameState, itemId: string, _location: unknown, quantity: number): void {
-    addRequirementProgress(state.requirementProgress.consumed, itemId, quantity)
-}

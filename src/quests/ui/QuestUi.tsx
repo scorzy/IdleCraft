@@ -26,7 +26,6 @@ import {
     selectQuestStatus,
 } from '../selectors/QuestSelectors'
 import { KillQuestRequestSelectors, selectQuestTargets, isKillingReq } from '../killRequest/killSelectors'
-
 import { IconsData } from '../../icons/Icons'
 import { acceptClick, completeQuest, selectQuest, setExpandedOutcome } from '../QuestFunctions'
 import { GameState } from '../../game/GameState'

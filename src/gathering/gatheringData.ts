@@ -30,7 +30,7 @@ export const GatheringSubZoneData: Record<GatheringSubZone, SubZoneConfig> = {
         gatheringTime: 3000,
         config: spiderNestConfig,
         unlockRequirements: [
-            { id: 'forest_spider_wolf', type: RequirementType.KillMonster, targetId: 'Wolf', quantity: 10 },
+            { id: 'forest_spider_wolf', type: RequirementType.KillMonster, targetId: 'Chicken', quantity: 10 },
         ],
     },
 }
