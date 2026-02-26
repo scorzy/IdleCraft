@@ -1,5 +1,6 @@
-import { GatheringZoneConfig, Rarity, Resource } from './gatheringTypes'
-import { gatherResources } from './gatheringFunctions'
+import { GatheringZoneConfig, Rarity, Resource } from '../gatheringTypes'
+import { gatherResources } from '../gatheringFunctions'
+import { GatheringZone } from '../gatheringZones'
 
 const forestResources: Resource[] = [
     { id: 'RedFlower', rarity: Rarity.Common },
@@ -13,6 +14,10 @@ const forestResources: Resource[] = [
 ]
 
 export const forestGatheringConfig: GatheringZoneConfig = {
+    zone: GatheringZone.Forest,
+    nameId: 'Forest',
+    gatheringTime: 5000,
+    expPerCycle: 10,
     guaranteedRarity: Rarity.Common,
     bonusRolls: [
         { rarity: Rarity.Common, chance: 75 },

@@ -1,3 +1,6 @@
+import { Msg } from '../msg/Msg'
+import { GatheringZone } from './gatheringZones'
+
 export enum Rarity {
     Common = 'Common',
     Uncommon = 'Uncommon',
@@ -15,6 +18,10 @@ export interface RarityRoll {
 }
 
 export interface GatheringZoneConfig {
+    zone: GatheringZone
+    nameId: keyof Msg
+    gatheringTime: number
+    expPerCycle: number
     guaranteedRarity: Rarity
     bonusRolls: RarityRoll[]
     resources: Resource[]

@@ -1,4 +1,5 @@
 import { memo, useCallback } from 'react'
+import { memoize } from 'proxy-memoize'
 import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
 import { PLAYER_ID } from '../../characters/charactersConst'
@@ -19,10 +20,11 @@ import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { addGathering } from '../functions/addGathering'
-import { RarityLabel, selectZoneLootTable } from '../gatheringData'
+import { RarityLabel } from '../gatheringData'
+import { selectZoneLootTable } from '../selectors/selectZoneLootTable'
 import { GatheringZone } from '../gatheringZones'
-import { selectGatheringTime, selectGatheringTimeAllMemo } from '../selectors/gatheringTime'
 import { MyLabel } from '../../ui/myCard/MyLabel'
+import { selectGatheringTime } from '../selectors/gatheringTime'
 import { GatheringSidebar } from './GatheringSidebar'
 
 export const Gathering = memo(function Gathering() {
@@ -49,7 +51,12 @@ const GatheringAction = memo(function GatheringAction() {
     const { t, fun } = useTranslations()
     const zone = useGameStore((s) => s.ui.gatheringZone)
     const actId = useGameStore(useCallback((s: GameState) => selectGatheringActivityId(s, zone), [zone]))
-    const time = useGameStore(selectGatheringTime)
+    const time = useGameStore(useCallback((s: GameState) => selectGatheringTime(zone).gatheringTime(s), [zone]))
+
+    const selectGatheringTimeAllMemo = useCallback(
+        (s: GameState) => memoize(selectGatheringTime(zone).gatheringTimeAll)(s),
+        [zone]
+    )
 
     const onAdd = useCallback(() => addGathering(zone), [zone])
     const onStop = useCallback(() => removeActivity(actId), [actId])
