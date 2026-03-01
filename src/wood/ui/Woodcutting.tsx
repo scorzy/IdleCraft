@@ -158,16 +158,11 @@ const Boost = memo(function Boost() {
 
     return (
         <Card>
-            <MyCardHeaderTitle title={fun.boostTree(woodType)} icon={IconsData.Axe} />
+            <MyCardHeaderTitle title={fun.boostTree(woodType)} icon={IconsData.Forest} />
             <CardContent>
                 <MyLabelContainer>
                     <MyLabel>
                         {t.Time} {fun.formatTime(INCREASE_GROW_SPEED_TIME)}
-                        <BonusDialog
-                            title={t.WoodcuttingTime}
-                            selectBonusResult={selectWoodcuttingTimeAll}
-                            isTime={true}
-                        />
                     </MyLabel>
                     <MyLabel>
                         {t.IncreaseGrowSpeed} +{f(activeBoost)}% ({f(activeStacks)}/{f(maxStacks)})
