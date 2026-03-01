@@ -1,9 +1,8 @@
 import { GatheringZoneConfig, Rarity, Resource } from '../gatheringTypes'
-import { gatherResources } from '../gatheringFunctions'
 import { GatheringZone } from '../gatheringZones'
 import { Icons } from '../../icons/Icons'
 
-const forestResources: Resource[] = [
+const wolfLairGatheringResources: Resource[] = [
     { id: 'RedFlower', rarity: Rarity.Common },
     { id: 'BlueFlower', rarity: Rarity.Common },
     { id: 'GreenFlower', rarity: Rarity.Common },
@@ -14,21 +13,17 @@ const forestResources: Resource[] = [
     { id: 'ManaSpore', rarity: Rarity.Rare },
 ]
 
-export const forestGatheringConfig: GatheringZoneConfig = {
-    zone: GatheringZone.Forest,
-    nameId: 'Forest',
-    iconId: Icons.Forest,
+export const wolfLairGatheringConfig: GatheringZoneConfig = {
+    zone: GatheringZone.WolfLair,
+    nameId: 'WolfLair',
+    iconId: Icons.WolfHead,
     gatheringTime: 5000,
     expPerCycle: 10,
     guaranteedRarity: Rarity.Common,
     bonusRolls: [
-        { rarity: Rarity.Common, chance: 75 },
-        { rarity: Rarity.Uncommon, chance: 20 },
-        { rarity: Rarity.Rare, chance: 5 },
+        { rarity: Rarity.Common, chance: 60 },
+        { rarity: Rarity.Uncommon, chance: 30 },
+        { rarity: Rarity.Rare, chance: 10 },
     ],
-    resources: forestResources,
-}
-
-export function gatherForest(random: () => number = Math.random): Resource[] {
-    return gatherResources(forestGatheringConfig, random)
+    resources: wolfLairGatheringResources,
 }

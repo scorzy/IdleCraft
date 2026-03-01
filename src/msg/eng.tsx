@@ -350,6 +350,7 @@ export const engMsg: Msg = {
     AddAfterCurrent: 'Next',
     StartActNow: 'Start now',
     AddOptions: 'Add activity options',
+    WolfLair: 'Wolf Lair',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

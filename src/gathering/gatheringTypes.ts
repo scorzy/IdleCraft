@@ -1,3 +1,4 @@
+import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 import { GatheringZone } from './gatheringZones'
 
@@ -16,8 +17,15 @@ export interface RarityRoll {
     rarity: Rarity
     chance: number
 }
+export interface GatheringGroupZone {
+    id: string
+    nameId: keyof Msg
+    iconId: Icons
+    group: GatheringZone[]
+}
 
 export interface GatheringZoneConfig {
+    iconId: Icons
     zone: GatheringZone
     nameId: keyof Msg
     gatheringTime: number

@@ -1,10 +1,12 @@
-import { Msg } from '../msg/Msg'
+import { Icons } from '../icons/Icons'
 import { GatheringZone } from './gatheringZones'
 import { forestGatheringConfig } from './data/forestGathering'
-import { GatheringZoneConfig, Rarity } from './gatheringTypes'
+import { GatheringGroupZone, GatheringZoneConfig, Rarity } from './gatheringTypes'
+import { wolfLairGatheringConfig } from './data/wolfLairGathering'
 
 export const GatheringData: Record<GatheringZone, GatheringZoneConfig> = {
     [GatheringZone.Forest]: forestGatheringConfig,
+    [GatheringZone.WolfLair]: wolfLairGatheringConfig,
 }
 
 export const RarityLabel: Record<Rarity, string> = {
@@ -13,9 +15,11 @@ export const RarityLabel: Record<Rarity, string> = {
     [Rarity.Rare]: 'Rare',
 }
 
-export interface GatheringGroupZone {
-    id: string
-    nameId: keyof Msg
-    zone: GatheringZone
-    group: string
-}
+export const GatheringZoneGroups: GatheringGroupZone[] = [
+    {
+        id: 'Forest',
+        nameId: 'Forest',
+        iconId: Icons.Forest,
+        group: [GatheringZone.Forest, GatheringZone.WolfLair],
+    },
+]

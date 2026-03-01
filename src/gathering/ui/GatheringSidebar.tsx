@@ -3,22 +3,36 @@ import { useGameStore } from '../../game/state'
 import { GameState } from '../../game/GameState'
 import { useTranslations } from '../../msg/useTranslations'
 import { setGatheringZone } from '../../ui/state/uiFunctions'
-import { MyListItem } from '../../ui/sidebar/MenuItem'
+import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { IconsData } from '../../icons/Icons'
-import { GatheringData } from '../gatheringData'
+import { GatheringData, GatheringZoneGroups } from '../gatheringData'
 import { GatheringZone } from '../gatheringZones'
-
-const zones = Object.values(GatheringZone)
+import { GatheringGroupZone } from '../gatheringTypes'
 
 export const GatheringSidebar = memo(function GatheringSidebar() {
     return (
         <SidebarContainer collapsedId={CollapsedEnum.Gathering}>
-            {zones.map((zone) => (
-                <GatheringZoneLink key={zone} zone={zone} />
+            {GatheringZoneGroups.map((group) => (
+                <GatheringZoneGroupUI key={group.nameId} group={group} />
             ))}
         </SidebarContainer>
+    )
+})
+
+export const GatheringZoneGroupUI = memo(function GatheringZoneGroupUI({ group }: { group: GatheringGroupZone }) {
+    return (
+        <CollapsibleMenu
+            collapsedId={CollapsedEnum.QuestAccepted}
+            name={group.nameId}
+            parentCollapsedId={CollapsedEnum.Gathering}
+            icon={IconsData[group.iconId]}
+        >
+            {group.group.map((configId) => (
+                <GatheringZoneLink key={configId} zone={configId} />
+            ))}
+        </CollapsibleMenu>
     )
 })
 

@@ -350,4 +350,5 @@ export interface Msg {
     AddBeforeCurrent: string
     AddAfterCurrent: string
     AddOptions: string
+    WolfLair: string
 }
