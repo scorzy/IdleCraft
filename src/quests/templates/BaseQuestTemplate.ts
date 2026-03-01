@@ -1,5 +1,6 @@
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
+import { GatheringZone } from '../../gathering/gatheringZones'
 import { QuestTemplate } from '../QuestTemplate'
 import { QuestAdapter, QuestOutcomeAdapter, QuestState } from '../QuestTypes'
 
@@ -24,4 +25,7 @@ export abstract class BaseQuestTemplate implements QuestTemplate {
         if (!outcome) return []
         return outcome.itemsRewards ?? []
     }
+
+    getZonesToUnlock = (_questId: string, _outcomeId: string) => (_state: GameState) => '' as GatheringZone
 }
+

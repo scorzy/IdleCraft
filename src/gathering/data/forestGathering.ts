@@ -17,6 +17,8 @@ const forestResources: Resource[] = [
 export const forestGatheringConfig: GatheringZoneConfig = {
     zone: GatheringZone.Forest,
     nameId: 'Forest',
+    unlocked: true,
+    requiredLevel: 0,
     iconId: Icons.Forest,
     gatheringTime: 5000,
     expPerCycle: 10,

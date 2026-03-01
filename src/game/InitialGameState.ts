@@ -100,6 +100,8 @@ export const InitialGameState: GameState = {
     startActNow: false,
     actRepetitions: 1,
     actAutoRemove: false,
+    killedMonstersByZone: {},
+    unlockedGatheringZones: {},
 }
 
 export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)

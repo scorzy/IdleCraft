@@ -10,6 +10,7 @@ import { IconsData } from '../../icons/Icons'
 import { GatheringData, GatheringZoneGroups } from '../gatheringData'
 import { GatheringZone } from '../gatheringZones'
 import { GatheringGroupZone } from '../gatheringTypes'
+import { isGatheringZoneUnlocked } from '../selectors/isGatheringZoneUnlocked'
 
 export const GatheringSidebar = memo(function GatheringSidebar() {
     return (
@@ -39,14 +40,17 @@ export const GatheringZoneGroupUI = memo(function GatheringZoneGroupUI({ group }
 const GatheringZoneLink = memo(function GatheringZoneLink({ zone }: { zone: GatheringZone }) {
     const { t } = useTranslations()
     const isSelected = useCallback((state: GameState) => state.ui.gatheringZone === zone, [zone])
-    const onClick = useCallback(() => setGatheringZone(zone), [zone])
+    const unlocked = useGameStore(useCallback((state: GameState) => isGatheringZoneUnlocked(zone)(state), [zone]))
+    const onClick = useCallback(() => {
+        if (unlocked) setGatheringZone(zone)
+    }, [zone, unlocked])
 
     const selected = useGameStore(isSelected)
     const data = GatheringData[zone]
 
     return (
         <MyListItem
-            text={t[data.nameId]}
+            text={unlocked ? t[data.nameId] : `${t[data.nameId]} (Locked)`}
             collapsedId={CollapsedEnum.Gathering}
             icon={IconsData.Forest}
             active={selected}

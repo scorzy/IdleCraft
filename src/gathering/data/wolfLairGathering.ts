@@ -16,6 +16,8 @@ const wolfLairGatheringResources: Resource[] = [
 export const wolfLairGatheringConfig: GatheringZoneConfig = {
     zone: GatheringZone.WolfLair,
     nameId: 'WolfLair',
+    unlocked: false,
+    requiredLevel: 2,
     iconId: Icons.WolfHead,
     gatheringTime: 5000,
     expPerCycle: 10,

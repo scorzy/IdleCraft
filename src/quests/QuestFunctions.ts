@@ -1,5 +1,6 @@
 import { MAX_AVAILABLE_QUESTS } from '../const'
 import { GameState } from '../game/GameState'
+import { GatheringData } from '../gathering/gatheringData'
 import { setState } from '../game/setState'
 import { addGold, addItem } from '../storage/storageFunctions'
 import { QuestData } from './QuestData'
@@ -75,6 +76,9 @@ export const completeQuest = (state: GameState, questId: string, outcomeId: stri
     if (outcome.itemsRewards)
         for (const reward of outcome.itemsRewards) addItem(state, reward.itemId, reward.quantity || 1)
     if (outcome.goldReward) addGold(state, outcome.goldReward)
+
+    const zoneToUnlock = questTemplate.getZonesToUnlock(questId, outcomeId)(state)
+    if (GatheringData[zoneToUnlock]) state.unlockedGatheringZones[zoneToUnlock] = true
 
     const oldIndex = selectAcceptedQuests(state).indexOf(questId)
 

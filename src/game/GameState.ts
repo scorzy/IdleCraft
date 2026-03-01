@@ -18,6 +18,7 @@ import { QuestState } from '../quests/QuestTypes'
 import { AppliedEffect } from '../effects/types/AppliedEffect'
 import { Effects } from '@/effects/types/Effects'
 import { InitialState } from '@/entityAdapter/InitialState'
+import { GatheringZone } from '../gathering/gatheringZones'
 
 export enum AddActivityTypes {
     Last = 'Last',
@@ -70,4 +71,6 @@ export interface GameState {
     startActNow: boolean
     actRepetitions: number
     actAutoRemove: boolean
+    killedMonstersByZone: Partial<Record<GatheringZone, number>>
+    unlockedGatheringZones: Partial<Record<GatheringZone, boolean>>
 }

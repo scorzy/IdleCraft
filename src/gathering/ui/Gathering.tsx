@@ -27,6 +27,7 @@ import { MyLabel } from '../../ui/myCard/MyLabel'
 import { selectGatheringTime } from '../selectors/gatheringTime'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GatheringSidebar } from './GatheringSidebar'
+import { isGatheringZoneUnlocked } from '../selectors/isGatheringZoneUnlocked'
 
 export const Gathering = memo(function Gathering() {
     const zone = useGameStore((s) => s.ui.gatheringZone)
@@ -52,6 +53,7 @@ const GatheringAction = memo(function GatheringAction() {
     const { t, fun } = useTranslations()
     const zone = useGameStore((s) => s.ui.gatheringZone)
     const actId = useGameStore(useCallback((s: GameState) => selectGatheringActivityId(s, zone), [zone]))
+    const unlocked = useGameStore(useCallback((s: GameState) => isGatheringZoneUnlocked(zone)(s), [zone]))
     const time = useGameStore(useCallback((s: GameState) => selectGatheringTime(zone).gatheringTime(s), [zone]))
 
     const selectGatheringTimeAllMemo = useCallback(
@@ -80,8 +82,12 @@ const GatheringAction = memo(function GatheringAction() {
                 ) : (
                     <AddActivityDialog
                         title={t.Gathering}
-                        openBtn={<Button>{t.Gathering}</Button>}
-                        addBtn={<Button onClick={onAdd}>{t.Add}</Button>}
+                        openBtn={<Button disabled={!unlocked}>{t.Gathering}</Button>}
+                        addBtn={
+                            <Button onClick={onAdd} disabled={!unlocked}>
+                                {t.Add}
+                            </Button>
+                        }
                     />
                 )}
             </CardFooter>

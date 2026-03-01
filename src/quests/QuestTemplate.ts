@@ -1,5 +1,6 @@
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
+import { GatheringZone } from '../gathering/gatheringZones'
 import { ItemsReward, QuestState } from './QuestTypes'
 
 export interface QuestTemplate {
@@ -14,4 +15,5 @@ export interface QuestTemplate {
     getOutcomeDescription: (questId: string, outcomeId: string) => (state: GameState) => string
     getOutcomeGoldReward: (questId: string, outcomeId: string) => (state: GameState) => number
     getOutcomeItemReward: (questId: string, outcomeId: string) => (state: GameState) => ItemsReward[]
+    getZonesToUnlock: (questId: string, outcomeId: string) => (state: GameState) => GatheringZone
 }

@@ -1,6 +1,7 @@
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 import { GatheringZone } from './gatheringZones'
+import { QuestState } from '../quests/QuestTypes'
 
 export enum Rarity {
     Common = 'Common',
@@ -28,6 +29,9 @@ export interface GatheringZoneConfig {
     iconId: Icons
     zone: GatheringZone
     nameId: keyof Msg
+    unlocked: boolean
+    requiredLevel: number
+    unlockQuest?: QuestState
     gatheringTime: number
     expPerCycle: number
     guaranteedRarity: Rarity
