@@ -9,6 +9,8 @@ export const isGatheringZoneUnlocked = (zone: GatheringZone) => (state: GameStat
     if (state.unlockedGatheringZones[zone]) return true
 
     const data = GatheringData[zone]
+
+    if (zone === GatheringZone.WolfLair) return (state.killedMonstersByZone[GatheringZone.WolfLair] ?? 0) >= 10
     if (data.unlocked) return true
 
     const level = selectLevel(ExpEnum.Gathering, PLAYER_ID)(state)

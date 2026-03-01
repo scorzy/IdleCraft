@@ -77,6 +77,7 @@ import { startGathering } from '../../gathering/functions/startGathering'
 import { getGatheringTitle } from '../../gathering/functions/getGatheringTitle'
 import { getGatheringIcon } from '../../gathering/functions/getGatheringIcon'
 import { viewGathering } from '../../gathering/functions/viewGathering'
+import { wolfLairUnlockOnKill } from '../../gathering/functions/wolfLairUnlockOnKill'
 
 export function initialize() {
     initActivities()
@@ -168,6 +169,7 @@ function initQuests() {
 function initListeners() {
     onKillListeners.push(addKillBattleLog)
     onKillListeners.push(questOnKillListener)
+    onKillListeners.push(wolfLairUnlockOnKill)
 
     onItemRemovedListeners.push(questOnItemRemove)
     onItemRemovedListeners.push(recipeOnItemRemove)
