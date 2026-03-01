@@ -20,11 +20,12 @@ import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { addGathering } from '../functions/addGathering'
-import { RarityLabel } from '../gatheringData'
+import { GatheringData, RarityLabel } from '../gatheringData'
 import { selectZoneLootTable } from '../selectors/selectZoneLootTable'
 import { GatheringZone } from '../gatheringZones'
 import { MyLabel } from '../../ui/myCard/MyLabel'
 import { selectGatheringTime } from '../selectors/gatheringTime'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GatheringSidebar } from './GatheringSidebar'
 
 export const Gathering = memo(function Gathering() {
@@ -96,9 +97,13 @@ function selectGatheringActivityId(state: GameState, zone: GatheringZone) {
 }
 
 const GatheringLootTable = memo(function GatheringLootTable() {
+    const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const zone = useGameStore((s) => s.ui.gatheringZone)
     const lootTable = selectZoneLootTable(zone)
+    const bonusRolls = GatheringData[zone].bonusRolls
+
+    if (!bonusRolls) return
 
     return (
         <Card>
@@ -114,7 +119,10 @@ const GatheringLootTable = memo(function GatheringLootTable() {
                     <TableBody>
                         {lootTable.map((loot) => (
                             <TableRow key={loot.rarity}>
-                                <TableCell>{RarityLabel[loot.rarity]}</TableCell>
+                                <TableCell>
+                                    {f(bonusRolls.find((r) => r.rarity === loot.rarity)?.chance ?? 0)}%{' '}
+                                    {RarityLabel[loot.rarity]}
+                                </TableCell>
                                 <TableCell>
                                     <div className="flex flex-wrap gap-3">
                                         {loot.items.map((itemId) => (
