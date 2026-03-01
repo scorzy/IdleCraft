@@ -405,6 +405,7 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
 
         //
         cutting: (woodName: keyof Msg) => `Cutting ${msg[woodName]}`,
+        boostTree: (woodName: keyof Msg) => `Boost ${msg[woodName]} Grow Speed`,
         crafting: (itemName: string) => `Crafting ${itemName}`,
         mining: (oreNameId: keyof Msg) => `Mining ${msg[oreNameId]}`,
         speedBonusPercent: (bonus: string) => `Speed bonus +${bonus}%`,

@@ -43,6 +43,7 @@ import {
 } from '../forest/growSpeedSelectors'
 import { GameIcon } from '../../icons/GameIcon'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
+import { INCREASE_GROW_SPEED_TIME } from '../GrowSpeedConst'
 import { WoodcuttingSidebar } from './WoodcuttingSidebar'
 import { ExpEnum } from '@/experience/ExpEnum'
 import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
@@ -88,6 +89,7 @@ const WoodPage = memo(function WoodPage() {
     return (
         <>
             <Cutting />
+            <Boost />
             <Forest />
         </>
     )
@@ -105,18 +107,6 @@ const Cutting = memo(function Cutting() {
     const hpPercent = Math.floor((100 * forest.hp) / defHp)
     const time = useGameStore(selectWoodcuttingTime)
     const damage = useGameStore(selectWoodcuttingDamage)
-    const location = useGameStore((s) => s.location)
-    const activeBoost = useGameStore(
-        useCallback((s) => selectGrowSpeedBonusMulti(s, woodType, location), [woodType, location])
-    )
-    const activeStacks = useGameStore(
-        useCallback((s) => selectIncreaseGrowSpeedActiveCount(s, woodType, location), [woodType, location])
-    )
-    const maxStacks = useGameStore(selectIncreaseGrowSpeedCap)
-    const selectGrowSpeedBonusAllMemo = useMemo(
-        () => memoize((s: GameState) => selectIncreaseGrowSpeedBonusAll(s, woodType, location)),
-        [woodType, location]
-    )
 
     return (
         <Card>
@@ -139,21 +129,59 @@ const Cutting = memo(function Cutting() {
                     {t.Time} {fun.formatTime(time)}
                     <BonusDialog title={t.WoodcuttingTime} selectBonusResult={selectWoodcuttingTimeAll} isTime={true} />
                 </MyLabel>
-                <MyLabel>
-                    {t.IncreaseGrowSpeed} +{f(activeBoost)}% ({f(activeStacks)}/{f(maxStacks)})
-                    <BonusDialog title={t.IncreaseGrowSpeed} selectBonusResult={selectGrowSpeedBonusAllMemo} />
-                </MyLabel>
                 <GameTimerProgress actionId={act} color="primary" className="mb-2" />
-                <GrowSpeedProgress />
             </CardContent>
             <CardFooter className="flex gap-2">
                 <CuttingButton />
-                <GrowSpeedButton />
             </CardFooter>
         </Card>
     )
 })
 
+const Boost = memo(function Boost() {
+    const { f } = useNumberFormatter()
+    const { t, fun } = useTranslations()
+
+    const woodType = useGameStore(selectWoodType)
+    const location = useGameStore((s) => s.location)
+    const activeBoost = useGameStore(
+        useCallback((s) => selectGrowSpeedBonusMulti(s, woodType, location), [woodType, location])
+    )
+    const activeStacks = useGameStore(
+        useCallback((s) => selectIncreaseGrowSpeedActiveCount(s, woodType, location), [woodType, location])
+    )
+    const maxStacks = useGameStore(selectIncreaseGrowSpeedCap)
+    const selectGrowSpeedBonusAllMemo = useMemo(
+        () => memoize((s: GameState) => selectIncreaseGrowSpeedBonusAll(s, woodType, location)),
+        [woodType, location]
+    )
+
+    return (
+        <Card>
+            <MyCardHeaderTitle title={fun.boostTree(woodType)} icon={IconsData.Axe} />
+            <CardContent>
+                <MyLabelContainer>
+                    <MyLabel>
+                        {t.Time} {fun.formatTime(INCREASE_GROW_SPEED_TIME)}
+                        <BonusDialog
+                            title={t.WoodcuttingTime}
+                            selectBonusResult={selectWoodcuttingTimeAll}
+                            isTime={true}
+                        />
+                    </MyLabel>
+                    <MyLabel>
+                        {t.IncreaseGrowSpeed} +{f(activeBoost)}% ({f(activeStacks)}/{f(maxStacks)})
+                        <BonusDialog title={t.IncreaseGrowSpeed} selectBonusResult={selectGrowSpeedBonusAllMemo} />
+                    </MyLabel>
+                </MyLabelContainer>
+                <GrowSpeedProgress />
+            </CardContent>
+            <CardFooter className="flex gap-2">
+                <GrowSpeedButton />
+            </CardFooter>
+        </Card>
+    )
+})
 const CuttingButton = memo(function CuttingButton() {
     const woodType = useGameStore(selectWoodType)
     const actId = useGameStore(useCallback((s) => selectWoodcuttingId(s, woodType), [woodType]))

@@ -19,6 +19,7 @@ export interface MsgFunctions {
 
     //
     cutting: (woodName: keyof Msg) => string
+    boostTree: (woodName: keyof Msg) => string
     crafting: (itemName: string) => string
     mining: (woodName: keyof Msg) => string
 
