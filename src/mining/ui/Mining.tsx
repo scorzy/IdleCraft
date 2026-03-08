@@ -77,7 +77,7 @@ export const Mining = memo(function Mining() {
 
             const oreVeinsHeaderHeight =
                 oreVeinsRef.current?.querySelector<HTMLElement>('[data-slot="card-header"]')?.offsetHeight ?? 0
-            const availableHeight = Math.floor(window.innerHeight - oreVeinsTopViewport - 16)
+            const availableHeight = Math.floor(window.innerHeight - oreVeinsTopViewport - 72)
             const availableContentHeight = Math.max(120, availableHeight - oreVeinsHeaderHeight)
             updateLayout({ isOreVeinsScrollable: true, oreVeinsMaxHeight: availableContentHeight })
         }
