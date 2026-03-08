@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useEffect, useRef, useState, type RefObject } from 'react'
 import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
 import { TbAlertTriangle } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
@@ -48,6 +48,35 @@ const ArrowDown = <LuArrowDown className="text-lg" />
 
 export const Mining = memo(function Mining() {
     const oreType = useGameStore(selectOreType)
+    const miningOreLockRef = useRef<HTMLDivElement>(null)
+    const oreVeinsRef = useRef<HTMLDivElement>(null)
+    const [isOreVeinsScrollable, setIsOreVeinsScrollable] = useState(false)
+
+    useEffect(() => {
+        const checkOffsetTop = () => {
+            const miningOreLockTop = miningOreLockRef.current?.offsetTop
+            const oreVeinsTop = oreVeinsRef.current?.offsetTop
+            if (miningOreLockTop === undefined || oreVeinsTop === undefined) {
+                setIsOreVeinsScrollable(false)
+                return
+            }
+
+            setIsOreVeinsScrollable(miningOreLockTop === oreVeinsTop)
+        }
+
+        checkOffsetTop()
+
+        const resizeObserver = new ResizeObserver(checkOffsetTop)
+        if (miningOreLockRef.current) resizeObserver.observe(miningOreLockRef.current)
+        if (oreVeinsRef.current) resizeObserver.observe(oreVeinsRef.current)
+        window.addEventListener('resize', checkOffsetTop)
+
+        return () => {
+            resizeObserver.disconnect()
+            window.removeEventListener('resize', checkOffsetTop)
+        }
+    }, [oreType])
+
     return (
         <MyPageAll
             sidebar={<MiningSidebar />}
@@ -59,14 +88,18 @@ export const Mining = memo(function Mining() {
             }
         >
             <MyPage className="page__main" key={oreType}>
-                <MiningOreLock />
-                <OreVeinsUi />
+                <MiningOreLock containerRef={miningOreLockRef} />
+                <OreVeinsUi containerRef={oreVeinsRef} isScrollable={isOreVeinsScrollable} />
             </MyPage>
         </MyPageAll>
     )
 })
 
-const MiningOreLock = memo(function MiningOreLock() {
+const MiningOreLock = memo(function MiningOreLock({
+    containerRef,
+}: {
+    containerRef: RefObject<HTMLDivElement | null>
+}) {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
@@ -77,17 +110,21 @@ const MiningOreLock = memo(function MiningOreLock() {
     if (enabled)
         return (
             <>
-                <MiningOre />
+                <div ref={containerRef}>
+                    <MiningOre />
+                </div>
                 <OreUi />
             </>
         )
 
     return (
-        <Alert variant="destructive">
-            <TbAlertTriangle className="h-4 w-4" />
-            <AlertTitle>{t.LevelToLow}</AlertTitle>
-            <AlertDescription>{fun.requireMiningLevel(f(data.requiredLevel))}</AlertDescription>
-        </Alert>
+        <div ref={containerRef}>
+            <Alert variant="destructive">
+                <TbAlertTriangle className="h-4 w-4" />
+                <AlertTitle>{t.LevelToLow}</AlertTitle>
+                <AlertDescription>{fun.requireMiningLevel(f(data.requiredLevel))}</AlertDescription>
+            </Alert>
+        </div>
     )
 })
 
@@ -209,7 +246,13 @@ const OreUi = memo(function MiningOre() {
     )
 })
 
-const OreVeinsUi = memo(function OreVeinsUi() {
+const OreVeinsUi = memo(function OreVeinsUi({
+    containerRef,
+    isScrollable,
+}: {
+    containerRef: RefObject<HTMLDivElement | null>
+    isScrollable: boolean
+}) {
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
     const veins = useGameStore((s) => s.locations[s.location].oreVeins[oreType] ?? [])
@@ -225,42 +268,44 @@ const OreVeinsUi = memo(function OreVeinsUi() {
     const onStopSearch = useCallback(() => removeActivity(searchActId), [searchActId])
 
     return (
-        <Card>
-            <MyCardHeaderTitle title={t.OreVeins} icon={IconsData[Icons.Ore]} />
-            <CardContent>
-                <div className="mb-2">
-                    {searchActId ? (
-                        <Button variant="destructive" onClick={onStopSearch}>
-                            {t.Stop}
-                        </Button>
-                    ) : (
-                        <AddActivityDialog
-                            title={
-                                <>
-                                    {IconsData.Pickaxe} {t.SearchOreVein}
-                                </>
-                            }
-                            openBtn={<Button>{t.SearchOreVein}</Button>}
-                            addBtn={<Button onClick={onSearch}>{t.Add}</Button>}
+        <div ref={containerRef}>
+            <Card>
+                <MyCardHeaderTitle title={t.OreVeins} icon={IconsData[Icons.Ore]} />
+                <CardContent className={cn(isScrollable && 'max-h-[440px] overflow-y-auto pr-1')}>
+                    <div className="mb-2">
+                        {searchActId ? (
+                            <Button variant="destructive" onClick={onStopSearch}>
+                                {t.Stop}
+                            </Button>
+                        ) : (
+                            <AddActivityDialog
+                                title={
+                                    <>
+                                        {IconsData.Pickaxe} {t.SearchOreVein}
+                                    </>
+                                }
+                                openBtn={<Button>{t.SearchOreVein}</Button>}
+                                addBtn={<Button onClick={onSearch}>{t.Add}</Button>}
+                            />
+                        )}
+                    </div>
+                    <MyLabel>
+                        {t.Time} {fun.formatTime(SEARCH_ORE_VEIN_TIME)}
+                    </MyLabel>
+                    <GameTimerProgress actionId={searchActId} color="primary" className="mb-2" />
+                    <MyLabel>{veins.length}/10</MyLabel>
+                    {veins.map((vein, index) => (
+                        <VeinCard
+                            key={vein.id}
+                            vein={vein}
+                            oreType={oreType}
+                            isFirst={index === 0}
+                            isLast={index === veins.length - 1}
                         />
-                    )}
-                </div>
-                <MyLabel>
-                    {t.Time} {fun.formatTime(SEARCH_ORE_VEIN_TIME)}
-                </MyLabel>
-                <GameTimerProgress actionId={searchActId} color="primary" className="mb-2" />
-                <MyLabel>{veins.length}/10</MyLabel>
-                {veins.map((vein, index) => (
-                    <VeinCard
-                        key={vein.id}
-                        vein={vein}
-                        oreType={oreType}
-                        isFirst={index === 0}
-                        isLast={index === veins.length - 1}
-                    />
-                ))}
-            </CardContent>
-        </Card>
+                    ))}
+                </CardContent>
+            </Card>
+        </div>
     )
 })
 
