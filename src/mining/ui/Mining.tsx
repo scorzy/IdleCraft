@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react'
+import { memo, useCallback, useEffect, useReducer, useRef, type RefObject } from 'react'
 import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
 import { TbAlertTriangle } from 'react-icons/tb'
 import { useGameStore } from '../../game/state'
@@ -50,21 +50,36 @@ export const Mining = memo(function Mining() {
     const oreType = useGameStore(selectOreType)
     const miningOreLockRef = useRef<HTMLDivElement>(null)
     const oreVeinsRef = useRef<HTMLDivElement>(null)
-    const [isOreVeinsScrollable, setIsOreVeinsScrollable] = useState(false)
-    const [layoutTick, setLayoutTick] = useState(0)
+    const [layout, updateLayout] = useReducer(
+        (
+            _: { isOreVeinsScrollable: boolean; oreVeinsMaxHeight?: number },
+            next: { isOreVeinsScrollable: boolean; oreVeinsMaxHeight?: number }
+        ) => next,
+        { isOreVeinsScrollable: false, oreVeinsMaxHeight: undefined }
+    )
 
     useEffect(() => {
         const checkOffsetTop = () => {
             const miningOreLockTop = miningOreLockRef.current?.offsetTop
             const oreVeinsTop = oreVeinsRef.current?.offsetTop
-            if (miningOreLockTop === undefined || oreVeinsTop === undefined) {
-                setIsOreVeinsScrollable(false)
-                setLayoutTick((v) => v + 1)
+            const oreVeinsTopViewport = oreVeinsRef.current?.getBoundingClientRect().top
+
+            if (miningOreLockTop === undefined || oreVeinsTop === undefined || oreVeinsTopViewport === undefined) {
+                updateLayout({ isOreVeinsScrollable: false, oreVeinsMaxHeight: undefined })
                 return
             }
 
-            setIsOreVeinsScrollable(miningOreLockTop === oreVeinsTop)
-            setLayoutTick((v) => v + 1)
+            const isSameRow = miningOreLockTop === oreVeinsTop
+            if (!isSameRow) {
+                updateLayout({ isOreVeinsScrollable: false, oreVeinsMaxHeight: undefined })
+                return
+            }
+
+            const oreVeinsHeaderHeight =
+                oreVeinsRef.current?.querySelector<HTMLElement>('[data-slot="card-header"]')?.offsetHeight ?? 0
+            const availableHeight = Math.floor(window.innerHeight - oreVeinsTopViewport - 16)
+            const availableContentHeight = Math.max(120, availableHeight - oreVeinsHeaderHeight)
+            updateLayout({ isOreVeinsScrollable: true, oreVeinsMaxHeight: availableContentHeight })
         }
 
         checkOffsetTop()
@@ -80,16 +95,6 @@ export const Mining = memo(function Mining() {
         }
     }, [oreType])
 
-    const oreVeinsMaxHeight = useMemo(() => {
-        if (!isOreVeinsScrollable) return undefined
-
-        const oreVeinsTopViewport = oreVeinsRef.current?.getBoundingClientRect().top ?? 0
-        const oreVeinsHeaderHeight =
-            oreVeinsRef.current?.querySelector<HTMLElement>('[data-slot="card-header"]')?.offsetHeight ?? 0
-
-        return Math.max(120, Math.floor(window.innerHeight - oreVeinsTopViewport - 16 - oreVeinsHeaderHeight))
-    }, [isOreVeinsScrollable, layoutTick])
-
     return (
         <MyPageAll
             sidebar={<MiningSidebar />}
@@ -104,8 +109,8 @@ export const Mining = memo(function Mining() {
                 <MiningOreLock containerRef={miningOreLockRef} />
                 <OreVeinsUi
                     containerRef={oreVeinsRef}
-                    isScrollable={isOreVeinsScrollable}
-                    maxHeight={oreVeinsMaxHeight}
+                    isScrollable={layout.isOreVeinsScrollable}
+                    maxHeight={layout.oreVeinsMaxHeight}
                 />
             </MyPage>
         </MyPageAll>
