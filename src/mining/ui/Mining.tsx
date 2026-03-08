@@ -51,17 +51,29 @@ export const Mining = memo(function Mining() {
     const miningOreLockRef = useRef<HTMLDivElement>(null)
     const oreVeinsRef = useRef<HTMLDivElement>(null)
     const [isOreVeinsScrollable, setIsOreVeinsScrollable] = useState(false)
+    const [oreVeinsMaxHeight, setOreVeinsMaxHeight] = useState<number>()
 
     useEffect(() => {
         const checkOffsetTop = () => {
             const miningOreLockTop = miningOreLockRef.current?.offsetTop
             const oreVeinsTop = oreVeinsRef.current?.offsetTop
-            if (miningOreLockTop === undefined || oreVeinsTop === undefined) {
+            const oreVeinsTopViewport = oreVeinsRef.current?.getBoundingClientRect().top
+            if (miningOreLockTop === undefined || oreVeinsTop === undefined || oreVeinsTopViewport === undefined) {
                 setIsOreVeinsScrollable(false)
+                setOreVeinsMaxHeight(undefined)
                 return
             }
 
-            setIsOreVeinsScrollable(miningOreLockTop === oreVeinsTop)
+            const isSameRow = miningOreLockTop === oreVeinsTop
+            setIsOreVeinsScrollable(isSameRow)
+
+            if (!isSameRow) {
+                setOreVeinsMaxHeight(undefined)
+                return
+            }
+
+            const availableHeight = Math.max(200, Math.floor(window.innerHeight - oreVeinsTopViewport - 16))
+            setOreVeinsMaxHeight(availableHeight)
         }
 
         checkOffsetTop()
@@ -89,7 +101,11 @@ export const Mining = memo(function Mining() {
         >
             <MyPage className="page__main" key={oreType}>
                 <MiningOreLock containerRef={miningOreLockRef} />
-                <OreVeinsUi containerRef={oreVeinsRef} isScrollable={isOreVeinsScrollable} />
+                <OreVeinsUi
+                    containerRef={oreVeinsRef}
+                    isScrollable={isOreVeinsScrollable}
+                    maxHeight={oreVeinsMaxHeight}
+                />
             </MyPage>
         </MyPageAll>
     )
@@ -249,9 +265,11 @@ const OreUi = memo(function MiningOre() {
 const OreVeinsUi = memo(function OreVeinsUi({
     containerRef,
     isScrollable,
+    maxHeight,
 }: {
     containerRef: RefObject<HTMLDivElement | null>
     isScrollable: boolean
+    maxHeight?: number
 }) {
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
@@ -271,7 +289,10 @@ const OreVeinsUi = memo(function OreVeinsUi({
         <div ref={containerRef}>
             <Card>
                 <MyCardHeaderTitle title={t.OreVeins} icon={IconsData[Icons.Ore]} />
-                <CardContent className={cn(isScrollable && 'max-h-[440px] overflow-y-auto pr-1')}>
+                <CardContent
+                    className={cn(isScrollable && 'overflow-y-auto pr-1')}
+                    style={isScrollable && maxHeight ? { maxHeight } : undefined}
+                >
                     <div className="mb-2">
                         {searchActId ? (
                             <Button variant="destructive" onClick={onStopSearch}>
