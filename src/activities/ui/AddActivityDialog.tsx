@@ -165,7 +165,7 @@ export const AddActivityDialog = memo(function AddActivityDialog({
                     <DialogClose asChild>
                         <Button variant="outline">{t.cancel}</Button>
                     </DialogClose>
-                    {addBtn}
+                    <DialogClose asChild>{addBtn}</DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
