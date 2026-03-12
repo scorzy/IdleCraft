@@ -57,8 +57,7 @@ const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialSt
 const reorderByQta = (storage: InitialState<StorageState>, items: ItemId[]) => {
     const ord: ItemOrdQta[] = []
     for (const e of items) {
-        let qta = 0
-        qta = storage.entries[e.id]?.quantity ?? 0
+        const qta = storage.entries[e.id]?.quantity ?? 0
         ord.push({ ...e, qta })
     }
     return ord.sort((a, b) => a.qta - b.qta)

@@ -18,7 +18,7 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
 
     if (itemFilter.itemId !== undefined) return <ItemFilterUiItemId itemId={itemFilter.itemId} />
 
-    let pre: React.ReactElement = <></>
+    let pre: React.ReactElement
     const arr: React.ReactElement[] = []
 
     if (itemFilter.itemType !== undefined) pre = <>{t[itemFilter.itemType as keyof Msg]}</>

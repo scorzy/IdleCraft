@@ -83,7 +83,7 @@ export function generatePotion(
 
     const effects = potionData.effects
     let stability = BASE_STABILITY
-    let potionResult: PotionResult = PotionResult.Chaotic
+    let potionResult: PotionResult
 
     if (effects.length === 0) {
         if (unknownEffects) potionResult = PotionResult.Unknown

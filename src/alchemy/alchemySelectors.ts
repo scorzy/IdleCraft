@@ -26,7 +26,7 @@ export function getPotionEffect(
     if (potencies.length < 2) return
 
     const effectData = alchemyEffectData[effect]
-    let value = 0
+    let value: number
     let duration = 0
 
     if (effectData.instant) {
