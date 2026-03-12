@@ -1,31 +1,18 @@
 import path from 'path'
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
 import { test } from 'vitest'
 import svgr from 'vite-plugin-svgr'
 import tailwindcss from '@tailwindcss/vite'
-
-const isDevelopment = process.env.NODE_ENV === 'development'
-
-const ReactCompilerConfig = {
-    panicThreshold: isDevelopment ? 'critical_errors' : 'none',
-    logger: {
-        logEvent(filename, event) {
-            if (isDevelopment && event.kind === 'CompileError') {
-                // console.log(filename, event)
-            }
-        },
-    },
-}
+import react, { reactCompilerPreset } from '@vitejs/plugin-react'
+import babel from '@rolldown/plugin-babel'
 
 // https://vitejs.dev/config/
 export default defineConfig({
     base: '/IdleCraft/',
     plugins: [
-        react({
-            babel: {
-                plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
-            },
+        react(),
+        babel({
+            presets: [reactCompilerPreset()],
         }),
         svgr({
             include: '**/*.svg',
