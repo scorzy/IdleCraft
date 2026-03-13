@@ -77,7 +77,6 @@
     "babel-plugin-react-compiler": "1.0.0",
     "gh-pages": "^6.3.0",
     "jsdom": "^28.1.0",
-    "oxc": "^0.71.0",
     "oxfmt": "^0.2.0",
     "oxlint": "^1.25.0",
     "tailwindcss": "^4.2.1",
