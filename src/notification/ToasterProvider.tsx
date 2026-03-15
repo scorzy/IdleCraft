@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { ExternalToast, toast } from 'sonner'
-import { useGameStore } from '../game/state'
 import { GameState } from '../game/GameState'
-import { useTranslations } from '../msg/useTranslations'
+import { useGameStore } from '../game/state'
 import { IconsData } from '../icons/Icons'
+import { useTranslations } from '../msg/useTranslations'
 
 const selectNotifications = (s: GameState) => s.notifications
 const removeNotifications = () =>

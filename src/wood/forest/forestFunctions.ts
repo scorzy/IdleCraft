@@ -1,7 +1,7 @@
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
+import { ForestsState, ForestsType } from '../ForestsState'
 import { WoodTypes, WoodTypesString } from '../WoodTypes'
-import { ForestsType, ForestsState } from '../ForestsState'
 import { selectDefaultForest } from './forestSelectors'
 
 export function addTree(state: GameState, woodType: WoodTypes, qta: number, location: GameLocations): void {

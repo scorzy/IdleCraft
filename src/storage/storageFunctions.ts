@@ -1,3 +1,4 @@
+import { InitialState } from '@/entityAdapter/InitialState'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GameState } from '../game/GameState'
@@ -7,9 +8,8 @@ import { Item } from '../items/Item'
 import { getUniqueId } from '../utils/getUniqueId'
 import { myCompare } from '../utils/myCompare'
 import { ItemAdapter } from './ItemAdapter'
-import { onItemRemovedListeners } from './storageEvents'
 import { StorageAdapter } from './storageAdapter'
-import { InitialState } from '@/entityAdapter/InitialState'
+import { onItemRemovedListeners } from './storageEvents'
 
 export function addGold(state: GameState, amount: number): void {
     state.gold = Math.max(0, state.gold + amount)

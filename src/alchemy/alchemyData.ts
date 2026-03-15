@@ -1,5 +1,5 @@
-import { Msg } from '../msg/Msg'
 import { Effects } from '../effects/types/Effects'
+import { Msg } from '../msg/Msg'
 
 export const oppositeEffects: { first: Effects[]; second: Effects[] }[] = [
     {

@@ -1,5 +1,5 @@
-import { ReactNode, memo } from 'react'
 import { clsx } from 'clsx'
+import { memo, ReactNode } from 'react'
 import './myPage.css'
 
 export const MyPage = memo(function MyPage({

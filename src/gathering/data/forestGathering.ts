@@ -1,7 +1,7 @@
-import { GatheringZoneConfig, Rarity, Resource } from '../gatheringTypes'
-import { gatherResources } from '../gatheringFunctions'
-import { GatheringZone } from '../gatheringZones'
 import { Icons } from '../../icons/Icons'
+import { gatherResources } from '../gatheringFunctions'
+import { GatheringZoneConfig, Rarity, Resource } from '../gatheringTypes'
+import { GatheringZone } from '../gatheringZones'
 
 const forestResources: Resource[] = [
     { id: 'RedFlower', rarity: Rarity.Common },

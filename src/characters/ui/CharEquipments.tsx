@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import { EquipSlotsEnum } from '../equipSlotsEnum'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
+import { EquipSlotsEnum } from '../equipSlotsEnum'
 
 const equipments = Object.keys(EquipSlotsEnum)
 export const CharEquipments = memo(function CharEquipments() {

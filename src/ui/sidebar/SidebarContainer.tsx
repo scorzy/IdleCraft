@@ -1,13 +1,13 @@
-import { memo, ReactNode, useCallback, useEffect, useRef } from 'react'
 import { clsx } from 'clsx'
+import { memo, ReactNode, useCallback, useEffect, useRef } from 'react'
 import { LuChevronLeft } from 'react-icons/lu'
 import { useMeasure } from 'react-use'
-import { collapse, setSidebarWidth } from '../state/uiFunctions'
 import { useGameStore } from '../../game/state'
+import { collapse, setSidebarWidth } from '../state/uiFunctions'
 import { isCollapsed } from '../state/uiSelectors'
+import { CollapsedEnum } from './CollapsedEnum'
 import { MyListItem } from './MenuItem'
 import classes from './sidebarContainer.module.css'
-import { CollapsedEnum } from './CollapsedEnum'
 
 export const SidebarContainer = memo(function SidebarContainer(props: {
     children?: ReactNode

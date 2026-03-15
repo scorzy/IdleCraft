@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest'
 import { create } from 'mutative'
+import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest'
+import { ActivityTypes } from '../activities/ActivityState'
 import type { GameState } from '../game/GameState'
 import { GetInitialGameState } from '../game/InitialGameState'
-import { ActivityTypes } from '../activities/ActivityState'
 import { getUniqueId } from '../utils/getUniqueId'
-import { prevTimers, updateTimers } from './updateTimers'
 import { TimerAdapter } from './Timer'
 import { execTimer } from './timerFunctions'
+import { prevTimers, updateTimers } from './updateTimers'
 
 vi.mock('./timerFunctions', () => ({
     execTimer: vi.fn(),

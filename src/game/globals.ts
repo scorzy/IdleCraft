@@ -1,8 +1,8 @@
 import { ActivityState, ActivityTypes } from '../activities/ActivityState'
-import { Timer } from '../timers/Timer'
 import { ActivityStartResult } from '../activities/activityInterfaces'
-import { MapEx } from '../utils/MapEx'
 import { Icons } from '../icons/Icons'
+import { Timer } from '../timers/Timer'
+import { MapEx } from '../utils/MapEx'
 import { GameState } from './GameState'
 
 export const activityExecutors = new MapEx<ActivityTypes, (state: GameState, timer: Timer) => void>()

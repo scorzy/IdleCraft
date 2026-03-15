@@ -1,7 +1,7 @@
-import { onTimer } from '../../timers/onTimer'
 import { getFirstTimer } from '../../timers/getFirstTimer'
-import { GameState } from '../GameState'
+import { onTimer } from '../../timers/onTimer'
 import { MAX_LOAD } from '../const'
+import { GameState } from '../GameState'
 import { advanceTimers } from './advanceTimers'
 
 export function loadGame(state: GameState): void {

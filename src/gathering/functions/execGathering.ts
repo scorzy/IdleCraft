@@ -6,8 +6,8 @@ import { addExp } from '../../experience/expFunctions'
 import { addItem } from '../../storage/storageFunctions'
 import { Timer } from '../../timers/Timer'
 import { isGathering } from '../Gathering'
-import { gatherResources } from '../gatheringFunctions'
 import { GatheringData } from '../gatheringData'
+import { gatherResources } from '../gatheringFunctions'
 
 export const execGathering = makeExecActivity((state, timer: Timer) => {
     const id = timer.actId

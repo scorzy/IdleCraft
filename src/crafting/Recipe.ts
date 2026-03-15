@@ -2,7 +2,7 @@ import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { ItemSubType } from '../items/Item'
 import { Msg } from '../msg/Msg'
-import { RecipeTypes, RecipeParameter, RecipeParameterValue, RecipeResult } from './RecipeInterfaces'
+import { RecipeParameter, RecipeParameterValue, RecipeResult, RecipeTypes } from './RecipeInterfaces'
 
 export interface Recipe {
     id: string

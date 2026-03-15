@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest'
-import { GetInitialGameState } from '../game/InitialGameState'
 import { CharTemplateEnum } from '../characters/templates/characterTemplateEnum'
+import { GetInitialGameState } from '../game/InitialGameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { ItemTypes } from '../items/Item'
-import { QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
 import { questOnItemRemove } from './collectRequest/questOnItemRemove'
+import { QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
 
 describe('Quest Functions', () => {
     test('questOnItemRemove 1', () => {

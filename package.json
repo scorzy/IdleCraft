@@ -10,7 +10,7 @@
     "preview": "vite preview --open",
     "build": "tsc && vite build",
     "analyze": "vite-bundle-visualizer -c vite.config.ts",
-    "lint": "eslint src --fix && prettier --write --log-level warn .",
+    "lint": "pnpx @biomejs/biome lint ./src --write && pnpx @biomejs/biome format ./src --write",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "coverage": "vitest run --coverage",
@@ -67,6 +67,7 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.7",
     "@eslint-react/eslint-plugin": "^2.13.0",
     "@eslint/compat": "^2.0.3",
     "@eslint/eslintrc": "^3.3.5",

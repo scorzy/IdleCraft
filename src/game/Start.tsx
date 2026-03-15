@@ -1,36 +1,4 @@
-import { SetStateAction, memo, useCallback, useEffect, useState } from 'react'
-import { Button } from '../components/ui/button'
-import { PLAYER_ID } from '../characters/charactersConst'
-import { TrashIcon } from '../icons/IconsMemo'
-import { useTranslations } from '../msg/useTranslations'
-import { getUniqueId } from '../utils/getUniqueId'
-import { ProgressBar } from '../ui/progress/ProgressBar'
-import { useUiTempStore } from '../ui/state/uiTempStore'
-import {
-    AlertDialogHeader,
-    AlertDialogFooter,
-    AlertDialog,
-    AlertDialogTrigger,
-    AlertDialogContent,
-    AlertDialogTitle,
-    AlertDialogDescription,
-    AlertDialogCancel,
-    AlertDialogAction,
-} from '../components/ui/alert-dialog'
-import { useGameStore } from './state'
-import { GetInitialGameState } from './InitialGameState'
-import { load, startAnyway, stopLoad } from './functions/gameFunctions'
-import { GameState } from './GameState'
-import classes from './start.module.css'
-import {
-    selectLoading,
-    selectLoadingEnd,
-    selectLoadingNow,
-    selectLoadingProgress,
-    selectLoadingStart,
-} from './gameSelectors'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
+import { memo, SetStateAction, useCallback, useEffect, useState } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -40,6 +8,38 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { PLAYER_ID } from '../characters/charactersConst'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '../components/ui/alert-dialog'
+import { Button } from '../components/ui/button'
+import { TrashIcon } from '../icons/IconsMemo'
+import { useTranslations } from '../msg/useTranslations'
+import { ProgressBar } from '../ui/progress/ProgressBar'
+import { useUiTempStore } from '../ui/state/uiTempStore'
+import { getUniqueId } from '../utils/getUniqueId'
+import { load, startAnyway, stopLoad } from './functions/gameFunctions'
+import { GameState } from './GameState'
+import {
+    selectLoading,
+    selectLoadingEnd,
+    selectLoadingNow,
+    selectLoadingProgress,
+    selectLoadingStart,
+} from './gameSelectors'
+import { GetInitialGameState } from './InitialGameState'
+import classes from './start.module.css'
+import { useGameStore } from './state'
 
 const startGame = (name: string) => () => {
     if (name === '') return

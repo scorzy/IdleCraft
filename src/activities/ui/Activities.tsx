@@ -1,7 +1,21 @@
+import { CheckedState } from '@radix-ui/react-checkbox'
 import { memo, useCallback } from 'react'
 import { LuArrowDown, LuArrowUp, LuInfo } from 'react-icons/lu'
-import { CheckedState } from '@radix-ui/react-checkbox'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Alert, AlertTitle } from '../../components/ui/alert'
+import { Card, CardContent } from '../../components/ui/card'
+import { Field, FieldLabel } from '../../components/ui/field'
+import { Input } from '../../components/ui/input'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
+import { IconsData } from '../../icons/Icons'
+import { Eye, TrashIcon } from '../../icons/IconsMemo'
+import { cn } from '../../lib/utils'
+import { useTranslations } from '../../msg/useTranslations'
+import { MyPage } from '../../ui/pages/MyPage'
 import {
     selectActivityAutoRemove,
     selectActivityCanView,
@@ -11,24 +25,10 @@ import {
     selectActivityTitle,
 } from '../ActivitySelectors'
 import { moveActivityNext, moveActivityPrev, setAutoRemove } from '../activityFunctions'
-import { useTranslations } from '../../msg/useTranslations'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { Alert, AlertTitle } from '../../components/ui/alert'
-import { MyPage } from '../../ui/pages/MyPage'
 import { removeActivity } from '../functions/removeActivity'
-import { IconsData } from '../../icons/Icons'
-import { Input } from '../../components/ui/input'
 import { setActivityNum } from '../functions/setActivityNum'
-import { Eye, TrashIcon } from '../../icons/IconsMemo'
-import { Card, CardContent } from '../../components/ui/card'
-import { GameState } from '../../game/GameState'
 import { viewActivity } from '../functions/viewActivity'
-import { cn } from '../../lib/utils'
-import { Field, FieldLabel } from '../../components/ui/field'
 import classes from './activities.module.css'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 
 const InfoIcon = <LuInfo className="h-4 w-4" />
 

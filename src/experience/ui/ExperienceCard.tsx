@@ -1,14 +1,14 @@
 import { memo } from 'react'
+import { Badge } from '../../components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { useGameStore } from '../../game/state'
+import { useTranslations } from '../../msg/useTranslations'
+import { MyLabel } from '../../ui/myCard/MyLabel'
+import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { ExpData } from '../ExpData'
 import { ExpEnum } from '../ExpEnum'
-import { useGameStore } from '../../game/state'
 import { selectExp, selectLevel, selectLevelExp, selectNextExp } from '../expSelectors'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { ProgressBar } from '../../ui/progress/ProgressBar'
-import { Badge } from '../../components/ui/badge'
-import { useTranslations } from '../../msg/useTranslations'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
-import { MyLabel } from '../../ui/myCard/MyLabel'
 
 export const ExperienceCard = memo(function ExperienceCard(props: { expType: ExpEnum; charId: string }) {
     const { expType, charId } = props

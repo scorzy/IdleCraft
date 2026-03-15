@@ -1,8 +1,8 @@
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
-    RecipeParamType,
     RecipeParameterItemFilter,
     RecipeParameterValue,
+    RecipeParamType,
     RecipeResult,
     RecipeTypes,
 } from '../../crafting/RecipeInterfaces'

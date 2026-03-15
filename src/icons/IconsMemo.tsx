@@ -1,5 +1,5 @@
 import { GiTwoCoins } from 'react-icons/gi'
-import { LuInfo, LuTrash2, LuChevronsUpDown, LuArrowDown, LuArrowUp, LuEye } from 'react-icons/lu'
+import { LuArrowDown, LuArrowUp, LuChevronsUpDown, LuEye, LuInfo, LuTrash2 } from 'react-icons/lu'
 import { TbCircleCheck } from 'react-icons/tb'
 
 export const TrashIcon = <LuTrash2 className="text-lg" />

@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest'
-import { GetInitialGameState } from '../game/InitialGameState'
-import { PLAYER_ID } from '../characters/charactersConst'
 import { CharacterAdapter } from '../characters/characterAdapter'
-import { addExp } from './expFunctions'
+import { PLAYER_ID } from '../characters/charactersConst'
+import { GetInitialGameState } from '../game/InitialGameState'
 import { ExpEnum } from './ExpEnum'
+import { addExp } from './expFunctions'
 import { getLevelExp } from './expSelectors'
 
 describe('Exp Functions', () => {

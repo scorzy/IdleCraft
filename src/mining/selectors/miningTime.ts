@@ -1,6 +1,6 @@
 import { memoize } from 'proxy-memoize'
 import { Bonus, BonusResult } from '../../bonus/Bonus'
-import { bonusFromPerk, bonusFromItem, getTotal } from '../../bonus/BonusFunctions'
+import { bonusFromItem, bonusFromPerk, getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
 import { hasPerk } from '../../perks/PerksSelectors'
 import { PerksEnum } from '../../perks/perksEnum'

@@ -1,14 +1,14 @@
 import { memo } from 'react'
 import { GiAllForOne, GiAnvilImpact, GiThreeLeaves } from 'react-icons/gi'
-import { UiPages } from '../state/UiPages'
-import { useGameStore } from '../../game/state'
-import { sidebarOpen } from '../state/uiFunctions'
-import { Badge } from '../../components/ui/badge'
 import { selectActivityNum } from '../../activities/ActivitySelectors'
+import { Badge } from '../../components/ui/badge'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { SidebarContainer } from './SidebarContainer'
-import { CollapsibleMenu, MenuItem } from './MenuItem'
+import { useGameStore } from '../../game/state'
+import { UiPages } from '../state/UiPages'
+import { sidebarOpen } from '../state/uiFunctions'
 import { CollapsedEnum } from './CollapsedEnum'
+import { CollapsibleMenu, MenuItem } from './MenuItem'
+import { SidebarContainer } from './SidebarContainer'
 
 export const Sidebar = memo(function Sidebar() {
     return (

@@ -1,4 +1,4 @@
-import { ReactNode, memo } from 'react'
+import { memo, ReactNode } from 'react'
 import { CardHeader, CardTitle } from '@/components/ui/card'
 
 export const MyCardHeaderTitle = memo(function MyCardHeaderTitle(props: {
