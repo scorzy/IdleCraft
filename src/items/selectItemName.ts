@@ -2,9 +2,9 @@ import { GameState } from '../game/GameState'
 import { GetItemNameParams } from '../msg/GetItemNameParams'
 import { selectTranslations } from '../msg/useTranslations'
 import { selectGameItem } from '../storage/StorageSelectors'
+import { GetItemNameParamsMemoized } from './GetItemNameParamsMemoized'
 import { Item } from './Item'
 import { selectItemNameMemoized } from './itemSelectors'
-import { GetItemNameParamsMemoized } from './GetItemNameParamsMemoized'
 
 export const selectItemName = (state: GameState, item: Item | string | undefined | null) => {
     if (!item) return ''

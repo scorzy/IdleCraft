@@ -1,8 +1,8 @@
-import { Msg } from '../msg/Msg'
-import { Icons } from '../icons/Icons'
-import { AbilitiesEnum } from '../activeAbilities/abilitiesEnum'
-import { PerksEnum } from './perksEnum'
 import { ExpEnum } from '@/experience/ExpEnum'
+import { AbilitiesEnum } from '../activeAbilities/abilitiesEnum'
+import { Icons } from '../icons/Icons'
+import { Msg } from '../msg/Msg'
+import { PerksEnum } from './perksEnum'
 
 export interface ExpReq {
     skill: ExpEnum

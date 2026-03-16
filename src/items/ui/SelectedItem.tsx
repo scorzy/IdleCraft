@@ -1,4 +1,9 @@
 import { memo, useCallback } from 'react'
+import { PotionItemUi } from '../../alchemy/PotionItemUi'
+import { equipClick } from '../../characters/characterFunctions'
+import { PLAYER_ID } from '../../characters/charactersConst'
+import { Button } from '../../components/ui/button'
+import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { useGameStore } from '../../game/state'
 import {
     getSelectedItem,
@@ -7,15 +12,10 @@ import {
     selectSelectedItemId,
 } from '../../storage/StorageSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { Button } from '../../components/ui/button'
-import { equipClick } from '../../characters/characterFunctions'
-import { PLAYER_ID } from '../../characters/charactersConst'
-import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { useItemName } from '../useItemName'
-import { PotionItemUi } from '../../alchemy/PotionItemUi'
+import { ItemIcon } from './ItemIcon'
 import { ItemInfo } from './ItemInfo'
 import classes from './selectItem.module.css'
-import { ItemIcon } from './ItemIcon'
 
 export const SelectedItem = memo(function SelectedItem({ showTitle }: { showTitle?: boolean }) {
     const qta = useGameStore(getSelectedItemQta)

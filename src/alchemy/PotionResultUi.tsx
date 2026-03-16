@@ -1,12 +1,12 @@
-import { memo } from 'react'
 import { AlertCircleIcon, CheckCircle2Icon } from 'lucide-react'
-import { useTranslations } from '../msg/useTranslations'
-import { useNumberFormatter } from '../formatters/selectNumberFormatter'
-import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert'
+import { memo } from 'react'
 import { BonusDialog } from '../bonus/ui/BonusUi'
+import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert'
+import { useNumberFormatter } from '../formatters/selectNumberFormatter'
+import { useTranslations } from '../msg/useTranslations'
 import { MyLabel } from '../ui/myCard/MyLabel'
-import { PotionItem } from './PotionCraftingResult'
 import { PotionResult } from './alchemyTypes'
+import { PotionItem } from './PotionCraftingResult'
 
 export const PotionResultUi = memo(function PotionItem({ result }: { result: PotionItem }) {
     const { t } = useTranslations()

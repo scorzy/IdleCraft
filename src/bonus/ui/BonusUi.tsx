@@ -1,12 +1,6 @@
+import { memoize } from 'proxy-memoize'
 import { memo, useMemo, useState } from 'react'
 import { TbInfoCircle } from 'react-icons/tb'
-import { memoize } from 'proxy-memoize'
-import { Bonus, BonusResult } from '../Bonus'
-import { IconsData } from '../../icons/Icons'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { useTranslations } from '../../msg/useTranslations'
-import { GameState } from '../../game/GameState'
-import { useGameStore } from '../../game/state'
 import {
     Dialog,
     DialogContent,
@@ -16,6 +10,12 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { GameState } from '../../game/GameState'
+import { useGameStore } from '../../game/state'
+import { IconsData } from '../../icons/Icons'
+import { useTranslations } from '../../msg/useTranslations'
+import { Bonus, BonusResult } from '../Bonus'
 
 const BonusListUi = memo(function BonusListUi(props: {
     selectBonusResult: BonusResult | ((state: GameState) => BonusResult)

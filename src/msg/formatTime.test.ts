@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { engMsg, makeEngMsg } from './eng'
 
 const formatTime = makeEngMsg(engMsg, (value: number) => value.toString()).formatTime

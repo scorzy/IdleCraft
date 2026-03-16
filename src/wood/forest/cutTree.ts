@@ -1,8 +1,8 @@
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { WoodTypes } from '../WoodTypes'
-import { selectDefaultForest } from './forestSelectors'
 import { checkGrowTrees } from './checkGrowTrees'
+import { selectDefaultForest } from './forestSelectors'
 
 export function cutTree(
     state: GameState,

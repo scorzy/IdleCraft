@@ -1,7 +1,7 @@
 import { GameState } from '../../game/GameState'
-import { TreeGrowthAdapter } from './forestGrowth'
-import { addTree } from './forestFunctions'
 import { checkGrowTrees } from './checkGrowTrees'
+import { addTree } from './forestFunctions'
+import { TreeGrowthAdapter } from './forestGrowth'
 
 export function growTree(state: GameState, id: string): void {
     const data = TreeGrowthAdapter.select(state.treeGrowth, id)

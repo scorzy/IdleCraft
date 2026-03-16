@@ -1,5 +1,5 @@
-import { Item, ItemTypes } from '../items/Item'
 import { Icons } from '../icons/Icons'
+import { Item, ItemTypes } from '../items/Item'
 import { Materials } from '../items/materials/materials'
 
 export const MiningItems = {

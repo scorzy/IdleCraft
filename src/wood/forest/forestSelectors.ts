@@ -2,9 +2,9 @@ import { memoize as microMemoize } from 'micro-memoize'
 import { memoize } from 'proxy-memoize'
 import { ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
+import { GameLocations } from '../../gameLocations/GameLocations'
 import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
-import { GameLocations } from '../../gameLocations/GameLocations'
 import { TreeGrowthAdapter } from './forestGrowth'
 
 export const selectDefaultForest = (_s: GameState, woodType: WoodTypes) => {

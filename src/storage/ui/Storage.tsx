@@ -1,31 +1,13 @@
 import { createContext, memo, use, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { useContainerQueries, QueryBreakpoints } from 'use-container-queries'
-import { useGameStore } from '../../game/state'
-import { GameLocationDataMap, GameLocations } from '../../gameLocations/GameLocations'
-import {
-    selectGameItem,
-    selectItemQta,
-    selectStorageLocationsMemo,
-    isSelected,
-    useLocationItems,
-} from '../StorageSelectors'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { setSelectedItem } from '../storageFunctions'
-import { SelectedItem, SelectedItemTitle } from '../../items/ui/SelectedItem'
-import { useTranslations } from '../../msg/useTranslations'
-import { Button } from '../../components/ui/button'
-import { cn } from '../../lib/utils'
-import { clickStorageHeader, setStorageOrder } from '../../ui/state/uiFunctions'
-import { MyPage } from '../../ui/pages/MyPage'
-import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDownIcon, InfoIcon } from '../../icons/IconsMemo'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
-import {
-    selectIsStorageOrderName,
-    selectIsStorageOrderQuantity,
-    selectIsStorageOrderValue,
-    selectStorageAsc,
-} from '../../ui/state/uiSelectors'
+import { QueryBreakpoints, useContainerQueries } from 'use-container-queries'
+import { Alert, AlertTitle } from '@/components/ui/alert'
+import { buttonVariants } from '@/components/ui/buttonVariants'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { useItemName } from '@/items/useItemName'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
+import { Button } from '../../components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import {
     Drawer,
     DrawerClose,
@@ -35,13 +17,31 @@ import {
     DrawerHeader,
     DrawerTitle,
 } from '../../components/ui/drawer'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { useGameStore } from '../../game/state'
+import { GameLocationDataMap, GameLocations } from '../../gameLocations/GameLocations'
+import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDownIcon, InfoIcon } from '../../icons/IconsMemo'
 import { ItemIcon } from '../../items/ui/ItemIcon'
+import { SelectedItem, SelectedItemTitle } from '../../items/ui/SelectedItem'
+import { cn } from '../../lib/utils'
+import { useTranslations } from '../../msg/useTranslations'
+import { MyPage } from '../../ui/pages/MyPage'
+import { clickStorageHeader, setStorageOrder } from '../../ui/state/uiFunctions'
+import {
+    selectIsStorageOrderName,
+    selectIsStorageOrderQuantity,
+    selectIsStorageOrderValue,
+    selectStorageAsc,
+} from '../../ui/state/uiSelectors'
+import {
+    isSelected,
+    selectGameItem,
+    selectItemQta,
+    selectStorageLocationsMemo,
+    useLocationItems,
+} from '../StorageSelectors'
+import { setSelectedItem } from '../storageFunctions'
 import classes from './storage.module.css'
-import { useItemName } from '@/items/useItemName'
-import { buttonVariants } from '@/components/ui/buttonVariants'
-import { Alert, AlertTitle } from '@/components/ui/alert'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 const breakpoints: QueryBreakpoints = {
     small: [0, 400],

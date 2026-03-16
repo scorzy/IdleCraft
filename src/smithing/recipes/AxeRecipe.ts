@@ -2,10 +2,10 @@ import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
-    RecipeTypes,
+    RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeParamType,
-    RecipeParameterItemFilter,
+    RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'

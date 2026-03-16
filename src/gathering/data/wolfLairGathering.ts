@@ -1,6 +1,6 @@
+import { Icons } from '../../icons/Icons'
 import { GatheringZoneConfig, Rarity, Resource } from '../gatheringTypes'
 import { GatheringZone } from '../gatheringZones'
-import { Icons } from '../../icons/Icons'
 
 const wolfLairGatheringResources: Resource[] = [
     { id: 'RedFlower', rarity: Rarity.Common },

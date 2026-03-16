@@ -1,5 +1,5 @@
-import { InitialState } from '../entityAdapter/InitialState'
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
+import { InitialState } from '../entityAdapter/InitialState'
 import { characterSelectors } from './characterSelectorsMap'
 import { CharacterState } from './characterState'
 import { PLAYER_CHAR } from './charactersConst'

@@ -1,6 +1,6 @@
-import { ReactNode, memo, useCallback, useState } from 'react'
-import { HoverCardTrigger } from '@radix-ui/react-hover-card'
 import * as HoverCardPrimitive from '@radix-ui/react-hover-card'
+import { HoverCardTrigger } from '@radix-ui/react-hover-card'
+import { memo, ReactNode, useCallback, useState } from 'react'
 import { HoverCard, HoverCardContent } from '../components/ui/hover-card'
 
 export const MyHoverCard = memo(function MyHoverCard(props: { children: ReactNode; trigger: ReactNode }) {

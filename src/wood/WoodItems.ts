@@ -1,7 +1,7 @@
-import { Item, ItemTypes } from '../items/Item'
 import { Icons } from '../icons/Icons'
-import { Materials } from '../items/materials/materials'
+import { Item, ItemTypes } from '../items/Item'
 import { PRIMARY_MATERIAL_KEY } from '../items/itemsConst'
+import { Materials } from '../items/materials/materials'
 
 export const WoodItems = {
     DeadTreeLog: {

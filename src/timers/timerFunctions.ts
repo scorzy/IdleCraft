@@ -1,8 +1,8 @@
 import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
 import { getFirstTimer } from './getFirstTimer'
-import { TimerAdapter } from './Timer'
 import { onTimer } from './onTimer'
+import { TimerAdapter } from './Timer'
 
 function onTimerAndCheck(state: GameState, timerId: string): void {
     const toDo = TimerAdapter.select(state.timers, timerId)

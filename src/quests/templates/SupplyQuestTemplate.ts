@@ -6,7 +6,7 @@ import { MiningItems } from '../../mining/MiningItems'
 import { SmithingItems } from '../../smithing/SmithingItems'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { WoodItems } from '../../wood/WoodItems'
-import { QuestState, QuestOutcome, QuestStatus } from '../QuestTypes'
+import { QuestOutcome, QuestState, QuestStatus } from '../QuestTypes'
 import { BaseQuestTemplate } from './BaseQuestTemplate'
 
 const SUPPLY_QTA = 100

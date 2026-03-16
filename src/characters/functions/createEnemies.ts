@@ -1,7 +1,7 @@
 import { GameState } from '../../game/GameState'
 import { CharacterAdapter } from '../characterAdapter'
-import { CharTemplatesData } from '../templates/charTemplateData'
 import { CharTemplateEnum } from '../templates/characterTemplateEnum'
+import { CharTemplatesData } from '../templates/charTemplateData'
 import { generateCharacter } from '../templates/generateCharacter'
 import { resetHealth } from './resetHealth'
 import { resetMana } from './resetMana'

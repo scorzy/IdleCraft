@@ -2,12 +2,12 @@ import './global.css'
 import './main.css'
 import 'inter-ui/inter-variable-latin.css'
 
+import { TooltipProvider } from '@radix-ui/react-tooltip'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { TooltipProvider } from '@radix-ui/react-tooltip'
+import { Toaster } from '@/components/ui/sonner.tsx'
 import App from './App.tsx'
 import { initialize } from './game/functions/initialize.ts'
-import { Toaster } from '@/components/ui/sonner.tsx'
 
 initialize()
 

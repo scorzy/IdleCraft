@@ -4,8 +4,8 @@ import { addBattleLog } from '../../battleLog/functions/addBattleLog'
 import { CharacterAdapter } from '../../characters/characterAdapter'
 import { removeCharacter } from '../../characters/functions/removeCharacter'
 import { GameState } from '../../game/GameState'
-import { TimerAdapter } from '../../timers/Timer'
 import { removeTimer } from '../../timers/removeTimer'
+import { TimerAdapter } from '../../timers/Timer'
 import { CastCharAbilityAdapter } from '../abilityAdapters'
 
 export function endBattle(state: GameState) {

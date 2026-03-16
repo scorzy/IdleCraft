@@ -1,9 +1,9 @@
-import { GameState } from '../game/GameState'
-import { Item } from '../items/Item'
 import { EffectPotency } from '../effects/types/EffectPotency'
 import { Effects } from '../effects/types/Effects'
-import { PotionEffect } from './alchemyTypes'
+import { GameState } from '../game/GameState'
+import { Item } from '../items/Item'
 import { alchemyEffectData } from './alchemyData'
+import { PotionEffect } from './alchemyTypes'
 
 export const selectDiscoveredEffectsPosition = (_state: GameState) => 1
 

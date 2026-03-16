@@ -1,16 +1,16 @@
 import { useUiTempStore } from '../../ui/state/uiTempStore'
+import { MAX_LOAD, TEST_DIF, WORKER_MIN_TIME } from '../const'
+import { GameState } from '../GameState'
 import { GetInitialGameState } from '../InitialGameState'
 import { loadData } from '../loadData'
 import { WorkerMessage } from '../loadWorkerTypes'
 import { useGameStore } from '../state'
-import { MAX_LOAD, TEST_DIF, WORKER_MIN_TIME } from '../const'
-import { GameState } from '../GameState'
-import { regenerate } from './regenerate'
 import { advanceTimers } from './advanceTimers'
+import { loadGame } from './loadGame'
 
 // eslint-disable-next-line import/default
 import LoadWorker from './loadWorker?worker'
-import { loadGame } from './loadGame'
+import { regenerate } from './regenerate'
 
 let worker = new LoadWorker()
 let tempState: GameState

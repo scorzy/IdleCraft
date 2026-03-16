@@ -1,7 +1,7 @@
+import { InitialState } from '@/entityAdapter/InitialState'
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 import { AbilitiesEnum } from './abilitiesEnum'
 import { CastCharAbility, CharAbility } from './abilityInterfaces'
-import { InitialState } from '@/entityAdapter/InitialState'
 
 class CharAbilityAdapterInt extends AbstractEntityAdapter<CharAbility> {
     getId(data: CharAbility): string {

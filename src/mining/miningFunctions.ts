@@ -1,19 +1,19 @@
-import { getUniqueId } from '../utils/getUniqueId'
-import { getRandomNum } from '../utils/getRandomNum'
 import { GameState } from '../game/GameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { hasPerk } from '../perks/PerksSelectors'
 import { PerksEnum } from '../perks/perksEnum'
-import { OreData } from './OreData'
+import { getRandomNum } from '../utils/getRandomNum'
+import { getUniqueId } from '../utils/getUniqueId'
 import {
     VEIN_MASTERY_ARMOUR_REDUCE,
     VEIN_MASTERY_GEM_BONUS,
     VEIN_MASTERY_HP_REDUCE,
     VEIN_MASTERY_QTA_BONUS,
 } from './MiningCost'
+import { selectDefaultMine } from './miningSelectors'
+import { OreData } from './OreData'
 import { OreVeinState } from './OreState'
 import { OreTypes } from './OreTypes'
-import { selectDefaultMine } from './miningSelectors'
 
 export const MAX_ORE_VEINS = 10
 

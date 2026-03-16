@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest'
-import { GameState } from '../../game/GameState'
-import { Crafting } from '../CraftingIterfaces'
+import { describe, expect, it } from 'vitest'
 import { ActivityTypes } from '../../activities/ActivityState'
+import { GameState } from '../../game/GameState'
 import { GetInitialGameState } from '../../game/InitialGameState'
+import { Crafting } from '../CraftingIterfaces'
 import { removeCrafting } from './removeCrafting'
 
 const crafting: Crafting = {
