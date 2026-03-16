@@ -32,6 +32,7 @@ export default defineConfig({
         pool: 'threads',
     },
     build: {
+        chunkSizeWarningLimit: 1000,
         rollupOptions: {
             output: {
                 manualChunks: function manualChunks(id) {
