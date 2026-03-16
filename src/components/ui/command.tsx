@@ -1,11 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import { type DialogProps } from '@radix-ui/react-dialog'
-import { Command as CommandPrimitive } from 'cmdk'
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
-import { cn } from '@/lib/utils'
+import { Command as CommandPrimitive } from 'cmdk'
+import * as React from 'react'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { cn } from '@/lib/utils'
 
 const Command = ({
     ref,
@@ -140,11 +140,11 @@ CommandShortcut.displayName = 'CommandShortcut'
 export {
     Command,
     CommandDialog,
-    CommandInput,
-    CommandList,
     CommandEmpty,
     CommandGroup,
+    CommandInput,
     CommandItem,
-    CommandShortcut,
+    CommandList,
     CommandSeparator,
+    CommandShortcut,
 }

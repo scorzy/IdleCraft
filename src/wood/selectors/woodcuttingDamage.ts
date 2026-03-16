@@ -1,7 +1,7 @@
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { bonusFromItem, getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
-import { DEF_WOOD_AXE, WoodBase, selectAxe } from './WoodcuttingSelectors'
+import { DEF_WOOD_AXE, selectAxe, WoodBase } from './WoodcuttingSelectors'
 
 const DAMAGE_BASE: Bonus = {
     id: 'base',

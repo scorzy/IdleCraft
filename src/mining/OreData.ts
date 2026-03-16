@@ -1,5 +1,5 @@
-import { Msg } from '../msg/Msg'
 import { Icons } from '../icons/Icons'
+import { Msg } from '../msg/Msg'
 import { OreTypes } from './OreTypes'
 
 interface OreDataType {

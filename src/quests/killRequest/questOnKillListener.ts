@@ -1,6 +1,6 @@
 import { CharacterAdapter } from '../../characters/characterAdapter'
 import { GameState } from '../../game/GameState'
-import { QuestAdapter, QuestStatus, QuestOutcome } from '../QuestTypes'
+import { QuestAdapter, QuestOutcome, QuestStatus } from '../QuestTypes'
 
 export const questOnKillListener = (state: GameState, killedCharId: string): void => {
     QuestAdapter.forEach(state.quests, (quest) => {

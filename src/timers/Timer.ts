@@ -1,6 +1,6 @@
+import { InitialState } from '@/entityAdapter/InitialState'
 import { ActivityTypes } from '../activities/ActivityState'
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
-import { InitialState } from '@/entityAdapter/InitialState'
 
 export interface Timer {
     id: string

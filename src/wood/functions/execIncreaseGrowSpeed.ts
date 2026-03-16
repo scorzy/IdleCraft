@@ -2,12 +2,11 @@ import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
 import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { makeExecActivity } from '../../activities/functions/makeExecActivity'
 import { GameState } from '../../game/GameState'
+import { scaleTreeGrowthTimers } from '../../timers/scaleTimers'
 import { startTimer } from '../../timers/startTimer'
 import { Timer, TimerAdapter } from '../../timers/Timer'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { GrowSpeedBonus, GrowSpeedBonusAdapter } from '../forest/growSpeedBonus'
-import { scaleTreeGrowthTimers } from '../../timers/scaleTimers'
-import { isIncreaseGrowSpeed } from '../IncreaseGrowSpeed'
 import {
     selectFirstExpiringGrowSpeedTimer,
     selectGrowSpeedBonusMultiplier,
@@ -16,6 +15,7 @@ import {
     selectIncreaseGrowSpeedDuration,
     selectIncreaseGrowSpeedMulti,
 } from '../forest/growSpeedSelectors'
+import { isIncreaseGrowSpeed } from '../IncreaseGrowSpeed'
 import { onGrowSpeedBonusEnd } from './onGrowSpeedBonusEnd'
 
 export const execIncreaseGrowSpeed = makeExecActivity((state: GameState, timer: Timer) => {

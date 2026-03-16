@@ -1,8 +1,8 @@
-import { test, describe, expect, afterEach, beforeEach, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { GetInitialGameState } from '../../game/InitialGameState'
 import { WoodTypes } from '../WoodTypes'
-import { addTree } from './forestFunctions'
 import { cutTree } from './cutTree'
+import { addTree } from './forestFunctions'
 import { selectDefaultForest } from './forestSelectors'
 
 describe('Forest Functions', () => {

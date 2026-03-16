@@ -1,12 +1,12 @@
 import { memoize } from 'micro-memoize'
+import { MsgFunctions } from '@/msg/MsgFunctions'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { GameState } from '../game/GameState'
-import { selectTranslations } from '../msg/useTranslations'
 import { GetItemNameParams } from '../msg/GetItemNameParams'
+import { selectTranslations } from '../msg/useTranslations'
 import { Item, ItemFilter } from './Item'
-import { MsgFunctions } from '@/msg/MsgFunctions'
 
 export const selectEquipId =
     (slot: EquipSlotsEnum, characterId = PLAYER_ID) =>

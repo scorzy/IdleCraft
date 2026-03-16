@@ -2,11 +2,11 @@ import { RecipeTypes } from '../crafting/RecipeInterfaces'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
-import { WoodTypes } from '../wood/WoodTypes'
-import { OreTypes } from '../mining/OreTypes'
 import { GatheringZone } from '../gathering/gatheringZones'
-import { UiPages } from './state/UiPages'
+import { OreTypes } from '../mining/OreTypes'
+import { WoodTypes } from '../wood/WoodTypes'
 import { CollapsedEnum } from './sidebar/CollapsedEnum'
+import { UiPages } from './state/UiPages'
 
 export interface UiState {
     open: boolean

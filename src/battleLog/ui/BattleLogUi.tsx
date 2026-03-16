@@ -1,13 +1,12 @@
 import { memo } from 'react'
 import { TbList } from 'react-icons/tb'
-import { Card, CardContent } from '../../components/ui/card'
-import { useGameStore } from '../../game/state'
-import { selectBattleLog, selectBattleLogsIds } from '../battleLogSelectors'
-import { IconsData } from '../../icons/Icons'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { useTranslations } from '../../msg/useTranslations'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { AutoScroll } from '../../components/ui/autoScroll'
+import { Card, CardContent } from '../../components/ui/card'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { useGameStore } from '../../game/state'
+import { IconsData } from '../../icons/Icons'
+import { useTranslations } from '../../msg/useTranslations'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import {
     DamageBattleLog,
     isDamageBattleLog,
@@ -16,6 +15,7 @@ import {
     isStartBattleLog,
     KillBattleLog,
 } from '../battleLogInterfaces'
+import { selectBattleLog, selectBattleLogsIds } from '../battleLogSelectors'
 
 const LIST_ICON = <TbList />
 export const BattleLogUi = memo(function BattleLogUi(props: { className?: string }) {

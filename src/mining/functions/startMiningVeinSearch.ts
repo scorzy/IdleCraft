@@ -3,8 +3,8 @@ import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { makeStartActivity } from '../../activities/functions/makeStartActivity'
 import { GameState } from '../../game/GameState'
 import { startTimer } from '../../timers/startTimer'
-import { OreTypes } from '../OreTypes'
 import { canSearchOreVein } from '../miningFunctions'
+import { OreTypes } from '../OreTypes'
 
 export const SEARCH_ORE_VEIN_TIME = 8000
 

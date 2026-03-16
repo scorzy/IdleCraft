@@ -1,6 +1,8 @@
 import { memo, ReactNode, useCallback } from 'react'
 import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
-import { useTranslations } from '../../msg/useTranslations'
+import { Button } from '../../components/ui/button'
+import { Checkbox } from '../../components/ui/checkbox'
+import { ComboBoxItem, ComboBoxResponsive, ComboBoxTrigger } from '../../components/ui/comboBox'
 import {
     Dialog,
     DialogClose,
@@ -11,13 +13,19 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '../../components/ui/dialog'
-import { Button } from '../../components/ui/button'
-import { Input } from '../../components/ui/input'
-import { Checkbox } from '../../components/ui/checkbox'
 import { Field, FieldGroup, FieldLabel } from '../../components/ui/field'
-import { ComboBoxItem, ComboBoxResponsive, ComboBoxTrigger } from '../../components/ui/comboBox'
-import { Msg } from '../../msg/Msg'
+import { Input } from '../../components/ui/input'
+import { AddActivityTypes } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
+import { Msg } from '../../msg/Msg'
+import { useTranslations } from '../../msg/useTranslations'
+import {
+    selectActAutoRemove,
+    selectActRepetitions,
+    selectAddActType,
+    selectRemoveOtherActivities,
+    selectStartActNow,
+} from '../ActivitySelectors'
 import {
     setActAutoRemove,
     setActRepetitions,
@@ -25,14 +33,6 @@ import {
     setRemoveOtherActivities,
     setStartActNow,
 } from '../activityFunctions'
-import {
-    selectRemoveOtherActivities,
-    selectAddActType,
-    selectStartActNow,
-    selectActRepetitions,
-    selectActAutoRemove,
-} from '../ActivitySelectors'
-import { AddActivityTypes } from '../../game/GameState'
 
 interface AddOptions {
     id: string

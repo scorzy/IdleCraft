@@ -1,10 +1,10 @@
-import path from 'path'
-import { defineConfig } from 'vite'
-import { test } from 'vitest'
-import svgr from 'vite-plugin-svgr'
+import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
-import babel from '@rolldown/plugin-babel'
+import path from 'path'
+import { defineConfig } from 'vite'
+// import svgr from 'vite-plugin-svgr'
+import { test } from 'vitest'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,9 +14,9 @@ export default defineConfig({
         babel({
             presets: [reactCompilerPreset()],
         }),
-        svgr({
-            include: '**/*.svg',
-        }),
+        // svgr({
+        //     include: '**/*.svg',
+        // }),
         tailwindcss(),
     ],
     resolve: {

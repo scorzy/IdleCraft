@@ -1,15 +1,15 @@
 import { memo, useCallback } from 'react'
-import { useGameStore } from '../../game/state'
 import { GameState } from '../../game/GameState'
-import { useTranslations } from '../../msg/useTranslations'
-import { setGatheringZone } from '../../ui/state/uiFunctions'
-import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
-import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
-import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
+import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
+import { useTranslations } from '../../msg/useTranslations'
+import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
+import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
+import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
+import { setGatheringZone } from '../../ui/state/uiFunctions'
 import { GatheringData, GatheringZoneGroups } from '../gatheringData'
-import { GatheringZone } from '../gatheringZones'
 import { GatheringGroupZone } from '../gatheringTypes'
+import { GatheringZone } from '../gatheringZones'
 
 export const GatheringSidebar = memo(function GatheringSidebar() {
     return (

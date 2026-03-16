@@ -1,11 +1,11 @@
+import { BaseBonus } from '../../bonus/Bonus'
+import { CharacterAdapter } from '../../characters/characterAdapter'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { GameState } from '../../game/GameState'
-import { selectGameItem } from '../../storage/StorageSelectors'
-import { PickaxeData } from '../../items/Item'
 import { Icons } from '../../icons/Icons'
-import { BaseBonus } from '../../bonus/Bonus'
-import { CharacterAdapter } from '../../characters/characterAdapter'
+import { PickaxeData } from '../../items/Item'
+import { selectGameItem } from '../../storage/StorageSelectors'
 
 export const DEF_PICKAXE: PickaxeData = {
     damage: 20,

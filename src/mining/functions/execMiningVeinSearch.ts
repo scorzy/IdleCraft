@@ -1,10 +1,10 @@
-import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { ActivityAdapter } from '../../activities/ActivityState'
+import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { makeExecActivity } from '../../activities/functions/makeExecActivity'
 import { GameState } from '../../game/GameState'
 import { Timer } from '../../timers/Timer'
-import { OreTypes } from '../OreTypes'
 import { searchOreVein } from '../miningFunctions'
+import { OreTypes } from '../OreTypes'
 
 export const execMiningVeinSearch = makeExecActivity((state: GameState, timer: Timer) => {
     const act = ActivityAdapter.select(state.activities, timer.actId)

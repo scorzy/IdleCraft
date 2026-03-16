@@ -1,6 +1,5 @@
-import { LuSun, LuMoon } from 'react-icons/lu'
 import { memo } from 'react'
-import { setTheme, setThemeColor } from './state/uiFunctions'
+import { LuMoon, LuSun } from 'react-icons/lu'
 import { Button } from '@/components/ui/button'
 import {
     DropdownMenu,
@@ -9,6 +8,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { setTheme, setThemeColor } from './state/uiFunctions'
 
 export const ModeToggle = memo(function ModeToggle() {
     return (

@@ -1,5 +1,5 @@
 import { getRandomNum } from '../utils/getRandomNum'
-import { GatheringZoneConfig, RandomFn, Rarity, Resource, RarityRoll } from './gatheringTypes'
+import { GatheringZoneConfig, RandomFn, Rarity, RarityRoll, Resource } from './gatheringTypes'
 
 function pickRandomResource(resources: Resource[], rarity: Rarity): Resource {
     const rarityResources = resources.filter((resource) => resource.rarity === rarity)

@@ -1,7 +1,7 @@
-import { Icons } from '../icons/Icons'
-import { Item, ItemTypes } from '../items/Item'
 import { EffectPotency } from '../effects/types/EffectPotency'
 import { Effects } from '../effects/types/Effects'
+import { Icons } from '../icons/Icons'
+import { Item, ItemTypes } from '../items/Item'
 import { IngredientTypes } from './alchemyTypes'
 
 export const AlchemyItems: Record<string, Item> = {

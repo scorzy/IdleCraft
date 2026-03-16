@@ -2,15 +2,15 @@ import { MAX_AVAILABLE_QUESTS } from '../const'
 import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
 import { addGold, addItem } from '../storage/storageFunctions'
+import { onCollectQuestComplete } from './collectRequest/onCollectQuestComplete'
 import { QuestData } from './QuestData'
+import { QuestAdapter, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
 import {
     isOutcomeCompleted,
     selectAcceptedQuests,
     selectAvailableQuests,
     selectQuestTemplate,
 } from './selectors/QuestSelectors'
-import { QuestAdapter, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
-import { onCollectQuestComplete } from './collectRequest/onCollectQuestComplete'
 
 export const selectQuest = (id: string) =>
     setState((state: GameState) => {

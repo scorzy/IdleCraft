@@ -1,6 +1,6 @@
 import { Icons } from '../../icons/Icons'
-import { CharTemplate } from './charTemplates'
 import { CharTemplateEnum } from './characterTemplateEnum'
+import { CharTemplate } from './charTemplates'
 
 export const CharTemplatesData: Record<CharTemplateEnum, CharTemplate> = {
     [CharTemplateEnum.Chicken]: {

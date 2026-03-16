@@ -1,10 +1,10 @@
 import { memoize } from 'micro-memoize'
-import { messages } from '../msg/allMsg'
-import { useGameStore } from '../game/state'
 import { GameState } from '../game/GameState'
+import { useGameStore } from '../game/state'
+import { messages } from '../msg/allMsg'
+import { CommaTypes } from './CommaTypes'
 import { getFormatter } from './formatNumber'
 import { NotationTypes } from './NotationTypes'
-import { CommaTypes } from './CommaTypes'
 
 const createFormatter = memoize((numberFormatNotation: NotationTypes, comma: CommaTypes, lang: string) => {
     const formatter = getFormatter(numberFormatNotation, comma)

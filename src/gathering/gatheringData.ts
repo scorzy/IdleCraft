@@ -1,8 +1,8 @@
 import { Icons } from '../icons/Icons'
-import { GatheringZone } from './gatheringZones'
 import { forestGatheringConfig } from './data/forestGathering'
-import { GatheringGroupZone, GatheringZoneConfig, Rarity } from './gatheringTypes'
 import { wolfLairGatheringConfig } from './data/wolfLairGathering'
+import { GatheringGroupZone, GatheringZoneConfig, Rarity } from './gatheringTypes'
+import { GatheringZone } from './gatheringZones'
 
 export const GatheringData: Record<GatheringZone, GatheringZoneConfig> = {
     [GatheringZone.Forest]: forestGatheringConfig,

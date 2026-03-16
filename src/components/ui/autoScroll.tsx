@@ -1,5 +1,5 @@
-import { useRef, useLayoutEffect, useEffect, JSX } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { JSX, useEffect, useLayoutEffect, useRef } from 'react'
 import { cn } from '../../lib/utils'
 import classes from './autoScroll.module.css'
 

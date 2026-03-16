@@ -1,6 +1,6 @@
 import { GameState } from '../../game/GameState'
-import { Timer } from '../../timers/Timer'
 import { scaleTreeGrowthTimers } from '../../timers/scaleTimers'
+import { Timer } from '../../timers/Timer'
 import { GrowSpeedBonusAdapter } from '../forest/growSpeedBonus'
 import { selectGrowSpeedBonusMultiplier } from '../forest/growSpeedSelectors'
 

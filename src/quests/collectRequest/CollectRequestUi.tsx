@@ -1,29 +1,29 @@
+import { memoize } from 'proxy-memoize'
 import { Fragment, useCallback, useMemo } from 'react'
 import { TbXboxX } from 'react-icons/tb'
 import { useShallow } from 'zustand/react/shallow'
-import { memoize } from 'proxy-memoize'
-import { ItemsSelect } from '../../storage/ui/ItemsSelect'
-import { selectFilteredItemsNumber } from '../../storage/StorageSelectors'
-import { useTranslations } from '../../msg/useTranslations'
-import { useGameStore } from '../../game/state'
-import { GameState } from '../../game/GameState'
+import { Badge } from '../../components/ui/badge'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { GameState } from '../../game/GameState'
+import { useGameStore } from '../../game/state'
+import { Check } from '../../icons/IconsMemo'
 import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
 import { ItemIconName } from '../../items/ui/ItemIconName'
+import { useTranslations } from '../../msg/useTranslations'
+import { selectFilteredItemsNumber } from '../../storage/StorageSelectors'
+import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { TypographyP } from '../../ui/typography'
 import { QuestStatus } from '../QuestTypes'
 import { selectQuestStatus } from '../selectors/QuestSelectors'
-import { Badge } from '../../components/ui/badge'
-import { Check } from '../../icons/IconsMemo'
 import {
-    selectItemReq,
-    selectCollectQuestItemValue,
     selectCollectQuestChosenItems,
+    selectCollectQuestItemValue,
     selectCollectQuestTotalQta,
+    selectItemReq,
     selectQuestItemsReqIds,
 } from './collectSelectors'
-import classes from './QuestUi.module.css'
 import { onCollectQuestItemSelect } from './onCollectQuestItemSelect'
+import classes from './QuestUi.module.css'
 
 export const CollectRequestUi = (props: { questId: string; outcomeId: string }) => {
     const { questId, outcomeId } = props

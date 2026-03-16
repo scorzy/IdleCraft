@@ -1,4 +1,5 @@
 import { memoize } from 'micro-memoize'
+import { ExpEnum } from '@/experience/ExpEnum'
 import { ActivityAdapter } from '../activities/ActivityState'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { selectLevelExp } from '../experience/expSelectors'
@@ -7,7 +8,6 @@ import { PickaxeData } from '../items/Item'
 import { isMining } from './Mining'
 import { OreData } from './OreData'
 import { OreTypes } from './OreTypes'
-import { ExpEnum } from '@/experience/ExpEnum'
 
 export const DEF_PICKAXE: PickaxeData = {
     damage: 10,

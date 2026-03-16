@@ -1,13 +1,13 @@
 import { Fragment, useCallback } from 'react'
-import { useGameStore } from '../../game/state'
-import { useTranslations } from '../../msg/useTranslations'
-import { selectGameItem } from '../../storage/StorageSelectors'
-import { DamageTypes, ItemFilter } from '../Item'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
+import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { Msg } from '../../msg/Msg'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { useTranslations } from '../../msg/useTranslations'
+import { selectGameItem } from '../../storage/StorageSelectors'
 import { DamageTypesData } from '../damageTypes'
+import { DamageTypes, ItemFilter } from '../Item'
 import { useItemName } from '../useItemName'
 
 export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }) {

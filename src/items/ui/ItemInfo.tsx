@@ -1,13 +1,13 @@
 import { memo } from 'react'
-import { DamageData, CraftingData, Item, PickaxeData, WeaponData, WoodAxeData, DamageTypes } from '../Item'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { useTranslations } from '../../msg/useTranslations'
-import { DamageTypesData } from '../damageTypes'
-import { Msg } from '../../msg/Msg'
-import { IngredientData, IngredientEffect, PotionData } from '../../alchemy/alchemyTypes'
 import { alchemyEffectData } from '../../alchemy/alchemyData'
 import { isEffectDiscovered } from '../../alchemy/alchemySelectors'
+import { IngredientData, IngredientEffect, PotionData } from '../../alchemy/alchemyTypes'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useGameStore } from '../../game/state'
+import { Msg } from '../../msg/Msg'
+import { useTranslations } from '../../msg/useTranslations'
+import { DamageTypesData } from '../damageTypes'
+import { CraftingData, DamageData, DamageTypes, Item, PickaxeData, WeaponData, WoodAxeData } from '../Item'
 
 export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
     const { item } = props

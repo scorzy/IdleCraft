@@ -1,5 +1,5 @@
-import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { ActivityAdapter } from '../../activities/ActivityState'
+import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { makeExecActivity } from '../../activities/functions/makeExecActivity'
 import { addExp } from '../../experience/expFunctions'
 import { GameState } from '../../game/GameState'

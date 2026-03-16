@@ -1,5 +1,5 @@
-import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { ActivityTypes } from '../../activities/ActivityState'
+import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { makeStartActivity } from '../../activities/functions/makeStartActivity'
 import { GameState } from '../../game/GameState'
 import { startTimer } from '../../timers/startTimer'
