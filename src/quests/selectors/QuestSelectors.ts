@@ -2,16 +2,22 @@ import { EMPTY_ARRAY } from '../../const'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { QuestData } from '../QuestData'
-import { QuestTemplate } from '../QuestTemplate'
+import { GenerateQuestDataData, QuestTemplate } from '../QuestTemplate'
 import { ItemsReward, QuestAdapter, QuestOutcomeAdapter, QuestStatus } from '../QuestTypes'
 import { QuestReqSelectors } from './QuestReqSelectors'
 import { selectOutcome } from './selectOutcome'
 
 export const selectAcceptedQuests = (s: GameState) =>
-    QuestAdapter.findManyIds(s.quests, (quest) => quest.state === QuestStatus.ACCEPTED)
+    QuestAdapter.findManyIds(
+        s.quests,
+        (quest) => quest.state === QuestStatus.ACCEPTED && (QuestData.getEx(quest.templateId).visible ?? true)
+    )
 
 export const selectAvailableQuests = (s: GameState) =>
-    QuestAdapter.findManyIds(s.quests, (quest) => quest.state === QuestStatus.AVAILABLE)
+    QuestAdapter.findManyIds(
+        s.quests,
+        (quest) => quest.state === QuestStatus.AVAILABLE && (QuestData.getEx(quest.templateId).visible ?? true)
+    )
 
 export const selectQuestName = (questId: string | null) => (state: GameState) => {
     if (!questId) return ''
@@ -68,7 +74,7 @@ export const isOutcomeCompleted = (questId: string, outcomeId: string) => (state
     if (!outcome) return true
     return QuestReqSelectors.every((selector) => selector.isCompleted(questId, outcomeId)(state))
 }
-export function selectQuestTemplate(state: GameState, questId: string): QuestTemplate {
+export function selectQuestTemplate(state: GameState, questId: string): QuestTemplate<GenerateQuestDataData> {
     const quest = QuestAdapter.selectEx(state.quests, questId)
     return QuestData.getEx(quest.templateId)
 }

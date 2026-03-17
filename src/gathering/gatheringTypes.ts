@@ -33,6 +33,7 @@ export interface GatheringZoneConfig {
     guaranteedRarity: Rarity
     bonusRolls: RarityRoll[]
     resources: Resource[]
+    unlockQuestId?: string
 }
 
 export type RandomFn = () => number

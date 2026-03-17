@@ -26,4 +26,5 @@ export const wolfLairGatheringConfig: GatheringZoneConfig = {
         { rarity: Rarity.Rare, chance: 10 },
     ],
     resources: wolfLairGatheringResources,
+    unlockQuestId: 'unlockWolfLair',
 }

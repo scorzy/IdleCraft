@@ -26,6 +26,7 @@ const getInitialVillageState: () => LocationState = () => {
         ores: {},
         oreVeins: {},
         loot: [],
+        unlockedGatheringZones: [],
     }
 }
 

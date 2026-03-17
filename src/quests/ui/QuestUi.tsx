@@ -1,7 +1,6 @@
 import { Popover, PopoverContent, PopoverTrigger, Portal } from '@radix-ui/react-popover'
 import { memo, ReactNode, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
-import { useShallow } from 'zustand/react/shallow'
 import { useItemName } from '@/items/useItemName'
 import { CharTemplatesData } from '../../characters/templates/charTemplateData'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
@@ -35,8 +34,6 @@ import { QuestStatus } from '../QuestTypes'
 import {
     isOutcomeCompleted,
     isQuestSelected,
-    selectAcceptedQuests,
-    selectAvailableQuests,
     selectExpandedOutcomeId,
     selectOutcomeDescription,
     selectOutcomeGoldReward,
@@ -49,6 +46,7 @@ import {
     selectQuestName,
     selectQuestStatus,
 } from '../selectors/QuestSelectors'
+import { selectAcceptedQuestsMemo, selectAvailableQuestsMemo } from '../selectors/QuestSelectorsMemo'
 import classes from './QuestUi.module.css'
 
 const QuestLink = (props: { id: string }) => {
@@ -71,7 +69,7 @@ const QuestLink = (props: { id: string }) => {
 
 const SidebarQuestAccepted = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
-    const ids = useGameStore(useShallow(selectAcceptedQuests))
+    const ids = useGameStore(selectAcceptedQuestsMemo)
 
     return (
         <CollapsibleMenu
@@ -90,7 +88,7 @@ const SidebarQuestAccepted = memo(function SidebarGathering() {
 
 const SidebarQuestAvailable = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
-    const ids = useGameStore(useShallow(selectAvailableQuests))
+    const ids = useGameStore(selectAvailableQuestsMemo)
 
     return (
         <CollapsibleMenu
