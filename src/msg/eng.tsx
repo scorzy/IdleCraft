@@ -351,7 +351,7 @@ export const engMsg: Msg = {
     StartActNow: 'Start now',
     AddOptions: 'Add activity options',
     WolfLair: 'Wolf Lair',
-    KillToUnlock:'Kill to unlock',
+    KillToUnlock: 'Kill to unlock',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
@@ -440,7 +440,7 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
             }
             return name
         },
-        UnlockQuest: (zone: keyof Msg) => `Unlock ${msg[zone]} Gathering Zone`, 
-        KillToUnlock:(enemy: keyof Msg) => `Kill ${msg[enemy]} to unlock`,
+        UnlockQuest: (zone: keyof Msg) => `Unlock ${msg[zone]} Gathering Zone`,
+        KillToUnlock: (enemy: keyof Msg) => `Kill ${msg[enemy]} to unlock`,
     }
 }

@@ -351,5 +351,5 @@ export interface Msg {
     AddAfterCurrent: string
     AddOptions: string
     WolfLair: string
-    KillToUnlock:string
+    KillToUnlock: string
 }

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react' 
+import { ReactNode } from 'react'
 import { QuestParams } from '../quests/QuestParams'
 import { GetItemNameParams } from './GetItemNameParams'
 import { Msg } from './Msg'
@@ -42,6 +42,6 @@ export interface MsgFunctions {
     collectN: (n: number) => string
 
     collectItemsTotal: (n: number) => ReactNode
-    UnlockQuest: (zone: keyof Msg) => string 
-    KillToUnlock:(enemy: keyof Msg) => string
+    UnlockQuest: (zone: keyof Msg) => string
+    KillToUnlock: (enemy: keyof Msg) => string
 }
