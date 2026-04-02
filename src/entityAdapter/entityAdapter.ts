@@ -112,4 +112,12 @@ export abstract class AbstractEntityAdapter<T> {
         }
         return true
     }
+    some(state: InitialState<T>, fun: (el: T) => boolean): boolean {
+        const ids = state.ids
+        for (const id of ids) {
+            const element = state.entries[id]
+            if (element && fun(element)) return true
+        }
+        return false
+    }
 }

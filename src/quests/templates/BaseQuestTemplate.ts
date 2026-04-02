@@ -1,3 +1,4 @@
+import { EMPTY_ARRAY } from '../../const'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { GenerateQuestDataData, QuestTemplate } from '../QuestTemplate'
@@ -18,10 +19,10 @@ export abstract class BaseQuestTemplate<T extends GenerateQuestDataData> impleme
         if (!outcome) return 0
         return outcome.goldReward ?? 0
     }
-    getOutcomeItemReward = (questId: string, outcomeId: string) => (state: GameState) => {
+    getOutcomeItemRewards = (questId: string, outcomeId: string) => (state: GameState) => {
         const questState = QuestAdapter.selectEx(state.quests, questId)
         const outcome = QuestOutcomeAdapter.selectEx(questState.outcomeData, outcomeId)
-        if (!outcome) return []
-        return outcome.itemsRewards ?? []
+        if (!outcome) return EMPTY_ARRAY
+        return outcome.itemsRewards ?? EMPTY_ARRAY
     }
 }

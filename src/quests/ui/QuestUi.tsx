@@ -1,4 +1,5 @@
 import { Popover, PopoverContent, PopoverTrigger, Portal } from '@radix-ui/react-popover'
+import { memoize } from 'proxy-memoize'
 import { memo, ReactNode, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { useItemName } from '@/items/useItemName'
@@ -38,7 +39,7 @@ import {
     selectOutcomeDescription,
     selectOutcomeGoldReward,
     selectOutcomeIds,
-    selectOutcomeItemReward,
+    selectOutcomeItemRewards,
     selectOutcomeTitle,
     selectQuestDescription,
     selectQuestIcon,
@@ -106,12 +107,11 @@ const SidebarQuestAvailable = memo(function SidebarGathering() {
 })
 
 export const QuestUi = memo(function QuestUi() {
+    const questId = useGameStore(selectQuestId)
     return (
         <MyPageAll sidebar={<QUestSidebar />}>
             <MyPage>
-                <div className="mx-auto max-w-6xl">
-                    <QuestDetailUi />
-                </div>
+                <div className="mx-auto max-w-6xl">{questId && <QuestDetailUi questId={questId} />}</div>
             </MyPage>
         </MyPageAll>
     )
@@ -126,35 +126,32 @@ const QUestSidebar = () => {
     )
 }
 
-const QuestDetailUi = memo(function QuestDetailUi() {
-    const id = useGameStore(selectQuestId)
+export const QuestDetailUi = memo(function QuestDetailUi({ questId }: { questId: string }) {
+    const outcomeIds = useGameStore(useCallback((s: GameState) => selectOutcomeIds(questId)(s), [questId]))
+    const state = useGameStore(useCallback((s: GameState) => selectQuestStatus(questId)(s), [questId]))
 
-    const outcomeIds = useGameStore(selectOutcomeIds)
-    const state = useGameStore(useCallback((s: GameState) => selectQuestStatus(id)(s), [id]))
-
-    if (!id || id === '') return <></>
+    if (!questId || questId === '') return <></>
 
     return (
         <>
-            <QuestTitle />
+            <QuestTitle questId={questId} />
 
             <div className="mt-4 grid gap-4">
-                <QuestAccordion>
+                <QuestAccordion questId={questId}>
                     {outcomeIds.map((outcomeId) => (
-                        <QuestOutcomeUi questId={id} outcomeId={outcomeId} key={outcomeId} />
+                        <QuestOutcomeUi questId={questId} outcomeId={outcomeId} key={outcomeId} />
                     ))}
                 </QuestAccordion>
-                {state === QuestStatus.AVAILABLE && <QuestButtons id={id} />}
+                {state === QuestStatus.AVAILABLE && <QuestButtons id={questId} />}
             </div>
         </>
     )
 })
 
-export const QuestTitle = () => {
-    const id = useGameStore(selectQuestId)
-    const nameId = useGameStore(useCallback((s: GameState) => selectQuestName(id)(s), [id]))
-    const iconId = useGameStore(useCallback((s: GameState) => selectQuestIcon(id)(s), [id]))
-    const description = useGameStore(useCallback((s: GameState) => selectQuestDescription(id)(s), [id]))
+export const QuestTitle = ({ questId }: { questId: string }) => {
+    const nameId = useGameStore(useCallback((s: GameState) => selectQuestName(questId)(s), [questId]))
+    const iconId = useGameStore(useCallback((s: GameState) => selectQuestIcon(questId)(s), [questId]))
+    const description = useGameStore(useCallback((s: GameState) => selectQuestDescription(questId)(s), [questId]))
     return (
         <Card>
             <CardHeader>
@@ -172,11 +169,10 @@ export const QuestTitle = () => {
     )
 }
 
-export const QuestAccordion = ({ children }: { children: ReactNode[] }) => {
-    const id = useGameStore(selectQuestId)
-    const onExpOutcomeChange = useCallback((outcomeId: string) => setExpandedOutcome(id, outcomeId), [id])
+export const QuestAccordion = ({ questId, children }: { questId: string; children: ReactNode[] }) => {
+    const onExpOutcomeChange = useCallback((outcomeId: string) => setExpandedOutcome(questId, outcomeId), [questId])
     const expOutcomeId = useGameStore(
-        useCallback((s: GameState) => (id ? selectExpandedOutcomeId(s, id) : undefined), [id])
+        useCallback((s: GameState) => (questId ? selectExpandedOutcomeId(s, questId) : undefined), [questId])
     )
     return (
         <Accordion
@@ -272,7 +268,10 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
         useCallback((s: GameState) => selectOutcomeGoldReward(s, questId, outcomeId), [questId, outcomeId])
     )
     const items = useGameStore(
-        useCallback((s: GameState) => selectOutcomeItemReward(s, questId, outcomeId), [questId, outcomeId])
+        useCallback(
+            memoize((s: GameState) => selectOutcomeItemRewards(s, questId, outcomeId)),
+            [questId, outcomeId]
+        )
     )
 
     return (
@@ -351,9 +350,6 @@ const KillRequestUi = (props: { questId: string; outcomeId: string }) => {
         <div className="@container">
             <TypographyP>{description}</TypographyP>
             <div className={classes.killContainer}>
-                {targets.map((target: KillQuestTarget) => (
-                    <KillOutcomeProgress key={questId + outcomeId + target.targetId} target={target} />
-                ))}
                 {targets.map((target: KillQuestTarget) => (
                     <KillOutcomeProgress key={questId + outcomeId + target.targetId} target={target} />
                 ))}

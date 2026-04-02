@@ -39,8 +39,7 @@ export const selectQuestStatus = (questId: string | null) => (state: GameState) 
     return QuestAdapter.selectEx(state.quests, questId).state
 }
 
-export const selectOutcomeIds = (s: GameState) => {
-    const questId = selectQuestId(s)
+export const selectOutcomeIds = (questId: string) => (s: GameState) => {
     if (!questId) return EMPTY_ARRAY
     const outcomes = QuestAdapter.selectEx(s.quests, questId).outcomeData
     if (!outcomes) return EMPTY_ARRAY
@@ -81,8 +80,8 @@ export function selectQuestTemplate(state: GameState, questId: string): QuestTem
 export function selectOutcomeGoldReward(state: GameState, questId: string, outcomeId: string): number {
     return selectQuestTemplate(state, questId).getOutcomeGoldReward(questId, outcomeId)(state)
 }
-export function selectOutcomeItemReward(state: GameState, questId: string, outcomeId: string): ItemsReward[] {
-    return selectQuestTemplate(state, questId).getOutcomeItemReward(questId, outcomeId)(state)
+export function selectOutcomeItemRewards(state: GameState, questId: string, outcomeId: string): ItemsReward[] {
+    return selectQuestTemplate(state, questId).getOutcomeItemRewards(questId, outcomeId)(state)
 }
 
 export const selectOutcomeLocation = (state: GameState, questId: string, outcomeId: string) =>

@@ -1,5 +1,7 @@
+import { GameLocations } from '../gameLocations/GameLocations'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
+import { GatheringZoneUnlockQuestData } from './functions/MakeGatheringZoneUnlockQuestData'
 import { GatheringZone } from './gatheringZones'
 
 export enum Rarity {
@@ -26,6 +28,7 @@ export interface GatheringGroupZone {
 
 export interface GatheringZoneConfig {
     iconId: Icons
+    locations?: GameLocations
     zone: GatheringZone
     nameId: keyof Msg
     gatheringTime: number
@@ -33,7 +36,10 @@ export interface GatheringZoneConfig {
     guaranteedRarity: Rarity
     bonusRolls: RarityRoll[]
     resources: Resource[]
-    unlockQuestId?: string
+    unlockData?: {
+        requiredLevel: number
+        questData?: GatheringZoneUnlockQuestData
+    }
 }
 
 export type RandomFn = () => number

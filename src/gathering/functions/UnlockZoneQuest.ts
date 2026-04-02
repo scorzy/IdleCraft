@@ -3,19 +3,20 @@ import { GameState } from '../../game/GameState'
 import { selectTranslations } from '../../msg/useTranslations'
 import { QuestAdapter, QuestOutcome, QuestState, QuestStatus } from '../../quests/QuestTypes'
 import { BaseQuestTemplate } from '../../quests/templates/BaseQuestTemplate'
-import { getUniqueId } from '../../utils/getUniqueId'
 import { GatheringData } from '../gatheringData'
 import { GatheringZoneConfig } from '../gatheringTypes'
 import { GatheringZone } from '../gatheringZones'
-import { MakeGatheringZoneUnlockQuestData } from './MakeGatheringZoneUnlockQuestData'
-export class UnlockZoneQuest extends BaseQuestTemplate<MakeGatheringZoneUnlockQuestData> {
+import { getGatheringQuestId } from '../selectors/gatheringSelectors'
+import { GatheringZoneUnlockQuestData, GatheringZoneUnlockQuestDataComplete } from './MakeGatheringZoneUnlockQuestData'
+
+export class UnlockZoneQuest extends BaseQuestTemplate<GatheringZoneUnlockQuestDataComplete> {
     id = 'UnlockZoneQuest'
     visible = false
     nextQuestId = undefined
-    private selectData(id: string, state: GameState): MakeGatheringZoneUnlockQuestData {
+    private selectData(id: string, state: GameState): GatheringZoneUnlockQuestDataComplete {
         const quest = QuestAdapter.selectEx(state.quests, id)
         if (!quest.parameters) throw new Error('Parameters are required for UnlockZoneQuest')
-        return quest.parameters as MakeGatheringZoneUnlockQuestData
+        return quest.parameters as GatheringZoneUnlockQuestDataComplete
     }
     private selectZoneConfig(id: string, state: GameState): GatheringZoneConfig {
         const zoneId = this.selectData(id, state).zone
@@ -23,7 +24,7 @@ export class UnlockZoneQuest extends BaseQuestTemplate<MakeGatheringZoneUnlockQu
         if (!zoneConfig) throw new Error('Zone config is required for UnlockZoneQuest')
         return zoneConfig
     }
-    generateQuestData = (_state: GameState, data?: MakeGatheringZoneUnlockQuestData) => {
+    generateQuestData = (_state: GameState, data?: GatheringZoneUnlockQuestDataComplete) => {
         if (!data) throw new Error('Data is required for UnlockZoneQuest')
 
         const defeat: QuestOutcome = {
@@ -33,10 +34,21 @@ export class UnlockZoneQuest extends BaseQuestTemplate<MakeGatheringZoneUnlockQu
             unlockGatheringZone: data.zone,
         }
 
+        if (data.enemies)
+            defeat.targets = data.enemies.map((enemy) => ({
+                targetId: enemy.templateId,
+                targetCount: enemy.qta,
+                killedCount: 0,
+                locationId: data.location,
+                unlockGatheringZone: data.zone,
+            }))
+
+        console.log(defeat)
+
         const quest: QuestState = {
-            id: getUniqueId(),
+            id: getGatheringQuestId(data.zone, data.location),
             state: QuestStatus.AVAILABLE,
-            templateId: 'SupplyQuest',
+            templateId: 'UnlockZoneQuest',
             parameters: data,
             expandedOutcome: 'defeat',
             outcomeData: {
@@ -53,8 +65,8 @@ export class UnlockZoneQuest extends BaseQuestTemplate<MakeGatheringZoneUnlockQu
         selectTranslations(state).fun.UnlockQuest(this.selectZoneConfig(id, state).nameId)
     getDescription = (_id: string) => (_state: GameState) => '' // ToDo
     getIcon = (id: string) => (state: GameState) => this.selectZoneConfig(id, state).iconId
-    getOutcomeTitle = (_questId: string, outcomeId: string) => (state: GameState) => {
-        const quest = QuestAdapter.selectEx(state.quests, this.id)
+    getOutcomeTitle = (questId: string, outcomeId: string) => (state: GameState) => {
+        const quest = QuestAdapter.selectEx(state.quests, questId)
         if (!quest) return ''
 
         if (outcomeId === 'defeat') {
@@ -69,7 +81,7 @@ export class UnlockZoneQuest extends BaseQuestTemplate<MakeGatheringZoneUnlockQu
             )
                 return t.t.KillToUnlock
 
-            const params = quest.parameters as MakeGatheringZoneUnlockQuestData | undefined
+            const params = quest.parameters as GatheringZoneUnlockQuestData | undefined
             const enemy = params?.enemies?.[0]?.templateId
             if (!enemy) return ''
             const enemyNameId = CharTemplatesData[enemy].nameId

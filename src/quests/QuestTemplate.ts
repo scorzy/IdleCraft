@@ -15,6 +15,6 @@ export interface QuestTemplate<T extends GenerateQuestDataData> {
     getOutcomeTitle: (questId: string, outcomeId: string) => (state: GameState) => string
     getOutcomeDescription: (questId: string, outcomeId: string) => (state: GameState) => string
     getOutcomeGoldReward: (questId: string, outcomeId: string) => (state: GameState) => number
-    getOutcomeItemReward: (questId: string, outcomeId: string) => (state: GameState) => ItemsReward[]
+    getOutcomeItemRewards: (questId: string, outcomeId: string) => (state: GameState) => ItemsReward[]
     getGatheringZoneUnlock?: (questId: string, outcomeId: string) => (state: GameState) => GatheringZone
 }
