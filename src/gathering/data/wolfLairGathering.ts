@@ -30,7 +30,7 @@ export const wolfLairGatheringConfig: GatheringZoneConfig = {
     unlockData: {
         requiredLevel: 2,
         questData: {
-            enemies: [{ qta: 2, templateId: CharTemplateEnum.Wolf }],
+            enemies: [{ qta: 2, templateId: CharTemplateEnum.Chicken }],
         },
     },
 }

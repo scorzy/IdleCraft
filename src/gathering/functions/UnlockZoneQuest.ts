@@ -12,6 +12,7 @@ import { GatheringZoneUnlockQuestData, GatheringZoneUnlockQuestDataComplete } fr
 export class UnlockZoneQuest extends BaseQuestTemplate<GatheringZoneUnlockQuestDataComplete> {
     id = 'UnlockZoneQuest'
     visible = false
+    auto = true
     nextQuestId = undefined
     private selectData(id: string, state: GameState): GatheringZoneUnlockQuestDataComplete {
         const quest = QuestAdapter.selectEx(state.quests, id)
@@ -43,11 +44,9 @@ export class UnlockZoneQuest extends BaseQuestTemplate<GatheringZoneUnlockQuestD
                 unlockGatheringZone: data.zone,
             }))
 
-        console.log(defeat)
-
         const quest: QuestState = {
             id: getGatheringQuestId(data.zone, data.location),
-            state: QuestStatus.AVAILABLE,
+            state: QuestStatus.ACCEPTED,
             templateId: 'UnlockZoneQuest',
             parameters: data,
             expandedOutcome: 'defeat',

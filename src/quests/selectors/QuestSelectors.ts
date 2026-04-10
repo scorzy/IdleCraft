@@ -38,7 +38,10 @@ export const selectQuestStatus = (questId: string | null) => (state: GameState) 
     if (!questId) return QuestStatus.AVAILABLE
     return QuestAdapter.selectEx(state.quests, questId).state
 }
-
+export const selectIsQuestAuto = (questId: string | null) => (state: GameState) => {
+    if (!questId) return false
+    return QuestData.getEx(QuestAdapter.selectEx(state.quests, questId).templateId).auto ?? false
+}
 export const selectOutcomeIds = (questId: string) => (s: GameState) => {
     if (!questId) return EMPTY_ARRAY
     const outcomes = QuestAdapter.selectEx(s.quests, questId).outcomeData

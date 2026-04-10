@@ -76,6 +76,13 @@ export const completeQuest = (state: GameState, questId: string, outcomeId: stri
         for (const reward of outcome.itemsRewards) addItem(state, reward.itemId, reward.quantity || 1)
     if (outcome.goldReward) addGold(state, outcome.goldReward)
 
+    if (outcome.unlockGatheringZone) {
+        // ToDo: move to procedure and add notification
+        const gatheringZone = outcome.unlockGatheringZone
+        const unlocked = state.locations[outcome.location].unlockedGatheringZones
+        if (!unlocked.includes(gatheringZone)) unlocked.push(gatheringZone)
+    }
+
     const oldIndex = selectAcceptedQuests(state).indexOf(questId)
 
     QuestAdapter.remove(state.quests, questId)

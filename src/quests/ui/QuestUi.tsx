@@ -36,6 +36,7 @@ import {
     isOutcomeCompleted,
     isQuestSelected,
     selectExpandedOutcomeId,
+    selectIsQuestAuto,
     selectOutcomeDescription,
     selectOutcomeGoldReward,
     selectOutcomeIds,
@@ -205,6 +206,7 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     const { t } = useTranslations()
 
     const status = useGameStore(useCallback((s: GameState) => selectQuestStatus(questId)(s), [questId]))
+    const isAuto = useGameStore(useCallback((s: GameState) => selectIsQuestAuto(questId)(s), [questId]))
 
     const completed = useGameStore(
         useCallback((s: GameState) => isOutcomeCompleted(questId, outcomeId)(s), [questId, outcomeId])
@@ -247,7 +249,7 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
                         {isCollecting && <CollectRequestUi questId={questId} outcomeId={outcomeId} />}
 
                         <OutcomeReward questId={questId} outcomeId={outcomeId} />
-                        {status === QuestStatus.ACCEPTED && (
+                        {!isAuto && status === QuestStatus.ACCEPTED && (
                             <Button onClick={completeClick} disabled={!completed} className="self-start">
                                 {t.Complete}
                             </Button>

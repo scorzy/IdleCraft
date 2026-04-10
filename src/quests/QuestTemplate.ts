@@ -8,6 +8,7 @@ export interface QuestTemplate<T extends GenerateQuestDataData> {
     id: string
     nextQuestId?: string
     visible?: boolean
+    auto?: boolean
     generateQuestData: (state: GameState, data?: T) => QuestState
     getName: (id: string) => (state: GameState) => string
     getDescription: (id: string) => (state: GameState) => string
