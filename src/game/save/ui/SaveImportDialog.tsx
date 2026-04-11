@@ -13,21 +13,76 @@ import { useTranslations } from '@/msg/useTranslations'
 import { load } from '@/game/functions/gameFunctions'
 import { saveService } from '../saveService'
 
+const MAX_SAVE_FILE_BYTES = 5 * 1024 * 1024
+
 export const SaveImportDialog = memo(function SaveImportDialog() {
     const { t } = useTranslations()
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [selectedFileName, setSelectedFileName] = useState('')
+
+    const importFromData = async (data: string): Promise<void> => {
+        const state = await saveService.importSave(data)
+        load(state)
+        setOpen(false)
+        setValue('')
+        setSelectedFileName('')
+    }
 
     const onImport = async () => {
         setError('')
         setLoading(true)
         try {
-            const state = await saveService.importSave(value)
-            load(state)
-            setOpen(false)
-            setValue('')
+            const data = value.trim()
+            if (!data) throw new Error('Save string is empty')
+            await importFromData(data)
+        } catch (e) {
+            const msg = e instanceof Error ? e.message : t.SaveImportError
+            setError(msg)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const onFileSelected = async (file: File): Promise<void> => {
+        if (file.size > MAX_SAVE_FILE_BYTES) throw new Error('File too large. Max size is 5MB')
+        const text = await file.text()
+        const data = text.trim()
+        if (!data) throw new Error('File vuoto')
+        await importFromData(data)
+    }
+
+    const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        setError('')
+        const file = event.target.files?.[0]
+        if (!file) return
+
+        setLoading(true)
+        setSelectedFileName(file.name)
+        try {
+            await onFileSelected(file)
+        } catch (e) {
+            const msg = e instanceof Error ? e.message : t.SaveImportError
+            setError(msg)
+        } finally {
+            setLoading(false)
+            event.target.value = ''
+        }
+    }
+
+    const onDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault()
+        setError('')
+
+        const file = event.dataTransfer.files[0]
+        if (!file) return
+
+        setLoading(true)
+        setSelectedFileName(file.name)
+        try {
+            await onFileSelected(file)
         } catch (e) {
             const msg = e instanceof Error ? e.message : t.SaveImportError
             setError(msg)
@@ -46,6 +101,16 @@ export const SaveImportDialog = memo(function SaveImportDialog() {
                     <DialogTitle>{t.ImportSave}</DialogTitle>
                     <DialogDescription>{t.ImportSaveDesc}</DialogDescription>
                 </DialogHeader>
+
+                <div
+                    onDrop={(event) => void onDrop(event)}
+                    onDragOver={(event) => event.preventDefault()}
+                    className="border-input bg-background rounded-md border border-dashed p-3"
+                >
+                    <input type="file" accept=".txt,.save" onChange={(event) => void onFileChange(event)} disabled={loading} />
+                    {selectedFileName && <div className="text-muted-foreground mt-1 text-xs">{selectedFileName}</div>}
+                </div>
+
                 <textarea
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
