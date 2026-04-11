@@ -1,3 +1,6 @@
+// @ts-nocheck
+import { jsonToToon, toonToJson } from './toonParser'
+
 const textEncoder = new TextEncoder()
 const textDecoder = new TextDecoder()
 
@@ -48,7 +51,8 @@ function base64ToBytes(base64) {
 async function exportSave(state) {
     const envelope = { version: 1, state }
     const json = JSON.stringify(envelope)
-    const rawBytes = textEncoder.encode(json)
+    const toon = jsonToToon(json)
+    const rawBytes = textEncoder.encode(toon)
     const compressed = await compressGzip(rawBytes)
     return bytesToBase64(compressed)
 }
@@ -64,16 +68,24 @@ async function importSave(value) {
         throw new Error('Invalid base64 save string')
     }
 
-    let jsonBytes
+    let toonBytes
     try {
-        jsonBytes = await decompressGzip(compressed)
+        toonBytes = await decompressGzip(compressed)
     } catch {
         throw new Error('Gzip decompression failed')
     }
 
+    let json
+    try {
+        const toon = textDecoder.decode(toonBytes)
+        json = toonToJson(toon)
+    } catch {
+        throw new Error('Invalid TOON payload')
+    }
+
     let parsed
     try {
-        parsed = JSON.parse(textDecoder.decode(jsonBytes))
+        parsed = JSON.parse(json)
     } catch {
         throw new Error('Invalid JSON in save data')
     }
