@@ -10,6 +10,7 @@ import { Button } from '../../components/ui/button'
 import { CardTitle } from '../../components/ui/card'
 import { CraftingUi } from '../../crafting/ui/CraftingUi'
 import { useGameStore } from '../../game/state'
+import { SaveExportDialog } from '../../game/save/ui/SaveExportDialog'
 import { Gathering } from '../../gathering/ui/Gathering'
 import { Mining } from '../../mining/ui/Mining'
 import { useTranslations } from '../../msg/useTranslations'
@@ -51,7 +52,8 @@ const Header = memo(function Header() {
                 </Button>
                 <HeaderTitle />
             </div>
-            <div>
+            <div className={classes.headerRight}>
+                <SaveExportDialog />
                 <ModeToggle />
             </div>
         </header>

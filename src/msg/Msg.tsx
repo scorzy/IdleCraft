@@ -170,6 +170,18 @@ export interface Msg {
     NewGame: string
     Delete: string
     SavedGames: string
+    LoadFromIndexedDB: string
+    ImportSave: string
+    ExportSave: string
+    ExportSaveDesc: string
+    ImportSaveDesc: string
+    CopyToClipboard: string
+    DownloadFile: string
+    SaveExportError: string
+    SaveImportError: string
+    NoSavesFound: string
+    Processing: string
+    Size: string
 
     Dagger: string
     TwoHSword: string
