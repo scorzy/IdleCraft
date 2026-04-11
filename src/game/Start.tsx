@@ -135,7 +135,7 @@ const LoadFromIndexedDb = memo(function LoadFromIndexedDb(props: {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">{t.LoadFromIndexedDB}</Button>
+                <Button variant="secondary">{t.LoadFromIndexedDB}</Button> 
             </DialogTrigger>
             <DialogContent className="sm:max-w-[520px]">
                 <DialogHeader>
