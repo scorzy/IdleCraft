@@ -1,4 +1,6 @@
 // @ts-nocheck
+
+import { minifyStateKeys, restoreStateKeys } from './stateKeyMinifier'
 import { jsonToToon, toonToJson } from './toonParser'
 
 const textEncoder = new TextEncoder()
@@ -49,7 +51,7 @@ function base64ToBytes(base64) {
 }
 
 async function exportSave(state) {
-    const envelope = { version: 1, state }
+    const envelope = { version: 1, state: minifyStateKeys(state) }
     const json = JSON.stringify(envelope)
     const toon = jsonToToon(json)
     const rawBytes = textEncoder.encode(toon)
@@ -91,7 +93,7 @@ async function importSave(value) {
     }
 
     if (!isSaveEnvelopeV1(parsed)) throw new Error('Unsupported save format or version')
-    return parsed.state
+    return restoreStateKeys(parsed.state)
 }
 
 async function handleMessage(request) {
