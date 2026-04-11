@@ -1,7 +1,7 @@
 import { GameState } from '../GameState'
 import { WorkerRequest, WorkerResponse } from './saveWorkerTypes'
 // eslint-disable-next-line import/default
-import SaveWorker from './saveWorker?worker'
+import SaveWorker from './saveWorker.js?worker'
 
 function estimateBase64DecodedBytes(value: string): number {
     const normalized = value.trim()

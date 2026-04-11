@@ -1,40 +1,32 @@
-import { GameState } from '../GameState'
-import { WorkerRequest, WorkerResponse } from './saveWorkerTypes'
-
-interface SaveEnvelopeV1 {
-    version: 1
-    state: GameState
-}
-
 const textEncoder = new TextEncoder()
 const textDecoder = new TextDecoder()
 
-function toArrayBuffer(bytes: Uint8Array): ArrayBuffer {
-    return Uint8Array.from(bytes).buffer as ArrayBuffer
+function toArrayBuffer(bytes) {
+    return Uint8Array.from(bytes).buffer
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
+function isRecord(value) {
     return typeof value === 'object' && value !== null
 }
 
-function isSaveEnvelopeV1(value: unknown): value is SaveEnvelopeV1 {
+function isSaveEnvelopeV1(value) {
     if (!isRecord(value)) return false
     return value.version === 1 && 'state' in value && isRecord(value.state)
 }
 
-async function compressGzip(input: Uint8Array): Promise<Uint8Array> {
+async function compressGzip(input) {
     const stream = new Blob([toArrayBuffer(input)]).stream().pipeThrough(new CompressionStream('gzip'))
     const buffer = await new Response(stream).arrayBuffer()
     return new Uint8Array(buffer)
 }
 
-async function decompressGzip(input: Uint8Array): Promise<Uint8Array> {
+async function decompressGzip(input) {
     const stream = new Blob([toArrayBuffer(input)]).stream().pipeThrough(new DecompressionStream('gzip'))
     const buffer = await new Response(stream).arrayBuffer()
     return new Uint8Array(buffer)
 }
 
-function bytesToBase64(bytes: Uint8Array): string {
+function bytesToBase64(bytes) {
     let binary = ''
     const chunkSize = 0x8000
     for (let i = 0; i < bytes.length; i += chunkSize) {
@@ -44,7 +36,7 @@ function bytesToBase64(bytes: Uint8Array): string {
     return btoa(binary)
 }
 
-function base64ToBytes(base64: string): Uint8Array {
+function base64ToBytes(base64) {
     const binary = atob(base64)
     const bytes = new Uint8Array(binary.length)
     for (let i = 0; i < binary.length; i++) {
@@ -53,33 +45,33 @@ function base64ToBytes(base64: string): Uint8Array {
     return bytes
 }
 
-async function exportSave(state: GameState): Promise<string> {
-    const envelope: SaveEnvelopeV1 = { version: 1, state }
+async function exportSave(state) {
+    const envelope = { version: 1, state }
     const json = JSON.stringify(envelope)
     const rawBytes = textEncoder.encode(json)
     const compressed = await compressGzip(rawBytes)
     return bytesToBase64(compressed)
 }
 
-async function importSave(value: string): Promise<GameState> {
+async function importSave(value) {
     const input = value.trim()
     if (input.length === 0) throw new Error('Save string is empty')
 
-    let compressed: Uint8Array
+    let compressed
     try {
         compressed = base64ToBytes(input)
     } catch {
         throw new Error('Invalid base64 save string')
     }
 
-    let jsonBytes: Uint8Array
+    let jsonBytes
     try {
         jsonBytes = await decompressGzip(compressed)
     } catch {
         throw new Error('Gzip decompression failed')
     }
 
-    let parsed: unknown
+    let parsed
     try {
         parsed = JSON.parse(textDecoder.decode(jsonBytes))
     } catch {
@@ -90,7 +82,7 @@ async function importSave(value: string): Promise<GameState> {
     return parsed.state
 }
 
-async function handleMessage(request: WorkerRequest): Promise<WorkerResponse> {
+async function handleMessage(request) {
     if (request.type === 'EXPORT') {
         const output = await exportSave(request.payload)
         return { type: 'EXPORT_SUCCESS', payload: output }
@@ -100,13 +92,12 @@ async function handleMessage(request: WorkerRequest): Promise<WorkerResponse> {
     return { type: 'IMPORT_SUCCESS', payload: output }
 }
 
-self.addEventListener('message', async (event: MessageEvent<WorkerRequest>) => {
+self.addEventListener('message', async (event) => {
     try {
         const response = await handleMessage(event.data)
         self.postMessage(response)
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown save worker error'
-        const response: WorkerResponse = { type: 'ERROR', error: message }
-        self.postMessage(response)
+        self.postMessage({ type: 'ERROR', error: message })
     }
 })
