@@ -169,6 +169,18 @@ export const engMsg: Msg = {
     NewGame: 'New Game',
     Delete: 'Delete',
     SavedGames: 'Saved Games',
+    LoadFromIndexedDB: 'Load from IndexedDB',
+    ImportSave: 'Import Save',
+    ExportSave: 'Export Save',
+    ExportSaveDesc: 'Copy this string or download it as a file to keep a backup.',
+    ImportSaveDesc: 'Paste a valid save string to import it into the game.',
+    CopyToClipboard: 'Copy to Clipboard',
+    DownloadFile: 'Download file',
+    SaveExportError: 'Export failed',
+    SaveImportError: 'Import failed',
+    NoSavesFound: 'No saves found in IndexedDB.',
+    Processing: 'Processing...',
+    Size: 'Size',
 
     //  Smithing
     Dagger: 'Dagger',
