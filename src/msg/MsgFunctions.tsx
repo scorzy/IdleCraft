@@ -42,4 +42,7 @@ export interface MsgFunctions {
     collectN: (n: number) => string
 
     collectItemsTotal: (n: number) => ReactNode
+    UnlockQuest: (zone: keyof Msg) => string
+    KillToUnlock: (enemy: keyof Msg) => string
+    ZoneUnlocked: (zone: keyof Msg) => string
 }

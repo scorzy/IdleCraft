@@ -1,3 +1,4 @@
+import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
 import { Icons } from '../../icons/Icons'
 import { GatheringZoneConfig, Rarity, Resource } from '../gatheringTypes'
 import { GatheringZone } from '../gatheringZones'
@@ -26,4 +27,10 @@ export const wolfLairGatheringConfig: GatheringZoneConfig = {
         { rarity: Rarity.Rare, chance: 10 },
     ],
     resources: wolfLairGatheringResources,
+    unlockData: {
+        requiredLevel: 2,
+        questData: {
+            enemies: [{ qta: 20, templateId: CharTemplateEnum.Wolf }],
+        },
+    },
 }

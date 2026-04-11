@@ -2,16 +2,22 @@ import { EMPTY_ARRAY } from '../../const'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { QuestData } from '../QuestData'
-import { QuestTemplate } from '../QuestTemplate'
+import { GenerateQuestDataData, QuestTemplate } from '../QuestTemplate'
 import { ItemsReward, QuestAdapter, QuestOutcomeAdapter, QuestStatus } from '../QuestTypes'
 import { QuestReqSelectors } from './QuestReqSelectors'
 import { selectOutcome } from './selectOutcome'
 
 export const selectAcceptedQuests = (s: GameState) =>
-    QuestAdapter.findManyIds(s.quests, (quest) => quest.state === QuestStatus.ACCEPTED)
+    QuestAdapter.findManyIds(
+        s.quests,
+        (quest) => quest.state === QuestStatus.ACCEPTED && (QuestData.getEx(quest.templateId).visible ?? true)
+    )
 
 export const selectAvailableQuests = (s: GameState) =>
-    QuestAdapter.findManyIds(s.quests, (quest) => quest.state === QuestStatus.AVAILABLE)
+    QuestAdapter.findManyIds(
+        s.quests,
+        (quest) => quest.state === QuestStatus.AVAILABLE && (QuestData.getEx(quest.templateId).visible ?? true)
+    )
 
 export const selectQuestName = (questId: string | null) => (state: GameState) => {
     if (!questId) return ''
@@ -32,9 +38,11 @@ export const selectQuestStatus = (questId: string | null) => (state: GameState) 
     if (!questId) return QuestStatus.AVAILABLE
     return QuestAdapter.selectEx(state.quests, questId).state
 }
-
-export const selectOutcomeIds = (s: GameState) => {
-    const questId = selectQuestId(s)
+export const selectIsQuestAuto = (questId: string | null) => (state: GameState) => {
+    if (!questId) return false
+    return QuestData.getEx(QuestAdapter.selectEx(state.quests, questId).templateId).auto ?? false
+}
+export const selectOutcomeIds = (questId: string) => (s: GameState) => {
     if (!questId) return EMPTY_ARRAY
     const outcomes = QuestAdapter.selectEx(s.quests, questId).outcomeData
     if (!outcomes) return EMPTY_ARRAY
@@ -68,15 +76,15 @@ export const isOutcomeCompleted = (questId: string, outcomeId: string) => (state
     if (!outcome) return true
     return QuestReqSelectors.every((selector) => selector.isCompleted(questId, outcomeId)(state))
 }
-export function selectQuestTemplate(state: GameState, questId: string): QuestTemplate {
+export function selectQuestTemplate(state: GameState, questId: string): QuestTemplate<GenerateQuestDataData> {
     const quest = QuestAdapter.selectEx(state.quests, questId)
     return QuestData.getEx(quest.templateId)
 }
 export function selectOutcomeGoldReward(state: GameState, questId: string, outcomeId: string): number {
     return selectQuestTemplate(state, questId).getOutcomeGoldReward(questId, outcomeId)(state)
 }
-export function selectOutcomeItemReward(state: GameState, questId: string, outcomeId: string): ItemsReward[] {
-    return selectQuestTemplate(state, questId).getOutcomeItemReward(questId, outcomeId)(state)
+export function selectOutcomeItemRewards(state: GameState, questId: string, outcomeId: string): ItemsReward[] {
+    return selectQuestTemplate(state, questId).getOutcomeItemRewards(questId, outcomeId)(state)
 }
 
 export const selectOutcomeLocation = (state: GameState, questId: string, outcomeId: string) =>

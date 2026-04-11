@@ -22,11 +22,14 @@ import { recipes } from '../../crafting/Recipes'
 import { getCraftingIcon } from '../../crafting/selectors/getCraftingIcon'
 import { getCraftingTitle } from '../../crafting/selectors/getCraftingTitle'
 import { onEffectEnd } from '../../effects/effectsFunctions'
+import { onPlayerSkillUpListeners } from '../../experience/levelUpListeners'
 import { execGathering } from '../../gathering/functions/execGathering'
 import { getGatheringIcon } from '../../gathering/functions/getGatheringIcon'
 import { getGatheringTitle } from '../../gathering/functions/getGatheringTitle'
 import { removeGathering } from '../../gathering/functions/removeGathering'
 import { startGathering } from '../../gathering/functions/startGathering'
+import { startGatheringQuest } from '../../gathering/functions/startGatheringQuest'
+import { UnlockZoneQuest } from '../../gathering/functions/UnlockZoneQuest'
 import { viewGathering } from '../../gathering/functions/viewGathering'
 import { execMining } from '../../mining/functions/execMining'
 import { execMiningVeinSearch } from '../../mining/functions/execMiningVeinSearch'
@@ -163,6 +166,7 @@ function initAbilities() {
 function initQuests() {
     QuestData.set('kill-n', new TestQuestTemplate())
     QuestData.set('SupplyQuest', new SupplyQuestTemplate())
+    QuestData.set('UnlockZoneQuest', new UnlockZoneQuest())
 }
 
 function initListeners() {
@@ -171,4 +175,6 @@ function initListeners() {
 
     onItemRemovedListeners.push(questOnItemRemove)
     onItemRemovedListeners.push(recipeOnItemRemove)
+
+    onPlayerSkillUpListeners.push(startGatheringQuest)
 }

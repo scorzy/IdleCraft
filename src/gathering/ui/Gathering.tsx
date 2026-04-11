@@ -5,6 +5,8 @@ import { removeActivity } from '../../activities/functions/removeActivity'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
 import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { PLAYER_ID } from '../../characters/charactersConst'
+import { Alert, AlertTitle } from '../../components/ui/alert'
+import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table'
@@ -17,6 +19,7 @@ import { IconsData } from '../../icons/Icons'
 import { ItemIcon } from '../../items/ui/ItemIcon'
 import { useItemName } from '../../items/useItemName'
 import { useTranslations } from '../../msg/useTranslations'
+import { QuestDetailUi } from '../../quests/ui/QuestUi'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyLabel } from '../../ui/myCard/MyLabel'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
@@ -24,6 +27,11 @@ import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { addGathering } from '../functions/addGathering'
 import { GatheringData, RarityLabel } from '../gatheringData'
 import { GatheringZone } from '../gatheringZones'
+import {
+    isGatheringZoneUnlocked,
+    selectActiveGatheringQuestId,
+    selectGatheringUnlockLevel,
+} from '../selectors/gatheringSelectors'
 import { selectGatheringTime } from '../selectors/gatheringTime'
 import { selectZoneLootTable } from '../selectors/selectZoneLootTable'
 import { GatheringSidebar } from './GatheringSidebar'
@@ -41,13 +49,44 @@ export const Gathering = memo(function Gathering() {
             }
         >
             <MyPage className="page__main" key={zone}>
-                <GatheringAction />
+                <GatheringUnlock />
                 <GatheringLootTable />
             </MyPage>
         </MyPageAll>
     )
 })
 
+const GatheringUnlock = memo(function GatheringUnlock() {
+    const unlocked = useGameStore(isGatheringZoneUnlocked)
+    if (unlocked) return <GatheringAction />
+    return <LockedGathering />
+})
+
+const LockedGathering = memo(function LockedGathering() {
+    const { f } = useNumberFormatter()
+    const questId = useGameStore(selectActiveGatheringQuestId)
+    const level = useGameStore(selectGatheringUnlockLevel)
+
+    return (
+        <>
+            <Card>
+                <MyCardHeaderTitle title="Gathering" icon={IconsData.Forest} />
+                <CardContent>
+                    <p>Unlock this gathering zone to start gathering here. </p>
+                    <p>
+                        Requires gathering level <Badge>{f(level)}</Badge> and completion of the related quest.
+                    </p>
+                </CardContent>
+            </Card>
+
+            {questId && (
+                <div>
+                    <QuestDetailUi questId={questId} />
+                </div>
+            )}
+        </>
+    )
+})
 const GatheringAction = memo(function GatheringAction() {
     const { t, fun } = useTranslations()
     const zone = useGameStore((s) => s.ui.gatheringZone)
