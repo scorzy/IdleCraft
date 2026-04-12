@@ -82,6 +82,7 @@
     "jsdom": "^28.1.0",
     "oxfmt": "^0.44.0",
     "oxlint": "^1.59.0",
+    "oxlint-tsgolint": "^0.20.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
     "use-container-queries": "^1.0.0",

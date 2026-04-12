@@ -50,7 +50,7 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
     if (itemFilter.weaponData?.damage !== undefined) {
         arr.push(
             ...Object.entries(itemFilter.weaponData.damage)
-                .sort()
+                .sort(([a], [b]) => a.localeCompare(b))
                 .map((kv) => (
                     <span key={kv[0]}>
                         {t[DamageTypesData[kv[0] as DamageTypes].DamageName].toLowerCase()} {f(kv[1])}
@@ -61,7 +61,7 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
     if (itemFilter.armourData !== undefined) {
         arr.push(
             ...Object.entries(itemFilter.armourData)
-                .sort()
+                .sort(([a], [b]) => a.localeCompare(b))
                 .map((kv) => (
                     <span key={kv[0]}>
                         {t[DamageTypesData[kv[0] as DamageTypes].DamageName].toLowerCase()} {f(kv[1])}

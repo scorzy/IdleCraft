@@ -12,5 +12,8 @@
   "env": {
     "builtin": true
   },   
-  "ignorePatterns": ["dist/**", "coverage/**", "vendor/**", "test/snapshots/**","vite.config.ts"] 
+  "ignorePatterns": ["dist/**", "coverage/**", "vendor/**", "test/snapshots/**","vite.config.ts"],
+  "options": {
+    "typeAware": true
+  }
 }

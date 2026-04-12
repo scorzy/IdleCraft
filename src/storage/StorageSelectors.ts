@@ -158,7 +158,7 @@ export const createInventoryNoQta = (inventory: CharInventory) => {
     const ret: InventoryNoQta = {}
 
     Object.entries(inventory)
-        .sort()
+        .sort(([a], [b]) => a.localeCompare(b))
         .forEach((kv) => {
             const slot = kv[0] as EquipSlotsEnum
             const itemIds = kv[1]

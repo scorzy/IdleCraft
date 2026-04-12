@@ -402,7 +402,7 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
             <div className="grid grid-flow-col items-center justify-start gap-2 text-sm">
                 <ul>
                     {Object.entries(damage)
-                        .sort()
+                        .sort((a, b) => a[1] - b[1])
                         .map((kv) => (
                             <AttackTypeInfo
                                 key={kv[0]}
