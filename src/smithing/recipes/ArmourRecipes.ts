@@ -45,6 +45,7 @@ export const armourRecipe = makeMemoizedRecipe({
 
         const armourData: DamageData = {}
         Object.entries(barArmourData).forEach((kv) => {
+            // oxlint-disable-next-line typescript/no-unsafe-type-assertion
             armourData[kv[0] as DamageTypes] = 10 * kv[1]
         })
 

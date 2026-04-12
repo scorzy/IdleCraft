@@ -354,7 +354,7 @@ const CharLevelUi = memo(function CharLevelUi(props: { charId: string }) {
     return <ExperienceCardUi title={'Level'} level={level} xp={xp} levelXp={levelXp} nextLevelXp={nextLevelXp} />
 })
 
-const armourTypes = Object.values(DamageTypes).sort()
+const armourTypes = Object.values(DamageTypes).toSorted()
 
 export const ArmourInfo = memo(function ArmourInfo(props: { charId: string }) {
     const { charId } = props
@@ -402,7 +402,7 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
             <div className="grid grid-flow-col items-center justify-start gap-2 text-sm">
                 <ul>
                     {Object.entries(damage)
-                        .sort((a, b) => a[1] - b[1])
+                        .toSorted((a, b) => a[1] - b[1])
                         .map((kv) => (
                             <AttackTypeInfo
                                 key={kv[0]}

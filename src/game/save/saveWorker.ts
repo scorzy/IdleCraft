@@ -109,9 +109,9 @@ async function handleMessage(request) {
 self.addEventListener('message', async (event) => {
     try {
         const response = await handleMessage(event.data)
-        self.postMessage(response)
+        self.postMessage(response, '*')
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown save worker error'
-        self.postMessage({ type: 'ERROR', error: message })
+        self.postMessage({ type: 'ERROR', error: message }, '*')
     }
 })

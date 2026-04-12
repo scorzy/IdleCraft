@@ -17,6 +17,7 @@ export class UnlockZoneQuest extends BaseQuestTemplate<GatheringZoneUnlockQuestD
     private selectData(id: string, state: GameState): GatheringZoneUnlockQuestDataComplete {
         const quest = QuestAdapter.selectEx(state.quests, id)
         if (!quest.parameters) throw new Error('Parameters are required for UnlockZoneQuest')
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion
         return quest.parameters as GatheringZoneUnlockQuestDataComplete
     }
     private selectZoneConfig(id: string, state: GameState): GatheringZoneConfig {

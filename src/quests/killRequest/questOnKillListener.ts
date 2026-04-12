@@ -20,6 +20,7 @@ export const questOnKillListener = (state: GameState, killedCharId: string): voi
             targets.forEach((target) => {
                 if (target.killedCount >= target.targetCount) return
                 const templateId = CharacterAdapter.selectEx(state.characters, killedCharId).templateId
+                // oxlint-disable-next-line typescript/no-unsafe-enum-comparison
                 if (target.targetId !== templateId) return
 
                 target.killedCount = target.killedCount + 1

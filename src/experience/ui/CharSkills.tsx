@@ -4,7 +4,7 @@ import { selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { ExpEnum } from '../ExpEnum'
 import { ExperienceCard } from './ExperienceCard'
 
-const skills = Object.values(ExpEnum).sort()
+const skills = Object.values(ExpEnum).toSorted()
 export const CharSkills = memo(function CharSkills() {
     const charId = useGameStore(selectSelectedCharId)
     return (

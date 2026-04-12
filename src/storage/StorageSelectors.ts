@@ -51,7 +51,7 @@ const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialSt
         const name = selectItemNameMemoized(item.nameFunc, params, t)
         ord.push({ ...e, name })
     }
-    return ord.sort((a, b) => a.name.localeCompare(b.name))
+    return ord.toSorted((a, b) => a.name.localeCompare(b.name))
 }
 
 const reorderByQta = (storage: InitialState<StorageState>, items: ItemId[]) => {
@@ -60,7 +60,7 @@ const reorderByQta = (storage: InitialState<StorageState>, items: ItemId[]) => {
         const qta = storage.entries[e.id]?.quantity ?? 0
         ord.push({ ...e, qta })
     }
-    return ord.sort((a, b) => a.qta - b.qta)
+    return ord.toSorted((a, b) => a.qta - b.qta)
 }
 
 const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[]) => {
@@ -69,7 +69,7 @@ const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[]) => {
         const item = selectGameItemFromCraft(e.id, craftedItems)
         ord.push({ ...e, value: item?.value ?? 0 })
     }
-    return ord.sort((a, b) => a.value - b.value)
+    return ord.toSorted((a, b) => a.value - b.value)
 }
 
 const selectLocationItemsSelector = (location: GameLocations, storageOrder: string) => {
@@ -158,7 +158,7 @@ export const createInventoryNoQta = (inventory: CharInventory) => {
     const ret: InventoryNoQta = {}
 
     Object.entries(inventory)
-        .sort(([a], [b]) => a.localeCompare(b))
+        .toSorted(([a], [b]) => a.localeCompare(b))
         .forEach((kv) => {
             const slot = kv[0] as EquipSlotsEnum
             const itemIds = kv[1]

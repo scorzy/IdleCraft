@@ -2,7 +2,7 @@ import { memo, ReactNode } from 'react'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { useItemName } from '@/items/useItemName'
 import { MyLabel } from '@/ui/myCard/MyLabel'
-import { isPotionItem, PotionItem } from '../../alchemy/PotionCraftingResult'
+import { isPotionItem } from '../../alchemy/PotionCraftingResult'
 import { PotionResultUi } from '../../alchemy/PotionResultUi'
 import { CardContent } from '../../components/ui/card'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -26,11 +26,10 @@ export const CraftingResult = memo(function CraftingResult({ result }: { result:
     else if (result.craftedItem) item = result.craftedItem
     else if (result.stdItemId) item = StdItems[result.stdItemId]
 
-    const info = isPotion ? <PotionResultUi result={result as PotionItem} /> : null
+    const info = isPotion ? <PotionResultUi result={result} /> : null
 
     if (!item) {
         if (info) return <>{info}</>
-
         return null
     }
     return <CraftingResult2 result={result} item={item} info={info} />

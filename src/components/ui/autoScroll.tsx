@@ -22,7 +22,7 @@ export const AutoScroll = ({
     'use no memo'
 
     const parentRef = useRef<HTMLDivElement>(null)
-    const prevWasAtBottomRef = useRef<boolean>(false)
+    const prevWasAtBottomRef = useRef(false)
     const prevLastIdRef = useRef<string | undefined>(undefined)
 
     const virtualizer = useVirtualizer({

@@ -64,7 +64,7 @@ const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boolean })
                 {t[bonus.nameId]} {bonus.showQta && ` X ${f(bonus.showQta)}`}
             </TableCell>
             <TableCell className="text-right">
-                {bonus.add && `${format(bonus.add)}`}
+                {bonus.add && format(bonus.add)}
                 {bonus.multi && bonus.multi > 0 && '+'}
                 {bonus.multi && `${f(bonus.multi)}%`}
             </TableCell>

@@ -68,7 +68,7 @@ export function generatePotion(
             effect,
             potencies.map((p) => p.potency)
         )
-        if (effects) potionData!.effects.push(effects)
+        if (effects) potionData.effects.push(effects)
     }
 
     potionData.effects.sort((a, b) => b.value - a.value)

@@ -18,5 +18,6 @@ export const viewCrafting = (state: GameState, activity: ActivityState) => {
     state.craftingForm.params = recipe.getParameters(state)
 
     const page = Object.entries(UiPagesData).find((kv) => kv[1].recipeType && kv[1].recipeType === recipe.type)?.[0]
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion
     if (page) state.ui.page = page as UiPages
 }

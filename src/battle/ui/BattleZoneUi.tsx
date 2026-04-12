@@ -49,7 +49,7 @@ const CombatSidebar = memo(function CombatSidebar() {
     )
 })
 
-const BattleAreasListUi = memo(function BattleAreasList({ bt }: { bt: BattleAreas }) {
+const BattleAreasListUi = memo(function BattleAreasListUi({ bt }: { bt: BattleAreas }) {
     const { t } = useTranslations()
     const set = useCallback(() => setArea(bt.id), [bt.id])
     const active = useGameStore(isBattleZoneSelected(bt.id))

@@ -5,7 +5,7 @@ import { ProgressBar } from './ProgressBar'
 export function RestartProgress(props: { value: number; className?: string; color: Colors }) {
     const { value: hpPercent, className, color } = props
     const [isZero, setIsZero] = useState(false)
-    const prevHpPercentRef = useRef<number>(100)
+    const prevHpPercentRef = useRef(100)
 
     useEffect(() => {
         let frame = -1

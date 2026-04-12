@@ -10,6 +10,7 @@ export function copyValues(origin: object, objValues: object) {
                 typeof value === 'number' ||
                 typeof value === 'string'
             )
+                // oxlint-disable-next-line typescript/no-unsafe-type-assertion
                 (origin as Record<string, unknown>)[key] = value
         }
     })
