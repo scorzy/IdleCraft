@@ -52,7 +52,7 @@ function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
     if (equipped) return true
 
     const locations = Object.values(state.locations)
-    for (const loc of locations) if (StorageAdapter.select(loc.storage, craftItemId)?.quantity ?? 0 > 0) return true
+    for (const loc of locations) if ((StorageAdapter.select(loc.storage, craftItemId)?.quantity ?? 0) > 0) return true
 
     return false
 }
