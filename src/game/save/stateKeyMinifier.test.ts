@@ -25,11 +25,11 @@ describe('stateKeyMinifier', () => {
         expect(minified.gameId).toBeUndefined()
 
         const locations = minified.ls as Record<string, Record<string, unknown>>
-        expect(locations.village.st).toEqual({ ids: [], entities: {} })
-        expect(locations.village.fo).toEqual({ trees: [] })
-        expect(locations.village.ug).toEqual([])
-        expect(locations.village.futureLocationField).toBe(42)
-        expect(locations.village.storage).toBeUndefined()
+        expect(locations.village?.st).toEqual({ ids: [], entities: {} })
+        expect(locations.village?.fo).toEqual({ trees: [] })
+        expect(locations.village?.ug).toEqual([])
+        expect(locations.village?.futureLocationField).toBe(42)
+        expect(locations.village?.storage).toBeUndefined()
     })
 
     it('restores minified keys and preserves unknown keys', () => {
@@ -54,10 +54,10 @@ describe('stateKeyMinifier', () => {
         expect(restored.gi).toBeUndefined()
 
         const locations = restored.locations as Record<string, Record<string, unknown>>
-        expect(locations.village.storage).toEqual({ ids: ['a'], entities: { a: { id: 'a' } } })
-        expect(locations.village.unlockedGatheringZones).toEqual(['forest'])
-        expect(locations.village.someNewLocationKey).toBe('safe-loc')
-        expect(locations.village.st).toBeUndefined()
+        expect(locations.village?.storage).toEqual({ ids: ['a'], entities: { a: { id: 'a' } } })
+        expect(locations.village?.unlockedGatheringZones).toEqual(['forest'])
+        expect(locations.village?.someNewLocationKey).toBe('safe-loc')
+        expect(locations.village?.st).toBeUndefined()
     })
 
     it('does not throw when locations has non-object entries', () => {
