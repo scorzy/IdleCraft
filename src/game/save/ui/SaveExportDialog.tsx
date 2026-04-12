@@ -82,7 +82,7 @@ export const SaveExportDialog = memo(function SaveExportDialog() {
                     readOnly
                     rows={10}
                     placeholder={loading ? t.Processing : ''}
-                    className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex w-full rounded-md border p-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex w-full rounded-md border p-3 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 />
                 {stats && (
                     <span className="text-muted-foreground text-sm">

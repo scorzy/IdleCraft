@@ -135,7 +135,7 @@ const LoadFromIndexedDb = memo(function LoadFromIndexedDb(props: {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="secondary">{t.LoadFromIndexedDB}</Button> 
+                <Button variant="secondary">{t.LoadFromIndexedDB}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[520px]">
                 <DialogHeader>
@@ -253,7 +253,8 @@ const LoadingProgress = memo(function LoadingProgress() {
     return (
         <>
             <span>
-                <span className="inline-block min-w-24">{fun.formatTimePrecise(done)} </span>/ {fun.formatTimePrecise(total)}
+                <span className="inline-block min-w-24">{fun.formatTimePrecise(done)} </span>/{' '}
+                {fun.formatTimePrecise(total)}
             </span>
             <ProgressBar value={percent} color="primary" />
         </>

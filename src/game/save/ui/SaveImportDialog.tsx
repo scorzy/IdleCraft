@@ -107,7 +107,12 @@ export const SaveImportDialog = memo(function SaveImportDialog() {
                     onDragOver={(event) => event.preventDefault()}
                     className="border-input bg-background rounded-md border border-dashed p-3"
                 >
-                    <input type="file" accept=".txt,.save" onChange={(event) => void onFileChange(event)} disabled={loading} />
+                    <input
+                        type="file"
+                        accept=".txt,.save"
+                        onChange={(event) => void onFileChange(event)}
+                        disabled={loading}
+                    />
                     {selectedFileName && <div className="text-muted-foreground mt-1 text-xs">{selectedFileName}</div>}
                 </div>
 
@@ -115,7 +120,7 @@ export const SaveImportDialog = memo(function SaveImportDialog() {
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     rows={10}
-                    className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex w-full rounded-md border p-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex w-full rounded-md border p-3 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 />
                 {error && <span className="text-sm text-red-500">{error}</span>}
                 <DialogFooter>
