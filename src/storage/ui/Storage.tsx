@@ -292,7 +292,7 @@ const StorageHeaderValue = memo(function StorageHeaderValue() {
         </TableHead>
     )
 })
-const StorageHeaderArrow = memo(function StorageHeaderValue() {
+const StorageHeaderArrow = memo(function StorageHeaderArrow() {
     const asc = useGameStore(selectStorageAsc)
     return asc ? ArrowDownIcon : ArrowUpIcon
 })

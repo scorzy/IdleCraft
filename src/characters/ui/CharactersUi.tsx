@@ -251,7 +251,7 @@ const HealthInfoUi = memo(function HealthInfoUi() {
     )
 })
 
-const StaminaInfoUi = memo(function HealthInfoUi() {
+const StaminaInfoUi = memo(function StaminaInfoUi() {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const charId = useGameStore(selectSelectedCharId)
@@ -296,7 +296,7 @@ const StaminaInfoUi = memo(function HealthInfoUi() {
     )
 })
 
-const ManaInfoUi = memo(function HealthInfoUi() {
+const ManaInfoUi = memo(function ManaInfoUi() {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const charId = useGameStore(selectSelectedCharId)

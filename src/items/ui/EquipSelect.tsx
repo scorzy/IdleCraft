@@ -60,9 +60,9 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
                 >
                     <OptionItem itemId="-" slot={slot} charId={charId} defIcon={<GiRock />} />
 
-                    {itemsId.map((t) => (
-                        <Fragment key={t}>
-                            <OptionItem itemId={t} slot={slot} charId={charId} />
+                    {itemsId.map((i) => (
+                        <Fragment key={i}>
+                            <OptionItem itemId={i} slot={slot} charId={charId} />
                         </Fragment>
                     ))}
                 </ComboBoxResponsive>

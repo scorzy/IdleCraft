@@ -241,7 +241,7 @@ const MiningButton = memo(function CuttingButton() {
     )
 })
 
-const OreUi = memo(function MiningOre() {
+const OreUi = memo(function OreUi() {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)

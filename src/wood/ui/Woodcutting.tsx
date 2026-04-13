@@ -328,8 +328,8 @@ const Trees = memo(function Trees() {
                 <span className="text-muted-foreground">/ {f(MAX_GROWING_TREES)}</span>
             </MyLabel>
 
-            {trees.map((t) => (
-                <Tree id={t} key={t} />
+            {trees.map((r) => (
+                <Tree id={r} key={r} />
             ))}
         </>
     )

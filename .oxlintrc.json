@@ -14,6 +14,7 @@
     "typescript/consistent-return": "off",
     "typescript/no-unsafe-type-assertion": "off",
     "typescript/no-unsafe-enum-comparison": "off",
+    "unicorn/require-post-message-target-origin": "off",
   },
   "env": {
     "builtin": true

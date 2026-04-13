@@ -60,7 +60,7 @@ const Header = memo(function Header() {
     )
 })
 
-const HeaderTitle = memo(function Header() {
+const HeaderTitle = memo(function HeaderTitle() {
     const page = useGameStore(selectPage)
     const { t } = useTranslations()
 

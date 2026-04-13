@@ -136,7 +136,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     const { t } = useTranslations()
 
     if (!recipeType) return
-    const recipesByType = selectRecipes(recipeType)
+    const recipesByTypeList = selectRecipes(recipeType)
     const selected = recipes.get(recipeId)
     const icon = selected && IconsData[selected.iconId]
 
@@ -154,7 +154,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
                 )
             }
         >
-            {recipesByType.map((r) => (
+            {recipesByTypeList.map((r) => (
                 <ComboBoxItem
                     key={r.id}
                     value={r.id}
@@ -227,7 +227,7 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
 
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
 
-    const handleRecipeChange = useCallback(
+    const handleItemChange = useCallback(
         (itemId: string) => setRecipeItemParamUi(recipeParam.id, itemId),
         [recipeParam.id]
     )
@@ -236,7 +236,7 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
         <ItemsSelect
             itemFilter={recipeParam.itemFilter}
             selectedValue={selected?.itemId}
-            onValueChange={handleRecipeChange}
+            onValueChange={handleItemChange}
             label={<ItemFilterDescription itemFilter={recipeParam.itemFilter} />}
         />
     )
