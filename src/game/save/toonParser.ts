@@ -17,7 +17,7 @@ function toNode(value: unknown): ToonNode {
     if (!isRecord(value)) throw new Error('Unsupported value in TOON encoder')
 
     const out: ToonNodeObject = {}
-    const keys = Object.keys(value).sort((a, b) => a.localeCompare(b))
+    const keys = Object.keys(value).toSorted((a, b) => a.localeCompare(b))
     for (const key of keys) {
         out[key] = toNode(value[key])
     }

@@ -1,3 +1,4 @@
+// oxlint-disable typescript/no-unsafe-type-assertion
 import { create } from 'mutative'
 import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest'
 import { ActivityTypes } from '../activities/ActivityState'
@@ -31,7 +32,7 @@ describe('updateTimers', () => {
         vi.spyOn(globalThis, 'setTimeout')
         vi.spyOn(globalThis, 'clearInterval')
 
-        state = create(prevState, (state: GameState) => TimerAdapter.create(state.timers, timer))
+        state = create(prevState, (state2: GameState) => TimerAdapter.create(state2.timers, timer))
 
         prevTimers.clear()
     })
@@ -67,8 +68,8 @@ describe('updateTimers', () => {
 
         const prevCallCount = (setTimeout as unknown as Mock).mock.calls.length
 
-        const newState = create(state, (state: GameState) => {
-            const tim = TimerAdapter.select(state.timers, 't1')
+        const newState = create(state, (state2: GameState) => {
+            const tim = TimerAdapter.select(state2.timers, 't1')
             if (tim) tim.to += 1e3
         })
 

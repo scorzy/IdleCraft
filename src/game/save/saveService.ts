@@ -16,11 +16,11 @@ class SaveService {
 
     constructor() {
         this.worker = new SaveWorker()
-        this.worker.onmessage = (event: MessageEvent<WorkerResponse>) => {
+        this.worker.addEventListener('message', (event: MessageEvent<WorkerResponse>) => {
             if (!this.pending) return
             this.pending(event.data)
             this.pending = null
-        }
+        })
     }
 
     private request(message: WorkerRequest): Promise<WorkerResponse> {

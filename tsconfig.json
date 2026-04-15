@@ -24,8 +24,7 @@
         "types": [],
         "typeRoots": [],
         "noUncheckedIndexedAccess": true,
-
-        "baseUrl": ".",
+ 
         "paths": {
             "@/*": ["./src/*"]
         }

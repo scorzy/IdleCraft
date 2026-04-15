@@ -15,6 +15,7 @@ export function loadUi(data: object, state: GameState): void {
     ) {
         Object.entries(data.ui.collapsed).forEach((kv) => {
             const key = kv[0]
+            // oxlint-disable-next-line typescript/no-unsafe-type-assertion
             if (key in CollapsedEnum) state.ui.collapsed[key as CollapsedEnum] = !!kv[1]
         })
     }

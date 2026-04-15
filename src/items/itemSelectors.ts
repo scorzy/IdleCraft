@@ -40,17 +40,17 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
         if (!itemData) return false
         if (typeof itemData !== 'object') continue
 
-        for (const kv of Object.entries(filterData)) {
-            const filterValue = kv[1]
+        for (const kv2 of Object.entries(filterData)) {
+            const filterValue = kv2[1]
 
             if (typeof filterValue === 'number') {
-                const itemKey = kv[0] as keyof typeof itemData
+                const itemKey = kv2[0] as keyof typeof itemData
                 const itemValue = itemData[itemKey]
                 if (typeof itemValue !== 'number') continue
                 if (itemValue === undefined) return false
                 if (itemValue < filterValue) return false
             } else if (typeof filterValue === 'object') {
-                const itemKey = kv[0] as keyof typeof itemData
+                const itemKey = kv2[0] as keyof typeof itemData
                 const itemValue = itemData[itemKey]
                 if (typeof itemValue !== 'object') continue
                 if (itemValue === undefined) return false

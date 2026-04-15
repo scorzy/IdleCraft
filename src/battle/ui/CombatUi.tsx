@@ -198,7 +198,7 @@ const CombatAbilitiesList = memo(function CombatAbilitiesList(props: { charId: s
         </div>
     )
 })
-const CombatAbilityBadge = memo(function CombatAbilitiesList(props: {
+const CombatAbilityBadge = memo(function CombatAbilityBadge(props: {
     characterId: string
     abilityId: string
     index: number

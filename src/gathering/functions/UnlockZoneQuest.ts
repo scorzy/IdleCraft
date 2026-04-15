@@ -17,6 +17,7 @@ export class UnlockZoneQuest extends BaseQuestTemplate<GatheringZoneUnlockQuestD
     private selectData(id: string, state: GameState): GatheringZoneUnlockQuestDataComplete {
         const quest = QuestAdapter.selectEx(state.quests, id)
         if (!quest.parameters) throw new Error('Parameters are required for UnlockZoneQuest')
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion
         return quest.parameters as GatheringZoneUnlockQuestDataComplete
     }
     private selectZoneConfig(id: string, state: GameState): GatheringZoneConfig {
@@ -62,7 +63,7 @@ export class UnlockZoneQuest extends BaseQuestTemplate<GatheringZoneUnlockQuestD
     }
     getName = (id: string) => (state: GameState) =>
         selectTranslations(state).fun.UnlockQuest(this.selectZoneConfig(id, state).nameId)
-    getDescription = (_id: string) => (_state: GameState) => '' // ToDo
+    getDescription = (_id: string) => (_state: GameState) => '' // TODO
     getIcon = (id: string) => (state: GameState) => this.selectZoneConfig(id, state).iconId
     getOutcomeTitle = (questId: string, outcomeId: string) => (state: GameState) => {
         const quest = QuestAdapter.selectEx(state.quests, questId)
@@ -89,6 +90,6 @@ export class UnlockZoneQuest extends BaseQuestTemplate<GatheringZoneUnlockQuestD
 
         return ''
     }
-    getOutcomeDescription = (_questId: string, _outcomeId: string) => (_state: GameState) => '' // ToDo
+    getOutcomeDescription = (_questId: string, _outcomeId: string) => (_state: GameState) => '' // TODO
     getGatheringZoneUnlock?: ((questId: string, outcomeId: string) => (state: GameState) => GatheringZone) | undefined
 }

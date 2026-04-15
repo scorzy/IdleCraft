@@ -19,7 +19,7 @@ export const makeAddActivity =
         const id = getUniqueId()
 
         const activity: ActivityState = {
-            id: id,
+            id,
             type: type,
             max: state.actRepetitions,
             remove: state.actAutoRemove,
@@ -27,7 +27,7 @@ export const makeAddActivity =
         }
 
         if (state.removeOtherActivities)
-            ActivityAdapter.getIds(state.activities).forEach((id) => removeActivityInt(state, id))
+            ActivityAdapter.getIds(state.activities).forEach((id2) => removeActivityInt(state, id2))
 
         ActivityAdapter.create(state.activities, activity)
 

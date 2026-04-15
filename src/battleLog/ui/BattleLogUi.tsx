@@ -115,7 +115,7 @@ const StartLogUi = memo(function StartLogUi() {
         </>
     )
 })
-const EndLogUi = memo(function StartLogUi() {
+const EndLogUi = memo(function EndLogUi() {
     const { t } = useTranslations()
     return (
         <>

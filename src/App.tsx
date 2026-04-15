@@ -31,9 +31,9 @@ if ('indexedDB' in window) {
         const objectStore = transaction.objectStore('save')
         const putRes = objectStore.put(state)
 
-        putRes.onerror = () => {
+        putRes.addEventListener('error', () => {
             console.log(`Save failed`)
-        }
+        })
     }, 500)
 
     open.onupgradeneeded = () => {

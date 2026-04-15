@@ -17,11 +17,11 @@ let tempState: GameState
 
 function createWorker() {
     worker = new LoadWorker()
-    worker.onmessage = (e: MessageEvent<WorkerMessage>) => {
+    worker.addEventListener('message', (e: MessageEvent<WorkerMessage>) => {
         if (e.data.loadingData) useUiTempStore.setState({ loadingData: e.data.loadingData })
         else if (e.data.state) start(e.data.state)
         if (e.data.state) tempState = e.data.state
-    }
+    })
 }
 
 createWorker()

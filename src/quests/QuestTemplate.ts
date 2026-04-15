@@ -3,7 +3,7 @@ import { GatheringZone } from '../gathering/gatheringZones'
 import { Icons } from '../icons/Icons'
 import { ItemsReward, QuestState } from './QuestTypes'
 
-export interface GenerateQuestDataData extends Object {}
+export interface GenerateQuestDataData extends Record<string, unknown> {}
 export interface QuestTemplate<T extends GenerateQuestDataData> {
     id: string
     nextQuestId?: string

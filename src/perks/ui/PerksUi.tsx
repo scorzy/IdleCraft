@@ -74,8 +74,8 @@ export const PerksSidebar = memo(function PerksSidebar() {
                     <PerkFilter />
                 </div>
             )}
-            {perks.map((t) => (
-                <PerkLink key={t} perk={t} />
+            {perks.map((p) => (
+                <PerkLink key={p} perk={p} />
             ))}
         </SidebarContainer>
     )
