@@ -1,5 +1,5 @@
-import { useRef, useLayoutEffect, useEffect, JSX } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { JSX, useEffect, useLayoutEffect, useRef } from 'react'
 import { cn } from '../../lib/utils'
 import classes from './autoScroll.module.css'
 
@@ -22,7 +22,7 @@ export const AutoScroll = ({
     'use no memo'
 
     const parentRef = useRef<HTMLDivElement>(null)
-    const prevWasAtBottomRef = useRef<boolean>(false)
+    const prevWasAtBottomRef = useRef(false)
     const prevLastIdRef = useRef<string | undefined>(undefined)
 
     const virtualizer = useVirtualizer({

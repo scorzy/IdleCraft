@@ -1,13 +1,14 @@
 import { ReactNode } from 'react'
 import { TbLock } from 'react-icons/tb'
-import { setState } from '../../game/setState'
-import { WoodTypes } from '../../wood/WoodTypes'
-import { GameState } from '../../game/GameState'
-import { OreTypes } from '../../mining/OreTypes'
 import { changeRecipeState } from '../../crafting/RecipeFunctions'
+import { GameState } from '../../game/GameState'
+import { setState } from '../../game/setState'
+import { GatheringZone } from '../../gathering/gatheringZones'
+import { OreTypes } from '../../mining/OreTypes'
+import { WoodTypes } from '../../wood/WoodTypes'
 import { CollapsedEnum } from '../sidebar/CollapsedEnum'
-import { UiPagesData } from './UiPagesData'
 import { UiPages } from './UiPages'
+import { UiPagesData } from './UiPagesData'
 import { useUiTempStore } from './uiTempStore'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'health' | 'stamina' | 'mana'
@@ -43,6 +44,11 @@ export const setWood = (woodType: WoodTypes) =>
 export const setOre = (oreType: OreTypes) =>
     setState((s) => {
         s.ui.oreType = oreType
+    })
+
+export const setGatheringZone = (gatheringZone: GatheringZone) =>
+    setState((s) => {
+        s.ui.gatheringZone = gatheringZone
     })
 
 export const setStorageOrder = (order: StorageOrder, asc: boolean) => () =>

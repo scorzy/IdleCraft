@@ -40,6 +40,7 @@ export interface Msg {
     Value: string
     Handle: string
     Ore: string
+    Gem: string
     Bar: string
 
     //  Trees
@@ -50,6 +51,7 @@ export interface Msg {
     GrowingTrees: string
     WoodcuttingDamage: string
     WoodcuttingTime: string
+    IncreaseGrowSpeed: string
 
     //  Wood
     DeadTree: string
@@ -66,6 +68,10 @@ export interface Msg {
     OreQta: string
     MiningTime: string
     MiningDamage: string
+    SearchOreVein: string
+    OreVeins: string
+    VeinArmour: string
+    VeinGemChance: string
 
     //  Exp
     MiningExp: string
@@ -104,8 +110,12 @@ export interface Msg {
     FastWoodcuttingPerkDesc: string
     FastMiningPerk: string
     FastMiningPerkDesc: string
+    VeinMasteryPerk: string
+    VeinMasteryPerkDesc: string
     ChargedAttackPerk: string
     ChargedAttackPerkDesc: string
+    GrowSpeedMasteryPerk: string
+    GrowSpeedMasteryPerkDesc: string
 
     Base: string
     Total: string
@@ -160,6 +170,18 @@ export interface Msg {
     NewGame: string
     Delete: string
     SavedGames: string
+    LoadFromIndexedDB: string
+    ImportSave: string
+    ExportSave: string
+    ExportSaveDesc: string
+    ImportSaveDesc: string
+    CopyToClipboard: string
+    DownloadFile: string
+    SaveExportError: string
+    SaveImportError: string
+    NoSavesFound: string
+    Processing: string
+    Size: string
 
     Dagger: string
     TwoHSword: string
@@ -253,6 +275,9 @@ export interface Msg {
     RedFlower: string
     GreenFlower: string
     BlueFlower: string
+    Ruby: string
+    Sapphire: string
+    Emerald: string
 
     Restore: string
 
@@ -337,4 +362,6 @@ export interface Msg {
     AddBeforeCurrent: string
     AddAfterCurrent: string
     AddOptions: string
+    WolfLair: string
+    KillToUnlock: string
 }

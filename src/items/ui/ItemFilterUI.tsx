@@ -1,13 +1,13 @@
 import { Fragment, useCallback } from 'react'
-import { useGameStore } from '../../game/state'
-import { useTranslations } from '../../msg/useTranslations'
-import { selectGameItem } from '../../storage/StorageSelectors'
-import { DamageTypes, ItemFilter } from '../Item'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
+import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { Msg } from '../../msg/Msg'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { useTranslations } from '../../msg/useTranslations'
+import { selectGameItem } from '../../storage/StorageSelectors'
 import { DamageTypesData } from '../damageTypes'
+import { DamageTypes, ItemFilter } from '../Item'
 import { useItemName } from '../useItemName'
 
 export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }) {
@@ -18,7 +18,7 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
 
     if (itemFilter.itemId !== undefined) return <ItemFilterUiItemId itemId={itemFilter.itemId} />
 
-    let pre: React.ReactElement = <></>
+    let pre: React.ReactElement
     const arr: React.ReactElement[] = []
 
     if (itemFilter.itemType !== undefined) pre = <>{t[itemFilter.itemType as keyof Msg]}</>
@@ -50,7 +50,7 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
     if (itemFilter.weaponData?.damage !== undefined) {
         arr.push(
             ...Object.entries(itemFilter.weaponData.damage)
-                .sort()
+                .toSorted(([a], [b]) => a.localeCompare(b))
                 .map((kv) => (
                     <span key={kv[0]}>
                         {t[DamageTypesData[kv[0] as DamageTypes].DamageName].toLowerCase()} {f(kv[1])}
@@ -61,7 +61,7 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
     if (itemFilter.armourData !== undefined) {
         arr.push(
             ...Object.entries(itemFilter.armourData)
-                .sort()
+                .toSorted(([a], [b]) => a.localeCompare(b))
                 .map((kv) => (
                     <span key={kv[0]}>
                         {t[DamageTypesData[kv[0] as DamageTypes].DamageName].toLowerCase()} {f(kv[1])}

@@ -1,9 +1,9 @@
-import { test, describe, expect } from 'vitest'
+import { describe, expect, test } from 'vitest'
+import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GetInitialGameState } from '../game/InitialGameState'
+import { GameLocations } from '../gameLocations/GameLocations'
 import { Icons } from '../icons/Icons'
 import { ItemTypes } from '../items/Item'
-import { GameLocations } from '../gameLocations/GameLocations'
-import { CRAFTED_ITEM_PREFIX } from '../const'
 import { addItem, hasItem, removeItem } from './storageFunctions'
 
 describe('Storage Functions', () => {

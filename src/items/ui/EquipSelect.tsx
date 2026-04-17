@@ -1,24 +1,24 @@
 import { Fragment, memo, ReactNode, useCallback } from 'react'
 import { GiRock } from 'react-icons/gi'
 import { useShallow } from 'zustand/react/shallow'
+import { PLAYER_ID } from '../../characters/charactersConst'
+import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import { getCharacterSelector } from '../../characters/getCharacterSelector'
+import { Card, CardContent } from '../../components/ui/card'
+import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
+import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
-import { useTranslations } from '../../msg/useTranslations'
-import { selectItemsByType, selectGameItem } from '../../storage/StorageSelectors'
-import { Item } from '../Item'
-import { SlotsData } from '../slotsData'
-import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { selectEquipId } from '../itemSelectors'
-import { changeEquip } from '../itemFunctions'
 import { DEF_PICKAXE } from '../../mining/miningSelectors'
-import { DEF_WOOD_AXE } from '../../wood/selectors/WoodcuttingSelectors'
-import { GameState } from '../../game/GameState'
 import { Msg } from '../../msg/Msg'
-import { PLAYER_ID } from '../../characters/charactersConst'
-import { Card, CardContent } from '../../components/ui/card'
+import { useTranslations } from '../../msg/useTranslations'
+import { selectGameItem, selectItemsByType } from '../../storage/StorageSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { getCharacterSelector } from '../../characters/getCharacterSelector'
-import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
+import { DEF_WOOD_AXE } from '../../wood/selectors/WoodcuttingSelectors'
+import { Item } from '../Item'
+import { changeEquip } from '../itemFunctions'
+import { selectEquipId } from '../itemSelectors'
+import { SlotsData } from '../slotsData'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 
 const noIcon = <GiRock />
@@ -60,9 +60,9 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
                 >
                     <OptionItem itemId="-" slot={slot} charId={charId} defIcon={<GiRock />} />
 
-                    {itemsId.map((t) => (
-                        <Fragment key={t}>
-                            <OptionItem itemId={t} slot={slot} charId={charId} />
+                    {itemsId.map((i) => (
+                        <Fragment key={i}>
+                            <OptionItem itemId={i} slot={slot} charId={charId} />
                         </Fragment>
                     ))}
                 </ComboBoxResponsive>

@@ -1,40 +1,40 @@
+import { CaretSortIcon } from '@radix-ui/react-icons'
 import { memo, useCallback, useState } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
-import { CaretSortIcon } from '@radix-ui/react-icons'
-import { MyPage } from '../../ui/pages/MyPage'
-import { useGameStore } from '../../game/state'
-import { selectTeamsMemo } from '../../characters/selectors/selectTeams'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { useItemName } from '@/items/useItemName'
+import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
+import { ActiveAbilityData } from '../../activeAbilities/ActiveAbilityData'
+import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
+import { selectCombatAbilityById } from '../../activeAbilities/selectors/selectCombatAbilityById'
+import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
+import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import {
     selectCharMainAttack,
     selectCharMainAttackIcon,
     selectCharMainAttackTimer,
 } from '../../characters/selectors/characterSelectors'
-import { useTranslations } from '../../msg/useTranslations'
-import { IconsData } from '../../icons/Icons'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { ProgressBar } from '../../ui/progress/ProgressBar'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { TimerProgressFromId } from '../../ui/progress/TimerProgress'
-import { ActiveAbilityData } from '../../activeAbilities/ActiveAbilityData'
-import { selectCombatAbilityById } from '../../activeAbilities/selectors/selectCombatAbilityById'
-import { GameState } from '../../game/GameState'
-import { Badge } from '../../components/ui/badge'
-import { MyHoverCard } from '../../ui/MyHoverCard'
-import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
-import { Card, CardContent } from '../../components/ui/card'
+import { selectTeamsMemo } from '../../characters/selectors/selectTeams'
 import { CharCombatInfo } from '../../characters/ui/CharactersUi'
+import { AutoScroll } from '../../components/ui/autoScroll'
+import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
+import { Card, CardContent } from '../../components/ui/card'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { GameState } from '../../game/GameState'
+import { useGameStore } from '../../game/state'
+import { IconsData } from '../../icons/Icons'
+import { useTranslations } from '../../msg/useTranslations'
+import { collectLootUi } from '../../storage/function/collectLoot'
+import { selectGameItem } from '../../storage/StorageSelectors'
 import { selectLoot } from '../../storage/selectors/selectLoot'
 import { LootId } from '../../storage/storageTypes'
-import { selectGameItem } from '../../storage/StorageSelectors'
-import { collectLootUi } from '../../storage/function/collectLoot'
-import { getCharacterSelector } from '../../characters/getCharacterSelector'
-import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
-import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
-import { AutoScroll } from '../../components/ui/autoScroll'
+import { MyHoverCard } from '../../ui/MyHoverCard'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+import { MyPage } from '../../ui/pages/MyPage'
+import { ProgressBar } from '../../ui/progress/ProgressBar'
+import { TimerProgressFromId } from '../../ui/progress/TimerProgress'
 import classes from './combat.module.css'
-import { useItemName } from '@/items/useItemName'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 export const CombatUi = memo(function CombatUi() {
     return (
@@ -198,7 +198,7 @@ const CombatAbilitiesList = memo(function CombatAbilitiesList(props: { charId: s
         </div>
     )
 })
-const CombatAbilityBadge = memo(function CombatAbilitiesList(props: {
+const CombatAbilityBadge = memo(function CombatAbilityBadge(props: {
     characterId: string
     abilityId: string
     index: number

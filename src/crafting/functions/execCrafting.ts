@@ -1,5 +1,5 @@
-import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { ActivityAdapter } from '../../activities/ActivityState'
+import { ActivityStartResult } from '../../activities/activityInterfaces'
 import { makeExecActivity } from '../../activities/functions/makeExecActivity'
 import { addExp } from '../../experience/expFunctions'
 import { GameState } from '../../game/GameState'
@@ -31,8 +31,8 @@ export const execCrafting = makeExecActivity((state: GameState, timer: Timer) =>
     for (const res of craftResult.results) {
         if (res.stdItemId) addItem(state, res.stdItemId, res.qta)
         else if (res.craftedItem) {
-            const { id } = saveCraftItem(state.craftedItems, res.craftedItem)
-            addItem(state, id, res.qta)
+            const { id: id2 } = saveCraftItem(state.craftedItems, res.craftedItem)
+            addItem(state, id2, res.qta)
         }
     }
 

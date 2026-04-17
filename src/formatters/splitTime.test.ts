@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest'
-import { splitTime, TimeParts } from './splitTime'
+import { describe, expect, it } from 'vitest'
+import { splitTime } from './splitTime'
 
 describe('splitTime', () => {
     it('splits zero milliseconds', () => {
-        expect(splitTime(0)).toEqual<TimeParts>({
+        expect(splitTime(0)).toEqual({
             years: 0,
             months: 0,
             days: 0,
@@ -14,7 +14,7 @@ describe('splitTime', () => {
     })
 
     it('splits less than a minute', () => {
-        expect(splitTime(45000)).toEqual<TimeParts>({
+        expect(splitTime(45000)).toEqual({
             years: 0,
             months: 0,
             days: 0,
@@ -25,7 +25,7 @@ describe('splitTime', () => {
     })
 
     it('splits one minute', () => {
-        expect(splitTime(60000)).toEqual<TimeParts>({
+        expect(splitTime(60000)).toEqual({
             years: 0,
             months: 0,
             days: 0,
@@ -36,7 +36,7 @@ describe('splitTime', () => {
     })
 
     it('splits one hour', () => {
-        expect(splitTime(3600000)).toEqual<TimeParts>({
+        expect(splitTime(3600000)).toEqual({
             years: 0,
             months: 0,
             days: 0,
@@ -47,7 +47,7 @@ describe('splitTime', () => {
     })
 
     it('splits one day', () => {
-        expect(splitTime(86400000)).toEqual<TimeParts>({
+        expect(splitTime(86400000)).toEqual({
             years: 0,
             months: 0,
             days: 1,
@@ -58,7 +58,7 @@ describe('splitTime', () => {
     })
 
     it('splits one month', () => {
-        expect(splitTime(2592000000)).toEqual<TimeParts>({
+        expect(splitTime(2592000000)).toEqual({
             years: 0,
             months: 1,
             days: 0,
@@ -69,7 +69,7 @@ describe('splitTime', () => {
     })
 
     it('splits one year', () => {
-        expect(splitTime(31536000000)).toEqual<TimeParts>({
+        expect(splitTime(31536000000)).toEqual({
             years: 1,
             months: 0,
             days: 0,
@@ -88,7 +88,7 @@ describe('splitTime', () => {
             4 * 3600000 + // 4 hours
             5 * 60000 + // 5 minutes
             6700 // 6.7 seconds
-        expect(splitTime(ms)).toEqual<TimeParts>({
+        expect(splitTime(ms)).toEqual({
             years: 1,
             months: 2,
             days: 3,

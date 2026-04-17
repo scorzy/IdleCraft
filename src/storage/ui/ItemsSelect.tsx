@@ -1,16 +1,16 @@
 import { memo, ReactElement, useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
+import { useItemName } from '@/items/useItemName'
+import { Badge } from '../../components/ui/badge'
+import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
-import { useTranslations } from '../../msg/useTranslations'
-import { selectGameItem, selectItemQta, selectFilteredItems } from '../StorageSelectors'
 import { ItemFilter } from '../../items/Item'
-import { Badge } from '../../components/ui/badge'
-import { ComboBoxResponsive, ComboBoxItem } from '../../components/ui/comboBox'
-import { ItemIconName } from '../../items/ui/ItemIconName'
 import { ItemIcon } from '../../items/ui/ItemIcon'
-import { useItemName } from '@/items/useItemName'
+import { ItemIconName } from '../../items/ui/ItemIconName'
+import { useTranslations } from '../../msg/useTranslations'
+import { selectFilteredItems, selectGameItem, selectItemQta } from '../StorageSelectors'
 
 export const ItemsSelect = memo(function ItemsSelect({
     itemFilter,

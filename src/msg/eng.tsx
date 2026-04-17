@@ -1,5 +1,11 @@
 import { splitTime } from '../formatters/splitTime'
-import { FAST_MINING_PERK } from '../mining/MiningCost'
+import {
+    FAST_MINING_PERK,
+    VEIN_MASTERY_ARMOUR_REDUCE,
+    VEIN_MASTERY_GEM_BONUS,
+    VEIN_MASTERY_HP_REDUCE,
+    VEIN_MASTERY_QTA_BONUS,
+} from '../mining/MiningCost'
 import { QuestParams } from '../quests/QuestParams'
 import { sameNumber } from '../utils/sameNumber'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
@@ -63,6 +69,7 @@ export const engMsg: Msg = {
     WoodworkingExp: 'Woodworking Level',
     SmithingExp: 'Smithing Level',
     Ore: 'Ore',
+    Gem: 'Gem',
     Bar: 'Bar',
     Smithing: 'Smithing',
 
@@ -74,8 +81,13 @@ export const engMsg: Msg = {
     ArmourPen: 'Armour Pen.',
     WoodcuttingDamage: 'Woodcutting Damage',
     WoodcuttingTime: 'Woodcutting  Time',
+    IncreaseGrowSpeed: 'Boost Growth',
     MiningTime: 'Mining Time',
     MiningDamage: 'Mining Damage',
+    SearchOreVein: 'Search Ore Vein',
+    OreVeins: 'Ore Veins',
+    VeinArmour: 'Vein Armour',
+    VeinGemChance: 'Gem Chance',
     SelectARecipe: 'Select a recipe',
     // Perks
     Perks: 'Perks',
@@ -102,8 +114,12 @@ export const engMsg: Msg = {
     FastWoodcuttingPerkDesc: `Increase woodcutting speed by ${FAST_WOODCUTTING_PERK}%`,
     FastMiningPerk: 'Faster Mining',
     FastMiningPerkDesc: `Increase mining speed by ${FAST_MINING_PERK}%`,
+    VeinMasteryPerk: 'Vein Mastery',
+    VeinMasteryPerkDesc: `Discovered veins: +${VEIN_MASTERY_QTA_BONUS}% quantity, -${VEIN_MASTERY_HP_REDUCE}% hp, -${VEIN_MASTERY_ARMOUR_REDUCE}% armour, +${VEIN_MASTERY_GEM_BONUS}% gem chance`,
     ChargedAttackPerk: 'Charged Attack',
     ChargedAttackPerkDesc: 'Unlock Charged Attack',
+    GrowSpeedMasteryPerk: 'Growth Mastery',
+    GrowSpeedMasteryPerkDesc: 'Increase Boost Growth effect to +40% for 3 minutes and raise max stacks to 5',
 
     ActivityAdded: 'Activity added',
     NormalAttack: 'Normal Attack',
@@ -153,6 +169,18 @@ export const engMsg: Msg = {
     NewGame: 'New Game',
     Delete: 'Delete',
     SavedGames: 'Saved Games',
+    LoadFromIndexedDB: 'Load from IndexedDB',
+    ImportSave: 'Import Save',
+    ExportSave: 'Export Save',
+    ExportSaveDesc: 'Copy this string or download it as a file to keep a backup.',
+    ImportSaveDesc: 'Paste a valid save string to import it into the game.',
+    CopyToClipboard: 'Copy to Clipboard',
+    DownloadFile: 'Download file',
+    SaveExportError: 'Export failed',
+    SaveImportError: 'Import failed',
+    NoSavesFound: 'No saves found in IndexedDB.',
+    Processing: 'Processing...',
+    Size: 'Size',
 
     //  Smithing
     Dagger: 'Dagger',
@@ -251,6 +279,9 @@ export const engMsg: Msg = {
     RedFlower: 'Red Flower',
     GreenFlower: 'Green Flower',
     BlueFlower: 'Blue Flower',
+    Ruby: 'Ruby',
+    Sapphire: 'Sapphire',
+    Emerald: 'Emerald',
 
     Restore: 'Restore',
     RegenHealth: 'Regen Health',
@@ -331,6 +362,8 @@ export const engMsg: Msg = {
     AddAfterCurrent: 'Next',
     StartActNow: 'Start now',
     AddOptions: 'Add activity options',
+    WolfLair: 'Wolf Lair',
+    KillToUnlock: 'Kill to unlock',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
@@ -352,6 +385,11 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
         m,
         s,
         formatTime: (time: number) => {
+            let negative = false
+            if (time < 0) {
+                time = time * -1
+                negative = true
+            }
             const split = splitTime(time)
             if (split.years > 0) return years(split.years)
             if (split.months > 0) return months(split.months)
@@ -360,9 +398,14 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
             if (split.minutes > 0) return m(split.minutes)
             if (split.seconds >= 10) return s(Math.floor(split.seconds))
             if (split.seconds > 10) return s(Math.floor(split.seconds))
-            return s(Math.floor(split.seconds * 10) / 10)
+            return (negative ? '-' : '') + s(Math.floor(split.seconds * 10) / 10)
         },
         formatTimePrecise: (time: number) => {
+            let negative = false
+            if (time < 0) {
+                time = time * -1
+                negative = true
+            }
             const split = splitTime(time)
             if (split.years > 0) return years(split.years)
             if (split.months > 0) return months(split.months)
@@ -371,11 +414,12 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
             if (split.minutes > 0) return `${m(split.minutes)} ${s(Math.floor(split.seconds))}`
             if (split.seconds >= 10) return s(Math.floor(split.seconds))
             if (split.seconds > 10) return s(Math.floor(split.seconds))
-            return s(Math.floor(split.seconds * 10) / 10)
+            return (negative ? '-' : '') + s(Math.floor(split.seconds * 10) / 10)
         },
 
         //
         cutting: (woodName: keyof Msg) => `Cutting ${msg[woodName]}`,
+        boostTree: (woodName: keyof Msg) => `Boost ${msg[woodName]} Grow Speed`,
         crafting: (itemName: string) => `Crafting ${itemName}`,
         mining: (oreNameId: keyof Msg) => `Mining ${msg[oreNameId]}`,
         speedBonusPercent: (bonus: string) => `Speed bonus +${bonus}%`,
@@ -408,5 +452,8 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
             }
             return name
         },
+        UnlockQuest: (zone: keyof Msg) => `Unlock ${msg[zone]} Gathering Zone`,
+        KillToUnlock: (enemy: keyof Msg) => `Kill ${msg[enemy]} to unlock`,
+        ZoneUnlocked: (zone: keyof Msg) => `Zone ${msg[zone]} Unlocked`,
     }
 }

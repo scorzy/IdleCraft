@@ -1,13 +1,13 @@
 import { BonusResult } from '../bonus/Bonus'
 import { getTotal } from '../bonus/BonusFunctions'
-import { GameState } from '../game/GameState'
-import { Icons } from '../icons/Icons'
-import { Item, ItemTypes } from '../items/Item'
+import { applyEffect, EffectData } from '../effects/effectsFunctions'
 import { EffectPotency } from '../effects/types/EffectPotency'
 import { Effects } from '../effects/types/Effects'
-import { selectGameItem } from '../storage/StorageSelectors'
-import { applyEffect, EffectData } from '../effects/effectsFunctions'
+import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
+import { Icons } from '../icons/Icons'
+import { Item, ItemTypes } from '../items/Item'
+import { selectGameItem } from '../storage/StorageSelectors'
 import { removeItem } from '../storage/storageFunctions'
 import {
     BASE_STABILITY,
@@ -20,7 +20,7 @@ import {
     UNSTABLE_POTENCY_PERCENT,
 } from './alchemyConst'
 import { oppositeEffects } from './alchemyData'
-import { isEffectDiscovered, getPotionEffect } from './alchemySelectors'
+import { getPotionEffect, isEffectDiscovered } from './alchemySelectors'
 import { PotionData, PotionResult } from './alchemyTypes'
 
 function getPotionValue(potionData: PotionData): number {
@@ -68,7 +68,7 @@ export function generatePotion(
             effect,
             potencies.map((p) => p.potency)
         )
-        if (effects) potionData!.effects.push(effects)
+        if (effects) potionData.effects.push(effects)
     }
 
     potionData.effects.sort((a, b) => b.value - a.value)
@@ -83,7 +83,7 @@ export function generatePotion(
 
     const effects = potionData.effects
     let stability = BASE_STABILITY
-    let potionResult: PotionResult = PotionResult.Chaotic
+    let potionResult: PotionResult
 
     if (effects.length === 0) {
         if (unknownEffects) potionResult = PotionResult.Unknown

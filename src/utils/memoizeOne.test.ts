@@ -1,22 +1,21 @@
-import { test, describe, expect } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { myMemoizeOne } from './myMemoizeOne'
+
+const fn1 = () => ({ r: 10 })
+const fn2 = (a: number) => a
 
 describe('memoizeOne', () => {
     test('memoizeOne 0', () => {
-        const fn = () => ({ r: 10 })
+        const memoized = myMemoizeOne(fn1)
 
-        const memoized = myMemoizeOne(fn)
-
-        expect(fn()).toEqual({ r: 10 })
+        expect(fn1()).toEqual({ r: 10 })
         expect(memoized()).toEqual({ r: 10 })
         expect(memoized()).toBe(memoized())
     })
     test('memoize 1', () => {
-        const fn = (a: number) => a
+        const memoized = myMemoizeOne(fn2)
 
-        const memoized = myMemoizeOne(fn)
-
-        expect(fn(1)).toBe(1)
+        expect(fn2(1)).toBe(1)
         expect(memoized(1)).toBe(1)
     })
 })

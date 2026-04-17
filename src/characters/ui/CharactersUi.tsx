@@ -1,37 +1,37 @@
-import { memo, useCallback, useState } from 'react'
-import { TbInfoCircle, TbPlus } from 'react-icons/tb'
-import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { clsx } from 'clsx'
-import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
-import { useGameStore } from '../../game/state'
-import { Icons, IconsData } from '../../icons/Icons'
-import { useTranslations } from '../../msg/useTranslations'
-import { MyListItem } from '../../ui/sidebar/MenuItem'
-import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
-import { selectCharactersTeamIds } from '../selectors/characterSelectors'
-import { setSelectedChar } from '../../ui/state/uiFunctions'
-import { isCharReadonly, isCharSelected, selectSelectedCharId } from '../../ui/state/uiSelectors'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { BonusDialog } from '../../bonus/ui/BonusUi'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { Button } from '../../components/ui/button'
-import { addHealthPointClick, addManaPointClick, addStaminaPointClick } from '../characterFunctions'
-import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
-import { PerkPage, PerksSidebar, PerksTab } from '../../perks/ui/PerksUi'
-import { MyTabNum } from '../../ui/myCard/MyTabNum'
-import { CombatAbilities } from '../../activeAbilities/ui/CombatAbilities'
+import { memo, useCallback, useState } from 'react'
+import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
+import { TbInfoCircle, TbPlus } from 'react-icons/tb'
 import { AbilitySidebar, AbilityUi } from '../../activeAbilities/ui/CharAbilities'
-import { DamageTypes } from '../../items/Item'
-import { DamageTypesData } from '../../items/damageTypes'
+import { CombatAbilities } from '../../activeAbilities/ui/CombatAbilities'
+import { BonusDialog } from '../../bonus/ui/BonusUi'
+import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardTitle } from '../../components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
 import { CharSkills } from '../../experience/ui/CharSkills'
 import { ExperienceCardUi } from '../../experience/ui/ExperienceCard'
-import { getCharacterSelector } from '../getCharacterSelector'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
+import { useGameStore } from '../../game/state'
+import { Icons, IconsData } from '../../icons/Icons'
+import { DamageTypesData } from '../../items/damageTypes'
+import { DamageTypes } from '../../items/Item'
+import { useTranslations } from '../../msg/useTranslations'
+import { PerkPage, PerksSidebar, PerksTab } from '../../perks/ui/PerksUi'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyLabel } from '../../ui/myCard/MyLabel'
-import classes from './charactersUi.module.css'
+import { MyTabNum } from '../../ui/myCard/MyTabNum'
+import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
+import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
+import { MyListItem } from '../../ui/sidebar/MenuItem'
+import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
+import { setSelectedChar } from '../../ui/state/uiFunctions'
+import { isCharReadonly, isCharSelected, selectSelectedCharId } from '../../ui/state/uiSelectors'
+import { addHealthPointClick, addManaPointClick, addStaminaPointClick } from '../characterFunctions'
+import { getCharacterSelector } from '../getCharacterSelector'
+import { selectCharactersTeamIds } from '../selectors/characterSelectors'
 import { CharEquipments } from './CharEquipments'
+import classes from './charactersUi.module.css'
 
 export const CharactersUi = memo(function CharactersUi() {
     const { t } = useTranslations()
@@ -251,7 +251,7 @@ const HealthInfoUi = memo(function HealthInfoUi() {
     )
 })
 
-const StaminaInfoUi = memo(function HealthInfoUi() {
+const StaminaInfoUi = memo(function StaminaInfoUi() {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const charId = useGameStore(selectSelectedCharId)
@@ -296,7 +296,7 @@ const StaminaInfoUi = memo(function HealthInfoUi() {
     )
 })
 
-const ManaInfoUi = memo(function HealthInfoUi() {
+const ManaInfoUi = memo(function ManaInfoUi() {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const charId = useGameStore(selectSelectedCharId)
@@ -354,7 +354,7 @@ const CharLevelUi = memo(function CharLevelUi(props: { charId: string }) {
     return <ExperienceCardUi title={'Level'} level={level} xp={xp} levelXp={levelXp} nextLevelXp={nextLevelXp} />
 })
 
-const armourTypes = Object.values(DamageTypes).sort()
+const armourTypes = Object.values(DamageTypes).toSorted()
 
 export const ArmourInfo = memo(function ArmourInfo(props: { charId: string }) {
     const { charId } = props
@@ -402,7 +402,7 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
             <div className="grid grid-flow-col items-center justify-start gap-2 text-sm">
                 <ul>
                     {Object.entries(damage)
-                        .sort()
+                        .toSorted((a, b) => a[1] - b[1])
                         .map((kv) => (
                             <AttackTypeInfo
                                 key={kv[0]}

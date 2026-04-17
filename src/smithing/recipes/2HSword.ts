@@ -1,13 +1,14 @@
+import { ExpEnum } from '@/experience/ExpEnum'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { BASE_SWORD_SPEED, BASE_SWORD_DAMAGE } from '../../const'
+import { BASE_SWORD_DAMAGE, BASE_SWORD_SPEED } from '../../const'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
-    RecipeTypes,
-    RecipeParameterValue,
-    RecipeResult,
-    RecipeParamType,
     RecipeParameterItemFilter,
+    RecipeParameterValue,
+    RecipeParamType,
+    RecipeResult,
+    RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
@@ -15,7 +16,6 @@ import { DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
-import { ExpEnum } from '@/experience/ExpEnum'
 
 const twoHSwordParams: RecipeParameterItemFilter[] = [
     {

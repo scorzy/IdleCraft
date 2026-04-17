@@ -1,6 +1,7 @@
 import { AbstractEntityAdapter } from '../entityAdapter/entityAdapter'
 import { InitialState } from '../entityAdapter/InitialState'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { GatheringZone } from '../gathering/gatheringZones'
 import { ItemRequest } from './ItemRequest'
 import { KillQuestTarget } from './KillQuestTarget'
 
@@ -20,13 +21,14 @@ export interface QuestOutcome {
     itemsRewards?: ItemsReward[]
     targets?: KillQuestTarget[]
     reqItems?: ItemRequest[]
+    unlockGatheringZone?: GatheringZone
 }
 export interface QuestState {
     id: string
     state: QuestStatus
     expandedOutcome: string
     templateId: string
-    parameters: Record<string, number | string>
+    parameters?: Record<string, unknown>
     outcomeData: InitialState<QuestOutcome>
 }
 

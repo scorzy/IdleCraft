@@ -1,36 +1,4 @@
-import { SetStateAction, memo, useCallback, useEffect, useState } from 'react'
-import { Button } from '../components/ui/button'
-import { PLAYER_ID } from '../characters/charactersConst'
-import { TrashIcon } from '../icons/IconsMemo'
-import { useTranslations } from '../msg/useTranslations'
-import { getUniqueId } from '../utils/getUniqueId'
-import { ProgressBar } from '../ui/progress/ProgressBar'
-import { useUiTempStore } from '../ui/state/uiTempStore'
-import {
-    AlertDialogHeader,
-    AlertDialogFooter,
-    AlertDialog,
-    AlertDialogTrigger,
-    AlertDialogContent,
-    AlertDialogTitle,
-    AlertDialogDescription,
-    AlertDialogCancel,
-    AlertDialogAction,
-} from '../components/ui/alert-dialog'
-import { useGameStore } from './state'
-import { GetInitialGameState } from './InitialGameState'
-import { load, startAnyway, stopLoad } from './functions/gameFunctions'
-import { GameState } from './GameState'
-import classes from './start.module.css'
-import {
-    selectLoading,
-    selectLoadingEnd,
-    selectLoadingNow,
-    selectLoadingProgress,
-    selectLoadingStart,
-} from './gameSelectors'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
+import { memo, SetStateAction, useCallback, useEffect, useState } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -40,6 +8,39 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { PLAYER_ID } from '../characters/charactersConst'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '../components/ui/alert-dialog'
+import { Button } from '../components/ui/button'
+import { TrashIcon } from '../icons/IconsMemo'
+import { useTranslations } from '../msg/useTranslations'
+import { ProgressBar } from '../ui/progress/ProgressBar'
+import { useUiTempStore } from '../ui/state/uiTempStore'
+import { getUniqueId } from '../utils/getUniqueId'
+import { load, startAnyway, stopLoad } from './functions/gameFunctions'
+import { GameState } from './GameState'
+import {
+    selectLoading,
+    selectLoadingEnd,
+    selectLoadingNow,
+    selectLoadingProgress,
+    selectLoadingStart,
+} from './gameSelectors'
+import { GetInitialGameState } from './InitialGameState'
+import { SaveImportDialog } from './save/ui/SaveImportDialog'
+import classes from './start.module.css'
+import { useGameStore } from './state'
 
 const startGame = (name: string) => () => {
     if (name === '') return
@@ -60,7 +61,6 @@ interface NameId {
 }
 
 export const Start = memo(function Start() {
-    const { t } = useTranslations()
     const [loadName, setLoadName] = useState<NameId[]>([])
 
     useEffect(() => {
@@ -81,9 +81,7 @@ export const Start = memo(function Start() {
                     if (!('gameId' in value && 'characters' in value)) return
                     try {
                         const name: string = value.characters?.entries[PLAYER_ID]?.name
-
                         const gameId: string = value.gameId
-
                         if (name) nameIds.push({ gameId, name, state: value as GameState })
                     } catch (e) {
                         console.error(e)
@@ -96,17 +94,9 @@ export const Start = memo(function Start() {
     return (
         <div className={classes.container}>
             <NewGame />
+            <LoadFromIndexedDb loadName={loadName} setLoadName={setLoadName} />
+            <SaveImportDialog />
             <Loading />
-            {loadName.length > 0 && (
-                <>
-                    <span className="text-center">{t.SavedGames}</span>
-                    <div className={classes.btnContainer}>
-                        {loadName.map((item) => (
-                            <LoadUi item={item} key={item.name} setLoadName={setLoadName} />
-                        ))}
-                    </div>
-                </>
-            )}
         </div>
     )
 })
@@ -136,11 +126,39 @@ const NewGame = memo(function NewGame() {
     )
 })
 
+const LoadFromIndexedDb = memo(function LoadFromIndexedDb(props: {
+    loadName: NameId[]
+    setLoadName: React.Dispatch<SetStateAction<NameId[]>>
+}) {
+    const { t } = useTranslations()
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="secondary">{t.LoadFromIndexedDB}</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[520px]">
+                <DialogHeader>
+                    <DialogTitle>{t.LoadFromIndexedDB}</DialogTitle>
+                    <DialogDescription>{t.SavedGames}</DialogDescription>
+                </DialogHeader>
+                {props.loadName.length > 0 ? (
+                    <div className={classes.btnContainer}>
+                        {props.loadName.map((item) => (
+                            <LoadUi item={item} key={item.gameId} setLoadName={props.setLoadName} />
+                        ))}
+                    </div>
+                ) : (
+                    <span className="text-muted-foreground text-sm">{t.NoSavesFound}</span>
+                )}
+            </DialogContent>
+        </Dialog>
+    )
+})
+
 const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Dispatch<SetStateAction<NameId[]>> }) {
     const { item, setLoadName } = props
     const { t } = useTranslations()
-    const name = item.name
-
     const deleteGame = useCallback(() => {
         const open = window.indexedDB.open('IdleCraft', 1)
         open.onsuccess = () => {
@@ -150,9 +168,9 @@ const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Di
             const objectStore = transaction.objectStore('save')
             const req = objectStore.delete(item.state.gameId)
 
-            req.onsuccess = () => setLoadName((loadName: NameId[]) => loadName.filter((e) => e.name !== name))
+            req.onsuccess = () => setLoadName((loadName: NameId[]) => loadName.filter((e) => e.gameId !== item.gameId))
         }
-    }, [name, setLoadName, item.state.gameId])
+    }, [setLoadName, item.state.gameId, item.gameId])
 
     const state = item.state
     const loadClick = useCallback(() => load(state), [state])

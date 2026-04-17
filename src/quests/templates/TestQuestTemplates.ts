@@ -5,10 +5,11 @@ import { Icons } from '../../icons/Icons'
 import { ItemTypes } from '../../items/Item'
 import { selectTranslations } from '../../msg/useTranslations'
 import { getUniqueId } from '../../utils/getUniqueId'
+import { GenerateQuestDataData } from '../QuestTemplate'
 import { QuestAdapter, QuestOutcome, QuestState, QuestStatus } from '../QuestTypes'
 import { BaseQuestTemplate } from './BaseQuestTemplate'
 
-export class TestQuestTemplate extends BaseQuestTemplate {
+export class TestQuestTemplate extends BaseQuestTemplate<GenerateQuestDataData> {
     nextQuestId = 'kill-n'
     id = 'kill-n'
     getName = (questId: string) => (state: GameState) =>
@@ -29,7 +30,7 @@ export class TestQuestTemplate extends BaseQuestTemplate {
         else return f.testOutcome2Desc(QuestAdapter.selectEx(state.quests, questId).parameters)
     }
 
-    generateQuestData = (_state: GameState) => {
+    generateQuestData = (_state: GameState, _data?: GenerateQuestDataData) => {
         const kill: QuestOutcome = {
             id: 'k',
             location: GameLocations.StartVillage,

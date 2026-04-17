@@ -1,10 +1,10 @@
 import { GameState } from '../game/GameState'
-import { addItem, removeItem } from '../storage/storageFunctions'
 import { setState } from '../game/setState'
+import { addItem, removeItem } from '../storage/storageFunctions'
 import { CharacterAdapter } from './characterAdapter'
-import { getCharacterSelector } from './getCharacterSelector'
 import { PLAYER_ID } from './charactersConst'
 import { EquipSlotsEnum } from './equipSlotsEnum'
+import { getCharacterSelector } from './getCharacterSelector'
 
 export function equipItem(
     state: GameState,

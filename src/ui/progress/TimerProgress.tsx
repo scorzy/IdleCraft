@@ -1,11 +1,11 @@
 import './progress.css'
 
 import { memo, useCallback, useLayoutEffect, useRef } from 'react'
+import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
 import { Colors } from '../state/uiFunctions'
-import { GameState } from '../../game/GameState'
-import { usePageVisibility } from './usePageVisibility'
 import styles from './timerProgress.module.css'
+import { usePageVisibility } from './usePageVisibility'
 
 const TimerProgress = memo(function TimerProgress(props: {
     className?: string

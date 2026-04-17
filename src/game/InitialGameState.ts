@@ -1,20 +1,22 @@
+import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { ActivityAdapter } from '../activities/ActivityState'
+import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
+import { PLAYER_CHAR, PLAYER_ID } from '../characters/charactersConst'
+import { RecipeTypes } from '../crafting/RecipeInterfaces'
+import { AppliedEffectAdapter } from '../effects/types/AppliedEffect'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { GatheringZone } from '../gathering/gatheringZones'
 import { OreTypes } from '../mining/OreTypes'
+import { QuestAdapter } from '../quests/QuestTypes'
 import { ItemAdapter } from '../storage/ItemAdapter'
+import { StorageAdapter } from '../storage/storageAdapter'
 import { TimerAdapter } from '../timers/Timer'
 import { UiPages } from '../ui/state/UiPages'
-import { WoodTypes } from '../wood/WoodTypes'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
-import { PLAYER_CHAR, PLAYER_ID } from '../characters/charactersConst'
-import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
-import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
-import { RecipeTypes } from '../crafting/RecipeInterfaces'
-import { QuestAdapter } from '../quests/QuestTypes'
-import { StorageAdapter } from '../storage/storageAdapter'
-import { AppliedEffectAdapter } from '../effects/types/AppliedEffect'
+import { GrowSpeedBonusAdapter } from '../wood/forest/growSpeedBonus'
+import { WoodTypes } from '../wood/WoodTypes'
 import { AddActivityTypes, GameState, LocationState } from './GameState'
 
 const getInitialVillageState: () => LocationState = () => {
@@ -22,7 +24,9 @@ const getInitialVillageState: () => LocationState = () => {
         storage: StorageAdapter.getInitialState(),
         forests: {},
         ores: {},
+        oreVeins: {},
         loot: [],
+        unlockedGatheringZones: [],
     }
 }
 
@@ -45,6 +49,7 @@ export const InitialGameState: GameState = {
         storageOrder: 'name',
         storageAsc: true,
         oreType: OreTypes.Copper,
+        gatheringZone: GatheringZone.Forest,
         showAvailablePerks: true,
         showOwnedPerks: true,
         showUnavailablePerks: true,
@@ -73,6 +78,7 @@ export const InitialGameState: GameState = {
         [GameLocations.Test]: getInitialVillageState(),
     },
     treeGrowth: TreeGrowthAdapter.getInitialState(),
+    growSpeedBonuses: GrowSpeedBonusAdapter.getInitialState(),
     recipeId: '',
     craftingForm: {
         params: [],

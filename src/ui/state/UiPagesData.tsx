@@ -2,8 +2,8 @@ import { GiAnvil, GiCrossedSwords, GiMeatCleaver, GiMining, GiTiedScroll, GiWood
 import { LuBox, LuLayoutList } from 'react-icons/lu'
 import { TbUsers } from 'react-icons/tb'
 import { RecipeTypes } from '../../crafting/RecipeInterfaces'
-import { IconsData, Icons } from '../../icons/Icons'
-import { UiPages, UiPageData } from './UiPages'
+import { Icons, IconsData } from '../../icons/Icons'
+import { UiPageData, UiPages } from './UiPages'
 
 export const UiPagesData: Record<UiPages, UiPageData> = {
     [UiPages.Activities]: {
@@ -26,6 +26,10 @@ export const UiPagesData: Record<UiPages, UiPageData> = {
     [UiPages.Mining]: {
         nameId: 'Mining',
         icon: <GiMining />,
+    },
+    [UiPages.Gathering]: {
+        nameId: 'Gathering',
+        icon: IconsData[Icons.Forest],
     },
     [UiPages.Smithing]: {
         nameId: 'Smithing',

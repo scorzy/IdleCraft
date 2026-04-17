@@ -6,7 +6,8 @@ import { MiningItems } from '../../mining/MiningItems'
 import { SmithingItems } from '../../smithing/SmithingItems'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { WoodItems } from '../../wood/WoodItems'
-import { QuestState, QuestOutcome, QuestStatus } from '../QuestTypes'
+import { GenerateQuestDataData } from '../QuestTemplate'
+import { QuestOutcome, QuestState, QuestStatus } from '../QuestTypes'
 import { BaseQuestTemplate } from './BaseQuestTemplate'
 
 const SUPPLY_QTA = 100
@@ -14,7 +15,7 @@ const ALCHEMY_OUTCOME_ID = 'Alchemy'
 const WOOD_OUTCOME_ID = 'Wood'
 const MINING_OUTCOME_ID = 'Mining'
 
-export class SupplyQuestTemplate extends BaseQuestTemplate {
+export class SupplyQuestTemplate extends BaseQuestTemplate<GenerateQuestDataData> {
     nextQuestId = 'SupplyQuest'
     id = 'SupplyQuest'
     getName = (_questId: string) => (_state: GameState) => 'Supply Quest'
@@ -36,7 +37,7 @@ export class SupplyQuestTemplate extends BaseQuestTemplate {
         else return ''
     }
 
-    generateQuestData = (_state: GameState) => {
+    generateQuestData = (_state: GameState, _data?: GenerateQuestDataData) => {
         const quantity = SUPPLY_QTA + Math.floor(Math.random() * 100)
 
         const alchemy: QuestOutcome = {

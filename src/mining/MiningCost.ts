@@ -1,1 +1,6 @@
 export const FAST_MINING_PERK = 30
+
+export const VEIN_MASTERY_QTA_BONUS = 20
+export const VEIN_MASTERY_HP_REDUCE = 10
+export const VEIN_MASTERY_ARMOUR_REDUCE = 20
+export const VEIN_MASTERY_GEM_BONUS = 30

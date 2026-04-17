@@ -34,8 +34,8 @@ export function startNextActivity(state: GameState): void {
 
         const activity = ActivityAdapter.select(state.activities, activityId)
         if (!activity) return false
-        const start = activityStarters.getEx(activity.type)
-        const result = start(state, activityId)
+        const start2 = activityStarters.getEx(activity.type)
+        const result = start2(state, activityId)
 
         if (result === ActivityStartResult.NotPossible) removeActivityInt(state, activityId)
 

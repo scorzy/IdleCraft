@@ -1,21 +1,21 @@
 import { memo, ReactNode } from 'react'
-import { StdItems } from '../../items/stdItems'
-import { Item } from '../../items/Item'
-import { useTranslations } from '../../msg/useTranslations'
-import { RecipeItem, RecipeItemReq } from '../RecipeInterfaces'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { useItemName } from '@/items/useItemName'
+import { MyLabel } from '@/ui/myCard/MyLabel'
+import { isPotionItem } from '../../alchemy/PotionCraftingResult'
+import { PotionResultUi } from '../../alchemy/PotionResultUi'
+import { CardContent } from '../../components/ui/card'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useGameStore } from '../../game/state'
+import { Item } from '../../items/Item'
+import { StdItems } from '../../items/stdItems'
+import { ItemIcon } from '../../items/ui/ItemIcon'
+import { ItemInfo } from '../../items/ui/ItemInfo'
+import { useTranslations } from '../../msg/useTranslations'
 import { selectGameItem, selectItemQta } from '../../storage/StorageSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { selectResultQta } from '../CraftingSelectors'
-import { ItemInfo } from '../../items/ui/ItemInfo'
-import { CardContent } from '../../components/ui/card'
-import { isPotionItem, PotionItem } from '../../alchemy/PotionCraftingResult'
-import { PotionResultUi } from '../../alchemy/PotionResultUi'
-import { ItemIcon } from '../../items/ui/ItemIcon'
-import { useItemName } from '@/items/useItemName'
-import { MyLabel } from '@/ui/myCard/MyLabel'
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { RecipeItem, RecipeItemReq } from '../RecipeInterfaces'
 
 export const CraftingResult = memo(function CraftingResult({ result }: { result: RecipeItem | undefined }) {
     if (!result) return null
@@ -26,11 +26,10 @@ export const CraftingResult = memo(function CraftingResult({ result }: { result:
     else if (result.craftedItem) item = result.craftedItem
     else if (result.stdItemId) item = StdItems[result.stdItemId]
 
-    const info = isPotion ? <PotionResultUi result={result as PotionItem} /> : null
+    const info = isPotion ? <PotionResultUi result={result} /> : null
 
     if (!item) {
         if (info) return <>{info}</>
-
         return null
     }
     return <CraftingResult2 result={result} item={item} info={info} />

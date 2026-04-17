@@ -24,12 +24,12 @@
         "types": [],
         "typeRoots": [],
         "noUncheckedIndexedAccess": true,
-
-        "baseUrl": ".",
+ 
         "paths": {
             "@/*": ["./src/*"]
         }
     },
     "include": ["src"],
+    "exclude": ["node_modules", "dist", "build"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

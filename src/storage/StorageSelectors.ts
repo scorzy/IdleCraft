@@ -1,23 +1,23 @@
 import { memoize } from 'proxy-memoize'
 import { useMemo } from 'react'
-import { GameState } from '../game/GameState'
-import { GameLocations } from '../gameLocations/GameLocations'
-import { StdItems, UnlimitedItems } from '../items/stdItems'
-import { Item, ItemFilter, ItemTypes } from '../items/Item'
-import { selectTranslations } from '../msg/useTranslations'
+import { InitialState } from '@/entityAdapter/InitialState'
+import { Translations } from '@/msg/Translations'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
+import { GameState } from '../game/GameState'
 import { useGameStore } from '../game/state'
-import { selectStorageOrder } from '../ui/state/uiSelectors'
-import { filterItem, selectItemNameMemoized } from '../items/itemSelectors'
+import { GameLocations } from '../gameLocations/GameLocations'
 import { GetItemNameParamsMemoized } from '../items/GetItemNameParamsMemoized'
+import { Item, ItemFilter, ItemTypes } from '../items/Item'
+import { filterItem, selectItemNameMemoized } from '../items/itemSelectors'
+import { StdItems, UnlimitedItems } from '../items/stdItems'
+import { selectTranslations } from '../msg/useTranslations'
+import { selectStorageOrder } from '../ui/state/uiSelectors'
 import { ItemAdapter } from './ItemAdapter'
-import { InventoryNoQta, StorageState } from './storageTypes'
-import { isCrafted } from './storageFunctions'
 import { StorageAdapter } from './storageAdapter'
-import { Translations } from '@/msg/Translations'
-import { InitialState } from '@/entityAdapter/InitialState'
+import { isCrafted } from './storageFunctions'
+import { InventoryNoQta, StorageState } from './storageTypes'
 
 export const selectCurrentLocationStorageIds = (state: GameState) =>
     StorageAdapter.getIds(state.locations[state.location].storage)
@@ -51,17 +51,16 @@ const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialSt
         const name = selectItemNameMemoized(item.nameFunc, params, t)
         ord.push({ ...e, name })
     }
-    return ord.sort((a, b) => a.name.localeCompare(b.name))
+    return ord.toSorted((a, b) => a.name.localeCompare(b.name))
 }
 
 const reorderByQta = (storage: InitialState<StorageState>, items: ItemId[]) => {
     const ord: ItemOrdQta[] = []
     for (const e of items) {
-        let qta = 0
-        qta = storage.entries[e.id]?.quantity ?? 0
+        const qta = storage.entries[e.id]?.quantity ?? 0
         ord.push({ ...e, qta })
     }
-    return ord.sort((a, b) => a.qta - b.qta)
+    return ord.toSorted((a, b) => a.qta - b.qta)
 }
 
 const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[]) => {
@@ -70,7 +69,7 @@ const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[]) => {
         const item = selectGameItemFromCraft(e.id, craftedItems)
         ord.push({ ...e, value: item?.value ?? 0 })
     }
-    return ord.sort((a, b) => a.value - b.value)
+    return ord.toSorted((a, b) => a.value - b.value)
 }
 
 const selectLocationItemsSelector = (location: GameLocations, storageOrder: string) => {
@@ -159,7 +158,7 @@ export const createInventoryNoQta = (inventory: CharInventory) => {
     const ret: InventoryNoQta = {}
 
     Object.entries(inventory)
-        .sort()
+        .toSorted(([a], [b]) => a.localeCompare(b))
         .forEach((kv) => {
             const slot = kv[0] as EquipSlotsEnum
             const itemIds = kv[1]

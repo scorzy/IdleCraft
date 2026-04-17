@@ -1,10 +1,10 @@
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
-    RecipeParamType,
-    RecipeTypes,
-    RecipeParameterValue,
-    RecipeResult,
     RecipeParameterItemFilter,
+    RecipeParameterValue,
+    RecipeParamType,
+    RecipeResult,
+    RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'

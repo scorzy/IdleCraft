@@ -1,23 +1,46 @@
+import { Popover, PopoverContent, PopoverTrigger, Portal } from '@radix-ui/react-popover'
+import { memoize } from 'proxy-memoize'
 import { memo, ReactNode, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
-import { Popover, PopoverTrigger, PopoverContent, Portal } from '@radix-ui/react-popover'
-import { useShallow } from 'zustand/react/shallow'
+import { useItemName } from '@/items/useItemName'
+import { CharTemplatesData } from '../../characters/templates/charTemplateData'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
+import { Badge } from '../../components/ui/badge'
+import { Button } from '../../components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { GameState } from '../../game/GameState'
+import { setState } from '../../game/setState'
 import { useGameStore } from '../../game/state'
+import { IconsData } from '../../icons/Icons'
+import { Check, ChevronsUpDownIcon, Coins } from '../../icons/IconsMemo'
+import { ItemIconName } from '../../items/ui/ItemIconName'
+import { ItemInfo } from '../../items/ui/ItemInfo'
+import { useTranslations } from '../../msg/useTranslations'
+import { selectGameItem } from '../../storage/StorageSelectors'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
+import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { sidebarOpen } from '../../ui/state/uiFunctions'
+import { TitleH1, TypographyP } from '../../ui/typography'
+import { CollectRequestUi } from '../collectRequest/CollectRequestUi'
+import { isCollectReq } from '../collectRequest/collectSelectors'
+import { KillQuestTarget } from '../KillQuestTarget'
+import { isKillingReq, KillQuestRequestSelectors, selectQuestTargets } from '../killRequest/killSelectors'
+import { acceptClick, completeQuest, selectQuest, setExpandedOutcome } from '../QuestFunctions'
+import { QuestStatus } from '../QuestTypes'
 import {
     isOutcomeCompleted,
     isQuestSelected,
-    selectAcceptedQuests,
-    selectAvailableQuests,
     selectExpandedOutcomeId,
+    selectIsQuestAuto,
     selectOutcomeDescription,
     selectOutcomeGoldReward,
     selectOutcomeIds,
-    selectOutcomeItemReward,
+    selectOutcomeItemRewards,
     selectOutcomeTitle,
     selectQuestDescription,
     selectQuestIcon,
@@ -25,32 +48,8 @@ import {
     selectQuestName,
     selectQuestStatus,
 } from '../selectors/QuestSelectors'
-import { KillQuestRequestSelectors, selectQuestTargets, isKillingReq } from '../killRequest/killSelectors'
-
-import { IconsData } from '../../icons/Icons'
-import { acceptClick, completeQuest, selectQuest, setExpandedOutcome } from '../QuestFunctions'
-import { GameState } from '../../game/GameState'
-import { Button } from '../../components/ui/button'
-import { QuestStatus } from '../QuestTypes'
-import { KillQuestTarget } from '../KillQuestTarget'
-import { TitleH1, TypographyP } from '../../ui/typography'
-import { ProgressBar } from '../../ui/progress/ProgressBar'
-import { useTranslations } from '../../msg/useTranslations'
-import { CharTemplatesData } from '../../characters/templates/charTemplateData'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { selectGameItem } from '../../storage/StorageSelectors'
-import { ItemInfo } from '../../items/ui/ItemInfo'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { Badge } from '../../components/ui/badge'
-import { isCollectReq } from '../collectRequest/collectSelectors'
-import { ItemIconName } from '../../items/ui/ItemIconName'
-import { CollectRequestUi } from '../collectRequest/CollectRequestUi'
-import { Check, ChevronsUpDownIcon, Coins } from '../../icons/IconsMemo'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
-import { setState } from '../../game/setState'
+import { selectAcceptedQuestsMemo, selectAvailableQuestsMemo } from '../selectors/QuestSelectorsMemo'
 import classes from './QuestUi.module.css'
-import { useItemName } from '@/items/useItemName'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -72,7 +71,7 @@ const QuestLink = (props: { id: string }) => {
 
 const SidebarQuestAccepted = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
-    const ids = useGameStore(useShallow(selectAcceptedQuests))
+    const ids = useGameStore(selectAcceptedQuestsMemo)
 
     return (
         <CollapsibleMenu
@@ -91,7 +90,7 @@ const SidebarQuestAccepted = memo(function SidebarGathering() {
 
 const SidebarQuestAvailable = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
-    const ids = useGameStore(useShallow(selectAvailableQuests))
+    const ids = useGameStore(selectAvailableQuestsMemo)
 
     return (
         <CollapsibleMenu
@@ -109,12 +108,11 @@ const SidebarQuestAvailable = memo(function SidebarGathering() {
 })
 
 export const QuestUi = memo(function QuestUi() {
+    const questId = useGameStore(selectQuestId)
     return (
         <MyPageAll sidebar={<QUestSidebar />}>
             <MyPage>
-                <div className="mx-auto max-w-6xl">
-                    <QuestDetailUi />
-                </div>
+                <div className="mx-auto max-w-6xl">{questId && <QuestDetailUi questId={questId} />}</div>
             </MyPage>
         </MyPageAll>
     )
@@ -129,35 +127,32 @@ const QUestSidebar = () => {
     )
 }
 
-const QuestDetailUi = memo(function QuestDetailUi() {
-    const id = useGameStore(selectQuestId)
+export const QuestDetailUi = memo(function QuestDetailUi({ questId }: { questId: string }) {
+    const outcomeIds = useGameStore(useCallback((s: GameState) => selectOutcomeIds(questId)(s), [questId]))
+    const state = useGameStore(useCallback((s: GameState) => selectQuestStatus(questId)(s), [questId]))
 
-    const outcomeIds = useGameStore(selectOutcomeIds)
-    const state = useGameStore(useCallback((s: GameState) => selectQuestStatus(id)(s), [id]))
-
-    if (!id || id === '') return <></>
+    if (!questId || questId === '') return <></>
 
     return (
         <>
-            <QuestTitle />
+            <QuestTitle questId={questId} />
 
             <div className="mt-4 grid gap-4">
-                <QuestAccordion>
+                <QuestAccordion questId={questId}>
                     {outcomeIds.map((outcomeId) => (
-                        <QuestOutcomeUi questId={id} outcomeId={outcomeId} key={outcomeId} />
+                        <QuestOutcomeUi questId={questId} outcomeId={outcomeId} key={outcomeId} />
                     ))}
                 </QuestAccordion>
-                {state === QuestStatus.AVAILABLE && <QuestButtons id={id} />}
+                {state === QuestStatus.AVAILABLE && <QuestButtons id={questId} />}
             </div>
         </>
     )
 })
 
-export const QuestTitle = () => {
-    const id = useGameStore(selectQuestId)
-    const nameId = useGameStore(useCallback((s: GameState) => selectQuestName(id)(s), [id]))
-    const iconId = useGameStore(useCallback((s: GameState) => selectQuestIcon(id)(s), [id]))
-    const description = useGameStore(useCallback((s: GameState) => selectQuestDescription(id)(s), [id]))
+export const QuestTitle = ({ questId }: { questId: string }) => {
+    const nameId = useGameStore(useCallback((s: GameState) => selectQuestName(questId)(s), [questId]))
+    const iconId = useGameStore(useCallback((s: GameState) => selectQuestIcon(questId)(s), [questId]))
+    const description = useGameStore(useCallback((s: GameState) => selectQuestDescription(questId)(s), [questId]))
     return (
         <Card>
             <CardHeader>
@@ -175,11 +170,10 @@ export const QuestTitle = () => {
     )
 }
 
-export const QuestAccordion = ({ children }: { children: ReactNode[] }) => {
-    const id = useGameStore(selectQuestId)
-    const onExpOutcomeChange = useCallback((outcomeId: string) => setExpandedOutcome(id, outcomeId), [id])
+export const QuestAccordion = ({ questId, children }: { questId: string; children: ReactNode[] }) => {
+    const onExpOutcomeChange = useCallback((outcomeId: string) => setExpandedOutcome(questId, outcomeId), [questId])
     const expOutcomeId = useGameStore(
-        useCallback((s: GameState) => (id ? selectExpandedOutcomeId(s, id) : undefined), [id])
+        useCallback((s: GameState) => (questId ? selectExpandedOutcomeId(s, questId) : undefined), [questId])
     )
     return (
         <Accordion
@@ -212,6 +206,7 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
     const { t } = useTranslations()
 
     const status = useGameStore(useCallback((s: GameState) => selectQuestStatus(questId)(s), [questId]))
+    const isAuto = useGameStore(useCallback((s: GameState) => selectIsQuestAuto(questId)(s), [questId]))
 
     const completed = useGameStore(
         useCallback((s: GameState) => isOutcomeCompleted(questId, outcomeId)(s), [questId, outcomeId])
@@ -254,7 +249,7 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
                         {isCollecting && <CollectRequestUi questId={questId} outcomeId={outcomeId} />}
 
                         <OutcomeReward questId={questId} outcomeId={outcomeId} />
-                        {status === QuestStatus.ACCEPTED && (
+                        {!isAuto && status === QuestStatus.ACCEPTED && (
                             <Button onClick={completeClick} disabled={!completed} className="self-start">
                                 {t.Complete}
                             </Button>
@@ -275,7 +270,10 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
         useCallback((s: GameState) => selectOutcomeGoldReward(s, questId, outcomeId), [questId, outcomeId])
     )
     const items = useGameStore(
-        useCallback((s: GameState) => selectOutcomeItemReward(s, questId, outcomeId), [questId, outcomeId])
+        useCallback(
+            memoize((s: GameState) => selectOutcomeItemRewards(s, questId, outcomeId)),
+            [questId, outcomeId]
+        )
     )
 
     return (
@@ -354,9 +352,6 @@ const KillRequestUi = (props: { questId: string; outcomeId: string }) => {
         <div className="@container">
             <TypographyP>{description}</TypographyP>
             <div className={classes.killContainer}>
-                {targets.map((target: KillQuestTarget) => (
-                    <KillOutcomeProgress key={questId + outcomeId + target.targetId} target={target} />
-                ))}
                 {targets.map((target: KillQuestTarget) => (
                     <KillOutcomeProgress key={questId + outcomeId + target.targetId} target={target} />
                 ))}

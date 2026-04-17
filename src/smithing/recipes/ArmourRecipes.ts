@@ -2,11 +2,11 @@ import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
-    RecipeTypes,
-    RecipeParameterValue,
-    RecipeResult,
-    RecipeParamType,
     RecipeParameterItemFilter,
+    RecipeParameterValue,
+    RecipeParamType,
+    RecipeResult,
+    RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
@@ -45,6 +45,7 @@ export const armourRecipe = makeMemoizedRecipe({
 
         const armourData: DamageData = {}
         Object.entries(barArmourData).forEach((kv) => {
+            // oxlint-disable-next-line typescript/no-unsafe-type-assertion
             armourData[kv[0] as DamageTypes] = 10 * kv[1]
         })
 

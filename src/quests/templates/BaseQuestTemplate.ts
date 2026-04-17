@@ -1,12 +1,13 @@
+import { EMPTY_ARRAY } from '../../const'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { QuestTemplate } from '../QuestTemplate'
+import { GenerateQuestDataData, QuestTemplate } from '../QuestTemplate'
 import { QuestAdapter, QuestOutcomeAdapter, QuestState } from '../QuestTypes'
 
-export abstract class BaseQuestTemplate implements QuestTemplate {
+export abstract class BaseQuestTemplate<T extends GenerateQuestDataData> implements QuestTemplate<T> {
     abstract id: string
     abstract nextQuestId?: string | undefined
-    abstract generateQuestData: (state: GameState) => QuestState
+    abstract generateQuestData: (state: GameState, data?: T) => QuestState
     abstract getName: (id: string) => (state: GameState) => string
     abstract getDescription: (id: string) => (state: GameState) => string
     abstract getIcon: (id: string) => (state: GameState) => Icons
@@ -18,10 +19,10 @@ export abstract class BaseQuestTemplate implements QuestTemplate {
         if (!outcome) return 0
         return outcome.goldReward ?? 0
     }
-    getOutcomeItemReward = (questId: string, outcomeId: string) => (state: GameState) => {
+    getOutcomeItemRewards = (questId: string, outcomeId: string) => (state: GameState) => {
         const questState = QuestAdapter.selectEx(state.quests, questId)
         const outcome = QuestOutcomeAdapter.selectEx(questState.outcomeData, outcomeId)
-        if (!outcome) return []
-        return outcome.itemsRewards ?? []
+        if (!outcome) return EMPTY_ARRAY
+        return outcome.itemsRewards ?? EMPTY_ARRAY
     }
 }

@@ -1,26 +1,28 @@
 import { clsx } from 'clsx'
 import { memo } from 'react'
 import { LuMenu } from 'react-icons/lu'
-import { useGameStore } from '../../game/state'
-import { UiPages } from '../state/UiPages'
-import { Woodcutting } from '../../wood/ui/Woodcutting'
-import { Sidebar } from '../sidebar/Sidebar'
-import { UiStorage } from '../../storage/ui/Storage'
 import { Activities } from '../../activities/ui/Activities'
-import { CraftingUi } from '../../crafting/ui/CraftingUi'
-import { ModeToggle } from '../modeToggle'
-import { Button } from '../../components/ui/button'
-import { sidebarOpen, toggle } from '../state/uiFunctions'
-import { Mining } from '../../mining/ui/Mining'
-import { UiPagesData } from '../state/UiPagesData'
-import { useTranslations } from '../../msg/useTranslations'
-import { CardTitle } from '../../components/ui/card'
 import { CombatPage } from '../../battle/ui/BattleZoneUi'
 import { CombatUi } from '../../battle/ui/CombatUi'
 import { CharactersUi } from '../../characters/ui/CharactersUi'
 import { DeadDialog } from '../../characters/ui/DeadDialog'
-import { selectPage } from '../uiSelectors'
+import { Button } from '../../components/ui/button'
+import { CardTitle } from '../../components/ui/card'
+import { CraftingUi } from '../../crafting/ui/CraftingUi'
+import { useGameStore } from '../../game/state'
+import { SaveExportDialog } from '../../game/save/ui/SaveExportDialog'
+import { Gathering } from '../../gathering/ui/Gathering'
+import { Mining } from '../../mining/ui/Mining'
+import { useTranslations } from '../../msg/useTranslations'
 import { QuestUi } from '../../quests/ui/QuestUi'
+import { UiStorage } from '../../storage/ui/Storage'
+import { Woodcutting } from '../../wood/ui/Woodcutting'
+import { ModeToggle } from '../modeToggle'
+import { Sidebar } from '../sidebar/Sidebar'
+import { UiPages } from '../state/UiPages'
+import { UiPagesData } from '../state/UiPagesData'
+import { sidebarOpen, toggle } from '../state/uiFunctions'
+import { selectPage } from '../uiSelectors'
 import classes from './appShell.module.css'
 
 export const AppShell = memo(function AppShell() {
@@ -50,14 +52,15 @@ const Header = memo(function Header() {
                 </Button>
                 <HeaderTitle />
             </div>
-            <div>
+            <div className={classes.headerRight}>
+                <SaveExportDialog />
                 <ModeToggle />
             </div>
         </header>
     )
 })
 
-const HeaderTitle = memo(function Header() {
+const HeaderTitle = memo(function HeaderTitle() {
     const page = useGameStore(selectPage)
     const { t } = useTranslations()
 
@@ -82,6 +85,8 @@ const PageContent = memo(function PageContent() {
             return <Activities />
         case UiPages.Mining:
             return <Mining />
+        case UiPages.Gathering:
+            return <Gathering />
         case UiPages.CombatZones:
             return <CombatPage />
         case UiPages.Combat:

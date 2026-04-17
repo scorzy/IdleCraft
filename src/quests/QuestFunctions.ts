@@ -1,16 +1,19 @@
 import { MAX_AVAILABLE_QUESTS } from '../const'
 import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
+import { GatheringData } from '../gathering/gatheringData'
+import { selectTranslations } from '../msg/useTranslations'
+import { addNotification } from '../notification/addNotification'
 import { addGold, addItem } from '../storage/storageFunctions'
+import { onCollectQuestComplete } from './collectRequest/onCollectQuestComplete'
 import { QuestData } from './QuestData'
+import { QuestAdapter, QuestOutcome, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
 import {
     isOutcomeCompleted,
     selectAcceptedQuests,
     selectAvailableQuests,
     selectQuestTemplate,
 } from './selectors/QuestSelectors'
-import { QuestAdapter, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
-import { onCollectQuestComplete } from './collectRequest/onCollectQuestComplete'
 
 export const selectQuest = (id: string) =>
     setState((state: GameState) => {
@@ -20,6 +23,22 @@ export const selectQuest = (id: string) =>
 function GenerateQuestState(state: GameState, templateId: string): QuestState {
     const questTemplate = QuestData.getEx(templateId)
     return questTemplate.generateQuestData(state)
+}
+
+function unlockGatheringZone(state: GameState, outcome: QuestOutcome) {
+    const gatheringZone = outcome.unlockGatheringZone
+    if (!gatheringZone) return
+
+    const unlocked = state.locations[outcome.location].unlockedGatheringZones
+    if (unlocked.includes(gatheringZone)) return
+
+    unlocked.push(gatheringZone)
+
+    const gatheringData = GatheringData[gatheringZone]
+    addNotification(state.notifications, {
+        title: selectTranslations(state).fun.ZoneUnlocked(gatheringData.nameId),
+        iconId: gatheringData.iconId,
+    })
 }
 
 export function updateQuests(state: GameState): void {
@@ -75,6 +94,8 @@ export const completeQuest = (state: GameState, questId: string, outcomeId: stri
     if (outcome.itemsRewards)
         for (const reward of outcome.itemsRewards) addItem(state, reward.itemId, reward.quantity || 1)
     if (outcome.goldReward) addGold(state, outcome.goldReward)
+
+    if (outcome.unlockGatheringZone) unlockGatheringZone(state, outcome)
 
     const oldIndex = selectAcceptedQuests(state).indexOf(questId)
 

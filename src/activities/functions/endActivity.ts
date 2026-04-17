@@ -1,7 +1,7 @@
 import { GameState } from '../../game/GameState'
+import { ActivityAdapter } from '../ActivityState'
 import { startNextActivity } from '../activityFunctions'
 import { ActivityStartResult } from '../activityInterfaces'
-import { ActivityAdapter } from '../ActivityState'
 import { removeActivityInt } from './removeActivity'
 
 export function endActivity(state: GameState, activityId: string, result: ActivityStartResult) {

@@ -1,16 +1,17 @@
+import { MsgFunctions } from '@/msg/MsgFunctions'
 import { IngredientData, PotionData, PotionFlaskData, SolventData } from '../alchemy/alchemyTypes'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ExpEnum } from '../experience/ExpEnum'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 import { ItemsMaterials } from './materials/ItemsMaterials'
-import { MsgFunctions } from '@/msg/MsgFunctions'
 
 export enum ItemTypes {
     Log = 'Log',
     Plank = 'Plank',
     Handle = 'Handle',
     Ore = 'Ore',
+    Gem = 'Gem',
     Bar = 'Bar',
     WoodAxe = 'WoodAxe',
     Pickaxe = 'Pickaxe',

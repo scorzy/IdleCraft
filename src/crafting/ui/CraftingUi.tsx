@@ -1,13 +1,25 @@
 import { memo, useCallback } from 'react'
 import { LuHourglass } from 'react-icons/lu'
-import {
-    RecipeParameter,
-    RecipeParameterItemFilter,
-    RecipeTypes,
-    isRecipeParameterItemFilter,
-} from '../RecipeInterfaces'
-import { recipes } from '../Recipes'
+import { removeActivity } from '../../activities/functions/removeActivity'
+import { ActivitiesList } from '../../activities/ui/Activities'
+import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
+import { PLAYER_ID } from '../../characters/charactersConst'
+import { Badge } from '../../components/ui/badge'
+import { Button } from '../../components/ui/button'
+import { Card, CardContent } from '../../components/ui/card'
+import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
+import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { useGameStore } from '../../game/state'
+import { IconsData } from '../../icons/Icons'
+import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
+import { ItemIconName } from '../../items/ui/ItemIconName'
+import { removeUnusedParams } from '../../msg/removeUnusedParams'
+import { useTranslations } from '../../msg/useTranslations'
+import { ItemsSelect } from '../../storage/ui/ItemsSelect'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
+import { GameTimerProgress } from '../../ui/progress/TimerProgress'
+import { handleRecipeChange } from '../CraftingFunctions'
 import {
     canCraft,
     selectCraftingIds,
@@ -21,29 +33,17 @@ import {
     selectRecipeResultItem,
     selectRecipeType,
 } from '../CraftingSelectors'
-import { useTranslations } from '../../msg/useTranslations'
-import { Button } from '../../components/ui/button'
-import { Badge } from '../../components/ui/badge'
-import { GameTimerProgress } from '../../ui/progress/TimerProgress'
-import { ExperienceCard } from '../../experience/ui/ExperienceCard'
+import { addCraftingClick } from '../functions/addCrafting'
+import { Recipe } from '../Recipe'
 import { RecipeData } from '../RecipeData'
 import { setRecipeItemParamUi } from '../RecipeFunctions'
-import { Recipe } from '../Recipe'
-import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
-import { removeActivity } from '../../activities/functions/removeActivity'
-import { addCraftingClick } from '../functions/addCrafting'
-import { handleRecipeChange } from '../CraftingFunctions'
-import { Card, CardContent } from '../../components/ui/card'
-import { PLAYER_ID } from '../../characters/charactersConst'
-import { IconsData } from '../../icons/Icons'
-import { ActivitiesList } from '../../activities/ui/Activities'
-import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { ItemsSelect } from '../../storage/ui/ItemsSelect'
-import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
-import { removeUnusedParams } from '../../msg/removeUnusedParams'
-import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
-import { ItemIconName } from '../../items/ui/ItemIconName'
+import {
+    isRecipeParameterItemFilter,
+    RecipeParameter,
+    RecipeParameterItemFilter,
+    RecipeTypes,
+} from '../RecipeInterfaces'
+import { recipes } from '../Recipes'
 import { CraftingReq, CraftingResult } from './CraftingResult'
 import classes from './craftingUi.module.css'
 
@@ -136,7 +136,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
     const { t } = useTranslations()
 
     if (!recipeType) return
-    const recipesByType = selectRecipes(recipeType)
+    const recipesByTypeList = selectRecipes(recipeType)
     const selected = recipes.get(recipeId)
     const icon = selected && IconsData[selected.iconId]
 
@@ -154,7 +154,7 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
                 )
             }
         >
-            {recipesByType.map((r) => (
+            {recipesByTypeList.map((r) => (
                 <ComboBoxItem
                     key={r.id}
                     value={r.id}
@@ -227,7 +227,7 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
 
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
 
-    const handleRecipeChange = useCallback(
+    const handleItemChange = useCallback(
         (itemId: string) => setRecipeItemParamUi(recipeParam.id, itemId),
         [recipeParam.id]
     )
@@ -236,7 +236,7 @@ const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipePar
         <ItemsSelect
             itemFilter={recipeParam.itemFilter}
             selectedValue={selected?.itemId}
-            onValueChange={handleRecipeChange}
+            onValueChange={handleItemChange}
             label={<ItemFilterDescription itemFilter={recipeParam.itemFilter} />}
         />
     )

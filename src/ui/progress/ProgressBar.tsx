@@ -1,5 +1,5 @@
-import { memo } from 'react'
 import { clsx } from 'clsx'
+import { memo } from 'react'
 import { Colors } from '../state/uiFunctions'
 import './progress.css'
 

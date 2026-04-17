@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { QuestParams } from '../quests/QuestParams'
-import { Msg } from './Msg'
 import { GetItemNameParams } from './GetItemNameParams'
+import { Msg } from './Msg'
 
 export interface MsgFunctions {
     // Time
@@ -19,6 +19,7 @@ export interface MsgFunctions {
 
     //
     cutting: (woodName: keyof Msg) => string
+    boostTree: (woodName: keyof Msg) => string
     crafting: (itemName: string) => string
     mining: (woodName: keyof Msg) => string
 
@@ -41,4 +42,7 @@ export interface MsgFunctions {
     collectN: (n: number) => string
 
     collectItemsTotal: (n: number) => ReactNode
+    UnlockQuest: (zone: keyof Msg) => string
+    KillToUnlock: (enemy: keyof Msg) => string
+    ZoneUnlocked: (zone: keyof Msg) => string
 }

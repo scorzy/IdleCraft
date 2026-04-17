@@ -1,4 +1,5 @@
 import { MapEx } from '../utils/MapEx'
 import { QuestTemplate } from './QuestTemplate'
 
-export const QuestData: MapEx<string, QuestTemplate> = new MapEx<string, QuestTemplate>()
+// biome-ignore lint/suspicious/noExplicitAny: -
+export const QuestData: MapEx<string, QuestTemplate<any>> = new MapEx()

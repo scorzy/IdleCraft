@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest'
+import { ActivityAdapter } from '../../activities/ActivityState'
+import { BattleZoneEnum } from '../../battle/BattleZoneEnum'
+import { makeBattle } from '../../battle/functions/addBattle'
+import { initialize } from '../../game/functions/initialize'
 import { GameState } from '../../game/GameState'
 import { GetInitialGameState } from '../../game/InitialGameState'
-import { makeBattle } from '../../battle/functions/addBattle'
-import { BattleZoneEnum } from '../../battle/BattleZoneEnum'
 import { PLAYER_ID } from '../charactersConst'
-import { ActivityAdapter } from '../../activities/ActivityState'
-import { initialize } from '../../game/functions/initialize'
 import { kill } from './kill'
 
 describe('kill', () => {

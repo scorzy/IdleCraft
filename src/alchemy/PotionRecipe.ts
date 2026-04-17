@@ -8,11 +8,11 @@ import {
     RecipeResult,
     RecipeTypes,
 } from '../crafting/RecipeInterfaces'
+import { Effects } from '../effects/types/Effects'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { Item, ItemSubType } from '../items/Item'
 import { selectGameItem } from '../storage/StorageSelectors'
-import { Effects } from '../effects/types/Effects'
 import { MAX_INGREDIENTS } from './alchemyConst'
 import { generatePotion } from './alchemyFunctions'
 import { PotionResult } from './alchemyTypes'
@@ -84,7 +84,7 @@ export const potionRecipe: Recipe = makeMemoizedRecipe({
         for (let i = 1; i <= MAX_INGREDIENTS; i++) {
             const ingredientId = params.find((p) => p.id === `Ingredient${i}`)?.itemId
             if (!ingredientId) continue
-            if (ingredients.some((i) => i.id === ingredientId)) continue
+            if (ingredients.some((n) => n.id === ingredientId)) continue
             const ingredient = selectGameItem(ingredientId)(state)
             if (!ingredient?.ingredientData) return
             ingredients.push(ingredient)

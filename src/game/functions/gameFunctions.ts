@@ -1,27 +1,27 @@
 import { useUiTempStore } from '../../ui/state/uiTempStore'
+import { MAX_LOAD, TEST_DIF, WORKER_MIN_TIME } from '../const'
+import { GameState } from '../GameState'
 import { GetInitialGameState } from '../InitialGameState'
 import { loadData } from '../loadData'
 import { WorkerMessage } from '../loadWorkerTypes'
 import { useGameStore } from '../state'
-import { MAX_LOAD, TEST_DIF, WORKER_MIN_TIME } from '../const'
-import { GameState } from '../GameState'
-import { regenerate } from './regenerate'
 import { advanceTimers } from './advanceTimers'
+import { loadGame } from './loadGame'
 
 // eslint-disable-next-line import/default
 import LoadWorker from './loadWorker?worker'
-import { loadGame } from './loadGame'
+import { regenerate } from './regenerate'
 
 let worker = new LoadWorker()
 let tempState: GameState
 
 function createWorker() {
     worker = new LoadWorker()
-    worker.onmessage = (e: MessageEvent<WorkerMessage>) => {
+    worker.addEventListener('message', (e: MessageEvent<WorkerMessage>) => {
         if (e.data.loadingData) useUiTempStore.setState({ loadingData: e.data.loadingData })
         else if (e.data.state) start(e.data.state)
         if (e.data.state) tempState = e.data.state
-    }
+    })
 }
 
 createWorker()

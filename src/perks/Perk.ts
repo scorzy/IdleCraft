@@ -1,8 +1,8 @@
-import { Msg } from '../msg/Msg'
-import { Icons } from '../icons/Icons'
-import { AbilitiesEnum } from '../activeAbilities/abilitiesEnum'
-import { PerksEnum } from './perksEnum'
 import { ExpEnum } from '@/experience/ExpEnum'
+import { AbilitiesEnum } from '../activeAbilities/abilitiesEnum'
+import { Icons } from '../icons/Icons'
+import { Msg } from '../msg/Msg'
+import { PerksEnum } from './perksEnum'
 
 export interface ExpReq {
     skill: ExpEnum
@@ -30,6 +30,22 @@ export const PerksData: Record<PerksEnum, Perk> = {
         iconId: Icons.Pickaxe,
         nameId: 'FastMiningPerk',
         descId: 'FastMiningPerkDesc',
+    },
+    [PerksEnum.VEIN_MASTERY]: {
+        id: PerksEnum.VEIN_MASTERY,
+        iconId: Icons.Ore,
+        nameId: 'VeinMasteryPerk',
+        descId: 'VeinMasteryPerkDesc',
+        requiredPerks: [PerksEnum.FAST_MINING],
+        requiredExp: [{ skill: ExpEnum.Mining, level: 8 }],
+    },
+    [PerksEnum.GROW_SPEED_MASTERY]: {
+        id: PerksEnum.GROW_SPEED_MASTERY,
+        iconId: Icons.Forest,
+        nameId: 'GrowSpeedMasteryPerk',
+        descId: 'GrowSpeedMasteryPerkDesc',
+        requiredPerks: [PerksEnum.FAST_WOODCUTTING],
+        requiredExp: [{ skill: ExpEnum.Woodcutting, level: 8 }],
     },
     [PerksEnum.CHARGED_ATTACK]: {
         id: PerksEnum.CHARGED_ATTACK,

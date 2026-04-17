@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest'
-import { GetInitialGameState } from '../game/InitialGameState'
 import { CharTemplateEnum } from '../characters/templates/characterTemplateEnum'
+import { GetInitialGameState } from '../game/InitialGameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { ItemTypes } from '../items/Item'
-import { QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
 import { questOnItemRemove } from './collectRequest/questOnItemRemove'
+import { QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
 
 describe('Quest Functions', () => {
     test('questOnItemRemove 1', () => {
@@ -58,10 +58,10 @@ describe('Quest Functions', () => {
         questOnItemRemove(state, 'item', state.location)
 
         expect(
-            state!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem1
+            state.quests.entries['questId']!.outcomeData.entries['k']!.reqItems![0]!.selectedItem1
         ).toBeUndefined()
 
-        expect(state!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem2).toEqual(
+        expect(state.quests.entries['questId']!.outcomeData.entries['k']!.reqItems![0]!.selectedItem2).toEqual(
             'otherItem'
         )
     })
@@ -116,11 +116,11 @@ describe('Quest Functions', () => {
 
         questOnItemRemove(state, 'item', state.location)
 
-        expect(state!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem1).toEqual(
+        expect(state.quests.entries['questId']!.outcomeData.entries['k']!.reqItems![0]!.selectedItem1).toEqual(
             'item'
         )
 
-        expect(state!.quests!.entries['questId']!.outcomeData!.entries['k']!.reqItems![0]!.selectedItem2).toEqual(
+        expect(state.quests.entries['questId']!.outcomeData.entries['k']!.reqItems![0]!.selectedItem2).toEqual(
             'otherItem'
         )
     })

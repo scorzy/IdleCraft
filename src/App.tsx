@@ -1,16 +1,16 @@
-import { TbAlertTriangle } from 'react-icons/tb'
 import { throttle } from 'es-toolkit/compat'
+import { TbAlertTriangle } from 'react-icons/tb'
+import { Alert, AlertDescription, AlertTitle } from './components/ui/alert'
+import { regenerate } from './game/functions/regenerate'
+import { GameState } from './game/GameState'
+import { selectGameId, selectLoading } from './game/gameSelectors'
 import { Start } from './game/Start'
+import { setState } from './game/setState'
 import { useGameStore } from './game/state'
 import { ToasterProvider } from './notification/ToasterProvider'
-import { selectGameId, selectLoading } from './game/gameSelectors'
+import { updateTimers } from './timers/updateTimers'
 import { AppShell } from './ui/shell/AppShell'
 import { ThemeProvider } from './ui/themeProvider'
-import { GameState } from './game/GameState'
-import { regenerate } from './game/functions/regenerate'
-import { Alert, AlertTitle, AlertDescription } from './components/ui/alert'
-import { setState } from './game/setState'
-import { updateTimers } from './timers/updateTimers'
 
 setInterval(() => {
     const gameId = useGameStore.getState().gameId
@@ -31,9 +31,9 @@ if ('indexedDB' in window) {
         const objectStore = transaction.objectStore('save')
         const putRes = objectStore.put(state)
 
-        putRes.onerror = () => {
+        putRes.addEventListener('error', () => {
             console.log(`Save failed`)
-        }
+        })
     }, 500)
 
     open.onupgradeneeded = () => {

@@ -1,1 +1,1 @@
-export type QuestParams = Record<string, number | string>
+export type QuestParams = Record<string, unknown> | undefined

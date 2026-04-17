@@ -1,40 +1,15 @@
 import { memo, useCallback } from 'react'
 import { TbCheck, TbLock, TbX } from 'react-icons/tb'
 import { useMediaQuery } from 'usehooks-ts'
-import { PerksEnum } from '../perksEnum'
-import { useGameStore } from '../../game/state'
-import { useTranslations } from '../../msg/useTranslations'
-import { ExpReq, PerksData } from '../Perk'
-import { setPerk, acquirePerkClick, setPerksOpen } from '../PerksFunctions'
 import {
-    hasPerk,
-    isPerkSelected,
-    selectCanSpendPerks,
-    selectMaxPerks,
-    selectPerk,
-    selectPerkCompleted,
-    selectUsedPerks,
-    isPerkEnabled,
-    selectPerksMemo,
-} from '../PerksSelectors'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { PLAYER_ID } from '../../characters/charactersConst'
 import { Button } from '../../components/ui/button'
-import { ExpData } from '../../experience/ExpData'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { selectLevel } from '../../experience/expSelectors'
-import { toggleShowAvailablePerks, toggleCompletedPerks, toggleShowUnavailablePerks } from '../../ui/state/uiFunctions'
-import {
-    selectShowAvailablePerks,
-    selectCompletedPerks,
-    selectShowUnavailablePerks,
-    isCollapsed,
-    selectSelectedCharId,
-    isCharReadonly,
-} from '../../ui/state/uiSelectors'
-import { IconsData } from '../../icons/Icons'
-import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
-import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
-import { MyListItem } from '../../ui/sidebar/MenuItem'
+import { Card, CardContent, CardFooter, CardTitle } from '../../components/ui/card'
 import {
     Dialog,
     DialogContent,
@@ -43,16 +18,41 @@ import {
     DialogHeader,
     DialogTitle,
 } from '../../components/ui/dialog'
-import { Card, CardContent, CardFooter, CardTitle } from '../../components/ui/card'
+import { ExpData } from '../../experience/ExpData'
+import { selectLevel } from '../../experience/expSelectors'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { useGameStore } from '../../game/state'
+import { IconsData } from '../../icons/Icons'
+import { useTranslations } from '../../msg/useTranslations'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyTabNum } from '../../ui/myCard/MyTabNum'
-import { PLAYER_ID } from '../../characters/charactersConst'
-import classes from './perkUi.module.css'
+import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
+import { MyListItem } from '../../ui/sidebar/MenuItem'
+import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
+import { toggleCompletedPerks, toggleShowAvailablePerks, toggleShowUnavailablePerks } from '../../ui/state/uiFunctions'
 import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+    isCharReadonly,
+    isCollapsed,
+    selectCompletedPerks,
+    selectSelectedCharId,
+    selectShowAvailablePerks,
+    selectShowUnavailablePerks,
+} from '../../ui/state/uiSelectors'
+import { ExpReq, PerksData } from '../Perk'
+import { acquirePerkClick, setPerk, setPerksOpen } from '../PerksFunctions'
+import {
+    hasPerk,
+    isPerkEnabled,
+    isPerkSelected,
+    selectCanSpendPerks,
+    selectMaxPerks,
+    selectPerk,
+    selectPerkCompleted,
+    selectPerksMemo,
+    selectUsedPerks,
+} from '../PerksSelectors'
+import { PerksEnum } from '../perksEnum'
+import classes from './perkUi.module.css'
 
 export const PerksSidebar = memo(function PerksSidebar() {
     const { f } = useNumberFormatter()
@@ -74,8 +74,8 @@ export const PerksSidebar = memo(function PerksSidebar() {
                     <PerkFilter />
                 </div>
             )}
-            {perks.map((t) => (
-                <PerkLink key={t} perk={t} />
+            {perks.map((p) => (
+                <PerkLink key={p} perk={p} />
             ))}
         </SidebarContainer>
     )
@@ -147,18 +147,21 @@ export const PerkPage = () => {
     const requirements = data.requiredExp ?? data.requiredPerks
 
     const content = (
-        <div className="text-sm">
-            {t[data.descId]}
-            {requirements && <span>{t.Requirements}</span>}
+        <div>
+            <p>{t[data.descId]}</p>
             {requirements && (
-                <ul>
-                    {data.requiredExp?.map((r) => (
-                        <PerkExpReq req={r} key={r.skill} />
-                    ))}
-                    {data.requiredPerks?.map((r) => (
-                        <PerkPerkReq perk={r} key={r} />
-                    ))}
-                </ul>
+                <>
+                    <span className="mt-2 block">{t.Requirements}</span>
+
+                    <ul>
+                        {data.requiredExp?.map((r) => (
+                            <PerkExpReq req={r} key={r.skill} />
+                        ))}
+                        {data.requiredPerks?.map((r) => (
+                            <PerkPerkReq perk={r} key={r} />
+                        ))}
+                    </ul>
+                </>
             )}
         </div>
     )
@@ -195,16 +198,25 @@ export const PerkPage = () => {
         </Card>
     )
 }
+
+const CheckIcon = memo(function CheckIcon({ ok }: { ok: boolean }) {
+    if (ok) return <TbCheck className="text-success" />
+    else return <TbX className="text-destructive" />
+})
+
 const PerkExpReq = memo(function PerkExpReq(props: { req: ExpReq }) {
     const { req } = props
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     const level = useGameStore(selectLevel(req.skill, PLAYER_ID))
     const skill = ExpData[req.skill]
+    const ok = level >= req.level
 
     return (
-        <li>
-            {t[skill.nameId]} {f(req.level)}/{f(level)}
+        <li className={classes.perkLi}>
+            <CheckIcon ok={ok} />
+            {t[skill.nameId]} {f(req.level)}
+            <span className="text-muted-foreground">/{f(level)}</span>
         </li>
     )
 })
@@ -216,7 +228,7 @@ const PerkPerkReq = memo(function PerkPerkReq(props: { perk: PerksEnum }) {
 
     return (
         <li className={classes.perkLi}>
-            {ownPerk ? <TbCheck /> : <TbX />}
+            <CheckIcon ok={ownPerk} />
             {t[perkData.nameId]}
         </li>
     )

@@ -1,38 +1,100 @@
-import { memo, useCallback } from 'react'
+import { memo, type RefObject, useCallback, useEffect, useReducer, useRef } from 'react'
+import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
 import { TbAlertTriangle } from 'react-icons/tb'
-import { useGameStore } from '../../game/state'
-import { selectOreType } from '../../ui/state/uiSelectors'
-import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { isOreEnabled, selectDefaultMine, selectMiningId, selectOre } from '../miningSelectors'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { useTranslations } from '../../msg/useTranslations'
-import { Button } from '../../components/ui/button'
-import { RestartProgress } from '../../ui/progress/RestartProgress'
-import { GameTimerProgress } from '../../ui/progress/TimerProgress'
-import { OreData } from '../OreData'
-import { ExperienceCard } from '../../experience/ui/ExperienceCard'
-import { EquipItemUi } from '../../items/ui/EquipSelect'
-import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
-import { addMining } from '../functions/addMining'
+import { ActivityAdapter, ActivityTypes } from '@/activities/ActivityState'
+import { ExpEnum } from '@/experience/ExpEnum'
+import { setState } from '@/game/setState'
+import { TrashIcon } from '@/icons/IconsMemo'
+import { cn } from '@/lib/utils'
+import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
 import { removeActivity } from '../../activities/functions/removeActivity'
-import { Icons, IconsData } from '../../icons/Icons'
-import { selectMiningTimeAllMemo, selectMiningTimeMemo } from '../selectors/miningTime'
+import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
 import { BonusDialog } from '../../bonus/ui/BonusUi'
-import { selectMiningDamageAllMemo, selectMiningDamageMemo } from '../selectors/miningDamage'
-import { GameState } from '../../game/GameState'
-import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert'
-import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { PLAYER_ID } from '../../characters/charactersConst'
+import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert'
+import { Button } from '../../components/ui/button'
+import { Card, CardContent, CardFooter } from '../../components/ui/card'
+import { ExperienceCard } from '../../experience/ui/ExperienceCard'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { GameState } from '../../game/GameState'
+import { useGameStore } from '../../game/state'
+import { Icons, IconsData } from '../../icons/Icons'
+import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { ItemIcon } from '../../items/ui/ItemIcon'
 import { useItemName } from '../../items/useItemName'
-import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
+import { useTranslations } from '../../msg/useTranslations'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
+import { RestartProgress } from '../../ui/progress/RestartProgress'
+import { GameTimerProgress } from '../../ui/progress/TimerProgress'
+import { selectOreType } from '../../ui/state/uiSelectors'
+import { addMining } from '../functions/addMining'
+import { addMiningVeinSearch } from '../functions/addMiningVeinSearch'
+import { SEARCH_ORE_VEIN_TIME } from '../functions/startMiningVeinSearch'
+import { isMining } from '../Mining'
+import { getCurrentOreVeinByType, moveOreVeinNext, moveOreVeinPrev, removeOreVein } from '../miningFunctions'
+import { isOreEnabled, selectDefaultMine, selectMiningId, selectOre } from '../miningSelectors'
+import { OreData } from '../OreData'
+import { OreVeinState } from '../OreState'
+import { OreTypes } from '../OreTypes'
+import { selectMiningDamageAllMemo, selectMiningDamageMemo } from '../selectors/miningDamage'
+import { selectMiningTimeAllMemo, selectMiningTimeMemo } from '../selectors/miningTime'
 import { MiningSidebar } from './MiningSidebar'
-import { ExpEnum } from '@/experience/ExpEnum'
-import { MyLabel, MyLabelContainer } from '@/ui/myCard/MyLabel'
+import classes from './miningVeins.module.css'
+
+const ArrowUp = <LuArrowUp className="text-lg" />
+const ArrowDown = <LuArrowDown className="text-lg" />
 
 export const Mining = memo(function Mining() {
     const oreType = useGameStore(selectOreType)
+    const miningOreLockRef = useRef<HTMLDivElement>(null)
+    const oreVeinsRef = useRef<HTMLDivElement>(null)
+    const [layout, updateLayout] = useReducer(
+        (
+            _: { isOreVeinsScrollable: boolean; oreVeinsMaxHeight?: number },
+            next: { isOreVeinsScrollable: boolean; oreVeinsMaxHeight?: number }
+        ) => next,
+        { isOreVeinsScrollable: false, oreVeinsMaxHeight: undefined }
+    )
+
+    useEffect(() => {
+        const checkOffsetTop = () => {
+            const miningOreLockTop = miningOreLockRef.current?.offsetTop
+            const oreVeinsTop = oreVeinsRef.current?.offsetTop
+            const oreVeinsTopViewport = oreVeinsRef.current?.getBoundingClientRect().top
+
+            if (miningOreLockTop === undefined || oreVeinsTop === undefined || oreVeinsTopViewport === undefined) {
+                updateLayout({ isOreVeinsScrollable: false, oreVeinsMaxHeight: undefined })
+                return
+            }
+
+            const isSameRow = miningOreLockTop === oreVeinsTop
+            if (!isSameRow) {
+                updateLayout({ isOreVeinsScrollable: false, oreVeinsMaxHeight: undefined })
+                return
+            }
+
+            const oreVeinsHeaderHeight =
+                oreVeinsRef.current?.querySelector<HTMLElement>('[data-slot="card-header"]')?.offsetHeight ?? 0
+            const availableHeight = Math.floor(window.innerHeight - oreVeinsTopViewport - 72)
+            const availableContentHeight = Math.max(120, availableHeight - oreVeinsHeaderHeight)
+            updateLayout({ isOreVeinsScrollable: true, oreVeinsMaxHeight: availableContentHeight })
+        }
+
+        checkOffsetTop()
+
+        const resizeObserver = new ResizeObserver(checkOffsetTop)
+        if (miningOreLockRef.current) resizeObserver.observe(miningOreLockRef.current)
+        if (oreVeinsRef.current) resizeObserver.observe(oreVeinsRef.current)
+        window.addEventListener('resize', checkOffsetTop)
+
+        return () => {
+            resizeObserver.disconnect()
+            window.removeEventListener('resize', checkOffsetTop)
+        }
+    }, [oreType])
+
     return (
         <MyPageAll
             sidebar={<MiningSidebar />}
@@ -44,13 +106,22 @@ export const Mining = memo(function Mining() {
             }
         >
             <MyPage className="page__main" key={oreType}>
-                <MiningOreLock />
+                <MiningOreLock containerRef={miningOreLockRef} />
+                <OreVeinsUi
+                    containerRef={oreVeinsRef}
+                    isScrollable={layout.isOreVeinsScrollable}
+                    maxHeight={layout.oreVeinsMaxHeight}
+                />
             </MyPage>
         </MyPageAll>
     )
 })
 
-const MiningOreLock = memo(function MiningOreLock() {
+const MiningOreLock = memo(function MiningOreLock({
+    containerRef,
+}: {
+    containerRef: RefObject<HTMLDivElement | null>
+}) {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
@@ -61,19 +132,39 @@ const MiningOreLock = memo(function MiningOreLock() {
     if (enabled)
         return (
             <>
-                <MiningOre />
+                <div ref={containerRef}>
+                    <MiningOre />
+                </div>
                 <OreUi />
             </>
         )
 
     return (
-        <Alert variant="destructive">
-            <TbAlertTriangle className="h-4 w-4" />
-            <AlertTitle>{t.LevelToLow}</AlertTitle>
-            <AlertDescription>{fun.requireMiningLevel(f(data.requiredLevel))}</AlertDescription>
-        </Alert>
+        <div ref={containerRef}>
+            <Alert variant="destructive">
+                <TbAlertTriangle className="h-4 w-4" />
+                <AlertTitle>{t.LevelToLow}</AlertTitle>
+                <AlertDescription>{fun.requireMiningLevel(f(data.requiredLevel))}</AlertDescription>
+            </Alert>
+        </div>
     )
 })
+
+function selectActiveVein(state: GameState, oreType: OreTypes): OreVeinState | undefined {
+    const actId = selectMiningId(state, oreType)
+    if (!actId) return getCurrentOreVeinByType(state, state.location, oreType)
+
+    const activity = ActivityAdapter.select(state.activities, actId)
+    if (!activity || !isMining(activity) || !activity.activeVeinId)
+        return getCurrentOreVeinByType(state, state.location, oreType)
+
+    const activeVein = (state.locations[state.location].oreVeins[oreType] ?? []).find(
+        (w) => w.id === activity.activeVeinId
+    )
+    if (activeVein) return activeVein
+
+    return getCurrentOreVeinByType(state, state.location, oreType)
+}
 
 const MiningOre = memo(function MiningOre() {
     const { f } = useNumberFormatter()
@@ -81,14 +172,17 @@ const MiningOre = memo(function MiningOre() {
     const oreType = useGameStore(selectOreType)
 
     const ore = useGameStore(useCallback((state: GameState) => selectOre(state, oreType), [oreType]))
+    const activeVein = useGameStore(useCallback((state: GameState) => selectActiveVein(state, oreType), [oreType]))
     const act = useGameStore(useCallback((state: GameState) => selectMiningId(state, oreType), [oreType]))
     const damage = useGameStore(selectMiningDamageMemo)
     const time = useGameStore(selectMiningTimeMemo)
 
-    const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
-    const hpPercent = Math.floor((100 * ore.hp) / def.hp)
-
     const oreData = OreData[oreType]
+    const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
+    const hp = activeVein?.hp ?? ore.hp
+    const maxHp = activeVein?.maxHp ?? def.hp
+    const armour = activeVein?.armour ?? oreData.armour
+    const hpPercent = Math.floor((100 * hp) / Math.max(1, maxHp))
 
     return (
         <Card>
@@ -96,10 +190,10 @@ const MiningOre = memo(function MiningOre() {
             <CardContent>
                 <MyLabelContainer>
                     <MyLabel>
-                        {t.OreHp} {f(ore.hp)} <span className="text-muted-foreground">/ {f(def.hp)}</span>
+                        {t.OreHp} {f(hp)} <span className="text-muted-foreground">/ {f(maxHp)}</span>
                     </MyLabel>
                     <MyLabel>
-                        {t.Armour} {f(oreData.armour)}
+                        {t.Armour} {f(armour)}
                     </MyLabel>
                     <MyLabel>
                         {t.Damage} {f(damage)}
@@ -146,25 +240,154 @@ const MiningButton = memo(function CuttingButton() {
         />
     )
 })
-const OreUi = memo(function MiningOre() {
+
+const OreUi = memo(function OreUi() {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
     const oreQta = useGameStore(useCallback((state: GameState) => selectOre(state, oreType).qta, [oreType]))
+    const activeVein = useGameStore(useCallback((state: GameState) => selectActiveVein(state, oreType), [oreType]))
     const def = useGameStore(useCallback((s) => selectDefaultMine(s, oreType), [oreType]))
-    const hpPercent = Math.floor((100 * oreQta) / def.qta)
+
     const oreData = OreData[oreType]
     const name = useItemName(oreData.oreId)
+    const qta = activeVein?.qta ?? oreQta
+    const maxQta = activeVein?.maxQta ?? def.qta
+    const hpPercent = Math.floor((100 * qta) / Math.max(1, maxQta))
 
     return (
         <Card>
             <MyCardHeaderTitle title={fun.OreVein(name)} icon={<ItemIcon itemId={oreData.oreId} />} />
             <CardContent>
                 <MyLabel>
-                    {t.OreQta} {f(oreQta)}/{f(def.qta)}
+                    {t.OreQta} {f(qta)}/{f(maxQta)}
                 </MyLabel>
                 <RestartProgress value={hpPercent} color="health" />
             </CardContent>
         </Card>
+    )
+})
+
+const OreVeinsUi = memo(function OreVeinsUi({
+    containerRef,
+    isScrollable,
+    maxHeight,
+}: {
+    containerRef: RefObject<HTMLDivElement | null>
+    isScrollable: boolean
+    maxHeight?: number
+}) {
+    const { t, fun } = useTranslations()
+    const oreType = useGameStore(selectOreType)
+    const veins = useGameStore((s) => s.locations[s.location].oreVeins[oreType] ?? [])
+    const searchActId = useGameStore(
+        (s) =>
+            ActivityAdapter.find(
+                s.activities,
+                (w) => w.type === ActivityTypes.MiningVeinSearch && 'oreType' in w && w.oreType === oreType
+            )?.id
+    )
+
+    const onSearch = useCallback(() => addMiningVeinSearch(oreType), [oreType])
+    const onStopSearch = useCallback(() => removeActivity(searchActId), [searchActId])
+
+    return (
+        <div ref={containerRef}>
+            <Card>
+                <MyCardHeaderTitle title={t.OreVeins} icon={IconsData[Icons.Ore]} />
+                <CardContent
+                    className={cn(isScrollable && 'overflow-y-auto pr-1')}
+                    style={isScrollable && maxHeight ? { maxHeight } : undefined}
+                >
+                    <div className="mb-2">
+                        {searchActId ? (
+                            <Button variant="destructive" onClick={onStopSearch}>
+                                {t.Stop}
+                            </Button>
+                        ) : (
+                            <AddActivityDialog
+                                title={
+                                    <>
+                                        {IconsData.Pickaxe} {t.SearchOreVein}
+                                    </>
+                                }
+                                openBtn={<Button>{t.SearchOreVein}</Button>}
+                                addBtn={<Button onClick={onSearch}>{t.Add}</Button>}
+                            />
+                        )}
+                    </div>
+                    <MyLabel>
+                        {t.Time} {fun.formatTime(SEARCH_ORE_VEIN_TIME)}
+                    </MyLabel>
+                    <GameTimerProgress actionId={searchActId} color="primary" className="mb-2" />
+                    <MyLabel>{veins.length}/10</MyLabel>
+                    {veins.map((vein, index) => (
+                        <VeinCard
+                            key={vein.id}
+                            vein={vein}
+                            oreType={oreType}
+                            isFirst={index === 0}
+                            isLast={index === veins.length - 1}
+                        />
+                    ))}
+                </CardContent>
+            </Card>
+        </div>
+    )
+})
+
+const VeinCard = memo(function VeinCard({
+    vein,
+    oreType,
+    isFirst,
+    isLast,
+}: {
+    vein: OreVeinState
+    oreType: OreTypes
+    isFirst: boolean
+    isLast: boolean
+}) {
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+
+    const onClickPrev = useCallback(() => {
+        setState((s) => moveOreVeinPrev(s, s.location, oreType, vein.id))
+    }, [oreType, vein.id])
+    const onClickNext = useCallback(() => {
+        setState((s) => moveOreVeinNext(s, s.location, oreType, vein.id))
+    }, [oreType, vein.id])
+    const onRemoveVein = useCallback(() => {
+        setState((s) => removeOreVein(s, s.location, oreType, vein.id))
+    }, [oreType, vein.id])
+
+    return (
+        <div className={classes.container}>
+            <div>
+                <MyLabel>
+                    {vein.oreType} - {t.OreQta}: {f(vein.qta)}
+                </MyLabel>
+                <MyLabel>
+                    {t.OreHp}: {f(vein.hp)} / {f(vein.maxHp)}
+                </MyLabel>
+                <MyLabel>
+                    {t.VeinArmour}: {f(vein.armour)} - {t.VeinGemChance}: {f(vein.gemChance * 100)}%
+                </MyLabel>
+            </div>
+            <div className={cn(classes.actions, 'text-muted-foreground')}>
+                {!isFirst && (
+                    <Button onClick={onClickPrev} variant="ghost" aria-label={t.MoveUp}>
+                        {ArrowUp}
+                    </Button>
+                )}
+                {!isLast && (
+                    <Button onClick={onClickNext} variant="ghost" aria-label={t.MoveDown}>
+                        {ArrowDown}
+                    </Button>
+                )}
+                <Button variant="ghost" onClick={onRemoveVein} aria-label={t.Remove}>
+                    {TrashIcon}
+                </Button>
+            </div>
+        </div>
     )
 })

@@ -1,12 +1,6 @@
+import { memoize } from 'proxy-memoize'
 import { memo, useMemo, useState } from 'react'
 import { TbInfoCircle } from 'react-icons/tb'
-import { memoize } from 'proxy-memoize'
-import { Bonus, BonusResult } from '../Bonus'
-import { IconsData } from '../../icons/Icons'
-import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { useTranslations } from '../../msg/useTranslations'
-import { GameState } from '../../game/GameState'
-import { useGameStore } from '../../game/state'
 import {
     Dialog,
     DialogContent,
@@ -16,6 +10,12 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { GameState } from '../../game/GameState'
+import { useGameStore } from '../../game/state'
+import { IconsData } from '../../icons/Icons'
+import { useTranslations } from '../../msg/useTranslations'
+import { Bonus, BonusResult } from '../Bonus'
 
 const BonusListUi = memo(function BonusListUi(props: {
     selectBonusResult: BonusResult | ((state: GameState) => BonusResult)
@@ -24,7 +24,7 @@ const BonusListUi = memo(function BonusListUi(props: {
     const { selectBonusResult, isTime } = props
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
-    const format = isTime ? fun.formatTime : f
+    const format = isTime ? fun.formatTimePrecise : f
 
     const selectBonusResultMemo = useMemo(() => {
         if (typeof selectBonusResult === 'function') return memoize(selectBonusResult)
@@ -41,7 +41,7 @@ const BonusListUi = memo(function BonusListUi(props: {
                 ))}
 
                 <TableRow>
-                    <TableCell colSpan={2} className="w-[100px]">
+                    <TableCell colSpan={2} className="w-25">
                         {t.Total}
                     </TableCell>
                     <TableCell className="text-right">{format(bonusRes.total)}</TableCell>
@@ -55,16 +55,16 @@ const BonusUi = memo(function BonusUi(props: { bonus: Bonus; isTime?: boolean })
     const { bonus, isTime } = props
     const { t, fun } = useTranslations()
     const { f } = useNumberFormatter()
-    const format = isTime ? fun.formatTime : f
+    const format = isTime ? fun.formatTimePrecise : f
 
     return (
         <TableRow>
-            <TableCell className="w-[30px] text-lg">{IconsData[bonus.iconId]}</TableCell>
+            <TableCell className="w-7.5 text-lg">{IconsData[bonus.iconId]}</TableCell>
             <TableCell className="text-left">
                 {t[bonus.nameId]} {bonus.showQta && ` X ${f(bonus.showQta)}`}
             </TableCell>
             <TableCell className="text-right">
-                {bonus.add && `${format(bonus.add)}`}
+                {bonus.add && format(bonus.add)}
                 {bonus.multi && bonus.multi > 0 && '+'}
                 {bonus.multi && `${f(bonus.multi)}%`}
             </TableCell>

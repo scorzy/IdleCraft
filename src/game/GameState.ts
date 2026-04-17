@@ -1,21 +1,24 @@
-import { ActivityState } from '../activities/ActivityState'
-import { RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
-import { GameLocations } from '../gameLocations/GameLocations'
-import { Item } from '../items/Item'
-import { OreType } from '../mining/OreState'
-import { LootId, StorageState } from '../storage/storageTypes'
-import { InitialTimerState } from '../timers/Timer'
-import { ForestsType } from '../wood/ForestsState'
-import { TreeGrowth } from '../wood/forest/forestGrowth'
-import { CharacterState } from '../characters/characterState'
-import { ToastState } from '../notification/toastState'
-import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
-import { BattleLog } from '../battleLog/battleLogInterfaces'
-import { UiState } from '../ui/UiState'
-import { QuestState } from '../quests/QuestTypes'
-import { AppliedEffect } from '../effects/types/AppliedEffect'
 import { Effects } from '@/effects/types/Effects'
 import { InitialState } from '@/entityAdapter/InitialState'
+import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
+import { ActivityState } from '../activities/ActivityState'
+import { BattleLog } from '../battleLog/battleLogInterfaces'
+import { CharacterState } from '../characters/characterState'
+import { RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
+import { AppliedEffect } from '../effects/types/AppliedEffect'
+import { GameLocations } from '../gameLocations/GameLocations'
+import { GatheringZone } from '../gathering/gatheringZones'
+import { Item } from '../items/Item'
+import { OreType, OreVeinState } from '../mining/OreState'
+import { OreTypes } from '../mining/OreTypes'
+import { ToastState } from '../notification/toastState'
+import { QuestState } from '../quests/QuestTypes'
+import { LootId, StorageState } from '../storage/storageTypes'
+import { InitialTimerState } from '../timers/Timer'
+import { UiState } from '../ui/UiState'
+import { ForestsType } from '../wood/ForestsState'
+import { TreeGrowth } from '../wood/forest/forestGrowth'
+import { GrowSpeedBonus } from '../wood/forest/growSpeedBonus'
 
 export enum AddActivityTypes {
     Last = 'Last',
@@ -27,7 +30,9 @@ export interface LocationState {
     storage: InitialState<StorageState>
     forests: ForestsType
     ores: OreType
+    oreVeins: Partial<Record<OreTypes, OreVeinState[]>>
     loot: LootId[]
+    unlockedGatheringZones: GatheringZone[]
 }
 export interface GameState {
     gameId: string
@@ -49,6 +54,7 @@ export interface GameState {
     waitingTrees: string | null
     locations: Record<GameLocations, LocationState>
     treeGrowth: InitialState<TreeGrowth>
+    growSpeedBonuses: InitialState<GrowSpeedBonus>
     recipeId: string
     craftingForm: {
         params: RecipeParameter[]
