@@ -6,7 +6,7 @@ describe('deepMerge', () => {
         const a = { a: 1 }
         const b = { b: 2 }
 
-        const result = deepMerge(a, b)
+        const result = deepMerge(a, b as unknown as typeof a)
 
         expect(result).toEqual({ a: 1, b: 2 })
     })
@@ -24,7 +24,7 @@ describe('deepMerge', () => {
         const a = { nested: { a: 1 } }
         const b = { nested: { b: 2 } }
 
-        const result = deepMerge(a, b)
+        const result = deepMerge(a, b as unknown as typeof a)
 
         expect(result).toEqual({ nested: { a: 1, b: 2 } })
     })
@@ -73,7 +73,7 @@ describe('deepMerge', () => {
             },
         }
 
-        const result = deepMerge(a, b)
+        const result = deepMerge(a, b as unknown as typeof a)
 
         expect(result).toEqual({
             data: {
