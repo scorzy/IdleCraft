@@ -81,4 +81,37 @@ describe('EntityAdapter Mutable', () => {
         }
         expect(() => adapter2.remove(state, 'third')).toThrowError("third doesn't exists")
     })
+    it('update keeps reference (no replacement)', () => {
+        const state = {
+            entries: {
+                first: { id: 'first', name: 'name1' },
+            },
+            ids: ['first'],
+        }
+
+        const beforeRef = state.entries.first
+
+        adapter2.update(state, 'first', { name: 'name2' })
+
+        const afterRef = state.entries.first
+
+        expect(afterRef).toBe(beforeRef)
+
+        expect(afterRef.name).toBe('name2')
+    })
+    it('reference stays valid after update (no stale object)', () => {
+        const state = {
+            entries: {
+                first: { id: 'first', name: 'name1' },
+            },
+            ids: ['first'],
+        }
+
+        const char = adapter2.selectEx(state, 'first')
+
+        adapter2.update(state, 'first', { name: 'name2' })
+
+        // se update facesse replace → questo fallirebbe
+        expect(char.name).toBe('name2')
+    })
 })

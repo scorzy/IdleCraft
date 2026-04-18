@@ -17,8 +17,9 @@ export function removeMutable<T>(state: InitialState<T>, id: string) {
 export function updateMutable<T>(state: InitialState<T>, id: string, data: Partial<T>) {
     const existing = state.entries[id]
     if (!existing) throw new Error(`${id} doesn't exists`)
-    const complete: T = { ...existing, ...data }
-    state.entries[id] = complete
+
+    Object.assign(existing, data) // in-place mutation
+
     return state
 }
 
