@@ -31,9 +31,7 @@ export function removeCharacter(state: GameState, characterId: string): void {
 }
 
 function killPlayer(state: GameState): void {
-    const activities = ActivityAdapter.getIds(state.activities)
-    for (const actId of activities) //
-        removeActivityInt(state, actId)
+    ActivityAdapter.forEach(state.activities, (act) => removeActivityInt(state, act.id))
 
     state.ui.deadDialog = true
 

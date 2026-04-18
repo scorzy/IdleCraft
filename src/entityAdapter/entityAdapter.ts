@@ -33,7 +33,7 @@ export abstract class AbstractEntityAdapter<T> {
         adapterFunctions.remove(state, id)
     }
     getIds(state: InitialState<T>): string[] {
-        return state.ids.slice()
+        return state.ids
     }
 
     select(state: InitialState<T>, id: string): T | undefined {
@@ -94,11 +94,8 @@ export abstract class AbstractEntityAdapter<T> {
     complete(data: unknown): T | null {
         return data as T
     }
-    findIds(data: InitialState<T>): string[] {
-        return data.ids
-    }
     forEach(state: InitialState<T>, fun: (el: T) => void) {
-        const ids = state.ids
+        const ids = state.ids.slice()
         for (const id of ids) {
             const element = state.entries[id]
             if (element) fun(element)

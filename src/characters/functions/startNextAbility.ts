@@ -17,18 +17,14 @@ export function startNextAbility(state: GameState, charId: string): void {
         if (combatAbility && startAbility(state, charId, combatAbility.abilityId)) {
             done = true
 
-            CharacterAdapter.update(state.characters, charId, {
-                lastCombatAbilityNum: pointer,
-                lastCombatAbilityId: combatAbilityId,
-            })
+            char.lastCombatAbilityNum = pointer
+            char.lastCombatAbilityId = combatAbilityId
         }
     }
 
     if (done) return
 
     startAbility(state, charId, AbilitiesEnum.NormalAttack)
-    CharacterAdapter.update(state.characters, charId, {
-        lastCombatAbilityNum: pointer,
-        lastCombatAbilityId: AbilitiesEnum.NormalAttack,
-    })
+    char.lastCombatAbilityNum = pointer
+    char.lastCombatAbilityId = AbilitiesEnum.NormalAttack
 }

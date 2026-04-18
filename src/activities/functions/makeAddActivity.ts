@@ -27,7 +27,7 @@ export const makeAddActivity =
         }
 
         if (state.removeOtherActivities)
-            ActivityAdapter.getIds(state.activities).forEach((id2) => removeActivityInt(state, id2))
+            ActivityAdapter.forEach(state.activities, (id2) => removeActivityInt(state, id2.id))
 
         ActivityAdapter.create(state.activities, activity)
 

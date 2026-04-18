@@ -22,12 +22,10 @@ export function createEnemies(
         }
     })
 
-    const ids = CharacterAdapter.getIds(state.characters)
-    ids.forEach((id) => {
-        const char = CharacterAdapter.selectEx(state.characters, id)
+    CharacterAdapter.forEach(state.characters, (char) => {
         if (!char.isEnemy) return
-        resetHealth(state, id)
-        resetMana(state, id)
-        resetStamina(state, id)
+        resetHealth(state, char.id)
+        resetMana(state, char.id)
+        resetStamina(state, char.id)
     })
 }

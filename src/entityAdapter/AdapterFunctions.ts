@@ -7,7 +7,6 @@ export function createMutable<T>(state: InitialState<T>, id: string, data: T): I
 }
 
 export function removeMutable<T>(state: InitialState<T>, id: string) {
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete state.entries[id]
     const index = state.ids.indexOf(id)
     state.ids.splice(index, 1)
