@@ -13,7 +13,6 @@ import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { ItemFilterDescription } from '../../items/ui/ItemFilterUI'
 import { ItemIconName } from '../../items/ui/ItemIconName'
-import { removeUnusedParams } from '../../msg/removeUnusedParams'
 import { useTranslations } from '../../msg/useTranslations'
 import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
@@ -147,7 +146,8 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
             triggerContent={
                 selected ? (
                     <span className="select-trigger">
-                        {icon} {removeUnusedParams(t[selected.nameId])}
+                        {icon} {t[selected.nameId]}
+                        {/* {removeUnusedParams(t[selected.nameId])} */}
                     </span>
                 ) : (
                     `-- ${t.SelectARecipe} --`
@@ -162,7 +162,8 @@ const RecipeSelectUi = memo(function RecipeSelectUi() {
                     onSelect={() => handleRecipeChange(r)}
                     selected={r.id === recipeId}
                 >
-                    {removeUnusedParams(t[r.nameId])}
+                    {t[r.nameId]}
+                    {/* {removeUnusedParams(t[r.nameId])} */}
                 </ComboBoxItem>
             ))}
         </ComboBoxResponsive>
