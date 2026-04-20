@@ -1,5 +1,4 @@
 import { memo, ReactElement, useCallback } from 'react'
-import { useShallow } from 'zustand/react/shallow'
 import { useItemName } from '@/items/useItemName'
 import { Badge } from '../../components/ui/badge'
 import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
@@ -11,6 +10,7 @@ import { ItemIcon } from '../../items/ui/ItemIcon'
 import { ItemIconName } from '../../items/ui/ItemIconName'
 import { useTranslations } from '../../msg/useTranslations'
 import { selectFilteredItems, selectGameItem, selectItemQta } from '../StorageSelectors'
+import { memoize } from 'proxy-memoize'
 
 export const ItemsSelect = memo(function ItemsSelect({
     itemFilter,
@@ -26,7 +26,10 @@ export const ItemsSelect = memo(function ItemsSelect({
     label?: ReactElement | ReactElement[] | string
 }) {
     const itemsId = useGameStore(
-        useShallow(useCallback((s: GameState) => selectFilteredItems(s, itemFilter), [itemFilter]))
+        useCallback(
+            memoize((s: GameState) => selectFilteredItems(s, itemFilter)),
+            [itemFilter]
+        )
     )
 
     return (
