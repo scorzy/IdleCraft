@@ -1,12 +1,8 @@
-import { memoize } from 'micro-memoize'
-import { MsgFunctions } from '@/msg/MsgFunctions'
-import { CharacterAdapter } from '../characters/characterAdapter'
-import { PLAYER_ID } from '../characters/charactersConst'
-import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
-import { GameState } from '../game/GameState'
-import { GetItemNameParams } from '../msg/GetItemNameParams'
-import { selectTranslations } from '../msg/useTranslations'
-import { Item, ItemFilter } from './Item'
+import { CharacterAdapter } from '../../characters/characterAdapter'
+import { PLAYER_ID } from '../../characters/charactersConst'
+import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import { GameState } from '../../game/GameState'
+import { Item, ItemFilter } from '../Item'
 
 export const selectEquipId =
     (slot: EquipSlotsEnum, characterId = PLAYER_ID) =>
@@ -60,13 +56,3 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
 
     return true
 }
-
-export const selectItemNameMemoized = memoize(
-    (nameFunc: keyof MsgFunctions | undefined, params: GetItemNameParams, t: ReturnType<typeof selectTranslations>) => {
-        const fn = t.fun[nameFunc ?? 'getItemName'] as (...args: unknown[]) => string
-
-        if (fn) return fn(params)
-        return t.t[params.itemNameId] ?? params.itemNameId
-    },
-    { maxSize: 100 }
-)

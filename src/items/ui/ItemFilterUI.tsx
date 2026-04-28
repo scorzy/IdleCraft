@@ -8,7 +8,7 @@ import { useTranslations } from '../../msg/useTranslations'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { DamageTypesData } from '../damageTypes'
 import { DamageTypes, ItemFilter } from '../Item'
-import { useItemName } from '../useItemName'
+import { useItemName } from '../selectors/useItemName'
 
 export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }) {
     const { f } = useNumberFormatter()

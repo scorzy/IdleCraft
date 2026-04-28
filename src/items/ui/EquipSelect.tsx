@@ -17,7 +17,7 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { DEF_WOOD_AXE } from '../../wood/selectors/WoodcuttingSelectors'
 import { Item } from '../Item'
 import { changeEquip } from '../itemFunctions'
-import { selectEquipId } from '../itemSelectors'
+import { selectEquipId } from '../selectors/itemSelectors'
 import { SlotsData } from '../slotsData'
 import { PickaxeDataUi, WoodAxeDataUi } from './ItemInfo'
 

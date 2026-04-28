@@ -3,7 +3,7 @@ import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { Item } from '../Item'
-import { useItemName } from '../useItemName'
+import { useItemName } from '../selectors/useItemName'
 import { ItemIcon } from './ItemIcon'
 
 export const ItemIconName = (props: { itemId: string | Item }) => {

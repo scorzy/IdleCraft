@@ -1,6 +1,6 @@
 import { memo, ReactElement, useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
-import { useItemName } from '@/items/useItemName'
+import { useItemName } from '@/items/selectors/useItemName'
 import { Badge } from '../../components/ui/badge'
 import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
-import { ExpEnum } from '../experience/ExpEnum'
-import { Icons } from '../icons/Icons'
-import { Item, ItemFilter, ItemSubType, ItemTypes } from './Item'
+import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import { ExpEnum } from '../../experience/ExpEnum'
+import { Icons } from '../../icons/Icons'
+import { Item, ItemFilter, ItemSubType, ItemTypes } from '../Item'
 import { filterItem } from './itemSelectors'
 
 describe('filterItem', () => {
