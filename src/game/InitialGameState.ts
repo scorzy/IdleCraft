@@ -61,6 +61,7 @@ export const InitialGameState: GameState = {
         recipeType: RecipeTypes.Smithing,
         selectedQuestId: null,
         itemFilterSubType: undefined,
+        itemFilterType: undefined,
     },
     notifications: [],
     location: GameLocations.StartVillage,

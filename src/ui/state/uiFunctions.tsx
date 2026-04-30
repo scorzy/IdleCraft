@@ -10,7 +10,7 @@ import { CollapsedEnum } from '../sidebar/CollapsedEnum'
 import { UiPages } from './UiPages'
 import { UiPagesData } from './UiPagesData'
 import { useUiTempStore } from './uiTempStore'
-import { ItemFilter } from '../../items/Item'
+import { ItemSubType, ItemTypes } from '../../items/Item'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'health' | 'stamina' | 'mana'
 type StorageOrder = 'name' | 'quantity' | 'value'
@@ -107,7 +107,12 @@ export const setSidebarWidth = (id: CollapsedEnum, width: number) =>
         sidebarWidths: { ...s.sidebarWidths, [id]: width },
     }))
 
-export const setItemFilterSubType = (itemFilterSubType: ItemFilter | undefined) =>
+export const setItemFilterSubType = (itemFilterSubType: ItemSubType | undefined) =>
     setState((s) => {
         s.ui.itemFilterSubType = itemFilterSubType
+    })
+
+export const setItemFilterType = (itemFilterType: ItemTypes | undefined) =>
+    setState((s) => {
+        s.ui.itemFilterType = itemFilterType
     })

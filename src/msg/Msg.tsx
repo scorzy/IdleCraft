@@ -364,4 +364,8 @@ export interface Msg {
     AddOptions: string
     WolfLair: string
     KillToUnlock: string
+    Weapons: string
+    Armours: string
+    Tools: string
+    Consumables: string
 }
