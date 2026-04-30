@@ -9,7 +9,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { Item, ItemSubType, ItemTypes } from '../../items/Item'
+import { Item, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
@@ -34,7 +34,6 @@ export const axeRecipe = makeMemoizedRecipe({
     type: RecipeTypes.Smithing,
     iconId: Icons.Axe,
     nameId: 'WoodAxe' as keyof Msg,
-    itemSubType: ItemSubType.Tool,
     getParameters: () => woodAxeParam,
     getResult: (state: GameState, params: RecipeParameterValue[]) => {
         const bar = params.find((i) => i.id === 'bar')

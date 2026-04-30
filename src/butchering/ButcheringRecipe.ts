@@ -9,7 +9,7 @@ import {
 } from '../crafting/RecipeInterfaces'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
-import { ItemSubType, ItemTypes } from '../items/Item'
+import { ItemTypes } from '../items/Item'
 
 export const butcheringRecipeParam: RecipeParameterItemFilter[] = [
     {
@@ -25,7 +25,6 @@ export const butcheringRecipe = makeMemoizedRecipe({
     type: RecipeTypes.Butchering,
     nameId: 'Butchering',
     iconId: Icons.MeatCleaver,
-    itemSubType: ItemSubType.Crafting,
     getParameters: () => butcheringRecipeParam,
     getResult: function (_state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const corpse = params.find((i) => i.id === 'corpse')

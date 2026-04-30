@@ -11,7 +11,7 @@ import {
 import { Effects } from '../effects/types/Effects'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
-import { Item, ItemSubType } from '../items/Item'
+import { Item } from '../items/Item'
 import { selectGameItem } from '../storage/StorageSelectors'
 import { MAX_INGREDIENTS } from './alchemyConst'
 import { generatePotion } from './alchemyFunctions'
@@ -62,7 +62,6 @@ export const potionRecipe: Recipe = makeMemoizedRecipe({
     nameId: 'Potion',
     iconId: Icons.Potion,
     type: RecipeTypes.Alchemy,
-    itemSubType: ItemSubType.Potion,
     getParameters: function (_state: GameState): RecipeParameter[] {
         return PotionRecipeParameters
     },
