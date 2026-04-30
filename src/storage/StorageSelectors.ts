@@ -14,7 +14,7 @@ import { filterItem } from '../items/selectors/itemSelectors'
 import { selectItemNameMemoized } from '@/items/selectors/itemSelectorsMemo'
 import { StdItems, UnlimitedItems } from '../items/stdItems'
 import { selectTranslations } from '../msg/useTranslations'
-import { selectStorageOrder } from '../ui/state/uiSelectors'
+import { selectitemFilterSubType, selectStorageOrder } from '../ui/state/uiSelectors'
 import { ItemAdapter } from './ItemAdapter'
 import { StorageAdapter } from './storageAdapter'
 import { isCrafted } from './storageFunctions'
@@ -73,10 +73,20 @@ const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[]) => {
     return ord.toSorted((a, b) => a.value - b.value)
 }
 
-const selectLocationItemsSelector = (location: GameLocations, storageOrder: string) => {
+const selectLocationItemsSelector = (
+    location: GameLocations,
+    storageOrder: string,
+    itemSubType: ItemFilter | undefined
+) => {
     let selector: (state: GameState) => string[]
+
     const selectLocationItemIds = (state: GameState) =>
-        StorageAdapter.getIds(state.locations[location].storage).map<ItemId>((id) => ({ id }))
+        StorageAdapter.findManyIds(state.locations[location].storage, (st) => {
+            if (!itemSubType) return true
+            const item = selectGameItem(st.itemId)(state)
+            if (!item) return false
+            return filterItem(item, itemSubType)
+        }).map<ItemId>((id) => ({ id }))
 
     const sortFunc = (sel: (state: GameState) => ItemId[]) => (s: GameState) => {
         const items = sel(s)
@@ -100,10 +110,11 @@ const selectLocationItemsSelector = (location: GameLocations, storageOrder: stri
 
 export const useLocationItems = (location: GameLocations) => {
     const storageOrder = useGameStore(selectStorageOrder)
+    const itemSubType = useGameStore(selectitemFilterSubType)
 
     const selectLocationItemsSelectorMemo = useMemo(
-        () => memoize(selectLocationItemsSelector(location, storageOrder)),
-        [location, storageOrder]
+        () => memoize(selectLocationItemsSelector(location, storageOrder, itemSubType)),
+        [location, storageOrder, itemSubType]
     )
 
     return useGameStore(selectLocationItemsSelectorMemo)

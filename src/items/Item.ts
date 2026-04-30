@@ -71,7 +71,6 @@ export interface Item {
     color?: string
     materials?: ItemsMaterials
     type: ItemTypes
-    subType?: ItemSubType
     value: number
     equipSlot?: EquipSlotsEnum
     craftingData?: CraftingData

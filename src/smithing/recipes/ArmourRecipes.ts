@@ -59,7 +59,6 @@ export const armourRecipe = makeMemoizedRecipe({
             materials,
             icon: Icons.Breastplate,
             type: ItemTypes.Body,
-            subType: ItemSubType.Armour,
             equipSlot: EquipSlotsEnum.Body,
             value: getItemValue(components, true),
             armourData,

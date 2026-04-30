@@ -42,6 +42,7 @@ import {
 } from '../StorageSelectors'
 import { setSelectedItem } from '../storageFunctions'
 import classes from './storage.module.css'
+import { ItemFilters } from './ItemFilters'
 
 const breakpoints: QueryBreakpoints = {
     small: [0, 400],
@@ -85,7 +86,8 @@ export function UiStorage() {
     return (
         <MyPage className={classes.cardList} ref={pageRef}>
             <UiStorageContext value={setOpen}>
-                <div ref={accordionRef}>
+                <div ref={accordionRef} className={cn('flex flex-col flex-1 gap-3')}>
+                    <ItemFilters />
                     <StorageAccordion />
                 </div>
 

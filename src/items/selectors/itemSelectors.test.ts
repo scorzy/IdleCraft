@@ -13,7 +13,6 @@ describe('filterItem', () => {
         value: 100,
         equipSlot: EquipSlotsEnum.MainHand,
         type: ItemTypes.OneHand,
-        subType: ItemSubType.Weapon,
         craftingData: { prestige: 1, speedBonus: 2 },
         woodAxeData: undefined,
         craftingWoodAxeData: undefined,

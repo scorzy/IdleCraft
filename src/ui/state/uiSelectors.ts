@@ -31,3 +31,5 @@ export const selectIsStorageOrderName = (s: GameState) => s.ui.storageOrder === 
 export const selectIsStorageOrderQuantity = (s: GameState) => s.ui.storageOrder === 'quantity'
 export const selectIsStorageOrderValue = (s: GameState) => s.ui.storageOrder === 'value'
 export const getSidebarWidth = (id?: CollapsedEnum) => (s: UiTempStore) => (id ? (s.sidebarWidths[id] ?? 0) : -1)
+
+export const selectitemFilterSubType = (s: GameState) => s.ui.itemFilterSubType

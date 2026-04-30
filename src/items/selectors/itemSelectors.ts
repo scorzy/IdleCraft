@@ -2,6 +2,7 @@ import { CharacterAdapter } from '../../characters/characterAdapter'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { GameState } from '../../game/GameState'
+import { getItemSubType } from '../getItemSubType'
 import { Item, ItemFilter } from '../Item'
 
 export const selectEquipId =
@@ -17,7 +18,7 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
     if (filter.nameId && item.nameId !== filter.nameId) return false
     if (filter.equipSlot && item.equipSlot !== filter.equipSlot) return false
     if (filter.itemType && item.type !== filter.itemType) return false
-    if (filter.itemSubType && item.subType !== filter.itemSubType) return false
+    if (filter.itemSubType && getItemSubType(item.type) !== filter.itemSubType) return false
     if (filter.minStats)
         for (const kv of Object.entries(filter.minStats)) {
             const itemKey = kv[0] as keyof Item

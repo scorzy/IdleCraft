@@ -60,6 +60,7 @@ export const InitialGameState: GameState = {
         deadDialog: false,
         recipeType: RecipeTypes.Smithing,
         selectedQuestId: null,
+        itemFilterSubType: undefined,
     },
     notifications: [],
     location: GameLocations.StartVillage,
