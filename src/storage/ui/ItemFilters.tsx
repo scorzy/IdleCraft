@@ -10,9 +10,11 @@ import { getItemSubType } from '../../items/getItemSubType'
 import { ItemTypesData } from '../../items/ItemTypesData'
 import { memoize } from 'micro-memoize'
 import { Msg } from '../../msg/Msg'
-import { Input } from '../../components/ui/input'
 import { Field, FieldLabel } from '../../components/ui/field'
 import { useTranslations } from '../../msg/useTranslations'
+import { InputGroup, InputGroupInput, InputGroupAddon } from '../../components/ui/input-group'
+import { Button } from '../../components/ui/button'
+import { MdClear } from 'react-icons/md'
 
 interface UiFilter {
     subType: ItemSubType
@@ -116,6 +118,7 @@ export const UIFilterType = memo(function UIFilterType({
 })
 
 const onChange = (e: ChangeEvent<HTMLInputElement>) => setItemFilterSearch(e.target.value)
+const clear = () => setItemFilterSearch('')
 export const ItemSearch = memo(function ItemSearch() {
     const itemFilterSearch = useGameStore(selectItemFilterSearch)
     const { t } = useTranslations()
@@ -123,7 +126,17 @@ export const ItemSearch = memo(function ItemSearch() {
     return (
         <Field>
             <FieldLabel htmlFor="SearchItem">{t.SearchItem}</FieldLabel>
-            <Input id="SearchItem" autoComplete="off" value={itemFilterSearch} onChange={onChange} />
+            <InputGroup>
+                <InputGroupInput id="SearchItem" value={itemFilterSearch} onChange={onChange} />
+
+                {itemFilterSearch && (
+                    <InputGroupAddon align="inline-end">
+                        <Button variant="ghost" size="icon" onClick={clear}>
+                            <MdClear />
+                        </Button>
+                    </InputGroupAddon>
+                )}
+            </InputGroup>
         </Field>
     )
 })
