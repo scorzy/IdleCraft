@@ -1,7 +1,7 @@
 import { memoize } from 'proxy-memoize'
 
 import { InitialState } from '@/entityAdapter/InitialState'
-import { Translations } from '@/msg/Translations'
+
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
@@ -46,28 +46,18 @@ export const selectStorageLocationsMemo = memoize((state: GameState) => {
 })
 
 interface ItemId {
-    id: string
+    item: Item
+    name: string
 }
 type ItemOrdQta = ItemId & { qta: number }
-type ItemOrdName = ItemId & { name: string }
 type ItemOrdValue = ItemId & { value: number }
 
-const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialState<Item>) => {
-    const ord: ItemOrdName[] = []
-    for (const e of items) {
-        const item = selectGameItemFromCraft(e.id, craftedItems)
-        if (!item) continue
-        const params = GetItemNameParamsMemoized(item.nameId, item.materials)
-        const name = selectItemNameMemoized(item.nameFunc, params, t)
-        ord.push({ ...e, name })
-    }
-    return ord.toSorted((a, b) => a.name.localeCompare(b.name))
-}
+const reorderByName = (items: ItemId[]) => items.toSorted((a, b) => a.name.localeCompare(b.name))
 
 const reorderByQta = (storage: InitialState<StorageState>, items: ItemId[]) => {
     const ord: ItemOrdQta[] = []
     for (const e of items) {
-        const qta = storage.entries[e.id]?.quantity ?? 0
+        const qta = storage.entries[e.item.id]?.quantity ?? 0
         ord.push({ ...e, qta })
     }
     return ord.toSorted((a, b) => a.qta - b.qta)
@@ -76,7 +66,7 @@ const reorderByQta = (storage: InitialState<StorageState>, items: ItemId[]) => {
 const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[]) => {
     const ord: ItemOrdValue[] = []
     for (const e of items) {
-        const item = selectGameItemFromCraft(e.id, craftedItems)
+        const item = selectGameItemFromCraft(e.item.id, craftedItems)
         ord.push({ ...e, value: item?.value ?? 0 })
     }
     return ord.toSorted((a, b) => a.value - b.value)
@@ -91,33 +81,34 @@ const selectLocationItemsSelector = (
 ) => {
     let selector: (state: GameState) => string[]
 
-    const selectLocationItemIds = (state: GameState) =>
-        StorageAdapter.findManyIds(state.locations[location].storage, (st) => {
+    const selectLocationItemIds = (state: GameState) => {
+        const itemIds: ItemId[] = []
+        const t = selectTranslations(state)
+        const itemSearchStr = itemSearch?.toLowerCase() ?? ''
+        StorageAdapter.forEach(state.locations[location].storage, (st) => {
             const item = selectGameItem(st.itemId)(state)
-            if (!item) return false
-            const t = selectTranslations(state)
-            itemSearch = itemSearch?.toLowerCase() ?? ''
-            return (
-                (!itemSubType || getItemSubType(item.type) === itemSubType) &&
-                (!itemType || item.type === itemType) &&
-                (itemSearch === '' ||
-                    selectItemNameMemoized(item.nameFunc, GetItemNameParamsMemoized(item.nameId, item.materials), t)
-                        .toLowerCase()
-                        .includes(itemSearch))
+            if (!item) return
+            if (itemSubType && getItemSubType(item.type) !== itemSubType) return
+            if (itemType && item.type !== itemType) return
+            const name = selectItemNameMemoized(
+                item.nameFunc,
+                GetItemNameParamsMemoized(item.nameId, item.materials),
+                t
             )
-        }).map<ItemId>((id) => ({ id }))
+            if (itemSearchStr !== '' && !name.toLowerCase().includes(itemSearchStr)) return
+            itemIds.push({ item, name })
+        })
+        return itemIds
+    }
 
     const sortFunc = (sel: (state: GameState) => ItemId[]) => (s: GameState) => {
         const items = sel(s)
         if (items.length === 0) return EMPTY_ARRAY
         if (!s.ui.storageAsc) items.reverse()
-        return items.map((i) => i.id)
+        return items.map((i) => i.item.id)
     }
 
-    if (storageOrder === 'name')
-        selector = sortFunc((s: GameState) =>
-            reorderByName(selectTranslations(s), selectLocationItemIds(s), s.craftedItems)
-        )
+    if (storageOrder === 'name') selector = sortFunc((s: GameState) => reorderByName(selectLocationItemIds(s)))
     else if (storageOrder === 'quantity')
         selector = sortFunc((s: GameState) => reorderByQta(s.locations[location].storage, selectLocationItemIds(s)))
     else if (storageOrder === 'value')
