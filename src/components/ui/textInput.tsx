@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { MdClear } from 'react-icons/md'
-
 import { Button } from './button'
 import { Field, FieldLabel } from './field'
 import { InputGroup, InputGroupInput, InputGroupAddon } from './input-group'
