@@ -368,4 +368,5 @@ export interface Msg {
     Armours: string
     Tools: string
     Consumables: string
+    SearchItem: string
 }

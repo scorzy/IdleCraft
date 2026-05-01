@@ -1,15 +1,18 @@
-import { memo } from 'react'
+import { ChangeEvent, memo } from 'react'
 import { Card, CardContent } from '../../components/ui/card'
 import { useGameStore } from '../../game/state'
-import { selectItemFilterSubType, selectItemFilterType } from '../../ui/state/uiSelectors'
+import { selectItemFilterSearch, selectItemFilterSubType, selectItemFilterType } from '../../ui/state/uiSelectors'
 import { Toggle } from '@/components/ui/toggle'
 import { Icons, IconsData } from '../../icons/Icons'
-import { setItemFilterSubType, setItemFilterType } from '../../ui/state/uiFunctions'
+import { setItemFilterSearch, setItemFilterSubType, setItemFilterType } from '../../ui/state/uiFunctions'
 import { ItemSubType, ItemTypes } from '../../items/Item'
 import { getItemSubType } from '../../items/getItemSubType'
 import { ItemTypesData } from '../../items/ItemTypesData'
 import { memoize } from 'micro-memoize'
 import { Msg } from '../../msg/Msg'
+import { Input } from '../../components/ui/input'
+import { Field, FieldLabel } from '../../components/ui/field'
+import { useTranslations } from '../../msg/useTranslations'
 
 interface UiFilter {
     subType: ItemSubType
@@ -46,6 +49,7 @@ export const ItemFilters = memo(function ItemFilters() {
             <CardContent className="flex flex-col gap-1">
                 <ItemFilterSubType />
                 <ItemFilterType />
+                <ItemSearch />
             </CardContent>
         </Card>
     )
@@ -108,5 +112,18 @@ export const UIFilterType = memo(function UIFilterType({
         >
             {IconsData[icon]}
         </Toggle>
+    )
+})
+
+const onChange = (e: ChangeEvent<HTMLInputElement>) => setItemFilterSearch(e.target.value)
+export const ItemSearch = memo(function ItemSearch() {
+    const itemFilterSearch = useGameStore(selectItemFilterSearch)
+    const { t } = useTranslations()
+
+    return (
+        <Field>
+            <FieldLabel htmlFor="SearchItem">{t.SearchItem}</FieldLabel>
+            <Input id="SearchItem" autoComplete="off" value={itemFilterSearch} onChange={onChange} />
+        </Field>
     )
 })

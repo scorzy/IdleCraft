@@ -34,3 +34,5 @@ export const getSidebarWidth = (id?: CollapsedEnum) => (s: UiTempStore) => (id ?
 
 export const selectItemFilterSubType = (s: GameState) => s.ui.itemFilterSubType
 export const selectItemFilterType = (s: GameState) => s.ui.itemFilterType
+export const selectItemFilterSearch = (s: GameState) => s.ui.itemFilterSearch
+export const selectPage = (state: GameState) => state.ui.page

@@ -368,6 +368,7 @@ export const engMsg: Msg = {
     Armours: 'Armours',
     Tools: 'Tools',
     Consumables: 'Consumables',
+    SearchItem: 'Search item',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

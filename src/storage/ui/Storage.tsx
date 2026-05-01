@@ -137,6 +137,7 @@ const StorageAccordion = memo(function StorageAccordion() {
         </Accordion>
     )
 })
+
 const AccordionItemLocation = memo(function AccordionItemLocation({ l, show }: { l: string; show: boolean }) {
     const { t } = useTranslations()
     const { ref, active } = useContainerQueries({ breakpoints })

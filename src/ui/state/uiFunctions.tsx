@@ -116,3 +116,8 @@ export const setItemFilterType = (itemFilterType: ItemTypes | undefined) =>
     setState((s) => {
         s.ui.itemFilterType = itemFilterType
     })
+
+export const setItemFilterSearch = (itemFilterSearch: string) =>
+    setState((s) => {
+        s.ui.itemFilterSearch = itemFilterSearch
+    })
