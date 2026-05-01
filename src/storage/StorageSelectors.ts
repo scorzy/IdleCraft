@@ -85,11 +85,12 @@ const selectLocationItemsSelector = (
         const itemIds: ItemId[] = []
         const t = selectTranslations(state)
         const itemSearchStr = itemSearch?.toLowerCase() ?? ''
+        const checkType = itemType && itemSubType && getItemSubType(itemType) === itemSubType
         StorageAdapter.forEach(state.locations[location].storage, (st) => {
             const item = selectGameItem(st.itemId)(state)
             if (!item) return
             if (itemSubType && getItemSubType(item.type) !== itemSubType) return
-            if (itemType && item.type !== itemType) return
+            if (checkType && item.type !== itemType) return
             const name = selectItemNameMemoized(
                 item.nameFunc,
                 GetItemNameParamsMemoized(item.nameId, item.materials),
