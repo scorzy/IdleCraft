@@ -62,6 +62,7 @@ export const InitialGameState: GameState = {
         selectedQuestId: null,
         itemFilterSubType: undefined,
         itemFilterType: undefined,
+        itemFilterSearch: '',
     },
     notifications: [],
     location: GameLocations.StartVillage,

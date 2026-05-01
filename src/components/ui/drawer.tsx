@@ -19,7 +19,7 @@ const DrawerOverlay = ({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay> & {
-    ref?: React.RefObject<React.ElementRef<typeof DrawerPrimitive.Overlay> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof DrawerPrimitive.Overlay> | null>
 }) => <DrawerPrimitive.Overlay ref={ref} className={cn('fixed inset-0 z-50 bg-black/80', className)} {...props} />
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
 
@@ -29,7 +29,7 @@ const DrawerContent = ({
     children,
     ...props
 }: React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
-    ref?: React.RefObject<React.ElementRef<typeof DrawerPrimitive.Content> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof DrawerPrimitive.Content> | null>
 }) => (
     <DrawerPortal>
         <DrawerOverlay />
@@ -63,7 +63,7 @@ const DrawerTitle = ({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title> & {
-    ref?: React.RefObject<React.ElementRef<typeof DrawerPrimitive.Title> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof DrawerPrimitive.Title> | null>
 }) => (
     <DrawerPrimitive.Title
         ref={ref}
@@ -78,7 +78,7 @@ const DrawerDescription = ({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description> & {
-    ref?: React.RefObject<React.ElementRef<typeof DrawerPrimitive.Description> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof DrawerPrimitive.Description> | null>
 }) => <DrawerPrimitive.Description ref={ref} className={cn('text-muted-foreground text-sm', className)} {...props} />
 DrawerDescription.displayName = DrawerPrimitive.Description.displayName
 
