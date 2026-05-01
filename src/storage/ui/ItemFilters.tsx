@@ -107,7 +107,7 @@ export const UIFilterType = memo(function UIFilterType({
             title={title}
             // size={'lg'}
             pressed={pressed}
-            variant={pressed ? 'primary' : 'default'}
+            variant={'primary'}
             onPressedChange={onClick}
         >
             {IconsData[icon]}
