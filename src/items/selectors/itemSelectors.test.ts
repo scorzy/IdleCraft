@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
-import { ExpEnum } from '../experience/ExpEnum'
-import { Icons } from '../icons/Icons'
-import { Item, ItemFilter, ItemSubType, ItemTypes } from './Item'
+import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import { ExpEnum } from '../../experience/ExpEnum'
+import { Icons } from '../../icons/Icons'
+import { Item, ItemFilter, ItemSubType, ItemTypes } from '../Item'
 import { filterItem } from './itemSelectors'
 
 describe('filterItem', () => {
@@ -13,7 +13,6 @@ describe('filterItem', () => {
         value: 100,
         equipSlot: EquipSlotsEnum.MainHand,
         type: ItemTypes.OneHand,
-        subType: ItemSubType.Weapon,
         craftingData: { prestige: 1, speedBonus: 2 },
         woodAxeData: undefined,
         craftingWoodAxeData: undefined,

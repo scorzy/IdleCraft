@@ -12,7 +12,7 @@ const Command = ({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<typeof CommandPrimitive> & {
-    ref?: React.RefObject<React.ElementRef<typeof CommandPrimitive> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof CommandPrimitive> | null>
 }) => (
     <CommandPrimitive
         ref={ref}
@@ -42,7 +42,7 @@ const CommandInput = ({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> & {
-    ref?: React.RefObject<React.ElementRef<typeof CommandPrimitive.Input> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof CommandPrimitive.Input> | null>
 }) => (
     // eslint-disable-next-line react/no-unknown-property
     <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
@@ -65,7 +65,7 @@ const CommandList = ({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<typeof CommandPrimitive.List> & {
-    ref?: React.RefObject<React.ElementRef<typeof CommandPrimitive.List> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof CommandPrimitive.List> | null>
 }) => (
     <CommandPrimitive.List
         ref={ref}
@@ -80,7 +80,7 @@ const CommandEmpty = ({
     ref,
     ...props
 }: React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty> & {
-    ref?: React.RefObject<React.ElementRef<typeof CommandPrimitive.Empty> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof CommandPrimitive.Empty> | null>
 }) => <CommandPrimitive.Empty ref={ref} className="py-6 text-center text-sm" {...props} />
 
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName
@@ -90,7 +90,7 @@ const CommandGroup = ({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<typeof CommandPrimitive.Group> & {
-    ref?: React.RefObject<React.ElementRef<typeof CommandPrimitive.Group> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof CommandPrimitive.Group> | null>
 }) => (
     <CommandPrimitive.Group
         ref={ref}
@@ -109,7 +109,7 @@ const CommandSeparator = ({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<typeof CommandPrimitive.Separator> & {
-    ref?: React.RefObject<React.ElementRef<typeof CommandPrimitive.Separator> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof CommandPrimitive.Separator> | null>
 }) => <CommandPrimitive.Separator ref={ref} className={cn('bg-border -mx-1 h-px', className)} {...props} />
 CommandSeparator.displayName = CommandPrimitive.Separator.displayName
 
@@ -118,7 +118,7 @@ const CommandItem = ({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item> & {
-    ref?: React.RefObject<React.ElementRef<typeof CommandPrimitive.Item> | null>
+    ref?: React.RefObject<React.ComponentRef<typeof CommandPrimitive.Item> | null>
 }) => (
     <CommandPrimitive.Item
         ref={ref}

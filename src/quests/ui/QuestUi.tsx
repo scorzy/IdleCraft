@@ -2,7 +2,7 @@ import { Popover, PopoverContent, PopoverTrigger, Portal } from '@radix-ui/react
 import { memoize } from 'proxy-memoize'
 import { memo, ReactNode, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
-import { useItemName } from '@/items/useItemName'
+import { useItemName } from '@/items/selectors/useItemName'
 import { CharTemplatesData } from '../../characters/templates/charTemplateData'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
 import { Badge } from '../../components/ui/badge'

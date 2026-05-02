@@ -1,6 +1,6 @@
 import { GameState } from '../../game/GameState'
 import { Item } from '../../items/Item'
-import { selectItemName } from '../../items/selectItemName'
+import { selectItemName } from '../../items/selectors/selectItemName'
 import { selectTranslations } from '../../msg/useTranslations'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { getCraftingActivity } from '../CraftingSelectors'

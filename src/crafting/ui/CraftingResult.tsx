@@ -1,6 +1,6 @@
 import { memo, ReactNode } from 'react'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { useItemName } from '@/items/useItemName'
+import { useItemName } from '@/items/selectors/useItemName'
 import { MyLabel } from '@/ui/myCard/MyLabel'
 import { isPotionItem } from '../../alchemy/PotionCraftingResult'
 import { PotionResultUi } from '../../alchemy/PotionResultUi'

@@ -22,8 +22,8 @@ import { Sidebar } from '../sidebar/Sidebar'
 import { UiPages } from '../state/UiPages'
 import { UiPagesData } from '../state/UiPagesData'
 import { sidebarOpen, toggle } from '../state/uiFunctions'
-import { selectPage } from '../uiSelectors'
 import classes from './appShell.module.css'
+import { selectPage } from '../state/uiSelectors'
 
 export const AppShell = memo(function AppShell() {
     const open = useGameStore(sidebarOpen)

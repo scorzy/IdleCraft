@@ -1,12 +1,13 @@
-import { RecipeTypes } from '../crafting/RecipeInterfaces'
-import { CommaTypes } from '../formatters/CommaTypes'
-import { NotationTypes } from '../formatters/NotationTypes'
-import { GameLocations } from '../gameLocations/GameLocations'
-import { GatheringZone } from '../gathering/gatheringZones'
-import { OreTypes } from '../mining/OreTypes'
-import { WoodTypes } from '../wood/WoodTypes'
-import { CollapsedEnum } from './sidebar/CollapsedEnum'
-import { UiPages } from './state/UiPages'
+import { RecipeTypes } from '../../crafting/RecipeInterfaces'
+import { CommaTypes } from '../../formatters/CommaTypes'
+import { NotationTypes } from '../../formatters/NotationTypes'
+import { GameLocations } from '../../gameLocations/GameLocations'
+import { GatheringZone } from '../../gathering/gatheringZones'
+import { ItemSubType, ItemTypes } from '../../items/Item'
+import { OreTypes } from '../../mining/OreTypes'
+import { WoodTypes } from '../../wood/WoodTypes'
+import { CollapsedEnum } from '../sidebar/CollapsedEnum'
+import { UiPages } from './UiPages'
 
 export interface UiState {
     open: boolean
@@ -33,4 +34,7 @@ export interface UiState {
     defaultClosed: Record<string, boolean>
     deadDialog: boolean
     selectedQuestId: string | null
+    itemFilterSubType: ItemSubType | undefined
+    itemFilterType: ItemTypes | undefined
+    itemFilterSearch: string
 }

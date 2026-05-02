@@ -12,7 +12,7 @@ import {
     selectSelectedItemId,
 } from '../../storage/StorageSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { useItemName } from '../useItemName'
+import { useItemName } from '../selectors/useItemName'
 import { ItemIcon } from './ItemIcon'
 import { ItemInfo } from './ItemInfo'
 import classes from './selectItem.module.css'

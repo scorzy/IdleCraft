@@ -10,7 +10,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { DamageData, DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'
+import { DamageData, DamageTypes, Item, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
@@ -29,7 +29,6 @@ export const armourRecipe = makeMemoizedRecipe({
     nameId: 'Armour' as keyof Msg,
     iconId: Icons.Breastplate,
     type: RecipeTypes.Smithing,
-    itemSubType: ItemSubType.Armour,
     getParameters: () => armourParams,
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')
@@ -59,7 +58,6 @@ export const armourRecipe = makeMemoizedRecipe({
             materials,
             icon: Icons.Breastplate,
             type: ItemTypes.Body,
-            subType: ItemSubType.Armour,
             equipSlot: EquipSlotsEnum.Body,
             value: getItemValue(components, true),
             armourData,

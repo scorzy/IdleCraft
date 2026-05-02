@@ -12,7 +12,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { DamageTypes, Item, ItemSubType, ItemTypes } from '../../items/Item'
+import { DamageTypes, Item, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
@@ -31,7 +31,6 @@ export const twoHSwordRecipe = makeMemoizedRecipe({
     nameId: 'TwoHSword' as keyof Msg,
     iconId: Icons.Sword,
     type: RecipeTypes.Smithing,
-    itemSubType: ItemSubType.Weapon,
     getParameters: () => twoHSwordParams,
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')

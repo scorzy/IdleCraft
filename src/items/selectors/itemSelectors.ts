@@ -1,12 +1,9 @@
-import { memoize } from 'micro-memoize'
-import { MsgFunctions } from '@/msg/MsgFunctions'
-import { CharacterAdapter } from '../characters/characterAdapter'
-import { PLAYER_ID } from '../characters/charactersConst'
-import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
-import { GameState } from '../game/GameState'
-import { GetItemNameParams } from '../msg/GetItemNameParams'
-import { selectTranslations } from '../msg/useTranslations'
-import { Item, ItemFilter } from './Item'
+import { CharacterAdapter } from '../../characters/characterAdapter'
+import { PLAYER_ID } from '../../characters/charactersConst'
+import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import { GameState } from '../../game/GameState'
+import { getItemSubType } from '../getItemSubType'
+import { Item, ItemFilter } from '../Item'
 
 export const selectEquipId =
     (slot: EquipSlotsEnum, characterId = PLAYER_ID) =>
@@ -21,7 +18,7 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
     if (filter.nameId && item.nameId !== filter.nameId) return false
     if (filter.equipSlot && item.equipSlot !== filter.equipSlot) return false
     if (filter.itemType && item.type !== filter.itemType) return false
-    if (filter.itemSubType && item.subType !== filter.itemSubType) return false
+    if (filter.itemSubType && getItemSubType(item.type) !== filter.itemSubType) return false
     if (filter.minStats)
         for (const kv of Object.entries(filter.minStats)) {
             const itemKey = kv[0] as keyof Item
@@ -60,13 +57,3 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
 
     return true
 }
-
-export const selectItemNameMemoized = memoize(
-    (nameFunc: keyof MsgFunctions | undefined, params: GetItemNameParams, t: ReturnType<typeof selectTranslations>) => {
-        const fn = t.fun[nameFunc ?? 'getItemName'] as (...args: unknown[]) => string
-
-        if (fn) return fn(params)
-        return t.t[params.itemNameId] ?? params.itemNameId
-    },
-    { maxSize: 100 }
-)

@@ -1,23 +1,33 @@
 import { memoize } from 'proxy-memoize'
-import { useMemo } from 'react'
+
 import { InitialState } from '@/entityAdapter/InitialState'
-import { Translations } from '@/msg/Translations'
+
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
 import { GameState } from '../game/GameState'
-import { useGameStore } from '../game/state'
+
 import { GameLocations } from '../gameLocations/GameLocations'
 import { GetItemNameParamsMemoized } from '../items/GetItemNameParamsMemoized'
-import { Item, ItemFilter, ItemTypes } from '../items/Item'
-import { filterItem, selectItemNameMemoized } from '../items/itemSelectors'
+import { Item, ItemFilter, ItemSubType, ItemTypes } from '../items/Item'
+import { filterItem } from '../items/selectors/itemSelectors'
+import { selectItemNameMemoized } from '@/items/selectors/itemSelectorsMemo'
 import { StdItems, UnlimitedItems } from '../items/stdItems'
 import { selectTranslations } from '../msg/useTranslations'
-import { selectStorageOrder } from '../ui/state/uiSelectors'
+
 import { ItemAdapter } from './ItemAdapter'
 import { StorageAdapter } from './storageAdapter'
 import { isCrafted } from './storageFunctions'
 import { InventoryNoQta, StorageState } from './storageTypes'
+import { getItemSubType } from '../items/getItemSubType'
+import { useMemo } from 'react'
+import { useGameStore } from '../game/state'
+import {
+    selectStorageOrder,
+    selectItemFilterSubType,
+    selectItemFilterType,
+    selectItemFilterSearch,
+} from '../ui/state/uiSelectors'
 
 export const selectCurrentLocationStorageIds = (state: GameState) =>
     StorageAdapter.getIds(state.locations[state.location].storage)
@@ -36,28 +46,18 @@ export const selectStorageLocationsMemo = memoize((state: GameState) => {
 })
 
 interface ItemId {
-    id: string
+    item: Item
+    name: string
 }
 type ItemOrdQta = ItemId & { qta: number }
-type ItemOrdName = ItemId & { name: string }
 type ItemOrdValue = ItemId & { value: number }
 
-const reorderByName = (t: Translations, items: ItemId[], craftedItems: InitialState<Item>) => {
-    const ord: ItemOrdName[] = []
-    for (const e of items) {
-        const item = selectGameItemFromCraft(e.id, craftedItems)
-        if (!item) continue
-        const params = GetItemNameParamsMemoized(item.nameId, item.materials)
-        const name = selectItemNameMemoized(item.nameFunc, params, t)
-        ord.push({ ...e, name })
-    }
-    return ord.toSorted((a, b) => a.name.localeCompare(b.name))
-}
+const reorderByName = (items: ItemId[]) => items.toSorted((a, b) => a.name.localeCompare(b.name))
 
 const reorderByQta = (storage: InitialState<StorageState>, items: ItemId[]) => {
     const ord: ItemOrdQta[] = []
     for (const e of items) {
-        const qta = storage.entries[e.id]?.quantity ?? 0
+        const qta = storage.entries[e.item.id]?.quantity ?? 0
         ord.push({ ...e, qta })
     }
     return ord.toSorted((a, b) => a.qta - b.qta)
@@ -66,28 +66,50 @@ const reorderByQta = (storage: InitialState<StorageState>, items: ItemId[]) => {
 const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[]) => {
     const ord: ItemOrdValue[] = []
     for (const e of items) {
-        const item = selectGameItemFromCraft(e.id, craftedItems)
+        const item = selectGameItemFromCraft(e.item.id, craftedItems)
         ord.push({ ...e, value: item?.value ?? 0 })
     }
     return ord.toSorted((a, b) => a.value - b.value)
 }
 
-const selectLocationItemsSelector = (location: GameLocations, storageOrder: string) => {
+const selectLocationItemsSelector = (
+    location: GameLocations,
+    storageOrder: string,
+    itemSubType: ItemSubType | undefined,
+    itemType: ItemTypes | undefined,
+    itemSearch: string | undefined
+) => {
     let selector: (state: GameState) => string[]
-    const selectLocationItemIds = (state: GameState) =>
-        StorageAdapter.getIds(state.locations[location].storage).map<ItemId>((id) => ({ id }))
+
+    const selectLocationItemIds = (state: GameState) => {
+        const itemIds: ItemId[] = []
+        const t = selectTranslations(state)
+        const itemSearchStr = itemSearch?.toLowerCase() ?? ''
+        const checkType = itemType && itemSubType && getItemSubType(itemType) === itemSubType
+        StorageAdapter.forEach(state.locations[location].storage, (st) => {
+            const item = selectGameItem(st.itemId)(state)
+            if (!item) return
+            if (itemSubType && getItemSubType(item.type) !== itemSubType) return
+            if (checkType && item.type !== itemType) return
+            const name = selectItemNameMemoized(
+                item.nameFunc,
+                GetItemNameParamsMemoized(item.nameId, item.materials),
+                t
+            )
+            if (itemSearchStr !== '' && !name.toLowerCase().includes(itemSearchStr)) return
+            itemIds.push({ item, name })
+        })
+        return itemIds
+    }
 
     const sortFunc = (sel: (state: GameState) => ItemId[]) => (s: GameState) => {
         const items = sel(s)
         if (items.length === 0) return EMPTY_ARRAY
         if (!s.ui.storageAsc) items.reverse()
-        return items.map((i) => i.id)
+        return items.map((i) => i.item.id)
     }
 
-    if (storageOrder === 'name')
-        selector = sortFunc((s: GameState) =>
-            reorderByName(selectTranslations(s), selectLocationItemIds(s), s.craftedItems)
-        )
+    if (storageOrder === 'name') selector = sortFunc((s: GameState) => reorderByName(selectLocationItemIds(s)))
     else if (storageOrder === 'quantity')
         selector = sortFunc((s: GameState) => reorderByQta(s.locations[location].storage, selectLocationItemIds(s)))
     else if (storageOrder === 'value')
@@ -99,10 +121,13 @@ const selectLocationItemsSelector = (location: GameLocations, storageOrder: stri
 
 export const useLocationItems = (location: GameLocations) => {
     const storageOrder = useGameStore(selectStorageOrder)
+    const itemSubType = useGameStore(selectItemFilterSubType)
+    const itemType = useGameStore(selectItemFilterType)
+    const itemSearch = useGameStore(selectItemFilterSearch)
 
     const selectLocationItemsSelectorMemo = useMemo(
-        () => memoize(selectLocationItemsSelector(location, storageOrder)),
-        [location, storageOrder]
+        () => memoize(selectLocationItemsSelector(location, storageOrder, itemSubType, itemType, itemSearch)),
+        [location, storageOrder, itemSubType, itemType, itemSearch]
     )
 
     return useGameStore(selectLocationItemsSelectorMemo)

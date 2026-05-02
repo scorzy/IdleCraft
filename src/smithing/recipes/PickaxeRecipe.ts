@@ -11,7 +11,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { Item, ItemSubType, ItemTypes } from '../../items/Item'
+import { Item, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
@@ -35,7 +35,6 @@ export const PickaxeRecipe = makeMemoizedRecipe({
     type: RecipeTypes.Smithing,
     nameId: 'Pickaxe',
     iconId: Icons.Pickaxe,
-    itemSubType: ItemSubType.Tool,
     getParameters: function (): RecipeParameter[] {
         return pickaxeParam
     },

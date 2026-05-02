@@ -5,7 +5,7 @@ import { useGameStore } from '../../game/state'
 import { GameIcon } from '../../icons/GameIcon'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { Item } from '../Item'
-import { selectPrimaryMaterial } from '../selectPrimaryMaterial'
+import { selectPrimaryMaterial } from '../selectors/selectPrimaryMaterial'
 
 export const ItemIcon = ({ itemId, className }: { itemId: string | Item; className?: string }) => {
     const item = useGameStore(

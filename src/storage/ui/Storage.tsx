@@ -4,7 +4,7 @@ import { Alert, AlertTitle } from '@/components/ui/alert'
 import { buttonVariants } from '@/components/ui/buttonVariants'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useItemName } from '@/items/useItemName'
+import { useItemName } from '@/items/selectors/useItemName'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
@@ -42,6 +42,7 @@ import {
 } from '../StorageSelectors'
 import { setSelectedItem } from '../storageFunctions'
 import classes from './storage.module.css'
+import { ItemFilters } from './ItemFilters'
 
 const breakpoints: QueryBreakpoints = {
     small: [0, 400],
@@ -85,7 +86,8 @@ export function UiStorage() {
     return (
         <MyPage className={classes.cardList} ref={pageRef}>
             <UiStorageContext value={setOpen}>
-                <div ref={accordionRef}>
+                <div ref={accordionRef} className={cn('flex flex-col flex-1 gap-3')}>
+                    <ItemFilters />
                     <StorageAccordion />
                 </div>
 
@@ -135,6 +137,7 @@ const StorageAccordion = memo(function StorageAccordion() {
         </Accordion>
     )
 })
+
 const AccordionItemLocation = memo(function AccordionItemLocation({ l, show }: { l: string; show: boolean }) {
     const { t } = useTranslations()
     const { ref, active } = useContainerQueries({ breakpoints })

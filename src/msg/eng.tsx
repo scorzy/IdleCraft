@@ -364,6 +364,11 @@ export const engMsg: Msg = {
     AddOptions: 'Add activity options',
     WolfLair: 'Wolf Lair',
     KillToUnlock: 'Kill to unlock',
+    Weapons: 'Weapons',
+    Armours: 'Armours',
+    Tools: 'Tools',
+    Consumables: 'Consumables',
+    SearchItem: 'Search',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

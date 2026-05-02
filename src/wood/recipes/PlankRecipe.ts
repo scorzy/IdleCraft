@@ -8,7 +8,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { ItemSubType, ItemTypes } from '../../items/Item'
+import { ItemTypes } from '../../items/Item'
 import { WoodData } from '../WoodData'
 
 export const LogToPlank = new Map<string, string>()
@@ -28,7 +28,6 @@ export const plankRecipe = makeMemoizedRecipe({
     type: RecipeTypes.Woodworking,
     nameId: 'Plank',
     iconId: Icons.Plank,
-    itemSubType: ItemSubType.Crafting,
     getParameters: () => plankParam,
     getResult: function (_: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const log = params.find((i) => i.id === 'log')
