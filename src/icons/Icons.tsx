@@ -27,6 +27,7 @@ import {
     GiPlanks,
     GiPunch,
     GiRoundBottomFlask,
+    GiRupee,
     GiSaberSlash,
     GiShield,
     GiSpottedMushroom,
@@ -81,6 +82,7 @@ export enum Icons {
     Leaf = 'Leaf',
     Mushroom = 'Mushroom',
     SwapBag = 'SwapBag',
+    Rupee = 'Rupee',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -123,4 +125,5 @@ export const IconsData: Record<Icons, ReactNode> = {
     Leaf: <GiLindenLeaf />,
     Mushroom: <GiSpottedMushroom />,
     SwapBag: <GiSwapBag />,
+    Rupee: <GiRupee />,
 }
