@@ -80,6 +80,7 @@ import {
     activityTitles,
     activityViewers,
 } from '../globals'
+import { pantsRecipe } from '../../smithing/recipes/PantsRecipe'
 
 export function initialize() {
     initActivities()
@@ -155,6 +156,7 @@ function initRecipes() {
     recipes.set(longSwordRecipe.id, longSwordRecipe)
     recipes.set(twoHSwordRecipe.id, twoHSwordRecipe)
     recipes.set(armourRecipe.id, armourRecipe)
+    recipes.set(pantsRecipe.id, pantsRecipe)
     recipes.set(butcheringRecipe.id, butcheringRecipe)
     recipes.set(potionRecipe.id, potionRecipe)
 }

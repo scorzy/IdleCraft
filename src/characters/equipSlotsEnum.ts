@@ -4,4 +4,5 @@ export enum EquipSlotsEnum {
     MainHand = 'MainHand',
     TwoHand = 'TwoHand',
     Body = 'Body',
+    Legs = 'Legs',
 }

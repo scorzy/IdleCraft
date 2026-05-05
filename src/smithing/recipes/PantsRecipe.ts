@@ -12,10 +12,10 @@ import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageData, DamageTypes, Item, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
-import { Msg } from '../../msg/Msg'
+
 import { selectGameItem } from '../../storage/StorageSelectors'
 
-const armourParams: RecipeParameterItemFilter[] = [
+const pantsParams: RecipeParameterItemFilter[] = [
     {
         id: 'bar',
         nameId: 'Bar',
@@ -24,26 +24,26 @@ const armourParams: RecipeParameterItemFilter[] = [
     },
 ]
 
-export const armourRecipe = makeMemoizedRecipe({
-    id: 'ArmourRecipe',
-    nameId: 'Armour' as keyof Msg,
-    iconId: Icons.Breastplate,
+export const pantsRecipe = makeMemoizedRecipe({
+    id: 'PantsRecipe',
+    nameId: 'Cuisses',
+    iconId: Icons.Cuisses,
     type: RecipeTypes.Smithing,
-    getParameters: () => armourParams,
+    getParameters: () => pantsParams,
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')
-        if (bar === undefined) return
+        if (!bar) return
         const barItem = selectGameItem(bar.itemId)(state)
         if (!barItem) return
         if (!barItem.craftingData) return
 
-        const components = [barItem, barItem, barItem, barItem]
+        const components = [barItem, barItem, barItem]
 
         const barArmourData = barItem.craftingData.armour
         if (!barArmourData) return
 
         const armourData: DamageData = {}
-        Object.entries(barArmourData).forEach((kv) => (armourData[kv[0] as DamageTypes] = 10 * kv[1]))
+        Object.entries(barArmourData).forEach((kv) => (armourData[kv[0] as DamageTypes] = 7 * kv[1]))
 
         const primaryMat = barItem.materials?.primary
         const materials: ItemsMaterials = {}
@@ -51,9 +51,9 @@ export const armourRecipe = makeMemoizedRecipe({
 
         const craftedItem: Item = {
             id: '',
-            nameId: 'Armour',
+            nameId: 'Cuisses',
             materials,
-            icon: Icons.Breastplate,
+            icon: Icons.Cuisses,
             type: ItemTypes.Body,
             equipSlot: EquipSlotsEnum.Body,
             value: getItemValue(components, true),

@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import {
     GiAnimalHide,
+    GiArmoredPants,
     GiBo,
     GiBoar,
     GiBreastplate,
@@ -83,6 +84,7 @@ export enum Icons {
     Mushroom = 'Mushroom',
     SwapBag = 'SwapBag',
     Rupee = 'Rupee',
+    Cuisses = 'Cuisses',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -126,4 +128,5 @@ export const IconsData: Record<Icons, ReactNode> = {
     Mushroom: <GiSpottedMushroom />,
     SwapBag: <GiSwapBag />,
     Rupee: <GiRupee />,
+    Cuisses: <GiArmoredPants />,
 }

@@ -21,4 +21,7 @@ export const SlotsData: Record<EquipSlotsEnum, SlotData> = {
     [EquipSlotsEnum.Body]: {
         ItemType: ItemTypes.Body,
     },
+    [EquipSlotsEnum.Legs]: {
+        ItemType: ItemTypes.Legs,
+    },
 }

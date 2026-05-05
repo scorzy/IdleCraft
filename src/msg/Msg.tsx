@@ -369,4 +369,6 @@ export interface Msg {
     Tools: string
     Consumables: string
     SearchItem: string
+    Cuisses: string
+    Legs: string
 }

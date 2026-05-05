@@ -18,6 +18,7 @@ export enum ItemTypes {
     OneHand = 'OneHand',
     TwoHands = 'TwoHands',
     Body = 'Body',
+    Legs = 'Legs',
     Corpse = 'Corpse',
     RawFood = 'RawFood',
     RawSkin = 'RawSkin',
