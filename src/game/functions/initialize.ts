@@ -52,8 +52,12 @@ import { twoHSwordRecipe } from '../../smithing/recipes/2HSword'
 import { armourRecipe } from '../../smithing/recipes/ArmourRecipes'
 import { axeRecipe } from '../../smithing/recipes/AxeRecipe'
 import { barRecipe } from '../../smithing/recipes/BarRecipe'
+import { bootsRecipe } from '../../smithing/recipes/BootsRecipe'
 import { daggerRecipe } from '../../smithing/recipes/Dagger'
+import { handsRecipe } from '../../smithing/recipes/HandsRecipe'
+import { helmetRecipe } from '../../smithing/recipes/HelmetRecipe'
 import { longSwordRecipe } from '../../smithing/recipes/LongSwordRecipe'
+import { pantsRecipe } from '../../smithing/recipes/PantsRecipe'
 import { PickaxeRecipe } from '../../smithing/recipes/PickaxeRecipe'
 import { onItemRemovedListeners } from '../../storage/storageEvents'
 import { execTreeGrow } from '../../wood/forest/execTreeGrow'
@@ -80,7 +84,6 @@ import {
     activityTitles,
     activityViewers,
 } from '../globals'
-import { pantsRecipe } from '../../smithing/recipes/PantsRecipe'
 
 export function initialize() {
     initActivities()
@@ -157,6 +160,9 @@ function initRecipes() {
     recipes.set(twoHSwordRecipe.id, twoHSwordRecipe)
     recipes.set(armourRecipe.id, armourRecipe)
     recipes.set(pantsRecipe.id, pantsRecipe)
+    recipes.set(helmetRecipe.id, helmetRecipe)
+    recipes.set(handsRecipe.id, handsRecipe)
+    recipes.set(bootsRecipe.id, bootsRecipe)
     recipes.set(butcheringRecipe.id, butcheringRecipe)
     recipes.set(potionRecipe.id, potionRecipe)
 }

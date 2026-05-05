@@ -4,6 +4,7 @@ import {
     GiArmoredPants,
     GiBo,
     GiBoar,
+    GiBoots,
     GiBreastplate,
     GiBroadsword,
     GiChicken,
@@ -13,6 +14,7 @@ import {
     GiDroplets,
     GiFizzingFlask,
     GiForest,
+    GiGauntlet,
     GiHeartPlus,
     GiHearts,
     GiLindenLeaf,
@@ -39,6 +41,7 @@ import {
     GiVanillaFlower,
     GiWolfHead,
     GiWoodAxe,
+    GiVisoredHelm,
 } from 'react-icons/gi'
 import { LuArrowDown, LuArrowDownUp, LuArrowUp } from 'react-icons/lu'
 
@@ -85,6 +88,9 @@ export enum Icons {
     SwapBag = 'SwapBag',
     Rupee = 'Rupee',
     Cuisses = 'Cuisses',
+    Helmet = 'Helmet',
+    Gauntlet = 'Gauntlet',
+    Boots = 'Boots',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -129,4 +135,7 @@ export const IconsData: Record<Icons, ReactNode> = {
     SwapBag: <GiSwapBag />,
     Rupee: <GiRupee />,
     Cuisses: <GiArmoredPants />,
+    Helmet: <GiVisoredHelm />,
+    Gauntlet: <GiGauntlet />,
+    Boots: <GiBoots />,
 }

@@ -12,10 +12,9 @@ import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageData, DamageTypes, Item, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
-
 import { selectGameItem } from '../../storage/StorageSelectors'
 
-const pantsParams: RecipeParameterItemFilter[] = [
+const bootsParams: RecipeParameterItemFilter[] = [
     {
         id: 'bar',
         nameId: 'Bar',
@@ -24,12 +23,12 @@ const pantsParams: RecipeParameterItemFilter[] = [
     },
 ]
 
-export const pantsRecipe = makeMemoizedRecipe({
-    id: 'PantsRecipe',
-    nameId: 'Cuisses',
-    iconId: Icons.Cuisses,
+export const bootsRecipe = makeMemoizedRecipe({
+    id: 'BootsRecipe',
+    nameId: 'Boots',
+    iconId: Icons.Boots,
     type: RecipeTypes.Smithing,
-    getParameters: () => pantsParams,
+    getParameters: () => bootsParams,
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')
         if (!bar) return
@@ -37,13 +36,13 @@ export const pantsRecipe = makeMemoizedRecipe({
         if (!barItem) return
         if (!barItem.craftingData) return
 
-        const components = [barItem, barItem, barItem]
+        const components = [barItem, barItem]
 
         const barArmourData = barItem.craftingData.armour
         if (!barArmourData) return
 
         const armourData: DamageData = {}
-        Object.entries(barArmourData).forEach((kv) => (armourData[kv[0] as DamageTypes] = 7 * kv[1]))
+        Object.entries(barArmourData).forEach((kv) => (armourData[kv[0] as DamageTypes] = 3 * kv[1]))
 
         const primaryMat = barItem.materials?.primary
         const materials: ItemsMaterials = {}
@@ -51,11 +50,11 @@ export const pantsRecipe = makeMemoizedRecipe({
 
         const craftedItem: Item = {
             id: '',
-            nameId: 'Cuisses',
+            nameId: 'Boots',
             materials,
-            icon: Icons.Cuisses,
-            type: ItemTypes.Legs,
-            equipSlot: EquipSlotsEnum.Legs,
+            icon: Icons.Boots,
+            type: ItemTypes.Feet,
+            equipSlot: EquipSlotsEnum.Feet,
             value: getItemValue(components, true),
             armourData,
         }
@@ -64,7 +63,7 @@ export const pantsRecipe = makeMemoizedRecipe({
             time: getCraftingTime(components),
             requirements: [
                 {
-                    qta: 3,
+                    qta: 2,
                     itemId: bar.itemId,
                 },
             ],

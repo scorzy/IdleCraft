@@ -152,7 +152,10 @@ export interface Msg {
     SlashingDamage: string
     OneHand: string
     TwoHands: string
+    Head: string
     Body: string
+    Hands: string
+    Feet: string
     DamageType: string
 
     Defence: string
@@ -185,6 +188,9 @@ export interface Msg {
 
     Dagger: string
     TwoHSword: string
+    Helmet: string
+    Gauntlets: string
+    Boots: string
 
     OffensiveInfo: string
     DefensiveInfo: string

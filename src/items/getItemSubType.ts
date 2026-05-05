@@ -8,7 +8,11 @@ export const getItemSubType = (itemType: ItemTypes): ItemSubType => {
         case ItemTypes.OneHand:
         case ItemTypes.TwoHands:
             return ItemSubType.Weapon
+        case ItemTypes.Head:
         case ItemTypes.Body:
+        case ItemTypes.Legs:
+        case ItemTypes.Hands:
+        case ItemTypes.Feet:
             return ItemSubType.Armour
         case ItemTypes.Log:
         case ItemTypes.Plank:

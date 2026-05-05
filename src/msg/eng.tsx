@@ -151,7 +151,10 @@ export const engMsg: Msg = {
 
     OneHand: 'Main Hand',
     TwoHands: 'Two Hands',
+    Head: 'Head',
     Body: 'Body Armour',
+    Hands: 'Hands',
+    Feet: 'Feet',
 
     DamageType: 'Damage Type',
     Defence: 'Defence',
@@ -185,6 +188,9 @@ export const engMsg: Msg = {
     //  Smithing
     Dagger: 'Dagger',
     TwoHSword: '2H Sword',
+    Helmet: 'Helmet',
+    Gauntlets: 'Gauntlets',
+    Boots: 'Boots',
     LongSword: 'Long Sword',
     WoodAxe: 'Wood Axe',
     Armour: 'Armour',
