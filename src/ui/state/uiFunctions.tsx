@@ -32,8 +32,10 @@ export const setPage = (page: UiPages) =>
     setState((s) => {
         const data = UiPagesData[page]
 
-        if (s.ui.recipeType !== data.recipeType) changeRecipeState(s, '')
-
+        if (s.ui.recipeType !== data.recipeType) {
+            s.ui.recipeType = data.recipeType
+            changeRecipeState(s, '')
+        }
         s.ui.page = page
         s.ui.open = false
         s.ui.recipeType = data.recipeType

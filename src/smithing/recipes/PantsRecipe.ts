@@ -5,6 +5,7 @@ import {
     RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeParamType,
+    RecipeGroups,
     RecipeResult,
     RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
@@ -29,6 +30,7 @@ export const pantsRecipe = makeMemoizedRecipe({
     nameId: 'Cuisses',
     iconId: Icons.Cuisses,
     type: RecipeTypes.Smithing,
+    recipeGroup: RecipeGroups.Armours,
     getParameters: () => pantsParams,
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')

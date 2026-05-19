@@ -3,6 +3,7 @@ import {
     RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeParamType,
+    RecipeGroups,
     RecipeResult,
     RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
@@ -26,6 +27,7 @@ const barParam: RecipeParameterItemFilter[] = [
 export const barRecipe = makeMemoizedRecipe({
     id: 'BarRecipe',
     type: RecipeTypes.Smithing,
+    recipeGroup: RecipeGroups.Others,
     nameId: 'Bar',
     iconId: Icons.Bar,
     getParameters: () => barParam,

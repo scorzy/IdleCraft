@@ -84,6 +84,7 @@ export const InitialGameState: GameState = {
     growSpeedBonuses: GrowSpeedBonusAdapter.getInitialState(),
     recipeId: '',
     craftingForm: {
+        recipeGroup: undefined,
         params: [],
         paramsValue: [],
         result: undefined,

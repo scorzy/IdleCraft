@@ -19,12 +19,13 @@ import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
-import { handleRecipeChange } from '../CraftingFunctions'
+import { handleRecipeChange, handleRecipeGroupChange } from '../CraftingFunctions'
 import {
     canCraft,
     selectCraftingIds,
     selectCraftTime,
     selectCurrentCrafting,
+    selectRecipeGroup,
     selectRecipeId,
     selectRecipeItemValue,
     selectRecipeParams,
@@ -36,6 +37,7 @@ import {
 import { addCraftingClick } from '../functions/addCrafting'
 import { Recipe } from '../Recipe'
 import { RecipeData } from '../RecipeData'
+import { RecipeGroupsData, RecipeGroupsList } from '../RecipeGroupsData'
 import { setRecipeItemParamUi } from '../RecipeFunctions'
 import {
     isRecipeParameterItemFilter,
@@ -49,15 +51,15 @@ import classes from './craftingUi.module.css'
 
 const recipesByType: Partial<Record<RecipeTypes, Recipe[]>> = {}
 
-const selectRecipes = (t: RecipeTypes) => {
+const selectRecipes = (t: RecipeTypes, recipeGroup?: Recipe['recipeGroup']) => {
     const ret1 = recipesByType[t]
-    if (ret1) return ret1
+    if (ret1) return recipeGroup ? ret1.filter((r) => r.recipeGroup === recipeGroup) : ret1
 
     const ret: Recipe[] = []
     const recipeValues = recipes.values()
     for (const recipe of recipeValues) if (recipe.type === t) ret.push(recipe)
     recipesByType[t] = ret
-    return ret
+    return recipeGroup ? ret.filter((r) => r.recipeGroup === recipeGroup) : ret
 }
 
 export const CraftingUi = memo(function CraftingUi() {
@@ -119,6 +121,7 @@ const RecipeUi = memo(function RecipeUi() {
             <MyCardHeaderTitle title={t.Recipe} />
             <CardContent>
                 <div className={classes.craftingForm}>
+                    <RecipeGroupSelectUi />
                     <RecipeSelectUi />
                     {params.map((rp) => (
                         <RecipeParamUi recipeParam={rp} key={rp.id} />
@@ -130,13 +133,52 @@ const RecipeUi = memo(function RecipeUi() {
     )
 })
 
+const RecipeGroupSelectUi = memo(function RecipeGroupSelectUi() {
+    const recipeType = useGameStore(selectRecipeType)
+    const recipeGroup = useGameStore(selectRecipeGroup)
+    const { t } = useTranslations()
+
+    if (recipeType !== RecipeTypes.Smithing || !recipeGroup) return null
+
+    const selected = RecipeGroupsData[recipeGroup]
+
+    return (
+        <ComboBoxResponsive
+            filter={false}
+            label={t.Filter}
+            selectedId={recipeGroup}
+            triggerContent={
+                <span className="select-trigger">
+                    {IconsData[selected.icon]} {t[selected.nameId]}
+                </span>
+            }
+        >
+            {RecipeGroupsList.map((group) => {
+                const data = RecipeGroupsData[group]
+
+                return (
+                    <ComboBoxItem
+                        key={group}
+                        value={group}
+                        icon={IconsData[data.icon]}
+                        onSelect={() => handleRecipeGroupChange(group)}
+                    >
+                        {t[data.nameId]}
+                    </ComboBoxItem>
+                )
+            })}
+        </ComboBoxResponsive>
+    )
+})
+
 const RecipeSelectUi = memo(function RecipeSelectUi() {
     const recipeType = useGameStore(selectRecipeType)
+    const recipeGroup = useGameStore(selectRecipeGroup)
     const recipeId = useGameStore(selectRecipeId)
     const { t } = useTranslations()
 
     if (!recipeType) return
-    const recipesByTypeList = selectRecipes(recipeType)
+    const recipesByTypeList = selectRecipes(recipeType, recipeType === RecipeTypes.Smithing ? recipeGroup : undefined)
     const selected = recipes.get(recipeId)
     const icon = selected && IconsData[selected.iconId]
 

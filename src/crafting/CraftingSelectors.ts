@@ -8,7 +8,8 @@ import { StdItems } from '../items/stdItems'
 import { selectItemQta } from '../storage/StorageSelectors'
 import { selectCraftItemId } from '../storage/storageFunctions'
 import { isCrafting } from './CraftingIterfaces'
-import { RecipeItem } from './RecipeInterfaces'
+import { RecipeGroups, RecipeItem } from './RecipeInterfaces'
+import { getDefaultRecipeGroup } from './RecipeGroupsData'
 import { recipes } from './Recipes'
 
 export const getCraftingActivity = (s: GameState, id: string) => {
@@ -25,6 +26,8 @@ export const selectRecipeItemValue = (recipeParamId: string) => (state: GameStat
 export const selectRecipeResult = (state: GameState) => state.craftingForm.result?.results
 export const selectRecipeReq = (state: GameState) => state.craftingForm.result?.requirements
 export const selectRecipeType = (s: GameState) => s.ui.recipeType
+export const selectRecipeGroup = (s: GameState): RecipeGroups | undefined =>
+    recipes.get(s.recipeId)?.recipeGroup ?? s.craftingForm.recipeGroup ?? getDefaultRecipeGroup(s.ui.recipeType)
 export const canCraft = (s: GameState) =>
     s.craftingForm.result !== undefined && s.craftingForm.result.results.some((r) => r.craftedItem || r.stdItemId)
 

@@ -5,6 +5,7 @@ import {
     RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeParamType,
+    RecipeGroups,
     RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
@@ -32,6 +33,7 @@ const woodAxeParam: RecipeParameterItemFilter[] = [
 export const axeRecipe = makeMemoizedRecipe({
     id: 'AxeRecipe',
     type: RecipeTypes.Smithing,
+    recipeGroup: RecipeGroups.Others,
     iconId: Icons.Axe,
     nameId: 'WoodAxe' as keyof Msg,
     getParameters: () => woodAxeParam,

@@ -372,6 +372,7 @@ export const engMsg: Msg = {
     KillToUnlock: 'Kill to unlock',
     Weapons: 'Weapons',
     Armours: 'Armours',
+    Others: 'Others',
     Tools: 'Tools',
     Consumables: 'Consumables',
     SearchItem: 'Search',

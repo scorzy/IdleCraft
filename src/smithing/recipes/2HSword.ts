@@ -7,6 +7,7 @@ import {
     RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeParamType,
+    RecipeGroups,
     RecipeResult,
     RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
@@ -31,6 +32,7 @@ export const twoHSwordRecipe = makeMemoizedRecipe({
     nameId: 'TwoHSword' as keyof Msg,
     iconId: Icons.Sword,
     type: RecipeTypes.Smithing,
+    recipeGroup: RecipeGroups.Weapons,
     getParameters: () => twoHSwordParams,
     getResult(state: GameState, params: RecipeParameterValue[]): RecipeResult | undefined {
         const bar = params.find((i) => i.id === 'bar')

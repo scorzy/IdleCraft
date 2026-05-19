@@ -4,7 +4,7 @@ import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
 import { ActivityState } from '../activities/ActivityState'
 import { BattleLog } from '../battleLog/battleLogInterfaces'
 import { CharacterState } from '../characters/characterState'
-import { RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
+import { RecipeGroups, RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
 import { AppliedEffect } from '../effects/types/AppliedEffect'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { GatheringZone } from '../gathering/gatheringZones'
@@ -57,6 +57,7 @@ export interface GameState {
     growSpeedBonuses: InitialState<GrowSpeedBonus>
     recipeId: string
     craftingForm: {
+        recipeGroup: RecipeGroups | undefined
         params: RecipeParameter[]
         paramsValue: RecipeParameterValue[]
         result: RecipeResult | undefined

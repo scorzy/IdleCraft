@@ -372,6 +372,7 @@ export interface Msg {
     KillToUnlock: string
     Weapons: string
     Armours: string
+    Others: string
     Tools: string
     Consumables: string
     SearchItem: string

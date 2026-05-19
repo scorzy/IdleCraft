@@ -1,14 +1,27 @@
 import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
 import { GameLocations } from '../gameLocations/GameLocations'
-import { RecipeParameterValue } from './RecipeInterfaces'
+import { RecipeGroups, RecipeParameterValue } from './RecipeInterfaces'
+import { getDefaultRecipeGroup } from './RecipeGroupsData'
 import { recipes } from './Recipes'
 
-export function changeRecipeState(state: GameState, recipeId: string | null): void {
-    if (state.recipeId === recipeId) return
+function selectFormRecipeGroup(
+    state: GameState,
+    recipeId: string,
+    recipeGroup?: RecipeGroups
+): RecipeGroups | undefined {
+    const recipe = recipes.get(recipeId)
+    return recipe?.recipeGroup ?? recipeGroup ?? getDefaultRecipeGroup(state.ui.recipeType)
+}
 
-    state.recipeId = recipeId ?? ''
+export function changeRecipeState(state: GameState, recipeId: string | null, recipeGroupOverride?: RecipeGroups): void {
+    const nextRecipeId = recipeId ?? ''
+    const recipeGroup = selectFormRecipeGroup(state, nextRecipeId, recipeGroupOverride)
+    if (state.recipeId === nextRecipeId && state.craftingForm.recipeGroup === recipeGroup) return
+
+    state.recipeId = nextRecipeId
     state.craftingForm = {
+        recipeGroup,
         paramsValue: [],
         params: [],
         result: undefined,
@@ -21,12 +34,24 @@ export function changeRecipeState(state: GameState, recipeId: string | null): vo
     const result = recipe.getResult(state, [])
 
     state.craftingForm = {
+        recipeGroup,
         paramsValue: [],
         params,
         result,
     }
 }
 export const changeRecipe = (recipeId: string | null) => setState((state) => changeRecipeState(state, recipeId))
+
+export function changeRecipeGroupState(state: GameState, recipeGroup: RecipeGroups): void {
+    const recipe = recipes.get(state.recipeId)
+    if (state.craftingForm.recipeGroup === recipeGroup && recipe?.recipeGroup === recipeGroup) return
+
+    state.craftingForm.recipeGroup = recipeGroup
+    if (recipe?.recipeGroup !== recipeGroup) changeRecipeState(state, null, recipeGroup)
+}
+
+export const changeRecipeGroup = (recipeGroup: RecipeGroups) =>
+    setState((state) => changeRecipeGroupState(state, recipeGroup))
 
 export const setRecipeItemParam = (state: GameState, id: string, paramValue: string) => {
     const paramsValue: RecipeParameterValue[] = state.craftingForm.paramsValue.filter((p) => p.id !== id)

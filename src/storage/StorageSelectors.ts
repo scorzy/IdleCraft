@@ -72,6 +72,13 @@ const reorderByValue = (craftedItems: InitialState<Item>, items: ItemId[]) => {
     return ord.toSorted((a, b) => a.value - b.value)
 }
 
+const sortFunc = (sel: (state: GameState) => ItemId[]) => (s: GameState) => {
+    const items = sel(s)
+    if (items.length === 0) return EMPTY_ARRAY
+    if (!s.ui.storageAsc) items.reverse()
+    return items.map((i) => i.item.id)
+}
+
 const selectLocationItemsSelector = (
     location: GameLocations,
     storageOrder: string,
@@ -100,13 +107,6 @@ const selectLocationItemsSelector = (
             itemIds.push({ item, name })
         })
         return itemIds
-    }
-
-    const sortFunc = (sel: (state: GameState) => ItemId[]) => (s: GameState) => {
-        const items = sel(s)
-        if (items.length === 0) return EMPTY_ARRAY
-        if (!s.ui.storageAsc) items.reverse()
-        return items.map((i) => i.item.id)
     }
 
     if (storageOrder === 'name') selector = sortFunc((s: GameState) => reorderByName(selectLocationItemIds(s)))

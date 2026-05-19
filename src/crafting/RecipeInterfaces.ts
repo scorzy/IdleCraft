@@ -7,6 +7,13 @@ export enum RecipeTypes {
     Butchering = 'Butchering',
     Alchemy = 'Alchemy',
 }
+
+export enum RecipeGroups {
+    Armours = 'Armours',
+    Weapons = 'Weapons',
+    Others = 'Others',
+}
+
 export enum RecipeParamType {
     ItemType = 'ItemType',
 }

@@ -7,6 +7,7 @@ import {
     RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeParamType,
+    RecipeGroups,
     RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
@@ -30,6 +31,7 @@ export const longSwordRecipe = makeMemoizedRecipe({
     nameId: 'LongSword' as keyof Msg,
     iconId: Icons.Sword,
     type: RecipeTypes.Smithing,
+    recipeGroup: RecipeGroups.Weapons,
     getParameters: () => longSwordParams,
     getResult: (state: GameState, params: RecipeParameterValue[]) => {
         const bar = params.find((i) => i.id === 'bar')

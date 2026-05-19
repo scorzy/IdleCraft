@@ -6,6 +6,7 @@ import {
     RecipeParameterItemFilter,
     RecipeParameterValue,
     RecipeParamType,
+    RecipeGroups,
     RecipeResult,
     RecipeTypes,
 } from '../../crafting/RecipeInterfaces'
@@ -33,6 +34,7 @@ const pickaxeParam: RecipeParameterItemFilter[] = [
 export const PickaxeRecipe = makeMemoizedRecipe({
     id: 'Pickaxe',
     type: RecipeTypes.Smithing,
+    recipeGroup: RecipeGroups.Others,
     nameId: 'Pickaxe',
     iconId: Icons.Pickaxe,
     getParameters: function (): RecipeParameter[] {
