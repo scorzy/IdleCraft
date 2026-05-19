@@ -12,6 +12,7 @@ import { memoize } from 'micro-memoize'
 import { Msg } from '../../msg/Msg'
 import { useTranslations } from '../../msg/useTranslations'
 import { TextInput } from '../../components/ui/textInput'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../../components/ui/tooltip'
 
 interface UiFilter {
     subType: ItemSubType
@@ -101,16 +102,14 @@ export const UIFilterType = memo(function UIFilterType({
     icon: Icons
 }) {
     return (
-        <Toggle
-            aria-label={title}
-            title={title}
-            // size={'lg'}
-            pressed={pressed}
-            variant={'primary'}
-            onPressedChange={onClick}
-        >
-            {IconsData[icon]}
-        </Toggle>
+        <Tooltip>
+            <TooltipTrigger>
+                <Toggle aria-label={title} pressed={pressed} variant={'primary'} onPressedChange={onClick}>
+                    {IconsData[icon]}
+                </Toggle>
+            </TooltipTrigger>
+            <TooltipContent>{title}</TooltipContent>
+        </Tooltip>
     )
 })
 

@@ -90,7 +90,6 @@ const MyListItemBtn = memo(function MyListItemBtn(props: {
 
     return (
         <button
-            title={text}
             type="button"
             onClick={onClick}
             className={cn(
