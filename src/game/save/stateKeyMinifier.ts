@@ -37,6 +37,7 @@ const gameStateKeyMap = {
 } as const
 
 const locationStateKeyMap = {
+    id: 'id',
     storage: 'st',
     forests: 'fo',
     ores: 'or',
@@ -81,13 +82,19 @@ function remapLocationRecord(input: unknown, keyMap: Record<string, string>): un
     return output
 }
 
+function remapLocations(input: unknown, keyMap: Record<string, string>): unknown {
+    if (!isRecord(input)) return input
+    if (isRecord(input.entries)) return { ...input, entries: remapLocationRecord(input.entries, keyMap) }
+    return remapLocationRecord(input, keyMap)
+}
+
 export function minifyStateKeys(input: unknown): unknown {
     if (!isRecord(input)) return input
 
     const minified = remapKeys(input, gameStateKeyMap)
     const compactLocationsKey = gameStateKeyMap.locations
     if (compactLocationsKey in minified) {
-        minified[compactLocationsKey] = remapLocationRecord(minified[compactLocationsKey], locationStateKeyMap)
+        minified[compactLocationsKey] = remapLocations(minified[compactLocationsKey], locationStateKeyMap)
     }
 
     return minified
@@ -98,7 +105,7 @@ export function restoreStateKeys(input: unknown): unknown {
 
     const restored = remapKeys(input, reverseGameStateKeyMap)
     if ('locations' in restored) {
-        restored.locations = remapLocationRecord(restored.locations, reverseLocationStateKeyMap)
+        restored.locations = remapLocations(restored.locations, reverseLocationStateKeyMap)
     }
 
     return restored

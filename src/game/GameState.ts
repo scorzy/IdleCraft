@@ -27,6 +27,7 @@ export enum AddActivityTypes {
     Next = 'Next',
 }
 export interface LocationState {
+    id: GameLocations
     storage: InitialState<StorageState>
     forests: ForestsType
     ores: OreType
@@ -52,7 +53,7 @@ export interface GameState {
     lastActivityDone: number
     craftedItems: InitialState<Item>
     waitingTrees: string | null
-    locations: Record<GameLocations, LocationState>
+    locations: InitialState<LocationState>
     treeGrowth: InitialState<TreeGrowth>
     growSpeedBonuses: InitialState<GrowSpeedBonus>
     recipeId: string

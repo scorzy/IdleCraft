@@ -1,4 +1,5 @@
 import { GameState } from '../../game/GameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { WoodTypes } from '../WoodTypes'
 import { checkGrowTrees } from './checkGrowTrees'
@@ -12,7 +13,8 @@ export function cutTree(
 ): {
     cut: boolean
 } {
-    const forest = state.locations[location].forests[woodType]
+    const forests = GameLocationAdapter.selectEx(state.locations, location).forests
+    const forest = forests[woodType]
 
     let qta: number
     let curHp: number
@@ -37,7 +39,7 @@ export function cutTree(
         checkGrowTrees(state, woodType, location)
     }
 
-    state.locations[location].forests[woodType] = {
+    forests[woodType] = {
         hp,
         qta,
     }

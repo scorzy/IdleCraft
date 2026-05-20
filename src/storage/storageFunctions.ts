@@ -3,6 +3,7 @@ import { CharacterAdapter } from '../characters/characterAdapter'
 import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
+import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Item } from '../items/Item'
 import { getUniqueId } from '../utils/getUniqueId'
@@ -19,7 +20,7 @@ export function addItem(state: GameState, itemId: string, qta: number, location?
     if (Math.abs(qta) < 0.00001) return
 
     location = location ?? state.location
-    const storage = state.locations[location].storage
+    const storage = GameLocationAdapter.selectEx(state.locations, location).storage
 
     const old = StorageAdapter.select(storage, itemId)
     const newQta = Math.max(qta + (old?.quantity ?? 0), 0)
@@ -51,15 +52,20 @@ function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
 
     if (equipped) return true
 
-    const locations = Object.values(state.locations)
-    for (const loc of locations) if ((StorageAdapter.select(loc.storage, craftItemId)?.quantity ?? 0) > 0) return true
+    if (
+        GameLocationAdapter.some(
+            state.locations,
+            (loc) => (StorageAdapter.select(loc.storage, craftItemId)?.quantity ?? 0) > 0
+        )
+    )
+        return true
 
     return false
 }
 
 export function hasItem(state: GameState, stdItemId: string, qta: number, location?: GameLocations): boolean {
     location = location ?? state.location
-    const storage = state.locations[location].storage
+    const storage = GameLocationAdapter.selectEx(state.locations, location).storage
     return (StorageAdapter.select(storage, stdItemId)?.quantity ?? 0) >= qta
 }
 

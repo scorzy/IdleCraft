@@ -1,6 +1,7 @@
 import { MAX_AVAILABLE_QUESTS } from '../const'
 import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
+import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GatheringData } from '../gathering/gatheringData'
 import { selectTranslations } from '../msg/useTranslations'
 import { addNotification } from '../notification/addNotification'
@@ -29,7 +30,7 @@ function unlockGatheringZone(state: GameState, outcome: QuestOutcome) {
     const gatheringZone = outcome.unlockGatheringZone
     if (!gatheringZone) return
 
-    const unlocked = state.locations[outcome.location].unlockedGatheringZones
+    const unlocked = GameLocationAdapter.selectEx(state.locations, outcome.location).unlockedGatheringZones
     if (unlocked.includes(gatheringZone)) return
 
     unlocked.push(gatheringZone)

@@ -2,6 +2,7 @@ import { memoize as microMemoize } from 'micro-memoize'
 import { memoize } from 'proxy-memoize'
 import { ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
@@ -16,7 +17,7 @@ export const selectDefaultForest = (_s: GameState, woodType: WoodTypes) => {
 }
 
 export const selectForest = (state: GameState, woodType: WoodTypes) => {
-    const forest = state.locations[state.location].forests[woodType]
+    const forest = GameLocationAdapter.selectEx(state.locations, state.location).forests[woodType]
     if (forest) return forest
     return selectDefaultForest(state, woodType)
 }

@@ -19,6 +19,7 @@ import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { Icons, IconsData } from '../../icons/Icons'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { ItemIcon } from '../../items/ui/ItemIcon'
@@ -158,7 +159,7 @@ function selectActiveVein(state: GameState, oreType: OreTypes): OreVeinState | u
     if (!activity || !isMining(activity) || !activity.activeVeinId)
         return getCurrentOreVeinByType(state, state.location, oreType)
 
-    const activeVein = (state.locations[state.location].oreVeins[oreType] ?? []).find(
+    const activeVein = (GameLocationAdapter.selectEx(state.locations, state.location).oreVeins[oreType] ?? []).find(
         (w) => w.id === activity.activeVeinId
     )
     if (activeVein) return activeVein
@@ -279,7 +280,7 @@ const OreVeinsUi = memo(function OreVeinsUi({
 }) {
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
-    const veins = useGameStore((s) => s.locations[s.location].oreVeins[oreType] ?? [])
+    const veins = useGameStore((s) => GameLocationAdapter.selectEx(s.locations, s.location).oreVeins[oreType] ?? [])
     const searchActId = useGameStore(
         (s) =>
             ActivityAdapter.find(

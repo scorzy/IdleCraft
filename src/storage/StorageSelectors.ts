@@ -7,6 +7,7 @@ import { CharInventory } from '../characters/inventory'
 import { EMPTY_ARRAY } from '../const'
 import { GameState } from '../game/GameState'
 
+import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { GetItemNameParamsMemoized } from '../items/GetItemNameParamsMemoized'
 import { Item, ItemFilter, ItemSubType, ItemTypes } from '../items/Item'
@@ -30,7 +31,7 @@ import {
 } from '../ui/state/uiSelectors'
 
 export const selectCurrentLocationStorageIds = (state: GameState) =>
-    StorageAdapter.getIds(state.locations[state.location].storage)
+    StorageAdapter.getIds(GameLocationAdapter.selectEx(state.locations, state.location).storage)
 
 export const selectGameItemFromCraft = (itemId: string, craftedItems: InitialState<Item>) => {
     if (!isCrafted(itemId)) return StdItems[itemId]
@@ -39,8 +40,9 @@ export const selectGameItemFromCraft = (itemId: string, craftedItems: InitialSta
 
 export const selectStorageLocationsMemo = memoize((state: GameState) => {
     const res: GameLocations[] = []
-    const locationsEntries = Object.entries(state.locations)
-    for (const loc of locationsEntries) if (loc[1].storage.ids.length > 0) res.push(loc[0] as GameLocations)
+    GameLocationAdapter.forEach(state.locations, (location) => {
+        if (location.storage.ids.length > 0) res.push(location.id)
+    })
 
     return res
 })
@@ -93,7 +95,8 @@ const selectLocationItemsSelector = (
         const t = selectTranslations(state)
         const itemSearchStr = itemSearch?.toLowerCase() ?? ''
         const checkType = itemType && itemSubType && getItemSubType(itemType) === itemSubType
-        StorageAdapter.forEach(state.locations[location].storage, (st) => {
+        const storage = GameLocationAdapter.selectEx(state.locations, location).storage
+        StorageAdapter.forEach(storage, (st) => {
             const item = selectGameItem(st.itemId)(state)
             if (!item) return
             if (itemSubType && getItemSubType(item.type) !== itemSubType) return
@@ -111,7 +114,9 @@ const selectLocationItemsSelector = (
 
     if (storageOrder === 'name') selector = sortFunc((s: GameState) => reorderByName(selectLocationItemIds(s)))
     else if (storageOrder === 'quantity')
-        selector = sortFunc((s: GameState) => reorderByQta(s.locations[location].storage, selectLocationItemIds(s)))
+        selector = sortFunc((s: GameState) =>
+            reorderByQta(GameLocationAdapter.selectEx(s.locations, location).storage, selectLocationItemIds(s))
+        )
     else if (storageOrder === 'value')
         selector = sortFunc((s: GameState) => reorderByValue(s.craftedItems, selectLocationItemIds(s)))
     else throw new Error(`Unknown storage order ${storageOrder}`)
@@ -137,7 +142,7 @@ export const selectItemQta = (location: GameLocations | null, itemId: string) =>
     if (!isCrafted(itemId) && StdItems[itemId]?.unlimited) return Number.POSITIVE_INFINITY
 
     location = location ?? state.location
-    const storage = state.locations[location].storage
+    const storage = GameLocationAdapter.selectEx(state.locations, location).storage
     return storage.entries[itemId]?.quantity ?? 0
 }
 
@@ -170,7 +175,7 @@ export const selectItemsByType = (itemType: ItemTypes | undefined) => (state: Ga
     if (!itemType) return EMPTY_ARRAY
     const ret: string[] = []
 
-    StorageAdapter.forEach(state.locations[state.location].storage, (st) => {
+    StorageAdapter.forEach(GameLocationAdapter.selectEx(state.locations, state.location).storage, (st) => {
         const item = selectGameItemFromCraft(st.itemId, state.craftedItems)
         if (item && item.type === itemType) ret.push(st.itemId)
     })
@@ -217,7 +222,8 @@ export const selectTotalFilteredQta = (s: GameState, location: GameLocations, it
 
     const itemFilterIds = selectFilteredItems(s, itemFilter)
 
-    for (const itemId of itemFilterIds) ret += s.locations[location].storage.entries[itemId]?.quantity ?? 0
+    const storage = GameLocationAdapter.selectEx(s.locations, location).storage
+    for (const itemId of itemFilterIds) ret += storage.entries[itemId]?.quantity ?? 0
 
     return ret
 }

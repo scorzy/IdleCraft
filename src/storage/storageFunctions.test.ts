@@ -1,16 +1,20 @@
 import { describe, expect, test } from 'vitest'
 import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GetInitialGameState } from '../game/InitialGameState'
+import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Icons } from '../icons/Icons'
 import { ItemTypes } from '../items/Item'
 import { addItem, hasItem, removeItem } from './storageFunctions'
 
+const getLocation = (state: ReturnType<typeof GetInitialGameState>, location = GameLocations.StartVillage) =>
+    GameLocationAdapter.selectEx(state.locations, location)
+
 describe('Storage Functions', () => {
     test('Add Item', () => {
         const state = GetInitialGameState()
         addItem(state, 'OakLog', 1)
-        expect(state.locations.StartVillage.storage).toEqual({
+        expect(getLocation(state).storage).toEqual({
             ids: ['OakLog'],
             entries: {
                 OakLog: { itemId: 'OakLog', quantity: 1 },
@@ -21,7 +25,7 @@ describe('Storage Functions', () => {
         const state = GetInitialGameState()
         const id = `${CRAFTED_ITEM_PREFIX}craft`
         addItem(state, id, 3)
-        expect(state.locations.StartVillage.storage).toEqual({
+        expect(getLocation(state).storage).toEqual({
             ids: [id],
             entries: {
                 [id]: { itemId: id, quantity: 3 },
@@ -30,7 +34,7 @@ describe('Storage Functions', () => {
     })
     test('Add Item craft 2', () => {
         const state = GetInitialGameState()
-        state.locations.StartVillage.storage = {
+        getLocation(state).storage = {
             ids: ['OakLog', 'std', `${CRAFTED_ITEM_PREFIX}craft`],
             entries: {
                 ['OakLog']: { itemId: 'OakLog', quantity: 1 },
@@ -39,7 +43,7 @@ describe('Storage Functions', () => {
             },
         }
         addItem(state, `${CRAFTED_ITEM_PREFIX}craft`, 3)
-        expect(state.locations.StartVillage.storage).toEqual({
+        expect(getLocation(state).storage).toEqual({
             ids: ['OakLog', 'std', `${CRAFTED_ITEM_PREFIX}craft`],
             entries: {
                 ['OakLog']: { itemId: 'OakLog', quantity: 1 },
@@ -50,28 +54,28 @@ describe('Storage Functions', () => {
     })
     test('Remove Item 1', () => {
         const state = GetInitialGameState()
-        state.locations.StartVillage.storage = {
+        getLocation(state).storage = {
             ids: ['OakLog'],
             entries: {
                 OakLog: { itemId: 'OakLog', quantity: 1 },
             },
         }
         removeItem(state, 'OakLog', 1)
-        expect(state.locations.StartVillage.storage).toEqual({
+        expect(getLocation(state).storage).toEqual({
             ids: [],
             entries: {},
         })
     })
     test('Remove Item 2', () => {
         const state = GetInitialGameState()
-        state.locations.StartVillage.storage = {
+        getLocation(state).storage = {
             ids: ['OakLog'],
             entries: {
                 OakLog: { itemId: 'OakLog', quantity: 10 },
             },
         }
         removeItem(state, 'OakLog', 2)
-        expect(state.locations.StartVillage.storage).toEqual({
+        expect(getLocation(state).storage).toEqual({
             ids: ['OakLog'],
             entries: {
                 OakLog: { itemId: 'OakLog', quantity: 8 },
@@ -81,7 +85,7 @@ describe('Storage Functions', () => {
     test('Remove Item 1 craft', () => {
         const state = GetInitialGameState()
         const craftedId = `${CRAFTED_ITEM_PREFIX}craft2`
-        state.locations.StartVillage.storage = {
+        getLocation(state).storage = {
             ids: [craftedId],
             entries: {
                 [craftedId]: { itemId: craftedId, quantity: 1 },
@@ -100,13 +104,13 @@ describe('Storage Functions', () => {
             },
         }
         removeItem(state, craftedId, 1, GameLocations.StartVillage)
-        expect(state.locations.StartVillage.storage).toEqual({ ids: [], entries: {} })
-        expect(state.locations.Test.storage).toEqual({ ids: [], entries: {} })
+        expect(getLocation(state).storage).toEqual({ ids: [], entries: {} })
+        expect(getLocation(state, GameLocations.Test).storage).toEqual({ ids: [], entries: {} })
         expect(state.craftedItems).toEqual({ ids: [], entries: {} })
     })
     test('Remove Item 2 craft', () => {
         const state = GetInitialGameState()
-        state.locations.StartVillage.storage = {
+        getLocation(state).storage = {
             ids: [`${CRAFTED_ITEM_PREFIX}craft`],
             entries: {
                 [`${CRAFTED_ITEM_PREFIX}craft`]: { itemId: `${CRAFTED_ITEM_PREFIX}craft`, quantity: 10 },
@@ -114,7 +118,7 @@ describe('Storage Functions', () => {
         }
 
         removeItem(state, `${CRAFTED_ITEM_PREFIX}craft`, 2)
-        expect(state.locations.StartVillage.storage).toEqual({
+        expect(getLocation(state).storage).toEqual({
             ids: [`${CRAFTED_ITEM_PREFIX}craft`],
             entries: {
                 [`${CRAFTED_ITEM_PREFIX}craft`]: { itemId: `${CRAFTED_ITEM_PREFIX}craft`, quantity: 8 },
@@ -128,7 +132,7 @@ describe('Storage Functions', () => {
     })
     test('Has Item Yes', () => {
         const state = GetInitialGameState()
-        state.locations.StartVillage.storage = {
+        getLocation(state).storage = {
             ids: [`${CRAFTED_ITEM_PREFIX}craft`],
             entries: {
                 [`${CRAFTED_ITEM_PREFIX}craft`]: { itemId: `${CRAFTED_ITEM_PREFIX}craft`, quantity: 1 },

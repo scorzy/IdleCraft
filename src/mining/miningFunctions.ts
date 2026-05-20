@@ -1,4 +1,5 @@
 import { GameState } from '../game/GameState'
+import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { hasPerk } from '../perks/PerksSelectors'
 import { PerksEnum } from '../perks/perksEnum'
@@ -18,7 +19,7 @@ import { OreTypes } from './OreTypes'
 export const MAX_ORE_VEINS = 10
 
 export function getOreVeinsByType(state: GameState, location: GameLocations, oreType: OreTypes): OreVeinState[] {
-    const veinsMap = state.locations[location].oreVeins
+    const veinsMap = GameLocationAdapter.selectEx(state.locations, location).oreVeins
     const veins = veinsMap[oreType]
     if (veins) return veins
 
@@ -28,12 +29,12 @@ export function getOreVeinsByType(state: GameState, location: GameLocations, ore
 }
 
 export function hasOre(state: GameState, oreType: OreTypes, location?: GameLocations): boolean {
-    return (state.locations[location ?? state.location].ores[oreType]?.qta ?? 1) > 0
+    return (GameLocationAdapter.selectEx(state.locations, location ?? state.location).ores[oreType]?.qta ?? 1) > 0
 }
 export function resetOre(state: GameState, oreType: OreTypes, location: GameLocations): void {
     const def = selectDefaultMine(state, oreType)
 
-    state.locations[location].ores[oreType] = structuredClone(def)
+    GameLocationAdapter.selectEx(state.locations, location).ores[oreType] = structuredClone(def)
 }
 
 export function getCurrentOreVeinByType(
@@ -119,7 +120,8 @@ export function mineOre(
 ): {
     mined: boolean
 } {
-    const mine = state.locations[location].ores[oreType]
+    const ores = GameLocationAdapter.selectEx(state.locations, location).ores
+    const mine = ores[oreType]
 
     let qta: number
     let curHp: number
@@ -144,7 +146,7 @@ export function mineOre(
         if (hp <= 0) hp = 0
     }
 
-    state.locations[location].ores[oreType] = {
+    ores[oreType] = {
         hp,
         qta,
     }

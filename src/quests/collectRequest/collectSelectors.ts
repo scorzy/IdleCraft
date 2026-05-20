@@ -1,5 +1,6 @@
 import { uniq } from 'es-toolkit/compat'
 import { GameState } from '../../game/GameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { selectTranslations } from '../../msg/useTranslations'
 import { selectTotalFilteredQta } from '../../storage/StorageSelectors'
 import { StorageAdapter } from '../../storage/storageAdapter'
@@ -60,8 +61,9 @@ export interface CollectRequestStatus {
     isReqCompleted: Record<string, boolean>
 }
 export const selectCollectQuestChosenItems = (state: GameState, questId: string, outcomeId: string) => {
-    const reqItems = selectOutcomeEx(state, questId, outcomeId).reqItems
-    const storage = state.locations[selectOutcomeEx(state, questId, outcomeId).location].storage
+    const outcome = selectOutcomeEx(state, questId, outcomeId)
+    const reqItems = outcome.reqItems
+    const storage = GameLocationAdapter.selectEx(state.locations, outcome.location).storage
 
     const ret: CollectRequestStatus = {
         isReqCompleted: {},

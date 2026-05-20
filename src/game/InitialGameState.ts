@@ -6,6 +6,7 @@ import { RecipeTypes } from '../crafting/RecipeInterfaces'
 import { AppliedEffectAdapter } from '../effects/types/AppliedEffect'
 import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
+import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { GatheringZone } from '../gathering/gatheringZones'
 import { OreTypes } from '../mining/OreTypes'
@@ -17,10 +18,12 @@ import { UiPages } from '../ui/state/UiPages'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { GrowSpeedBonusAdapter } from '../wood/forest/growSpeedBonus'
 import { WoodTypes } from '../wood/WoodTypes'
-import { AddActivityTypes, GameState, LocationState } from './GameState'
+import { AddActivityTypes } from './GameState'
+import type { GameState, LocationState } from './GameState'
 
-const getInitialVillageState: () => LocationState = () => {
+const getInitialLocationState: (id: GameLocations) => LocationState = (id) => {
     return {
+        id,
         storage: StorageAdapter.getInitialState(),
         forests: {},
         ores: {},
@@ -28,6 +31,13 @@ const getInitialVillageState: () => LocationState = () => {
         loot: [],
         unlockedGatheringZones: [],
     }
+}
+
+const getInitialLocations = () => {
+    const locations = GameLocationAdapter.getInitialState()
+    GameLocationAdapter.create(locations, getInitialLocationState(GameLocations.StartVillage))
+    GameLocationAdapter.create(locations, getInitialLocationState(GameLocations.Test))
+    return locations
 }
 
 export const InitialGameState: GameState = {
@@ -76,10 +86,7 @@ export const InitialGameState: GameState = {
     loading: false,
     craftedItems: ItemAdapter.getInitialState(),
     waitingTrees: null,
-    locations: {
-        [GameLocations.StartVillage]: getInitialVillageState(),
-        [GameLocations.Test]: getInitialVillageState(),
-    },
+    locations: getInitialLocations(),
     treeGrowth: TreeGrowthAdapter.getInitialState(),
     growSpeedBonuses: GrowSpeedBonusAdapter.getInitialState(),
     recipeId: '',

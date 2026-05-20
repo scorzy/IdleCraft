@@ -1,4 +1,5 @@
 import { GameState } from '../../game/GameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { QuestAdapter } from '../../quests/QuestTypes'
 import { GatheringData } from '../gatheringData'
@@ -10,7 +11,9 @@ export const isGatheringZoneUnlocked = (state: GameState) => {
 
     if (data.unlockData === undefined) return true
 
-    return state.locations[state.location].unlockedGatheringZones.includes(state.ui.gatheringZone)
+    return GameLocationAdapter.selectEx(state.locations, state.location).unlockedGatheringZones.includes(
+        state.ui.gatheringZone
+    )
 }
 
 export const getGatheringQuestId = (zone: GatheringZone, location: GameLocations) => {

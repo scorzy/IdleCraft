@@ -1,5 +1,6 @@
 import { ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { startTimer } from '../../timers/startTimer'
 import { getUniqueId } from '../../utils/getUniqueId'
@@ -13,7 +14,7 @@ export const checkGrowTrees = (state: GameState, woodType: WoodTypes, location: 
     const number = selectGrowTreeNumber(state, woodType, location)
     if (number >= MAX_GROWING_TREES) return
 
-    const forest = state.locations[state.location].forests[woodType]
+    const forest = GameLocationAdapter.selectEx(state.locations, state.location).forests[woodType]
     if (!forest) return
 
     const def = selectDefaultForest(state, woodType)

@@ -4,6 +4,7 @@ import { ActivityAdapter } from '../activities/ActivityState'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { selectLevelExp } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
+import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { PickaxeData } from '../items/Item'
 import { isMining } from './Mining'
 import { OreData } from './OreData'
@@ -35,7 +36,7 @@ export const selectDefaultMine = (_s: GameState, oreType: OreTypes) => {
 }
 
 export const selectOre = (state: GameState, oreType: OreTypes) => {
-    const ore = state.locations[state.location].ores[oreType]
+    const ore = GameLocationAdapter.selectEx(state.locations, state.location).ores[oreType]
     if (ore) return ore
     return selectDefaultMine(state, oreType)
 }

@@ -1,5 +1,6 @@
 import { ExpEnum } from '../../experience/ExpEnum'
 import { GameState } from '../../game/GameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { QuestAdapter } from '../../quests/QuestTypes'
 import { GatheringData } from '../gatheringData'
@@ -11,7 +12,7 @@ export const startGatheringQuest = (state: GameState, expType: ExpEnum, prevLeve
     if (prevLevel >= newLevel) return
 
     Object.values(GameLocations).forEach((location) => {
-        const unlockedZone = state.locations[location].unlockedGatheringZones
+        const unlockedZone = GameLocationAdapter.selectEx(state.locations, location).unlockedGatheringZones
 
         Object.values(GatheringData).forEach((zoneConfig) => {
             if (
