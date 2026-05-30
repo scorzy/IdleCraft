@@ -1,4 +1,4 @@
-import { GiAnvil, GiCrossedSwords, GiMeatCleaver, GiMining, GiTiedScroll, GiWoodAxe } from 'react-icons/gi'
+import { GiAnvil, GiCompass, GiCrossedSwords, GiMeatCleaver, GiMining, GiTiedScroll, GiWoodAxe } from 'react-icons/gi'
 import { LuBox, LuLayoutList } from 'react-icons/lu'
 import { TbUsers } from 'react-icons/tb'
 import { RecipeTypes } from '../../crafting/RecipeInterfaces'
@@ -13,6 +13,10 @@ export const UiPagesData: Record<UiPages, UiPageData> = {
     [UiPages.Storage]: {
         nameId: 'Storage',
         icon: <LuBox />,
+    },
+    [UiPages.World]: {
+        nameId: 'World',
+        icon: <GiCompass />,
     },
     [UiPages.Woodcutting]: {
         nameId: 'Woodcutting',

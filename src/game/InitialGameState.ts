@@ -73,6 +73,7 @@ export const InitialGameState: GameState = {
         itemFilterSubType: undefined,
         itemFilterType: undefined,
         itemFilterSearch: '',
+        selectedLocation: GameLocations.StartVillage,
     },
     notifications: [],
     location: GameLocations.StartVillage,

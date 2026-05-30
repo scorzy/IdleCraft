@@ -4,6 +4,7 @@ export enum CollapsedEnum {
     Characters = 'Characters',
     Mining = 'Mining',
     Woodcutting = 'Woodcutting',
+    World = 'World',
     Sidebar = 'Sidebar',
     BattleArea = 'BattleArea',
     GatheringSide = 'GatheringSide',

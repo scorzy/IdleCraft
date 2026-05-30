@@ -17,6 +17,7 @@ import { useTranslations } from '../../msg/useTranslations'
 import { QuestUi } from '../../quests/ui/QuestUi'
 import { UiStorage } from '../../storage/ui/Storage'
 import { Woodcutting } from '../../wood/ui/Woodcutting'
+import { World } from '../../gameLocations/ui/World'
 import { ModeToggle } from '../modeToggle'
 import { Sidebar } from '../sidebar/Sidebar'
 import { UiPages } from '../state/UiPages'
@@ -87,6 +88,8 @@ const PageContent = memo(function PageContent() {
             return <Mining />
         case UiPages.Gathering:
             return <Gathering />
+        case UiPages.World:
+            return <World />
         case UiPages.CombatZones:
             return <CombatPage />
         case UiPages.Combat:

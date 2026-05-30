@@ -37,4 +37,5 @@ export interface UiState {
     itemFilterSubType: ItemSubType | undefined
     itemFilterType: ItemTypes | undefined
     itemFilterSearch: string
+    selectedLocation: GameLocations
 }

@@ -4,6 +4,8 @@ export interface Msg {
     Abilities: string
     Storage: string
     Woodcutting: string
+    World: string
+    Travel: string
     Time: string
     Stop: string
     MoveUp: string

@@ -13,6 +13,7 @@ export enum UiPages {
     CombatZones = 'CombatZones',
     Combat = 'Combat',
     Characters = 'Characters',
+    World = 'World',
     Butchering = 'Butchering',
     Quest = 'Quest',
     Alchemy = 'Alchemy',

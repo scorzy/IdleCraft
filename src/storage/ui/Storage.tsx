@@ -43,6 +43,7 @@ import {
 import { setSelectedItem } from '../storageFunctions'
 import classes from './storage.module.css'
 import { ItemFilters } from './ItemFilters'
+import { IconsData } from '../../icons/Icons'
 
 const breakpoints: QueryBreakpoints = {
     small: [0, 400],
@@ -130,7 +131,7 @@ const StorageAccordion = memo(function StorageAccordion() {
     }, [])
 
     return (
-        <Accordion type="single" collapsible className="mb-4 w-full" defaultValue={locations[0]}>
+        <Accordion type="single" collapsible className="mb-4 flex w-full flex-col gap-2" defaultValue={locations[0]}>
             {locations.map((l) => (
                 <AccordionItemLocation l={l} show={show} key={l} />
             ))}
@@ -138,11 +139,11 @@ const StorageAccordion = memo(function StorageAccordion() {
     )
 })
 
-const AccordionItemLocation = memo(function AccordionItemLocation({ l, show }: { l: string; show: boolean }) {
+const AccordionItemLocation = memo(function AccordionItemLocation({ l, show }: { l: GameLocations; show: boolean }) {
     const { t } = useTranslations()
     const { ref, active } = useContainerQueries({ breakpoints })
     const small = active === 'small'
-    const locationData = GameLocationDataMap[l as GameLocations]
+    const locationData = GameLocationDataMap[l]
     if (!locationData) return null
 
     return (
@@ -151,7 +152,7 @@ const AccordionItemLocation = memo(function AccordionItemLocation({ l, show }: {
                 <CardHeader>
                     <AccordionTrigger className="p-0">
                         <CardTitle>
-                            {ChevronsUpDownIcon} {t[locationData.name]}
+                            {ChevronsUpDownIcon} {IconsData[locationData.icon]} {t[locationData.name]}
                         </CardTitle>
                     </AccordionTrigger>
                 </CardHeader>
@@ -160,13 +161,14 @@ const AccordionItemLocation = memo(function AccordionItemLocation({ l, show }: {
                     <CardContent>
                         {small && <SortDropdown />}
 
-                        {show && <LocationStorage small={small} location={GameLocations.StartVillage} />}
+                        {show && <LocationStorage small={small} location={l} />}
                     </CardContent>
                 </AccordionContent>
             </Card>
         </AccordionItem>
     )
 })
+
 const StorageDrawerContent = memo(function StorageDrawerContent() {
     const { t } = useTranslations()
     return (

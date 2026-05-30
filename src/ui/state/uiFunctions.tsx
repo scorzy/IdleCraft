@@ -11,6 +11,7 @@ import { UiPages } from './UiPages'
 import { UiPagesData } from './UiPagesData'
 import { useUiTempStore } from './uiTempStore'
 import { ItemSubType, ItemTypes } from '../../items/Item'
+import { GameLocations } from '../../gameLocations/GameLocations'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'health' | 'stamina' | 'mana'
 type StorageOrder = 'name' | 'quantity' | 'value'
@@ -122,4 +123,8 @@ export const setItemFilterType = (itemFilterType: ItemTypes | undefined) =>
 export const setItemFilterSearch = (itemFilterSearch: string) =>
     setState((s) => {
         s.ui.itemFilterSearch = itemFilterSearch
+    })
+export const setSelectedLocation = (selectedLocation: GameLocations) =>
+    setState((s) => {
+        s.ui.selectedLocation = selectedLocation
     })

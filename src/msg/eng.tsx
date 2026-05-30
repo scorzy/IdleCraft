@@ -20,6 +20,8 @@ export const engMsg: Msg = {
     Abilities: 'Abilities',
     Storage: 'Storage',
     Woodcutting: 'Woodcutting',
+    World: 'World',
+    Travel: 'Travel',
     Woodworking: 'Woodworking',
     Time: 'Time',
     Stop: 'Stop',
