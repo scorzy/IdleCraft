@@ -85,24 +85,26 @@ export function UiStorage() {
 
     if (locations.length === 0) return <NoItems />
     return (
-        <MyPage className={classes.cardList} ref={pageRef}>
-            <UiStorageContext value={setOpen}>
-                <div ref={accordionRef} className={cn('flex flex-col flex-1 gap-3')}>
-                    <ItemFilters />
-                    <StorageAccordion />
-                </div>
+        <div className={classes.container}>
+            <div className={classes.cardList} ref={pageRef}>
+                <UiStorageContext value={setOpen}>
+                    <MyPage ref={accordionRef} className={cn('flex flex-col flex-1 gap-3')}>
+                        <ItemFilters />
+                        <StorageAccordion />
+                    </MyPage>
 
-                {!sameRow && (
-                    <Drawer open={open} onOpenChange={setOpen}>
-                        <StorageDrawerContent />
-                    </Drawer>
-                )}
-            </UiStorageContext>
+                    {!sameRow && (
+                        <Drawer open={open} onOpenChange={setOpen}>
+                            <StorageDrawerContent />
+                        </Drawer>
+                    )}
+                </UiStorageContext>
 
-            <div ref={selectedItemRef}>
-                <SelectedItem showTitle={true} />
+                <MyPage ref={selectedItemRef}>
+                    <SelectedItem showTitle={true} />
+                </MyPage>
             </div>
-        </MyPage>
+        </div>
     )
 }
 const NoItems = memo(function NoItems() {

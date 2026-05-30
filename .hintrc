@@ -8,7 +8,8 @@
       {
         "ignore": [
           "user-select",
-          "accent-color"
+          "accent-color",
+          "container-type"
         ]
       }
     ],
