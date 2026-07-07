@@ -42,6 +42,7 @@ import {
     GiWolfHead,
     GiWoodAxe,
     GiVisoredHelm,
+    GiHutsVillage,
 } from 'react-icons/gi'
 import { LuArrowDown, LuArrowDownUp, LuArrowUp } from 'react-icons/lu'
 
@@ -91,6 +92,7 @@ export enum Icons {
     Helmet = 'Helmet',
     Gauntlet = 'Gauntlet',
     Boots = 'Boots',
+    HutsVillage = 'HutsVillage',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -138,4 +140,5 @@ export const IconsData: Record<Icons, ReactNode> = {
     Helmet: <GiVisoredHelm />,
     Gauntlet: <GiGauntlet />,
     Boots: <GiBoots />,
+    HutsVillage: <GiHutsVillage />,
 }

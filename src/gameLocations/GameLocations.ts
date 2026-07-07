@@ -17,12 +17,12 @@ export const GameLocationDataMap: Record<GameLocations, GameLocationData> = {
         id: GameLocations.StartVillage,
         name: 'startVillageName',
         description: 'startVillageDesc',
-        icon: Icons.AnimalHide,
+        icon: Icons.HutsVillage,
     },
     [GameLocations.Test]: {
         id: GameLocations.Test,
         name: 'testName',
         description: 'testDesc',
-        icon: Icons.AnimalHide,
+        icon: Icons.HutsVillage,
     },
 }

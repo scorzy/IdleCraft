@@ -41,6 +41,8 @@ import { GetInitialGameState } from './InitialGameState'
 import { SaveImportDialog } from './save/ui/SaveImportDialog'
 import classes from './start.module.css'
 import { useGameStore } from './state'
+import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
+import { GameLocations } from '../gameLocations/GameLocations'
 
 const startGame = (name: string) => () => {
     if (name === '') return
@@ -50,6 +52,7 @@ const startGame = (name: string) => () => {
         s.gameId = getUniqueId()
         const player = s.characters.entries[PLAYER_ID]
         if (player) player.name = name
+        GameLocationAdapter.remove(s.locations, GameLocations.Test)
         return s
     })
 }
@@ -111,7 +114,7 @@ const NewGame = memo(function NewGame() {
             <DialogTrigger asChild>
                 <Button variant="secondary">{t.NewGame}</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-106.25">
                 <DialogTitle>{t.NewGame}</DialogTitle>
                 <DialogDescription></DialogDescription>
                 <Label htmlFor="name">{t.Name}</Label>
