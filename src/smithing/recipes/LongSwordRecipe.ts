@@ -14,7 +14,6 @@ import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageTypes, Item, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
-import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
 const longSwordParams: RecipeParameterItemFilter[] = [
@@ -28,7 +27,7 @@ const longSwordParams: RecipeParameterItemFilter[] = [
 
 export const longSwordRecipe = makeMemoizedRecipe({
     id: 'LongSwordRecipe',
-    nameId: 'LongSword' as keyof Msg,
+    nameId: 'LongSword',
     iconId: Icons.Sword,
     type: RecipeTypes.Smithing,
     recipeGroup: RecipeGroups.Weapons,

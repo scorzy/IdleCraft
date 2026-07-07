@@ -13,7 +13,6 @@ import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageData, DamageTypes, Item, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
-import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
 const armourParams: RecipeParameterItemFilter[] = [
@@ -27,7 +26,7 @@ const armourParams: RecipeParameterItemFilter[] = [
 
 export const armourRecipe = makeMemoizedRecipe({
     id: 'ArmourRecipe',
-    nameId: 'Armour' as keyof Msg,
+    nameId: 'Armour',
     iconId: Icons.Breastplate,
     type: RecipeTypes.Smithing,
     recipeGroup: RecipeGroups.Armours,

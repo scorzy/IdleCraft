@@ -12,7 +12,6 @@ import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { Item, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
-import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
 const woodAxeParam: RecipeParameterItemFilter[] = [
@@ -35,7 +34,7 @@ export const axeRecipe = makeMemoizedRecipe({
     type: RecipeTypes.Smithing,
     recipeGroup: RecipeGroups.Others,
     iconId: Icons.Axe,
-    nameId: 'WoodAxe' as keyof Msg,
+    nameId: 'WoodAxe',
     getParameters: () => woodAxeParam,
     getResult: (state: GameState, params: RecipeParameterValue[]) => {
         const bar = params.find((i) => i.id === 'bar')

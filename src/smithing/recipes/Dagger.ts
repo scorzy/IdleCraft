@@ -14,7 +14,6 @@ import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
 import { DamageTypes, Item, ItemTypes } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
-import { Msg } from '../../msg/Msg'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
 const daggerParams: RecipeParameterItemFilter[] = [
@@ -28,7 +27,7 @@ const daggerParams: RecipeParameterItemFilter[] = [
 
 export const daggerRecipe = makeMemoizedRecipe({
     id: 'DaggerRecipe',
-    nameId: 'Dagger' as keyof Msg,
+    nameId: 'Dagger',
     iconId: Icons.Sword,
     type: RecipeTypes.Smithing,
     recipeGroup: RecipeGroups.Weapons,

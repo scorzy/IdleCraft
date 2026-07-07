@@ -29,6 +29,6 @@ export function updateTimers(state: GameState): void {
 
 function startTimer(timer: Timer) {
     const diff = Math.max(timer.to - Date.now(), 0)
-    const intervalId = setTimeout(() => execTimer(timer.id), diff) as unknown as number
+    const intervalId = setTimeout(() => execTimer(timer.id), diff)
     prevTimers.set(timer.id, { id: timer.id, to: timer.to, from: timer.from, intervalId })
 }
