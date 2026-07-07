@@ -1,3 +1,4 @@
 import { GameState } from '../game/GameState'
+import { GameLocationAdapter } from './GameLocationAdapter'
 
-export const selectGameLocation = (state: GameState) => state.location
+export const selectGameLocationIds = (state: GameState) => GameLocationAdapter.getIds(state.locations)

@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback } from 'react'
 import { Button } from '../../components/ui/button'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
@@ -13,9 +13,10 @@ import { travel } from '../functions/travel'
 import { setSelectedLocation } from '../../ui/state/uiFunctions'
 import { selectSelectedGameLocation } from '../../ui/state/uiSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
+import { selectGameLocationIds } from '../GameLocationSelectors'
 
 export const World = memo(function World() {
-    const locations = useMemo(() => Object.values(GameLocations).toSorted() as GameLocations[], [])
+    const locations = useGameStore(selectGameLocationIds)
 
     return (
         <MyPageAll
