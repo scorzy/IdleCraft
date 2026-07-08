@@ -46,7 +46,10 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     }
 
     return (
-        <Card gap="sm">
+        <Card
+        //ToDo  
+        //  gap="sm"
+         >
             <MyCardHeaderTitle title={t[slotData.ItemType as keyof Msg]} />
             <CardContent>
                 <ComboBoxResponsive

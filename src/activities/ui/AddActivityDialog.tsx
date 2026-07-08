@@ -87,7 +87,7 @@ export const AddActivityDialog = memo(function AddActivityDialog({
 
     return (
         <Dialog>
-            <DialogTrigger asChild>{openBtn}</DialogTrigger>
+            <DialogTrigger render={<>{openBtn}</>} />
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
@@ -162,10 +162,8 @@ export const AddActivityDialog = memo(function AddActivityDialog({
                     </Field>
                 </FieldGroup>
                 <DialogFooter>
-                    <DialogClose asChild>
-                        <Button variant="outline">{t.cancel}</Button>
-                    </DialogClose>
-                    <DialogClose asChild>{addBtn}</DialogClose>
+                    <DialogClose render={<Button variant="outline">{t.cancel}</Button>} />
+                    <DialogClose render={<>{addBtn}</>} />
                 </DialogFooter>
             </DialogContent>
         </Dialog>

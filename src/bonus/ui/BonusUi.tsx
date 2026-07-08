@@ -83,11 +83,13 @@ export const BonusDialog = memo(function BonusDialog(props: {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <button title={t.Info} className="text-muted-foreground cursor-pointer" type="button">
-                    <TbInfoCircle size={18} />
-                </button>
-            </DialogTrigger>
+            <DialogTrigger
+                render={
+                    <button title={t.Info} className="text-muted-foreground cursor-pointer" type="button">
+                        <TbInfoCircle size={18} />
+                    </button>
+                }
+            />
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>

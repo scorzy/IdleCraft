@@ -111,9 +111,7 @@ const NewGame = memo(function NewGame() {
 
     return (
         <Dialog>
-            <DialogTrigger asChild>
-                <Button variant="secondary">{t.NewGame}</Button>
-            </DialogTrigger>
+            <DialogTrigger render={<Button variant="secondary">{t.NewGame} </Button>} />
             <DialogContent className="sm:max-w-106.25">
                 <DialogTitle>{t.NewGame}</DialogTitle>
                 <DialogDescription></DialogDescription>
@@ -137,9 +135,7 @@ const LoadFromIndexedDb = memo(function LoadFromIndexedDb(props: {
 
     return (
         <Dialog>
-            <DialogTrigger asChild>
-                <Button variant="secondary">{t.LoadFromIndexedDB}</Button>
-            </DialogTrigger>
+            <DialogTrigger render={<Button variant="secondary">{t.LoadFromIndexedDB}</Button>} />
             <DialogContent className="sm:max-w-[520px]">
                 <DialogHeader>
                     <DialogTitle>{t.LoadFromIndexedDB}</DialogTitle>
@@ -185,11 +181,13 @@ const LoadUi = memo(function LoadUi(props: { item: NameId; setLoadName: React.Di
                 <TimeAgo date={item.state.now} /> {t.Ago}
             </span>
             <AlertDialog>
-                <AlertDialogTrigger asChild>
-                    <Button variant="ghost" title={t.Delete} className="text-muted-foreground">
-                        {TrashIcon}
-                    </Button>
-                </AlertDialogTrigger>
+                <AlertDialogTrigger
+                    render={
+                        <Button variant="ghost" title={t.Delete} className="text-muted-foreground">
+                            {TrashIcon}
+                        </Button>
+                    }
+                />
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>{t.deleteSaveTitle}</AlertDialogTitle>

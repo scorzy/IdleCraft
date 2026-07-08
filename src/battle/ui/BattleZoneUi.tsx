@@ -1,4 +1,3 @@
-import { DialogTrigger } from '@radix-ui/react-dialog'
 import { memo, useCallback } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
@@ -7,7 +6,14 @@ import { CharTemplatesData } from '../../characters/templates/charTemplateData'
 import { generateCharacter } from '../../characters/templates/generateCharacter'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../components/ui/dialog'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '../../components/ui/dialog'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
@@ -156,11 +162,13 @@ const EnemyDropsUi = memo(function EnemyDropsUi({ templateEnum }: { templateEnum
     const { f } = useNumberFormatter()
     return (
         <Dialog>
-            <DialogTrigger asChild>
-                <Button size="xs" variant="secondary">
-                    {t.Drops}
-                </Button>
-            </DialogTrigger>
+            <DialogTrigger
+                render={
+                    <Button size="xs" variant="secondary">
+                        {t.Drops}
+                    </Button>
+                }
+            />
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>

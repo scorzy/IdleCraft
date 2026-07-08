@@ -1,4 +1,3 @@
-import { CaretSortIcon } from '@radix-ui/react-icons'
 import { memo, useCallback, useState } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -35,6 +34,7 @@ import { MyPage } from '../../ui/pages/MyPage'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { TimerProgressFromId } from '../../ui/progress/TimerProgress'
 import classes from './combat.module.css'
+import { RxCaretSort } from 'react-icons/rx'
 
 export const CombatUi = memo(function CombatUi() {
     return (
@@ -85,12 +85,14 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
                     <CombatAbilitiesList charId={charId} />
 
                     <Collapsible open={isAttOpen} onOpenChange={setIsAttOpen} className="text-sm">
-                        <CollapsibleTrigger asChild>
-                            <Button variant="ghost" className="w-full">
-                                {t.Stats}
-                                <CaretSortIcon />
-                            </Button>
-                        </CollapsibleTrigger>
+                        <CollapsibleTrigger
+                            render={
+                                <Button variant="ghost" className="w-full">
+                                    {t.Stats}
+                                    <RxCaretSort />
+                                </Button>
+                            }
+                        />
 
                         <CollapsibleContent className="CollapsibleContent">
                             <CardContent className="grid gap-2">

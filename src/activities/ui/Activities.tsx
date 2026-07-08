@@ -1,4 +1,4 @@
-import { CheckedState } from '@radix-ui/react-checkbox'
+ 
 import { memo, useCallback } from 'react'
 import { LuArrowDown, LuArrowUp, LuInfo } from 'react-icons/lu'
 import { Badge } from '@/components/ui/badge'
@@ -99,7 +99,7 @@ export const ActivityCard = memo(function ActivityCard({
     const onClickNext = useCallback(() => moveActivityNext(id), [id])
     const onClickRemove = useCallback(() => removeActivity(id), [id])
     const onClickView = useCallback(() => viewActivity(id), [id])
-    const onAutoRemove = useCallback((checked: CheckedState) => setAutoRemove(id, checked === true), [id])
+    const onAutoRemove = useCallback((checked: boolean) => setAutoRemove(id, checked === true), [id])
 
     const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
@@ -132,7 +132,8 @@ export const ActivityCard = memo(function ActivityCard({
                 {view && (
                     <Button
                         aria-label={t.Remove}
-                        color="error"
+                        // ToDo: Add color="error" to the button when the design system supports it
+                        // color="error"
                         onClick={onClickView}
                         variant="ghost"
                         className="text-muted-foreground"
@@ -151,7 +152,8 @@ export const ActivityCard = memo(function ActivityCard({
                 />
                 <Button
                     aria-label={t.Remove}
-                    color="error"
+                    // ToDo: Add color="error" to the button when the design system supports it
+                    // color="error"
                     onClick={onClickRemove}
                     variant="ghost"
                     className="text-muted-foreground"

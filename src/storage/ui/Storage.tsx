@@ -133,7 +133,7 @@ const StorageAccordion = memo(function StorageAccordion() {
     }, [])
 
     return (
-        <Accordion type="single" collapsible className="mb-4 flex w-full flex-col gap-2" defaultValue={locations[0]}>
+        <Accordion     className="mb-4 flex w-full flex-col gap-2"  >
             {locations.map((l) => (
                 <AccordionItemLocation l={l} show={show} key={l} />
             ))}

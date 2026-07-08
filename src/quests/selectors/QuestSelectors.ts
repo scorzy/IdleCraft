@@ -91,4 +91,4 @@ export const selectOutcomeLocation = (state: GameState, questId: string, outcome
     selectOutcome(state, questId, outcomeId)?.location
 
 export const selectExpandedOutcomeId = (state: GameState, questId: string) =>
-    QuestAdapter.selectEx(state.quests, questId).expandedOutcome
+    [QuestAdapter.selectEx(state.quests, questId).expandedOutcome]

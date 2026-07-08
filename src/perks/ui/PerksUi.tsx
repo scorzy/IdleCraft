@@ -98,9 +98,7 @@ const PerkFilter = memo(function PerkFilter() {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="secondary">{t.Filter}</Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuTrigger render={<Button variant="secondary">{t.Filter}</Button>} />
             <DropdownMenuContent className={`sort ${classes.dropDown!}`}>
                 <DropdownMenuCheckboxItem checked={available} onCheckedChange={toggleShowAvailablePerks}>
                     {t.Available}

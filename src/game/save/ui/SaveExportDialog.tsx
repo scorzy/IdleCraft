@@ -69,9 +69,7 @@ export const SaveExportDialog = memo(function SaveExportDialog() {
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogTrigger asChild>
-                <Button variant="outline">{t.ExportSave}</Button>
-            </DialogTrigger>
+            <DialogTrigger render={<Button variant="outline">{t.ExportSave}</Button>}></DialogTrigger>
             <DialogContent className="sm:max-w-[680px]">
                 <DialogHeader>
                     <DialogTitle>{t.ExportSave}</DialogTitle>

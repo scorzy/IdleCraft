@@ -1,7 +1,5 @@
-import * as HoverCardPrimitive from '@radix-ui/react-hover-card'
-import { HoverCardTrigger } from '@radix-ui/react-hover-card'
 import { memo, ReactNode, useCallback, useState } from 'react'
-import { HoverCard, HoverCardContent } from '../components/ui/hover-card'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '../components/ui/hover-card'
 
 export const MyHoverCard = memo(function MyHoverCard(props: { children: ReactNode; trigger: ReactNode }) {
     const { children, trigger } = props
@@ -12,13 +10,11 @@ export const MyHoverCard = memo(function MyHoverCard(props: { children: ReactNod
     const onBlur = useCallback(() => setOpen(false), [setOpen])
 
     return (
-        <HoverCard open={open} onOpenChange={setOpen} openDelay={500}>
+        <HoverCard open={open} onOpenChange={setOpen}>
             <HoverCardTrigger onClick={onClick} onFocus={onFocus} onBlur={onBlur}>
                 {trigger}
             </HoverCardTrigger>
-            <HoverCardPrimitive.Portal>
-                <HoverCardContent>{children}</HoverCardContent>
-            </HoverCardPrimitive.Portal>
+            <HoverCardContent>{children}</HoverCardContent>
         </HoverCard>
     )
 })

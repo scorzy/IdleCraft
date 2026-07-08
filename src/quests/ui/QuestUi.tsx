@@ -1,4 +1,3 @@
-import { Popover, PopoverContent, PopoverTrigger, Portal } from '@radix-ui/react-popover'
 import { memoize } from 'proxy-memoize'
 import { memo, ReactNode, useCallback } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
@@ -50,6 +49,7 @@ import {
 } from '../selectors/QuestSelectors'
 import { selectAcceptedQuestsMemo, selectAvailableQuestsMemo } from '../selectors/QuestSelectorsMemo'
 import classes from './QuestUi.module.css'
+import { Popover, PopoverContent, PopoverTrigger } from '../../components/ui/popover'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -171,18 +171,15 @@ export const QuestTitle = ({ questId }: { questId: string }) => {
 }
 
 export const QuestAccordion = ({ questId, children }: { questId: string; children: ReactNode[] }) => {
-    const onExpOutcomeChange = useCallback((outcomeId: string) => setExpandedOutcome(questId, outcomeId), [questId])
+    const onExpOutcomeChange = useCallback(
+        (outcomeId: string[]) => setExpandedOutcome(questId, outcomeId[0] ?? ''),
+        [questId]
+    )
     const expOutcomeId = useGameStore(
         useCallback((s: GameState) => (questId ? selectExpandedOutcomeId(s, questId) : undefined), [questId])
     )
     return (
-        <Accordion
-            type="single"
-            collapsible
-            className="grid w-full gap-4"
-            value={expOutcomeId}
-            onValueChange={onExpOutcomeChange}
-        >
+        <Accordion className="grid w-full gap-4" value={expOutcomeId} onValueChange={onExpOutcomeChange}>
             {children}
         </Accordion>
     )
@@ -281,7 +278,10 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
             <CardTitle>{t.Rewards}</CardTitle>
             <div className="mt-2 flex flex-wrap gap-2">
                 {gold > 0 && (
-                    <Badge variant="secondary" size="base">
+                    <Badge
+                        variant="secondary"
+                        // size="base"
+                    >
                         {Coins}
                         {f(gold)}
                     </Badge>
@@ -315,22 +315,21 @@ export function ItemRewardUi(props: { itemId: string; quantity: number }) {
 
     return (
         <Popover>
-            <PopoverTrigger asChild>
-                <Badge variant="secondary" size="base">
-                    {f(quantity)} <ItemIconName itemId={itemId} />
-                </Badge>
-            </PopoverTrigger>
-
-            <Portal>
-                <PopoverContent side="top">
-                    <Card className="min-w-50">
-                        <MyCardHeaderTitle title={`${f(quantity)} ${name}`} icon={icon} />
-                        <CardContent>
-                            <ItemInfo item={item} />
-                        </CardContent>
-                    </Card>
-                </PopoverContent>
-            </Portal>
+            <PopoverTrigger
+                render={
+                    <Badge variant="secondary" {...props}>
+                        {f(quantity)} <ItemIconName itemId={itemId} />
+                    </Badge>
+                }
+            />
+            <PopoverContent side="top">
+                <Card className="min-w-50">
+                    <MyCardHeaderTitle title={`${f(quantity)} ${name}`} icon={icon} />
+                    <CardContent>
+                        <ItemInfo item={item} />
+                    </CardContent>
+                </Card>
+            </PopoverContent>
         </Popover>
     )
 }
@@ -370,7 +369,7 @@ const KillOutcomeProgress = (props: { target: KillQuestTarget }) => {
     const percent = Math.round((killedCount / targetCount) * 100)
     return (
         <div>
-            <Badge variant="secondary" className="mb-1" size="base">
+            <Badge variant="secondary" className="mb-1">
                 {killedCount >= targetCount && Check} {IconsData[charTemplate.iconId]} {t[charTemplate.nameId]}{' '}
                 {f(killedCount)}/{f(targetCount)}
             </Badge>
