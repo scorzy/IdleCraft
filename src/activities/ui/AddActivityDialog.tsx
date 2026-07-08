@@ -87,7 +87,7 @@ export const AddActivityDialog = memo(function AddActivityDialog({
 
     return (
         <Dialog>
-            <DialogTrigger render={<>{openBtn}</>} />
+            <DialogTrigger>{openBtn}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
