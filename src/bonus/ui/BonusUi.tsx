@@ -94,7 +94,6 @@ export const BonusDialog = memo(function BonusDialog(props: {
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>
-                <DialogDescription></DialogDescription>
                 {open && <BonusListUi selectBonusResult={selectBonusResult} isTime={isTime} />}
             </DialogContent>
         </Dialog>

@@ -18,6 +18,7 @@
 .page__container-sidebar {
     overflow: auto;
     container-type: inline-size;
+    width: 100%;
 }
 .page__all {
     overflow: auto;

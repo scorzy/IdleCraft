@@ -50,6 +50,7 @@ import {
 import { selectAcceptedQuestsMemo, selectAvailableQuestsMemo } from '../selectors/QuestSelectorsMemo'
 import classes from './QuestUi.module.css'
 import { Popover, PopoverContent, PopoverTrigger } from '../../components/ui/popover'
+import { useShallow } from 'zustand/react/shallow'
 
 const QuestLink = (props: { id: string }) => {
     const { id } = props
@@ -176,7 +177,9 @@ export const QuestAccordion = ({ questId, children }: { questId: string; childre
         [questId]
     )
     const expOutcomeId = useGameStore(
-        useCallback((s: GameState) => (questId ? selectExpandedOutcomeId(s, questId) : undefined), [questId])
+        useShallow(
+            useCallback((s: GameState) => (questId ? selectExpandedOutcomeId(s, questId) : undefined), [questId])
+        )
     )
     return (
         <Accordion className="grid w-full gap-4" value={expOutcomeId} onValueChange={onExpOutcomeChange}>

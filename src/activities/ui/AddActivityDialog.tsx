@@ -92,8 +92,6 @@ export const AddActivityDialog = memo(function AddActivityDialog({
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>
-                <DialogDescription>{}</DialogDescription>
-
                 <FieldGroup>
                     <Field orientation="horizontal">
                         <Input
