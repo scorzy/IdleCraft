@@ -1,4 +1,4 @@
-import { createContext, memo, use, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { createContext, memo, use, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { QueryBreakpoints, useContainerQueries } from 'use-container-queries'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { buttonVariants } from '@/components/ui/buttonVariants'
@@ -123,6 +123,7 @@ const NoItems = memo(function NoItems() {
 
 const StorageAccordion = memo(function StorageAccordion() {
     const locations = useGameStore(selectStorageLocationsMemo)
+    const defaultValue = useMemo(() => [locations[0]], [locations])
 
     const [show, setShow] = useState(false)
     useEffect(() => {
@@ -133,7 +134,7 @@ const StorageAccordion = memo(function StorageAccordion() {
     }, [])
 
     return (
-        <Accordion     className="mb-4 flex w-full flex-col gap-2"  >
+        <Accordion className="mb-4 flex w-full flex-col gap-2" defaultValue={defaultValue}>
             {locations.map((l) => (
                 <AccordionItemLocation l={l} show={show} key={l} />
             ))}
