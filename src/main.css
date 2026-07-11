@@ -39,8 +39,20 @@
 }
 
 .CollapsibleContent {
+    display: flex;
+    height: var(--collapsible-panel-height);
+    flex-direction: column;
+    justify-content: end;
     overflow: hidden;
-    container-type: inline-size;
+    transition: height 130ms ease-out;
+    &[hidden]:not([hidden='until-found']) {
+        display: none;
+    }
+
+    &[data-starting-style],
+    &[data-ending-style] {
+        height: 0;
+    }
 }
 .CollapsibleContent[data-state='open'] {
     animation: slideDown 300ms ease-out;
