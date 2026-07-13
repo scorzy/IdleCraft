@@ -105,7 +105,7 @@ const CraftingReqRow = memo(function CraftingReqRow({ req }: { req: RecipeItemRe
         </TableRow>
     )
 })
-const CraftingReqRowHaveQta = memo(function CraftingReqRowHaveQta(props: { itemId: string }) {
+export const CraftingReqRowHaveQta = memo(function CraftingReqRowHaveQta(props: { itemId: string }) {
     const { itemId } = props
     const { f } = useNumberFormatter()
     const qtaStorage = useGameStore(selectItemQta(null, itemId))

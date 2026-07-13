@@ -6,7 +6,7 @@ import { CharTemplatesData } from '../../characters/templates/charTemplateData'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../components/ui/card'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
 import { setState } from '../../game/setState'
@@ -16,7 +16,7 @@ import { Check, ChevronsUpDownIcon, Coins } from '../../icons/IconsMemo'
 import { ItemIconName } from '../../items/ui/ItemIconName'
 import { ItemInfo } from '../../items/ui/ItemInfo'
 import { useTranslations } from '../../msg/useTranslations'
-import { selectGameItem } from '../../storage/StorageSelectors'
+import { selectGameItem, selectItemQta } from '../../storage/StorageSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
@@ -242,19 +242,21 @@ const QuestOutcomeUi = (props: { questId: string; outcomeId: string }) => {
                 </CardHeader>
 
                 <AccordionContent>
-                    <CardContent className="flex flex-col gap-4">
+                    <CardContent className="flex flex-col">
                         <TypographyP>{description}</TypographyP>
 
                         {isKilling && <KillRequestUi questId={questId} outcomeId={outcomeId} />}
                         {isCollecting && <CollectRequestUi questId={questId} outcomeId={outcomeId} />}
 
                         <OutcomeReward questId={questId} outcomeId={outcomeId} />
-                        {!isAuto && status === QuestStatus.ACCEPTED && (
+                    </CardContent>
+                    {!isAuto && status === QuestStatus.ACCEPTED && (
+                        <CardFooter>
                             <Button onClick={completeClick} disabled={!completed} className="self-start">
                                 {t.Complete}
                             </Button>
-                        )}
-                    </CardContent>
+                        </CardFooter>
+                    )}
                 </AccordionContent>
             </Card>
         </AccordionItem>
@@ -300,6 +302,8 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
 export function ItemRewardUi(props: { itemId: string; quantity: number }) {
     const { itemId, quantity } = props
     const { f } = useNumberFormatter()
+    const { t } = useTranslations()
+    const qta = useGameStore(selectItemQta(null, itemId))
 
     const item = useGameStore(
         useCallback(
@@ -320,18 +324,19 @@ export function ItemRewardUi(props: { itemId: string; quantity: number }) {
         <Popover>
             <PopoverTrigger
                 render={
-                    <Badge variant="secondary" {...props}>
+                    <Button variant="secondary" size="sm" {...props}>
                         {f(quantity)} <ItemIconName itemId={itemId} />
-                    </Badge>
+                    </Button>
                 }
             />
             <PopoverContent side="top">
-                <Card className="min-w-50">
-                    <MyCardHeaderTitle title={`${f(quantity)} ${name}`} icon={icon} />
-                    <CardContent>
-                        <ItemInfo item={item} />
-                    </CardContent>
-                </Card>
+                <MyCardHeaderTitle title={`${f(quantity)} ${name}`} icon={icon} />
+                {qta > 0 && (
+                    <span className="text-muted-foreground">
+                        {t.YouHave} {f(qta)}
+                    </span>
+                )}
+                <ItemInfo item={item} />
             </PopoverContent>
         </Popover>
     )
