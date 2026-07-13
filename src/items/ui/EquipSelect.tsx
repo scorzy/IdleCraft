@@ -46,16 +46,13 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     }
 
     return (
-        <Card
-        //ToDo  
-        //  gap="sm"
-         >
+        <Card>
             <MyCardHeaderTitle title={t[slotData.ItemType as keyof Msg]} />
             <CardContent>
                 <ComboBoxResponsive
                     selectedId={itemId ?? '-'}
                     triggerContent={
-                        <span className="grid grid-flow-col items-center gap-2">
+                        <span className="select-trigger">
                             {icon}
                             {name}
                         </span>
