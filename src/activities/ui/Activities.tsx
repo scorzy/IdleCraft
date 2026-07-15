@@ -99,7 +99,7 @@ export const ActivityCard = memo(function ActivityCard({
     const onClickNext = useCallback(() => moveActivityNext(id), [id])
     const onClickRemove = useCallback(() => removeActivity(id), [id])
     const onClickView = useCallback(() => viewActivity(id), [id])
-    const onAutoRemove = useCallback((checked: boolean) => setAutoRemove(id, checked === true), [id])
+    const onAutoRemove = useCallback((checked: boolean) => setAutoRemove(id,  checked), [id])
 
     const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
