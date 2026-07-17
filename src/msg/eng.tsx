@@ -83,7 +83,7 @@ export const engMsg: Msg = {
     ArmourPen: 'Armour Pen.',
     WoodcuttingDamage: 'Woodcutting Damage',
     WoodcuttingTime: 'Woodcutting  Time',
-    IncreaseGrowSpeed: 'Boost Growth',
+    IncreaseGrowSpeed: 'Growth time',
     MiningTime: 'Mining Time',
     MiningDamage: 'Mining Damage',
     SearchOreVein: 'Search Ore Vein',
@@ -339,8 +339,15 @@ export const engMsg: Msg = {
 
     startVillageName: 'Start Village',
     startVillageDesc: 'Peaceful village surrounded by nature.',
+    woodVillageName: 'Wood Village',
+    woodVillageDesc: 'A village built among thriving forests, rich with lumber.',
     testName: 'testName',
     testDesc: 'testDesc',
+
+    treeGrowBoostName: 'Tree Grow Boost',
+    treeGrowBoostDesc: 'Tree grow speed',
+    maxTreeName: 'Max Tree Boost',
+    maxTreeDesc: 'Max trees',
 
     Use: 'Use',
 

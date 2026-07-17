@@ -63,4 +63,12 @@ describe('Forest Functions', () => {
         })
         expect(res.cut).toBeTruthy()
     })
+    test('Cutting the first ever tree of a full forest starts regrowth immediately', () => {
+        const state = GetInitialGameState()
+        const def = selectDefaultForest(state, WoodTypes.DeadTree)
+        const res = cutTree(state, WoodTypes.DeadTree, def.hp, state.location)
+        expect(res.cut).toBeTruthy()
+        expect(getStartVillage(state).forests.DeadTree?.qta).toBe(def.qta - 1)
+        expect(state.treeGrowth.ids).toHaveLength(1)
+    })
 })

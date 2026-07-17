@@ -336,8 +336,15 @@ export interface Msg {
 
     startVillageName: string
     startVillageDesc: string
+    woodVillageName: string
+    woodVillageDesc: string
     testName: string
     testDesc: string
+
+    treeGrowBoostName: string
+    treeGrowBoostDesc: string
+    maxTreeName: string
+    maxTreeDesc: string
 
     Use: string
 

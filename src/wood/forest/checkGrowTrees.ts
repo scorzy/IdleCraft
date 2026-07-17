@@ -17,7 +17,7 @@ export const checkGrowTrees = (state: GameState, woodType: WoodTypes, location: 
     const forest = GameLocationAdapter.selectEx(state.locations, state.location).forests[woodType]
     if (!forest) return
 
-    const def = selectDefaultForest(state, woodType)
+    const def = selectDefaultForest(state, woodType, location)
     if (forest.qta + number >= def.qta) return
 
     const growthTime = selectTreeRespawnTime(state, woodType, location)

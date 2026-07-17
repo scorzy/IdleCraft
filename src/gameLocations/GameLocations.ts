@@ -3,6 +3,7 @@ import { Msg } from '../msg/Msg'
 
 export enum GameLocations {
     StartVillage = 'StartVillage',
+    WoodVillage = 'WoodVillage',
     Test = 'Test',
 }
 
@@ -18,6 +19,12 @@ export const GameLocationDataMap: Record<GameLocations, GameLocationData> = {
         name: 'startVillageName',
         description: 'startVillageDesc',
         icon: Icons.HutsVillage,
+    },
+    [GameLocations.WoodVillage]: {
+        id: GameLocations.WoodVillage,
+        name: 'woodVillageName',
+        description: 'woodVillageDesc',
+        icon: Icons.Forest,
     },
     [GameLocations.Test]: {
         id: GameLocations.Test,

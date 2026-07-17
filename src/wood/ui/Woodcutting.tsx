@@ -18,6 +18,8 @@ import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
 import { GameIcon } from '../../icons/GameIcon'
 import { IconsData } from '../../icons/Icons'
+import { LocationModifierType } from '../../gameLocations/modifiers/LocationModifier'
+import { selectLocationModifierBonusResult } from '../../gameLocations/modifiers/locationModifierSelectors'
 import { EquipItemUi } from '../../items/ui/EquipSelect'
 import { useTranslations } from '../../msg/useTranslations'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
@@ -165,7 +167,8 @@ const Boost = memo(function Boost() {
                         {t.Time} {fun.formatTime(INCREASE_GROW_SPEED_TIME)}
                     </MyLabel>
                     <MyLabel>
-                        {t.IncreaseGrowSpeed} +{f(activeBoost)}% ({f(activeStacks)}/{f(maxStacks)})
+                        {t.IncreaseGrowSpeed} {activeBoost > 0 ? '+' : ''}
+                        {f(activeBoost)}% ({f(activeStacks)}/{f(maxStacks)})
                         <BonusDialog title={t.IncreaseGrowSpeed} selectBonusResult={selectGrowSpeedBonusAllMemo} />
                     </MyLabel>
                 </MyLabelContainer>
@@ -270,7 +273,7 @@ const Forest = memo(function Forest() {
             />
             <CardContent>
                 <ForestQta />
-                <ForestRespawn />
+
                 <Trees />
             </CardContent>
         </Card>
@@ -279,17 +282,26 @@ const Forest = memo(function Forest() {
 
 const ForestQta = memo(function ForestQta() {
     const woodType = useGameStore(selectWoodType)
+    const location = useGameStore((s) => s.location)
     const qta = useGameStore(useCallback((s) => selectForestQta(s, woodType), [woodType]))
     const def = useGameStore(useShallow(useCallback((state) => selectDefaultForest(state, woodType), [woodType])))
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     const treePercent = Math.floor((100 * qta) / def.qta)
+    const selectMaxTreeBonusMemo = useMemo(
+        () => memoize((s: GameState) => selectLocationModifierBonusResult(s, location, LocationModifierType.MaxTree)),
+        [location]
+    )
 
     return (
         <>
-            <MyLabel>
-                {t.Trees} {f(qta)} <span className="text-muted-foreground">/ {f(def.qta)}</span>
-            </MyLabel>
+            <MyLabelContainer>
+                <MyLabel>
+                    {t.Trees} {f(qta)} <span className="text-muted-foreground">/ {f(def.qta)}</span>
+                    <BonusDialog title={t.maxTreeName} selectBonusResult={selectMaxTreeBonusMemo} />
+                </MyLabel>
+                <ForestRespawn />
+            </MyLabelContainer>
             <ProgressBar value={treePercent} color="success" className="mb-2" />
         </>
     )
@@ -308,7 +320,7 @@ const ForestRespawn = memo(function ForestRespawn() {
 
     return (
         <MyLabel>
-            {t.Time} {fun.formatTime(respawn)}
+            {t.Time} {fun.formatTimePrecise(respawn)}
             <BonusDialog title={t.IncreaseGrowSpeed} selectBonusResult={selectTreeRespawnTimeAllMemo} isTime={true} />
         </MyLabel>
     )

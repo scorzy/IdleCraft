@@ -9,14 +9,17 @@ import { getUniqueId } from '../../utils/getUniqueId'
 import { GrowSpeedBonus, GrowSpeedBonusAdapter } from '../forest/growSpeedBonus'
 import {
     selectFirstExpiringGrowSpeedTimer,
-    selectGrowSpeedBonusMultiplier,
     selectIncreaseGrowSpeedActiveCount,
     selectIncreaseGrowSpeedCap,
     selectIncreaseGrowSpeedDuration,
     selectIncreaseGrowSpeedMulti,
+    selectTreeRespawnTime,
 } from '../forest/growSpeedSelectors'
 import { isIncreaseGrowSpeed } from '../IncreaseGrowSpeed'
 import { onGrowSpeedBonusEnd } from './onGrowSpeedBonusEnd'
+import { addExp } from '../../experience/expFunctions'
+import { ExpEnum } from '../../experience/ExpEnum'
+import { WoodData } from '../WoodData'
 
 export const execIncreaseGrowSpeed = makeExecActivity((state: GameState, timer: Timer) => {
     const act = ActivityAdapter.select(state.activities, timer.actId)
@@ -33,7 +36,7 @@ export const execIncreaseGrowSpeed = makeExecActivity((state: GameState, timer: 
         }
     }
 
-    const before = selectGrowSpeedBonusMultiplier(state, act.woodType, act.location)
+    const before = selectTreeRespawnTime(state, act.woodType, act.location)
     const bonus: GrowSpeedBonus = {
         id: getUniqueId(),
         location: act.location,
@@ -42,12 +45,15 @@ export const execIncreaseGrowSpeed = makeExecActivity((state: GameState, timer: 
     }
 
     GrowSpeedBonusAdapter.create(state.growSpeedBonuses, bonus)
-    const after = selectGrowSpeedBonusMultiplier(state, act.woodType, act.location)
+    const after = selectTreeRespawnTime(state, act.woodType, act.location)
 
     scaleTreeGrowthTimers(state, act.woodType, act.location, after / before)
 
     const duration = selectIncreaseGrowSpeedDuration(state)
     startTimer(state, duration, ActivityTypes.GrowSpeedBonus, bonus.id, bonus.id)
+
+    const wood = WoodData[act.woodType]
+    addExp(state, ExpEnum.Woodcutting, wood.maxHp / 10)
 
     return ActivityStartResult.Ended
 })

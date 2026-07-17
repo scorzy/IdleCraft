@@ -7,6 +7,7 @@ import { CharacterState } from '../characters/characterState'
 import { RecipeGroups, RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
 import { AppliedEffect } from '../effects/types/AppliedEffect'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { LocationModifier } from '../gameLocations/modifiers/LocationModifier'
 import { GatheringZone } from '../gathering/gatheringZones'
 import { Item } from '../items/Item'
 import { OreType, OreVeinState } from '../mining/OreState'
@@ -34,6 +35,7 @@ export interface LocationState {
     oreVeins: Partial<Record<OreTypes, OreVeinState[]>>
     loot: LootId[]
     unlockedGatheringZones: GatheringZone[]
+    modifiers: InitialState<LocationModifier>
 }
 export interface GameState {
     gameId: string

@@ -44,6 +44,7 @@ const locationStateKeyMap = {
     oreVeins: 'ov',
     loot: 'lt',
     unlockedGatheringZones: 'ug',
+    modifiers: 'md',
 } as const
 
 const reverseGameStateKeyMap = Object.fromEntries(

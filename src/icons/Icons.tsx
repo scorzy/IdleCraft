@@ -37,6 +37,7 @@ import {
     GiSteak,
     GiStrong,
     GiSwapBag,
+    GiTreeGrowth,
     GiTwoCoins,
     GiVanillaFlower,
     GiWolfHead,
@@ -93,6 +94,7 @@ export enum Icons {
     Gauntlet = 'Gauntlet',
     Boots = 'Boots',
     HutsVillage = 'HutsVillage',
+    Tree = 'Tree',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -141,4 +143,5 @@ export const IconsData: Record<Icons, ReactNode> = {
     Gauntlet: <GiGauntlet />,
     Boots: <GiBoots />,
     HutsVillage: <GiHutsVillage />,
+    Tree: <GiTreeGrowth />,
 }

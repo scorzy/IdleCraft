@@ -1,19 +1,27 @@
-import { memo, useCallback } from 'react'
+import { memoize } from 'proxy-memoize'
+import { memo, useCallback, useMemo } from 'react'
 import { Button } from '../../components/ui/button'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { useGameStore } from '../../game/state'
+import { GameState } from '../../game/GameState'
 import { useTranslations } from '../../msg/useTranslations'
 import { GameLocationDataMap, GameLocations } from '../GameLocations'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+import { MyLabel, MyLabelContainer } from '../../ui/myCard/MyLabel'
 import { IconsData } from '../../icons/Icons'
+import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
+import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { travel } from '../functions/travel'
 import { setSelectedLocation } from '../../ui/state/uiFunctions'
 import { selectSelectedGameLocation } from '../../ui/state/uiSelectors'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { selectGameLocationIds } from '../GameLocationSelectors'
+import { LocationModifierType } from '../modifiers/LocationModifier'
+import { LocationModifierDataMap } from '../modifiers/LocationModifierData'
+import { selectLocationModifierBonusResult, selectLocationModifierMulti } from '../modifiers/locationModifierSelectors'
 
 export const World = memo(function World() {
     const locations = useGameStore(selectGameLocationIds)
@@ -74,6 +82,7 @@ export const Location = memo(function Location() {
             <MyCardHeaderTitle title={t[selectedLocationData.name]} icon={IconsData[selectedLocationData.icon]} />
             <CardContent>
                 <p className="mt-2 text-sm">{t[selectedLocationData.description]}</p>
+                <LocationModifiers location={loc} />
             </CardContent>
             <CardFooter className="flex gap-2">
                 <Button disabled={isCurrentLocation} onClick={onTravel} className="mt-4">
@@ -81,5 +90,42 @@ export const Location = memo(function Location() {
                 </Button>
             </CardFooter>
         </Card>
+    )
+})
+
+const LocationModifierRow = memo(function LocationModifierRow(props: {
+    location: GameLocations
+    type: LocationModifierType
+}) {
+    const { location, type } = props
+    const { t } = useTranslations()
+    const { f } = useNumberFormatter()
+    const data = LocationModifierDataMap[type]
+
+    const multi = useGameStore(
+        useCallback((s: GameState) => selectLocationModifierMulti(s, location, type), [location, type])
+    )
+    const selectBonusResultMemo = useMemo(
+        () => memoize((s: GameState) => selectLocationModifierBonusResult(s, location, type)),
+        [location, type]
+    )
+
+    if (!multi) return null
+
+    return (
+        <MyLabel>
+            {IconsData[data.iconId]} {t[data.descriptionId]} +{f(multi)}%
+            <BonusDialog title={t[data.nameId]} selectBonusResult={selectBonusResultMemo} />
+        </MyLabel>
+    )
+})
+
+const LocationModifiers = memo(function LocationModifiers({ location }: { location: GameLocations }) {
+    return (
+        <MyLabelContainer className="mt-2">
+            {Object.values(LocationModifierType).map((type) => (
+                <LocationModifierRow key={type} location={location} type={type} />
+            ))}
+        </MyLabelContainer>
     )
 })

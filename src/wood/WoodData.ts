@@ -12,6 +12,7 @@ interface WoodDataType {
     handleId: string
     requiredLevel: number
     color: string
+    respawnTime: number
 }
 export const WoodData: Record<WoodTypes, WoodDataType> = {
     [WoodTypes.DeadTree]: {
@@ -24,6 +25,7 @@ export const WoodData: Record<WoodTypes, WoodDataType> = {
         handleId: 'DeadTreeHandle',
         requiredLevel: 0,
         color: 'text-dead-tree-foreground',
+        respawnTime: 1e3 * 60 * 3,
     },
     [WoodTypes.Oak]: {
         maxHp: 200,
@@ -35,5 +37,6 @@ export const WoodData: Record<WoodTypes, WoodDataType> = {
         handleId: 'OakHandle',
         requiredLevel: 10,
         color: 'text-oak-foreground',
+        respawnTime: 1e3 * 60 * 3.5,
     },
 }

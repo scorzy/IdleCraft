@@ -19,7 +19,7 @@ export function cutTree(
     let qta: number
     let curHp: number
 
-    const def = selectDefaultForest(state, woodType)
+    const def = selectDefaultForest(state, woodType, location)
     if (forest) {
         qta = forest.qta
         curHp = forest.hp
@@ -35,14 +35,14 @@ export function cutTree(
         hp = def.hp
         qta = Math.max(0, qta - 1)
         cut = true
-
-        checkGrowTrees(state, woodType, location)
     }
 
     forests[woodType] = {
         hp,
         qta,
     }
+
+    if (cut) checkGrowTrees(state, woodType, location)
 
     return { cut }
 }

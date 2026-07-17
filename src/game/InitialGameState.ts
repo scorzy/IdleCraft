@@ -8,6 +8,7 @@ import { CommaTypes } from '../formatters/CommaTypes'
 import { NotationTypes } from '../formatters/NotationTypes'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { LocationModifierAdapter, LocationModifierType } from '../gameLocations/modifiers/LocationModifier'
 import { GatheringZone } from '../gathering/gatheringZones'
 import { OreTypes } from '../mining/OreTypes'
 import { QuestAdapter } from '../quests/QuestTypes'
@@ -21,6 +22,23 @@ import { WoodTypes } from '../wood/WoodTypes'
 import { AddActivityTypes } from './GameState'
 import type { GameState, LocationState } from './GameState'
 
+const getInitialLocationModifiers = (id: GameLocations) => {
+    const modifiers = LocationModifierAdapter.getInitialState()
+    if (id === GameLocations.WoodVillage) {
+        LocationModifierAdapter.create(modifiers, {
+            id: 'WoodVillageTreeGrowBoost',
+            type: LocationModifierType.TreeGrowBoost,
+            multi: -10,
+        })
+        LocationModifierAdapter.create(modifiers, {
+            id: 'WoodVillageMaxTree',
+            type: LocationModifierType.MaxTree,
+            multi: 40,
+        })
+    }
+    return modifiers
+}
+
 const getInitialLocationState: (id: GameLocations) => LocationState = (id) => {
     return {
         id,
@@ -30,12 +48,14 @@ const getInitialLocationState: (id: GameLocations) => LocationState = (id) => {
         oreVeins: {},
         loot: [],
         unlockedGatheringZones: [],
+        modifiers: getInitialLocationModifiers(id),
     }
 }
 
 const getInitialLocations = () => {
     const locations = GameLocationAdapter.getInitialState()
     GameLocationAdapter.create(locations, getInitialLocationState(GameLocations.StartVillage))
+    GameLocationAdapter.create(locations, getInitialLocationState(GameLocations.WoodVillage))
     GameLocationAdapter.create(locations, getInitialLocationState(GameLocations.Test))
     return locations
 }
