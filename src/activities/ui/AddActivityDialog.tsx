@@ -1,4 +1,4 @@
-import { memo, ReactNode, useCallback } from 'react'
+import { memo, ReactElement, ReactNode, useCallback } from 'react'
 import { LuArrowDown, LuArrowUp } from 'react-icons/lu'
 import { Button } from '../../components/ui/button'
 import { Checkbox } from '../../components/ui/checkbox'
@@ -67,8 +67,8 @@ export const AddActivityDialog = memo(function AddActivityDialog({
     addBtn,
 }: {
     title: ReactNode
-    openBtn: ReactNode
-    addBtn: ReactNode
+    openBtn: ReactElement
+    addBtn: ReactElement
 }) {
     const { t } = useTranslations()
     const num = useGameStore(selectActRepetitions)
@@ -86,7 +86,7 @@ export const AddActivityDialog = memo(function AddActivityDialog({
 
     return (
         <Dialog>
-            <DialogTrigger>{openBtn}</DialogTrigger>
+            <DialogTrigger render={openBtn} />
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
@@ -160,7 +160,7 @@ export const AddActivityDialog = memo(function AddActivityDialog({
                 </FieldGroup>
                 <DialogFooter>
                     <DialogClose render={<Button variant="outline">{t.cancel}</Button>} />
-                    <DialogClose render={<>{addBtn}</>} />
+                    <DialogClose render={addBtn} />
                 </DialogFooter>
             </DialogContent>
         </Dialog>
