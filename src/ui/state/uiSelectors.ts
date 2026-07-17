@@ -37,3 +37,4 @@ export const selectItemFilterType = (s: GameState) => s.ui.itemFilterType
 export const selectItemFilterSearch = (s: GameState) => s.ui.itemFilterSearch
 export const selectPage = (state: GameState) => state.ui.page
 export const selectSelectedGameLocation = (state: GameState) => state.ui.selectedLocation
+export const selectTravelling = (s: UiTempStore) => s.travelling

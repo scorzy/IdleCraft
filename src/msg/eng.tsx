@@ -259,6 +259,9 @@ export const engMsg: Msg = {
     deleteSaveTitle: 'Are you absolutely sure?',
     deleteSaveDesc: 'This action cannot be undone. This will permanently delete your save',
     cancel: 'Cancel',
+    travelConfirmTitle: 'Are you sure you want to travel?',
+    travelConfirmDesc: 'All current activities will be removed.',
+    Travelling: 'Travelling...',
     Active: 'Active',
     InQueue: 'In Queue',
 

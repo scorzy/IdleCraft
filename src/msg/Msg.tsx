@@ -255,6 +255,9 @@ export interface Msg {
     deleteSaveTitle: string
     deleteSaveDesc: string
     cancel: string
+    travelConfirmTitle: string
+    travelConfirmDesc: string
+    Travelling: string
     Active: string
     InQueue: string
     BoarTusk: string
