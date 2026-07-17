@@ -43,9 +43,10 @@ export const World = memo(function World() {
         <MyPageAll
             sidebar={
                 <SidebarContainer collapsedId={CollapsedEnum.World}>
-                    {locations.map((location) => (
-                        <LocationLink key={location} location={location} />
-                    ))}
+                    {locations.map(
+                        (location) =>
+                            location !== GameLocations.Test && <LocationLink key={location} location={location} />
+                    )}
                 </SidebarContainer>
             }
         >
@@ -153,6 +154,16 @@ const TravelProgress = memo(function TravelProgress(props: { start: number; end:
     )
 })
 
+const LocationModifiers = memo(function LocationModifiers({ location }: { location: GameLocations }) {
+    return (
+        <MyLabelContainer className="mt-2">
+            {Object.values(LocationModifierType).map((type) => (
+                <LocationModifierRow key={type} location={location} type={type} />
+            ))}
+        </MyLabelContainer>
+    )
+})
+
 const LocationModifierRow = memo(function LocationModifierRow(props: {
     location: GameLocations
     type: LocationModifierType
@@ -174,18 +185,9 @@ const LocationModifierRow = memo(function LocationModifierRow(props: {
 
     return (
         <MyLabel>
-            {IconsData[data.iconId]} {t[data.descriptionId]} +{f(multi)}%
+            {IconsData[data.iconId]} {t[data.descriptionId]} {multi > 0 ? '+' : ''}
+            {f(multi)}%
             <BonusDialog title={t[data.nameId]} selectBonusResult={selectBonusResultMemo} />
         </MyLabel>
-    )
-})
-
-const LocationModifiers = memo(function LocationModifiers({ location }: { location: GameLocations }) {
-    return (
-        <MyLabelContainer className="mt-2">
-            {Object.values(LocationModifierType).map((type) => (
-                <LocationModifierRow key={type} location={location} type={type} />
-            ))}
-        </MyLabelContainer>
     )
 })
