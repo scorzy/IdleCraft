@@ -34,7 +34,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<'div'>) {
         <div
             data-slot="card-title"
             className={cn(
-                'grid grid-cols-[auto_1fr_auto] items-center gap-1.5 text-lg leading-normal font-semibold group-data-[size=sm]/card:text-sm',
+                'grid grid-cols-[auto_1fr_auto] items-center gap-1.5 text-lg leading-normal font-semibold group-data-[size=sm]/card:text-base',
                 className
             )}
             {...props}
