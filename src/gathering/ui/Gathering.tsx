@@ -18,6 +18,7 @@ import {
 import { GatheringAction } from './GatheringAction'
 import { GatheringLootTable } from './GatheringLootTable'
 import { GatheringSidebar } from './GatheringSidebar'
+import { useTranslations } from '../../msg/useTranslations'
 
 export const Gathering = memo(function Gathering() {
     const zone = useGameStore((s) => s.ui.gatheringZone)
@@ -49,15 +50,16 @@ const LockedGathering = memo(function LockedGathering() {
     const { f } = useNumberFormatter()
     const questId = useGameStore(selectActiveGatheringQuestId)
     const level = useGameStore(selectGatheringUnlockLevel)
+    const { t } = useTranslations()
 
     return (
         <>
             <Card>
                 <MyCardHeaderTitle title="Gathering" icon={IconsData.Forest} />
                 <CardContent>
-                    <p>Unlock this gathering zone to start gathering here. </p>
+                    <p>{t.UnlockGathering}</p>
                     <p>
-                        Requires gathering level <Badge>{f(level)}</Badge> and completion of the related quest.
+                        {t.UnlockGathering1} <Badge>{f(level)}</Badge> {t.UnlockGathering2}
                     </p>
                 </CardContent>
             </Card>

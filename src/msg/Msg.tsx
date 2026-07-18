@@ -387,4 +387,7 @@ export interface Msg {
     SearchItem: string
     Cuisses: string
     Legs: string
+    UnlockGathering: string
+    UnlockGathering1: string
+    UnlockGathering2: string
 }
