@@ -66,8 +66,8 @@ Run:
 
 Before completing any task:
 
-- Ensure ESLint passes.
-- Ensure Prettier formatting is applied.
+- Ensure oxlint passes.
+- Ensure oxfmt formatting is applied.
 - Do not introduce unused imports.
 
 ---
