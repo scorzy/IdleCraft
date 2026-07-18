@@ -1,4 +1,4 @@
-import { memo, type RefObject, useCallback, useEffect, useReducer, useRef } from 'react'
+import { memo, useCallback, useEffect, useReducer, useRef } from 'react'
 import { TbAlertTriangle } from 'react-icons/tb'
 import { ExpEnum } from '@/experience/ExpEnum'
 import { PLAYER_ID } from '../../characters/charactersConst'
@@ -68,6 +68,8 @@ export const Mining = memo(function Mining() {
         }
     }, [oreType])
 
+    const enabled = useGameStore(useCallback((state: GameState) => isOreEnabled(oreType)(state), [oreType]))
+
     return (
         <MyPageAll
             sidebar={<MiningSidebar />}
@@ -79,46 +81,37 @@ export const Mining = memo(function Mining() {
             }
         >
             <MyPage className="page__main" key={oreType}>
-                <MiningOreLock containerRef={miningOreLockRef} />
-                <OreVeinsUi
-                    containerRef={oreVeinsRef}
-                    isScrollable={layout.isOreVeinsScrollable}
-                    maxHeight={layout.oreVeinsMaxHeight}
-                />
+                <div ref={miningOreLockRef}>
+                    {enabled && <MiningOre />}
+                    {!enabled && <MiningOreLock />}
+                </div>
+
+                {enabled && (
+                    <>
+                        <OreUi />
+                        <OreVeinsUi
+                            containerRef={oreVeinsRef}
+                            isScrollable={layout.isOreVeinsScrollable}
+                            maxHeight={layout.oreVeinsMaxHeight}
+                        />
+                    </>
+                )}
             </MyPage>
         </MyPageAll>
     )
 })
 
-const MiningOreLock = memo(function MiningOreLock({
-    containerRef,
-}: {
-    containerRef: RefObject<HTMLDivElement | null>
-}) {
+const MiningOreLock = memo(function MiningOreLock() {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
-    const isEnabled = useCallback((state: GameState) => isOreEnabled(oreType)(state), [oreType])
-    const enabled = useGameStore(isEnabled)
     const data = OreData[oreType]
 
-    if (enabled)
-        return (
-            <>
-                <div ref={containerRef}>
-                    <MiningOre />
-                </div>
-                <OreUi />
-            </>
-        )
-
     return (
-        <div ref={containerRef}>
-            <Alert variant="destructive">
-                <TbAlertTriangle className="h-4 w-4" />
-                <AlertTitle>{t.LevelToLow}</AlertTitle>
-                <AlertDescription>{fun.requireMiningLevel(f(data.requiredLevel))}</AlertDescription>
-            </Alert>
-        </div>
+        <Alert variant="destructive">
+            <TbAlertTriangle className="h-4 w-4" />
+            <AlertTitle>{t.LevelToLow}</AlertTitle>
+            <AlertDescription>{fun.requireMiningLevel(f(data.requiredLevel))}</AlertDescription>
+        </Alert>
     )
 })

@@ -38,7 +38,7 @@ export const OreVeinsUi = memo(function OreVeinsUi({
 }) {
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
-    const veins = useGameStore((s) => GameLocationAdapter.selectEx(s.locations, s.location).oreVeins[oreType] ?? [])
+    const veins = useGameStore((s) => GameLocationAdapter.selectEx(s.locations, s.location).oreVeins[oreType])
     const searchActId = useGameStore(
         (s) =>
             ActivityAdapter.find(
@@ -79,16 +79,20 @@ export const OreVeinsUi = memo(function OreVeinsUi({
                         {t.Time} {fun.formatTime(SEARCH_ORE_VEIN_TIME)}
                     </MyLabel>
                     <GameTimerProgress actionId={searchActId} color="primary" className="mb-2" />
-                    <MyLabel>{veins.length}/10</MyLabel>
-                    {veins.map((vein, index) => (
-                        <VeinCard
-                            key={vein.id}
-                            vein={vein}
-                            oreType={oreType}
-                            isFirst={index === 0}
-                            isLast={index === veins.length - 1}
-                        />
-                    ))}
+                    {veins && (
+                        <>
+                            <MyLabel>{veins.length}/10</MyLabel>
+                            {veins.map((vein, index) => (
+                                <VeinCard
+                                    key={vein.id}
+                                    vein={vein}
+                                    oreType={oreType}
+                                    isFirst={index === 0}
+                                    isLast={index === veins.length - 1}
+                                />
+                            ))}
+                        </>
+                    )}
                 </CardContent>
             </Card>
         </div>
