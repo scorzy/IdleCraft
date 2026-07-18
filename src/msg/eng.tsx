@@ -390,6 +390,9 @@ export const engMsg: Msg = {
     SearchItem: 'Search',
     Cuisses: 'Cuisses',
     Legs: 'Legs',
+    UnlockGathering: 'Unlock this gathering zone to start gathering here.',
+    UnlockGathering1: 'Requires gathering level ',
+    UnlockGathering2: ' and completion of the related quest.',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (
