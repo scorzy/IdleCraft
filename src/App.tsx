@@ -10,7 +10,7 @@ import { useGameStore } from './game/state'
 import { ToasterProvider } from './notification/ToasterProvider'
 import { updateTimers } from './timers/updateTimers'
 import { AppShell } from './ui/shell/AppShell'
-import { ThemeProvider } from './ui/themeProvider' 
+import { ThemeProvider } from './ui/themeProvider'
 
 setInterval(() => {
     const gameId = useGameStore.getState().gameId
@@ -67,16 +67,8 @@ function App() {
             </div>
         )
 
-    if (gameId !== '' && !loading)
-        return (
-            
-                <AppShell /> 
-        )
-    else
-        return (
-             
-                <Start /> 
-        )
+    if (gameId !== '' && !loading) return <AppShell />
+    else return <Start />
 }
 
 export default App

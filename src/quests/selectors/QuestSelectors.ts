@@ -90,5 +90,6 @@ export function selectOutcomeItemRewards(state: GameState, questId: string, outc
 export const selectOutcomeLocation = (state: GameState, questId: string, outcomeId: string) =>
     selectOutcome(state, questId, outcomeId)?.location
 
-export const selectExpandedOutcomeId = (state: GameState, questId: string) =>
-    [QuestAdapter.selectEx(state.quests, questId).expandedOutcome]
+export const selectExpandedOutcomeId = (state: GameState, questId: string) => [
+    QuestAdapter.selectEx(state.quests, questId).expandedOutcome,
+]

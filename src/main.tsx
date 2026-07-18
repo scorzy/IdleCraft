@@ -1,7 +1,7 @@
 import './global.css'
 import './main.css'
 import 'inter-ui/inter-variable-latin.css'
- 
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Toaster } from '@/components/ui/sonner.tsx'
@@ -13,7 +13,7 @@ initialize()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <TooltipProvider  >
+        <TooltipProvider>
             <App />
         </TooltipProvider>
         <Toaster />

@@ -66,10 +66,7 @@ const CollectRequestItemsUi = (props: { questId: string; outcomeId: string }) =>
             {t.collectConsume}
             {reqItems.usedItems.map((i, index) => (
                 <Fragment key={i.itemId}>
-                    <Badge variant="secondary"
-                    // ToDo
-                    //  size="base"
-                     >
+                    <Badge variant="secondary">
                         {f(i.quantity)}
                         <ItemIconName itemId={i.itemId} />
                     </Badge>
