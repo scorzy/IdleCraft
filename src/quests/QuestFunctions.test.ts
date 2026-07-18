@@ -57,9 +57,7 @@ describe('Quest Functions', () => {
 
         questOnItemRemove(state, 'item', state.location)
 
-        expect(
-            state.quests.entries['questId']!.outcomeData.entries['k']!.reqItems![0]!.selectedItem1
-        ).toBeUndefined()
+        expect(state.quests.entries['questId']!.outcomeData.entries['k']!.reqItems![0]!.selectedItem1).toBeUndefined()
 
         expect(state.quests.entries['questId']!.outcomeData.entries['k']!.reqItems![0]!.selectedItem2).toEqual(
             'otherItem'
@@ -116,9 +114,7 @@ describe('Quest Functions', () => {
 
         questOnItemRemove(state, 'item', state.location)
 
-        expect(state.quests.entries['questId']!.outcomeData.entries['k']!.reqItems![0]!.selectedItem1).toEqual(
-            'item'
-        )
+        expect(state.quests.entries['questId']!.outcomeData.entries['k']!.reqItems![0]!.selectedItem1).toEqual('item')
 
         expect(state.quests.entries['questId']!.outcomeData.entries['k']!.reqItems![0]!.selectedItem2).toEqual(
             'otherItem'
