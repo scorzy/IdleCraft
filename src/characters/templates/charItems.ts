@@ -9,6 +9,7 @@ export const CharItems: Record<string, Item> = {
         icon: Icons.Chicken,
         type: ItemTypes.TwoHands,
         value: 0,
+        volume: 0.0001,
         weaponData: {
             attackSpeed: 3e3,
             expType: ExpEnum.TwoHanded,
@@ -25,6 +26,7 @@ export const CharItems: Record<string, Item> = {
         icon: Icons.Boar,
         type: ItemTypes.TwoHands,
         value: 0,
+        volume: 0.0005,
         weaponData: {
             attackSpeed: 4e3,
             expType: ExpEnum.TwoHanded,

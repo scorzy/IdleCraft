@@ -14,6 +14,7 @@ export interface MsgFunctions {
 
     formatTime: (time: number) => string
     formatTimePrecise: (time: number) => string
+    formatVolume: (volumeM3: number) => string
 
     getItemName: (params: GetItemNameParams) => string
 

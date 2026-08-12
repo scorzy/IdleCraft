@@ -11,6 +11,7 @@ export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> =
         nameId: 'DeadChicken',
         type: ItemTypes.Corpse,
         value: 5,
+        volume: 0.01,
         butchering: [
             {
                 id: 'WhiteMeat',
@@ -25,6 +26,7 @@ export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> =
         nameId: 'DeadBoar',
         type: ItemTypes.Corpse,
         value: 5,
+        volume: 0.15,
         butchering: [
             {
                 id: 'RedMeat',
@@ -39,6 +41,7 @@ export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> =
         nameId: 'DeadWolf',
         type: ItemTypes.Corpse,
         value: 8,
+        volume: 0.08,
         butchering: [
             {
                 id: 'RedMeat',

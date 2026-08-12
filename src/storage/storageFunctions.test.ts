@@ -100,6 +100,7 @@ describe('Storage Functions', () => {
                     nameId: 'Craft',
                     type: ItemTypes.Bar,
                     value: 1,
+                    volume: 0.001,
                 },
             },
         }

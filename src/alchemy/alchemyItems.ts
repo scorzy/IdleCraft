@@ -10,6 +10,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.RoundPotion,
         nameId: 'GlassFlask',
         value: 10,
+        volume: 0.0005,
         type: ItemTypes.Flask,
         flaskData: {
             reusePercent: 0,
@@ -21,6 +22,7 @@ export const AlchemyItems: Record<string, Item> = {
         nameId: 'Water',
         color: 'text-mana',
         value: 1,
+        volume: 0.0005,
         type: ItemTypes.Solvent,
         unlimited: true,
         solventData: {
@@ -32,6 +34,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.VanillaFlower,
         nameId: 'RedFlower',
         value: 3,
+        volume: 0.0002,
         color: 'text-health',
         type: ItemTypes.CraftingIngredient,
         ingredientData: {
@@ -48,6 +51,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.VanillaFlower,
         nameId: 'BlueFlower',
         value: 3,
+        volume: 0.0002,
         color: 'text-mana',
         type: ItemTypes.CraftingIngredient,
         ingredientData: {
@@ -64,6 +68,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.VanillaFlower,
         nameId: 'GreenFlower',
         value: 3,
+        volume: 0.0002,
         color: 'text-stamina',
         type: ItemTypes.CraftingIngredient,
         ingredientData: {
@@ -81,6 +86,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.Leaf,
         nameId: 'VitalHerb',
         value: 4,
+        volume: 0.0002,
         color: 'text-health',
         type: ItemTypes.CraftingIngredient,
         ingredientData: {
@@ -95,6 +101,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.VanillaFlower,
         nameId: 'ManaBloom',
         value: 4,
+        volume: 0.0002,
         color: 'text-mana',
         type: ItemTypes.CraftingIngredient,
         ingredientData: {
@@ -109,6 +116,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.Leaf,
         nameId: 'StaminaLeaf',
         value: 4,
+        volume: 0.0002,
         color: 'text-stamina',
         type: ItemTypes.CraftingIngredient,
         ingredientData: {
@@ -123,6 +131,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.Mushroom,
         nameId: 'HealingFungus',
         value: 6,
+        volume: 0.0001,
         color: 'text-health',
         type: ItemTypes.CraftingIngredient,
         ingredientData: {
@@ -137,6 +146,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.Mushroom,
         nameId: 'ManaSpore',
         value: 6,
+        volume: 0.0001,
         color: 'text-mana',
         type: ItemTypes.CraftingIngredient,
         ingredientData: {
@@ -151,6 +161,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.SwapBag,
         nameId: 'HeartCrystalDust',
         value: 10,
+        volume: 0.00005,
         color: 'text-health',
         type: ItemTypes.CraftingIngredient,
         ingredientData: {
@@ -165,6 +176,7 @@ export const AlchemyItems: Record<string, Item> = {
         icon: Icons.SwapBag,
         nameId: 'ManaCrystalDust',
         value: 10,
+        volume: 0.00005,
         color: 'text-mana',
         type: ItemTypes.CraftingIngredient,
         ingredientData: {

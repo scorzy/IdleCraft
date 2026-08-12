@@ -11,6 +11,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.DeadWood },
         type: ItemTypes.Log,
         value: 5,
+        volume: 0.05,
     },
     OakLog: {
         id: 'OakLog',
@@ -19,6 +20,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.Oak },
         type: ItemTypes.Log,
         value: 6,
+        volume: 0.05,
     },
 
     // plank
@@ -29,6 +31,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.DeadWood },
         type: ItemTypes.Plank,
         value: 10,
+        volume: 0.02,
     },
     OakPlank: {
         id: 'OakPlank',
@@ -37,6 +40,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.Oak },
         type: ItemTypes.Plank,
         value: 12,
+        volume: 0.02,
     },
 
     //  handle
@@ -47,6 +51,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.DeadWood },
         type: ItemTypes.Handle,
         value: 15,
+        volume: 0.0005,
         craftingData: {
             prestige: 1,
             speedBonus: 1,
@@ -59,6 +64,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.Oak },
         type: ItemTypes.Handle,
         value: 20,
+        volume: 0.0005,
         craftingData: {
             prestige: 1,
             speedBonus: 1.1,

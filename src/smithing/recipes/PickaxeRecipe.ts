@@ -1,5 +1,5 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
+import { getCraftingTime, getItemValue, getItemVolume } from '../../crafting/CraftingFunctions'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeParameter,
@@ -71,6 +71,7 @@ export const PickaxeRecipe = makeMemoizedRecipe({
             type: ItemTypes.Pickaxe,
             equipSlot: EquipSlotsEnum.Pickaxe,
             value: getItemValue(components, true),
+            volume: getItemVolume(components),
             pickaxeData: {
                 damage: barItem.craftingPickaxeData.damage,
                 time: barItem.craftingPickaxeData.time / (handleItem.craftingData.speedBonus ?? 1),

@@ -12,7 +12,7 @@ import { CraftingData, DamageData, DamageTypes, Item, PickaxeData, WeaponData, W
 export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
     const { item } = props
     const { f } = useNumberFormatter()
-    const { t } = useTranslations()
+    const { t, fun } = useTranslations()
 
     return (
         <div>
@@ -21,6 +21,9 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
             </div>
             <div>
                 <span className="text-muted-foreground">{t.Value}</span> {f(item.value)}
+            </div>
+            <div>
+                <span className="text-muted-foreground">{t.Volume}</span> {fun.formatVolume(item.volume)}
             </div>
             {item.weaponData && <WeaponDataUi weaponData={item.weaponData} />}
             {item.armourData && <ArmourDataUi armourData={item.armourData} />}

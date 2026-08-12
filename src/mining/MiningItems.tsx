@@ -10,6 +10,7 @@ export const MiningItems = {
         materials: { primary: Materials.Copper },
         type: ItemTypes.Ore,
         value: 5,
+        volume: 0.02,
     },
     TinOre: {
         icon: Icons.Ore,
@@ -18,6 +19,7 @@ export const MiningItems = {
         type: ItemTypes.Ore,
         materials: { primary: Materials.Tin },
         value: 10,
+        volume: 0.02,
     },
     Ruby: {
         icon: Icons.Ore,
@@ -25,6 +27,7 @@ export const MiningItems = {
         nameId: 'Ruby',
         type: ItemTypes.Gem,
         value: 65,
+        volume: 0.00005,
     },
     Sapphire: {
         icon: Icons.Ore,
@@ -32,6 +35,7 @@ export const MiningItems = {
         nameId: 'Sapphire',
         type: ItemTypes.Gem,
         value: 75,
+        volume: 0.00005,
     },
     Emerald: {
         icon: Icons.Ore,
@@ -39,5 +43,6 @@ export const MiningItems = {
         nameId: 'Emerald',
         type: ItemTypes.Gem,
         value: 85,
+        volume: 0.00005,
     },
 } satisfies Record<string, Item>

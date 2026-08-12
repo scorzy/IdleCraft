@@ -11,6 +11,7 @@ describe('filterItem', () => {
         nameId: 'LongSword',
         icon: Icons.Sword,
         value: 100,
+        volume: 0.005,
         equipSlot: EquipSlotsEnum.MainHand,
         type: ItemTypes.OneHand,
         craftingData: { prestige: 1, speedBonus: 2 },

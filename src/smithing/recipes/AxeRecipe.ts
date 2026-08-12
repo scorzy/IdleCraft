@@ -1,5 +1,5 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
+import { getCraftingTime, getItemValue, getItemVolume } from '../../crafting/CraftingFunctions'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeParameterItemFilter,
@@ -67,6 +67,7 @@ export const axeRecipe = makeMemoizedRecipe({
             type: ItemTypes.WoodAxe,
             equipSlot: EquipSlotsEnum.WoodAxe,
             value: getItemValue(components, true),
+            volume: getItemVolume(components),
             woodAxeData: {
                 damage: barItem.craftingWoodAxeData.damage,
                 time: barItem.craftingWoodAxeData.time / (handleItem.craftingData.speedBonus ?? 1),

@@ -76,6 +76,7 @@ export interface Item {
     materials?: ItemsMaterials
     type: ItemTypes
     value: number
+    volume: number
     equipSlot?: EquipSlotsEnum
     craftingData?: CraftingData
     woodAxeData?: WoodAxeData

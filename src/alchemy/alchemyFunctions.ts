@@ -32,7 +32,8 @@ function getPotionValue(potionData: PotionData): number {
 export function generatePotion(
     state: GameState,
     includeUnknownEffects: boolean,
-    ingredients: Item[]
+    ingredients: Item[],
+    flask: Item
 ):
     | {
           item: Item | undefined
@@ -110,6 +111,7 @@ export function generatePotion(
             icon: Icons.Potion,
             type: ItemTypes.Potion,
             value: getPotionValue(potionData),
+            volume: flask.volume,
             potionData,
         }
 

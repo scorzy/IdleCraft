@@ -13,6 +13,11 @@ export function getItemValue(components: Item[], isFinalItem: boolean): number {
 
     return Math.floor(value * prestige)
 }
+export function getItemVolume(components: Item[]): number {
+    let volume = 0
+    for (const comp of components) volume += comp.volume
+    return volume
+}
 export function getCraftingTime(components: Item[]): number {
     return components.length * 1.5e3
 }

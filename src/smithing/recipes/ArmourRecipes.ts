@@ -1,5 +1,5 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
+import { getCraftingTime, getItemValue, getItemVolume } from '../../crafting/CraftingFunctions'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeParameterItemFilter,
@@ -58,6 +58,7 @@ export const armourRecipe = makeMemoizedRecipe({
             type: ItemTypes.Body,
             equipSlot: EquipSlotsEnum.Body,
             value: getItemValue(components, true),
+            volume: getItemVolume(components),
             armourData,
         }
 

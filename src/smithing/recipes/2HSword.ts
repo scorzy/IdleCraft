@@ -1,7 +1,7 @@
 import { ExpEnum } from '@/experience/ExpEnum'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { BASE_SWORD_DAMAGE, BASE_SWORD_SPEED } from '../../const'
-import { getCraftingTime, getItemValue } from '../../crafting/CraftingFunctions'
+import { getCraftingTime, getItemValue, getItemVolume } from '../../crafting/CraftingFunctions'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
     RecipeParameterItemFilter,
@@ -54,6 +54,7 @@ export const twoHSwordRecipe = makeMemoizedRecipe({
             type: ItemTypes.TwoHands,
             equipSlot: EquipSlotsEnum.TwoHand,
             value: getItemValue(components, true),
+            volume: getItemVolume(components),
             weaponData: {
                 expType: ExpEnum.OneHanded,
                 attackSpeed: Math.floor((1.4 * BASE_SWORD_SPEED) / (barItem.craftingData.speedBonus ?? 1)),

@@ -40,6 +40,7 @@ export interface Msg {
     Name: string
     Quantity: string
     Value: string
+    Volume: string
     Handle: string
     Ore: string
     Gem: string

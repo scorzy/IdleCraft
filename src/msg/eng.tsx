@@ -1,3 +1,4 @@
+import { convertVolume } from '../formatters/convertVolume'
 import { splitTime } from '../formatters/splitTime'
 import {
     FAST_MINING_PERK,
@@ -7,6 +8,7 @@ import {
     VEIN_MASTERY_QTA_BONUS,
 } from '../mining/MiningCost'
 import { QuestParams } from '../quests/QuestParams'
+import { myMemoize } from '../utils/myMemoize'
 import { sameNumber } from '../utils/sameNumber'
 import { FAST_WOODCUTTING_PERK } from '../wood/WoodConst'
 import { GetItemNameParams } from './GetItemNameParams'
@@ -57,6 +59,7 @@ export const engMsg: Msg = {
     Name: 'Name',
     Quantity: 'Quantity',
     Value: 'Value',
+    Volume: 'Volume',
     Handle: 'Handle',
     DeadTreeHandle: 'Dead Tree Handle',
     OakHandle: 'Oak Handle',
@@ -445,6 +448,10 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
             if (split.seconds > 10) return s(Math.floor(split.seconds))
             return (negative ? '-' : '') + s(Math.floor(split.seconds * 10) / 10)
         },
+        formatVolume: myMemoize((volumeM3: number) => {
+            const { value, unit } = convertVolume(volumeM3)
+            return `${f(value)} ${unit}`
+        }),
 
         //
         cutting: (woodName: keyof Msg) => `Cutting ${msg[woodName]}`,

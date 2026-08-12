@@ -8,6 +8,7 @@ export const ButcheringItems: Record<string, Item> = {
         nameId: 'WhiteMeat',
         type: ItemTypes.RawFood,
         value: 5,
+        volume: 0.003,
     },
     RedMeat: {
         id: 'RedMeat',
@@ -15,6 +16,7 @@ export const ButcheringItems: Record<string, Item> = {
         nameId: 'RedMeat',
         type: ItemTypes.RawFood,
         value: 6,
+        volume: 0.004,
     },
     BoarSkin: {
         id: 'BoarSkin',
@@ -22,5 +24,6 @@ export const ButcheringItems: Record<string, Item> = {
         nameId: 'BoarSkin',
         type: ItemTypes.RawSkin,
         value: 5,
+        volume: 0.01,
     },
 }
