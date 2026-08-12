@@ -1,11 +1,13 @@
 import { describe, expect, test } from 'vitest'
+import { CaravanTierId } from '../caravans/CaravanConst'
+import { ShipmentStatus } from '../caravans/ShipmentState'
 import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GetInitialGameState } from '../game/InitialGameState'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Icons } from '../icons/Icons'
 import { ItemTypes } from '../items/Item'
-import { addItem, hasItem, removeItem } from './storageFunctions'
+import { addItem, hasGold, hasItem, removeItem, spendGold } from './storageFunctions'
 
 const getLocation = (state: ReturnType<typeof GetInitialGameState>, location = GameLocations.StartVillage) =>
     GameLocationAdapter.selectEx(state.locations, location)
@@ -140,5 +142,100 @@ describe('Storage Functions', () => {
             },
         }
         expect(hasItem(state, `${CRAFTED_ITEM_PREFIX}craft`, 1)).toBe(true)
+    })
+
+    test('Has Gold', () => {
+        const state = GetInitialGameState()
+        state.gold = 10
+        expect(hasGold(state, 10)).toBe(true)
+        expect(hasGold(state, 11)).toBe(false)
+    })
+
+    test('Spend Gold', () => {
+        const state = GetInitialGameState()
+        state.gold = 10
+        spendGold(state, 4)
+        expect(state.gold).toBe(6)
+    })
+
+    test('Spend Gold clamps at 0', () => {
+        const state = GetInitialGameState()
+        state.gold = 3
+        spendGold(state, 10)
+        expect(state.gold).toBe(0)
+    })
+
+    test('Remove Item craft survives while in an active shipment cargo', () => {
+        const state = GetInitialGameState()
+        const craftedId = `${CRAFTED_ITEM_PREFIX}inTransit`
+        getLocation(state).storage = {
+            ids: [craftedId],
+            entries: { [craftedId]: { itemId: craftedId, quantity: 1 } },
+        }
+        state.craftedItems = {
+            ids: [craftedId],
+            entries: {
+                [craftedId]: {
+                    id: craftedId,
+                    icon: Icons.Axe,
+                    nameId: 'Craft',
+                    type: ItemTypes.Bar,
+                    value: 1,
+                    volume: 0.001,
+                },
+            },
+        }
+        state.shipments = {
+            ids: ['shipment1'],
+            entries: {
+                shipment1: {
+                    id: 'shipment1',
+                    tierId: CaravanTierId.Standard,
+                    fromId: GameLocations.StartVillage,
+                    toId: GameLocations.WoodVillage,
+                    cargo: [{ itemId: craftedId, quantity: 1 }],
+                    totalVolume: 0.001,
+                    cargoValue: 1,
+                    departAtMs: 0,
+                    arriveAtMs: 1000,
+                    costPaid: 1,
+                    status: ShipmentStatus.InTransit,
+                },
+            },
+        }
+
+        removeItem(state, craftedId, 1, GameLocations.StartVillage)
+        expect(getLocation(state).storage).toEqual({ ids: [], entries: {} })
+        expect(state.craftedItems.ids).toContain(craftedId)
+    })
+
+    test('Remove Item craft survives while sitting in a dock', () => {
+        const state = GetInitialGameState()
+        const craftedId = `${CRAFTED_ITEM_PREFIX}inDock`
+        getLocation(state).storage = {
+            ids: [craftedId],
+            entries: { [craftedId]: { itemId: craftedId, quantity: 1 } },
+        }
+        getLocation(state, GameLocations.WoodVillage).dock = {
+            ids: [craftedId],
+            entries: { [craftedId]: { itemId: craftedId, quantity: 1 } },
+        }
+        state.craftedItems = {
+            ids: [craftedId],
+            entries: {
+                [craftedId]: {
+                    id: craftedId,
+                    icon: Icons.Axe,
+                    nameId: 'Craft',
+                    type: ItemTypes.Bar,
+                    value: 1,
+                    volume: 0.001,
+                },
+            },
+        }
+
+        removeItem(state, craftedId, 1, GameLocations.StartVillage)
+        expect(getLocation(state).storage).toEqual({ ids: [], entries: {} })
+        expect(state.craftedItems.ids).toContain(craftedId)
     })
 })

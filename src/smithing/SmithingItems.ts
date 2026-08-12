@@ -1,3 +1,4 @@
+import { REFINED_VOLUME } from '../caravans/CaravanConst'
 import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
 import { Materials } from '../items/materials/materials'
@@ -9,7 +10,7 @@ export const SmithingItems: Record<string, Item> = {
         nameId: 'Bar',
         type: ItemTypes.Bar,
         value: 10,
-        volume: 0.002,
+        volume: REFINED_VOLUME,
         materials: { primary: Materials.Copper },
         craftingData: {
             prestige: 1.05,
@@ -41,7 +42,7 @@ export const SmithingItems: Record<string, Item> = {
         nameId: 'Bar',
         type: ItemTypes.Bar,
         value: 20,
-        volume: 0.002,
+        volume: REFINED_VOLUME,
         materials: { primary: Materials.Tin },
         craftingData: {
             prestige: 1.1,

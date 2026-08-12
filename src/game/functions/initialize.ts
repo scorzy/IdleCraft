@@ -12,6 +12,7 @@ import { getBattleIcon } from '../../battle/selectors/getBattleIcon'
 import { getBattleTitle } from '../../battle/selectors/getBattleTitle'
 import { addKillBattleLog } from '../../battleLog/functions/addBattleLog'
 import { butcheringRecipe } from '../../butchering/ButcheringRecipe'
+import { execShipment } from '../../caravans/functions/execShipment'
 import { onKillListeners } from '../../characters/functions/onKillListeners'
 import { execCrafting } from '../../crafting/functions/execCrafting'
 import { removeCrafting } from '../../crafting/functions/removeCrafting'
@@ -147,6 +148,8 @@ function initActivities() {
 
     activityExecutors.set(ActivityTypes.Effect, onEffectEnd)
     activityExecutors.set(ActivityTypes.GrowSpeedBonus, onGrowSpeedBonusEnd)
+
+    activityExecutors.set(ActivityTypes.Shipment, execShipment)
 }
 
 function initRecipes() {

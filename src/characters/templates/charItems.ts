@@ -1,3 +1,4 @@
+import { FINISHED_VOLUME } from '../../caravans/CaravanConst'
 import { ExpEnum } from '../../experience/ExpEnum'
 import { Icons } from '../../icons/Icons'
 import { Item, ItemTypes } from '../../items/Item'
@@ -9,7 +10,7 @@ export const CharItems: Record<string, Item> = {
         icon: Icons.Chicken,
         type: ItemTypes.TwoHands,
         value: 0,
-        volume: 0.0001,
+        volume: FINISHED_VOLUME,
         weaponData: {
             attackSpeed: 3e3,
             expType: ExpEnum.TwoHanded,
@@ -26,7 +27,7 @@ export const CharItems: Record<string, Item> = {
         icon: Icons.Boar,
         type: ItemTypes.TwoHands,
         value: 0,
-        volume: 0.0005,
+        volume: FINISHED_VOLUME,
         weaponData: {
             attackSpeed: 4e3,
             expType: ExpEnum.TwoHanded,

@@ -1,6 +1,8 @@
 import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { ActivityAdapter } from '../activities/ActivityState'
 import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
+import { DEFAULT_CARAVAN_SLOTS, DEFAULT_UNLOCKED_CARAVAN_TIERS } from '../caravans/CaravanConst'
+import { ShipmentAdapter } from '../caravans/ShipmentState'
 import { PLAYER_CHAR, PLAYER_ID } from '../characters/charactersConst'
 import { RecipeTypes } from '../crafting/RecipeInterfaces'
 import { AppliedEffectAdapter } from '../effects/types/AppliedEffect'
@@ -43,6 +45,7 @@ const getInitialLocationState: (id: GameLocations) => LocationState = (id) => {
     return {
         id,
         storage: StorageAdapter.getInitialState(),
+        dock: StorageAdapter.getInitialState(),
         forests: {},
         ores: {},
         oreVeins: {},
@@ -133,6 +136,9 @@ export const InitialGameState: GameState = {
     startActNow: false,
     actRepetitions: 1,
     actAutoRemove: false,
+    caravanSlots: DEFAULT_CARAVAN_SLOTS,
+    unlockedCaravanTiers: DEFAULT_UNLOCKED_CARAVAN_TIERS,
+    shipments: ShipmentAdapter.getInitialState(),
 }
 
 export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)

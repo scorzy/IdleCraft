@@ -91,8 +91,8 @@ export const potionRecipe: Recipe = makeMemoizedRecipe({
 
         if (ingredients.length < 2) return
 
-        const realPotion = generatePotion(state, true, ingredients, flask)
-        const uiPotion = generatePotion(state, false, ingredients, flask)
+        const realPotion = generatePotion(state, true, ingredients)
+        const uiPotion = generatePotion(state, false, ingredients)
 
         const result: PotionCraftingResult = {
             time: 5e3,

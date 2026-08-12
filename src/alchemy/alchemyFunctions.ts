@@ -1,5 +1,6 @@
 import { BonusResult } from '../bonus/Bonus'
 import { getTotal } from '../bonus/BonusFunctions'
+import { FINISHED_VOLUME } from '../caravans/CaravanConst'
 import { applyEffect, EffectData } from '../effects/effectsFunctions'
 import { EffectPotency } from '../effects/types/EffectPotency'
 import { Effects } from '../effects/types/Effects'
@@ -32,8 +33,7 @@ function getPotionValue(potionData: PotionData): number {
 export function generatePotion(
     state: GameState,
     includeUnknownEffects: boolean,
-    ingredients: Item[],
-    flask: Item
+    ingredients: Item[]
 ):
     | {
           item: Item | undefined
@@ -111,7 +111,7 @@ export function generatePotion(
             icon: Icons.Potion,
             type: ItemTypes.Potion,
             value: getPotionValue(potionData),
-            volume: flask.volume,
+            volume: FINISHED_VOLUME,
             potionData,
         }
 

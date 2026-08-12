@@ -1,3 +1,4 @@
+import { RAW_VOLUME } from '../caravans/CaravanConst'
 import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
 import { Materials } from '../items/materials/materials'
@@ -10,7 +11,7 @@ export const MiningItems = {
         materials: { primary: Materials.Copper },
         type: ItemTypes.Ore,
         value: 5,
-        volume: 0.02,
+        volume: RAW_VOLUME,
     },
     TinOre: {
         icon: Icons.Ore,
@@ -19,7 +20,7 @@ export const MiningItems = {
         type: ItemTypes.Ore,
         materials: { primary: Materials.Tin },
         value: 10,
-        volume: 0.02,
+        volume: RAW_VOLUME,
     },
     Ruby: {
         icon: Icons.Ore,
@@ -27,7 +28,7 @@ export const MiningItems = {
         nameId: 'Ruby',
         type: ItemTypes.Gem,
         value: 65,
-        volume: 0.00005,
+        volume: RAW_VOLUME,
     },
     Sapphire: {
         icon: Icons.Ore,
@@ -35,7 +36,7 @@ export const MiningItems = {
         nameId: 'Sapphire',
         type: ItemTypes.Gem,
         value: 75,
-        volume: 0.00005,
+        volume: RAW_VOLUME,
     },
     Emerald: {
         icon: Icons.Ore,
@@ -43,6 +44,6 @@ export const MiningItems = {
         nameId: 'Emerald',
         type: ItemTypes.Gem,
         value: 85,
-        volume: 0.00005,
+        volume: RAW_VOLUME,
     },
 } satisfies Record<string, Item>

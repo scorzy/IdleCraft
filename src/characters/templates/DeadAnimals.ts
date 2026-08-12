@@ -1,3 +1,4 @@
+import { RAW_VOLUME } from '../../caravans/CaravanConst'
 import { RecipeItem } from '../../crafting/RecipeInterfaces'
 import { Icons } from '../../icons/Icons'
 import { Item, ItemTypes } from '../../items/Item'
@@ -11,7 +12,7 @@ export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> =
         nameId: 'DeadChicken',
         type: ItemTypes.Corpse,
         value: 5,
-        volume: 0.01,
+        volume: RAW_VOLUME,
         butchering: [
             {
                 id: 'WhiteMeat',
@@ -26,7 +27,7 @@ export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> =
         nameId: 'DeadBoar',
         type: ItemTypes.Corpse,
         value: 5,
-        volume: 0.15,
+        volume: RAW_VOLUME,
         butchering: [
             {
                 id: 'RedMeat',
@@ -41,7 +42,7 @@ export const DeadAnimals: Record<string, Item & { butchering?: RecipeItem[] }> =
         nameId: 'DeadWolf',
         type: ItemTypes.Corpse,
         value: 8,
-        volume: 0.08,
+        volume: RAW_VOLUME,
         butchering: [
             {
                 id: 'RedMeat',

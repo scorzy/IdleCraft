@@ -34,11 +34,15 @@ const gameStateKeyMap = {
     startActNow: 'sn',
     actRepetitions: 'ar',
     actAutoRemove: 'am',
+    caravanSlots: 'cs',
+    unlockedCaravanTiers: 'ut',
+    shipments: 'sh',
 } as const
 
 const locationStateKeyMap = {
     id: 'id',
     storage: 'st',
+    dock: 'dk',
     forests: 'fo',
     ores: 'or',
     oreVeins: 'ov',

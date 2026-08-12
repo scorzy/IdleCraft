@@ -1,4 +1,5 @@
 import { InitialState } from '@/entityAdapter/InitialState'
+import { ShipmentAdapter } from '../caravans/ShipmentState'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { CRAFTED_ITEM_PREFIX } from '../const'
 import { GameState } from '../game/GameState'
@@ -14,6 +15,14 @@ import { onItemRemovedListeners } from './storageEvents'
 
 export function addGold(state: GameState, amount: number): void {
     state.gold = Math.max(0, state.gold + amount)
+}
+
+export function hasGold(state: GameState, amount: number): boolean {
+    return state.gold >= amount
+}
+
+export function spendGold(state: GameState, amount: number): void {
+    addGold(state, -amount)
 }
 
 export function addItem(state: GameState, itemId: string, qta: number, location?: GameLocations): void {
@@ -55,9 +64,14 @@ function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
     if (
         GameLocationAdapter.some(
             state.locations,
-            (loc) => (StorageAdapter.select(loc.storage, craftItemId)?.quantity ?? 0) > 0
+            (loc) =>
+                (StorageAdapter.select(loc.storage, craftItemId)?.quantity ?? 0) > 0 ||
+                (StorageAdapter.select(loc.dock, craftItemId)?.quantity ?? 0) > 0
         )
     )
+        return true
+
+    if (ShipmentAdapter.some(state.shipments, (shipment) => shipment.cargo.some((line) => line.itemId === craftItemId)))
         return true
 
     return false

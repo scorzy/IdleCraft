@@ -1,3 +1,4 @@
+import { RAW_VOLUME, REFINED_VOLUME } from '../caravans/CaravanConst'
 import { Icons } from '../icons/Icons'
 import { Item, ItemTypes } from '../items/Item'
 import { PRIMARY_MATERIAL_KEY } from '../items/itemsConst'
@@ -11,7 +12,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.DeadWood },
         type: ItemTypes.Log,
         value: 5,
-        volume: 0.05,
+        volume: RAW_VOLUME,
     },
     OakLog: {
         id: 'OakLog',
@@ -20,7 +21,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.Oak },
         type: ItemTypes.Log,
         value: 6,
-        volume: 0.05,
+        volume: RAW_VOLUME,
     },
 
     // plank
@@ -31,7 +32,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.DeadWood },
         type: ItemTypes.Plank,
         value: 10,
-        volume: 0.02,
+        volume: REFINED_VOLUME,
     },
     OakPlank: {
         id: 'OakPlank',
@@ -40,7 +41,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.Oak },
         type: ItemTypes.Plank,
         value: 12,
-        volume: 0.02,
+        volume: REFINED_VOLUME,
     },
 
     //  handle
@@ -51,7 +52,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.DeadWood },
         type: ItemTypes.Handle,
         value: 15,
-        volume: 0.0005,
+        volume: REFINED_VOLUME,
         craftingData: {
             prestige: 1,
             speedBonus: 1,
@@ -64,7 +65,7 @@ export const WoodItems = {
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.Oak },
         type: ItemTypes.Handle,
         value: 20,
-        volume: 0.0005,
+        volume: REFINED_VOLUME,
         craftingData: {
             prestige: 1,
             speedBonus: 1.1,
