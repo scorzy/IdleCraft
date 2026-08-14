@@ -45,7 +45,6 @@ const getInitialLocationState: (id: GameLocations) => LocationState = (id) => {
     return {
         id,
         storage: StorageAdapter.getInitialState(),
-        dock: StorageAdapter.getInitialState(),
         forests: {},
         ores: {},
         oreVeins: {},
@@ -93,6 +92,7 @@ export const InitialGameState: GameState = {
         deadDialog: false,
         recipeType: RecipeTypes.Smithing,
         selectedQuestId: null,
+        selectedShipmentId: null,
         itemFilterSubType: undefined,
         itemFilterType: undefined,
         itemFilterSearch: '',
@@ -139,6 +139,11 @@ export const InitialGameState: GameState = {
     caravanSlots: DEFAULT_CARAVAN_SLOTS,
     unlockedCaravanTiers: DEFAULT_UNLOCKED_CARAVAN_TIERS,
     shipments: ShipmentAdapter.getInitialState(),
+    caravanDispatchForm: {
+        toId: undefined,
+        tierId: undefined,
+        cargo: [],
+    },
 }
 
 export const GetInitialGameState: () => GameState = () => structuredClone(InitialGameState)

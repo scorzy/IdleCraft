@@ -37,12 +37,12 @@ const gameStateKeyMap = {
     caravanSlots: 'cs',
     unlockedCaravanTiers: 'ut',
     shipments: 'sh',
+    caravanDispatchForm: 'df',
 } as const
 
 const locationStateKeyMap = {
     id: 'id',
     storage: 'st',
-    dock: 'dk',
     forests: 'fo',
     ores: 'or',
     oreVeins: 'ov',

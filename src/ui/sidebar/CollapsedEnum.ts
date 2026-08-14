@@ -17,4 +17,5 @@ export enum CollapsedEnum {
     Quest = 'Quest',
     QuestAccepted = 'QuestAccepted',
     QuestAvailable = 'QuestAvailable',
+    Caravans = 'Caravans',
 }

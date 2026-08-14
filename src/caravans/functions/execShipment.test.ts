@@ -33,27 +33,27 @@ function makeTimer(actId: string): Timer {
 }
 
 describe('execShipment', () => {
-    test('spedizione in andata: consegna il cargo nel dock di destinazione e rimuove lo shipment', () => {
+    test('spedizione in andata: consegna il cargo nello storage di destinazione e rimuove lo shipment', () => {
         const state = GetInitialGameState()
         const shipment = makeShipment()
         ShipmentAdapter.create(state.shipments, shipment)
 
         execShipment(state, makeTimer(shipment.id))
 
-        expect(getLocation(state, GameLocations.WoodVillage).dock.entries.OakLog?.quantity).toBe(200)
-        expect(getLocation(state, GameLocations.StartVillage).dock).toEqual({ ids: [], entries: {} })
+        expect(getLocation(state, GameLocations.WoodVillage).storage.entries.OakLog?.quantity).toBe(200)
+        expect(getLocation(state, GameLocations.StartVillage).storage).toEqual({ ids: [], entries: {} })
         expect(state.shipments.ids).not.toContain(shipment.id)
     })
 
-    test('spedizione di ritorno: consegna il cargo nel dock di origine', () => {
+    test('spedizione di ritorno: consegna il cargo nello storage di origine', () => {
         const state = GetInitialGameState()
         const shipment = makeShipment({ status: ShipmentStatus.Returning })
         ShipmentAdapter.create(state.shipments, shipment)
 
         execShipment(state, makeTimer(shipment.id))
 
-        expect(getLocation(state, GameLocations.StartVillage).dock.entries.OakLog?.quantity).toBe(200)
-        expect(getLocation(state, GameLocations.WoodVillage).dock).toEqual({ ids: [], entries: {} })
+        expect(getLocation(state, GameLocations.StartVillage).storage.entries.OakLog?.quantity).toBe(200)
+        expect(getLocation(state, GameLocations.WoodVillage).storage).toEqual({ ids: [], entries: {} })
         expect(state.shipments.ids).not.toContain(shipment.id)
     })
 
@@ -69,9 +69,23 @@ describe('execShipment', () => {
 
         execShipment(state, makeTimer(shipment.id))
 
-        const dock = getLocation(state, GameLocations.WoodVillage).dock
-        expect(dock.entries.OakLog?.quantity).toBe(200)
-        expect(dock.entries.CopperOre?.quantity).toBe(50)
+        const storage = getLocation(state, GameLocations.WoodVillage).storage
+        expect(storage.entries.OakLog?.quantity).toBe(200)
+        expect(storage.entries.CopperOre?.quantity).toBe(50)
+    })
+
+    test('la consegna si somma a un item già presente nello storage di destinazione', () => {
+        const state = GetInitialGameState()
+        getLocation(state, GameLocations.WoodVillage).storage = {
+            ids: ['OakLog'],
+            entries: { OakLog: { itemId: 'OakLog', quantity: 50 } },
+        }
+        const shipment = makeShipment()
+        ShipmentAdapter.create(state.shipments, shipment)
+
+        execShipment(state, makeTimer(shipment.id))
+
+        expect(getLocation(state, GameLocations.WoodVillage).storage.entries.OakLog?.quantity).toBe(250)
     })
 
     test('timer senza shipment corrispondente non fa nulla', () => {

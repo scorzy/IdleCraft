@@ -101,7 +101,7 @@ const MyListItemBtn = memo(function MyListItemBtn(props: {
             )}
         >
             {icon}
-            {text}
+            <div className={classes.itemText}>{text}</div>
             {right}
             {arrow}
         </button>

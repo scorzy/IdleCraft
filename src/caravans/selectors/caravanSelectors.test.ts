@@ -3,14 +3,8 @@ import { GetInitialGameState } from '../../game/InitialGameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { addItem } from '../../storage/storageFunctions'
 import { CaravanTierId } from '../CaravanConst'
-import { addToDock } from '../functions/dockFunctions'
 import { dispatch, DispatchResult } from '../functions/dispatch'
-import {
-    selectActiveShipments,
-    selectAvailableCaravanSlots,
-    selectDockEntries,
-    selectShipmentsAtLocation,
-} from './caravanSelectors'
+import { selectActiveShipments, selectAvailableCaravanSlots, selectShipmentsAtLocation } from './caravanSelectors'
 
 function stateReady() {
     const state = GetInitialGameState()
@@ -57,12 +51,5 @@ describe('caravanSelectors', () => {
             cargo: [{ itemId: 'OakLog', quantity: 100 }],
         })
         expect(selectAvailableCaravanSlots(state)).toBe(state.caravanSlots - 1)
-    })
-
-    test('selectDockEntries espone il contenuto del dock di un luogo', () => {
-        const state = stateReady()
-        addToDock(state, GameLocations.WoodVillage, 'OakLog', 5)
-        expect(selectDockEntries(state, GameLocations.WoodVillage)).toEqual([{ itemId: 'OakLog', quantity: 5 }])
-        expect(selectDockEntries(state, GameLocations.StartVillage)).toEqual([])
     })
 })

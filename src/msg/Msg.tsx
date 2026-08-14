@@ -394,4 +394,41 @@ export interface Msg {
     UnlockGathering: string
     UnlockGathering1: string
     UnlockGathering2: string
+
+    //  Caravans
+    Caravans: string
+    NewCaravan: string
+    Destination: string
+    CaravanTier: string
+    CaravanHeavyCart: string
+    CaravanStandard: string
+    CaravanFastCourier: string
+    Cargo: string
+    LoadAllStorage: string
+    Dispatch: string
+    InTransit: string
+    Returning: string
+    Recall: string
+    recallConfirmTitle: string
+    recallConfirmDesc: string
+    Duration: string
+    TotalCost: string
+    TotalVolume: string
+    From: string
+    To: string
+    NoActiveShipments: string
+    ArrivesIn: string
+    AvailableSlots: string
+    NotEnoughCargo: string
+    NotEnoughGold: string
+    NoFreeSlots: string
+    TierLocked: string
+    SelectDestination: string
+    SelectTier: string
+    NoDestinations: string
+    AddToCaravan: string
+    AlreadyInCargo: string
+    TimeRemaining: string
+    Arrived: string
+    AddAll: string
 }

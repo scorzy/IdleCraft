@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 import { ActivityTypes } from '../../activities/ActivityState'
 import { GetInitialGameState } from '../../game/InitialGameState'
 import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
@@ -45,6 +45,31 @@ function stateWithShipment(overrides: Partial<Shipment> = {}) {
 }
 
 describe('recall', () => {
+    afterEach(() => {
+        vi.useRealTimers()
+    })
+
+    test("richiamo reale da UI (isTimer=false): sincronizza state.now sull'orologio reale prima di calcolare il tempo trascorso", () => {
+        vi.useFakeTimers()
+        vi.setSystemTime(10_000)
+
+        const { state } = stateWithShipment()
+        state.isTimer = false // una recall scatenata da un click reale, non da una simulazione/replay
+
+        vi.setSystemTime(25_000) // 15s reali passano senza che nessun altro timer sincronizzi state.now
+
+        const result = recall(state, 'shipment1')
+        expect(result).toBe(RecallResult.Recalled)
+
+        const shipment = ShipmentAdapter.select(state.shipments, 'shipment1')
+        expect(state.now).toBe(25_000)
+        expect(shipment?.departAtMs).toBe(25_000)
+        expect(shipment?.arriveAtMs).toBe(40_000) // 25_000 + 15_000 di tempo realmente trascorso
+
+        const timer = TimerAdapter.find(state.timers, (t) => t.actId === 'shipment1')
+        expect(timer?.to).toBe(40_000)
+    })
+
     test('richiamo a metà viaggio: nuova durata pari al tempo trascorso, nessun rimborso', () => {
         const { state } = stateWithShipment()
         state.now = 20_000 // metà tra 10_000 (partenza) e 30_000 (arrivo previsto): 10_000ms trascorsi
@@ -63,8 +88,8 @@ describe('recall', () => {
         expect(timer?.to).toBe(30_000)
 
         execShipment(state, timer!)
-        expect(getLocation(state, GameLocations.StartVillage).dock.entries.OakLog?.quantity).toBe(200)
-        expect(getLocation(state, GameLocations.WoodVillage).dock).toEqual({ ids: [], entries: {} })
+        expect(getLocation(state, GameLocations.StartVillage).storage.entries.OakLog?.quantity).toBe(200)
+        expect(getLocation(state, GameLocations.WoodVillage).storage).toEqual({ ids: [], entries: {} })
     })
 
     test('richiamo subito dopo la partenza: durata di ritorno ~0', () => {

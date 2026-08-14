@@ -10,3 +10,12 @@ export function getRoute(fromId: GameLocations, toId: GameLocations): RouteConfi
 export function getTier(tierId: CaravanTierId): CaravanTier | undefined {
     return CARAVAN_TIERS.find((tier) => tier.id === tierId)
 }
+
+export function getReachableDestinations(fromId: GameLocations): GameLocations[] {
+    const result: GameLocations[] = []
+    for (const route of CARAVAN_ROUTES) {
+        if (route.fromId === fromId) result.push(route.toId)
+        else if (route.toId === fromId) result.push(route.fromId)
+    }
+    return result
+}

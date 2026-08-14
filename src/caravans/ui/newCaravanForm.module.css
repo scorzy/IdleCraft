@@ -1,0 +1,47 @@
+.cargoAddRow {
+    container-type: inline-size;
+}
+.cargoAddRowInner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+.cargoAddButton {
+    justify-self: start;
+}
+@container (min-width: 340px) {
+    .cargoAddRowInner {
+        grid-template-columns: 1fr auto;
+        align-items: center;
+    }
+    .cargoAddButton {
+        justify-self: end;
+    }
+}
+
+.cargoLine {
+    container-type: inline-size;
+}
+.cargoLineInner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+.cargoLineName {
+    min-width: 0;
+}
+.cargoLineActions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-self: start;
+}
+@container (min-width: 340px) {
+    .cargoLineInner {
+        grid-template-columns: 1fr auto;
+        align-items: center;
+    }
+    .cargoLineActions {
+        justify-self: end;
+    }
+}

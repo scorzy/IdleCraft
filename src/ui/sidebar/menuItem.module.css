@@ -30,3 +30,10 @@
 .myListTransition {
     transition: all 0.25s ease;
 }
+.itemText {
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

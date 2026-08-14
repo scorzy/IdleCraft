@@ -32,7 +32,6 @@ export enum AddActivityTypes {
 export interface LocationState {
     id: GameLocations
     storage: InitialState<StorageState>
-    dock: InitialState<StorageState>
     forests: ForestsType
     ores: OreType
     oreVeins: Partial<Record<OreTypes, OreVeinState[]>>
@@ -82,4 +81,9 @@ export interface GameState {
     caravanSlots: number
     unlockedCaravanTiers: CaravanTierId[]
     shipments: InitialState<Shipment>
+    caravanDispatchForm: {
+        toId: GameLocations | undefined
+        tierId: CaravanTierId | undefined
+        cargo: StorageState[]
+    }
 }

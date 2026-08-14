@@ -4,6 +4,7 @@ import { LuMenu } from 'react-icons/lu'
 import { Activities } from '../../activities/ui/Activities'
 import { CombatPage } from '../../battle/ui/BattleZoneUi'
 import { CombatUi } from '../../battle/ui/CombatUi'
+import { CaravanUi } from '../../caravans/ui/CaravanUi'
 import { CharactersUi } from '../../characters/ui/CharactersUi'
 import { DeadDialog } from '../../characters/ui/DeadDialog'
 import { Button } from '../../components/ui/button'
@@ -98,6 +99,8 @@ const PageContent = memo(function PageContent() {
             return <CharactersUi />
         case UiPages.Quest:
             return <QuestUi />
+        case UiPages.Caravans:
+            return <CaravanUi />
 
         case UiPages.Woodworking:
         case UiPages.Smithing:

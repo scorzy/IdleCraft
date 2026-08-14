@@ -111,4 +111,5 @@ export interface ItemFilter {
     solventData?: Partial<SolventData>
     flaskData?: Partial<PotionFlaskData>
     potionData?: Partial<PotionData>
+    unlimitedItems?: boolean
 }

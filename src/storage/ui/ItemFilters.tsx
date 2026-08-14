@@ -103,11 +103,13 @@ export const UIFilterType = memo(function UIFilterType({
 }) {
     return (
         <Tooltip>
-            <TooltipTrigger>
-                <Toggle aria-label={title} pressed={pressed} variant={'primary'} onPressedChange={onClick}>
-                    {IconsData[icon]}
-                </Toggle>
-            </TooltipTrigger>
+            <TooltipTrigger
+                render={
+                    <Toggle aria-label={title} pressed={pressed} variant={'primary'} onPressedChange={onClick}>
+                        {IconsData[icon]}
+                    </Toggle>
+                }
+            />
             <TooltipContent>{title}</TooltipContent>
         </Tooltip>
     )

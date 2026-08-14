@@ -18,6 +18,8 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
     if (filter.nameId && item.nameId !== filter.nameId) return false
     if (filter.equipSlot && item.equipSlot !== filter.equipSlot) return false
     if (filter.itemType && item.type !== filter.itemType) return false
+    if (filter.unlimitedItems !== undefined && filter.unlimitedItems && !item.unlimited) return false
+    if (filter.unlimitedItems !== undefined && !filter.unlimitedItems && item.unlimited) return false
     if (filter.itemSubType && getItemSubType(item.type) !== filter.itemSubType) return false
     if (filter.minStats)
         for (const kv of Object.entries(filter.minStats)) {

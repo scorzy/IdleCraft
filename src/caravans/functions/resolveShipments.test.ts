@@ -59,16 +59,16 @@ describe('resolveShipments', () => {
         resolveShipments(state, THREE_DAYS_MS)
 
         expect(state.shipments).toEqual({ ids: [], entries: {} })
-        const dock = getLocation(state, GameLocations.WoodVillage).dock
-        expect(dock.entries.OakLog?.quantity).toBe(10)
-        expect(dock.entries.CopperOre?.quantity).toBe(10)
-        expect(dock.entries.TinOre?.quantity).toBe(10)
+        const storage = getLocation(state, GameLocations.WoodVillage).storage
+        expect(storage.entries.OakLog?.quantity).toBe(10)
+        expect(storage.entries.CopperOre?.quantity).toBe(10)
+        expect(storage.entries.TinOre?.quantity).toBe(10)
         expect(state.now).toBe(3000)
 
         // seconda chiamata: nessun timer di tipo Shipment rimasto, nessuna duplicazione
         resolveShipments(state, THREE_DAYS_MS)
-        const dockAfter = getLocation(state, GameLocations.WoodVillage).dock
-        expect(dockAfter.entries.OakLog?.quantity).toBe(10)
+        const storageAfter = getLocation(state, GameLocations.WoodVillage).storage
+        expect(storageAfter.entries.OakLog?.quantity).toBe(10)
     })
 
     test('risolve in ordine cronologico: a metà percorso solo le prime spedizioni sono consegnate', () => {
@@ -82,9 +82,9 @@ describe('resolveShipments', () => {
         resolveShipments(state, 1500)
 
         expect(state.shipments.ids).toEqual(['s2', 's3'])
-        const dock = getLocation(state, GameLocations.WoodVillage).dock
-        expect(dock.entries.OakLog?.quantity).toBe(10)
-        expect(dock.entries.CopperOre).toBeUndefined()
+        const storage = getLocation(state, GameLocations.WoodVillage).storage
+        expect(storage.entries.OakLog?.quantity).toBe(10)
+        expect(storage.entries.CopperOre).toBeUndefined()
     })
 
     test('clock indietro: nessuna risoluzione, nessun crash', () => {
@@ -97,7 +97,7 @@ describe('resolveShipments', () => {
 
         expect(state.now).toBe(5000)
         expect(state.shipments.ids).toEqual(['s1'])
-        const dock = getLocation(state, GameLocations.WoodVillage).dock
-        expect(dock).toEqual({ ids: [], entries: {} })
+        const storage = getLocation(state, GameLocations.WoodVillage).storage
+        expect(storage).toEqual({ ids: [], entries: {} })
     })
 })

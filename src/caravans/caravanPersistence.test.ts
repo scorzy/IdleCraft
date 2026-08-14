@@ -25,7 +25,7 @@ function stateWithInFlightShipment() {
 }
 
 describe('persistenza carovane', () => {
-    test('round-trip via loadData (path autosave IndexedDB) preserva spedizioni, dock, slot e tier sbloccati', () => {
+    test('round-trip via loadData (path autosave IndexedDB) preserva spedizioni, slot e tier sbloccati', () => {
         const { state } = stateWithInFlightShipment()
 
         const restored = loadData(structuredClone(state))
@@ -61,10 +61,6 @@ describe('persistenza carovane', () => {
         expect(restored.shipments).toEqual({ ids: [], entries: {} })
         expect(restored.caravanSlots).toBe(DEFAULT_CARAVAN_SLOTS)
         expect(restored.unlockedCaravanTiers).toEqual(DEFAULT_UNLOCKED_CARAVAN_TIERS)
-        expect(GameLocationAdapter.selectEx(restored.locations, GameLocations.StartVillage).dock).toEqual({
-            ids: [],
-            entries: {},
-        })
         expect(
             GameLocationAdapter.selectEx(restored.locations, GameLocations.StartVillage).storage.entries.OakLog
         ).toEqual({ itemId: 'OakLog', quantity: 3 })

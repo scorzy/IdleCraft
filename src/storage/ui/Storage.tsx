@@ -182,7 +182,9 @@ const StorageDrawerContent = memo(function StorageDrawerContent() {
                     <DrawerDescription></DrawerDescription>
                 </DrawerTitle>
             </DrawerHeader>
+
             <SelectedItem />
+
             <DrawerFooter>
                 <DrawerClose>{t.Close}</DrawerClose>
             </DrawerFooter>

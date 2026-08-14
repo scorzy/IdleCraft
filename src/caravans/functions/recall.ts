@@ -15,6 +15,10 @@ export function recall(state: GameState, shipmentId: string): RecallResult {
     if (!shipment) return RecallResult.NotFound
     if (shipment.status !== ShipmentStatus.InTransit) return RecallResult.NotInTransit
 
+    // state.now only advances when a timer fires or starts (see startTimer.ts); sync it to the real
+    // clock here too, or elapsedMs would be computed against a stale value and read as ~0.
+    if (!state.loading && !state.isTimer) state.now = Date.now()
+
     const elapsedMs = Math.max(0, state.now - shipment.departAtMs)
 
     removeActivityTimers(state, shipmentId)

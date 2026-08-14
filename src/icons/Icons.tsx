@@ -7,6 +7,7 @@ import {
     GiBoots,
     GiBreastplate,
     GiBroadsword,
+    GiCaravan,
     GiChicken,
     GiCrossedSwords,
     GiDeadWood,
@@ -17,6 +18,7 @@ import {
     GiGauntlet,
     GiHeartPlus,
     GiHearts,
+    GiHorseHead,
     GiLindenLeaf,
     GiLog,
     GiMagicPalm,
@@ -24,6 +26,7 @@ import {
     GiMetalBar,
     GiMining,
     GiOak,
+    GiOldWagon,
     GiOre,
     GiPiercingSword,
     GiPlainDagger,
@@ -95,6 +98,9 @@ export enum Icons {
     Boots = 'Boots',
     HutsVillage = 'HutsVillage',
     Tree = 'Tree',
+    Caravan = 'Caravan',
+    HeavyCart = 'HeavyCart',
+    FastCourier = 'FastCourier',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -144,4 +150,7 @@ export const IconsData: Record<Icons, ReactNode> = {
     Boots: <GiBoots />,
     HutsVillage: <GiHutsVillage />,
     Tree: <GiTreeGrowth />,
+    Caravan: <GiCaravan />,
+    HeavyCart: <GiOldWagon />,
+    FastCourier: <GiHorseHead />,
 }

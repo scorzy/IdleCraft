@@ -1,8 +1,5 @@
 import { GameState } from '../../game/GameState'
-import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
-import { StorageAdapter } from '../../storage/storageAdapter'
-import { StorageState } from '../../storage/storageTypes'
 import { Shipment, ShipmentAdapter } from '../ShipmentState'
 
 export function selectActiveShipments(state: GameState): Shipment[] {
@@ -20,7 +17,10 @@ export function selectAvailableCaravanSlots(state: GameState): number {
     return Math.max(0, state.caravanSlots - state.shipments.ids.length)
 }
 
-export function selectDockEntries(state: GameState, location: GameLocations): StorageState[] {
-    const dock = GameLocationAdapter.selectEx(state.locations, location).dock
-    return StorageAdapter.findMany(dock, () => true)
+export function selectSelectedShipmentId(state: GameState): string | null {
+    return state.ui.selectedShipmentId
+}
+
+export function selectShipment(state: GameState, id: string): Shipment | undefined {
+    return ShipmentAdapter.select(state.shipments, id)
 }

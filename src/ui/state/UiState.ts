@@ -34,6 +34,7 @@ export interface UiState {
     defaultClosed: Record<string, boolean>
     deadDialog: boolean
     selectedQuestId: string | null
+    selectedShipmentId: string | null
     itemFilterSubType: ItemSubType | undefined
     itemFilterType: ItemTypes | undefined
     itemFilterSearch: string

@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react'
 import { PotionItemUi } from '../../alchemy/PotionItemUi'
+import { AddToCaravanUi } from '../../caravans/ui/AddToCaravanUi'
 import { equipClick } from '../../characters/characterFunctions'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { Button } from '../../components/ui/button'
@@ -61,6 +62,7 @@ export const SelectedItemInfo = memo(function SelectedItemInfo() {
             </Card>
             {isCurrentLocation && item.equipSlot && <EquipItem />}
             {isCurrentLocation && item.potionData && <PotionItemUi />}
+            {isCurrentLocation && <AddToCaravanUi />}
         </>
     )
 })

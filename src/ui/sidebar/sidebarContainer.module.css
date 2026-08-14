@@ -21,10 +21,6 @@
     padding-bottom: 0.5rem;
 }
 
-.muiCollapse {
-    height: 100%;
-    display: flex;
-}
 .icon {
     transition-property: transform;
     transition-duration: 300ms;

@@ -208,34 +208,4 @@ describe('Storage Functions', () => {
         expect(getLocation(state).storage).toEqual({ ids: [], entries: {} })
         expect(state.craftedItems.ids).toContain(craftedId)
     })
-
-    test('Remove Item craft survives while sitting in a dock', () => {
-        const state = GetInitialGameState()
-        const craftedId = `${CRAFTED_ITEM_PREFIX}inDock`
-        getLocation(state).storage = {
-            ids: [craftedId],
-            entries: { [craftedId]: { itemId: craftedId, quantity: 1 } },
-        }
-        getLocation(state, GameLocations.WoodVillage).dock = {
-            ids: [craftedId],
-            entries: { [craftedId]: { itemId: craftedId, quantity: 1 } },
-        }
-        state.craftedItems = {
-            ids: [craftedId],
-            entries: {
-                [craftedId]: {
-                    id: craftedId,
-                    icon: Icons.Axe,
-                    nameId: 'Craft',
-                    type: ItemTypes.Bar,
-                    value: 1,
-                    volume: 0.001,
-                },
-            },
-        }
-
-        removeItem(state, craftedId, 1, GameLocations.StartVillage)
-        expect(getLocation(state).storage).toEqual({ ids: [], entries: {} })
-        expect(state.craftedItems.ids).toContain(craftedId)
-    })
 })

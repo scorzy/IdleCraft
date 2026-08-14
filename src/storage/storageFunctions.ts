@@ -64,9 +64,7 @@ function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
     if (
         GameLocationAdapter.some(
             state.locations,
-            (loc) =>
-                (StorageAdapter.select(loc.storage, craftItemId)?.quantity ?? 0) > 0 ||
-                (StorageAdapter.select(loc.dock, craftItemId)?.quantity ?? 0) > 0
+            (loc) => (StorageAdapter.select(loc.storage, craftItemId)?.quantity ?? 0) > 0
         )
     )
         return true
