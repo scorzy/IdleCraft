@@ -12,6 +12,7 @@ import { getBattleIcon } from '../../battle/selectors/getBattleIcon'
 import { getBattleTitle } from '../../battle/selectors/getBattleTitle'
 import { addKillBattleLog } from '../../battleLog/functions/addBattleLog'
 import { butcheringRecipe } from '../../butchering/ButcheringRecipe'
+import { caravanOnItemDecrease, caravanOnItemRemove } from '../../caravans/functions/caravanFormFunctions'
 import { execShipment } from '../../caravans/functions/execShipment'
 import { onKillListeners } from '../../characters/functions/onKillListeners'
 import { execCrafting } from '../../crafting/functions/execCrafting'
@@ -66,7 +67,7 @@ import { helmetRecipe } from '../../smithing/recipes/HelmetRecipe'
 import { longSwordRecipe } from '../../smithing/recipes/LongSwordRecipe'
 import { pantsRecipe } from '../../smithing/recipes/PantsRecipe'
 import { PickaxeRecipe } from '../../smithing/recipes/PickaxeRecipe'
-import { onItemRemovedListeners } from '../../storage/storageEvents'
+import { onItemDecreasedListeners, onItemRemovedListeners } from '../../storage/storageEvents'
 import { execTreeGrow } from '../../wood/forest/execTreeGrow'
 import { execIncreaseGrowSpeed } from '../../wood/functions/execIncreaseGrowSpeed'
 import { execWoodcutting } from '../../wood/functions/execWoodcutting'
@@ -199,6 +200,9 @@ function initListeners() {
 
     onItemRemovedListeners.push(questOnItemRemove)
     onItemRemovedListeners.push(recipeOnItemRemove)
+    onItemRemovedListeners.push(caravanOnItemRemove)
+
+    onItemDecreasedListeners.push(caravanOnItemDecrease)
 
     onPlayerSkillUpListeners.push(startGatheringQuest)
 }

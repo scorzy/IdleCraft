@@ -86,3 +86,23 @@ export const recallShipmentUi = (shipmentId: string) =>
     setState((state) => {
         recall(state, shipmentId)
     })
+
+export const caravanOnItemDecrease = (
+    state: GameState,
+    itemId: string,
+    location: GameLocations,
+    newQuantity: number
+): void => {
+    if (location !== state.location) return
+
+    const line = state.caravanDispatchForm.cargo.find((l) => l.itemId === itemId)
+    if (!line || line.quantity <= newQuantity) return
+
+    setCargoLineQty(state, itemId, newQuantity)
+}
+
+export const caravanOnItemRemove = (state: GameState, itemId: string, location: GameLocations): void => {
+    if (location !== state.location) return
+
+    removeCargoLine(state, itemId)
+}

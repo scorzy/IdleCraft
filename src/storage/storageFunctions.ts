@@ -11,7 +11,7 @@ import { getUniqueId } from '../utils/getUniqueId'
 import { myCompare } from '../utils/myCompare'
 import { ItemAdapter } from './ItemAdapter'
 import { StorageAdapter } from './storageAdapter'
-import { onItemRemovedListeners } from './storageEvents'
+import { onItemDecreasedListeners, onItemRemovedListeners } from './storageEvents'
 
 export function addGold(state: GameState, amount: number): void {
     state.gold = Math.max(0, state.gold + amount)
@@ -41,6 +41,8 @@ export function addItem(state: GameState, itemId: string, qta: number, location?
         StorageAdapter.remove(storage, itemId)
     } else if (old) old.quantity = newQta
     else StorageAdapter.upsertMerge(storage, { itemId, quantity: newQta })
+
+    if (qta < 0) for (const event of onItemDecreasedListeners) event(state, itemId, location, newQta)
 
     if (isCrafted(itemId) && !isCraftItemUsed(state, itemId)) removeCraftItem(state.craftedItems, itemId)
 }

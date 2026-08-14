@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import { CaravanTierId } from '../caravans/CaravanConst'
 import { ShipmentStatus } from '../caravans/ShipmentState'
 import { CRAFTED_ITEM_PREFIX } from '../const'
@@ -7,6 +7,7 @@ import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Icons } from '../icons/Icons'
 import { ItemTypes } from '../items/Item'
+import { onItemDecreasedListeners } from './storageEvents'
 import { addItem, hasGold, hasItem, removeItem, spendGold } from './storageFunctions'
 
 const getLocation = (state: ReturnType<typeof GetInitialGameState>, location = GameLocations.StartVillage) =>
@@ -127,6 +128,56 @@ describe('Storage Functions', () => {
                 [`${CRAFTED_ITEM_PREFIX}craft`]: { itemId: `${CRAFTED_ITEM_PREFIX}craft`, quantity: 8 },
             },
         })
+    })
+
+    test('Remove Item fires onItemDecreasedListeners with the new quantity', () => {
+        const state = GetInitialGameState()
+        getLocation(state).storage = {
+            ids: ['OakLog'],
+            entries: {
+                OakLog: { itemId: 'OakLog', quantity: 10 },
+            },
+        }
+
+        const listener = vi.fn()
+        onItemDecreasedListeners.push(listener)
+        try {
+            removeItem(state, 'OakLog', 3)
+            expect(listener).toHaveBeenCalledWith(state, 'OakLog', GameLocations.StartVillage, 7)
+        } finally {
+            onItemDecreasedListeners.splice(onItemDecreasedListeners.indexOf(listener), 1)
+        }
+    })
+
+    test('Remove Item down to zero fires onItemDecreasedListeners with quantity 0', () => {
+        const state = GetInitialGameState()
+        getLocation(state).storage = {
+            ids: ['OakLog'],
+            entries: {
+                OakLog: { itemId: 'OakLog', quantity: 3 },
+            },
+        }
+
+        const listener = vi.fn()
+        onItemDecreasedListeners.push(listener)
+        try {
+            removeItem(state, 'OakLog', 3)
+            expect(listener).toHaveBeenCalledWith(state, 'OakLog', GameLocations.StartVillage, 0)
+        } finally {
+            onItemDecreasedListeners.splice(onItemDecreasedListeners.indexOf(listener), 1)
+        }
+    })
+
+    test('Add Item does not fire onItemDecreasedListeners', () => {
+        const state = GetInitialGameState()
+        const listener = vi.fn()
+        onItemDecreasedListeners.push(listener)
+        try {
+            addItem(state, 'OakLog', 5)
+            expect(listener).not.toHaveBeenCalled()
+        } finally {
+            onItemDecreasedListeners.splice(onItemDecreasedListeners.indexOf(listener), 1)
+        }
     })
 
     test('Has Item No', () => {

@@ -5,6 +5,8 @@ import { addItem } from '../../storage/storageFunctions'
 import { CaravanTierId } from '../CaravanConst'
 import {
     addCargoItem,
+    caravanOnItemDecrease,
+    caravanOnItemRemove,
     confirmDispatch,
     loadAllStorageAsCargo,
     removeCargoLine,
@@ -111,6 +113,61 @@ describe('caravanFormFunctions', () => {
 
         expect(result).toBe(DispatchResult.InvalidRoute)
         expect(state).toEqual(before)
+    })
+
+    test('caravanOnItemDecrease shrinks a staged cargo line that now exceeds the available quantity', () => {
+        const state = stateReady()
+        setCargoLineQty(state, 'OakLog', 100)
+
+        caravanOnItemDecrease(state, 'OakLog', GameLocations.StartVillage, 40)
+
+        expect(state.caravanDispatchForm.cargo).toEqual([{ itemId: 'OakLog', quantity: 40 }])
+    })
+
+    test('caravanOnItemDecrease removes the cargo line when the item is fully gone', () => {
+        const state = stateReady()
+        setCargoLineQty(state, 'OakLog', 100)
+
+        caravanOnItemDecrease(state, 'OakLog', GameLocations.StartVillage, 0)
+
+        expect(state.caravanDispatchForm.cargo).toEqual([])
+    })
+
+    test('caravanOnItemDecrease leaves the cargo line untouched when still within the available quantity', () => {
+        const state = stateReady()
+        setCargoLineQty(state, 'OakLog', 100)
+
+        caravanOnItemDecrease(state, 'OakLog', GameLocations.StartVillage, 200)
+
+        expect(state.caravanDispatchForm.cargo).toEqual([{ itemId: 'OakLog', quantity: 100 }])
+    })
+
+    test('caravanOnItemDecrease ignores changes from a different location', () => {
+        const state = stateReady()
+        setCargoLineQty(state, 'OakLog', 100)
+
+        caravanOnItemDecrease(state, 'OakLog', GameLocations.WoodVillage, 0)
+
+        expect(state.caravanDispatchForm.cargo).toEqual([{ itemId: 'OakLog', quantity: 100 }])
+    })
+
+    test('caravanOnItemRemove removes the staged cargo line for the removed item', () => {
+        const state = stateReady()
+        setCargoLineQty(state, 'OakLog', 100)
+        setCargoLineQty(state, 'CopperOre', 10)
+
+        caravanOnItemRemove(state, 'OakLog', GameLocations.StartVillage)
+
+        expect(state.caravanDispatchForm.cargo).toEqual([{ itemId: 'CopperOre', quantity: 10 }])
+    })
+
+    test('caravanOnItemRemove ignores removals from a different location', () => {
+        const state = stateReady()
+        setCargoLineQty(state, 'OakLog', 100)
+
+        caravanOnItemRemove(state, 'OakLog', GameLocations.WoodVillage)
+
+        expect(state.caravanDispatchForm.cargo).toEqual([{ itemId: 'OakLog', quantity: 100 }])
     })
 
     test('confirmDispatch failing (insufficient gold) leaves the form intact', () => {
