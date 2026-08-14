@@ -59,11 +59,6 @@ export function selectDispatchHasFreeSlot(state: GameState): boolean {
     return selectAvailableCaravanSlots(state) > 0
 }
 
-export function selectDispatchIsTierUnlocked(state: GameState): boolean {
-    const tier = selectDispatchTier(state)
-    return !!tier && state.unlockedCaravanTiers.includes(tier.id)
-}
-
 export function selectDispatchCargoQuantity(state: GameState, itemId: string): number {
     return state.caravanDispatchForm.cargo.find((line) => line.itemId === itemId)?.quantity ?? 0
 }
@@ -74,7 +69,6 @@ export function canDispatch(state: GameState): boolean {
         !!selectDispatchTier(state) &&
         selectDispatchHasEnoughCargo(state) &&
         selectDispatchHasEnoughGold(state) &&
-        selectDispatchHasFreeSlot(state) &&
-        selectDispatchIsTierUnlocked(state)
+        selectDispatchHasFreeSlot(state)
     )
 }

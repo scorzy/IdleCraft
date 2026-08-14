@@ -79,7 +79,6 @@ export interface GameState {
     actRepetitions: number
     actAutoRemove: boolean
     caravanSlots: number
-    unlockedCaravanTiers: CaravanTierId[]
     shipments: InitialState<Shipment>
     caravanDispatchForm: {
         toId: GameLocations | undefined

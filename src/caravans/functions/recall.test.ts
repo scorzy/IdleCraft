@@ -49,14 +49,14 @@ describe('recall', () => {
         vi.useRealTimers()
     })
 
-    test("richiamo reale da UI (isTimer=false): sincronizza state.now sull'orologio reale prima di calcolare il tempo trascorso", () => {
+    test('real recall from UI (isTimer=false): syncs state.now to the real clock before computing elapsed time', () => {
         vi.useFakeTimers()
         vi.setSystemTime(10_000)
 
         const { state } = stateWithShipment()
-        state.isTimer = false // una recall scatenata da un click reale, non da una simulazione/replay
+        state.isTimer = false // a recall triggered by a real click, not a simulation/replay
 
-        vi.setSystemTime(25_000) // 15s reali passano senza che nessun altro timer sincronizzi state.now
+        vi.setSystemTime(25_000) // 15 real seconds pass without any other timer syncing state.now
 
         const result = recall(state, 'shipment1')
         expect(result).toBe(RecallResult.Recalled)
@@ -64,15 +64,15 @@ describe('recall', () => {
         const shipment = ShipmentAdapter.select(state.shipments, 'shipment1')
         expect(state.now).toBe(25_000)
         expect(shipment?.departAtMs).toBe(25_000)
-        expect(shipment?.arriveAtMs).toBe(40_000) // 25_000 + 15_000 di tempo realmente trascorso
+        expect(shipment?.arriveAtMs).toBe(40_000) // 25_000 + 15_000 of actually elapsed time
 
         const timer = TimerAdapter.find(state.timers, (t) => t.actId === 'shipment1')
         expect(timer?.to).toBe(40_000)
     })
 
-    test('richiamo a metà viaggio: nuova durata pari al tempo trascorso, nessun rimborso', () => {
+    test('recall halfway through the trip: new duration equal to elapsed time, no refund', () => {
         const { state } = stateWithShipment()
-        state.now = 20_000 // metà tra 10_000 (partenza) e 30_000 (arrivo previsto): 10_000ms trascorsi
+        state.now = 20_000 // halfway between 10_000 (departure) and 30_000 (expected arrival): 10_000ms elapsed
         const goldBefore = state.gold
 
         const result = recall(state, 'shipment1')
@@ -81,7 +81,7 @@ describe('recall', () => {
         const shipment = ShipmentAdapter.select(state.shipments, 'shipment1')
         expect(shipment?.status).toBe(ShipmentStatus.Returning)
         expect(shipment?.departAtMs).toBe(20_000)
-        expect(shipment?.arriveAtMs).toBe(30_000) // 20_000 + 10_000 di tempo già trascorso
+        expect(shipment?.arriveAtMs).toBe(30_000) // 20_000 + 10_000 of already elapsed time
         expect(state.gold).toBe(goldBefore)
 
         const timer = TimerAdapter.find(state.timers, (t) => t.actId === 'shipment1')
@@ -92,21 +92,21 @@ describe('recall', () => {
         expect(getLocation(state, GameLocations.WoodVillage).storage).toEqual({ ids: [], entries: {} })
     })
 
-    test('richiamo subito dopo la partenza: durata di ritorno ~0', () => {
+    test('recall right after departure: return duration ~0', () => {
         const { state } = stateWithShipment()
-        state.now = 10_000 // nessun tempo trascorso
+        state.now = 10_000 // no time elapsed
 
         recall(state, 'shipment1')
         const shipment = ShipmentAdapter.select(state.shipments, 'shipment1')
         expect(shipment?.arriveAtMs).toBe(shipment?.departAtMs)
     })
 
-    test('shipment inesistente -> NotFound', () => {
+    test('nonexistent shipment -> NotFound', () => {
         const state = GetInitialGameState()
         expect(recall(state, 'missing')).toBe(RecallResult.NotFound)
     })
 
-    test('shipment già in ritorno -> NotInTransit', () => {
+    test('shipment already returning -> NotInTransit', () => {
         const { state } = stateWithShipment({ status: ShipmentStatus.Returning })
         expect(recall(state, 'shipment1')).toBe(RecallResult.NotInTransit)
     })

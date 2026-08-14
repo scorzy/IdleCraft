@@ -5,7 +5,7 @@ import { minifyStateKeys, restoreStateKeys } from '../game/save/stateKeyMinifier
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { addItem } from '../storage/storageFunctions'
-import { CaravanTierId, DEFAULT_CARAVAN_SLOTS, DEFAULT_UNLOCKED_CARAVAN_TIERS } from './CaravanConst'
+import { CaravanTierId, DEFAULT_CARAVAN_SLOTS } from './CaravanConst'
 import { dispatch, DispatchResult } from './functions/dispatch'
 
 function stateWithInFlightShipment() {
@@ -19,27 +19,26 @@ function stateWithInFlightShipment() {
         tierId: CaravanTierId.Standard,
         cargo: [{ itemId: 'OakLog', quantity: 200 }],
     })
-    if (result !== DispatchResult.Dispatched || !shipmentId) throw new Error('dispatch di test fallito')
+    if (result !== DispatchResult.Dispatched || !shipmentId) throw new Error('dispatch test failed')
 
     return { state, shipmentId }
 }
 
-describe('persistenza carovane', () => {
-    test('round-trip via loadData (path autosave IndexedDB) preserva spedizioni, slot e tier sbloccati', () => {
+describe('save', () => {
+    test('round-trip via loadData (autosave IndexedDB path)', () => {
         const { state } = stateWithInFlightShipment()
 
         const restored = loadData(structuredClone(state))
 
         expect(restored.shipments).toEqual(state.shipments)
         expect(restored.caravanSlots).toBe(state.caravanSlots)
-        expect(restored.unlockedCaravanTiers).toEqual(state.unlockedCaravanTiers)
         expect(restored.timers).toEqual(state.timers)
         expect(GameLocationAdapter.selectEx(restored.locations, GameLocations.StartVillage).storage).toEqual(
             GameLocationAdapter.selectEx(state.locations, GameLocations.StartVillage).storage
         )
     })
 
-    test('round-trip via minify/restore (path export/import) preserva l’intero stato', () => {
+    test('round-trip via minify/restore (export/import path) preserves the whole state', () => {
         const { state } = stateWithInFlightShipment()
 
         const minified = minifyStateKeys(state)
@@ -48,7 +47,7 @@ describe('persistenza carovane', () => {
         expect(restored).toEqual(state)
     })
 
-    test('un salvataggio legacy senza campi carovane viene migrato con i default', () => {
+    test('a legacy save without caravan fields is migrated with defaults', () => {
         const restored = loadData({
             gold: 42,
             locations: {
@@ -60,7 +59,6 @@ describe('persistenza carovane', () => {
 
         expect(restored.shipments).toEqual({ ids: [], entries: {} })
         expect(restored.caravanSlots).toBe(DEFAULT_CARAVAN_SLOTS)
-        expect(restored.unlockedCaravanTiers).toEqual(DEFAULT_UNLOCKED_CARAVAN_TIERS)
         expect(
             GameLocationAdapter.selectEx(restored.locations, GameLocations.StartVillage).storage.entries.OakLog
         ).toEqual({ itemId: 'OakLog', quantity: 3 })

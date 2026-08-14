@@ -33,7 +33,7 @@ function makeTimer(actId: string): Timer {
 }
 
 describe('execShipment', () => {
-    test('spedizione in andata: consegna il cargo nello storage di destinazione e rimuove lo shipment', () => {
+    test('outbound shipment: delivers cargo to the destination storage and removes the shipment', () => {
         const state = GetInitialGameState()
         const shipment = makeShipment()
         ShipmentAdapter.create(state.shipments, shipment)
@@ -45,7 +45,7 @@ describe('execShipment', () => {
         expect(state.shipments.ids).not.toContain(shipment.id)
     })
 
-    test('spedizione di ritorno: consegna il cargo nello storage di origine', () => {
+    test('return shipment: delivers cargo to the origin storage', () => {
         const state = GetInitialGameState()
         const shipment = makeShipment({ status: ShipmentStatus.Returning })
         ShipmentAdapter.create(state.shipments, shipment)
@@ -57,7 +57,7 @@ describe('execShipment', () => {
         expect(state.shipments.ids).not.toContain(shipment.id)
     })
 
-    test('cargo con più item consegna ogni riga', () => {
+    test('cargo with multiple items delivers every line', () => {
         const state = GetInitialGameState()
         const shipment = makeShipment({
             cargo: [
@@ -74,7 +74,7 @@ describe('execShipment', () => {
         expect(storage.entries.CopperOre?.quantity).toBe(50)
     })
 
-    test('la consegna si somma a un item già presente nello storage di destinazione', () => {
+    test('the delivery adds up to an item already present in the destination storage', () => {
         const state = GetInitialGameState()
         getLocation(state, GameLocations.WoodVillage).storage = {
             ids: ['OakLog'],
@@ -88,7 +88,7 @@ describe('execShipment', () => {
         expect(getLocation(state, GameLocations.WoodVillage).storage.entries.OakLog?.quantity).toBe(250)
     })
 
-    test('timer senza shipment corrispondente non fa nulla', () => {
+    test('timer without a matching shipment does nothing', () => {
         const state = GetInitialGameState()
         expect(() => execShipment(state, makeTimer('missing'))).not.toThrow()
         expect(state.shipments).toEqual({ ids: [], entries: {} })

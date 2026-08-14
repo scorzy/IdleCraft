@@ -1,10 +1,10 @@
 import {
     GiAnvil,
-    GiCaravan,
     GiCompass,
     GiCrossedSwords,
     GiMeatCleaver,
     GiMining,
+    GiOldWagon,
     GiTiedScroll,
     GiWoodAxe,
 } from 'react-icons/gi'
@@ -77,6 +77,6 @@ export const UiPagesData: Record<UiPages, UiPageData> = {
     },
     [UiPages.Caravans]: {
         nameId: 'Caravans',
-        icon: <GiCaravan />,
+        icon: <GiOldWagon />,
     },
 }

@@ -25,11 +25,11 @@ function stateReady() {
 }
 
 describe('dispatch', () => {
-    test('spedizione riuscita: sottrae cargo e oro, crea Shipment e Timer', () => {
+    test('successful dispatch: subtracts cargo and gold, creates Shipment and Timer', () => {
         const state = stateReady()
         const route = getRoute(GameLocations.StartVillage, GameLocations.WoodVillage)
         const tier = getTier(CaravanTierId.Standard)
-        if (!route || !tier) throw new Error('route/tier di test mancanti')
+        if (!route || !tier) throw new Error('missing test route/tier')
 
         const cargo = [{ itemId: 'OakLog', quantity: 200 }]
         const totalVolume = calcTotalVolume(cargo, state.craftedItems)
@@ -62,7 +62,7 @@ describe('dispatch', () => {
         expect(timer?.to).toBe(shipment?.arriveAtMs)
     })
 
-    test('cargo vuoto -> rifiutato, nessuna mutazione', () => {
+    test('empty cargo -> rejected, no mutation', () => {
         const state = stateReady()
         const before = structuredClone(state)
 
@@ -76,7 +76,7 @@ describe('dispatch', () => {
         expect(state).toEqual(before)
     })
 
-    test('rotta inesistente -> rifiutato', () => {
+    test('nonexistent route -> rejected', () => {
         const state = stateReady()
         const { result } = dispatch(state, {
             toId: GameLocations.Test,
@@ -86,17 +86,7 @@ describe('dispatch', () => {
         expect(result).toBe(DispatchResult.InvalidRoute)
     })
 
-    test('tier non sbloccato -> rifiutato', () => {
-        const state = stateReady()
-        const { result } = dispatch(state, {
-            toId: GameLocations.WoodVillage,
-            tierId: CaravanTierId.FastCourier,
-            cargo: [{ itemId: 'OakLog', quantity: 1 }],
-        })
-        expect(result).toBe(DispatchResult.TierLocked)
-    })
-
-    test('nessuno slot carovana disponibile -> rifiutato', () => {
+    test('no caravan slot available -> rejected', () => {
         const state = stateReady()
         state.caravanSlots = 1
         const first = dispatch(state, {
@@ -114,7 +104,7 @@ describe('dispatch', () => {
         expect(second.result).toBe(DispatchResult.NoCaravanSlots)
     })
 
-    test('cargo insufficiente in storage -> rifiutato, nessuna mutazione', () => {
+    test('insufficient cargo in storage -> rejected, no mutation', () => {
         const state = stateReady()
         const before = structuredClone(state)
 
@@ -128,7 +118,7 @@ describe('dispatch', () => {
         expect(state).toEqual(before)
     })
 
-    test('oro insufficiente -> rifiutato, nessuna mutazione', () => {
+    test('insufficient gold -> rejected, no mutation', () => {
         const state = stateReady()
         state.gold = 0
         const before = structuredClone(state)
@@ -143,7 +133,7 @@ describe('dispatch', () => {
         expect(state).toEqual(before)
     })
 
-    test('un crafted item spedito come ultima copia sopravvive in state.craftedItems', () => {
+    test('a crafted item shipped as the last copy survives in state.craftedItems', () => {
         const state = stateReady()
         const craftedId = `${CRAFTED_ITEM_PREFIX}sword`
         addItem(state, craftedId, 1, GameLocations.StartVillage)

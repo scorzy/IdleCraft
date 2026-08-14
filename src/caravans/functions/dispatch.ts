@@ -20,7 +20,7 @@ export enum DispatchResult {
     Dispatched = 'Dispatched',
     EmptyCargo = 'EmptyCargo',
     InvalidRoute = 'InvalidRoute',
-    TierLocked = 'TierLocked',
+    InvalidTier = 'InvalidTier',
     NoCaravanSlots = 'NoCaravanSlots',
     InsufficientCargo = 'InsufficientCargo',
     InsufficientGold = 'InsufficientGold',
@@ -38,13 +38,12 @@ export function dispatch(state: GameState, params: DispatchParams): { result: Di
     if (!route) return { result: DispatchResult.InvalidRoute }
 
     const tier = getTier(tierId)
-    if (!tier || !state.unlockedCaravanTiers.includes(tierId)) return { result: DispatchResult.TierLocked }
+    if (!tier) return { result: DispatchResult.InvalidTier }
 
     if (state.shipments.ids.length >= state.caravanSlots) return { result: DispatchResult.NoCaravanSlots }
 
-    for (const line of cargo) {
+    for (const line of cargo)
         if (!hasItem(state, line.itemId, line.quantity, fromId)) return { result: DispatchResult.InsufficientCargo }
-    }
 
     const totalVolume = calcTotalVolume(cargo, state.craftedItems)
     const cargoValue = calcCargoValue(cargo, state.craftedItems)

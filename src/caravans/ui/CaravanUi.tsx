@@ -89,7 +89,7 @@ const ShipmentLink = memo(function ShipmentLink({ shipmentId }: { shipmentId: st
     return (
         <MyListItem
             text={`${t[fromData.name]} → ${t[toData.name]}`}
-            icon={IconsData[Icons.Caravan]}
+            icon={IconsData[Icons.HeavyCart]}
             active={selectedShipmentId === shipmentId}
             onClick={onClick}
             collapsedId={CollapsedEnum.Caravans}
@@ -133,7 +133,7 @@ const ShipmentDetailUi = memo(function ShipmentDetailUi({ shipmentId }: { shipme
         <Card>
             <MyCardHeaderTitle
                 title={`${t[fromData.name]} → ${t[toData.name]}`}
-                icon={IconsData[Icons.Caravan]}
+                icon={IconsData[Icons.HeavyCart]}
                 rightSlot={
                     <Badge variant={returning ? 'secondary' : 'default'}>{returning ? t.Returning : t.InTransit}</Badge>
                 }

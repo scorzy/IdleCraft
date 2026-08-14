@@ -4,7 +4,7 @@ import { CaravanTierId } from '../CaravanConst'
 import { getReachableDestinations, getRoute, getTier } from './getRoute'
 
 describe('getRoute', () => {
-    test('trova la rotta indipendentemente dalla direzione', () => {
+    test('finds the route regardless of direction', () => {
         const forward = getRoute(GameLocations.StartVillage, GameLocations.WoodVillage)
         const backward = getRoute(GameLocations.WoodVillage, GameLocations.StartVillage)
         expect(forward).toBeDefined()
@@ -12,24 +12,24 @@ describe('getRoute', () => {
         expect(forward).toEqual(backward)
     })
 
-    test('nessuna rotta per una coppia non configurata', () => {
+    test('no route for an unconfigured pair', () => {
         expect(getRoute(GameLocations.StartVillage, GameLocations.Test)).toBeUndefined()
     })
 })
 
 describe('getTier', () => {
-    test('trova un tier esistente', () => {
+    test('finds an existing tier', () => {
         expect(getTier(CaravanTierId.Standard)?.id).toBe(CaravanTierId.Standard)
     })
 })
 
 describe('getReachableDestinations', () => {
-    test('elenca le destinazioni raggiungibili da un luogo su una rotta', () => {
+    test('lists the destinations reachable from a location on a route', () => {
         expect(getReachableDestinations(GameLocations.StartVillage)).toEqual([GameLocations.WoodVillage])
         expect(getReachableDestinations(GameLocations.WoodVillage)).toEqual([GameLocations.StartVillage])
     })
 
-    test('nessuna destinazione per un luogo senza rotte configurate', () => {
+    test('no destinations for a location without configured routes', () => {
         expect(getReachableDestinations(GameLocations.Test)).toEqual([])
     })
 })

@@ -53,7 +53,7 @@ const AddToCaravanUiInt = memo(function AddToCaravanUiInt({
         <Card>
             <MyCardHeaderTitle
                 title={t.AddToCaravan}
-                icon={IconsData[Icons.Caravan]}
+                icon={IconsData[Icons.HeavyCart]}
                 rightSlot={
                     inCargo > 0 ? (
                         <Badge variant="secondary">

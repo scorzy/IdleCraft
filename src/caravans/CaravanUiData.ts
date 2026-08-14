@@ -9,6 +9,6 @@ export interface CaravanTierUiData {
 
 export const CaravanTierData: Record<CaravanTierId, CaravanTierUiData> = {
     [CaravanTierId.HeavyCart]: { nameId: 'CaravanHeavyCart', icon: Icons.HeavyCart },
-    [CaravanTierId.Standard]: { nameId: 'CaravanStandard', icon: Icons.Caravan },
+    [CaravanTierId.Standard]: { nameId: 'CaravanStandard', icon: Icons.HeavyCart },
     [CaravanTierId.FastCourier]: { nameId: 'CaravanFastCourier', icon: Icons.FastCourier },
 }

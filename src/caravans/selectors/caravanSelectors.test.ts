@@ -15,7 +15,7 @@ function stateReady() {
 }
 
 describe('caravanSelectors', () => {
-    test('selectActiveShipments restituisce tutte le spedizioni presenti', () => {
+    test('selectActiveShipments returns all present shipments', () => {
         const state = stateReady()
         expect(selectActiveShipments(state)).toEqual([])
 
@@ -28,7 +28,7 @@ describe('caravanSelectors', () => {
         expect(selectActiveShipments(state)).toHaveLength(1)
     })
 
-    test('selectShipmentsAtLocation filtra per origine e destinazione', () => {
+    test('selectShipmentsAtLocation filters by origin and destination', () => {
         const state = stateReady()
         dispatch(state, {
             toId: GameLocations.WoodVillage,
@@ -41,7 +41,7 @@ describe('caravanSelectors', () => {
         expect(selectShipmentsAtLocation(state, GameLocations.Test)).toHaveLength(0)
     })
 
-    test('selectAvailableCaravanSlots scala con le spedizioni attive', () => {
+    test('selectAvailableCaravanSlots scales with active shipments', () => {
         const state = stateReady()
         expect(selectAvailableCaravanSlots(state)).toBe(state.caravanSlots)
 

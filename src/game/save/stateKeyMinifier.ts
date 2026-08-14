@@ -35,7 +35,6 @@ const gameStateKeyMap = {
     actRepetitions: 'ar',
     actAutoRemove: 'am',
     caravanSlots: 'cs',
-    unlockedCaravanTiers: 'ut',
     shipments: 'sh',
     caravanDispatchForm: 'df',
 } as const

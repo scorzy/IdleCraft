@@ -16,7 +16,6 @@ import {
     selectDispatchHasEnoughCargo,
     selectDispatchHasEnoughGold,
     selectDispatchHasFreeSlot,
-    selectDispatchIsTierUnlocked,
     selectDispatchRoute,
     selectDispatchTier,
     selectDispatchTotalVolume,
@@ -29,8 +28,8 @@ function stateReady() {
     return state
 }
 
-describe('senza selezioni', () => {
-    test('nessuna rotta/tier, costo e durata a zero, non spedibile', () => {
+describe('with no selections', () => {
+    test('no route/tier, cost and duration at zero, not dispatchable', () => {
         const state = stateReady()
 
         expect(selectDispatchRoute(state)).toBeUndefined()
@@ -43,7 +42,7 @@ describe('senza selezioni', () => {
 })
 
 describe('selectDispatchTotalVolume / selectDispatchCargoValue', () => {
-    test('sommano i valori del cargo selezionato', () => {
+    test('sum the values of the selected cargo', () => {
         const state = stateReady()
         setCargoLineQty(state, 'OakLog', 100)
 
@@ -56,7 +55,7 @@ describe('selectDispatchTotalVolume / selectDispatchCargoValue', () => {
 })
 
 describe('selectDispatchDurationMs / selectDispatchCost', () => {
-    test('coerenti con le formule pure quando rotta e tier sono selezionati', () => {
+    test('consistent with the pure formulas when route and tier are selected', () => {
         const state = stateReady()
         setCaravanDestination(state, GameLocations.WoodVillage)
         setCaravanTier(state, CaravanTierId.Standard)
@@ -73,12 +72,12 @@ describe('selectDispatchDurationMs / selectDispatchCost', () => {
 })
 
 describe('selectDispatchCargoQuantity', () => {
-    test("restituisce 0 se l'item non è nel cargo", () => {
+    test('returns 0 if the item is not in the cargo', () => {
         const state = stateReady()
         expect(selectDispatchCargoQuantity(state, 'OakLog')).toBe(0)
     })
 
-    test("restituisce la quantità già presente nel cargo per quell'item", () => {
+    test('returns the quantity already present in the cargo for that item', () => {
         const state = stateReady()
         setCargoLineQty(state, 'OakLog', 150)
         expect(selectDispatchCargoQuantity(state, 'OakLog')).toBe(150)
@@ -87,7 +86,7 @@ describe('selectDispatchCargoQuantity', () => {
 })
 
 describe('canDispatch', () => {
-    test('form completo e valido -> true', () => {
+    test('complete and valid form -> true', () => {
         const state = stateReady()
         setCaravanDestination(state, GameLocations.WoodVillage)
         setCaravanTier(state, CaravanTierId.Standard)
@@ -96,7 +95,7 @@ describe('canDispatch', () => {
         expect(canDispatch(state)).toBe(true)
     })
 
-    test('cargo superiore allo storage disponibile -> false', () => {
+    test('cargo exceeding available storage -> false', () => {
         const state = stateReady()
         setCaravanDestination(state, GameLocations.WoodVillage)
         setCaravanTier(state, CaravanTierId.Standard)
@@ -106,7 +105,7 @@ describe('canDispatch', () => {
         expect(canDispatch(state)).toBe(false)
     })
 
-    test('oro insufficiente -> false', () => {
+    test('insufficient gold -> false', () => {
         const state = stateReady()
         state.gold = 0
         setCaravanDestination(state, GameLocations.WoodVillage)
@@ -117,7 +116,7 @@ describe('canDispatch', () => {
         expect(canDispatch(state)).toBe(false)
     })
 
-    test('nessuno slot libero -> false', () => {
+    test('no free slot -> false', () => {
         const state = stateReady()
         state.caravanSlots = 0
         setCaravanDestination(state, GameLocations.WoodVillage)
@@ -125,16 +124,6 @@ describe('canDispatch', () => {
         setCargoLineQty(state, 'OakLog', 100)
 
         expect(selectDispatchHasFreeSlot(state)).toBe(false)
-        expect(canDispatch(state)).toBe(false)
-    })
-
-    test('tier non sbloccato -> false', () => {
-        const state = stateReady()
-        setCaravanDestination(state, GameLocations.WoodVillage)
-        setCaravanTier(state, CaravanTierId.FastCourier)
-        setCargoLineQty(state, 'OakLog', 100)
-
-        expect(selectDispatchIsTierUnlocked(state)).toBe(false)
         expect(canDispatch(state)).toBe(false)
     })
 })

@@ -1,7 +1,7 @@
 import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { ActivityAdapter } from '../activities/ActivityState'
 import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
-import { DEFAULT_CARAVAN_SLOTS, DEFAULT_UNLOCKED_CARAVAN_TIERS } from '../caravans/CaravanConst'
+import { DEFAULT_CARAVAN_SLOTS } from '../caravans/CaravanConst'
 import { ShipmentAdapter } from '../caravans/ShipmentState'
 import { PLAYER_CHAR, PLAYER_ID } from '../characters/charactersConst'
 import { RecipeTypes } from '../crafting/RecipeInterfaces'
@@ -137,7 +137,6 @@ export const InitialGameState: GameState = {
     actRepetitions: 1,
     actAutoRemove: false,
     caravanSlots: DEFAULT_CARAVAN_SLOTS,
-    unlockedCaravanTiers: DEFAULT_UNLOCKED_CARAVAN_TIERS,
     shipments: ShipmentAdapter.getInitialState(),
     caravanDispatchForm: {
         toId: undefined,

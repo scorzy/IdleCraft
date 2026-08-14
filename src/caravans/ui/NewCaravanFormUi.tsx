@@ -1,5 +1,4 @@
 import { memo, useCallback } from 'react'
-import { TbLock } from 'react-icons/tb'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
@@ -36,7 +35,6 @@ import {
     selectDispatchHasEnoughCargo,
     selectDispatchHasEnoughGold,
     selectDispatchHasFreeSlot,
-    selectDispatchIsTierUnlocked,
     selectDispatchRoute,
     selectDispatchTier,
     selectDispatchTotalVolume,
@@ -49,7 +47,7 @@ export const NewCaravanFormUi = memo(function NewCaravanFormUi() {
 
     return (
         <Card>
-            <MyCardHeaderTitle title={t.NewCaravan} icon={IconsData[Icons.Caravan]} />
+            <MyCardHeaderTitle title={t.NewCaravan} icon={IconsData[Icons.HeavyCart]} />
             <CardContent className="flex flex-col gap-4">
                 <DestinationSelectUi />
                 <TierSelectUi />
@@ -108,7 +106,6 @@ const DestinationSelectUi = memo(function DestinationSelectUi() {
 const TierSelectUi = memo(function TierSelectUi() {
     const { t } = useTranslations()
     const tierId = useGameStore((s: GameState) => s.caravanDispatchForm.tierId)
-    const unlockedTiers = useGameStore((s: GameState) => s.unlockedCaravanTiers)
 
     return (
         <ComboBoxResponsive
@@ -127,17 +124,15 @@ const TierSelectUi = memo(function TierSelectUi() {
         >
             {CARAVAN_TIERS.map((tier) => {
                 const data = CaravanTierData[tier.id]
-                const unlocked = unlockedTiers.includes(tier.id)
                 return (
                     <ComboBoxItem
                         key={tier.id}
                         value={tier.id}
                         icon={IconsData[data.icon]}
                         selected={tierId === tier.id}
-                        rightSlot={!unlocked ? <TbLock /> : undefined}
-                        onSelect={unlocked ? () => setCaravanTierUi(tier.id) : undefined}
+                        onSelect={() => setCaravanTierUi(tier.id)}
                     >
-                        {t[data.nameId]} {!unlocked && <Badge variant="secondary">{t.TierLocked}</Badge>}
+                        {t[data.nameId]}
                     </ComboBoxItem>
                 )
             })}
@@ -232,7 +227,6 @@ const DispatchPreviewUi = memo(function DispatchPreviewUi() {
     const hasEnoughCargo = useGameStore(selectDispatchHasEnoughCargo)
     const hasEnoughGold = useGameStore(selectDispatchHasEnoughGold)
     const hasFreeSlot = useGameStore(selectDispatchHasFreeSlot)
-    const isTierUnlocked = useGameStore(selectDispatchIsTierUnlocked)
 
     return (
         <div className="flex flex-col gap-2 text-sm">
@@ -251,7 +245,6 @@ const DispatchPreviewUi = memo(function DispatchPreviewUi() {
                 {hasCargo && !hasEnoughCargo && <Badge variant="destructive">{t.NotEnoughCargo}</Badge>}
                 {!hasEnoughGold && <Badge variant="destructive">{t.NotEnoughGold}</Badge>}
                 {!hasFreeSlot && <Badge variant="destructive">{t.NoFreeSlots}</Badge>}
-                {tier && !isTierUnlocked && <Badge variant="destructive">{t.TierLocked}</Badge>}
             </div>
         </div>
     )

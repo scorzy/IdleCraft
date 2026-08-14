@@ -48,7 +48,7 @@ function addShipment(
 const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000
 
 describe('resolveShipments', () => {
-    test('offline: tre spedizioni scaglionate risolte in ordine cronologico dopo 3 giorni, senza duplicazioni', () => {
+    test('offline: three staggered shipments resolved chronologically after 3 days, without duplicates', () => {
         const state = GetInitialGameState()
         state.isTimer = true
         state.now = 0
@@ -65,13 +65,13 @@ describe('resolveShipments', () => {
         expect(storage.entries.TinOre?.quantity).toBe(10)
         expect(state.now).toBe(3000)
 
-        // seconda chiamata: nessun timer di tipo Shipment rimasto, nessuna duplicazione
+        // second call: no Shipment-type timer left, no duplication
         resolveShipments(state, THREE_DAYS_MS)
         const storageAfter = getLocation(state, GameLocations.WoodVillage).storage
         expect(storageAfter.entries.OakLog?.quantity).toBe(10)
     })
 
-    test('risolve in ordine cronologico: a metà percorso solo le prime spedizioni sono consegnate', () => {
+    test('resolves chronologically: halfway through only the earlier shipments are delivered', () => {
         const state = GetInitialGameState()
         state.isTimer = true
         state.now = 0
@@ -87,7 +87,7 @@ describe('resolveShipments', () => {
         expect(storage.entries.CopperOre).toBeUndefined()
     })
 
-    test('clock indietro: nessuna risoluzione, nessun crash', () => {
+    test('clock moved backward: no resolution, no crash', () => {
         const state = GetInitialGameState()
         state.isTimer = true
         state.now = 5000

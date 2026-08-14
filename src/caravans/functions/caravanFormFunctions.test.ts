@@ -25,7 +25,7 @@ function stateReady() {
 }
 
 describe('caravanFormFunctions', () => {
-    test('setCaravanDestination/setCaravanTier aggiornano il form', () => {
+    test('setCaravanDestination/setCaravanTier update the form', () => {
         const state = stateReady()
         setCaravanDestination(state, GameLocations.WoodVillage)
         setCaravanTier(state, CaravanTierId.Standard)
@@ -33,7 +33,7 @@ describe('caravanFormFunctions', () => {
         expect(state.caravanDispatchForm.tierId).toBe(CaravanTierId.Standard)
     })
 
-    test('setCargoLineQty aggiunge, aggiorna e rimuove una riga cargo', () => {
+    test('setCargoLineQty adds, updates and removes a cargo line', () => {
         const state = stateReady()
         setCargoLineQty(state, 'OakLog', 100)
         expect(state.caravanDispatchForm.cargo).toEqual([{ itemId: 'OakLog', quantity: 100 }])
@@ -45,19 +45,19 @@ describe('caravanFormFunctions', () => {
         expect(state.caravanDispatchForm.cargo).toEqual([])
     })
 
-    test('addCargoItem precarica la quantità disponibile nello storage corrente', () => {
+    test('addCargoItem preloads the quantity available in the current storage', () => {
         const state = stateReady()
         addCargoItem(state, 'OakLog')
         expect(state.caravanDispatchForm.cargo).toEqual([{ itemId: 'OakLog', quantity: 500 }])
     })
 
-    test('addCargoItem non aggiunge un item assente dallo storage', () => {
+    test('addCargoItem does not add an item missing from storage', () => {
         const state = stateReady()
         addCargoItem(state, 'TinOre')
         expect(state.caravanDispatchForm.cargo).toEqual([])
     })
 
-    test('removeCargoLine rimuove solo la riga indicata', () => {
+    test('removeCargoLine removes only the specified line', () => {
         const state = stateReady()
         setCargoLineQty(state, 'OakLog', 100)
         setCargoLineQty(state, 'CopperOre', 10)
@@ -65,7 +65,7 @@ describe('caravanFormFunctions', () => {
         expect(state.caravanDispatchForm.cargo).toEqual([{ itemId: 'CopperOre', quantity: 10 }])
     })
 
-    test('loadAllStorageAsCargo precarica tutto lo storage del luogo corrente', () => {
+    test('loadAllStorageAsCargo preloads the entire storage of the current location', () => {
         const state = stateReady()
         loadAllStorageAsCargo(state)
         expect(state.caravanDispatchForm.cargo).toEqual(
@@ -77,7 +77,7 @@ describe('caravanFormFunctions', () => {
         expect(state.caravanDispatchForm.cargo).toHaveLength(2)
     })
 
-    test('resetCaravanForm svuota destinazione, tier e cargo', () => {
+    test('resetCaravanForm clears destination, tier and cargo', () => {
         const state = stateReady()
         setCaravanDestination(state, GameLocations.WoodVillage)
         setCaravanTier(state, CaravanTierId.Standard)
@@ -88,7 +88,7 @@ describe('caravanFormFunctions', () => {
         expect(state.caravanDispatchForm).toEqual({ toId: undefined, tierId: undefined, cargo: [] })
     })
 
-    test('confirmDispatch spedisce, svuota il form e seleziona la nuova spedizione', () => {
+    test('confirmDispatch dispatches, clears the form and selects the new shipment', () => {
         const state = stateReady()
         setCaravanDestination(state, GameLocations.WoodVillage)
         setCaravanTier(state, CaravanTierId.Standard)
@@ -102,7 +102,7 @@ describe('caravanFormFunctions', () => {
         expect(state.shipments.ids).toContain(state.ui.selectedShipmentId)
     })
 
-    test('confirmDispatch senza destinazione/tier non muta lo stato', () => {
+    test('confirmDispatch without destination/tier does not mutate state', () => {
         const state = stateReady()
         setCargoLineQty(state, 'OakLog', 100)
         const before = structuredClone(state)
@@ -113,7 +113,7 @@ describe('caravanFormFunctions', () => {
         expect(state).toEqual(before)
     })
 
-    test('confirmDispatch che fallisce (oro insufficiente) lascia il form intatto', () => {
+    test('confirmDispatch failing (insufficient gold) leaves the form intact', () => {
         const state = stateReady()
         state.gold = 0
         setCaravanDestination(state, GameLocations.WoodVillage)

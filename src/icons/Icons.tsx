@@ -7,7 +7,6 @@ import {
     GiBoots,
     GiBreastplate,
     GiBroadsword,
-    GiCaravan,
     GiChicken,
     GiCrossedSwords,
     GiDeadWood,
@@ -98,7 +97,6 @@ export enum Icons {
     Boots = 'Boots',
     HutsVillage = 'HutsVillage',
     Tree = 'Tree',
-    Caravan = 'Caravan',
     HeavyCart = 'HeavyCart',
     FastCourier = 'FastCourier',
 }
@@ -150,7 +148,6 @@ export const IconsData: Record<Icons, ReactNode> = {
     Boots: <GiBoots />,
     HutsVillage: <GiHutsVillage />,
     Tree: <GiTreeGrowth />,
-    Caravan: <GiCaravan />,
     HeavyCart: <GiOldWagon />,
     FastCourier: <GiHorseHead />,
 }

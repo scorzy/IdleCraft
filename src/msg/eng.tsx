@@ -423,7 +423,6 @@ export const engMsg: Msg = {
     NotEnoughCargo: 'Not enough cargo in storage',
     NotEnoughGold: 'Not enough gold',
     NoFreeSlots: 'No caravan slots available',
-    TierLocked: 'Locked',
     SelectDestination: 'Select a destination',
     SelectTier: 'Select a caravan',
     NoDestinations: 'No reachable destinations from here.',

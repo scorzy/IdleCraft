@@ -422,7 +422,6 @@ export interface Msg {
     NotEnoughCargo: string
     NotEnoughGold: string
     NoFreeSlots: string
-    TierLocked: string
     SelectDestination: string
     SelectTier: string
     NoDestinations: string

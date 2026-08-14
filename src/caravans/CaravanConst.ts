@@ -18,18 +18,13 @@ export interface CaravanTier {
     speed: number
     tariffFlat: number
     tariffPct: number
-    unlockedByDefault: boolean
 }
 
 export const CARAVAN_TIERS: CaravanTier[] = [
-    { id: CaravanTierId.HeavyCart, speed: 0.33, tariffFlat: 0.5, tariffPct: 0.002, unlockedByDefault: true },
-    { id: CaravanTierId.Standard, speed: 1.0, tariffFlat: 2, tariffPct: 0.005, unlockedByDefault: true },
-    { id: CaravanTierId.FastCourier, speed: 3.0, tariffFlat: 8, tariffPct: 0.02, unlockedByDefault: false },
+    { id: CaravanTierId.HeavyCart, speed: 0.33, tariffFlat: 0.5, tariffPct: 0.002 },
+    { id: CaravanTierId.Standard, speed: 1.0, tariffFlat: 2, tariffPct: 0.005 },
+    { id: CaravanTierId.FastCourier, speed: 3.0, tariffFlat: 8, tariffPct: 0.02 },
 ]
-
-export const DEFAULT_UNLOCKED_CARAVAN_TIERS: CaravanTierId[] = CARAVAN_TIERS.filter(
-    (tier) => tier.unlockedByDefault
-).map((tier) => tier.id)
 
 export enum RouteCategory {
     Nearby = 'Nearby',
