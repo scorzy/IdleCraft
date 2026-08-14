@@ -33,24 +33,32 @@ export const SaveImportDialog = memo(function SaveImportDialog() {
 
     const onImport = async () => {
         setError('')
+        const data = value.trim()
+        if (!data) {
+            setError(t.SaveStringEmpty)
+            return
+        }
         setLoading(true)
         try {
-            const data = value.trim()
-            if (!data) throw new Error('Save string is empty')
             await importFromData(data)
-        } catch (e) {
-            const msg = e instanceof Error ? e.message : t.SaveImportError
-            setError(msg)
+        } catch {
+            setError(t.SaveImportError)
         } finally {
             setLoading(false)
         }
     }
 
     const onFileSelected = async (file: File): Promise<void> => {
-        if (file.size > MAX_SAVE_FILE_BYTES) throw new Error('File too large. Max size is 5MB')
+        if (file.size > MAX_SAVE_FILE_BYTES) {
+            setError(t.SaveFileTooLarge)
+            return
+        }
         const text = await file.text()
         const data = text.trim()
-        if (!data) throw new Error('File vuoto')
+        if (!data) {
+            setError(t.SaveStringEmpty)
+            return
+        }
         await importFromData(data)
     }
 
@@ -63,9 +71,8 @@ export const SaveImportDialog = memo(function SaveImportDialog() {
         setSelectedFileName(file.name)
         try {
             await onFileSelected(file)
-        } catch (e) {
-            const msg = e instanceof Error ? e.message : t.SaveImportError
-            setError(msg)
+        } catch {
+            setError(t.SaveImportError)
         } finally {
             setLoading(false)
             event.target.value = ''
@@ -83,9 +90,8 @@ export const SaveImportDialog = memo(function SaveImportDialog() {
         setSelectedFileName(file.name)
         try {
             await onFileSelected(file)
-        } catch (e) {
-            const msg = e instanceof Error ? e.message : t.SaveImportError
-            setError(msg)
+        } catch {
+            setError(t.SaveImportError)
         } finally {
             setLoading(false)
         }

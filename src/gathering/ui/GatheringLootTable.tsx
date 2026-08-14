@@ -6,9 +6,10 @@ import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
 import { useItemName } from '../../items/selectors/useItemName'
 import { ItemIcon } from '../../items/ui/ItemIcon'
+import { Msg } from '../../msg/Msg'
 import { useTranslations } from '../../msg/useTranslations'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { GatheringData, RarityLabel } from '../gatheringData'
+import { GatheringData } from '../gatheringData'
 import { selectZoneLootTable } from '../selectors/selectZoneLootTable'
 
 export const GatheringLootTable = memo(function GatheringLootTable() {
@@ -36,7 +37,7 @@ export const GatheringLootTable = memo(function GatheringLootTable() {
                             <TableRow key={loot.rarity}>
                                 <TableCell>
                                     {f(bonusRolls.find((r) => r.rarity === loot.rarity)?.chance ?? 0)}%{' '}
-                                    {RarityLabel[loot.rarity]}
+                                    {t[loot.rarity as keyof Msg]}
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex flex-wrap gap-3">

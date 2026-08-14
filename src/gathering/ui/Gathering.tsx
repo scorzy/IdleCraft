@@ -55,7 +55,7 @@ const LockedGathering = memo(function LockedGathering() {
     return (
         <>
             <Card>
-                <MyCardHeaderTitle title="Gathering" icon={IconsData.Forest} />
+                <MyCardHeaderTitle title={t.Gathering} icon={IconsData.Forest} />
                 <CardContent>
                     <p>{t.UnlockGathering}</p>
                     <p>

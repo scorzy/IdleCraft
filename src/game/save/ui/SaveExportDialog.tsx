@@ -43,9 +43,8 @@ export const SaveExportDialog = memo(function SaveExportDialog() {
             const result = await saveService.exportSave(state)
             setValue(result.value)
             setStats({ uncompressedBytes: result.uncompressedBytes, compressedBytes: result.compressedBytes })
-        } catch (e) {
-            const msg = e instanceof Error ? e.message : t.SaveExportError
-            setError(msg)
+        } catch {
+            setError(t.SaveExportError)
         } finally {
             setLoading(false)
         }

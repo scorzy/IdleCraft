@@ -25,8 +25,8 @@ export const CombatAbilities = memo(function CombatAbilities() {
     const readonly = useGameStore(isCharReadonly)
 
     return (
-        <Card title="Skill Rotation">
-            <MyCardHeaderTitle title="Skill Rotation" />
+        <Card title={t.SkillRotation}>
+            <MyCardHeaderTitle title={t.SkillRotation} />
             <CardContent>
                 {!readonly && (
                     <>

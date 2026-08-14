@@ -6,6 +6,8 @@ import { PLAYER_ID } from '../../characters/charactersConst'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { useGameStore } from '../../game/state'
+import { Msg } from '../../msg/Msg'
+import { useTranslations } from '../../msg/useTranslations'
 import {
     getSelectedItem,
     getSelectedItemQta,
@@ -68,6 +70,7 @@ export const SelectedItemInfo = memo(function SelectedItemInfo() {
 })
 
 const EquipItem = memo(function EquipItem() {
+    const { t } = useTranslations()
     const selectedItemId = useGameStore(selectSelectedItemId)
     const item = useGameStore(getSelectedItem)
 
@@ -80,9 +83,9 @@ const EquipItem = memo(function EquipItem() {
 
     return (
         <Card>
-            <MyCardHeaderTitle title={`Equip ${item.equipSlot}`} />
+            <MyCardHeaderTitle title={`${t.Equip} ${item.equipSlot ? t[item.equipSlot as keyof Msg] : ''}`} />
             <CardFooter>
-                <Button onClick={onClick}>Equip</Button>
+                <Button onClick={onClick}>{t.Equip}</Button>
             </CardFooter>
         </Card>
     )

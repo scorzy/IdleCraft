@@ -431,6 +431,26 @@ export const engMsg: Msg = {
     TimeRemaining: 'Time remaining',
     Arrived: 'Arrived',
     AddAll: 'Add all',
+
+    Error: 'Error',
+    IndexedDbNotFound: 'indexedDB not found, please check your browser permission',
+    ToggleTheme: 'Toggle theme',
+    ThemeLight: 'Light',
+    ThemeDark: 'Dark',
+    ThemeSystem: 'System',
+    ThemeZinc: 'Zinc',
+    ThemeBlue: 'Blue',
+    ThemeGreen: 'Green',
+    ThemeViolet: 'Violet',
+    SkillRotation: 'Skill Rotation',
+    Equip: 'Equip',
+    MainHand: 'Main Hand',
+    TwoHand: 'Two Hands',
+    Common: 'Common',
+    Uncommon: 'Uncommon',
+    Rare: 'Rare',
+    SaveStringEmpty: 'Save string is empty',
+    SaveFileTooLarge: 'File too large. Max size is 5MB',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

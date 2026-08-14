@@ -11,6 +11,7 @@ import { ToasterProvider } from './notification/ToasterProvider'
 import { updateTimers } from './timers/updateTimers'
 import { AppShell } from './ui/shell/AppShell'
 import { ThemeProvider } from './ui/themeProvider'
+import { useTranslations } from './msg/useTranslations'
 
 setInterval(() => {
     const gameId = useGameStore.getState().gameId
@@ -51,6 +52,7 @@ function App() {
     ThemeProvider()
     ToasterProvider()
 
+    const { t } = useTranslations()
     const gameId = useGameStore(selectGameId)
     const loading = useGameStore(selectLoading)
 
@@ -61,8 +63,8 @@ function App() {
             <div className="grid h-dvh items-center justify-center p-0">
                 <Alert variant="destructive">
                     <TbAlertTriangle className="h-4 w-4" />
-                    <AlertTitle>Error</AlertTitle>
-                    <AlertDescription>indexedDB not found, please check your browser permission</AlertDescription>
+                    <AlertTitle>{t.Error}</AlertTitle>
+                    <AlertDescription>{t.IndexedDbNotFound}</AlertDescription>
                 </Alert>
             </div>
         )

@@ -430,4 +430,24 @@ export interface Msg {
     TimeRemaining: string
     Arrived: string
     AddAll: string
+
+    Error: string
+    IndexedDbNotFound: string
+    ToggleTheme: string
+    ThemeLight: string
+    ThemeDark: string
+    ThemeSystem: string
+    ThemeZinc: string
+    ThemeBlue: string
+    ThemeGreen: string
+    ThemeViolet: string
+    SkillRotation: string
+    Equip: string
+    MainHand: string
+    TwoHand: string
+    Common: string
+    Uncommon: string
+    Rare: string
+    SaveStringEmpty: string
+    SaveFileTooLarge: string
 }

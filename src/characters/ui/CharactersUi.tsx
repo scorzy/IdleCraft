@@ -343,6 +343,7 @@ const ManaInfoUi = memo(function ManaInfoUi() {
 
 const CharLevelUi = memo(function CharLevelUi(props: { charId: string }) {
     const { charId } = props
+    const { t } = useTranslations()
 
     const charSel = getCharacterSelector(charId)
 
@@ -351,7 +352,7 @@ const CharLevelUi = memo(function CharLevelUi(props: { charId: string }) {
     const levelXp = useGameStore(useCallback((s: GameState) => charSel.LevelExp(s), [charSel]))
     const nextLevelXp = useGameStore(useCallback((s: GameState) => charSel.NextLevelExp(s), [charSel]))
 
-    return <ExperienceCardUi title={'Level'} level={level} xp={xp} levelXp={levelXp} nextLevelXp={nextLevelXp} />
+    return <ExperienceCardUi title={t.Level} level={level} xp={xp} levelXp={levelXp} nextLevelXp={nextLevelXp} />
 })
 
 const armourTypes = Object.values(DamageTypes).toSorted()
