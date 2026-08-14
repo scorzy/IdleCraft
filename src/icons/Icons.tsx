@@ -8,6 +8,7 @@ import {
     GiBreastplate,
     GiBroadsword,
     GiChicken,
+    GiConversation,
     GiCrossedSwords,
     GiDeadWood,
     GiDeathSkull,
@@ -30,6 +31,7 @@ import {
     GiPiercingSword,
     GiPlainDagger,
     GiPlanks,
+    GiPriceTag,
     GiPunch,
     GiRoundBottomFlask,
     GiRupee,
@@ -46,6 +48,7 @@ import {
     GiWoodAxe,
     GiVisoredHelm,
     GiHutsVillage,
+    GiReceiveMoney,
 } from 'react-icons/gi'
 import { LuArrowDown, LuArrowDownUp, LuArrowUp } from 'react-icons/lu'
 
@@ -99,6 +102,8 @@ export enum Icons {
     Tree = 'Tree',
     HeavyCart = 'HeavyCart',
     FastCourier = 'FastCourier',
+    Market = 'Market',
+    Persuasion = 'Persuasion',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -150,4 +155,6 @@ export const IconsData: Record<Icons, ReactNode> = {
     Tree: <GiTreeGrowth />,
     HeavyCart: <GiOldWagon />,
     FastCourier: <GiHorseHead />,
+    Market: <GiReceiveMoney />,
+    Persuasion: <GiConversation />,
 }

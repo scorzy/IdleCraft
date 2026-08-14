@@ -54,4 +54,16 @@ export const PerksData: Record<PerksEnum, Perk> = {
         descId: 'ChargedAttackPerkDesc',
         abilityUnlock: AbilitiesEnum.ChargedAttack,
     },
+    [PerksEnum.HIGH_PRICES]: {
+        id: PerksEnum.HIGH_PRICES,
+        iconId: Icons.Market,
+        nameId: 'HighPricesPerk',
+        descId: 'HighPricesPerkDesc',
+    },
+    [PerksEnum.FAST_SELLING]: {
+        id: PerksEnum.FAST_SELLING,
+        iconId: Icons.Coins,
+        nameId: 'FastSellingPerk',
+        descId: 'FastSellingPerkDesc',
+    },
 }

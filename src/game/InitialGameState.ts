@@ -76,6 +76,7 @@ export const InitialGameState: GameState = {
         lang: 'eng',
         numberFormatNotation: NotationTypes.STANDARD,
         woodType: WoodTypes.DeadTree,
+        marketItemId: null,
         selectedItemId: null,
         selectedItemLocation: null,
         storageOrder: 'name',

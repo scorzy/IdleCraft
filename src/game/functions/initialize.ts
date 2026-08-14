@@ -32,6 +32,12 @@ import { startGathering } from '../../gathering/functions/startGathering'
 import { startGatheringQuest } from '../../gathering/functions/startGatheringQuest'
 import { UnlockZoneQuest } from '../../gathering/functions/UnlockZoneQuest'
 import { viewGathering } from '../../gathering/functions/viewGathering'
+import { execMarket } from '../../market/functions/execMarket'
+import { getMarketIcon } from '../../market/functions/getMarketIcon'
+import { getMarketTitle } from '../../market/functions/getMarketTitle'
+import { removeMarket } from '../../market/functions/removeMarket'
+import { startMarket } from '../../market/functions/startMarket'
+import { viewMarket } from '../../market/functions/viewMarket'
 import { execMining } from '../../mining/functions/execMining'
 import { execMiningVeinSearch } from '../../mining/functions/execMiningVeinSearch'
 import { removeMining } from '../../mining/functions/removeMining'
@@ -150,6 +156,13 @@ function initActivities() {
     activityExecutors.set(ActivityTypes.GrowSpeedBonus, onGrowSpeedBonusEnd)
 
     activityExecutors.set(ActivityTypes.Shipment, execShipment)
+
+    activityExecutors.set(ActivityTypes.Market, execMarket)
+    activityRemovers.set(ActivityTypes.Market, removeMarket)
+    activityStarters.set(ActivityTypes.Market, startMarket)
+    activityTitles.set(ActivityTypes.Market, getMarketTitle)
+    activityIcons.set(ActivityTypes.Market, getMarketIcon)
+    activityViewers.set(ActivityTypes.Market, viewMarket)
 }
 
 function initRecipes() {

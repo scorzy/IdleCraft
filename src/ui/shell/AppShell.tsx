@@ -13,6 +13,7 @@ import { CraftingUi } from '../../crafting/ui/CraftingUi'
 import { useGameStore } from '../../game/state'
 import { SaveExportDialog } from '../../game/save/ui/SaveExportDialog'
 import { Gathering } from '../../gathering/ui/Gathering'
+import { Market } from '../../market/ui/Market'
 import { Mining } from '../../mining/ui/Mining'
 import { useTranslations } from '../../msg/useTranslations'
 import { QuestUi } from '../../quests/ui/QuestUi'
@@ -101,6 +102,8 @@ const PageContent = memo(function PageContent() {
             return <QuestUi />
         case UiPages.Caravans:
             return <CaravanUi />
+        case UiPages.Market:
+            return <Market />
 
         case UiPages.Woodworking:
         case UiPages.Smithing:

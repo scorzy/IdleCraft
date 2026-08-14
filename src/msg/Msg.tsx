@@ -81,6 +81,7 @@ export interface Msg {
     WoodcuttingExp: string
     WoodworkingExp: string
     SmithingExp: string
+    PersuasionExp: string
 
     Smithing: string
     WoodAxe: string
@@ -119,6 +120,10 @@ export interface Msg {
     ChargedAttackPerkDesc: string
     GrowSpeedMasteryPerk: string
     GrowSpeedMasteryPerkDesc: string
+    HighPricesPerk: string
+    HighPricesPerkDesc: string
+    FastSellingPerk: string
+    FastSellingPerkDesc: string
 
     Base: string
     Total: string
@@ -430,6 +435,17 @@ export interface Msg {
     TimeRemaining: string
     Arrived: string
     AddAll: string
+
+    //  Market
+    Market: string
+    MarketUnknownItem: string
+    MarketTime: string
+    SaleValue: string
+    PersuasionBonus: string
+    SelectItem: string
+    Sell: string
+    SellAll: string
+    QuickSell: string
 
     Error: string
     IndexedDbNotFound: string

@@ -50,6 +50,11 @@ export const setOre = (oreType: OreTypes) =>
         s.ui.oreType = oreType
     })
 
+export const setMarketItem = (itemId: string | null) =>
+    setState((s) => {
+        s.ui.marketItemId = itemId
+    })
+
 export const setGatheringZone = (gatheringZone: GatheringZone) =>
     setState((s) => {
         s.ui.gatheringZone = gatheringZone

@@ -4,5 +4,7 @@ export enum PerksEnum {
     VEIN_MASTERY = 'VEIN_MASTERY',
     GROW_SPEED_MASTERY = 'GROW_SPEED_MASTERY',
     CHARGED_ATTACK = 'CHARGED_ATTACK',
+    HIGH_PRICES = 'HIGH_PRICES',
+    FAST_SELLING = 'FAST_SELLING',
 }
 export const PerksEnumKeys = Object.keys(PerksEnum)

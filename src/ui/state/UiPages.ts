@@ -18,6 +18,7 @@ export enum UiPages {
     Quest = 'Quest',
     Alchemy = 'Alchemy',
     Caravans = 'Caravans',
+    Market = 'Market',
 }
 export interface UiPageData {
     nameId: keyof Msg

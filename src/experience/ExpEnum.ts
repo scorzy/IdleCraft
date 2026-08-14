@@ -10,4 +10,5 @@ export enum ExpEnum {
     Butchering = 'Butchering',
     Alchemy = 'Alchemy',
     Gathering = 'Gathering',
+    Persuasion = 'Persuasion',
 }

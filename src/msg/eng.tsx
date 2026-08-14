@@ -1,5 +1,6 @@
 import { convertVolume } from '../formatters/convertVolume'
 import { splitTime } from '../formatters/splitTime'
+import { FAST_SELLING_PERK, HIGH_PRICES_PERK } from '../market/MarketConst'
 import {
     FAST_MINING_PERK,
     VEIN_MASTERY_ARMOUR_REDUCE,
@@ -73,6 +74,7 @@ export const engMsg: Msg = {
     WoodcuttingExp: 'Woodcutting Level',
     WoodworkingExp: 'Woodworking Level',
     SmithingExp: 'Smithing Level',
+    PersuasionExp: 'Persuasion Level',
     Ore: 'Ore',
     Gem: 'Gem',
     Bar: 'Bar',
@@ -125,6 +127,10 @@ export const engMsg: Msg = {
     ChargedAttackPerkDesc: 'Unlock Charged Attack',
     GrowSpeedMasteryPerk: 'Growth Mastery',
     GrowSpeedMasteryPerkDesc: 'Increase Boost Growth effect to +40% for 3 minutes and raise max stacks to 5',
+    HighPricesPerk: 'Higher Prices',
+    HighPricesPerkDesc: `Increase sale value by ${HIGH_PRICES_PERK}%`,
+    FastSellingPerk: 'Faster Selling',
+    FastSellingPerkDesc: `Reduce market selling time by ${FAST_SELLING_PERK}%`,
 
     ActivityAdded: 'Activity added',
     NormalAttack: 'Normal Attack',
@@ -432,6 +438,16 @@ export const engMsg: Msg = {
     Arrived: 'Arrived',
     AddAll: 'Add all',
 
+    Market: 'Market',
+    MarketUnknownItem: 'Unknown item',
+    MarketTime: 'Time',
+    SaleValue: 'Value',
+    PersuasionBonus: 'Persuasion',
+    SelectItem: 'Select an item',
+    Sell: 'Sell',
+    SellAll: 'Sell all',
+    QuickSell: 'Quick Sell',
+
     Error: 'Error',
     IndexedDbNotFound: 'indexedDB not found, please check your browser permission',
     ToggleTheme: 'Toggle theme',
@@ -513,6 +529,7 @@ export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunction
         boostTree: (woodName: keyof Msg) => `Boost ${msg[woodName]} Grow Speed`,
         crafting: (itemName: string) => `Crafting ${itemName}`,
         mining: (oreNameId: keyof Msg) => `Mining ${msg[oreNameId]}`,
+        selling: (itemName: string) => `Selling ${itemName}`,
         speedBonusPercent: (bonus: string) => `Speed bonus +${bonus}%`,
         prestigePercent: (bonus: string) => `Value bonus +${bonus}%`,
         fighting: (enemy: keyof Msg) => `Fighting ${msg[enemy]}`,

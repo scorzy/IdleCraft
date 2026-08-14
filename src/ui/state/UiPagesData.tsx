@@ -79,4 +79,8 @@ export const UiPagesData: Record<UiPages, UiPageData> = {
         nameId: 'Caravans',
         icon: <GiOldWagon />,
     },
+    [UiPages.Market]: {
+        nameId: 'Market',
+        icon: IconsData[Icons.Market],
+    },
 }

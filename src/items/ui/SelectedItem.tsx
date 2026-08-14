@@ -14,6 +14,7 @@ import {
     isSelectedItemCurrentLocation,
     selectSelectedItemId,
 } from '../../storage/StorageSelectors'
+import { SellItemUi } from '../../storage/ui/SellItemUi'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { useItemName } from '../selectors/useItemName'
 import { ItemIcon } from './ItemIcon'
@@ -65,6 +66,7 @@ export const SelectedItemInfo = memo(function SelectedItemInfo() {
             {isCurrentLocation && item.equipSlot && <EquipItem />}
             {isCurrentLocation && item.potionData && <PotionItemUi />}
             {isCurrentLocation && <AddToCaravanUi />}
+            {isCurrentLocation && !item.unlimited && <SellItemUi />}
         </>
     )
 })

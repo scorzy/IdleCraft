@@ -19,6 +19,7 @@ export interface UiState {
     lang: string
     woodType: WoodTypes
     oreType: OreTypes
+    marketItemId: string | null
     gatheringZone: GatheringZone
     selectedItemId: string | null
     selectedItemLocation: GameLocations | null
