@@ -31,7 +31,6 @@ import {
     GiPiercingSword,
     GiPlainDagger,
     GiPlanks,
-    GiPriceTag,
     GiPunch,
     GiRoundBottomFlask,
     GiRupee,
