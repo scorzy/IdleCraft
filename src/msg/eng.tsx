@@ -353,6 +353,10 @@ export const engMsg: Msg = {
     startVillageDesc: 'Peaceful village surrounded by nature.',
     woodVillageName: 'Wood Village',
     woodVillageDesc: 'A village built among thriving forests, rich with lumber.',
+    capitalCityName: 'Capital City',
+    capitalCityDesc: 'A busy seat of power where merchants, guilds, and contracts shape every trade.',
+    mountainVillageName: 'Mountain Village',
+    mountainVillageDesc: 'A hardy settlement built beneath rich peaks and deep mining tunnels.',
     testName: 'testName',
     testDesc: 'testDesc',
 
@@ -360,6 +364,16 @@ export const engMsg: Msg = {
     treeGrowBoostDesc: 'Tree grow speed',
     maxTreeName: 'Max Tree Boost',
     maxTreeDesc: 'Max trees',
+    marketSaleValueBoostName: 'Market Sale Value Boost',
+    marketSaleValueBoostDesc: 'Market sale value',
+    marketTimeBoostName: 'Market Time Boost',
+    marketTimeBoostDesc: 'Market time',
+    oreVeinSearchTimeBoostName: 'Ore Vein Search Time Boost',
+    oreVeinSearchTimeBoostDesc: 'Ore vein search time',
+    oreVeinQuantityBoostName: 'Ore Vein Quantity Boost',
+    oreVeinQuantityBoostDesc: 'Ore vein quantity',
+    maxOreVeinsBoostName: 'Max Ore Veins Boost',
+    maxOreVeinsBoostDesc: 'Max ore veins',
 
     Use: 'Use',
 

@@ -18,8 +18,8 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
 import { selectOreType } from '../../ui/state/uiSelectors'
 import { addMiningVeinSearch } from '../functions/addMiningVeinSearch'
-import { SEARCH_ORE_VEIN_TIME } from '../functions/startMiningVeinSearch'
-import { moveOreVeinNext, moveOreVeinPrev, removeOreVein } from '../miningFunctions'
+import { selectOreVeinSearchTime } from '../functions/startMiningVeinSearch'
+import { moveOreVeinNext, moveOreVeinPrev, removeOreVein, selectMaxOreVeins } from '../miningFunctions'
 import { OreVeinState } from '../OreState'
 import { OreTypes } from '../OreTypes'
 import classes from './miningVeins.module.css'
@@ -39,6 +39,8 @@ export const OreVeinsUi = memo(function OreVeinsUi({
     const { t, fun } = useTranslations()
     const oreType = useGameStore(selectOreType)
     const veins = useGameStore((s) => GameLocationAdapter.selectEx(s.locations, s.location).oreVeins[oreType])
+    const maxVeins = useGameStore((s) => selectMaxOreVeins(s, s.location))
+    const searchTime = useGameStore(selectOreVeinSearchTime)
     const searchActId = useGameStore(
         (s) =>
             ActivityAdapter.find(
@@ -76,12 +78,14 @@ export const OreVeinsUi = memo(function OreVeinsUi({
                         )}
                     </div>
                     <MyLabel>
-                        {t.Time} {fun.formatTime(SEARCH_ORE_VEIN_TIME)}
+                        {t.Time} {fun.formatTime(searchTime)}
                     </MyLabel>
                     <GameTimerProgress actionId={searchActId} color="primary" className="mb-2" />
                     {veins && (
                         <>
-                            <MyLabel>{veins.length}/10</MyLabel>
+                            <MyLabel>
+                                {veins.length}/{maxVeins}
+                            </MyLabel>
                             {veins.map((vein, index) => (
                                 <VeinCard
                                     key={vein.id}

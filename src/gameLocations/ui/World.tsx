@@ -182,11 +182,13 @@ const LocationModifierRow = memo(function LocationModifierRow(props: {
     )
 
     if (!multi) return null
+    const suffix = data.percentage === false ? '' : '%'
 
     return (
         <MyLabel>
             {IconsData[data.iconId]} {t[data.descriptionId]} {multi > 0 ? '+' : ''}
-            {f(multi)}%
+            {f(multi)}
+            {suffix}
             <BonusDialog title={t[data.nameId]} selectBonusResult={selectBonusResultMemo} />
         </MyLabel>
     )

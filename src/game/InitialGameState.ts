@@ -38,6 +38,35 @@ const getInitialLocationModifiers = (id: GameLocations) => {
             multi: 40,
         })
     }
+    if (id === GameLocations.CapitalCity) {
+        LocationModifierAdapter.create(modifiers, {
+            id: 'CapitalCityMarketSaleValue',
+            type: LocationModifierType.MarketSaleValue,
+            multi: 20,
+        })
+        LocationModifierAdapter.create(modifiers, {
+            id: 'CapitalCityMarketTime',
+            type: LocationModifierType.MarketTime,
+            multi: -20,
+        })
+    }
+    if (id === GameLocations.MountainVillage) {
+        LocationModifierAdapter.create(modifiers, {
+            id: 'MountainVillageOreVeinSearchTime',
+            type: LocationModifierType.OreVeinSearchTime,
+            multi: -20,
+        })
+        LocationModifierAdapter.create(modifiers, {
+            id: 'MountainVillageMaxOreVeins',
+            type: LocationModifierType.MaxOreVeins,
+            multi: 2,
+        })
+        LocationModifierAdapter.create(modifiers, {
+            id: 'MountainVillageOreVeinQuantity',
+            type: LocationModifierType.OreVeinQuantity,
+            multi: 50,
+        })
+    }
     return modifiers
 }
 
@@ -58,6 +87,8 @@ const getInitialLocations = () => {
     const locations = GameLocationAdapter.getInitialState()
     GameLocationAdapter.create(locations, getInitialLocationState(GameLocations.StartVillage))
     GameLocationAdapter.create(locations, getInitialLocationState(GameLocations.WoodVillage))
+    GameLocationAdapter.create(locations, getInitialLocationState(GameLocations.CapitalCity))
+    GameLocationAdapter.create(locations, getInitialLocationState(GameLocations.MountainVillage))
     GameLocationAdapter.create(locations, getInitialLocationState(GameLocations.Test))
     return locations
 }

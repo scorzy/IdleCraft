@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { GameState } from '../../game/GameState'
 import { GetInitialGameState } from '../../game/InitialGameState'
 import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
+import { GameLocations } from '../../gameLocations/GameLocations'
 import { sellItem } from './sellItem'
 
 const getStorage = (state: GameState) => GameLocationAdapter.selectEx(state.locations, state.location).storage
@@ -17,6 +18,17 @@ describe('sellItem', () => {
         expect(getStorage(state).entries['OakLog']?.quantity).toBe(6)
         expect(state.gold).toBe(gold)
         expect(gold).toBeGreaterThan(0)
+    })
+
+    it('does not apply capital market bonuses to quick sell', () => {
+        const state = GetInitialGameState()
+        state.location = GameLocations.CapitalCity
+        getStorage(state).ids = ['OakLog']
+        getStorage(state).entries = { OakLog: { itemId: 'OakLog', quantity: 1 } }
+
+        const gold = sellItem(state, 'OakLog', 1)
+
+        expect(gold).toBe(6)
     })
 
     it('clamps the sold quantity to what is actually in storage', () => {

@@ -3,6 +3,11 @@ import { AbstractEntityAdapter } from '../../entityAdapter/entityAdapter'
 export enum LocationModifierType {
     TreeGrowBoost = 'TreeGrowBoost',
     MaxTree = 'MaxTree',
+    MarketSaleValue = 'MarketSaleValue',
+    MarketTime = 'MarketTime',
+    OreVeinSearchTime = 'OreVeinSearchTime',
+    OreVeinQuantity = 'OreVeinQuantity',
+    MaxOreVeins = 'MaxOreVeins',
 }
 
 export interface LocationModifier {

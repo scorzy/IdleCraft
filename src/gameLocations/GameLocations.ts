@@ -4,6 +4,8 @@ import { Msg } from '../msg/Msg'
 export enum GameLocations {
     StartVillage = 'StartVillage',
     WoodVillage = 'WoodVillage',
+    CapitalCity = 'CapitalCity',
+    MountainVillage = 'MountainVillage',
     Test = 'Test',
 }
 
@@ -25,6 +27,18 @@ export const GameLocationDataMap: Record<GameLocations, GameLocationData> = {
         name: 'woodVillageName',
         description: 'woodVillageDesc',
         icon: Icons.Forest,
+    },
+    [GameLocations.CapitalCity]: {
+        id: GameLocations.CapitalCity,
+        name: 'capitalCityName',
+        description: 'capitalCityDesc',
+        icon: Icons.Market,
+    },
+    [GameLocations.MountainVillage]: {
+        id: GameLocations.MountainVillage,
+        name: 'mountainVillageName',
+        description: 'mountainVillageDesc',
+        icon: Icons.Pickaxe,
     },
     [GameLocations.Test]: {
         id: GameLocations.Test,

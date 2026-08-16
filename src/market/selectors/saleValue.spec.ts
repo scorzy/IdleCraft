@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { ExpEnum } from '../../experience/ExpEnum'
 import { GetInitialGameState } from '../../game/InitialGameState'
+import { GameLocations } from '../../gameLocations/GameLocations'
 import { PerksEnum } from '../../perks/perksEnum'
 import { HIGH_PRICES_PERK, PERSUASION_VALUE_PER_LEVEL } from '../MarketConst'
 import { selectSaleValueAll } from './saleValue'
@@ -39,6 +40,15 @@ describe('selectSaleValueAll', () => {
         const result = selectSaleValueAll('OakLog')(state)
 
         expect(result.total).toBeCloseTo(6 * (1 + HIGH_PRICES_PERK / 100))
+    })
+
+    it('increases value for market activities in the capital city', () => {
+        const state = GetInitialGameState()
+        state.location = GameLocations.CapitalCity
+
+        const result = selectSaleValueAll('OakLog')(state)
+
+        expect(result.total).toBeCloseTo(6 * 1.2)
     })
 
     it('composes Persuasion level and the HIGH_PRICES perk multiplicatively', () => {

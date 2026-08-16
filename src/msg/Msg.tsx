@@ -347,6 +347,10 @@ export interface Msg {
     startVillageDesc: string
     woodVillageName: string
     woodVillageDesc: string
+    capitalCityName: string
+    capitalCityDesc: string
+    mountainVillageName: string
+    mountainVillageDesc: string
     testName: string
     testDesc: string
 
@@ -354,6 +358,16 @@ export interface Msg {
     treeGrowBoostDesc: string
     maxTreeName: string
     maxTreeDesc: string
+    marketSaleValueBoostName: string
+    marketSaleValueBoostDesc: string
+    marketTimeBoostName: string
+    marketTimeBoostDesc: string
+    oreVeinSearchTimeBoostName: string
+    oreVeinSearchTimeBoostDesc: string
+    oreVeinQuantityBoostName: string
+    oreVeinQuantityBoostDesc: string
+    maxOreVeinsBoostName: string
+    maxOreVeinsBoostDesc: string
 
     Use: string
 

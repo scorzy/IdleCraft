@@ -5,6 +5,9 @@ import { PLAYER_ID } from '../characters/charactersConst'
 import { selectLevelExp } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
+import { GameLocations } from '../gameLocations/GameLocations'
+import { LocationModifierType } from '../gameLocations/modifiers/LocationModifier'
+import { selectLocationModifierMulti } from '../gameLocations/modifiers/locationModifierSelectors'
 import { PickaxeData } from '../items/Item'
 import { isMining } from './Mining'
 import { OreData } from './OreData'
@@ -19,11 +22,11 @@ export const DEF_PICKAXE: PickaxeData = {
 export const isOreSelected = (oreType: OreTypes) => (state: GameState) => state.ui.oreType === oreType
 
 const makeDefaultMine = memoize(
-    (oreType: OreTypes) => {
+    (oreType: OreTypes, quantityBonus: number) => {
         const data = OreData[oreType]
         return {
             hp: data.hp,
-            qta: data.qta,
+            qta: Math.max(1, Math.floor((data.qta * (100 + quantityBonus)) / 100)),
         }
     },
     {
@@ -31,8 +34,11 @@ const makeDefaultMine = memoize(
     }
 )
 
-export const selectDefaultMine = (_s: GameState, oreType: OreTypes) => {
-    return makeDefaultMine(oreType)
+export const selectDefaultMine = (state: GameState, oreType: OreTypes, location: GameLocations = state.location) => {
+    const quantityBonus = selectLocationModifierMulti(state, location, LocationModifierType.OreVeinQuantity)
+    const def = makeDefaultMine(oreType, quantityBonus)
+
+    return def
 }
 
 export const selectOre = (state: GameState, oreType: OreTypes) => {

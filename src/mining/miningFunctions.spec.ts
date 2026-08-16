@@ -18,6 +18,7 @@ import {
     removeOreVein,
     resetOre,
     searchOreVein,
+    selectMaxOreVeins,
 } from './miningFunctions'
 
 const LOC = GameLocations.StartVillage
@@ -72,6 +73,16 @@ describe('miningFunctions', () => {
             resetOre(state, OreTypes.Copper, LOC)
             const ore = GameLocationAdapter.selectEx(state.locations, LOC).ores[OreTypes.Copper]
             expect(ore).toEqual({ qta: 20, hp: 100 })
+        })
+
+        it('applies the mountain village quantity bonus to the default ore quantity', () => {
+            const location = GameLocations.MountainVillage
+            GameLocationAdapter.selectEx(state.locations, location).ores[OreTypes.Copper] = { qta: 0, hp: 0 }
+
+            resetOre(state, OreTypes.Copper, location)
+
+            const ore = GameLocationAdapter.selectEx(state.locations, location).ores[OreTypes.Copper]
+            expect(ore).toEqual({ qta: 26, hp: 100 })
         })
     })
 
@@ -157,6 +168,17 @@ describe('miningFunctions', () => {
             )
             expect(canSearchOreVein(state, LOC, OreTypes.Copper)).toBe(false)
         })
+
+        it('uses the mountain village max vein bonus', () => {
+            const location = GameLocations.MountainVillage
+            GameLocationAdapter.selectEx(state.locations, location).oreVeins[OreTypes.Copper] = Array.from(
+                { length: MAX_ORE_VEINS + 1 },
+                (_, i) => makeVein({ id: `v${i}` })
+            )
+
+            expect(selectMaxOreVeins(state, location)).toBe(MAX_ORE_VEINS + 2)
+            expect(canSearchOreVein(state, location, OreTypes.Copper)).toBe(true)
+        })
     })
 
     describe('searchOreVein', () => {
@@ -181,6 +203,26 @@ describe('miningFunctions', () => {
             )
 
             expect(searchOreVein(state, LOC, OreTypes.Copper)).toBeUndefined()
+        })
+
+        it('allows extra veins in the mountain village', () => {
+            const location = GameLocations.MountainVillage
+            GameLocationAdapter.selectEx(state.locations, location).oreVeins[OreTypes.Copper] = Array.from(
+                { length: MAX_ORE_VEINS },
+                (_, i) => makeVein({ id: `v${i}` })
+            )
+
+            expect(searchOreVein(state, location, OreTypes.Copper)).toBeDefined()
+        })
+
+        it('increases discovered vein quantity in the mountain village', () => {
+            vi.spyOn(Math, 'random').mockReturnValue(0.5)
+
+            const vein = searchOreVein(state, GameLocations.MountainVillage, OreTypes.Copper)
+
+            expect(vein?.qta).toBe(26)
+            expect(vein?.maxQta).toBe(26)
+            vi.restoreAllMocks()
         })
     })
 

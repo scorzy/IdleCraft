@@ -1,6 +1,8 @@
 import { GameState } from '../game/GameState'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { LocationModifierType } from '../gameLocations/modifiers/LocationModifier'
+import { selectLocationModifierMulti } from '../gameLocations/modifiers/locationModifierSelectors'
 import { hasPerk } from '../perks/PerksSelectors'
 import { PerksEnum } from '../perks/perksEnum'
 import { getRandomNum } from '../utils/getRandomNum'
@@ -18,6 +20,11 @@ import { OreTypes } from './OreTypes'
 
 export const MAX_ORE_VEINS = 10
 
+export function selectMaxOreVeins(state: GameState, location: GameLocations): number {
+    const locationBonus = selectLocationModifierMulti(state, location, LocationModifierType.MaxOreVeins)
+    return Math.max(0, MAX_ORE_VEINS + Math.round(locationBonus))
+}
+
 export function getOreVeinsByType(state: GameState, location: GameLocations, oreType: OreTypes): OreVeinState[] {
     const veinsMap = GameLocationAdapter.selectEx(state.locations, location).oreVeins
     const veins = veinsMap[oreType]
@@ -32,7 +39,7 @@ export function hasOre(state: GameState, oreType: OreTypes, location?: GameLocat
     return (GameLocationAdapter.selectEx(state.locations, location ?? state.location).ores[oreType]?.qta ?? 1) > 0
 }
 export function resetOre(state: GameState, oreType: OreTypes, location: GameLocations): void {
-    const def = selectDefaultMine(state, oreType)
+    const def = selectDefaultMine(state, oreType, location)
 
     GameLocationAdapter.selectEx(state.locations, location).ores[oreType] = structuredClone(def)
 }
@@ -74,12 +81,12 @@ export function removeOreVein(state: GameState, location: GameLocations, oreType
 }
 
 export function canSearchOreVein(state: GameState, location: GameLocations, oreType: OreTypes): boolean {
-    return getOreVeinsByType(state, location, oreType).length < MAX_ORE_VEINS
+    return getOreVeinsByType(state, location, oreType).length < selectMaxOreVeins(state, location)
 }
 
 export function searchOreVein(state: GameState, location: GameLocations, oreType: OreTypes): OreVeinState | undefined {
     const veins = getOreVeinsByType(state, location, oreType)
-    if (veins.length >= MAX_ORE_VEINS) return
+    if (veins.length >= selectMaxOreVeins(state, location)) return
 
     const oreData = OreData[oreType]
     const veinMastery = hasPerk(PerksEnum.VEIN_MASTERY)(state)
@@ -88,8 +95,10 @@ export function searchOreVein(state: GameState, location: GameLocations, oreType
     const hpRaw = Math.max(10, Math.floor((oreData.hp * getRandomNum(70, 130)) / 100))
     const armourRaw = Math.max(0, Math.floor((oreData.armour * getRandomNum(70, 130)) / 100))
     const gemChanceRaw = getRandomNum(3, 20) / 100
+    const oreVeinQuantityBonus = selectLocationModifierMulti(state, location, LocationModifierType.OreVeinQuantity)
 
-    const qta = veinMastery ? Math.max(1, Math.floor((qtaRaw * (100 + VEIN_MASTERY_QTA_BONUS)) / 100)) : qtaRaw
+    const qtaBonus = veinMastery ? VEIN_MASTERY_QTA_BONUS + oreVeinQuantityBonus : oreVeinQuantityBonus
+    const qta = Math.max(1, Math.floor((qtaRaw * (100 + qtaBonus)) / 100))
     const hp = veinMastery ? Math.max(1, Math.floor((hpRaw * (100 - VEIN_MASTERY_HP_REDUCE)) / 100)) : hpRaw
     const armour = veinMastery
         ? Math.max(0, Math.floor((armourRaw * (100 - VEIN_MASTERY_ARMOUR_REDUCE)) / 100))
@@ -126,7 +135,7 @@ export function mineOre(
     let qta: number
     let curHp: number
 
-    const def = selectDefaultMine(state, oreType)
+    const def = selectDefaultMine(state, oreType, location)
     if (mine) {
         qta = mine.qta
         curHp = mine.hp
