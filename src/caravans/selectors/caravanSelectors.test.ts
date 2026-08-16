@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { GetInitialGameState } from '../../game/InitialGameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { addItem } from '../../storage/storageFunctions'
 import { CaravanTierId } from '../CaravanConst'
@@ -43,13 +44,27 @@ describe('caravanSelectors', () => {
 
     test('selectAvailableCaravanSlots scales with active shipments', () => {
         const state = stateReady()
-        expect(selectAvailableCaravanSlots(state)).toBe(state.caravanSlots)
+        const location = GameLocationAdapter.selectEx(state.locations, state.location)
+        expect(selectAvailableCaravanSlots(state)).toBe(location.caravanSlots)
 
         dispatch(state, {
             toId: GameLocations.WoodVillage,
             tierId: CaravanTierId.Standard,
             cargo: [{ itemId: 'OakLog', quantity: 100 }],
         })
-        expect(selectAvailableCaravanSlots(state)).toBe(state.caravanSlots - 1)
+        expect(selectAvailableCaravanSlots(state)).toBe(location.caravanSlots - 1)
+    })
+
+    test('selectAvailableCaravanSlots ignores caravans dispatched from other locations', () => {
+        const state = stateReady()
+        dispatch(state, {
+            toId: GameLocations.WoodVillage,
+            tierId: CaravanTierId.Standard,
+            cargo: [{ itemId: 'OakLog', quantity: 100 }],
+        })
+
+        state.location = GameLocations.WoodVillage
+        const location = GameLocationAdapter.selectEx(state.locations, state.location)
+        expect(selectAvailableCaravanSlots(state)).toBe(location.caravanSlots)
     })
 })

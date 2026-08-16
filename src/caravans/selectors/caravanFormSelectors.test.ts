@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { GetInitialGameState } from '../../game/InitialGameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { addItem } from '../../storage/storageFunctions'
 import { CaravanTierId } from '../CaravanConst'
@@ -61,7 +62,7 @@ describe('selectDispatchDurationMs / selectDispatchCost', () => {
         setCaravanTier(state, CaravanTierId.Standard)
         setCargoLineQty(state, 'OakLog', 100)
 
-        const route = getRoute(GameLocations.StartVillage, GameLocations.WoodVillage)!
+        const route = getRoute(state, GameLocations.WoodVillage)!
         const tier = getTier(CaravanTierId.Standard)!
         const totalVolume = calcTotalVolume(state.caravanDispatchForm.cargo, state.craftedItems)
         const cargoValue = selectDispatchCargoValue(state)
@@ -118,7 +119,7 @@ describe('canDispatch', () => {
 
     test('no free slot -> false', () => {
         const state = stateReady()
-        state.caravanSlots = 0
+        GameLocationAdapter.selectEx(state.locations, state.location).caravanSlots = 0
         setCaravanDestination(state, GameLocations.WoodVillage)
         setCaravanTier(state, CaravanTierId.Standard)
         setCargoLineQty(state, 'OakLog', 100)

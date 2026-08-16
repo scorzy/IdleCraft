@@ -1,4 +1,5 @@
 import { GameState } from '../../game/GameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Shipment, ShipmentAdapter } from '../ShipmentState'
 
@@ -14,7 +15,9 @@ export function selectShipmentsAtLocation(state: GameState, location: GameLocati
 }
 
 export function selectAvailableCaravanSlots(state: GameState): number {
-    return Math.max(0, state.caravanSlots - state.shipments.ids.length)
+    const location = GameLocationAdapter.selectEx(state.locations, state.location)
+    const activeCaravans = ShipmentAdapter.count(state.shipments, (shipment) => shipment.fromId === state.location)
+    return Math.max(0, location.caravanSlots - activeCaravans)
 }
 
 export function selectSelectedShipmentId(state: GameState): string | null {

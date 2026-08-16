@@ -7,6 +7,7 @@ import { Input } from '../../components/ui/input'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocationDataMap } from '../../gameLocations/GameLocations'
 import { Icons, IconsData } from '../../icons/Icons'
 import { Coins, TrashIcon } from '../../icons/IconsMemo'
@@ -26,7 +27,6 @@ import {
     setCaravanTierUi,
     setCargoLineQtyUi,
 } from '../functions/caravanFormFunctions'
-import { getReachableDestinations } from '../functions/getRoute'
 import {
     canDispatch,
     selectDispatchCost,
@@ -63,10 +63,11 @@ export const NewCaravanFormUi = memo(function NewCaravanFormUi() {
 
 const DestinationSelectUi = memo(function DestinationSelectUi() {
     const { t } = useTranslations()
-    const location = useGameStore((s: GameState) => s.location)
+    const caravanRoutes = useGameStore(
+        (s: GameState) => GameLocationAdapter.selectEx(s.locations, s.location).caravanRoutes
+    )
     const toId = useGameStore((s: GameState) => s.caravanDispatchForm.toId)
-
-    const destinations = getReachableDestinations(location)
+    const destinations = caravanRoutes.map((route) => route.toId)
 
     if (destinations.length === 0) return <p className="text-muted-foreground text-sm">{t.NoDestinations}</p>
 

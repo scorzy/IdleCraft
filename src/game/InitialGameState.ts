@@ -1,7 +1,7 @@
 import { CastCharAbilityAdapter } from '../activeAbilities/abilityAdapters'
 import { ActivityAdapter } from '../activities/ActivityState'
 import { BattleLogAdapter } from '../battleLog/battleLogAdapter'
-import { DEFAULT_CARAVAN_SLOTS } from '../caravans/CaravanConst'
+import { DEFAULT_CARAVAN_SLOTS, ROUTE_CATEGORY_MINUTES, RouteCategory } from '../caravans/CaravanConst'
 import { ShipmentAdapter } from '../caravans/ShipmentState'
 import { PLAYER_CHAR, PLAYER_ID } from '../characters/charactersConst'
 import { RecipeTypes } from '../crafting/RecipeInterfaces'
@@ -73,6 +73,13 @@ const getInitialLocationModifiers = (id: GameLocations) => {
 const getInitialLocationState: (id: GameLocations) => LocationState = (id) => {
     return {
         id,
+        caravanSlots: DEFAULT_CARAVAN_SLOTS,
+        caravanRoutes:
+            id === GameLocations.StartVillage
+                ? [{ toId: GameLocations.WoodVillage, baseMinutes: ROUTE_CATEGORY_MINUTES[RouteCategory.Nearby] }]
+                : id === GameLocations.WoodVillage
+                  ? [{ toId: GameLocations.StartVillage, baseMinutes: ROUTE_CATEGORY_MINUTES[RouteCategory.Nearby] }]
+                  : [],
         storage: StorageAdapter.getInitialState(),
         forests: {},
         ores: {},
@@ -168,7 +175,6 @@ export const InitialGameState: GameState = {
     startActNow: false,
     actRepetitions: 1,
     actAutoRemove: false,
-    caravanSlots: DEFAULT_CARAVAN_SLOTS,
     shipments: ShipmentAdapter.getInitialState(),
     caravanDispatchForm: {
         toId: undefined,

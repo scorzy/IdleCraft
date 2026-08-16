@@ -1,9 +1,11 @@
+import { GameState } from '../../game/GameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
-import { CARAVAN_ROUTES, CARAVAN_TIERS, CaravanTier, CaravanTierId, RouteConfig } from '../CaravanConst'
+import { CARAVAN_TIERS, CaravanTier, CaravanTierId, RouteConfig } from '../CaravanConst'
 
-export function getRoute(fromId: GameLocations, toId: GameLocations): RouteConfig | undefined {
-    return CARAVAN_ROUTES.find(
-        (route) => (route.fromId === fromId && route.toId === toId) || (route.fromId === toId && route.toId === fromId)
+export function getRoute(state: GameState, toId: GameLocations): RouteConfig | undefined {
+    return GameLocationAdapter.selectEx(state.locations, state.location).caravanRoutes.find(
+        (route) => route.toId === toId
     )
 }
 
@@ -11,11 +13,6 @@ export function getTier(tierId: CaravanTierId): CaravanTier | undefined {
     return CARAVAN_TIERS.find((tier) => tier.id === tierId)
 }
 
-export function getReachableDestinations(fromId: GameLocations): GameLocations[] {
-    const result: GameLocations[] = []
-    for (const route of CARAVAN_ROUTES) {
-        if (route.fromId === fromId) result.push(route.toId)
-        else if (route.toId === fromId) result.push(route.fromId)
-    }
-    return result
+export function getReachableDestinations(state: GameState): GameLocations[] {
+    return GameLocationAdapter.selectEx(state.locations, state.location).caravanRoutes.map((route) => route.toId)
 }

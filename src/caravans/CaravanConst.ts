@@ -39,17 +39,8 @@ export const ROUTE_CATEGORY_MINUTES: Record<RouteCategory, number> = {
 }
 
 export interface RouteConfig {
-    fromId: GameLocations
     toId: GameLocations
     baseMinutes: number
 }
-
-export const CARAVAN_ROUTES: RouteConfig[] = [
-    {
-        fromId: GameLocations.StartVillage,
-        toId: GameLocations.WoodVillage,
-        baseMinutes: ROUTE_CATEGORY_MINUTES[RouteCategory.Nearby],
-    },
-]
 
 export const DEFAULT_CARAVAN_SLOTS = 2

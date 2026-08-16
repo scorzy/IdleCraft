@@ -27,7 +27,7 @@ function stateReady() {
 describe('dispatch', () => {
     test('successful dispatch: subtracts cargo and gold, creates Shipment and Timer', () => {
         const state = stateReady()
-        const route = getRoute(GameLocations.StartVillage, GameLocations.WoodVillage)
+        const route = getRoute(state, GameLocations.WoodVillage)
         const tier = getTier(CaravanTierId.Standard)
         if (!route || !tier) throw new Error('missing test route/tier')
 
@@ -88,7 +88,7 @@ describe('dispatch', () => {
 
     test('no caravan slot available -> rejected', () => {
         const state = stateReady()
-        state.caravanSlots = 1
+        getLocation(state).caravanSlots = 1
         const first = dispatch(state, {
             toId: GameLocations.WoodVillage,
             tierId: CaravanTierId.Standard,

@@ -1,19 +1,24 @@
 import { describe, expect, test } from 'vitest'
+import { GetInitialGameState } from '../../game/InitialGameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { CaravanTierId } from '../CaravanConst'
 import { getReachableDestinations, getRoute, getTier } from './getRoute'
 
 describe('getRoute', () => {
-    test('finds the route regardless of direction', () => {
-        const forward = getRoute(GameLocations.StartVillage, GameLocations.WoodVillage)
-        const backward = getRoute(GameLocations.WoodVillage, GameLocations.StartVillage)
+    test('finds the route configured for the current location', () => {
+        const state = GetInitialGameState()
+        const forward = getRoute(state, GameLocations.WoodVillage)
+        state.location = GameLocations.WoodVillage
+        const backward = getRoute(state, GameLocations.StartVillage)
         expect(forward).toBeDefined()
         expect(backward).toBeDefined()
-        expect(forward).toEqual(backward)
+        expect(forward?.toId).toBe(GameLocations.WoodVillage)
+        expect(backward?.toId).toBe(GameLocations.StartVillage)
+        expect(forward?.baseMinutes).toBe(backward?.baseMinutes)
     })
 
     test('no route for an unconfigured pair', () => {
-        expect(getRoute(GameLocations.StartVillage, GameLocations.Test)).toBeUndefined()
+        expect(getRoute(GetInitialGameState(), GameLocations.Test)).toBeUndefined()
     })
 })
 
@@ -25,11 +30,15 @@ describe('getTier', () => {
 
 describe('getReachableDestinations', () => {
     test('lists the destinations reachable from a location on a route', () => {
-        expect(getReachableDestinations(GameLocations.StartVillage)).toEqual([GameLocations.WoodVillage])
-        expect(getReachableDestinations(GameLocations.WoodVillage)).toEqual([GameLocations.StartVillage])
+        const state = GetInitialGameState()
+        expect(getReachableDestinations(state)).toEqual([GameLocations.WoodVillage])
+        state.location = GameLocations.WoodVillage
+        expect(getReachableDestinations(state)).toEqual([GameLocations.StartVillage])
     })
 
     test('no destinations for a location without configured routes', () => {
-        expect(getReachableDestinations(GameLocations.Test)).toEqual([])
+        const state = GetInitialGameState()
+        state.location = GameLocations.Test
+        expect(getReachableDestinations(state)).toEqual([])
     })
 })

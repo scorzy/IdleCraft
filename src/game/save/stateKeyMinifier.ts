@@ -34,13 +34,14 @@ const gameStateKeyMap = {
     startActNow: 'sn',
     actRepetitions: 'ar',
     actAutoRemove: 'am',
-    caravanSlots: 'cs',
     shipments: 'sh',
     caravanDispatchForm: 'df',
 } as const
 
 const locationStateKeyMap = {
     id: 'id',
+    caravanSlots: 'cs',
+    caravanRoutes: 'cr',
     storage: 'st',
     forests: 'fo',
     ores: 'or',
@@ -108,6 +109,10 @@ export function restoreStateKeys(input: unknown): unknown {
     if (!isRecord(input)) return input
 
     const restored = remapKeys(input, reverseGameStateKeyMap)
+    if ('cs' in restored && !('caravanSlots' in restored)) {
+        restored.caravanSlots = restored.cs
+        delete restored.cs
+    }
     if ('locations' in restored) {
         restored.locations = remapLocations(restored.locations, reverseLocationStateKeyMap)
     }

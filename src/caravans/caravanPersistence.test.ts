@@ -31,7 +31,9 @@ describe('save', () => {
         const restored = loadData(structuredClone(state))
 
         expect(restored.shipments).toEqual(state.shipments)
-        expect(restored.caravanSlots).toBe(state.caravanSlots)
+        expect(GameLocationAdapter.selectEx(restored.locations, GameLocations.StartVillage).caravanSlots).toBe(
+            GameLocationAdapter.selectEx(state.locations, GameLocations.StartVillage).caravanSlots
+        )
         expect(restored.timers).toEqual(state.timers)
         expect(GameLocationAdapter.selectEx(restored.locations, GameLocations.StartVillage).storage).toEqual(
             GameLocationAdapter.selectEx(state.locations, GameLocations.StartVillage).storage
@@ -58,10 +60,24 @@ describe('save', () => {
         })
 
         expect(restored.shipments).toEqual({ ids: [], entries: {} })
-        expect(restored.caravanSlots).toBe(DEFAULT_CARAVAN_SLOTS)
+        expect(GameLocationAdapter.selectEx(restored.locations, GameLocations.StartVillage).caravanSlots).toBe(
+            DEFAULT_CARAVAN_SLOTS
+        )
         expect(
             GameLocationAdapter.selectEx(restored.locations, GameLocations.StartVillage).storage.entries.OakLog
         ).toEqual({ itemId: 'OakLog', quantity: 3 })
         expect(restored.gold).toBe(42)
+    })
+
+    test('a legacy global caravan slot count is migrated to the current location', () => {
+        const restored = loadData({
+            location: GameLocations.WoodVillage,
+            caravanSlots: 3,
+        })
+
+        expect(GameLocationAdapter.selectEx(restored.locations, GameLocations.WoodVillage).caravanSlots).toBe(3)
+        expect(GameLocationAdapter.selectEx(restored.locations, GameLocations.StartVillage).caravanSlots).toBe(
+            DEFAULT_CARAVAN_SLOTS
+        )
     })
 })

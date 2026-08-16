@@ -1,5 +1,6 @@
 import { ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
+import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { hasGold, hasItem, removeItem, spendGold } from '../../storage/storageFunctions'
 import { StorageState } from '../../storage/storageTypes'
@@ -34,13 +35,15 @@ export function dispatch(state: GameState, params: DispatchParams): { result: Di
 
     if (cargo.length === 0 || cargo.some((line) => line.quantity <= 0)) return { result: DispatchResult.EmptyCargo }
 
-    const route = getRoute(fromId, toId)
+    const route = getRoute(state, toId)
     if (!route) return { result: DispatchResult.InvalidRoute }
 
     const tier = getTier(tierId)
     if (!tier) return { result: DispatchResult.InvalidTier }
 
-    if (state.shipments.ids.length >= state.caravanSlots) return { result: DispatchResult.NoCaravanSlots }
+    const location = GameLocationAdapter.selectEx(state.locations, fromId)
+    const activeCaravans = ShipmentAdapter.count(state.shipments, (shipment) => shipment.fromId === fromId)
+    if (activeCaravans >= location.caravanSlots) return { result: DispatchResult.NoCaravanSlots }
 
     for (const line of cargo)
         if (!hasItem(state, line.itemId, line.quantity, fromId)) return { result: DispatchResult.InsufficientCargo }

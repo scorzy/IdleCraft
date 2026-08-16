@@ -9,7 +9,7 @@ const MS_PER_MINUTE = 60 * 1000
 
 export function selectDispatchRoute(state: GameState): RouteConfig | undefined {
     const toId = state.caravanDispatchForm.toId
-    return toId ? getRoute(state.location, toId) : undefined
+    return toId ? getRoute(state, toId) : undefined
 }
 
 export function selectDispatchTier(state: GameState): CaravanTier | undefined {

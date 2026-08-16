@@ -3,7 +3,7 @@ import { InitialState } from '@/entityAdapter/InitialState'
 import { CastCharAbility } from '../activeAbilities/abilityInterfaces'
 import { ActivityState } from '../activities/ActivityState'
 import { BattleLog } from '../battleLog/battleLogInterfaces'
-import { CaravanTierId } from '../caravans/CaravanConst'
+import { CaravanTierId, RouteConfig } from '../caravans/CaravanConst'
 import { Shipment } from '../caravans/ShipmentState'
 import { CharacterState } from '../characters/characterState'
 import { RecipeGroups, RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
@@ -31,6 +31,8 @@ export enum AddActivityTypes {
 }
 export interface LocationState {
     id: GameLocations
+    caravanSlots: number
+    caravanRoutes: RouteConfig[]
     storage: InitialState<StorageState>
     forests: ForestsType
     ores: OreType
@@ -78,7 +80,6 @@ export interface GameState {
     startActNow: boolean
     actRepetitions: number
     actAutoRemove: boolean
-    caravanSlots: number
     shipments: InitialState<Shipment>
     caravanDispatchForm: {
         toId: GameLocations | undefined

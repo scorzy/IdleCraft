@@ -20,7 +20,6 @@ function makeCraftedItems(items: Item[]): InitialState<Item> {
 }
 
 const nearbyRoute: RouteConfig = {
-    fromId: GameLocations.StartVillage,
     toId: GameLocations.WoodVillage,
     baseMinutes: 20,
 }

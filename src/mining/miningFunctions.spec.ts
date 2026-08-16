@@ -82,7 +82,7 @@ describe('miningFunctions', () => {
             resetOre(state, OreTypes.Copper, location)
 
             const ore = GameLocationAdapter.selectEx(state.locations, location).ores[OreTypes.Copper]
-            expect(ore).toEqual({ qta: 26, hp: 100 })
+            expect(ore).toEqual({ qta: 30, hp: 100 })
         })
     })
 
@@ -220,8 +220,8 @@ describe('miningFunctions', () => {
 
             const vein = searchOreVein(state, GameLocations.MountainVillage, OreTypes.Copper)
 
-            expect(vein?.qta).toBe(26)
-            expect(vein?.maxQta).toBe(26)
+            expect(vein?.qta).toBe(30)
+            expect(vein?.maxQta).toBe(30)
             vi.restoreAllMocks()
         })
     })
