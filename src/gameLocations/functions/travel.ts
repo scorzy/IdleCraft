@@ -1,6 +1,7 @@
 import { ActivityAdapter } from '../../activities/ActivityState'
 import { removeActivityInt } from '../../activities/functions/removeActivity'
 import { setState } from '../../game/setState'
+import { setMarketItem } from '../../ui/state/uiFunctions'
 import { useUiTempStore } from '../../ui/state/uiTempStore'
 import { GameLocations } from '../GameLocations'
 
@@ -19,6 +20,18 @@ export const travel = (location: GameLocations) => {
     setTimeout(() => {
         setState((s) => {
             s.location = location
+            s.craftingForm = {
+                recipeGroup: undefined,
+                params: [],
+                paramsValue: [],
+                result: undefined,
+            }
+            s.caravanDispatchForm = {
+                toId: undefined,
+                tierId: undefined,
+                cargo: [],
+            }
+            setMarketItem(null)
         })
         useUiTempStore.setState({ travelling: undefined })
     }, TRAVEL_TIME)
