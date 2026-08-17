@@ -3,9 +3,12 @@ import { PerksData } from '../perks/Perk'
 import { PerksEnum } from '../perks/perksEnum'
 import { Bonus } from './Bonus'
 
-export function getTotal(bonuses: Bonus[]): number {
+export function getTotal(bonuses: Bonus[], multi: boolean = false): number {
     let ret = 0
     for (const bonus of bonuses) ret += bonus.add ?? 0
+
+    if (multi && ret === 0) ret = 1
+
     for (const bonus of bonuses) {
         if (!bonus.multi) continue
         ret *= 1 + bonus.multi / 100

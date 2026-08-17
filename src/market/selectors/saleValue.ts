@@ -7,7 +7,7 @@ import { GameState } from '../../game/GameState'
 import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { LocationModifierType } from '../../gameLocations/modifiers/LocationModifier'
 import { LocationModifierDataMap } from '../../gameLocations/modifiers/LocationModifierData'
-import { selectLocationModifierMulti } from '../../gameLocations/modifiers/locationModifierSelectors'
+import { selectLocationModifierBonusResult } from '../../gameLocations/modifiers/locationModifierSelectors'
 import { Icons } from '../../icons/Icons'
 import { hasPerk } from '../../perks/PerksSelectors'
 import { PerksEnum } from '../../perks/perksEnum'
@@ -23,7 +23,6 @@ export const selectSaleValueAll =
 
         const level = selectLevel(ExpEnum.Persuasion, PLAYER_ID)(s)
         const highPricesPerk = hasPerk(PerksEnum.HIGH_PRICES)(s)
-        const locationModifier = selectLocationModifierMulti(s, s.location, LocationModifierType.MarketSaleValue)
 
         const ret: BonusResult = { total: item.value, bonuses: [bonusFromItem(item, { add: item.value })] }
 
@@ -38,18 +37,20 @@ export const selectSaleValueAll =
         }
 
         if (highPricesPerk) ret.bonuses.push(bonusFromPerk(PerksEnum.HIGH_PRICES, { multi: HIGH_PRICES_PERK }))
-        if (locationModifier) {
+
+        const locationModifiers = selectLocationModifierBonusResult(s, s.location, LocationModifierType.MarketSaleValue)
+
+        for (const locationModifier of locationModifiers.bonuses) {
             const data = LocationModifierDataMap[LocationModifierType.MarketSaleValue]
             const location = GameLocationAdapter.selectEx(s.locations, s.location)
             ret.bonuses.push({
                 id: `${location.id}-MarketSaleValue`,
                 nameId: data.nameId,
                 iconId: data.iconId,
-                multi: locationModifier,
+                multi: locationModifier.multi,
             })
         }
-
-        ret.total = getTotal(ret.bonuses)
+        ret.total = Math.round(getTotal(ret.bonuses))
         return ret
     }
 

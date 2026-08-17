@@ -1,10 +1,8 @@
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { bonusFromPerk, getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
-import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { LocationModifierType } from '../../gameLocations/modifiers/LocationModifier'
-import { LocationModifierDataMap } from '../../gameLocations/modifiers/LocationModifierData'
-import { selectLocationModifierMulti } from '../../gameLocations/modifiers/locationModifierSelectors'
+import { selectLocationModifierBonusResult } from '../../gameLocations/modifiers/locationModifierSelectors'
 import { Icons } from '../../icons/Icons'
 import { hasPerk } from '../../perks/PerksSelectors'
 import { PerksEnum } from '../../perks/perksEnum'
@@ -20,20 +18,12 @@ const PERK_FAST_SELLING: Bonus = bonusFromPerk(PerksEnum.FAST_SELLING, { multi: 
 
 export const selectMarketTimeAll = (s: GameState) => {
     const fastSellingPerk = hasPerk(PerksEnum.FAST_SELLING)(s)
-    const locationModifier = selectLocationModifierMulti(s, s.location, LocationModifierType.MarketTime)
     const ret: BonusResult = { total: MARKET_BASE_TIME, bonuses: [TIME_BASE] }
 
     if (fastSellingPerk) ret.bonuses.push(PERK_FAST_SELLING)
-    if (locationModifier) {
-        const data = LocationModifierDataMap[LocationModifierType.MarketTime]
-        const location = GameLocationAdapter.selectEx(s.locations, s.location)
-        ret.bonuses.push({
-            id: `${location.id}-MarketTime`,
-            nameId: data.nameId,
-            iconId: data.iconId,
-            multi: locationModifier,
-        })
-    }
+
+    const locationModifiers = selectLocationModifierBonusResult(s, s.location, LocationModifierType.MarketTime)
+    for (const locationModifier of locationModifiers.bonuses) ret.bonuses.push(locationModifier)
 
     ret.total = getTotal(ret.bonuses)
     return ret

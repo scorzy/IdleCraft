@@ -4,11 +4,10 @@ import { ActivityTypes } from '../../activities/ActivityState'
 import { GameState } from '../../game/GameState'
 import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
-import { LocationModifierType } from '../../gameLocations/modifiers/LocationModifier'
-import { selectLocationModifierMulti } from '../../gameLocations/modifiers/locationModifierSelectors'
 import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
 import { TreeGrowthAdapter } from './forestGrowth'
+import { selectForestMaxTree } from './selectForestMaxTree'
 
 export const selectDefaultForest = (
     state: GameState,
@@ -16,10 +15,10 @@ export const selectDefaultForest = (
     location: GameLocations = state.location
 ) => {
     const data = WoodData[woodType]
-    const maxTreeMulti = selectLocationModifierMulti(state, location, LocationModifierType.MaxTree)
+    const qta = selectForestMaxTree(state, woodType, location)
     return {
         hp: data.maxHp,
-        qta: Math.round(data.maxQta * (1 + maxTreeMulti / 100)),
+        qta: qta,
     }
 }
 

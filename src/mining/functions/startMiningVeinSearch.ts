@@ -4,10 +4,8 @@ import { makeStartActivity } from '../../activities/functions/makeStartActivity'
 import { Bonus, BonusResult } from '../../bonus/Bonus'
 import { getTotal } from '../../bonus/BonusFunctions'
 import { GameState } from '../../game/GameState'
-import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { LocationModifierType } from '../../gameLocations/modifiers/LocationModifier'
-import { LocationModifierDataMap } from '../../gameLocations/modifiers/LocationModifierData'
-import { selectLocationModifierMulti } from '../../gameLocations/modifiers/locationModifierSelectors'
+import { selectLocationModifierBonusResult } from '../../gameLocations/modifiers/locationModifierSelectors'
 import { Icons } from '../../icons/Icons'
 import { startTimer } from '../../timers/startTimer'
 import { canSearchOreVein } from '../miningFunctions'
@@ -23,18 +21,14 @@ const TIME_BASE: Bonus = {
 
 export const selectOreVeinSearchTimeAll = (s: GameState): BonusResult => {
     const ret: BonusResult = { total: SEARCH_ORE_VEIN_TIME, bonuses: [TIME_BASE] }
-    const locationModifier = selectLocationModifierMulti(s, s.location, LocationModifierType.OreVeinSearchTime)
 
-    if (locationModifier) {
-        const data = LocationModifierDataMap[LocationModifierType.OreVeinSearchTime]
-        const location = GameLocationAdapter.selectEx(s.locations, s.location)
-        ret.bonuses.push({
-            id: `${location.id}-OreVeinSearchTime`,
-            nameId: data.nameId,
-            iconId: data.iconId,
-            multi: locationModifier,
-        })
-    }
+    const locationModifierBonuses = selectLocationModifierBonusResult(
+        s,
+        s.location,
+        LocationModifierType.OreVeinSearchTime
+    )
+
+    for (const bonus of locationModifierBonuses.bonuses) ret.bonuses.push(bonus)
 
     ret.total = getTotal(ret.bonuses)
     return ret

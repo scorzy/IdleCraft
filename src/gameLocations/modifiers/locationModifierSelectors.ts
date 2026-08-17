@@ -17,10 +17,14 @@ export const selectLocationModifierBonusResult = (
 
     LocationModifierAdapter.forEach(modifiers, (m) => {
         if (m.type !== type) return
-        bonuses.push({ id: m.id, nameId: data.nameId, iconId: data.iconId, add: m.multi })
+        const bonus: Bonus = { id: m.id, nameId: data.nameId, iconId: data.iconId }
+        bonuses.push(bonus)
+
+        if (data.sumType === 'multi') bonus.multi = m.multi
+        else bonus.add = m.multi
     })
 
-    return { total: getTotal(bonuses), bonuses }
+    return { total: getTotal(bonuses, data.sumType === 'multi'), bonuses }
 }
 
 export const selectLocationModifierMulti = (state: GameState, location: GameLocations, type: LocationModifierType) =>

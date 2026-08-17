@@ -26,7 +26,7 @@ const makeDefaultMine = memoize(
         const data = OreData[oreType]
         return {
             hp: data.hp,
-            qta: Math.max(1, Math.floor((data.qta * (100 + quantityBonus)) / 100)),
+            qta: Math.max(1, Math.floor(data.qta * quantityBonus)),
         }
     },
     {

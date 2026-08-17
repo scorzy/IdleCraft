@@ -98,7 +98,7 @@ export function searchOreVein(state: GameState, location: GameLocations, oreType
     const oreVeinQuantityBonus = selectLocationModifierMulti(state, location, LocationModifierType.OreVeinQuantity)
 
     const qtaBonus = veinMastery ? VEIN_MASTERY_QTA_BONUS + oreVeinQuantityBonus : oreVeinQuantityBonus
-    const qta = Math.max(1, Math.floor((qtaRaw * (100 + qtaBonus)) / 100))
+    const qta = Math.floor(qtaRaw * qtaBonus)
     const hp = veinMastery ? Math.max(1, Math.floor((hpRaw * (100 - VEIN_MASTERY_HP_REDUCE)) / 100)) : hpRaw
     const armour = veinMastery
         ? Math.max(0, Math.floor((armourRaw * (100 - VEIN_MASTERY_ARMOUR_REDUCE)) / 100))

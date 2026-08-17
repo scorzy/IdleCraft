@@ -1,5 +1,4 @@
-import { memoize } from 'proxy-memoize'
-import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import {
     AlertDialog,
     AlertDialogAction,
@@ -24,7 +23,6 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyLabel, MyLabelContainer } from '../../ui/myCard/MyLabel'
 import { IconsData } from '../../icons/Icons'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { BonusDialog } from '../../bonus/ui/BonusUi'
 import { travel } from '../functions/travel'
 import { setSelectedLocation } from '../../ui/state/uiFunctions'
 import { selectSelectedGameLocation, selectTravelling } from '../../ui/state/uiSelectors'
@@ -34,7 +32,7 @@ import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { selectGameLocationIds } from '../GameLocationSelectors'
 import { LocationModifierType } from '../modifiers/LocationModifier'
 import { LocationModifierDataMap } from '../modifiers/LocationModifierData'
-import { selectLocationModifierBonusResult, selectLocationModifierMulti } from '../modifiers/locationModifierSelectors'
+import { selectLocationModifierMulti } from '../modifiers/locationModifierSelectors'
 
 export const World = memo(function World() {
     const locations = useGameStore(selectGameLocationIds)
@@ -176,10 +174,6 @@ const LocationModifierRow = memo(function LocationModifierRow(props: {
     const multi = useGameStore(
         useCallback((s: GameState) => selectLocationModifierMulti(s, location, type), [location, type])
     )
-    const selectBonusResultMemo = useMemo(
-        () => memoize((s: GameState) => selectLocationModifierBonusResult(s, location, type)),
-        [location, type]
-    )
 
     if (!multi) return null
     const suffix = data.percentage === false ? '' : '%'
@@ -189,7 +183,6 @@ const LocationModifierRow = memo(function LocationModifierRow(props: {
             {IconsData[data.iconId]} {t[data.descriptionId]} {multi > 0 ? '+' : ''}
             {f(multi)}
             {suffix}
-            <BonusDialog title={t[data.nameId]} selectBonusResult={selectBonusResultMemo} />
         </MyLabel>
     )
 })

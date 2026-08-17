@@ -30,7 +30,7 @@ describe('selectSaleValueAll', () => {
 
         const result = selectSaleValueAll('OakLog')(state)
 
-        expect(result.total).toBeCloseTo(6 * (1 + (10 * PERSUASION_VALUE_PER_LEVEL) / 100))
+        expect(result.total).toBeCloseTo(Math.round(6 * (1 + (10 * PERSUASION_VALUE_PER_LEVEL) / 100)))
     })
 
     it('increases value with the HIGH_PRICES perk', () => {
@@ -39,7 +39,7 @@ describe('selectSaleValueAll', () => {
 
         const result = selectSaleValueAll('OakLog')(state)
 
-        expect(result.total).toBeCloseTo(6 * (1 + HIGH_PRICES_PERK / 100))
+        expect(result.total).toBeCloseTo(Math.round(6 * (1 + HIGH_PRICES_PERK / 100)))
     })
 
     it('increases value for market activities in the capital city', () => {
@@ -48,7 +48,7 @@ describe('selectSaleValueAll', () => {
 
         const result = selectSaleValueAll('OakLog')(state)
 
-        expect(result.total).toBeCloseTo(6 * 1.2)
+        expect(result.total).toBeCloseTo(7)
     })
 
     it('composes Persuasion level and the HIGH_PRICES perk multiplicatively', () => {
@@ -59,7 +59,7 @@ describe('selectSaleValueAll', () => {
         const result = selectSaleValueAll('OakLog')(state)
 
         expect(result.total).toBeCloseTo(
-            6 * (1 + (10 * PERSUASION_VALUE_PER_LEVEL) / 100) * (1 + HIGH_PRICES_PERK / 100)
+            Math.round(6 * (1 + (10 * PERSUASION_VALUE_PER_LEVEL) / 100) * (1 + HIGH_PRICES_PERK / 100))
         )
     })
 })

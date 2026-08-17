@@ -8,8 +8,6 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
 import { GameIcon } from '../../icons/GameIcon'
-import { LocationModifierType } from '../../gameLocations/modifiers/LocationModifier'
-import { selectLocationModifierBonusResult } from '../../gameLocations/modifiers/locationModifierSelectors'
 import { useTranslations } from '../../msg/useTranslations'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
@@ -19,6 +17,7 @@ import { selectDefaultForest, selectForestQta, selectGrowingTreesMemo } from '..
 import { selectTreeRespawnTime, selectTreeRespawnTimeAll } from '../forest/growSpeedSelectors'
 import { MAX_GROWING_TREES } from '../WoodConst'
 import { WoodData } from '../WoodData'
+import { selectForestMaxTreeList } from '../forest/selectForestMaxTree'
 
 export const Forest = memo(function Forest() {
     const woodType = useGameStore(selectWoodType)
@@ -49,7 +48,7 @@ const ForestQta = memo(function ForestQta() {
     const { t } = useTranslations()
     const treePercent = Math.floor((100 * qta) / def.qta)
     const selectMaxTreeBonusMemo = useMemo(
-        () => memoize((s: GameState) => selectLocationModifierBonusResult(s, location, LocationModifierType.MaxTree)),
+        () => memoize((s: GameState) => selectForestMaxTreeList(s, woodType, location)),
         [location]
     )
 
