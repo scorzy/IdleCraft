@@ -29,3 +29,12 @@ export const selectLocationModifierBonusResult = (
 
 export const selectLocationModifierMulti = (state: GameState, location: GameLocations, type: LocationModifierType) =>
     selectLocationModifierBonusResult(state, location, type).total
+
+export const selectLocationModifiers = (state: GameState, location: GameLocations) => {
+    const modifiers = GameLocationAdapter.selectEx(state.locations, location).modifiers
+    return LocationModifierAdapter.getIds(modifiers)
+}
+export const selectLocationModifier = (state: GameState, location: GameLocations, id: string) => {
+    const modifiers = GameLocationAdapter.selectEx(state.locations, location).modifiers
+    return LocationModifierAdapter.selectEx(modifiers, id)
+}
