@@ -1,4 +1,5 @@
 import { Effects } from '../effects/types/Effects'
+import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 
 export const oppositeEffects: { first: Effects[]; second: Effects[] }[] = [
@@ -16,22 +17,40 @@ export const oppositeEffects: { first: Effects[]; second: Effects[] }[] = [
     },
 ]
 
-export const potionNameIds: Record<Effects, keyof Msg> = {
-    [Effects.Health]: 'HealthPotion',
-    [Effects.Mana]: 'ManaPotion',
-    [Effects.Stamina]: 'StaminaPotion',
-    [Effects.RegenHealth]: 'RegenHealthPotion',
-    [Effects.RegenMana]: 'RegenManaPotion',
-    [Effects.RegenStamina]: 'RegenStaminaPotion',
-    [Effects.MaxHealth]: 'MaxHealthPotion',
-    [Effects.MaxMana]: 'MaxManaPotion',
-    [Effects.MaxStamina]: 'MaxStaminaPotion',
-    [Effects.DamageHealth]: 'DamageHealthPotion',
-    [Effects.DamageMana]: 'DamageManaPotion',
-    [Effects.DamageStamina]: 'DamageStaminaPotion',
-    [Effects.DamageRegenHealth]: 'DamageRegenHealthPotion',
-    [Effects.DamageRegenMana]: 'DamageRegenManaPotion',
-    [Effects.DamageRegenStamina]: 'DamageRegenStaminaPotion',
+interface PotionItemData {
+    nameId: keyof Msg
+    color: string
+    icon?: Icons
+}
+
+export const potionItemData: Record<Effects, PotionItemData> = {
+    [Effects.Health]: { nameId: 'HealthPotion', color: 'text-health' },
+    [Effects.Mana]: { nameId: 'ManaPotion', color: 'text-mana' },
+    [Effects.Stamina]: { nameId: 'StaminaPotion', color: 'text-stamina' },
+    [Effects.RegenHealth]: { nameId: 'RegenHealthPotion', color: 'text-health' },
+    [Effects.RegenMana]: { nameId: 'RegenManaPotion', color: 'text-mana' },
+    [Effects.RegenStamina]: { nameId: 'RegenStaminaPotion', color: 'text-stamina' },
+    [Effects.MaxHealth]: { nameId: 'MaxHealthPotion', color: 'text-health' },
+    [Effects.MaxMana]: { nameId: 'MaxManaPotion', color: 'text-mana' },
+    [Effects.MaxStamina]: { nameId: 'MaxStaminaPotion', color: 'text-stamina' },
+    [Effects.DamageHealth]: { nameId: 'DamageHealthPotion', color: 'text-health', icon: Icons.Poison },
+    [Effects.DamageMana]: { nameId: 'DamageManaPotion', color: 'text-mana', icon: Icons.Poison },
+    [Effects.DamageStamina]: { nameId: 'DamageStaminaPotion', color: 'text-stamina', icon: Icons.Poison },
+    [Effects.DamageRegenHealth]: {
+        nameId: 'DamageRegenHealthPotion',
+        color: 'text-health',
+        icon: Icons.Poison,
+    },
+    [Effects.DamageRegenMana]: {
+        nameId: 'DamageRegenManaPotion',
+        color: 'text-mana',
+        icon: Icons.Poison,
+    },
+    [Effects.DamageRegenStamina]: {
+        nameId: 'DamageRegenStaminaPotion',
+        color: 'text-stamina',
+        icon: Icons.Poison,
+    },
 }
 
 export interface AlchemyEffectDataEntry {

@@ -20,7 +20,7 @@ import {
     STABILITY_UNSTABLE,
     UNSTABLE_POTENCY_PERCENT,
 } from './alchemyConst'
-import { oppositeEffects, potionNameIds } from './alchemyData'
+import { oppositeEffects, potionItemData } from './alchemyData'
 import { getPotionEffect, isEffectDiscovered } from './alchemySelectors'
 import { PotionData, PotionResult } from './alchemyTypes'
 
@@ -104,16 +104,19 @@ export function generatePotion(
     }
 
     let item: Item | undefined = undefined
-    if (PotionResult.NotPotion !== potionResult)
+    if (PotionResult.NotPotion !== potionResult) {
+        const itemData = potionData.effects[0] ? potionItemData[potionData.effects[0].effect] : undefined
         item = {
             id: '',
-            nameId: potionData.effects[0] ? potionNameIds[potionData.effects[0].effect] : 'UnknownPotion',
-            icon: Icons.Potion,
+            nameId: itemData?.nameId ?? 'UnknownPotion',
+            icon: itemData?.icon ?? Icons.Potion,
+            color: itemData?.color ?? 'text-muted-foreground',
             type: ItemTypes.Potion,
             value: getPotionValue(potionData),
             volume: FINISHED_VOLUME,
             potionData,
         }
+    }
 
     return {
         item,

@@ -35,6 +35,7 @@ describe('generatePotion', () => {
         ])
 
         expect(potion?.item?.nameId).toBe('HealthPotion')
+        expect(potion?.item).toMatchObject({ color: 'text-health', icon: Icons.Potion })
         expect(selectItemName(state, potion?.item)).toBe('Health Potion')
     })
 
@@ -47,6 +48,7 @@ describe('generatePotion', () => {
         ])
 
         expect(potion?.item?.nameId).toBe('DamageStaminaPotion')
+        expect(potion?.item).toMatchObject({ color: 'text-stamina', icon: Icons.Poison })
         expect(selectItemName(state, potion?.item)).toBe('Stamina Poison')
     })
 })
