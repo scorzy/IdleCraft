@@ -21,6 +21,8 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
     if (filter.unlimitedItems !== undefined && filter.unlimitedItems && !item.unlimited) return false
     if (filter.unlimitedItems !== undefined && !filter.unlimitedItems && item.unlimited) return false
     if (filter.itemSubType && getItemSubType(item.type) !== filter.itemSubType) return false
+    if (filter.potionEffects?.some((effect) => !item.potionData?.effects.some((entry) => entry.effect === effect)))
+        return false
     if (filter.minStats)
         for (const kv of Object.entries(filter.minStats)) {
             const itemKey = kv[0] as keyof Item
@@ -30,7 +32,7 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
     if (filter.has) for (const key of filter.has) if (item[key] === undefined) return false
 
     for (const kv of Object.entries(filter)) {
-        if (kv[0] === 'minStats' || kv[0] === 'has') continue
+        if (kv[0] === 'minStats' || kv[0] === 'has' || kv[0] === 'potionEffects') continue
 
         const filterData = kv[1]
         if (typeof filterData !== 'object') continue

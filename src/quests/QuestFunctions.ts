@@ -8,6 +8,7 @@ import { addNotification } from '../notification/addNotification'
 import { addGold, addItem } from '../storage/storageFunctions'
 import { onCollectQuestComplete } from './collectRequest/onCollectQuestComplete'
 import { QuestData } from './QuestData'
+import { FARM_BOAR_TUTORIAL_ID } from './templates/FarmBoarTutorialQuest'
 import { QuestAdapter, QuestOutcome, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
 import {
     isOutcomeCompleted,
@@ -43,6 +44,13 @@ function unlockGatheringZone(state: GameState, outcome: QuestOutcome) {
 }
 
 export function updateQuests(state: GameState): void {
+    const hasTutorial = QuestAdapter.getIds(state.quests).some(
+        (questId) => QuestAdapter.selectEx(state.quests, questId).templateId === FARM_BOAR_TUTORIAL_ID
+    )
+    if (!hasTutorial && !state.completedQuestTemplates.includes(FARM_BOAR_TUTORIAL_ID)) {
+        QuestAdapter.create(state.quests, GenerateQuestState(state, FARM_BOAR_TUTORIAL_ID))
+    }
+
     if (selectAvailableQuests(state).length > MAX_AVAILABLE_QUESTS) return
 
     let nKillQuests = 0
@@ -99,6 +107,8 @@ export const completeQuest = (state: GameState, questId: string, outcomeId: stri
     if (outcome.unlockGatheringZone) unlockGatheringZone(state, outcome)
 
     const oldIndex = selectAcceptedQuests(state).indexOf(questId)
+
+    if (!state.completedQuestTemplates.includes(quest.templateId)) state.completedQuestTemplates.push(quest.templateId)
 
     QuestAdapter.remove(state.quests, questId)
 

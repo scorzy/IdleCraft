@@ -73,6 +73,7 @@ export interface GameState {
     castCharAbility: InitialState<CastCharAbility>
     battleLogs: InitialState<BattleLog>
     quests: InitialState<QuestState>
+    completedQuestTemplates: string[]
     discoveredEffects: Record<string, Effects[]>
     effects: InitialState<AppliedEffect>
     addActType: AddActivityTypes

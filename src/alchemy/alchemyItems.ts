@@ -127,6 +127,36 @@ export const AlchemyItems: Record<string, Item> = {
         },
     },
 
+    BitterRoot: {
+        id: 'BitterRoot',
+        icon: Icons.Leaf,
+        nameId: 'BitterRoot',
+        value: 4,
+        volume: RAW_VOLUME,
+        color: 'text-stamina',
+        type: ItemTypes.CraftingIngredient,
+        ingredientData: {
+            stability: 15,
+            type: IngredientTypes.Herb,
+            effects: [{ potency: EffectPotency.Low, effect: Effects.DamageStamina }],
+        },
+    },
+
+    Nightshade: {
+        id: 'Nightshade',
+        icon: Icons.VanillaFlower,
+        nameId: 'Nightshade',
+        value: 5,
+        volume: RAW_VOLUME,
+        color: 'text-stamina',
+        type: ItemTypes.CraftingIngredient,
+        ingredientData: {
+            stability: 15,
+            type: IngredientTypes.Herb,
+            effects: [{ potency: EffectPotency.Low, effect: Effects.DamageStamina }],
+        },
+    },
+
     HealingFungus: {
         id: 'HealingFungus',
         icon: Icons.Mushroom,

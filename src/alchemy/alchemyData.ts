@@ -16,6 +16,24 @@ export const oppositeEffects: { first: Effects[]; second: Effects[] }[] = [
     },
 ]
 
+export const potionNameIds: Record<Effects, keyof Msg> = {
+    [Effects.Health]: 'HealthPotion',
+    [Effects.Mana]: 'ManaPotion',
+    [Effects.Stamina]: 'StaminaPotion',
+    [Effects.RegenHealth]: 'RegenHealthPotion',
+    [Effects.RegenMana]: 'RegenManaPotion',
+    [Effects.RegenStamina]: 'RegenStaminaPotion',
+    [Effects.MaxHealth]: 'MaxHealthPotion',
+    [Effects.MaxMana]: 'MaxManaPotion',
+    [Effects.MaxStamina]: 'MaxStaminaPotion',
+    [Effects.DamageHealth]: 'DamageHealthPotion',
+    [Effects.DamageMana]: 'DamageManaPotion',
+    [Effects.DamageStamina]: 'DamageStaminaPotion',
+    [Effects.DamageRegenHealth]: 'DamageRegenHealthPotion',
+    [Effects.DamageRegenMana]: 'DamageRegenManaPotion',
+    [Effects.DamageRegenStamina]: 'DamageRegenStaminaPotion',
+}
+
 export interface AlchemyEffectDataEntry {
     nameId1: keyof Msg
     nameId2: keyof Msg

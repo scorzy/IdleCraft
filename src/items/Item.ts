@@ -1,4 +1,5 @@
 import { MsgFunctions } from '@/msg/MsgFunctions'
+import { Effects } from '../effects/types/Effects'
 import { IngredientData, PotionData, PotionFlaskData, SolventData } from '../alchemy/alchemyTypes'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ExpEnum } from '../experience/ExpEnum'
@@ -111,5 +112,6 @@ export interface ItemFilter {
     solventData?: Partial<SolventData>
     flaskData?: Partial<PotionFlaskData>
     potionData?: Partial<PotionData>
+    potionEffects?: Effects[]
     unlimitedItems?: boolean
 }

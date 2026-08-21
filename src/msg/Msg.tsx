@@ -273,6 +273,21 @@ export interface Msg {
     NoResults: string
     Close: string
     Potion: string
+    UnknownPotion: string
+    HealthPotion: string
+    ManaPotion: string
+    StaminaPotion: string
+    RegenHealthPotion: string
+    RegenManaPotion: string
+    RegenStaminaPotion: string
+    MaxHealthPotion: string
+    MaxManaPotion: string
+    MaxStaminaPotion: string
+    DamageHealthPotion: string
+    DamageManaPotion: string
+    DamageRegenHealthPotion: string
+    DamageRegenManaPotion: string
+    DamageRegenStaminaPotion: string
     Solvent: string
     Flask: string
     Ingredient: string
@@ -385,6 +400,17 @@ export interface Msg {
     StaminaLeaf: string
     HealingFungus: string
     ManaSpore: string
+    BitterRoot: string
+    Nightshade: string
+    DamageStaminaPotion: string
+    FarmBoarTutorialName: string
+    FarmBoarTutorialDescription: string
+    FarmBoarHuntTitle: string
+    FarmBoarHuntDescription: string
+    FarmBoarFenceTitle: string
+    FarmBoarFenceDescription: string
+    FarmBoarRepellentTitle: string
+    FarmBoarRepellentDescription: string
     HeartCrystalDust: string
     ManaCrystalDust: string
 

@@ -27,6 +27,7 @@ const gameStateKeyMap = {
     castCharAbility: 'ca',
     battleLogs: 'bl',
     quests: 'qu',
+    completedQuestTemplates: 'cq',
     discoveredEffects: 'de',
     effects: 'ef',
     addActType: 'aa',

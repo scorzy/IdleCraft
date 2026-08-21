@@ -168,6 +168,7 @@ export const InitialGameState: GameState = {
     castCharAbility: CastCharAbilityAdapter.getInitialState(),
     battleLogs: BattleLogAdapter.getInitialState(),
     quests: QuestAdapter.getInitialState(),
+    completedQuestTemplates: [],
     discoveredEffects: {},
     effects: AppliedEffectAdapter.getInitialState(),
     addActType: AddActivityTypes.Last,

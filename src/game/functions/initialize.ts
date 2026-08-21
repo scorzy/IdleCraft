@@ -56,6 +56,7 @@ import { questOnKillListener } from '../../quests/killRequest/questOnKillListene
 import { QuestData } from '../../quests/QuestData'
 import { SupplyQuestTemplate } from '../../quests/templates/SupplyQuestTemplate'
 import { TestQuestTemplate } from '../../quests/templates/TestQuestTemplates'
+import { FarmBoarTutorialQuest, FARM_BOAR_TUTORIAL_ID } from '../../quests/templates/FarmBoarTutorialQuest'
 import { twoHSwordRecipe } from '../../smithing/recipes/2HSword'
 import { armourRecipe } from '../../smithing/recipes/ArmourRecipes'
 import { axeRecipe } from '../../smithing/recipes/AxeRecipe'
@@ -189,6 +190,7 @@ function initAbilities() {
 }
 
 function initQuests() {
+    QuestData.set(FARM_BOAR_TUTORIAL_ID, new FarmBoarTutorialQuest())
     QuestData.set('kill-n', new TestQuestTemplate())
     QuestData.set('SupplyQuest', new SupplyQuestTemplate())
     QuestData.set('UnlockZoneQuest', new UnlockZoneQuest())

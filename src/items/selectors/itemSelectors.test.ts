@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { ExpEnum } from '../../experience/ExpEnum'
+import { Effects } from '../../effects/types/Effects'
 import { Icons } from '../../icons/Icons'
 import { Item, ItemSubType, ItemTypes } from '../Item'
 import { filterItem } from './itemSelectors'
@@ -95,5 +96,18 @@ describe('filterItem', () => {
         }
         expect(filterItem(itemWithMultiple, { has: ['weaponData', 'armourData'] })).toBe(true)
         expect(filterItem(itemWithWeaponData, { has: ['weaponData', 'armourData'] })).toBe(false)
+    })
+    it('filters potions by required effects', () => {
+        const poison: Item = {
+            ...baseItem,
+            type: ItemTypes.Potion,
+            potionData: {
+                effects: [{ effect: Effects.DamageStamina, value: 20, duration: 0 }],
+            },
+        }
+
+        expect(filterItem(poison, { potionEffects: [Effects.DamageStamina] })).toBe(true)
+        expect(filterItem(poison, { potionEffects: [Effects.Health] })).toBe(false)
+        expect(filterItem(baseItem, { potionEffects: [Effects.DamageStamina] })).toBe(false)
     })
 })
