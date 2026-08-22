@@ -20,6 +20,7 @@ import { QuestUi } from '../../quests/ui/QuestUi'
 import { UiStorage } from '../../storage/ui/Storage'
 import { Woodcutting } from '../../wood/ui/Woodcutting'
 import { World } from '../../gameLocations/ui/World'
+import { Vendors } from '../../vendors/ui/Vendors'
 import { ModeToggle } from '../modeToggle'
 import { Sidebar } from '../sidebar/Sidebar'
 import { UiPages } from '../state/UiPages'
@@ -104,6 +105,8 @@ const PageContent = memo(function PageContent() {
             return <CaravanUi />
         case UiPages.Market:
             return <Market />
+        case UiPages.Vendors:
+            return <Vendors />
 
         case UiPages.Woodworking:
         case UiPages.Smithing:

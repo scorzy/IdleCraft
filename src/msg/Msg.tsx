@@ -487,6 +487,15 @@ export interface Msg {
     SellAll: string
     QuickSell: string
 
+    // Vendors
+    Vendors: string
+    GeneralMerchant: string
+    Blacksmith: string
+    Alchemist: string
+    UnlimitedStock: string
+    UnitPrice: string
+    Buy: string
+
     Error: string
     IndexedDbNotFound: string
     ToggleTheme: string

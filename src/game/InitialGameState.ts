@@ -21,6 +21,7 @@ import { UiPages } from '../ui/state/UiPages'
 import { TreeGrowthAdapter } from '../wood/forest/forestGrowth'
 import { GrowSpeedBonusAdapter } from '../wood/forest/growSpeedBonus'
 import { WoodTypes } from '../wood/WoodTypes'
+import { VendorTypes } from '../vendors/VendorTypes'
 import { AddActivityTypes } from './GameState'
 import type { GameState, LocationState } from './GameState'
 
@@ -115,6 +116,7 @@ export const InitialGameState: GameState = {
         numberFormatNotation: NotationTypes.STANDARD,
         woodType: WoodTypes.DeadTree,
         marketItemId: null,
+        vendorType: VendorTypes.GeneralMerchant,
         selectedItemId: null,
         selectedItemLocation: null,
         storageOrder: 'name',

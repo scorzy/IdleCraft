@@ -6,6 +6,7 @@ import { GatheringZone } from '../../gathering/gatheringZones'
 import { ItemSubType, ItemTypes } from '../../items/Item'
 import { OreTypes } from '../../mining/OreTypes'
 import { WoodTypes } from '../../wood/WoodTypes'
+import { VendorTypes } from '../../vendors/VendorTypes'
 import { CollapsedEnum } from '../sidebar/CollapsedEnum'
 import { UiPages } from './UiPages'
 
@@ -20,6 +21,7 @@ export interface UiState {
     woodType: WoodTypes
     oreType: OreTypes
     marketItemId: string | null
+    vendorType: VendorTypes
     gatheringZone: GatheringZone
     selectedItemId: string | null
     selectedItemLocation: GameLocations | null

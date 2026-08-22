@@ -5,6 +5,7 @@ import {
     GiMeatCleaver,
     GiMining,
     GiOldWagon,
+    GiShop,
     GiTiedScroll,
     GiWoodAxe,
 } from 'react-icons/gi'
@@ -82,5 +83,9 @@ export const UiPagesData: Record<UiPages, UiPageData> = {
     [UiPages.Market]: {
         nameId: 'Market',
         icon: IconsData[Icons.Market],
+    },
+    [UiPages.Vendors]: {
+        nameId: 'Vendors',
+        icon: <GiShop />,
     },
 }

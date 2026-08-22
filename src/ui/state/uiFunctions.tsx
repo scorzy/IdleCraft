@@ -12,6 +12,7 @@ import { UiPagesData } from './UiPagesData'
 import { useUiTempStore } from './uiTempStore'
 import { ItemSubType, ItemTypes } from '../../items/Item'
 import { GameLocations } from '../../gameLocations/GameLocations'
+import { VendorTypes } from '../../vendors/VendorTypes'
 
 export type Colors = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'health' | 'stamina' | 'mana'
 type StorageOrder = 'name' | 'quantity' | 'value'
@@ -53,6 +54,11 @@ export const setOre = (oreType: OreTypes) =>
 export const setMarketItem = (itemId: string | null) =>
     setState((s) => {
         s.ui.marketItemId = itemId
+    })
+
+export const setVendorType = (vendorType: VendorTypes) =>
+    setState((s) => {
+        s.ui.vendorType = vendorType
     })
 
 export const setGatheringZone = (gatheringZone: GatheringZone) =>

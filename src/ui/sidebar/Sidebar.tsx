@@ -4,6 +4,7 @@ import { selectActivityNum } from '../../activities/ActivitySelectors'
 import { Badge } from '../../components/ui/badge'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useGameStore } from '../../game/state'
+import { Icons, IconsData } from '../../icons/Icons'
 import { UiPages } from '../state/UiPages'
 import { sidebarOpen } from '../state/uiFunctions'
 import { CollapsedEnum } from './CollapsedEnum'
@@ -15,6 +16,7 @@ export const Sidebar = memo(function Sidebar() {
         <SidebarContainer collapsedId={CollapsedEnum.Sidebar}>
             <MenuItem page={UiPages.Activities} collapsedId={CollapsedEnum.Sidebar} right={<ActivitiesLinkBadge />} />
             <MenuItem page={UiPages.Storage} collapsedId={CollapsedEnum.Sidebar} />
+            <MenuItem page={UiPages.Vendors} collapsedId={CollapsedEnum.Sidebar} right={<VendorGoldBadge />} />
             <MenuItem page={UiPages.Characters} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.World} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Caravans} collapsedId={CollapsedEnum.Sidebar} />
@@ -33,6 +35,17 @@ const ActivitiesLinkBadge = memo(function ActivitiesLinkBadge() {
     const { f } = useNumberFormatter()
     if (actNum === 0) return
     return <Badge variant="secondary">{f(actNum)}</Badge>
+})
+const VendorGoldBadge = memo(function VendorGoldBadge() {
+    const gold = useGameStore((state) => state.gold)
+    const { f } = useNumberFormatter()
+
+    return (
+        <Badge variant="secondary" className="ml-auto gap-1">
+            {IconsData[Icons.Coins]}
+            {f(gold)}
+        </Badge>
+    )
 })
 const SidebarBattle = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)

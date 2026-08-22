@@ -491,6 +491,14 @@ export const engMsg: Msg = {
     SellAll: 'Sell all',
     QuickSell: 'Quick Sell',
 
+    Vendors: 'Vendors',
+    GeneralMerchant: 'General merchant',
+    Blacksmith: 'Blacksmith',
+    Alchemist: 'Alchemist',
+    UnlimitedStock: 'Unlimited stock',
+    UnitPrice: 'Unit price',
+    Buy: 'Buy',
+
     Error: 'Error',
     IndexedDbNotFound: 'indexedDB not found, please check your browser permission',
     ToggleTheme: 'Toggle theme',
