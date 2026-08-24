@@ -155,7 +155,7 @@ export interface ItemLocationQuantity {
 export const selectItemLocationQuantities =
     (itemId: string) =>
     (state: GameState): ItemLocationQuantity[] =>
-        Object.values(GameLocations)
+        GameLocationAdapter.getIds(state.locations)
             .map((location) => ({
                 location,
                 quantity: selectItemQta(location, itemId)(state),

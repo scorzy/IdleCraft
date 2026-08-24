@@ -2,7 +2,7 @@ import { memo, useCallback, useId, useMemo, useState } from 'react'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { ButtonGroup } from '../../components/ui/button-group'
-import { Card, CardContent } from '../../components/ui/card'
+import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { Input } from '../../components/ui/input'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useGameStore } from '../../game/state'
@@ -146,19 +146,7 @@ const VendorOfferCard = memo(function VendorOfferCard({
                         <ItemLocationsDialog itemId={offer.itemId} />
                     </span>
                 </div>
-                <ButtonGroup className="flex-wrap">
-                    {QUICK_BUY_QUANTITIES.map((quickQuantity) => (
-                        <Button
-                            key={quickQuantity}
-                            size="sm"
-                            variant="outline"
-                            onClick={() => quickBuy(quickQuantity)}
-                            disabled={offer.unitPrice * quickQuantity > gold}
-                        >
-                            {t.Buy} {f(quickQuantity)}
-                        </Button>
-                    ))}
-                </ButtonGroup>
+
                 <div className="grid grid-cols-[minmax(5rem,1fr)_auto] items-end gap-2">
                     <label htmlFor={inputId} className="grid gap-1">
                         <Input
@@ -178,8 +166,22 @@ const VendorOfferCard = memo(function VendorOfferCard({
                         {t.Buy} / {IconsData[Icons.Coins]} {f(totalPrice)}
                     </Button>
                 </div>
-                {isValidQuantity && !canAfford && <span className="text-destructive text-xs">{t.NotEnoughGold}</span>}
             </CardContent>
+            <CardFooter>
+                <ButtonGroup>
+                    {QUICK_BUY_QUANTITIES.map((quickQuantity) => (
+                        <Button
+                            key={quickQuantity}
+                            size="sm"
+                            variant="outline"
+                            onClick={() => quickBuy(quickQuantity)}
+                            disabled={offer.unitPrice * quickQuantity > gold}
+                        >
+                            {t.Buy} {f(quickQuantity)}
+                        </Button>
+                    ))}
+                </ButtonGroup>
+            </CardFooter>
         </Card>
     )
 })

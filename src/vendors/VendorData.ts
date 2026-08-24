@@ -11,69 +11,148 @@ export interface VendorPurchaseOption extends VendorOffer {
     vendorType: VendorTypes
 }
 
-type VendorItems = Record<VendorTypes, readonly string[]>
-type VendorPriceMultipliers = Record<VendorTypes, number>
-
-const BASE_VENDOR_ITEMS: VendorItems = {
-    [VendorTypes.GeneralMerchant]: ['DeadTreeLog'],
-    [VendorTypes.Blacksmith]: ['CopperOre'],
-    [VendorTypes.Alchemist]: ['GlassFlask', 'RedFlower', 'BlueFlower', 'GreenFlower'],
+export interface VendorItemData {
+    itemId: string
+    multiplier?: number
 }
 
-const LOCATION_EXTRA_ITEMS: Record<GameLocations, Partial<VendorItems>> = {
-    [GameLocations.StartVillage]: {},
-    [GameLocations.WoodVillage]: {
-        [VendorTypes.Alchemist]: ['VitalHerb'],
-    },
-    [GameLocations.CapitalCity]: {
-        [VendorTypes.Alchemist]: ['ManaBloom', 'StaminaLeaf', 'BitterRoot'],
-    },
-    [GameLocations.MountainVillage]: {
-        [VendorTypes.Alchemist]: ['HealingFungus', 'HeartCrystalDust'],
-    },
-    [GameLocations.Test]: {},
+export interface VendorData {
+    vendorType: VendorTypes
+    items: VendorItemData[]
+    multiplier: number
 }
 
-const LOCATION_PRICE_MULTIPLIERS: Record<GameLocations, VendorPriceMultipliers> = {
-    [GameLocations.StartVillage]: {
-        [VendorTypes.GeneralMerchant]: 1.35,
-        [VendorTypes.Blacksmith]: 1.4,
-        [VendorTypes.Alchemist]: 1.35,
-    },
-    [GameLocations.WoodVillage]: {
-        [VendorTypes.GeneralMerchant]: 1.05,
-        [VendorTypes.Blacksmith]: 1.5,
-        [VendorTypes.Alchemist]: 1.45,
-    },
-    [GameLocations.CapitalCity]: {
-        [VendorTypes.GeneralMerchant]: 1.45,
-        [VendorTypes.Blacksmith]: 1.2,
-        [VendorTypes.Alchemist]: 1.15,
-    },
-    [GameLocations.MountainVillage]: {
-        [VendorTypes.GeneralMerchant]: 1.55,
-        [VendorTypes.Blacksmith]: 1.05,
-        [VendorTypes.Alchemist]: 1.4,
-    },
-    [GameLocations.Test]: {
-        [VendorTypes.GeneralMerchant]: 1.25,
-        [VendorTypes.Blacksmith]: 1.25,
-        [VendorTypes.Alchemist]: 1.25,
-    },
+export const VENDOR_DATA: Record<GameLocations, VendorData[]> = {
+    [GameLocations.StartVillage]: [
+        {
+            vendorType: VendorTypes.GeneralMerchant,
+            items: [{ itemId: 'DeadTreeLog' }],
+            multiplier: 2.5,
+        },
+        {
+            vendorType: VendorTypes.Blacksmith,
+            items: [{ itemId: 'CopperOre', multiplier: 1.5 }],
+            multiplier: 3,
+        },
+        {
+            vendorType: VendorTypes.Alchemist,
+            items: [
+                { itemId: 'GlassFlask', multiplier: 1.25 },
+                { itemId: 'RedFlower' },
+                { itemId: 'BlueFlower' },
+                { itemId: 'GreenFlower' },
+            ],
+            multiplier: 2.5,
+        },
+    ],
+    [GameLocations.WoodVillage]: [
+        {
+            vendorType: VendorTypes.GeneralMerchant,
+            items: [{ itemId: 'DeadTreeLog' }],
+            multiplier: 2,
+        },
+        {
+            vendorType: VendorTypes.Blacksmith,
+            items: [{ itemId: 'CopperOre', multiplier: 1.75 }],
+            multiplier: 3.5,
+        },
+        {
+            vendorType: VendorTypes.Alchemist,
+            items: [
+                { itemId: 'GlassFlask', multiplier: 1.25 },
+                { itemId: 'RedFlower' },
+                { itemId: 'BlueFlower' },
+                { itemId: 'GreenFlower' },
+                { itemId: 'VitalHerb' },
+            ],
+            multiplier: 2,
+        },
+    ],
+    [GameLocations.CapitalCity]: [
+        {
+            vendorType: VendorTypes.GeneralMerchant,
+            items: [{ itemId: 'DeadTreeLog', multiplier: 1.5 }],
+            multiplier: 3,
+        },
+        {
+            vendorType: VendorTypes.Blacksmith,
+            items: [{ itemId: 'CopperOre', multiplier: 1.25 }],
+            multiplier: 2.5,
+        },
+        {
+            vendorType: VendorTypes.Alchemist,
+            items: [
+                { itemId: 'GlassFlask' },
+                { itemId: 'RedFlower', multiplier: 1.25 },
+                { itemId: 'BlueFlower', multiplier: 1.25 },
+                { itemId: 'GreenFlower', multiplier: 1.25 },
+                { itemId: 'ManaBloom', multiplier: 1.25 },
+                { itemId: 'StaminaLeaf', multiplier: 1.25 },
+                { itemId: 'BitterRoot', multiplier: 1.25 },
+            ],
+            multiplier: 2.25,
+        },
+    ],
+    [GameLocations.MountainVillage]: [
+        {
+            vendorType: VendorTypes.GeneralMerchant,
+            items: [{ itemId: 'DeadTreeLog', multiplier: 2 }],
+            multiplier: 4,
+        },
+        {
+            vendorType: VendorTypes.Blacksmith,
+            items: [{ itemId: 'CopperOre' }],
+            multiplier: 2,
+        },
+        {
+            vendorType: VendorTypes.Alchemist,
+            items: [
+                { itemId: 'GlassFlask', multiplier: 1.5 },
+                { itemId: 'RedFlower', multiplier: 1.5 },
+                { itemId: 'BlueFlower', multiplier: 1.5 },
+                { itemId: 'GreenFlower', multiplier: 1.5 },
+                { itemId: 'HealingFungus' },
+                { itemId: 'HeartCrystalDust' },
+            ],
+            multiplier: 2.5,
+        },
+    ],
+    [GameLocations.Test]: [
+        {
+            vendorType: VendorTypes.GeneralMerchant,
+            items: [{ itemId: 'DeadTreeLog' }],
+            multiplier: 2,
+        },
+        {
+            vendorType: VendorTypes.Blacksmith,
+            items: [{ itemId: 'CopperOre' }],
+            multiplier: 2,
+        },
+        {
+            vendorType: VendorTypes.Alchemist,
+            items: [
+                { itemId: 'GlassFlask' },
+                { itemId: 'RedFlower' },
+                { itemId: 'BlueFlower' },
+                { itemId: 'GreenFlower' },
+            ],
+            multiplier: 2,
+        },
+    ],
 }
 
 function makeOffers(location: GameLocations, vendorType: VendorTypes): readonly VendorOffer[] {
-    const itemIds = [...BASE_VENDOR_ITEMS[vendorType], ...(LOCATION_EXTRA_ITEMS[location][vendorType] ?? [])]
-    const multiplier = LOCATION_PRICE_MULTIPLIERS[location][vendorType]
+    const vendor = VENDOR_DATA[location].find((data) => data.vendorType === vendorType)
+    if (!vendor) throw new Error(`Missing ${vendorType} data for ${location}`)
 
     return Object.freeze(
-        itemIds.map((itemId) => {
+        vendor.items.map(({ itemId, multiplier = 1 }) => {
             const item = StdItems[itemId]
             if (!item) throw new Error(`Unknown vendor item ${itemId}`)
 
             return Object.freeze({
                 itemId,
-                unitPrice: Math.max(item.value, Math.ceil(item.value * multiplier)),
+                unitPrice: Math.max(item.value, Math.ceil(item.value * vendor.multiplier * multiplier)),
             })
         })
     )

@@ -3,7 +3,7 @@ import { GetInitialGameState } from '../game/InitialGameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { StdItems } from '../items/stdItems'
-import { getVendorOffer, getVendorOffers, getVendorPurchaseOption } from './VendorData'
+import { getVendorOffer, getVendorOffers, getVendorPurchaseOption, VENDOR_DATA } from './VendorData'
 import { purchaseVendorItem, purchaseVendorItems, VendorPurchaseResult } from './vendorFunctions'
 import { VendorTypes, VendorTypeList } from './VendorTypes'
 
@@ -28,6 +28,27 @@ describe('vendors', () => {
                 }
             }
         }
+    })
+
+    test('vendor multipliers range from x2 to x4', () => {
+        for (const vendors of Object.values(VENDOR_DATA)) {
+            for (const vendor of vendors) {
+                expect(vendor.multiplier).toBeGreaterThanOrEqual(2)
+                expect(vendor.multiplier).toBeLessThanOrEqual(4)
+            }
+        }
+    })
+
+    test('applies the optional item multiplier to imported goods', () => {
+        const vendor = VENDOR_DATA[GameLocations.StartVillage].find(
+            ({ vendorType }) => vendorType === VendorTypes.Blacksmith
+        )!
+        const item = vendor.items.find(({ itemId }) => itemId === 'CopperOre')!
+
+        expect(item.multiplier).toBeGreaterThan(1)
+        expect(getVendorOffer(GameLocations.StartVillage, VendorTypes.Blacksmith, item.itemId)?.unitPrice).toBe(
+            Math.ceil(StdItems[item.itemId]!.value * vendor.multiplier * item.multiplier!)
+        )
     })
 
     test('location catalog and prices vary', () => {
