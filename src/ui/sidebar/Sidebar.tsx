@@ -21,7 +21,6 @@ export const Sidebar = memo(function Sidebar() {
             <MenuItem page={UiPages.World} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Caravans} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Quest} collapsedId={CollapsedEnum.Sidebar} />
-            <MenuItem page={UiPages.Market} collapsedId={CollapsedEnum.Sidebar} />
 
             <SidebarBattle />
             <SidebarGathering />
@@ -70,10 +69,11 @@ const SidebarGathering = memo(function SidebarGathering() {
         <CollapsibleMenu
             key={open ? '1' : '0'}
             collapsedId={CollapsedEnum.GatheringSide}
-            name="Gathering"
+            name="Activities"
             parentCollapsedId={CollapsedEnum.Sidebar}
             icon={<GiThreeLeaves />}
         >
+            <MenuItem page={UiPages.Market} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Woodcutting} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Mining} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Gathering} collapsedId={CollapsedEnum.Sidebar} />
