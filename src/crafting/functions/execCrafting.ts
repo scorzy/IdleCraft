@@ -9,6 +9,7 @@ import { isCrafting } from '../CraftingIterfaces'
 import { RecipeData } from '../RecipeData'
 import { recipes } from '../Recipes'
 import { isCraftable } from '../selectors/canCraft'
+import { purchaseCraftingRequirements } from './autoBuyCrafting'
 
 export const execCrafting = makeExecActivity((state: GameState, timer: Timer) => {
     const id = timer.actId
@@ -24,6 +25,7 @@ export const execCrafting = makeExecActivity((state: GameState, timer: Timer) =>
     const recipe = recipes.getEx(data.recipeId)
 
     const craftResult = data.result
+    if (!purchaseCraftingRequirements(state, craftResult, data.autoBuy ?? {})) return ActivityStartResult.NotPossible
     if (!isCraftable(state, craftResult)) return ActivityStartResult.NotPossible
 
     for (const req of craftResult.requirements) removeItem(state, req.itemId, req.qta)

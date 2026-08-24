@@ -68,6 +68,7 @@ export interface GameState {
         params: RecipeParameter[]
         paramsValue: RecipeParameterValue[]
         result: RecipeResult | undefined
+        autoBuy: Record<string, boolean>
     }
     characters: InitialState<CharacterState>
     castCharAbility: InitialState<CastCharAbility>

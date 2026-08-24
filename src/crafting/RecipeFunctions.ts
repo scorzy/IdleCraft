@@ -1,6 +1,8 @@
 import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { selectItemQta } from '../storage/StorageSelectors'
+import { getVendorPurchaseOption } from '../vendors/VendorData'
 import { RecipeGroups, RecipeParameterValue } from './RecipeInterfaces'
 import { getDefaultRecipeGroup } from './RecipeGroupsData'
 import { recipes } from './Recipes'
@@ -25,6 +27,7 @@ export function changeRecipeState(state: GameState, recipeId: string | null, rec
         paramsValue: [],
         params: [],
         result: undefined,
+        autoBuy: {},
     }
 
     const recipe = recipes.get(state.recipeId)
@@ -38,6 +41,7 @@ export function changeRecipeState(state: GameState, recipeId: string | null, rec
         paramsValue: [],
         params,
         result,
+        autoBuy: {},
     }
 }
 export const changeRecipe = (recipeId: string | null) => setState((state) => changeRecipeState(state, recipeId))
@@ -65,13 +69,36 @@ export const setRecipeItemParam = (state: GameState, id: string, paramValue: str
 
     state.craftingForm.paramsValue = paramsValue
     state.craftingForm.result = result
+
+    const requirementIds = new Set(result?.requirements.map((requirement) => requirement.itemId))
+    for (const itemId of Object.keys(state.craftingForm.autoBuy))
+        if (!requirementIds.has(itemId)) delete state.craftingForm.autoBuy[itemId]
+
+    const selectedRequired =
+        result?.requirements
+            .filter((requirement) => requirement.itemId === paramValue)
+            .reduce((total, requirement) => total + requirement.qta, 0) ?? 0
+    if (
+        selectedRequired > selectItemQta(state.location, paramValue)(state) &&
+        getVendorPurchaseOption(state.location, paramValue)
+    )
+        state.craftingForm.autoBuy[paramValue] = true
 }
 
 export const setRecipeItemParamUi = (id: string, paramValue: string) =>
     setState((state) => setRecipeItemParam(state, id, paramValue))
 
+export const setCraftingAutoBuyState = (state: GameState, itemId: string, checked: boolean) => {
+    if (checked) state.craftingForm.autoBuy[itemId] = true
+    else delete state.craftingForm.autoBuy[itemId]
+}
+
+export const setCraftingAutoBuy = (itemId: string, checked: boolean) =>
+    setState((state) => setCraftingAutoBuyState(state, itemId, checked))
+
 export const recipeOnItemRemove = (state: GameState, itemId: string, location: GameLocations): void => {
     if (state.location !== location) return
+    if (state.craftingForm.autoBuy[itemId] && getVendorPurchaseOption(location, itemId)) return
 
     let toRemove = state.craftingForm.paramsValue.find((p) => p.itemId === itemId)
 

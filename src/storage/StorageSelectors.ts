@@ -21,6 +21,7 @@ import { StorageAdapter } from './storageAdapter'
 import { isCrafted } from './storageFunctions'
 import { InventoryNoQta, StorageState } from './storageTypes'
 import { getItemSubType } from '../items/getItemSubType'
+import { getVendorPurchaseOptions } from '../vendors/VendorData'
 import { useMemo } from 'react'
 import { useGameStore } from '../game/state'
 import {
@@ -146,6 +147,24 @@ export const selectItemQta = (location: GameLocations | null, itemId: string) =>
     return storage.entries[itemId]?.quantity ?? 0
 }
 
+export interface ItemLocationQuantity {
+    location: GameLocations
+    quantity: number
+}
+
+export const selectItemLocationQuantities =
+    (itemId: string) =>
+    (state: GameState): ItemLocationQuantity[] =>
+        Object.values(GameLocations)
+            .map((location) => ({
+                location,
+                quantity: selectItemQta(location, itemId)(state),
+            }))
+            .filter((entry) => entry.quantity > 0)
+
+export const selectItemTotalQta = (itemId: string) => (state: GameState) =>
+    selectItemLocationQuantities(itemId)(state).reduce((total, entry) => total + entry.quantity, 0)
+
 export const selectGameItem = (itemId: string) => (state: GameState) =>
     selectGameItemFromCraft(itemId, state.craftedItems)
 
@@ -198,7 +217,7 @@ export const createInventoryNoQta = (inventory: CharInventory) => {
     return ret
 }
 
-export const selectFilteredItems = (s: GameState, itemFilter: ItemFilter) => {
+export const selectFilteredItems = (s: GameState, itemFilter: ItemFilter, includePurchasableItems = false) => {
     if (!itemFilter) return EMPTY_ARRAY
 
     const storageIds = selectCurrentLocationStorageIds(s)
@@ -213,6 +232,14 @@ export const selectFilteredItems = (s: GameState, itemFilter: ItemFilter) => {
         if (!item.unlimited) return
         if (filterItem(item, itemFilter)) ret.push(item.id)
     })
+
+    if (includePurchasableItems) {
+        for (const option of getVendorPurchaseOptions(s.location)) {
+            if (ret.includes(option.itemId)) continue
+            const item = StdItems[option.itemId]
+            if (item && filterItem(item, itemFilter)) ret.push(item.id)
+        }
+    }
 
     return ret
 }

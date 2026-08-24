@@ -11,23 +11,42 @@ export enum VendorPurchaseResult {
     InsufficientGold = 'InsufficientGold',
 }
 
+export interface VendorPurchase {
+    vendorType: VendorTypes
+    itemId: string
+    quantity: number
+}
+
+export function purchaseVendorItems(state: GameState, purchases: VendorPurchase[]): VendorPurchaseResult {
+    let totalPrice = 0
+
+    for (const purchase of purchases) {
+        if (!Number.isSafeInteger(purchase.quantity) || purchase.quantity <= 0)
+            return VendorPurchaseResult.InvalidQuantity
+
+        const offer = getVendorOffer(state.location, purchase.vendorType, purchase.itemId)
+        if (!offer) return VendorPurchaseResult.ItemNotSold
+
+        const price = offer.unitPrice * purchase.quantity
+        if (!Number.isSafeInteger(price) || !Number.isSafeInteger(totalPrice + price))
+            return VendorPurchaseResult.InsufficientGold
+        totalPrice += price
+    }
+
+    if (!hasGold(state, totalPrice)) return VendorPurchaseResult.InsufficientGold
+
+    spendGold(state, totalPrice)
+    for (const purchase of purchases) addItem(state, purchase.itemId, purchase.quantity)
+    return VendorPurchaseResult.Success
+}
+
 export function purchaseVendorItem(
     state: GameState,
     vendorType: VendorTypes,
     itemId: string,
     quantity: number
 ): VendorPurchaseResult {
-    if (!Number.isSafeInteger(quantity) || quantity <= 0) return VendorPurchaseResult.InvalidQuantity
-
-    const offer = getVendorOffer(state.location, vendorType, itemId)
-    if (!offer) return VendorPurchaseResult.ItemNotSold
-
-    const totalPrice = offer.unitPrice * quantity
-    if (!Number.isSafeInteger(totalPrice) || !hasGold(state, totalPrice)) return VendorPurchaseResult.InsufficientGold
-
-    spendGold(state, totalPrice)
-    addItem(state, itemId, quantity)
-    return VendorPurchaseResult.Success
+    return purchaseVendorItems(state, [{ vendorType, itemId, quantity }])
 }
 
 export function buyVendorItem(vendorType: VendorTypes, itemId: string, quantity: number): VendorPurchaseResult {

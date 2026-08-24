@@ -1,6 +1,7 @@
 import { memo, useCallback, useId, useMemo, useState } from 'react'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
+import { ButtonGroup } from '../../components/ui/button-group'
 import { Card, CardContent } from '../../components/ui/card'
 import { Input } from '../../components/ui/input'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -13,14 +14,17 @@ import { selectItemNameMemoized } from '../../items/selectors/itemSelectorsMemo'
 import { StdItems } from '../../items/stdItems'
 import { ItemIconName } from '../../items/ui/ItemIconName'
 import { useTranslations } from '../../msg/useTranslations'
-import { selectItemQta } from '../../storage/StorageSelectors'
+import { selectItemQta, selectItemTotalQta } from '../../storage/StorageSelectors'
 import { ItemFilters } from '../../storage/ui/ItemFilters'
+import { ItemLocationsDialog } from '../../storage/ui/ItemLocationsDialog'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { selectItemFilterSearch, selectItemFilterSubType, selectItemFilterType } from '../../ui/state/uiSelectors'
 import { getVendorOffers, VendorOffer } from '../VendorData'
 import { buyVendorItem } from '../vendorFunctions'
 import { VendorTypes } from '../VendorTypes'
 import { VendorSidebar } from './VendorSidebar'
+
+const QUICK_BUY_QUANTITIES = [1, 10, 100, 1000] as const
 
 export const Vendors = memo(function Vendors() {
     const location = useGameStore((state) => state.location)
@@ -101,6 +105,7 @@ const VendorOfferCard = memo(function VendorOfferCard({
     const [quantityInput, setQuantityInput] = useState('1')
     const gold = useGameStore((state) => state.gold)
     const owned = useGameStore(useCallback((state) => selectItemQta(null, offer.itemId)(state), [offer.itemId]))
+    const totalOwned = useGameStore(useCallback((state) => selectItemTotalQta(offer.itemId)(state), [offer.itemId]))
 
     const quantity = Number(quantityInput)
     const isValidQuantity = Number.isSafeInteger(quantity) && quantity > 0
@@ -114,6 +119,11 @@ const VendorOfferCard = memo(function VendorOfferCard({
     const normalizeQuantity = useCallback(() => {
         if (!isValidQuantity) setQuantityInput('1')
     }, [isValidQuantity])
+
+    const quickBuy = useCallback(
+        (quantityToBuy: number) => buyVendorItem(vendorType, offer.itemId, quantityToBuy),
+        [offer.itemId, vendorType]
+    )
 
     return (
         <Card className="gap-2 py-3">
@@ -129,9 +139,26 @@ const VendorOfferCard = memo(function VendorOfferCard({
                 <div className="text-muted-foreground flex flex-wrap gap-x-3 text-xs">
                     <span>{t.UnlimitedStock}</span>
                     <span>
-                        {t.YouHave}: {f(owned)}
+                        {t.CurrentLocation}: {f(owned)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                        {t.Total}: {f(totalOwned)}
+                        <ItemLocationsDialog itemId={offer.itemId} />
                     </span>
                 </div>
+                <ButtonGroup className="flex-wrap">
+                    {QUICK_BUY_QUANTITIES.map((quickQuantity) => (
+                        <Button
+                            key={quickQuantity}
+                            size="sm"
+                            variant="outline"
+                            onClick={() => quickBuy(quickQuantity)}
+                            disabled={offer.unitPrice * quickQuantity > gold}
+                        >
+                            {t.Buy} {f(quickQuantity)}
+                        </Button>
+                    ))}
+                </ButtonGroup>
                 <div className="grid grid-cols-[minmax(5rem,1fr)_auto] items-end gap-2">
                     <label htmlFor={inputId} className="grid gap-1">
                         <Input

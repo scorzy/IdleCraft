@@ -471,6 +471,7 @@ export const engMsg: Msg = {
     AvailableSlots: 'Available slots',
     NotEnoughCargo: 'Not enough cargo in storage',
     NotEnoughGold: 'Not enough gold',
+    NotEnoughItems: 'Not enough items',
     NoFreeSlots: 'No caravan slots available',
     SelectDestination: 'Select a destination',
     SelectTier: 'Select a caravan',
@@ -498,6 +499,12 @@ export const engMsg: Msg = {
     UnlimitedStock: 'Unlimited stock',
     UnitPrice: 'Unit price',
     Buy: 'Buy',
+    CurrentLocation: 'Current location',
+    AutoBuy: 'Auto buy',
+    AutoBuyDescription:
+        'Automatically buys the missing quantity of this ingredient from vendors in the current location before crafting. Crafting is available only when you have enough gold.',
+    Per: 'x',
+    GoldToSpend: 'Gold to spend',
 
     Error: 'Error',
     IndexedDbNotFound: 'indexedDB not found, please check your browser permission',

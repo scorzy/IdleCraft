@@ -5,6 +5,7 @@ export type Crafting = ActivityState & {
     recipeId: string
     paramsValue: RecipeParameterValue[]
     result: RecipeResult
+    autoBuy?: Record<string, boolean>
 }
 export function isCrafting(act: ActivityState | Crafting): act is Crafting {
     return act.type === ActivityTypes.Crafting

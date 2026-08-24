@@ -8,6 +8,7 @@ interface CraftingData {
     recipeId: string
     paramsValue: RecipeParameterValue[]
     result: RecipeResult
+    autoBuy: Record<string, boolean>
 }
 
 const makeCrafting = (data: CraftingData) => makeAddActivity(ActivityTypes.Crafting, data)
@@ -19,6 +20,7 @@ const addCrafting = (state: GameState) => {
         recipeId: state.recipeId,
         paramsValue: state.craftingForm.paramsValue,
         result: state.craftingForm.result,
+        autoBuy: state.craftingForm.autoBuy,
     }
 
     makeCrafting(data)(state)

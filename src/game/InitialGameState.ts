@@ -160,6 +160,7 @@ export const InitialGameState: GameState = {
         params: [],
         paramsValue: [],
         result: undefined,
+        autoBuy: {},
     },
     characters: {
         ids: [PLAYER_ID],

@@ -466,6 +466,7 @@ export interface Msg {
     AvailableSlots: string
     NotEnoughCargo: string
     NotEnoughGold: string
+    NotEnoughItems: string
     NoFreeSlots: string
     SelectDestination: string
     SelectTier: string
@@ -495,6 +496,11 @@ export interface Msg {
     UnlimitedStock: string
     UnitPrice: string
     Buy: string
+    CurrentLocation: string
+    AutoBuy: string
+    AutoBuyDescription: string
+    Per: string
+    GoldToSpend: string
 
     Error: string
     IndexedDbNotFound: string

@@ -6,12 +6,14 @@ import { startTimer } from '../../timers/startTimer'
 import { getCraftingActivity } from '../CraftingSelectors'
 import { recipes } from '../Recipes'
 import { isCraftable } from '../selectors/canCraft'
+import { purchaseCraftingRequirements } from './autoBuyCrafting'
 
 export const startCrafting = makeStartActivity((state: GameState, id: string) => {
     const data = getCraftingActivity(state, id)
     const recipe = recipes.getEx(data.recipeId)
     const craftResult = recipe.getResult(state, data.paramsValue)
     if (!craftResult) return ActivityStartResult.NotPossible
+    if (!purchaseCraftingRequirements(state, craftResult, data.autoBuy ?? {})) return ActivityStartResult.NotPossible
     if (!isCraftable(state, craftResult)) return ActivityStartResult.NotPossible
 
     data.result = craftResult

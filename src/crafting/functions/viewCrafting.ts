@@ -17,6 +17,7 @@ export const viewCrafting = (state: GameState, activity: ActivityState) => {
     state.craftingForm.paramsValue = structuredClone(original(activity.paramsValue))
     state.craftingForm.result = structuredClone(original(activity.result))
     state.craftingForm.params = recipe.getParameters(state)
+    state.craftingForm.autoBuy = activity.autoBuy ? structuredClone(original(activity.autoBuy)) : {}
 
     const page = Object.entries(UiPagesData).find((kv) => kv[1].recipeType && kv[1].recipeType === recipe.type)?.[0]
     // oxlint-disable-next-line typescript/no-unsafe-type-assertion

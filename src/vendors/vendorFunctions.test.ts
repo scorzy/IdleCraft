@@ -3,8 +3,8 @@ import { GetInitialGameState } from '../game/InitialGameState'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { StdItems } from '../items/stdItems'
-import { getVendorOffer, getVendorOffers } from './VendorData'
-import { purchaseVendorItem, VendorPurchaseResult } from './vendorFunctions'
+import { getVendorOffer, getVendorOffers, getVendorPurchaseOption } from './VendorData'
+import { purchaseVendorItem, purchaseVendorItems, VendorPurchaseResult } from './vendorFunctions'
 import { VendorTypes, VendorTypeList } from './VendorTypes'
 
 describe('vendors', () => {
@@ -38,6 +38,13 @@ describe('vendors', () => {
         ).not.toBe(getVendorOffer(GameLocations.CapitalCity, VendorTypes.GeneralMerchant, 'DeadTreeLog')?.unitPrice)
     })
 
+    test('finds a purchase option across all vendors in the current location', () => {
+        expect(getVendorPurchaseOption(GameLocations.StartVillage, 'CopperOre')?.vendorType).toBe(
+            VendorTypes.Blacksmith
+        )
+        expect(getVendorPurchaseOption(GameLocations.StartVillage, 'OakLog')).toBeUndefined()
+    })
+
     test('purchase spends gold and adds the requested quantity to current location storage', () => {
         const state = GetInitialGameState()
         state.gold = 100
@@ -64,5 +71,20 @@ describe('vendors', () => {
         )
         expect(state.gold).toBe(1)
         expect(GameLocationAdapter.selectEx(state.locations, state.location).storage.ids).toEqual([])
+    })
+
+    test('batch purchases are atomic when total gold is insufficient', () => {
+        const state = GetInitialGameState()
+        const oreOffer = getVendorOffer(state.location, VendorTypes.Blacksmith, 'CopperOre')!
+        const logOffer = getVendorOffer(state.location, VendorTypes.GeneralMerchant, 'DeadTreeLog')!
+        state.gold = oreOffer.unitPrice + logOffer.unitPrice - 1
+
+        expect(
+            purchaseVendorItems(state, [
+                { vendorType: VendorTypes.Blacksmith, itemId: 'CopperOre', quantity: 1 },
+                { vendorType: VendorTypes.GeneralMerchant, itemId: 'DeadTreeLog', quantity: 1 },
+            ])
+        ).toBe(VendorPurchaseResult.InsufficientGold)
+        expect(state.locations.entries[state.location]?.storage.ids).toEqual([])
     })
 })

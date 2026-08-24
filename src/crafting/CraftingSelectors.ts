@@ -8,6 +8,7 @@ import { StdItems } from '../items/stdItems'
 import { selectItemQta } from '../storage/StorageSelectors'
 import { selectCraftItemId } from '../storage/storageFunctions'
 import { isCrafting } from './CraftingIterfaces'
+import { getCraftingPurchasePlan } from './functions/autoBuyCrafting'
 import { RecipeGroups, RecipeItem } from './RecipeInterfaces'
 import { getDefaultRecipeGroup } from './RecipeGroupsData'
 import { recipes } from './Recipes'
@@ -25,11 +26,15 @@ export const selectRecipeItemValue = (recipeParamId: string) => (state: GameStat
 
 export const selectRecipeResult = (state: GameState) => state.craftingForm.result?.results
 export const selectRecipeReq = (state: GameState) => state.craftingForm.result?.requirements
+export const selectCraftingAutoBuy = (state: GameState) => state.craftingForm.autoBuy
 export const selectRecipeType = (s: GameState) => s.ui.recipeType
 export const selectRecipeGroup = (s: GameState): RecipeGroups | undefined =>
     recipes.get(s.recipeId)?.recipeGroup ?? s.craftingForm.recipeGroup ?? getDefaultRecipeGroup(s.ui.recipeType)
-export const canCraft = (s: GameState) =>
-    s.craftingForm.result !== undefined && s.craftingForm.result.results.some((r) => r.craftedItem || r.stdItemId)
+export const canCraft = (s: GameState) => {
+    const result = s.craftingForm.result
+    if (!result?.results.some((item) => item.craftedItem || item.stdItemId)) return false
+    return getCraftingPurchasePlan(s, result, s.craftingForm.autoBuy).canCraft
+}
 
 export const selectCraftTime = (s: GameState) => s.craftingForm.result?.time
 
@@ -44,7 +49,7 @@ export const selectCurrentCrafting = (s: GameState) => {
         if (!isCrafting(e)) return false
         if (e.recipeId !== recipeId) return false
         if (len !== e.paramsValue.length) return false
-        if (equal(e.paramsValue, paramsValue)) return true
+        if (equal(e.paramsValue, paramsValue) && equal(e.autoBuy ?? {}, s.craftingForm.autoBuy)) return true
         return false
     })
     return ret?.id ?? null

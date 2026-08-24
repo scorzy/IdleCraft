@@ -25,6 +25,7 @@ export const travel = (location: GameLocations) => {
                 params: [],
                 paramsValue: [],
                 result: undefined,
+                autoBuy: {},
             }
             s.caravanDispatchForm = {
                 toId: undefined,

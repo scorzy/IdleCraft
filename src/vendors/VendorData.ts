@@ -7,6 +7,10 @@ export interface VendorOffer {
     unitPrice: number
 }
 
+export interface VendorPurchaseOption extends VendorOffer {
+    vendorType: VendorTypes
+}
+
 type VendorItems = Record<VendorTypes, readonly string[]>
 type VendorPriceMultipliers = Record<VendorTypes, number>
 
@@ -92,4 +96,21 @@ export function getVendorOffer(
     itemId: string
 ): VendorOffer | undefined {
     return getVendorOffers(location, vendorType).find((offer) => offer.itemId === itemId)
+}
+
+export function getVendorPurchaseOption(location: GameLocations, itemId: string): VendorPurchaseOption | undefined {
+    return getVendorPurchaseOptions(location).find((option) => option.itemId === itemId)
+}
+
+export function getVendorPurchaseOptions(location: GameLocations): VendorPurchaseOption[] {
+    const result = new Map<string, VendorPurchaseOption>()
+
+    for (const vendorType of VendorTypeList) {
+        for (const offer of getVendorOffers(location, vendorType)) {
+            const current = result.get(offer.itemId)
+            if (!current || offer.unitPrice < current.unitPrice) result.set(offer.itemId, { ...offer, vendorType })
+        }
+    }
+
+    return [...result.values()]
 }

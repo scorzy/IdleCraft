@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react'
 import { LuHourglass } from 'react-icons/lu'
+import { TbInfoCircle } from 'react-icons/tb'
 import { removeActivity } from '../../activities/functions/removeActivity'
 import { ActivitiesList } from '../../activities/ui/Activities'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
@@ -7,7 +8,16 @@ import { PLAYER_ID } from '../../characters/charactersConst'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent } from '../../components/ui/card'
+import { Checkbox } from '../../components/ui/checkbox'
 import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '../../components/ui/dialog'
 import { ExperienceCard } from '../../experience/ui/ExperienceCard'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
@@ -18,6 +28,7 @@ import { ItemsSelect } from '../../storage/ui/ItemsSelect'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { GameTimerProgress } from '../../ui/progress/TimerProgress'
+import { getVendorPurchaseOption } from '../../vendors/VendorData'
 import { handleRecipeChange, handleRecipeGroupChange } from '../CraftingFunctions'
 import {
     canCraft,
@@ -37,7 +48,7 @@ import { addCraftingClick } from '../functions/addCrafting'
 import { Recipe } from '../Recipe'
 import { RecipeData } from '../RecipeData'
 import { RecipeGroupsData, RecipeGroupsList } from '../RecipeGroupsData'
-import { setRecipeItemParamUi } from '../RecipeFunctions'
+import { setCraftingAutoBuy, setRecipeItemParamUi } from '../RecipeFunctions'
 import {
     isRecipeParameterItemFilter,
     RecipeParameter,
@@ -267,20 +278,73 @@ const RecipeParamUi = memo(function RecipeParamUi(props: { recipeParam: RecipePa
 
 const RecipeParamItemType = memo(function RecipeParamItemType(props: { recipeParam: RecipeParameterItemFilter }) {
     const { recipeParam } = props
+    const { t } = useTranslations()
 
     const selected = useGameStore(selectRecipeItemValue(recipeParam.id))
+    const selectedItemId = selected?.itemId ?? ''
+    const autoBuy = useGameStore(useCallback((state) => !!state.craftingForm.autoBuy[selectedItemId], [selectedItemId]))
+    const purchasable = useGameStore(
+        useCallback(
+            (state) => !!selectedItemId && !!getVendorPurchaseOption(state.location, selectedItemId),
+            [selectedItemId]
+        )
+    )
 
     const handleItemChange = useCallback(
         (itemId: string) => setRecipeItemParamUi(recipeParam.id, itemId),
         [recipeParam.id]
     )
+    const handleAutoBuyChange = useCallback(
+        (checked: boolean) => setCraftingAutoBuy(selectedItemId, checked),
+        [selectedItemId]
+    )
 
     return (
-        <ItemsSelect
-            itemFilter={recipeParam.itemFilter}
-            selectedValue={selected?.itemId}
-            onValueChange={handleItemChange}
-            label={<ItemFilterDescription itemFilter={recipeParam.itemFilter} />}
-        />
+        <div className="grid gap-2">
+            <ItemsSelect
+                itemFilter={recipeParam.itemFilter}
+                selectedValue={selected?.itemId}
+                onValueChange={handleItemChange}
+                label={<ItemFilterDescription itemFilter={recipeParam.itemFilter} />}
+                includePurchasableItems={true}
+            />
+            {purchasable && (
+                <div className="flex items-center gap-1">
+                    <label className="flex items-center gap-2 text-sm">
+                        <Checkbox checked={autoBuy} onCheckedChange={handleAutoBuyChange} />
+                        {t.AutoBuy}
+                    </label>
+                    <AutoBuyInfo />
+                </div>
+            )}
+        </div>
+    )
+})
+
+const AutoBuyInfo = memo(function AutoBuyInfo() {
+    const { t } = useTranslations()
+    const label = `${t.Info}: ${t.AutoBuy}`
+
+    return (
+        <Dialog>
+            <DialogTrigger
+                render={
+                    <button
+                        type="button"
+                        className="text-muted-foreground cursor-pointer"
+                        title={label}
+                        aria-label={label}
+                    >
+                        <TbInfoCircle size={18} aria-hidden="true" />
+                    </button>
+                }
+            />
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>{t.AutoBuy}</DialogTitle>
+                    <DialogDescription>{t.AutoBuyDescription}</DialogDescription>
+                </DialogHeader>
+            </DialogContent>
+        </Dialog>
     )
 })
