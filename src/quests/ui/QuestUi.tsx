@@ -324,7 +324,7 @@ export function ItemRewardUi(props: { itemId: string; quantity: number }) {
         <Popover>
             <PopoverTrigger
                 render={
-                    <Button variant="secondary" size="sm" {...props}>
+                    <Button variant="secondary" size="sm">
                         {f(quantity)} <ItemIconName itemId={itemId} />
                     </Button>
                 }
