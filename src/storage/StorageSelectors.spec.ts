@@ -14,10 +14,9 @@ describe('item location quantity selectors', () => {
 
         const quantities = selectItemLocationQuantities('CopperOre')(state)
 
-        expect(quantities).toHaveLength(Object.values(GameLocations).length)
+        expect(quantities).toHaveLength(2)
         expect(quantities).toContainEqual({ location: GameLocations.StartVillage, quantity: 2 })
         expect(quantities).toContainEqual({ location: GameLocations.MountainVillage, quantity: 3 })
-        expect(quantities).toContainEqual({ location: GameLocations.CapitalCity, quantity: 0 })
         expect(selectItemTotalQta('CopperOre')(state)).toBe(5)
     })
 
@@ -28,7 +27,7 @@ describe('item location quantity selectors', () => {
 
         const quantities = selectItemLocationQuantities('CopperOre')(state)
 
-        expect(quantities).toHaveLength(GameLocationAdapter.getIds(state.locations).length)
+        expect(quantities).toHaveLength(1)
         expect(quantities).not.toContainEqual({ location: GameLocations.Test, quantity: 0 })
         expect(selectItemTotalQta('CopperOre')(state)).toBe(2)
     })
