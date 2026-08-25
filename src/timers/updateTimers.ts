@@ -14,7 +14,7 @@ export function updateTimers(state: GameState): void {
         const prev = prevTimers.get(timer.id)
 
         if (!prev) startTimer(timer)
-        else if (timer.from !== prev.to || timer.to !== prev.to) {
+        else if (timer.from !== prev.from || timer.to !== prev.to) {
             clearInterval(prev.intervalId)
             startTimer(timer)
         }
