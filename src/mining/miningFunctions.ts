@@ -99,14 +99,15 @@ export function searchOreVein(state: GameState, location: GameLocations, oreType
     const oreData = OreData[oreType]
     const veinMastery = hasPerk(PerksEnum.VEIN_MASTERY)(state)
 
-    const qtaRaw = Math.max(1, Math.floor((oreData.qta * getRandomNum(70, 130)) / 100))
+    const qtaRaw = Math.max(1, Math.floor((oreData.qta * getRandomNum(80, 150)) / 100))
     const hpRaw = Math.max(10, Math.floor((oreData.hp * getRandomNum(70, 130)) / 100))
     const armourRaw = Math.max(0, Math.floor((oreData.armour * getRandomNum(70, 130)) / 100))
     const gemChanceRaw = getRandomNum(3, 20) / 100
     const oreVeinQuantityBonus = selectLocationModifierMulti(state, location, LocationModifierType.OreVeinQuantity)
 
-    const qtaBonus = veinMastery ? VEIN_MASTERY_QTA_BONUS + oreVeinQuantityBonus : oreVeinQuantityBonus
+    const qtaBonus = veinMastery ? (1 + VEIN_MASTERY_QTA_BONUS / 100) * oreVeinQuantityBonus : oreVeinQuantityBonus
     const qta = Math.floor(qtaRaw * qtaBonus)
+
     const hp = veinMastery ? Math.max(1, Math.floor((hpRaw * (100 - VEIN_MASTERY_HP_REDUCE)) / 100)) : hpRaw
     const armour = veinMastery
         ? Math.max(0, Math.floor((armourRaw * (100 - VEIN_MASTERY_ARMOUR_REDUCE)) / 100))

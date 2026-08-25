@@ -222,8 +222,8 @@ describe('miningFunctions', () => {
 
             const vein = searchOreVein(state, GameLocations.MountainVillage, OreTypes.Copper)
 
-            expect(vein?.qta).toBe(30)
-            expect(vein?.maxQta).toBe(30)
+            expect(vein?.qta).toBe(34) // floor ( 20base * 1.15 * 1.5 )
+            expect(vein?.maxQta).toBe(34)
             vi.restoreAllMocks()
         })
     })
