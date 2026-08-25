@@ -43,10 +43,12 @@ describe('miningFunctions', () => {
     })
 
     describe('getOreVeinsByType', () => {
-        it('creates and returns an empty array when none exist yet', () => {
+        it('returns an empty array without initializing the state when none exist yet', () => {
+            const location = GameLocationAdapter.selectEx(state.locations, LOC)
             const veins = getOreVeinsByType(state, LOC, OreTypes.Copper)
+
             expect(veins).toEqual([])
-            expect(GameLocationAdapter.selectEx(state.locations, LOC).oreVeins[OreTypes.Copper]).toBe(veins)
+            expect(location.oreVeins[OreTypes.Copper]).toBeUndefined()
         })
 
         it('returns the existing array for the ore type', () => {

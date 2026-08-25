@@ -25,7 +25,15 @@ export function selectMaxOreVeins(state: GameState, location: GameLocations): nu
     return Math.max(0, MAX_ORE_VEINS + Math.round(locationBonus))
 }
 
-export function getOreVeinsByType(state: GameState, location: GameLocations, oreType: OreTypes): OreVeinState[] {
+export function getOreVeinsByType(
+    state: GameState,
+    location: GameLocations,
+    oreType: OreTypes
+): readonly OreVeinState[] {
+    return GameLocationAdapter.selectEx(state.locations, location).oreVeins[oreType] ?? []
+}
+
+function getOrCreateOreVeinsByType(state: GameState, location: GameLocations, oreType: OreTypes): OreVeinState[] {
     const veinsMap = GameLocationAdapter.selectEx(state.locations, location).oreVeins
     const veins = veinsMap[oreType]
     if (veins) return veins
@@ -53,7 +61,7 @@ export function getCurrentOreVeinByType(
 }
 
 export function moveOreVeinPrev(state: GameState, location: GameLocations, oreType: OreTypes, veinId: string): void {
-    const veins = getOreVeinsByType(state, location, oreType)
+    const veins = getOrCreateOreVeinsByType(state, location, oreType)
     const index = veins.findIndex((w) => w.id === veinId)
     if (index <= 0) return
 
@@ -64,7 +72,7 @@ export function moveOreVeinPrev(state: GameState, location: GameLocations, oreTy
 }
 
 export function moveOreVeinNext(state: GameState, location: GameLocations, oreType: OreTypes, veinId: string): void {
-    const veins = getOreVeinsByType(state, location, oreType)
+    const veins = getOrCreateOreVeinsByType(state, location, oreType)
     const index = veins.findIndex((w) => w.id === veinId)
     if (index < 0 || index >= veins.length - 1) return
 
@@ -75,7 +83,7 @@ export function moveOreVeinNext(state: GameState, location: GameLocations, oreTy
 }
 
 export function removeOreVein(state: GameState, location: GameLocations, oreType: OreTypes, veinId: string): void {
-    const veins = getOreVeinsByType(state, location, oreType)
+    const veins = getOrCreateOreVeinsByType(state, location, oreType)
     const index = veins.findIndex((w) => w.id === veinId)
     if (index >= 0) veins.splice(index, 1)
 }
@@ -85,7 +93,7 @@ export function canSearchOreVein(state: GameState, location: GameLocations, oreT
 }
 
 export function searchOreVein(state: GameState, location: GameLocations, oreType: OreTypes): OreVeinState | undefined {
-    const veins = getOreVeinsByType(state, location, oreType)
+    const veins = getOrCreateOreVeinsByType(state, location, oreType)
     if (veins.length >= selectMaxOreVeins(state, location)) return
 
     const oreData = OreData[oreType]
