@@ -15,6 +15,7 @@ export enum ActivityTypes {
     Gathering = 'Gathering',
     Shipment = 'Shipment',
     Market = 'Market',
+    Travel = 'Travel',
 }
 export interface ActivityState {
     id: string

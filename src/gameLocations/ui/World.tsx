@@ -22,13 +22,12 @@ import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyLabel } from '../../ui/myCard/MyLabel'
 import { IconsData } from '../../icons/Icons'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { travel } from '../functions/travel'
+import { travel } from '../functions/travelUi'
 import { setSelectedLocation } from '../../ui/state/uiFunctions'
-import { selectSelectedGameLocation, selectTravelling } from '../../ui/state/uiSelectors'
-import { useUiTempStore } from '../../ui/state/uiTempStore'
+import { selectSelectedGameLocation } from '../../ui/state/uiSelectors'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
-import { selectGameLocationIds } from '../GameLocationSelectors'
+import { selectGameLocationIds, selectTravelTimer } from '../GameLocationSelectors'
 import { LocationModifierDataMap } from '../modifiers/LocationModifierData'
 import { selectLocationModifier, selectLocationModifiers } from '../modifiers/locationModifierSelectors'
 
@@ -82,7 +81,7 @@ export const Location = memo(function Location() {
     const loc = useGameStore(selectSelectedGameLocation)
     const selectedLocationData = GameLocationDataMap[loc]
     const isCurrentLocation = useGameStore(useCallback((s) => s.location === loc, [loc]))
-    const travelling = useUiTempStore(selectTravelling)
+    const travelling = useGameStore(selectTravelTimer)
 
     const onTravel = useCallback(() => {
         if (isCurrentLocation) return
@@ -97,8 +96,8 @@ export const Location = memo(function Location() {
             </CardContent>
             <CardFooter className="flex gap-2">
                 {travelling ? (
-                    travelling.location === loc ? (
-                        <TravelProgress start={travelling.start} end={travelling.end} />
+                    travelling.actId === loc ? (
+                        <TravelProgress start={travelling.from} end={travelling.to} />
                     ) : (
                         <Button disabled className="mt-4">
                             {t.Travel}

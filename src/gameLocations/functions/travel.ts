@@ -1,39 +1,37 @@
-import { ActivityAdapter } from '../../activities/ActivityState'
+import { ActivityAdapter, ActivityTypes } from '../../activities/ActivityState'
 import { removeActivityInt } from '../../activities/functions/removeActivity'
-import { setState } from '../../game/setState'
-import { setMarketItem } from '../../ui/state/uiFunctions'
-import { useUiTempStore } from '../../ui/state/uiTempStore'
+import { resetCaravanForm } from '../../caravans/functions/caravanFormFunctions'
+import { GameState } from '../../game/GameState'
+import { startTimer } from '../../timers/startTimer'
+import { Timer } from '../../timers/Timer'
+import { GameLocationAdapter } from '../GameLocationAdapter'
+import { selectTravelTimer } from '../GameLocationSelectors'
 import { GameLocations } from '../GameLocations'
 
 export const TRAVEL_TIME = 3000
 
-export const travel = (location: GameLocations) => {
-    if (useUiTempStore.getState().travelling) return
+export function startTravel(state: GameState, location: GameLocations): void {
+    if (selectTravelTimer(state)) return
+    if (!GameLocationAdapter.select(state.locations, location)) return
 
-    setState((s) => {
-        ActivityAdapter.forEach(s.activities, (act) => removeActivityInt(s, act.id))
-    })
+    ActivityAdapter.forEach(state.activities, (activity) => removeActivityInt(state, activity.id))
+    startTimer(state, TRAVEL_TIME, ActivityTypes.Travel, location)
+}
 
-    const start = Date.now()
-    useUiTempStore.setState({ travelling: { location, start, end: start + TRAVEL_TIME } })
+export function execTravel(state: GameState, timer: Timer): void {
+    if (timer.type !== ActivityTypes.Travel) return
 
-    setTimeout(() => {
-        setState((s) => {
-            s.location = location
-            s.craftingForm = {
-                recipeGroup: undefined,
-                params: [],
-                paramsValue: [],
-                result: undefined,
-                autoBuy: {},
-            }
-            s.caravanDispatchForm = {
-                toId: undefined,
-                tierId: undefined,
-                cargo: [],
-            }
-            setMarketItem(null)
-        })
-        useUiTempStore.setState({ travelling: undefined })
-    }, TRAVEL_TIME)
+    const destination = GameLocationAdapter.select(state.locations, timer.actId as GameLocations)
+    if (!destination) return
+
+    state.location = destination.id
+    state.craftingForm = {
+        recipeGroup: undefined,
+        params: [],
+        paramsValue: [],
+        result: undefined,
+        autoBuy: {},
+    }
+    resetCaravanForm(state)
+    state.ui.marketItemId = null
 }

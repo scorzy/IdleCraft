@@ -25,6 +25,7 @@ import { getCraftingIcon } from '../../crafting/selectors/getCraftingIcon'
 import { getCraftingTitle } from '../../crafting/selectors/getCraftingTitle'
 import { onEffectEnd } from '../../effects/effectsFunctions'
 import { onPlayerSkillUpListeners } from '../../experience/levelUpListeners'
+import { execTravel } from '../../gameLocations/functions/travel'
 import { execGathering } from '../../gathering/functions/execGathering'
 import { getGatheringIcon } from '../../gathering/functions/getGatheringIcon'
 import { getGatheringTitle } from '../../gathering/functions/getGatheringTitle'
@@ -158,6 +159,7 @@ function initActivities() {
     activityExecutors.set(ActivityTypes.GrowSpeedBonus, onGrowSpeedBonusEnd)
 
     activityExecutors.set(ActivityTypes.Shipment, execShipment)
+    activityExecutors.set(ActivityTypes.Travel, execTravel)
 
     activityExecutors.set(ActivityTypes.Market, execMarket)
     activityRemovers.set(ActivityTypes.Market, removeMarket)
