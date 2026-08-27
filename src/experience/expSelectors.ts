@@ -9,6 +9,9 @@ export const getLevel = (state: GameState, expType: ExpEnum, charId: string) =>
 export const getLevelExp = (level: number) =>
     Math.round((EXP_BASE_PRICE * (EXP_GROW_RATE ** level - 1)) / (EXP_GROW_RATE - 1))
 
+export const getLevelProgress = (xp: number, levelXp: number, nextLevelXp: number) =>
+    Math.floor((100 * (xp - levelXp)) / (nextLevelXp - levelXp))
+
 export const selectLevel = (expType: ExpEnum, charId: string) => (state: GameState) => getLevel(state, expType, charId)
 export const selectExp = (expType: ExpEnum, charId: string) => (state: GameState) =>
     CharacterAdapter.selectEx(state.characters, charId).skillsExp[expType] ?? 0

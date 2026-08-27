@@ -8,7 +8,7 @@ import { MyLabel } from '../../ui/myCard/MyLabel'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { ExpData } from '../ExpData'
 import { ExpEnum } from '../ExpEnum'
-import { selectExp, selectLevel, selectLevelExp, selectNextExp } from '../expSelectors'
+import { getLevelProgress, selectExp, selectLevel, selectLevelExp, selectNextExp } from '../expSelectors'
 
 export const ExperienceCard = memo(function ExperienceCard(props: { expType: ExpEnum; charId: string }) {
     const { expType, charId } = props
@@ -35,7 +35,7 @@ export const ExperienceCardUi = memo(function ExperienceCardUi(props: {
     const { title, level, xp, nextLevelXp, levelXp } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
-    const percent = Math.floor((100 * (xp - levelXp)) / (nextLevelXp - levelXp))
+    const percent = getLevelProgress(xp, levelXp, nextLevelXp)
 
     return (
         <Card>

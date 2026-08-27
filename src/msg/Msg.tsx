@@ -13,6 +13,7 @@ export interface Msg {
     Remove: string
     Level: string
     XP: string
+    Progress: string
     Crafting: string
     Gathering: string
     ItemType: string

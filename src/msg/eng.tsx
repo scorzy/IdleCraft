@@ -70,6 +70,7 @@ export const engMsg: Msg = {
     OreQta: 'Quantity',
     Level: 'Level',
     XP: 'XP',
+    Progress: 'Progress',
     MiningExp: 'Mining Level',
     WoodcuttingExp: 'Woodcutting Level',
     WoodworkingExp: 'Woodworking Level',

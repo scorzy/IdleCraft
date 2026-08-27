@@ -4,7 +4,7 @@ import { PLAYER_ID } from '../characters/charactersConst'
 import { GetInitialGameState } from '../game/InitialGameState'
 import { ExpEnum } from './ExpEnum'
 import { addExp } from './expFunctions'
-import { getLevelExp } from './expSelectors'
+import { getLevelExp, getLevelProgress } from './expSelectors'
 
 describe('Exp Functions', () => {
     test('getLevelExp 1', () => {
@@ -12,6 +12,10 @@ describe('Exp Functions', () => {
     })
     test('getLevelExp 2', () => {
         expect(getLevelExp(2)).toEqual(2200)
+    })
+    test('getLevelProgress', () => {
+        expect(getLevelProgress(500, 0, 1000)).toEqual(50)
+        expect(getLevelProgress(1000, 1000, 2200)).toEqual(0)
     })
     test('addExp', () => {
         const state = GetInitialGameState()
