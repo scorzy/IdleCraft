@@ -364,7 +364,14 @@ function ComboBoxResponsive({ children, triggerContent, selectedId, label, filte
     }
 
     return (
-        <ComboboxPrimitive.Root value={selectedId} inputValue={query} onInputValueChange={setQuery} inline={!isDesktop}>
+        <ComboboxPrimitive.Root
+            open={open}
+            onOpenChange={handleOpenChange}
+            value={selectedId}
+            inputValue={query}
+            onInputValueChange={setQuery}
+            inline={!isDesktop}
+        >
             <div>
                 {labelUi}
                 {/*  */}
