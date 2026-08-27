@@ -171,6 +171,7 @@ export const engMsg: Msg = {
     Defence: 'Defence',
     Attack: 'Attack',
     Equipments: 'Equipments',
+    QuickSlot: 'Quickslot',
     YouDied: 'You died',
 
     Archery: 'Archery',

@@ -33,4 +33,7 @@ export const SlotsData: Record<EquipSlotsEnum, SlotData> = {
     [EquipSlotsEnum.Feet]: {
         ItemType: ItemTypes.Feet,
     },
+    [EquipSlotsEnum.QuickSlot]: {
+        ItemType: ItemTypes.Potion,
+    },
 }

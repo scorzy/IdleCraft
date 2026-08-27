@@ -4,9 +4,10 @@ import { useGameStore } from '../../game/state'
 import { selectGameItem } from '../../storage/StorageSelectors'
 import { Item } from '../Item'
 import { useItemName } from '../selectors/useItemName'
-import { ItemIcon } from './ItemIcon'
+import { ItemIcon } from './ItemIcon' 
+import { twMerge } from 'tailwind-merge'
 
-export const ItemIconName = (props: { itemId: string | Item }) => {
+export const ItemIconName = (props: { itemId: string | Item; className?: string }) => {
     const { itemId } = props
 
     const item = useGameStore(
@@ -25,7 +26,7 @@ export const ItemIconName = (props: { itemId: string | Item }) => {
     if (!item) return <></>
 
     return (
-        <span className="flex items-center gap-1">
+        <span className={twMerge(props.className, 'flex items-center gap-1')}>
             <ItemIcon itemId={item.id} className="mr-2" /> {name}
         </span>
     )

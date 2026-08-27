@@ -8,4 +8,5 @@ export enum EquipSlotsEnum {
     Legs = 'Legs',
     Hands = 'Hands',
     Feet = 'Feet',
+    QuickSlot = 'QuickSlot',
 }

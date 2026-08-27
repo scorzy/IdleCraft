@@ -186,10 +186,8 @@ function alterEffects(potionData: PotionData, potionResult: PotionResult) {
     }
 }
 
-export function consumePotion(state: GameState, charId: string, itemId: string): void {
-    const item = selectGameItem(itemId)(state)
-    if (!item || !item.potionData) return
-
+export function applyPotionEffects(state: GameState, charId: string, item: Item): void {
+    if (!item.potionData) return
     for (const effect of item.potionData.effects) {
         const effectData: EffectData = {
             effect: effect.effect,
@@ -201,6 +199,13 @@ export function consumePotion(state: GameState, charId: string, itemId: string):
         }
         applyEffect(state, effectData)
     }
+}
+
+export function consumePotion(state: GameState, charId: string, itemId: string): void {
+    const item = selectGameItem(itemId)(state)
+    if (!item || !item.potionData) return
+
+    applyPotionEffects(state, charId, item)
 
     removeItem(state, itemId, 1)
 }

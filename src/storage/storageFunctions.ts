@@ -44,7 +44,7 @@ export function addItem(state: GameState, itemId: string, qta: number, location?
 
     if (qta < 0) for (const event of onItemDecreasedListeners) event(state, itemId, location, newQta)
 
-    if (isCrafted(itemId) && !isCraftItemUsed(state, itemId)) removeCraftItem(state.craftedItems, itemId)
+    removeCraftItemIfUnused(state, itemId)
 }
 
 export function isCrafted(itemId: string): boolean {
@@ -75,6 +75,10 @@ function isCraftItemUsed(state: GameState, craftItemId: string): boolean {
         return true
 
     return false
+}
+
+export function removeCraftItemIfUnused(state: GameState, itemId: string): void {
+    if (isCrafted(itemId) && !isCraftItemUsed(state, itemId)) removeCraftItem(state.craftedItems, itemId)
 }
 
 export function hasItem(state: GameState, stdItemId: string, qta: number, location?: GameLocations): boolean {

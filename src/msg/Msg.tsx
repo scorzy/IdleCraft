@@ -169,6 +169,7 @@ export interface Msg {
     Defence: string
     Attack: string
     Equipments: string
+    QuickSlot: string
     YouDied: string
 
     Archery: string

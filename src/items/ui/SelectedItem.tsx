@@ -3,6 +3,8 @@ import { PotionItemUi } from '../../alchemy/PotionItemUi'
 import { AddToCaravanUi } from '../../caravans/ui/AddToCaravanUi'
 import { equipClick } from '../../characters/characterFunctions'
 import { PLAYER_ID } from '../../characters/charactersConst'
+import { selectIsQuickSlotEquipped } from '../../characters/selectors/quickSlotSelectors'
+import { QuickSlotStorageCard } from '../../characters/ui/QuickSlotStorageCard'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { useGameStore } from '../../game/state'
@@ -24,9 +26,12 @@ import classes from './selectItem.module.css'
 export const SelectedItem = memo(function SelectedItem({ showTitle }: { showTitle?: boolean }) {
     const qta = useGameStore(getSelectedItemQta)
     const item = useGameStore(getSelectedItem)
+    const isQuickSlotEquipped = useGameStore(
+        useCallback((state) => (item ? selectIsQuickSlotEquipped(item.id, PLAYER_ID)(state) : false), [item])
+    )
     const itemName = useItemName(item)
 
-    if (qta <= 0) return
+    if (qta <= 0 && !isQuickSlotEquipped) return
     if (item === undefined) return
 
     return (
@@ -52,8 +57,11 @@ export const SelectedItemInfo = memo(function SelectedItemInfo() {
     const qta = useGameStore(getSelectedItemQta)
     const item = useGameStore(getSelectedItem)
     const isCurrentLocation = useGameStore(isSelectedItemCurrentLocation)
+    const isQuickSlotEquipped = useGameStore(
+        useCallback((state) => (item ? selectIsQuickSlotEquipped(item.id, PLAYER_ID)(state) : false), [item])
+    )
 
-    if (qta <= 0) return
+    if (qta <= 0 && !isQuickSlotEquipped) return
     if (item === undefined) return
 
     return (
@@ -64,6 +72,9 @@ export const SelectedItemInfo = memo(function SelectedItemInfo() {
                 </CardContent>
             </Card>
             {isCurrentLocation && item.equipSlot && <EquipItem />}
+            {isCurrentLocation && item.potionData && (
+                <QuickSlotStorageCard key={item.id} charId={PLAYER_ID} item={item} />
+            )}
             {isCurrentLocation && item.potionData && <PotionItemUi />}
             {isCurrentLocation && <AddToCaravanUi />}
             {isCurrentLocation && !item.unlimited && <SellItemUi />}

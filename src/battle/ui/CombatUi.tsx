@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
+import { useShallow } from 'zustand/react/shallow'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { useItemName } from '@/items/selectors/useItemName'
 import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
@@ -8,11 +9,13 @@ import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selec
 import { selectCombatAbilityById } from '../../activeAbilities/selectors/selectCombatAbilityById'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
+import { consumeQuickSlotPotionClick } from '../../characters/quickSlotFunctions'
 import {
     selectCharMainAttack,
     selectCharMainAttackIcon,
     selectCharMainAttackTimer,
 } from '../../characters/selectors/characterSelectors'
+import { selectQuickSlot, selectQuickSlots } from '../../characters/selectors/quickSlotSelectors'
 import { selectTeamsMemo } from '../../characters/selectors/selectTeams'
 import { CharCombatInfo } from '../../characters/ui/CharactersUi'
 import { AutoScroll } from '../../components/ui/autoScroll'
@@ -26,6 +29,7 @@ import { IconsData } from '../../icons/Icons'
 import { useTranslations } from '../../msg/useTranslations'
 import { collectLootUi } from '../../storage/function/collectLoot'
 import { selectGameItem } from '../../storage/StorageSelectors'
+import { PotionDataUi } from '../../items/ui/ItemInfo'
 import { selectLoot } from '../../storage/selectors/selectLoot'
 import { LootId } from '../../storage/storageTypes'
 import { MyHoverCard } from '../../ui/MyHoverCard'
@@ -35,6 +39,8 @@ import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { TimerProgressFromId } from '../../ui/progress/TimerProgress'
 import classes from './combat.module.css'
 import { RxCaretSort } from 'react-icons/rx'
+import { ItemIcon } from '../../items/ui/ItemIcon'
+import { ItemIconName } from '../../items/ui/ItemIconName'
 
 export const CombatUi = memo(function CombatUi() {
     return (
@@ -69,6 +75,9 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
 
     const name = useGameStore(useCallback((s: GameState) => charSel.Name(s), [charSel]))
     const icon = useGameStore(useCallback((s: GameState) => charSel.Icon(s), [charSel]))
+    const isEnemy = useGameStore(
+        useCallback((s: GameState) => s.characters.entries[charId]?.isEnemy ?? false, [charId])
+    )
 
     const [isAttOpen, setIsAttOpen] = useState(false)
 
@@ -83,6 +92,7 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
 
                     <MainAttack charId={charId} />
                     <CombatAbilitiesList charId={charId} />
+                    {!isEnemy && <CombatQuickSlotsList charId={charId} />}
 
                     <Collapsible open={isAttOpen} onOpenChange={setIsAttOpen} className="text-sm">
                         <CollapsibleTrigger
@@ -198,6 +208,52 @@ const CombatAbilitiesList = memo(function CombatAbilitiesList(props: { charId: s
                 <CombatAbilityBadge characterId={charId} abilityId="NormalAttack" index={0} />
             )}
         </div>
+    )
+})
+const CombatQuickSlotsList = memo(function CombatQuickSlotsList({ charId }: { charId: string }) {
+    const quickSlots = useGameStore(useShallow(selectQuickSlots(charId)))
+
+    if (quickSlots.every((quickSlot) => quickSlot === null)) return null
+
+    return (
+        <div className={classes.abilitiesList}>
+            {quickSlots.map((quickSlot, index) =>
+                quickSlot ? <CombatQuickSlot charId={charId} index={index} key={`${charId}-${index}`} /> : null
+            )}
+        </div>
+    )
+})
+const CombatQuickSlot = memo(function CombatQuickSlot({ charId, index }: { charId: string; index: number }) {
+    const quickSlot = useGameStore(
+        useCallback((state: GameState) => selectQuickSlot(index, charId)(state), [charId, index])
+    )
+    const item = useGameStore(
+        useCallback(
+            (state: GameState) => {
+                const slot = selectQuickSlot(index, charId)(state)
+                return slot ? selectGameItem(slot.itemId)(state) : undefined
+            },
+            [charId, index]
+        )
+    )
+    const onClick = useCallback(() => consumeQuickSlotPotionClick(charId, index), [charId, index])
+
+    if (!item) return null
+    if (!quickSlot || !item?.potionData) return null
+
+    return (
+        <MyHoverCard
+            trigger={
+                <Button variant="secondary" size="sm" className="gap-1 text-lg" onClick={onClick}>
+                    <ItemIcon itemId={item} />
+                    <span className="text-sm">{quickSlot.quantity ?? 1}</span>
+                </Button>
+            }
+        >
+            <ItemIconName itemId={item} className="text-lg" />
+
+            <PotionDataUi potionData={item.potionData} />
+        </MyHoverCard>
     )
 })
 const CombatAbilityBadge = memo(function CombatAbilityBadge(props: {

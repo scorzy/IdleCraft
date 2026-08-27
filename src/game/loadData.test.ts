@@ -1,4 +1,7 @@
 import { describe, expect, it } from 'vitest'
+import { PLAYER_ID } from '../characters/charactersConst'
+import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
+import { selectQuickSlots } from '../characters/selectors/quickSlotSelectors'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { loadData } from './loadData'
@@ -23,5 +26,38 @@ describe('loadData', () => {
         expect(location.id).toBe(GameLocations.StartVillage)
         expect(location.forests).toEqual({})
         expect(location.storage.entries.OakLog?.quantity).toBe(2)
+    })
+
+    it('normalizes legacy character inventories with an empty quick slot', () => {
+        const state = loadData({
+            characters: {
+                ids: [PLAYER_ID],
+                entries: { [PLAYER_ID]: { id: PLAYER_ID } },
+            },
+        })
+
+        expect(selectQuickSlots(PLAYER_ID)(state)).toEqual([null])
+        expect(state.characters.entries[PLAYER_ID]?.inventory).toEqual({})
+    })
+
+    it('moves quick slots from saves created by the previous schema into inventory', () => {
+        const state = loadData({
+            characters: {
+                ids: [PLAYER_ID],
+                entries: {
+                    [PLAYER_ID]: {
+                        id: PLAYER_ID,
+                        inventory: {},
+                        quickSlots: [{ itemId: 'C_potion', quantity: 2 }],
+                    },
+                },
+            },
+        })
+
+        expect(state.characters.entries[PLAYER_ID]?.inventory[EquipSlotsEnum.QuickSlot]).toEqual({
+            itemId: 'C_potion',
+            quantity: 2,
+        })
+        expect(state.characters.entries[PLAYER_ID]).not.toHaveProperty('quickSlots')
     })
 })
