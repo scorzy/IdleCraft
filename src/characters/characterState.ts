@@ -6,6 +6,7 @@ import { Msg } from '../msg/Msg'
 import { PerkState } from '../perks/PerkState'
 import { PerksEnum } from '../perks/perksEnum'
 import { Loot } from '../storage/storageTypes'
+import { ActiveWeaponCoating } from '../weaponCoatings/weaponCoatingTypes'
 import { CharInventory } from './inventory'
 
 export interface CharacterState {
@@ -36,4 +37,5 @@ export interface CharacterState {
     selectedAbilityId?: string
     selectedPerk?: PerksEnum
     loot?: Loot[]
+    weaponCoating?: ActiveWeaponCoating
 }

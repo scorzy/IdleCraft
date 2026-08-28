@@ -157,6 +157,36 @@ export const AlchemyItems: Record<string, Item> = {
         },
     },
 
+    VenomLeaf: {
+        id: 'VenomLeaf',
+        icon: Icons.Leaf,
+        nameId: 'VenomLeaf',
+        value: 6,
+        volume: RAW_VOLUME,
+        color: 'text-health',
+        type: ItemTypes.CraftingIngredient,
+        ingredientData: {
+            stability: 20,
+            type: IngredientTypes.Herb,
+            effects: [{ potency: EffectPotency.Low, effect: Effects.DamageRegenHealth }],
+        },
+    },
+
+    ToxicMushroom: {
+        id: 'ToxicMushroom',
+        icon: Icons.Mushroom,
+        nameId: 'ToxicMushroom',
+        value: 7,
+        volume: RAW_VOLUME,
+        color: 'text-health',
+        type: ItemTypes.CraftingIngredient,
+        ingredientData: {
+            stability: 20,
+            type: IngredientTypes.Herb,
+            effects: [{ potency: EffectPotency.Low, effect: Effects.DamageRegenHealth }],
+        },
+    },
+
     HealingFungus: {
         id: 'HealingFungus',
         icon: Icons.Mushroom,

@@ -5,6 +5,7 @@ import { CharacterAdapter } from './characterAdapter'
 import { PLAYER_ID } from './charactersConst'
 import { EquipSlotsEnum } from './equipSlotsEnum'
 import { getCharacterSelector } from './getCharacterSelector'
+import { clearWeaponCoatingIfWeaponChanged } from '../weaponCoatings/weaponCoatingFunctions'
 
 export function equipItem(
     state: GameState,
@@ -27,6 +28,8 @@ export function equipItem(
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete char.inventory[slot]
     }
+
+    clearWeaponCoatingIfWeaponChanged(state, charId)
 }
 export const equipClick = (charId: string, slot: EquipSlotsEnum, itemId: string | null = null, quantity = 1) =>
     setState((s) => equipItem(s, charId, slot, itemId, quantity))

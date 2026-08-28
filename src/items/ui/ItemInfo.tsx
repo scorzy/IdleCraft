@@ -8,6 +8,7 @@ import { Msg } from '../../msg/Msg'
 import { useTranslations } from '../../msg/useTranslations'
 import { DamageTypesData } from '../damageTypes'
 import { CraftingData, DamageData, DamageTypes, Item, PickaxeData, WeaponData, WoodAxeData } from '../Item'
+import { WeaponCoatingData } from '../../weaponCoatings/weaponCoatingTypes'
 
 export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
     const { item } = props
@@ -31,7 +32,30 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
             {item.woodAxeData && <WoodAxeDataUi woodAxeData={item.woodAxeData} />}
             {item.pickaxeData && <PickaxeDataUi pickaxeData={item.pickaxeData} />}
             {item.potionData && <PotionDataUi potionData={item.potionData} />}
+            {item.weaponCoatingData && <WeaponCoatingDataUi coatingData={item.weaponCoatingData} />}
             {item.ingredientData && <IngredientDataUi item={item} ingredientData={item.ingredientData} />}
+        </div>
+    )
+})
+
+export const WeaponCoatingDataUi = memo(function WeaponCoatingDataUi({
+    coatingData,
+}: {
+    coatingData: WeaponCoatingData
+}) {
+    const { f } = useNumberFormatter()
+    const { t, fun } = useTranslations()
+    return (
+        <div>
+            <div>
+                <span className="text-muted-foreground">{t.CoatingCharges}</span> {f(coatingData.charges)}
+            </div>
+            {coatingData.effects.map((effect) => (
+                <div key={effect.effect}>
+                    <span className="text-muted-foreground">{t.DamagePerSec}</span> {f(effect.value)}{' '}
+                    <span className="text-muted-foreground">{t.PerSecFor}</span> {fun.formatTime(effect.duration)}
+                </div>
+            ))}
         </div>
     )
 })

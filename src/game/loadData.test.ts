@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { PLAYER_ID } from '../characters/charactersConst'
-import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ActivityTypes } from '../activities/ActivityState'
-import { selectQuickSlots } from '../characters/selectors/quickSlotSelectors'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { loadData } from './loadData'

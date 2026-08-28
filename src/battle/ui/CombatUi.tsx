@@ -41,6 +41,12 @@ import classes from './combat.module.css'
 import { RxCaretSort } from 'react-icons/rx'
 import { ItemIcon } from '../../items/ui/ItemIcon'
 import { ItemIconName } from '../../items/ui/ItemIconName'
+import {
+    selectActiveWeaponCoating,
+    selectWeaponCoatingEffectRemaining,
+    selectWeaponCoatingEffects,
+} from '../../weaponCoatings/weaponCoatingSelectors'
+import { AppliedEffect } from '../../effects/types/AppliedEffect'
 
 export const CombatUi = memo(function CombatUi() {
     return (
@@ -89,6 +95,8 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
                     <CharHealth charId={charId} />
                     <CharStamina charId={charId} />
                     <CharMana charId={charId} />
+                    <ActiveWeaponCoating charId={charId} />
+                    <WeaponCoatingEffects charId={charId} />
 
                     <MainAttack charId={charId} />
                     <CombatAbilitiesList charId={charId} />
@@ -113,6 +121,59 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
                 </div>
             </CardContent>
         </Card>
+    )
+})
+
+const ActiveWeaponCoating = memo(function ActiveWeaponCoating({ charId }: { charId: string }) {
+    const coating = useGameStore(useCallback(selectActiveWeaponCoating(charId), [charId]))
+    const { f } = useNumberFormatter()
+    const { t } = useTranslations()
+    if (!coating) return null
+
+    return (
+        <div className="grid grid-flow-col items-center justify-start gap-1 text-sm">
+            {IconsData[coating.data.iconId]}
+            <span>{t[coating.data.nameId]}</span>
+            <span>
+                {t.CoatingCharges}: {f(coating.remainingCharges)}
+            </span>
+        </div>
+    )
+})
+
+const WeaponCoatingEffects = memo(function WeaponCoatingEffects({ charId }: { charId: string }) {
+    const selectEffects = useCallback(selectWeaponCoatingEffects(charId), [charId])
+    const effects = useGameStore(useShallow(selectEffects))
+    if (effects.length === 0) return null
+
+    return (
+        <div className="grid gap-1">
+            {effects.map((effect) => (
+                <WeaponCoatingEffect key={effect.id} effect={effect} />
+            ))}
+        </div>
+    )
+})
+
+const WeaponCoatingEffect = memo(function WeaponCoatingEffect({ effect }: { effect: AppliedEffect }) {
+    const { f } = useNumberFormatter()
+    const { t, fun } = useTranslations()
+    const remaining = useGameStore(selectWeaponCoatingEffectRemaining(effect.id))
+    const color =
+        effect.effect === 'DamageRegenMana'
+            ? 'text-mana'
+            : effect.effect === 'DamageRegenStamina'
+              ? 'text-stamina'
+              : 'text-health'
+    return (
+        <div className={`${color} grid grid-flow-col items-center justify-start gap-1 text-sm`}>
+            {IconsData[effect.iconId]}
+            <span>{t[effect.nameId]}</span>
+            <span>
+                {f(Math.abs(effect.value ?? 0))} {t.PerSec}
+            </span>
+            <span className="text-muted-foreground">({fun.formatTime(remaining)})</span>
+        </div>
     )
 })
 

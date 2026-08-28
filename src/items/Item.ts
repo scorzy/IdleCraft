@@ -6,6 +6,7 @@ import { ExpEnum } from '../experience/ExpEnum'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 import { ItemsMaterials } from './materials/ItemsMaterials'
+import { WeaponCoatingData } from '../weaponCoatings/weaponCoatingTypes'
 
 export enum ItemTypes {
     Log = 'Log',
@@ -90,6 +91,7 @@ export interface Item {
     solventData?: SolventData
     flaskData?: PotionFlaskData
     potionData?: PotionData
+    weaponCoatingData?: WeaponCoatingData
     unlimited?: boolean
 }
 export interface ItemFilter {

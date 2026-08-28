@@ -13,6 +13,7 @@ import { selectTranslations } from '../../msg/useTranslations'
 import { AbilityParams, ActiveAbility } from '../ActiveAbility'
 import { AbilitiesEnum } from '../abilitiesEnum'
 import { sumDamage } from '../functions/sumDamage'
+import { onWeaponHit } from '../../weaponCoatings/weaponCoatingFunctions'
 
 export class NormalAttack implements ActiveAbility {
     id = AbilitiesEnum.NormalAttack
@@ -67,5 +68,7 @@ export class NormalAttack implements ActiveAbility {
             source,
             targets,
         })
+
+        onWeaponHit(state, characterId, enemyId)
     }
 }

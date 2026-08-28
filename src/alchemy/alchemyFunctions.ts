@@ -23,6 +23,8 @@ import {
 import { oppositeEffects, potionItemData } from './alchemyData'
 import { getPotionEffect, isEffectDiscovered } from './alchemySelectors'
 import { PotionData, PotionResult } from './alchemyTypes'
+import { DEFAULT_POISON_CHARGES, DEFAULT_POISON_DURATION } from '../weaponCoatings/weaponCoatingConst'
+import { isWeaponCoatingEffect, WeaponCoatingKind } from '../weaponCoatings/weaponCoatingTypes'
 
 function getPotionValue(potionData: PotionData): number {
     let total = 0
@@ -116,6 +118,21 @@ export function generatePotion(
             volume: FINISHED_VOLUME,
             potionData,
         }
+
+        const coatingEffects = potionData.effects.filter((effect) => isWeaponCoatingEffect(effect.effect))
+        if (coatingEffects.length > 0) {
+            item.weaponCoatingData = {
+                kind: WeaponCoatingKind.Poison,
+                charges: DEFAULT_POISON_CHARGES,
+                effects: coatingEffects.map((effect) => ({
+                    effect: effect.effect,
+                    value: effect.value,
+                    duration: effect.duration || DEFAULT_POISON_DURATION,
+                })),
+                nameId: item.nameId,
+                iconId: itemData?.icon ?? Icons.Poison,
+            }
+        }
     }
 
     return {
@@ -195,7 +212,7 @@ export function applyPotionEffects(state: GameState, charId: string, item: Item)
             iconId: item.icon,
             duration: effect.duration,
             target: charId,
-            value: effect.value,
+            value: isWeaponCoatingEffect(effect.effect) ? -effect.value : effect.value,
         }
         applyEffect(state, effectData)
     }

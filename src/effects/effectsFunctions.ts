@@ -4,7 +4,7 @@ import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 import { startTimer } from '../timers/startTimer'
-import { Timer } from '../timers/Timer'
+import { Timer, TimerAdapter } from '../timers/Timer'
 import { getUniqueId } from '../utils/getUniqueId'
 import { AppliedEffect, AppliedEffectAdapter } from './types/AppliedEffect'
 import { Effects } from './types/Effects'
@@ -16,10 +16,11 @@ export interface EffectData {
     duration?: number
     target?: string
     value?: number
+    sourceId?: string
 }
 
 export function applyInstantEffect(state: GameState, data: EffectData): void {
-    if (!(data.target && data.value && data.value > 0)) return
+    if (!(data.target && data.value && data.value !== 0)) return
 
     switch (data.effect) {
         case Effects.Health:
@@ -32,19 +33,40 @@ export function applyInstantEffect(state: GameState, data: EffectData): void {
             addMana(state, data.target, data.value)
             break
         case Effects.DamageHealth:
-            addHealth(state, data.target, data.value)
+            addHealth(state, data.target, -data.value)
             break
         case Effects.DamageStamina:
-            addStamina(state, data.target, data.value)
+            addStamina(state, data.target, -data.value)
             break
         case Effects.DamageMana:
-            addMana(state, data.target, data.value)
+            addMana(state, data.target, -data.value)
             break
     }
 }
 export function applyEffect(state: GameState, data: EffectData): void {
     if (!data.duration || data.duration <= 0) {
         applyInstantEffect(state, data)
+        return
+    }
+
+    const existing = data.sourceId
+        ? AppliedEffectAdapter.find(
+              state.effects,
+              (effect) =>
+                  effect.sourceId === data.sourceId && effect.effect === data.effect && effect.target === data.target
+          )
+        : undefined
+
+    if (existing) {
+        existing.duration = data.duration
+        existing.nameId = data.nameId
+        existing.iconId = data.iconId
+        existing.value = data.value
+
+        TimerAdapter.findMany(state.timers, (timer) => timer.actId === existing.id).forEach((timer) =>
+            TimerAdapter.remove(state.timers, timer.id)
+        )
+        startTimer(state, data.duration, ActivityTypes.Effect, existing.id)
         return
     }
 
@@ -56,6 +78,7 @@ export function applyEffect(state: GameState, data: EffectData): void {
         iconId: data.iconId,
         target: data.target,
         value: data.value,
+        sourceId: data.sourceId,
     }
 
     startTimer(state, data.duration, ActivityTypes.Effect, appliedEffect.id)

@@ -9,6 +9,8 @@ const forestResources: Resource[] = [
     { id: 'GreenFlower', rarity: Rarity.Common },
     { id: 'BitterRoot', rarity: Rarity.Common },
     { id: 'Nightshade', rarity: Rarity.Common },
+    { id: 'VenomLeaf', rarity: Rarity.Uncommon },
+    { id: 'ToxicMushroom', rarity: Rarity.Rare },
     { id: 'VitalHerb', rarity: Rarity.Uncommon },
     { id: 'ManaBloom', rarity: Rarity.Uncommon },
     { id: 'StaminaLeaf', rarity: Rarity.Uncommon },

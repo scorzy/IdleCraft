@@ -365,6 +365,13 @@ export const engMsg: Msg = {
     UnstablePotionDesc: 'Reduced efficiency.',
     ChaoticPotionDesc: 'Reduced efficiency and less effects.',
     UnknownPotionDesc: 'Unknown potion.',
+    ApplyCoating: 'Apply to weapon',
+    NoWeaponToCoat: 'Equip a weapon first.',
+    WeaponCoating: 'Weapon Coating',
+    CoatingCharges: 'Charges',
+    CoatingEffectiveness: 'Effectiveness',
+    DamagePerSec: 'Damage per second',
+    ActiveCoating: 'Active Coating',
 
     startVillageName: 'Start Village',
     startVillageDesc: 'Peaceful village surrounded by nature.',
@@ -410,6 +417,8 @@ export const engMsg: Msg = {
     ManaSpore: 'Mana Spore',
     BitterRoot: 'Bitter Root',
     Nightshade: 'Nightshade',
+    VenomLeaf: 'Venom Leaf',
+    ToxicMushroom: 'Toxic Mushroom',
     DamageStaminaPotion: 'Stamina Poison',
     FarmBoarTutorialName: 'Boars at the Family Farm',
     FarmBoarTutorialDescription:

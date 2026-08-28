@@ -11,6 +11,7 @@ export interface AppliedEffect {
     iconId: Icons
     target?: string
     value?: number
+    sourceId?: string
 }
 class AppliedEffectAdapterInt extends AbstractEntityAdapter<AppliedEffect> {
     getId(data: AppliedEffect): string {

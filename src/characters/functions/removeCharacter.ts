@@ -6,8 +6,17 @@ import { removeTimer } from '../../timers/removeTimer'
 import { TimerAdapter } from '../../timers/Timer'
 import { CharacterAdapter } from '../characterAdapter'
 import { PLAYER_ID } from '../charactersConst'
+import { AppliedEffectAdapter } from '../../effects/types/AppliedEffect'
 
 export function removeCharacter(state: GameState, characterId: string): void {
+    const effects = AppliedEffectAdapter.findMany(state.effects, (effect) => effect.target === characterId)
+    effects.forEach((effect) => {
+        AppliedEffectAdapter.remove(state.effects, effect.id)
+        TimerAdapter.findMany(state.timers, (timer) => timer.actId === effect.id).forEach((timer) =>
+            removeTimer(state, timer.id)
+        )
+    })
+
     if (characterId === PLAYER_ID) {
         killPlayer(state)
         return

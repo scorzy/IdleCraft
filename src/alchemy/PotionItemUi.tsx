@@ -28,9 +28,7 @@ const PotionItemUiInt = memo(function PotionItemUiInt({
     potionData: PotionData
 }) {
     const { t } = useTranslations()
-    const onClick = useCallback(() => {
-        if (potionData) consumePotionClick(PLAYER_ID, itemId)
-    }, [potionData, itemId])
+    const onUse = useCallback(() => consumePotionClick(PLAYER_ID, itemId), [itemId])
 
     return (
         <Card>
@@ -39,7 +37,7 @@ const PotionItemUiInt = memo(function PotionItemUiInt({
                 <PotionDataUi potionData={potionData} />
             </CardContent>
             <CardFooter>
-                <Button onClick={onClick}>{t.Use}</Button>
+                <Button onClick={onUse}>{t.Use}</Button>
             </CardFooter>
         </Card>
     )

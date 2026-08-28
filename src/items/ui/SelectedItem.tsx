@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react'
 import { PotionItemUi } from '../../alchemy/PotionItemUi'
+import { WeaponCoatingItemUi } from '../../weaponCoatings/WeaponCoatingItemUi'
 import { AddToCaravanUi } from '../../caravans/ui/AddToCaravanUi'
 import { equipClick } from '../../characters/characterFunctions'
 import { PLAYER_ID } from '../../characters/charactersConst'
@@ -76,6 +77,7 @@ export const SelectedItemInfo = memo(function SelectedItemInfo() {
                 <QuickSlotStorageCard key={item.id} charId={PLAYER_ID} item={item} />
             )}
             {isCurrentLocation && item.potionData && <PotionItemUi />}
+            {isCurrentLocation && item.weaponCoatingData && <WeaponCoatingItemUi />}
             {isCurrentLocation && <AddToCaravanUi />}
             {isCurrentLocation && !item.unlimited && <SellItemUi />}
         </>

@@ -359,6 +359,13 @@ export interface Msg {
     UnstablePotionDesc: string
     ChaoticPotionDesc: string
     UnknownPotionDesc: string
+    ApplyCoating: string
+    NoWeaponToCoat: string
+    WeaponCoating: string
+    CoatingCharges: string
+    CoatingEffectiveness: string
+    DamagePerSec: string
+    ActiveCoating: string
 
     startVillageName: string
     startVillageDesc: string
@@ -404,6 +411,8 @@ export interface Msg {
     ManaSpore: string
     BitterRoot: string
     Nightshade: string
+    VenomLeaf: string
+    ToxicMushroom: string
     DamageStaminaPotion: string
     FarmBoarTutorialName: string
     FarmBoarTutorialDescription: string
