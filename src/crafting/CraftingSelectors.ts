@@ -9,7 +9,7 @@ import { selectItemQta } from '../storage/StorageSelectors'
 import { selectCraftItemId } from '../storage/storageFunctions'
 import { isCrafting } from './CraftingIterfaces'
 import { getCraftingPurchasePlan } from './functions/autoBuyCrafting'
-import { RecipeGroups, RecipeItem } from './RecipeInterfaces'
+import { RecipeGroups, RecipeItem, RecipeParameterValue, RecipeResult } from './RecipeInterfaces'
 import { getDefaultRecipeGroup } from './RecipeGroupsData'
 import { recipes } from './Recipes'
 
@@ -24,19 +24,32 @@ export const selectRecipeParams = (state: GameState) => state.craftingForm.param
 export const selectRecipeItemValue = (recipeParamId: string) => (state: GameState) =>
     state.craftingForm.paramsValue.find((p) => p.id === recipeParamId)
 
-export const selectRecipeResult = (state: GameState) => state.craftingForm.result?.results
-export const selectRecipeReq = (state: GameState) => state.craftingForm.result?.requirements
+export const getRecipeResult = (
+    state: GameState,
+    recipeId: string,
+    paramsValue: RecipeParameterValue[]
+): RecipeResult | undefined => recipes.get(recipeId)?.getResult(state, paramsValue)
+
+export const selectCraftingFormResult = memoize((state: GameState) =>
+    getRecipeResult(state, state.recipeId, state.craftingForm.paramsValue)
+)
+
+export const selectRecipeResult = (state: GameState) => selectCraftingFormResult(state)?.results
+export const selectRecipeReq = (state: GameState) => selectCraftingFormResult(state)?.requirements
 export const selectCraftingAutoBuy = (state: GameState) => state.craftingForm.autoBuy
 export const selectRecipeType = (s: GameState) => s.ui.recipeType
 export const selectRecipeGroup = (s: GameState): RecipeGroups | undefined =>
     recipes.get(s.recipeId)?.recipeGroup ?? s.craftingForm.recipeGroup ?? getDefaultRecipeGroup(s.ui.recipeType)
 export const canCraft = (s: GameState) => {
-    const result = s.craftingForm.result
+    const result = selectCraftingFormResult(s)
     if (!result?.results.some((item) => item.craftedItem || item.stdItemId)) return false
-    return getCraftingPurchasePlan(s, result, s.craftingForm.autoBuy).canCraft
+    return selectCraftingPurchasePlan(s).canCraft
 }
 
-export const selectCraftTime = (s: GameState) => s.craftingForm.result?.time
+export const selectCraftTime = (s: GameState) => selectCraftingFormResult(s)?.time
+export const selectCraftingPurchasePlan = memoize((state: GameState) =>
+    getCraftingPurchasePlan(state, selectCraftingFormResult(state), state.craftingForm.autoBuy)
+)
 
 export const selectCurrentCrafting = (s: GameState) => {
     const crafting = s.activities

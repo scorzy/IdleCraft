@@ -52,7 +52,6 @@ describe('RecipeFunctions', () => {
         expect(state.craftingForm.recipeGroup).toBe(RecipeGroups.Armours)
         expect(state.craftingForm.params).toEqual([])
         expect(state.craftingForm.paramsValue).toEqual([])
-        expect(state.craftingForm.result).toBeUndefined()
     })
 
     it('enables auto buy when selecting a purchasable ingredient that is not available', () => {

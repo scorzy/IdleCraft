@@ -2,25 +2,24 @@ import { ActivityTypes } from '../../activities/ActivityState'
 import { makeAddActivity } from '../../activities/functions/makeAddActivity'
 import { GameState } from '../../game/GameState'
 import { setState } from '../../game/setState'
-import { RecipeParameterValue, RecipeResult } from '../RecipeInterfaces'
+import { RecipeParameterValue } from '../RecipeInterfaces'
+import { getRecipeResult } from '../CraftingSelectors'
 
 interface CraftingData {
     recipeId: string
     paramsValue: RecipeParameterValue[]
-    result: RecipeResult
     autoBuy: Record<string, boolean>
 }
 
 const makeCrafting = (data: CraftingData) => makeAddActivity(ActivityTypes.Crafting, data)
 
 const addCrafting = (state: GameState) => {
-    if (!state.craftingForm.result) return state
+    if (!getRecipeResult(state, state.recipeId, state.craftingForm.paramsValue)) return state
 
     const data: CraftingData = {
         recipeId: state.recipeId,
-        paramsValue: state.craftingForm.paramsValue,
-        result: state.craftingForm.result,
-        autoBuy: state.craftingForm.autoBuy,
+        paramsValue: state.craftingForm.paramsValue.map((param) => ({ ...param })),
+        autoBuy: { ...state.craftingForm.autoBuy },
     }
 
     makeCrafting(data)(state)

@@ -6,7 +6,7 @@ import { BattleLog } from '../battleLog/battleLogInterfaces'
 import { CaravanTierId, RouteConfig } from '../caravans/CaravanConst'
 import { Shipment } from '../caravans/ShipmentState'
 import { CharacterState } from '../characters/characterState'
-import { RecipeGroups, RecipeParameter, RecipeParameterValue, RecipeResult } from '../crafting/RecipeInterfaces'
+import { RecipeGroups, RecipeParameter, RecipeParameterValue } from '../crafting/RecipeInterfaces'
 import { AppliedEffect } from '../effects/types/AppliedEffect'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { LocationModifier } from '../gameLocations/modifiers/LocationModifier'
@@ -67,7 +67,6 @@ export interface GameState {
         recipeGroup: RecipeGroups | undefined
         params: RecipeParameter[]
         paramsValue: RecipeParameterValue[]
-        result: RecipeResult | undefined
         autoBuy: Record<string, boolean>
     }
     characters: InitialState<CharacterState>

@@ -15,7 +15,6 @@ export const viewCrafting = (state: GameState, activity: ActivityState) => {
 
     state.craftingForm.recipeGroup = recipe.recipeGroup
     state.craftingForm.paramsValue = structuredClone(original(activity.paramsValue))
-    state.craftingForm.result = structuredClone(original(activity.result))
     state.craftingForm.params = recipe.getParameters(state)
     state.craftingForm.autoBuy = activity.autoBuy ? structuredClone(original(activity.autoBuy)) : {}
 

@@ -1,10 +1,9 @@
 import { ActivityState, ActivityTypes } from '../activities/ActivityState'
-import { RecipeParameterValue, RecipeResult } from './RecipeInterfaces'
+import { RecipeParameterValue } from './RecipeInterfaces'
 
 export type Crafting = ActivityState & {
     recipeId: string
     paramsValue: RecipeParameterValue[]
-    result: RecipeResult
     autoBuy?: Record<string, boolean>
 }
 export function isCrafting(act: ActivityState | Crafting): act is Crafting {

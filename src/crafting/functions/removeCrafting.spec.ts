@@ -16,17 +16,6 @@ const crafting: Crafting = {
             itemId: 'item-1',
         },
     ],
-    result: {
-        time: 1e3,
-        requirements: [],
-        results: [
-            {
-                id: 'item-1',
-                qta: 1,
-                stdItemId: 'item-1',
-            },
-        ],
-    },
 }
 
 describe('removeCrafting', () => {

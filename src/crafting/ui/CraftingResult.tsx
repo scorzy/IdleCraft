@@ -1,6 +1,5 @@
-import { memo, ReactNode, useCallback, useMemo } from 'react'
+import { memo, ReactNode, useCallback } from 'react'
 import { AlertCircleIcon } from 'lucide-react'
-import { memoize } from 'proxy-memoize'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { useItemName } from '@/items/selectors/useItemName'
@@ -9,7 +8,6 @@ import { isPotionItem } from '../../alchemy/PotionCraftingResult'
 import { PotionResultUi } from '../../alchemy/PotionResultUi'
 import { CardContent } from '../../components/ui/card'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
 import { Icons, IconsData } from '../../icons/Icons'
 import { Item } from '../../items/Item'
@@ -19,8 +17,8 @@ import { ItemInfo } from '../../items/ui/ItemInfo'
 import { useTranslations } from '../../msg/useTranslations'
 import { selectGameItem, selectItemQta } from '../../storage/StorageSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { selectCraftingAutoBuy, selectResultQta } from '../CraftingSelectors'
-import { getCraftingPurchasePlan, CraftingPurchaseLine } from '../functions/autoBuyCrafting'
+import { selectCraftingAutoBuy, selectCraftingPurchasePlan, selectResultQta } from '../CraftingSelectors'
+import { CraftingPurchaseLine } from '../functions/autoBuyCrafting'
 import { RecipeItem, RecipeItemReq } from '../RecipeInterfaces'
 
 export const CraftingResult = memo(function CraftingResult({ result }: { result: RecipeItem | undefined }) {
@@ -80,14 +78,7 @@ export const CraftingResultHaveQta = memo(function CraftingResultHaveQta(props: 
 export const CraftingReq = memo(function CraftingReq({ req }: { req: RecipeItemReq[] | undefined }) {
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
-    const selector = useMemo(
-        () =>
-            memoize((state: GameState) =>
-                getCraftingPurchasePlan(state, state.craftingForm.result, state.craftingForm.autoBuy)
-            ),
-        []
-    )
-    const plan = useGameStore(selector)
+    const plan = useGameStore(selectCraftingPurchasePlan)
     const autoBuy = useGameStore(selectCraftingAutoBuy)
     const gold = useGameStore((state) => state.gold)
 

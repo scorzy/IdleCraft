@@ -26,7 +26,6 @@ export function changeRecipeState(state: GameState, recipeId: string | null, rec
         recipeGroup,
         paramsValue: [],
         params: [],
-        result: undefined,
         autoBuy: {},
     }
 
@@ -34,13 +33,10 @@ export function changeRecipeState(state: GameState, recipeId: string | null, rec
     if (!recipe) return
 
     const params = recipe.getParameters(state)
-    const result = recipe.getResult(state, [])
-
     state.craftingForm = {
         recipeGroup,
         paramsValue: [],
         params,
-        result,
         autoBuy: {},
     }
 }
@@ -68,7 +64,6 @@ export const setRecipeItemParam = (state: GameState, id: string, paramValue: str
     const result = recipe.getResult(state, paramsValue)
 
     state.craftingForm.paramsValue = paramsValue
-    state.craftingForm.result = result
 
     const requirementIds = new Set(result?.requirements.map((requirement) => requirement.itemId))
     for (const itemId of Object.keys(state.craftingForm.autoBuy))

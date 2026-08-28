@@ -159,7 +159,6 @@ export const InitialGameState: GameState = {
         recipeGroup: undefined,
         params: [],
         paramsValue: [],
-        result: undefined,
         autoBuy: {},
     },
     characters: {

@@ -29,7 +29,6 @@ export function execTravel(state: GameState, timer: Timer): void {
         recipeGroup: undefined,
         params: [],
         paramsValue: [],
-        result: undefined,
         autoBuy: {},
     }
     resetCaravanForm(state)

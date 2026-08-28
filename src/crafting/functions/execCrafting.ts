@@ -6,6 +6,7 @@ import { GameState } from '../../game/GameState'
 import { addItem, removeItem, saveCraftItem } from '../../storage/storageFunctions'
 import { Timer } from '../../timers/Timer'
 import { isCrafting } from '../CraftingIterfaces'
+import { getRecipeResult } from '../CraftingSelectors'
 import { RecipeData } from '../RecipeData'
 import { recipes } from '../Recipes'
 import { isCraftable } from '../selectors/canCraft'
@@ -24,7 +25,8 @@ export const execCrafting = makeExecActivity((state: GameState, timer: Timer) =>
 
     const recipe = recipes.getEx(data.recipeId)
 
-    const craftResult = data.result
+    const craftResult = getRecipeResult(state, data.recipeId, data.paramsValue)
+    if (!craftResult) return ActivityStartResult.NotPossible
     if (!purchaseCraftingRequirements(state, craftResult, data.autoBuy ?? {})) return ActivityStartResult.NotPossible
     if (!isCraftable(state, craftResult)) return ActivityStartResult.NotPossible
 
@@ -40,7 +42,7 @@ export const execCrafting = makeExecActivity((state: GameState, timer: Timer) =>
 
     addExp(state, RecipeData[recipe.type].expType, 10)
 
-    if (recipe.afterCrafting) recipe.afterCrafting(state, data.paramsValue, data.result)
+    if (recipe.afterCrafting) recipe.afterCrafting(state, data.paramsValue, craftResult)
 
     return ActivityStartResult.Ended
 })
