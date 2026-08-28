@@ -82,4 +82,23 @@ describe('stateKeyMinifier', () => {
 
         expect(() => restoreStateKeys(input)).not.toThrow()
     })
+
+    it('round-trips adapter-shaped locations without changing their structure', () => {
+        const input = {
+            locations: {
+                ids: ['village'],
+                entries: {
+                    village: {
+                        id: 'village',
+                        caravanSlots: 2,
+                        storage: { ids: ['log'], entries: { log: { itemId: 'OakLog', quantity: 3 } } },
+                        forests: { Oak: { qta: 2, hp: 100 } },
+                        oreVeins: { Copper: [] },
+                    },
+                },
+            },
+        }
+
+        expect(restoreStateKeys(minifyStateKeys(input))).toEqual(input)
+    })
 })

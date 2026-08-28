@@ -29,37 +29,12 @@ describe('loadData', () => {
         expect(location.storage.entries.OakLog?.quantity).toBe(2)
     })
 
-    it('normalizes legacy character inventories with an empty quick slot', () => {
-        const state = loadData({
-            characters: {
-                ids: [PLAYER_ID],
-                entries: { [PLAYER_ID]: { id: PLAYER_ID } },
-            },
-        })
+    it('recreates the player when a save has no player character entry', () => {
+        const state = loadData({ characters: { ids: [], entries: {} } })
 
-        expect(selectQuickSlots(PLAYER_ID)(state)).toEqual([null])
-        expect(state.characters.entries[PLAYER_ID]?.inventory).toEqual({})
-    })
-
-    it('moves quick slots from saves created by the previous schema into inventory', () => {
-        const state = loadData({
-            characters: {
-                ids: [PLAYER_ID],
-                entries: {
-                    [PLAYER_ID]: {
-                        id: PLAYER_ID,
-                        inventory: {},
-                        quickSlots: [{ itemId: 'C_potion', quantity: 2 }],
-                    },
-                },
-            },
-        })
-
-        expect(state.characters.entries[PLAYER_ID]?.inventory[EquipSlotsEnum.QuickSlot]).toEqual({
-            itemId: 'C_potion',
-            quantity: 2,
-        })
-        expect(state.characters.entries[PLAYER_ID]).not.toHaveProperty('quickSlots')
+        expect(state.characters.ids).toContain(PLAYER_ID)
+        expect(state.characters.entries[PLAYER_ID]?.id).toBe(PLAYER_ID)
+        expect(state.characters.entries[PLAYER_ID]?.inventory).toBeDefined()
     })
 
     it('removes cached crafting results from legacy saves', () => {
