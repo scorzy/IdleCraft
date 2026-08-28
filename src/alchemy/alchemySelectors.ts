@@ -44,11 +44,11 @@ export function getPotionEffect(
         value = potencies.reduce((sum, potency) => {
             switch (potency) {
                 case EffectPotency.Low:
-                    return sum + 1
-                case EffectPotency.Medium:
                     return sum + 2
-                case EffectPotency.High:
+                case EffectPotency.Medium:
                     return sum + 3
+                case EffectPotency.High:
+                    return sum + 4
             }
         }, 0)
 
