@@ -43,9 +43,8 @@ export const SaveImportDialog = memo(function SaveImportDialog() {
             await importFromData(data)
         } catch {
             setError(t.SaveImportError)
-        } finally {
-            setLoading(false)
         }
+        setLoading(false)
     }
 
     const onFileSelected = async (file: File): Promise<void> => {
@@ -73,10 +72,9 @@ export const SaveImportDialog = memo(function SaveImportDialog() {
             await onFileSelected(file)
         } catch {
             setError(t.SaveImportError)
-        } finally {
-            setLoading(false)
-            event.target.value = ''
         }
+        setLoading(false)
+        event.target.value = ''
     }
 
     const onDrop = async (event: React.DragEvent<HTMLDivElement>) => {
@@ -92,9 +90,8 @@ export const SaveImportDialog = memo(function SaveImportDialog() {
             await onFileSelected(file)
         } catch {
             setError(t.SaveImportError)
-        } finally {
-            setLoading(false)
         }
+        setLoading(false)
     }
 
     return (

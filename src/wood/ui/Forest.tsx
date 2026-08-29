@@ -49,7 +49,7 @@ const ForestQta = memo(function ForestQta() {
     const treePercent = Math.floor((100 * qta) / def.qta)
     const selectMaxTreeBonusMemo = useMemo(
         () => memoize((s: GameState) => selectForestMaxTreeList(s, woodType, location)),
-        [location]
+        [woodType, location]
     )
 
     return (

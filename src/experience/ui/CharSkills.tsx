@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react'
+import { memo, useState } from 'react'
 import { TextInput } from '../../components/ui/textInput'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
@@ -21,8 +21,6 @@ export const CharSkills = memo(function CharSkills() {
     const charId = useGameStore(selectSelectedCharId)
     const { t } = useTranslations()
     const [search, setSearch] = useState('')
-
-    useEffect(() => setSearch(''), [charId])
 
     const visibleSkills = skills.filter((skill) => skillMatchesSearch(t[ExpData[skill].nameId], search))
 

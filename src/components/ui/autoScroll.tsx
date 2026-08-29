@@ -25,6 +25,7 @@ export const AutoScroll = ({
     const prevWasAtBottomRef = useRef(false)
     const prevLastIdRef = useRef<string | undefined>(undefined)
 
+    // oxlint-disable-next-line react/incompatible-library
     const virtualizer = useVirtualizer({
         count: totalCount,
         getScrollElement: () => parentRef.current,
@@ -72,6 +73,7 @@ export const AutoScroll = ({
         // store current lastId for next comparison (already handled by effect above, but keep for clarity)
         prevLastIdRef.current = lastId
         // Note: do NOT update prevWasAtBottomRef here — it's updated by the scroll handler above
+        // oxlint-disable-next-line react-hooks/exhaustive-deps
     }, [lastId, autoscroll, virtualizer.getTotalSize(), totalCount])
 
     return (

@@ -45,9 +45,8 @@ export const SaveExportDialog = memo(function SaveExportDialog() {
             setStats({ uncompressedBytes: result.uncompressedBytes, compressedBytes: result.compressedBytes })
         } catch {
             setError(t.SaveExportError)
-        } finally {
-            setLoading(false)
         }
+        setLoading(false)
     }
 
     const onCopy = async () => {
