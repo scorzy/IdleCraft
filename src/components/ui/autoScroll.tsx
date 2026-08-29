@@ -32,6 +32,7 @@ export const AutoScroll = ({
         estimateSize,
         overscan: 5,
     })
+    const totalSize = virtualizer.getTotalSize()
 
     // keep `prevWasAtBottomRef` updated from user actions (scroll/resize)
     useEffect(() => {
@@ -73,12 +74,11 @@ export const AutoScroll = ({
         // store current lastId for next comparison (already handled by effect above, but keep for clarity)
         prevLastIdRef.current = lastId
         // Note: do NOT update prevWasAtBottomRef here — it's updated by the scroll handler above
-        // oxlint-disable-next-line react-hooks/exhaustive-deps
-    }, [lastId, autoscroll, virtualizer.getTotalSize(), totalCount])
+    }, [lastId, autoscroll, totalSize])
 
     return (
         <div ref={parentRef} className={cn(classes.container, className)}>
-            <div className={classes.container2} style={{ height: `${virtualizer.getTotalSize()}px` }}>
+            <div className={classes.container2} style={{ height: `${totalSize}px` }}>
                 {virtualizer.getVirtualItems().map((virtualRow) => (
                     <div
                         key={virtualRow.key}

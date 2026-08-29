@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { GiRock } from 'react-icons/gi'
 import { useShallow } from 'zustand/react/shallow'
 import { Badge } from '../../components/ui/badge'
@@ -30,7 +30,7 @@ export const QuickSlotStorageCard = memo(function QuickSlotStorageCard({
     index,
 }: QuickSlotStorageCardProps) {
     if (item === undefined && index === undefined) return null
-    return <QuickSlotStorageEditor charId={charId} item={item} index={index} />
+    return <QuickSlotStorageEditor key={`${item?.id ?? ''}:${index ?? ''}`} charId={charId} item={item} index={index} />
 })
 
 type QuickSlotStorageEditorProps = {
@@ -47,11 +47,12 @@ const QuickSlotStorageEditor = memo(function QuickSlotStorageEditor({
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     const quickSlots = useGameStore(useShallow(selectQuickSlots(charId)))
-    const [slotIndex, setSlotIndex] = useState(() => {
+    const [slotIndexState, setSlotIndex] = useState(() => {
         if (index !== undefined) return index
         const equippedIndex = item ? quickSlots.findIndex((slot) => slot?.itemId === item.id) : -1
         return equippedIndex >= 0 ? equippedIndex : 0
     })
+    const slotIndex = Math.min(slotIndexState, Math.max(quickSlots.length - 1, 0))
     const equipped = useGameStore(
         useCallback((state: GameState) => selectQuickSlot(slotIndex, charId)(state), [charId, slotIndex])
     )
@@ -77,19 +78,6 @@ const QuickSlotStorageEditor = memo(function QuickSlotStorageEditor({
     const [itemId, setItemId] = useState<string | null>(initialItemId)
     const [quantity, setQuantity] = useState(item && equipped?.itemId !== item.id ? 1 : (equipped?.quantity ?? 1))
 
-    useEffect(() => {
-        if (index !== undefined) {
-            setSlotIndex(index)
-            return
-        }
-        setSlotIndex((current) => Math.min(current, Math.max(quickSlots.length - 1, 0)))
-    }, [index, quickSlots.length])
-
-    useEffect(() => {
-        setItemId(item?.id ?? equipped?.itemId ?? null)
-        setQuantity(item && equipped?.itemId !== item.id ? 1 : (equipped?.quantity ?? 1))
-    }, [equipped, item?.id])
-
     const selectedPotion = useGameStore(
         useCallback((state: GameState) => (itemId ? selectGameItem(itemId)(state) : undefined), [itemId])
     )
@@ -98,7 +86,16 @@ const QuickSlotStorageEditor = memo(function QuickSlotStorageEditor({
     )
     const available = storageQuantity + (equipped?.itemId === itemId ? (equipped.quantity ?? 1) : 0)
 
-    const onSlotSelect = useCallback((value: string) => setSlotIndex(Number(value)), [])
+    const onSlotSelect = useCallback(
+        (value: string) => {
+            const nextSlotIndex = Number(value)
+            const nextEquipped = quickSlots[nextSlotIndex]
+            setSlotIndex(nextSlotIndex)
+            setItemId(item?.id ?? nextEquipped?.itemId ?? null)
+            setQuantity(item && nextEquipped?.itemId !== item.id ? 1 : (nextEquipped?.quantity ?? 1))
+        },
+        [item, quickSlots]
+    )
     const onPotionSelect = useCallback((nextItemId: string) => {
         if (nextItemId === '-') {
             setItemId(null)

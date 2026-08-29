@@ -66,7 +66,7 @@ export const Mining = memo(function Mining() {
             resizeObserver.disconnect()
             window.removeEventListener('resize', checkOffsetTop)
         }
-    }, [oreType])
+    }, [])
 
     const enabled = useGameStore(useCallback((state: GameState) => isOreEnabled(oreType)(state), [oreType]))
 

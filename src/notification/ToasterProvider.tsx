@@ -30,4 +30,6 @@ export function ToasterProvider() {
         }
         removeNotifications()
     }, [notifications, t])
+
+    return null
 }

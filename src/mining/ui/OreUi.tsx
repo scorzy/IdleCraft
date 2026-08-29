@@ -24,13 +24,14 @@ export const OreUi = memo(function OreUi() {
 
     const oreData = OreData[oreType]
     const name = useItemName(oreData.oreId)
+    const formatOreVein = fun.OreVein
     const qta = activeVein?.qta ?? oreQta
     const maxQta = activeVein?.maxQta ?? def.qta
     const hpPercent = Math.floor((100 * qta) / Math.max(1, maxQta))
 
     return (
         <Card>
-            <MyCardHeaderTitle title={fun.OreVein(name)} icon={<ItemIcon itemId={oreData.oreId} />} />
+            <MyCardHeaderTitle title={formatOreVein(name)} icon={<ItemIcon itemId={oreData.oreId} />} />
             <CardContent>
                 <MyLabel>
                     {t.OreQta} {f(qta)}/{f(maxQta)}
