@@ -9,9 +9,8 @@ export function startNextAbility(state: GameState, charId: string): void {
     const char = CharacterAdapter.selectEx(state.characters, charId)
 
     let done = false
-    const offset = char.lastCombatAbilityNum + 1
     const len = char.combatAbilities.length
-    const pointer = offset % len
+    const pointer = char.lastCombatAbilityId === null ? 0 : (char.lastCombatAbilityNum + 1) % len
     const combatAbilityId = char.combatAbilities[pointer]
 
     if (combatAbilityId) {
