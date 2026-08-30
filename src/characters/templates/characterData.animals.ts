@@ -80,19 +80,6 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         manaPoints: -8,
         loot: [{ quantity: 1, itemId: 'DeadBoar' }],
         combatAbilities: [AbilitiesEnum.NormalAttack, AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
-        allCombatAbilities: {
-            ids: [AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
-            entries: {
-                [AbilitiesEnum.NormalAttack]: {
-                    id: AbilitiesEnum.NormalAttack,
-                    abilityId: AbilitiesEnum.NormalAttack,
-                },
-                [AbilitiesEnum.ChargedAttack]: {
-                    id: AbilitiesEnum.ChargedAttack,
-                    abilityId: AbilitiesEnum.ChargedAttack,
-                },
-            },
-        },
         randomizeAbilitiesOrder: true,
     },
     Wolf: {
@@ -118,19 +105,6 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         manaPoints: -8,
         loot: [{ quantity: 1, itemId: 'DeadWolf' }],
         combatAbilities: [AbilitiesEnum.NormalAttack, AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
-        allCombatAbilities: {
-            ids: [AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
-            entries: {
-                [AbilitiesEnum.NormalAttack]: {
-                    id: AbilitiesEnum.NormalAttack,
-                    abilityId: AbilitiesEnum.NormalAttack,
-                },
-                [AbilitiesEnum.ChargedAttack]: {
-                    id: AbilitiesEnum.ChargedAttack,
-                    abilityId: AbilitiesEnum.ChargedAttack,
-                },
-            },
-        },
         randomizeAbilitiesOrder: true,
     },
     Spider: {

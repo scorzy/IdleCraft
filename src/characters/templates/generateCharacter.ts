@@ -7,6 +7,17 @@ import { selectMaxStaminaFromChar } from '../selectors/staminaSelectors'
 import { CharacterDefinition } from './characterInterfaces'
 import { resolveCharacterItemRef } from './characterRegistry'
 
+const getAllCombatAbilities = (template: CharacterDefinition) => {
+    if (template.allCombatAbilities) return template.allCombatAbilities
+    if (!template.combatAbilities?.length) return CharAbilityAdapter.getInitialState()
+
+    const ids = [...new Set(template.combatAbilities)]
+    return {
+        ids,
+        entries: Object.fromEntries(ids.map((id) => [id, { id, abilityId: id }])),
+    }
+}
+
 export const generateCharacter = (templateId: string, template: CharacterDefinition) => {
     const char: CharacterState = structuredClone({
         id: getUniqueId(),
@@ -31,7 +42,7 @@ export const generateCharacter = (templateId: string, template: CharacterDefinit
         mana: 100,
         stamina: 100,
         combatAbilities: [...(template.combatAbilities ?? [])],
-        allCombatAbilities: template.allCombatAbilities ?? CharAbilityAdapter.getInitialState(),
+        allCombatAbilities: getAllCombatAbilities(template),
         lastCombatAbilityId: null,
         lastCombatAbilityNum: 0,
         perks: {},
