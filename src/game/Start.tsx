@@ -207,7 +207,7 @@ const TimeAgo = memo(function TimeAgo(props: { date: number }) {
     const { date } = props
     const { fun } = useTranslations()
 
-    const [time, setTime] = useState(Date.now())
+    const [time, setTime] = useState(() => Date.now())
 
     useEffect(() => {
         const interval = setInterval(() => setTime(Date.now()), 1000)

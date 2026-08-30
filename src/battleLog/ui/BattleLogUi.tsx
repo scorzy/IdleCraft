@@ -32,6 +32,7 @@ export const BattleLogUi = memo(function BattleLogUi(props: { className?: string
 })
 
 const estimateLogSize = () => 20
+const renderLogItem = (index: number) => <LogUiFromIndex index={index} />
 
 const LogUiFromIndex = memo(function LogUiFromIndex({ index }: { index: number }) {
     const ids = useGameStore(selectBattleLogsIds)
@@ -50,7 +51,7 @@ const BattleLogs = memo(function BattleLogs() {
             totalCount={ids.length}
             estimateSize={estimateLogSize}
             autoscroll={true}
-            itemContent={(index) => <LogUiFromIndex index={index} />}
+            itemContent={renderLogItem}
             lastId={ids[ids.length - 1]}
         />
     )

@@ -350,6 +350,7 @@ const CombatAbilityBadge = memo(function CombatAbilityBadge(props: {
 const BAG_ICON = <GiSwapBag />
 
 const estimateLootSize = () => 24
+const renderLootItem = (index: number) => <LootUiFromIndex index={index} />
 
 const LootUiFromIndex = memo(function LootUiFromIndex({ index }: { index: number }) {
     const loots = useGameStore(selectLoot)
@@ -370,7 +371,7 @@ function BattleLootUi() {
                     totalCount={loots.length}
                     estimateSize={estimateLootSize}
                     autoscroll={true}
-                    itemContent={(index) => <LootUiFromIndex index={index} />}
+                    itemContent={renderLootItem}
                 />
             </CardContent>
         </Card>

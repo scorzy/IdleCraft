@@ -1,4 +1,4 @@
-import { memo, ReactElement, useCallback } from 'react'
+import { memo, ReactElement, useCallback, useMemo } from 'react'
 import { useItemName } from '@/items/selectors/useItemName'
 import { Badge } from '../../components/ui/badge'
 import { ComboBoxItem, ComboBoxResponsive } from '../../components/ui/comboBox'
@@ -28,12 +28,11 @@ export const ItemsSelect = memo(function ItemsSelect({
     label?: ReactElement | ReactElement[] | string
     includePurchasableItems?: boolean
 }) {
-    const itemsId = useGameStore(
-        useCallback(
-            memoize((s: GameState) => selectFilteredItems(s, itemFilter, includePurchasableItems)),
-            [includePurchasableItems, itemFilter]
-        )
+    const selectItemsId = useMemo(
+        () => memoize((s: GameState) => selectFilteredItems(s, itemFilter, includePurchasableItems)),
+        [includePurchasableItems, itemFilter]
     )
+    const itemsId = useGameStore(selectItemsId)
 
     return (
         <ComboBoxResponsive

@@ -3,7 +3,8 @@
   "plugins": [
     "typescript",
     "unicorn",
-    "oxc"
+    "oxc",
+    "react"
   ],
   "categories": {
     "correctness": "error",
@@ -15,6 +16,7 @@
     "typescript/no-unsafe-type-assertion": "off",
     "typescript/no-unsafe-enum-comparison": "off",
     "unicorn/require-post-message-target-origin": "off",
+    "react/react-in-jsx-scope": "off",
   },
   "env": {
     "builtin": true

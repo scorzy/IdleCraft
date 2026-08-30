@@ -49,9 +49,6 @@ if ('indexedDB' in window) {
 useGameStore.subscribe(updateTimers)
 
 function App() {
-    ThemeProvider()
-    ToasterProvider()
-
     const { t } = useTranslations()
     const gameId = useGameStore(selectGameId)
     const loading = useGameStore(selectLoading)
@@ -69,8 +66,13 @@ function App() {
             </div>
         )
 
-    if (gameId !== '' && !loading) return <AppShell />
-    else return <Start />
+    return (
+        <>
+            <ThemeProvider />
+            <ToasterProvider />
+            {gameId !== '' && !loading ? <AppShell /> : <Start />}
+        </>
+    )
 }
 
 export default App

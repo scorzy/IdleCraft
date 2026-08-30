@@ -20,6 +20,34 @@ export const TextInput = memo(function TextInput({
     debounceMs?: number
     onChange: (v: string) => void
 }) {
+    return (
+        <TextInputField
+            key={text}
+            id={id}
+            title={title}
+            text={text}
+            clearable={clearable}
+            debounceMs={debounceMs}
+            onChange={onChange}
+        />
+    )
+})
+
+const TextInputField = memo(function TextInputField({
+    id,
+    title,
+    text,
+    clearable,
+    debounceMs,
+    onChange,
+}: {
+    id: string
+    title: string
+    text: string
+    clearable: boolean
+    debounceMs: number
+    onChange: (v: string) => void
+}) {
     const [inputText, setInputText] = useState(text)
     const debounceTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
     const clearDebounce = useCallback(() => {
@@ -59,10 +87,6 @@ export const TextInput = memo(function TextInput({
         [emitChange]
     )
     const showClear = clearable && inputText.length > 0
-
-    useEffect(() => {
-        setInputText(text)
-    }, [text])
 
     useEffect(() => clearDebounce, [clearDebounce])
 

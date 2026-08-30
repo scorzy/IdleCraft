@@ -24,4 +24,6 @@ export function ThemeProvider() {
         const dark = themeClass === 'dark' ? 'dark-' : ''
         if (themeColor !== '') root.classList.add(`theme-${dark}${themeColor}`)
     }, [theme, themeColor])
+
+    return null
 }

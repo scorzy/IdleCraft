@@ -1,5 +1,5 @@
 import { memoize } from 'proxy-memoize'
-import { memo, ReactNode, useCallback } from 'react'
+import { memo, ReactNode, useCallback, useMemo } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { useItemName } from '@/items/selectors/useItemName'
 import { CharTemplatesData } from '../../characters/templates/charTemplateData'
@@ -271,12 +271,11 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
     const gold = useGameStore(
         useCallback((s: GameState) => selectOutcomeGoldReward(s, questId, outcomeId), [questId, outcomeId])
     )
-    const items = useGameStore(
-        useCallback(
-            memoize((s: GameState) => selectOutcomeItemRewards(s, questId, outcomeId)),
-            [questId, outcomeId]
-        )
+    const selectItems = useMemo(
+        () => memoize((s: GameState) => selectOutcomeItemRewards(s, questId, outcomeId)),
+        [questId, outcomeId]
     )
+    const items = useGameStore(selectItems)
 
     return (
         <div>
