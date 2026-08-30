@@ -5,11 +5,11 @@ const characterDataSources = [AnimalCharacterData] as const
 type KeysOfUnion<T> = T extends T ? keyof T : never
 export type CharacterId = KeysOfUnion<(typeof characterDataSources)[number]>
 
-export const CharacterData: Record<CharacterId, CharacterDefinition> = {} as Record<CharacterId, CharacterDefinition>
+export const CharacterData: Record<CharacterId, CharacterDefinition> = {}
 
 export function reconcileCharacterData(): void {
     for (const source of characterDataSources) {
-        for (const [id, definition] of Object.entries(source) as [CharacterId, CharacterDefinition][]) {
+        for (const [id, definition] of Object.entries(source)) {
             const current = CharacterData[id]
             if (current && JSON.stringify(current) !== JSON.stringify(definition)) {
                 throw new Error(`Conflicting character definition: ${id}`)
@@ -26,6 +26,7 @@ export function getCharacterItems(): CharacterItem[] {
         if (current && JSON.stringify(current) !== JSON.stringify(item)) {
             throw new Error(`Conflicting character item definition: ${item.id}`)
         }
+
         items.set(item.id, item)
     }
     for (const character of Object.values(CharacterData)) {
