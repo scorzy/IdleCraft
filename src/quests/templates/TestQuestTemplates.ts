@@ -34,7 +34,7 @@ export class TestQuestTemplate extends BaseQuestTemplate<GenerateQuestDataData> 
             id: 'k',
             location: GameLocations.StartVillage,
             goldReward: 100,
-            itemsRewards: [{ itemId: 'DeadBoar', quantity: 10 }],
+            itemsRewards: [{ itemId: 'BoarDeadBoar', quantity: 10 }],
             targets: [
                 {
                     targetId: 'Boar',

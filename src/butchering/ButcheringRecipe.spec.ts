@@ -7,11 +7,11 @@ describe('butcheringRecipe', () => {
     it('uses corpse data registered from the owning enemy', () => {
         initialize()
 
-        expect(butcheringRecipe.getResult(GetInitialGameState(), [{ id: 'corpse', itemId: 'DeadBoar' }])).toMatchObject(
-            {
-                requirements: [{ itemId: 'DeadBoar', qta: 1 }],
-                results: [{ id: 'RedMeat', stdItemId: 'RedMeat', qta: 2 }],
-            }
-        )
+        expect(
+            butcheringRecipe.getResult(GetInitialGameState(), [{ id: 'corpse', itemId: 'BoarDeadBoar' }])
+        ).toMatchObject({
+            requirements: [{ itemId: 'BoarDeadBoar', qta: 1 }],
+            results: [{ id: 'RedMeat', stdItemId: 'RedMeat', qta: 2 }],
+        })
     })
 })

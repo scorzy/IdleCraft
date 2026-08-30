@@ -32,7 +32,7 @@ describe('Quest Functions', () => {
                         goldReward: 100,
                         itemsRewards: [
                             { itemId: 'TinOre', quantity: 1 },
-                            { itemId: 'DeadBoar', quantity: 1 },
+                            { itemId: 'BoarDeadBoar', quantity: 1 },
                         ],
                         targets: [
                             {
@@ -89,7 +89,7 @@ describe('Quest Functions', () => {
                         goldReward: 100,
                         itemsRewards: [
                             { itemId: 'TinOre', quantity: 1 },
-                            { itemId: 'DeadBoar', quantity: 1 },
+                            { itemId: 'BoarDeadBoar', quantity: 1 },
                         ],
                         targets: [
                             {
@@ -153,7 +153,7 @@ describe('Quest Functions', () => {
 
         expect(QuestAdapter.select(state.quests, quest.id)).toBeUndefined()
         expect(state.gold).toBe(100)
-        expect(selectItemQta(null, 'DeadBoar')(state)).toBe(10)
+        expect(selectItemQta(null, 'BoarDeadBoar')(state)).toBe(10)
         expect(state.completedQuestTemplates).toEqual(['kill-n'])
         expect(state.ui.selectedQuestId).not.toBeNull()
         expect(QuestAdapter.selectEx(state.quests, state.ui.selectedQuestId!).templateId).toBe('kill-n')

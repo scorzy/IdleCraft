@@ -11,7 +11,7 @@ import { PLAYER_ID } from './charactersConst'
 import { EquipSlotsEnum } from './equipSlotsEnum'
 import { consumeQuickSlotPotion, equipQuickSlot } from './quickSlotFunctions'
 import { selectQuickSlots } from './selectors/quickSlotSelectors'
-import { CharacterData, reconcileCharacterData } from './templates/characterRegistry'
+import { getCharacterDefinition, reconcileCharacterData } from './templates/characterRegistry'
 import { generateCharacter } from './templates/generateCharacter'
 
 const healthPotion: Item = {
@@ -46,7 +46,7 @@ describe('quick slots', () => {
     it('initializes one empty quick slot for every generated character', () => {
         reconcileCharacterData()
         const state = GetInitialGameState()
-        const generated = generateCharacter('Boar', CharacterData.Boar)
+        const generated = generateCharacter('Boar', getCharacterDefinition('Boar'))
 
         expect(selectQuickSlots(PLAYER_ID)(state)).toEqual([null])
         const generatedState = {

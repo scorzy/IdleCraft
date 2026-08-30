@@ -1,4 +1,4 @@
-import { CharacterData } from '../../characters/templates/characterRegistry'
+import { getCharacterDefinition } from '../../characters/templates/characterRegistry'
 import { GameState } from '../../game/GameState'
 import { selectTranslations } from '../../msg/useTranslations'
 import { QuestAdapter, QuestOutcome, QuestState, QuestStatus } from '../../quests/QuestTypes'
@@ -84,7 +84,7 @@ export class UnlockZoneQuest extends BaseQuestTemplate<GatheringZoneUnlockQuestD
             const params = quest.parameters as GatheringZoneUnlockQuestData | undefined
             const enemy = params?.enemies?.[0]?.templateId
             if (!enemy) return ''
-            const enemyNameId = CharacterData[enemy].nameId
+            const enemyNameId = getCharacterDefinition(enemy).nameId
             return t.fun.KillToUnlock(enemyNameId)
         }
 

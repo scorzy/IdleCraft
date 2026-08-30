@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
-import { CharacterData, CharacterId } from '../../characters/templates/characterRegistry'
+import { CharacterId, getCharacterDefinition } from '../../characters/templates/characterRegistry'
 import { generateCharacter } from '../../characters/templates/generateCharacter'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
@@ -116,7 +116,7 @@ const EnemyInfoUi = memo(function EnemyInfoUi({
     quantity: number
     templateEnum: CharacterId
 }) {
-    const template = CharacterData[templateEnum]
+    const template = getCharacterDefinition(templateEnum)
     const enemy = generateCharacter(templateEnum, template)
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
@@ -155,7 +155,7 @@ const EnemyInfoUi = memo(function EnemyInfoUi({
     )
 })
 const EnemyDropsUi = memo(function EnemyDropsUi({ templateEnum }: { templateEnum: CharacterId }) {
-    const template = CharacterData[templateEnum]
+    const template = getCharacterDefinition(templateEnum)
     const enemy = generateCharacter(templateEnum, template)
     const { t } = useTranslations()
     const { f } = useNumberFormatter()

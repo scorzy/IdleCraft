@@ -7,6 +7,12 @@ export type CharacterId = KeysOfUnion<(typeof characterDataSources)[number]>
 
 export const CharacterData: Record<CharacterId, CharacterDefinition> = {}
 
+export function getCharacterDefinition(id: CharacterId): CharacterDefinition {
+    const definition = CharacterData[id]
+    if (!definition) throw new Error(`Character definition not reconciled: ${id}`)
+    return definition
+}
+
 export function reconcileCharacterData(): void {
     for (const source of characterDataSources) {
         for (const [id, definition] of Object.entries(source)) {
@@ -19,6 +25,8 @@ export function reconcileCharacterData(): void {
     }
 }
 
+export const getCharacterItemId = (templateId: string, itemId: string) => `${templateId}${itemId}`
+
 export function getCharacterItems(): CharacterItem[] {
     const items = new Map<string, CharacterItem>()
     const add = (item: CharacterItem) => {
@@ -29,18 +37,29 @@ export function getCharacterItems(): CharacterItem[] {
 
         items.set(item.id, item)
     }
-    for (const character of Object.values(CharacterData)) {
-        Object.values(character.items).forEach(add)
+    for (const [templateId, character] of Object.entries(CharacterData)) {
+        Object.values(character.items).forEach((item) => add({ ...item, id: getCharacterItemId(templateId, item.id) }))
         Object.values(character.inventory).forEach((entry) => {
-            if (entry && typeof entry.itemId !== 'string') add(entry.itemId)
+            if (entry && typeof entry.itemId !== 'string') {
+                add({ ...entry.itemId, id: getCharacterItemId(templateId, entry.itemId.id) })
+            }
         })
         character.loot.forEach((entry) => {
-            if (typeof entry.itemId !== 'string') add(entry.itemId)
+            if (typeof entry.itemId !== 'string')
+                add({ ...entry.itemId, id: getCharacterItemId(templateId, entry.itemId.id) })
         })
     }
     return [...items.values()]
 }
 
-export function resolveCharacterItemRef(item: CharacterItemRef): string {
-    return typeof item === 'string' ? item : item.id
+export function resolveCharacterItemRef(
+    templateId: string,
+    template: CharacterDefinition,
+    item: CharacterItemRef
+): string {
+    if (typeof item !== 'string') return getCharacterItemId(templateId, item.id)
+    if (Object.values(template.items).some((characterItem) => characterItem.id === item)) {
+        return getCharacterItemId(templateId, item)
+    }
+    return item
 }

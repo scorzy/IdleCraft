@@ -19,7 +19,7 @@ import { CharacterId } from './templates/characterRegistry'
 export const makeCharacterSelector: (charId: string) => CharacterSelector = (charId: string) => {
     const selChar = (s: GameState) => CharacterAdapter.selectEx(s.characters, charId)
 
-    const TemplateId = (s: GameState) => selChar(s).templateId as CharacterId
+    const TemplateId = (s: GameState): CharacterId => selChar(s).templateId
 
     const Name = (state: GameState) => {
         const char = CharacterAdapter.selectEx(state.characters, charId)

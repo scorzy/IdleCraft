@@ -16,7 +16,7 @@ export const generateCharacter = (templateId: string, template: CharacterDefinit
         inventory: Object.fromEntries(
             Object.entries(template.inventory).map(([slot, item]) => [
                 slot,
-                item && { ...item, itemId: resolveCharacterItemRef(item.itemId) },
+                item && { ...item, itemId: resolveCharacterItemRef(templateId, template, item.itemId) },
             ])
         ),
         skillsExp: template.skillsExp,
@@ -35,7 +35,10 @@ export const generateCharacter = (templateId: string, template: CharacterDefinit
         lastCombatAbilityId: null,
         lastCombatAbilityNum: 0,
         perks: {},
-        loot: template.loot.map((loot) => ({ ...loot, itemId: resolveCharacterItemRef(loot.itemId) })),
+        loot: template.loot.map((loot) => ({
+            ...loot,
+            itemId: resolveCharacterItemRef(templateId, template, loot.itemId),
+        })),
     })
 
     if (template.randomizeAbilitiesOrder)

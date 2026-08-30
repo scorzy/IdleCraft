@@ -2,7 +2,7 @@ import { memoize } from 'proxy-memoize'
 import { memo, ReactNode, useCallback, useMemo } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { useItemName } from '@/items/selectors/useItemName'
-import { CharacterData } from '../../characters/templates/characterRegistry'
+import { getCharacterDefinition } from '../../characters/templates/characterRegistry'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
@@ -370,7 +370,7 @@ const KillOutcomeProgress = (props: { target: KillQuestTarget }) => {
     const { targetId, targetCount, killedCount } = target
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
-    const charTemplate = CharacterData[targetId]
+    const charTemplate = getCharacterDefinition(targetId)
 
     if (targetCount <= 0) return <></>
     const percent = Math.round((killedCount / targetCount) * 100)

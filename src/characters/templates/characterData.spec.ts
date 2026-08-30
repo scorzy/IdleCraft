@@ -34,15 +34,15 @@ describe('character data', () => {
 
         const character = generateCharacter('InlineCharacter', definition)
 
-        expect(character.inventory.TwoHand?.itemId).toBe('InlineWeapon')
-        expect(character.loot).toEqual([{ itemId: 'InlineWeapon', quantity: 1 }])
+        expect(character.inventory.TwoHand?.itemId).toBe('InlineCharacterInlineWeapon')
+        expect(character.loot).toEqual([{ itemId: 'InlineCharacterInlineWeapon', quantity: 1 }])
     })
 
     it('registers nested enemy items during initialization', () => {
         initialize()
 
-        expect(StdItems.ChickenBeak).toBeDefined()
-        expect((StdItems.DeadChicken as CharacterItem).butchering).toEqual([
+        expect(StdItems.ChickenChickenBeak).toBeDefined()
+        expect((StdItems.ChickenDeadChicken as CharacterItem).butchering).toEqual([
             { id: 'WhiteMeat', stdItemId: 'WhiteMeat', qta: 1 },
         ])
     })
