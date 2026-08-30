@@ -3,9 +3,10 @@ import { Effects } from '../../effects/types/Effects'
 import { ExpEnum } from '../../experience/ExpEnum'
 import { Icons } from '../../icons/Icons'
 import { ItemTypes } from '../../items/Item'
+import { WeaponCoatingKind } from '../../weaponCoatings/weaponCoatingTypes'
 import type { CharacterDefinition } from './characterInterfaces'
 
-export const AnimalCharacterData = {
+export const AnimalCharacterData: Record<string, CharacterDefinition> = {
     Chicken: {
         nameId: 'Chicken',
         iconId: Icons.Chicken,
@@ -125,10 +126,25 @@ export const AnimalCharacterData = {
                 type: ItemTypes.Potion,
                 value: 0,
                 volume: FINISHED_VOLUME,
-                potionData: { effects: [{ effect: Effects.DamageRegenHealth, value: 2, duration: 1e4 }] },
+                weaponCoatingData: {
+                    kind: WeaponCoatingKind.Poison,
+                    charges: 20,
+                    iconId: Icons.Poison,
+                    nameId: 'Spider',
+                    effects: [
+                        {
+                            effect: Effects.DamageRegenHealth,
+                            value: 2,
+                            duration: 1e4,
+                        },
+                    ],
+                },
             },
         },
-        inventory: {},
+        inventory: {
+            TwoHand: { itemId: 'SpiderMainW' },
+            QuickSlot: { itemId: 'SpiderPoison', quantity: 10 },
+        },
         skillsExp: {},
         skillsLevel: {},
         level: 3,
@@ -137,4 +153,4 @@ export const AnimalCharacterData = {
         manaPoints: -8,
         loot: [],
     },
-} satisfies Record<string, CharacterDefinition>
+}
