@@ -125,7 +125,7 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
 })
 
 const ActiveWeaponCoating = memo(function ActiveWeaponCoating({ charId }: { charId: string }) {
-    const coating = useGameStore(useCallback(selectActiveWeaponCoating(charId), [charId]))
+    const coating = useGameStore(useCallback((state: GameState) => selectActiveWeaponCoating(charId)(state), [charId]))
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
     if (!coating) return null
@@ -142,7 +142,7 @@ const ActiveWeaponCoating = memo(function ActiveWeaponCoating({ charId }: { char
 })
 
 const WeaponCoatingEffects = memo(function WeaponCoatingEffects({ charId }: { charId: string }) {
-    const selectEffects = useCallback(selectWeaponCoatingEffects(charId), [charId])
+    const selectEffects = useCallback((state: GameState) => selectWeaponCoatingEffects(charId)(state), [charId])
     const effects = useGameStore(useShallow(selectEffects))
     if (effects.length === 0) return null
 
