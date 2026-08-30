@@ -25,6 +25,9 @@ export function startBattleTimer(state: GameState, timer: Timer): void {
 
     const charIds = CharacterAdapter.getIds(state.characters)
     for (const charId of charIds) {
+        const char = CharacterAdapter.selectEx(state.characters, charId)
+        char.lastCombatAbilityNum = 0
+        char.lastCombatAbilityId = null
         autoApplyBestWeaponCoating(state, charId)
         startNextAbility(state, charId)
     }
