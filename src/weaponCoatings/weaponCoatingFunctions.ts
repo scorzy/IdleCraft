@@ -3,9 +3,11 @@ import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
 import { DamageTypes, Item } from '../items/Item'
 import { selectGameItem, selectItemQta } from '../storage/StorageSelectors'
-import { removeItem } from '../storage/storageFunctions'
+import { removeCraftItemIfUnused, removeItem } from '../storage/storageFunctions'
 import { CharacterAdapter } from '../characters/characterAdapter'
+import { PLAYER_ID } from '../characters/charactersConst'
 import { getCharacterSelector } from '../characters/getCharacterSelector'
+import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { getUniqueId } from '../utils/getUniqueId'
 import { WEAPON_COATING_EFFECTIVENESS_BPS } from './weaponCoatingConst'
 import { ActiveWeaponCoating, isWeaponCoatingEffect, WeaponCoatingData } from './weaponCoatingTypes'
@@ -77,6 +79,47 @@ export function applyWeaponCoating(state: GameState, charId: string, itemId: str
         data,
     }
     removeItem(state, itemId, 1)
+    return true
+}
+
+export function autoApplyBestWeaponCoating(state: GameState, charId: string): boolean {
+    if (charId === PLAYER_ID) return false
+
+    clearWeaponCoatingIfWeaponChanged(state, charId)
+    if (getActiveWeaponCoating(state, charId)) return false
+
+    const char = CharacterAdapter.select(state.characters, charId)
+    const weapon = char ? getCharacterSelector(charId).MainWeapon(state) : undefined
+    if (!char || !weapon) return false
+
+    let bestCoating: { slot: EquipSlotsEnum; item: Item } | undefined
+    for (const [slot, inventoryItem] of Object.entries(char.inventory)) {
+        const quantity = inventoryItem.quantity ?? 1
+        const item = selectGameItem(inventoryItem.itemId)(state)
+        if (!Number.isSafeInteger(quantity) || quantity < 1 || !item?.weaponCoatingData) continue
+        if (!bestCoating || item.value > bestCoating.item.value) {
+            bestCoating = { slot: slot as EquipSlotsEnum, item }
+        }
+    }
+
+    if (!bestCoating) return false
+
+    const { slot, item } = bestCoating
+    const coatingData = item.weaponCoatingData
+    if (!coatingData) return false
+    const inventoryItem = char.inventory[slot]!
+    const quantity = inventoryItem.quantity ?? 1
+    char.weaponCoating = {
+        weaponItemId: weapon.id,
+        coatingItemId: item.id,
+        coatingInstanceId: getUniqueId(),
+        remainingCharges: coatingData.charges,
+        data: structuredClone(coatingData),
+    }
+
+    if (quantity === 1) delete char.inventory[slot]
+    else inventoryItem.quantity = quantity - 1
+    removeCraftItemIfUnused(state, item.id)
     return true
 }
 

@@ -2,8 +2,10 @@ import { AbilitiesEnum } from '../../activeAbilities/abilitiesEnum'
 import { startAbility } from '../../activeAbilities/functions/startAbility'
 import { GameState } from '../../game/GameState'
 import { CharacterAdapter } from '../characterAdapter'
+import { autoApplyBestWeaponCoating } from '../../weaponCoatings/weaponCoatingFunctions'
 
 export function startNextAbility(state: GameState, charId: string): void {
+    autoApplyBestWeaponCoating(state, charId)
     const char = CharacterAdapter.selectEx(state.characters, charId)
 
     let done = false

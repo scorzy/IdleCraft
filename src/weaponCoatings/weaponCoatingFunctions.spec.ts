@@ -21,6 +21,7 @@ import { Effects } from '../effects/types/Effects'
 import { EffectPotency } from '../effects/types/EffectPotency'
 import {
     applyWeaponCoating,
+    autoApplyBestWeaponCoating,
     getWeaponCoatingEffectiveness,
     onWeaponHit,
     scaleWeaponCoatingValue,
@@ -113,6 +114,38 @@ describe('weapon coatings', () => {
             effect: Effects.DamageRegenHealth,
             value: -4,
         })
+    })
+
+    it('automatically applies the highest-value coating from a non-player character inventory', () => {
+        const state = GetInitialGameState()
+        const lowValueCoating = generatePotion(state, true, [
+            AlchemyItems.VenomLeaf!,
+            AlchemyItems.ToxicMushroom!,
+        ])?.item
+        const highValueCoating = generatePotion(state, true, [
+            AlchemyItems.VenomLeaf!,
+            AlchemyItems.ToxicMushroom!,
+        ])?.item
+        if (!lowValueCoating || !highValueCoating) throw new Error('expected coatings')
+
+        lowValueCoating.id = CRAFTED_ITEM_PREFIX + 'lowValueCoating'
+        lowValueCoating.value = 1
+        highValueCoating.id = CRAFTED_ITEM_PREFIX + 'highValueCoating'
+        highValueCoating.value = 2
+        ItemAdapter.create(state.craftedItems, lowValueCoating)
+        ItemAdapter.create(state.craftedItems, highValueCoating)
+        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Chicken }])
+        const enemyId = state.characters.ids.find((id) => id !== PLAYER_ID)
+        if (!enemyId) throw new Error('expected enemy')
+        const enemy = CharacterAdapter.selectEx(state.characters, enemyId)
+        enemy.inventory[EquipSlotsEnum.QuickSlot] = { itemId: lowValueCoating.id, quantity: 2 }
+        enemy.inventory[EquipSlotsEnum.Head] = { itemId: highValueCoating.id }
+
+        expect(autoApplyBestWeaponCoating(state, enemy.id)).toBe(true)
+        expect(enemy.weaponCoating?.coatingItemId).toBe(highValueCoating.id)
+        expect(enemy.inventory[EquipSlotsEnum.Head]).toBeUndefined()
+        expect(enemy.inventory[EquipSlotsEnum.QuickSlot]).toEqual({ itemId: lowValueCoating.id, quantity: 2 })
+        expect(autoApplyBestWeaponCoating(state, enemy.id)).toBe(false)
     })
 
     it('consumes a charge on a hit, refreshes the target effect, and clears the final charge', () => {

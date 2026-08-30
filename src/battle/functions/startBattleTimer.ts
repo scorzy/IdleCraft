@@ -8,6 +8,7 @@ import { GameState } from '../../game/GameState'
 import { Timer } from '../../timers/Timer'
 import { isBattle } from '../BattleTypes'
 import { BattleZones } from '../BattleZones'
+import { autoApplyBestWeaponCoating } from '../../weaponCoatings/weaponCoatingFunctions'
 
 export function startBattleTimer(state: GameState, timer: Timer): void {
     const data = ActivityAdapter.selectEx(state.activities, timer.actId)
@@ -23,5 +24,8 @@ export function startBattleTimer(state: GameState, timer: Timer): void {
     addBattleLog(state, { type: BattleLogType.Start })
 
     const charIds = CharacterAdapter.getIds(state.characters)
-    for (const charId of charIds) startNextAbility(state, charId)
+    for (const charId of charIds) {
+        autoApplyBestWeaponCoating(state, charId)
+        startNextAbility(state, charId)
+    }
 }
