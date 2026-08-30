@@ -1,3 +1,4 @@
+import { AbilitiesEnum } from '../../activeAbilities/abilitiesEnum'
 import { RAW_VOLUME, FINISHED_VOLUME } from '../../caravans/CaravanConst'
 import { Effects } from '../../effects/types/Effects'
 import { ExpEnum } from '../../experience/ExpEnum'
@@ -78,6 +79,21 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         staminaPoints: -3,
         manaPoints: -8,
         loot: [{ quantity: 1, itemId: 'DeadBoar' }],
+        combatAbilities: [AbilitiesEnum.NormalAttack, AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
+        allCombatAbilities: {
+            ids: [AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
+            entries: {
+                [AbilitiesEnum.NormalAttack]: {
+                    id: AbilitiesEnum.NormalAttack,
+                    abilityId: AbilitiesEnum.NormalAttack,
+                },
+                [AbilitiesEnum.ChargedAttack]: {
+                    id: AbilitiesEnum.ChargedAttack,
+                    abilityId: AbilitiesEnum.ChargedAttack,
+                },
+            },
+        },
+        randomizeAbilitiesOrder: true,
     },
     Wolf: {
         nameId: 'Wolf',
@@ -101,6 +117,21 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         staminaPoints: 2,
         manaPoints: -8,
         loot: [{ quantity: 1, itemId: 'DeadWolf' }],
+        combatAbilities: [AbilitiesEnum.NormalAttack, AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
+        allCombatAbilities: {
+            ids: [AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
+            entries: {
+                [AbilitiesEnum.NormalAttack]: {
+                    id: AbilitiesEnum.NormalAttack,
+                    abilityId: AbilitiesEnum.NormalAttack,
+                },
+                [AbilitiesEnum.ChargedAttack]: {
+                    id: AbilitiesEnum.ChargedAttack,
+                    abilityId: AbilitiesEnum.ChargedAttack,
+                },
+            },
+        },
+        randomizeAbilitiesOrder: true,
     },
     Spider: {
         nameId: 'Spider',

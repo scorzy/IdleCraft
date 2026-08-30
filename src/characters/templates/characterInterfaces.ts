@@ -1,4 +1,6 @@
+import { CharAbility } from '../../activeAbilities/abilityInterfaces'
 import { RecipeItem } from '../../crafting/RecipeInterfaces'
+import { InitialState } from '../../entityAdapter/InitialState'
 import { ExpState } from '../../experience/ExpState'
 import { Icons } from '../../icons/Icons'
 import { Item } from '../../items/Item'
@@ -23,4 +25,7 @@ export interface CharacterDefinition {
     staminaPoints: number
     manaPoints: number
     loot: CharacterLoot[]
+    combatAbilities?: string[]
+    allCombatAbilities?: InitialState<CharAbility>
+    randomizeAbilitiesOrder?: boolean
 }

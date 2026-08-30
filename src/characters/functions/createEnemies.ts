@@ -18,7 +18,12 @@ export function createEnemies(
     initCharacterStdItems()
     enemies.forEach((enemyData) => {
         for (let i = 0; i < enemyData.quantity; i++) {
-            const enemy = generateCharacter(enemyData.template, CharacterData[enemyData.template])
+            const data = CharacterData[enemyData.template]
+            if (!data) {
+                console.error(`Character template ${enemyData.template} not found`)
+                continue
+            }
+            const enemy = generateCharacter(enemyData.template, data)
             enemy.isEnemy = true
             CharacterAdapter.create(state.characters, enemy)
         }
