@@ -6,9 +6,39 @@ import { ItemTypes } from '../../items/Item'
 import { StdItems } from '../../items/stdItems'
 import { initialize } from '../../game/functions/initialize'
 import { CharacterDefinition, CharacterItem } from './characterInterfaces'
+import { AnimalCharacterData } from './characterData.animals'
 import { generateCharacter } from './generateCharacter'
+import { getCharacterItemId, resolveCharacterItemRef } from './characterRegistry'
 
 describe('character data', () => {
+    it.each(Object.entries(AnimalCharacterData))('validates the %s character definition', (templateId, definition) => {
+        expect(definition.nameId).toBe(templateId)
+        expect(definition.level).toBeGreaterThan(0)
+
+        for (const [itemId, item] of Object.entries(definition.items)) {
+            expect(item.id).toBe(itemId)
+        }
+
+        const assertLocalItemReference = (itemId: string) => {
+            expect(definition.items[itemId]).toBeDefined()
+            expect(resolveCharacterItemRef(templateId, definition, itemId)).toBe(getCharacterItemId(templateId, itemId))
+        }
+
+        Object.values(definition.inventory).forEach((entry) => {
+            if (!entry) return
+            expect(entry.quantity ?? 1).toBeGreaterThan(0)
+            if (typeof entry.itemId === 'string') assertLocalItemReference(entry.itemId)
+        })
+        definition.loot.forEach(({ itemId, quantity }) => {
+            expect(quantity).toBeGreaterThan(0)
+            if (typeof itemId === 'string') assertLocalItemReference(itemId)
+        })
+
+        definition.combatAbilities?.forEach((ability) => {
+            expect(Object.values(AbilitiesEnum)).toContain(ability)
+        })
+    })
+
     it('normalizes inline character item references in generated runtime state', () => {
         const inlineWeapon = {
             id: 'InlineWeapon',
