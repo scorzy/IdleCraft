@@ -1,4 +1,3 @@
-import { CharTemplateEnum } from '../characters/templates/characterTemplateEnum'
 import { Icons } from '../icons/Icons'
 import { BattleZone } from './BattleZone'
 import { BattleZoneEnum } from './BattleZoneEnum'
@@ -11,7 +10,7 @@ export const BattleZones: Record<BattleZoneEnum, BattleZone> = {
             {
                 id: 'Chicken',
                 quantity: 1,
-                template: CharTemplateEnum.Chicken,
+                template: 'Chicken',
             },
         ],
     },
@@ -22,7 +21,7 @@ export const BattleZones: Record<BattleZoneEnum, BattleZone> = {
             {
                 id: 'boar-2',
                 quantity: 2,
-                template: CharTemplateEnum.Boar,
+                template: 'Boar',
             },
         ],
     },
@@ -33,7 +32,7 @@ export const BattleZones: Record<BattleZoneEnum, BattleZone> = {
             {
                 id: 'wolf-3',
                 quantity: 3,
-                template: CharTemplateEnum.Wolf,
+                template: 'Wolf',
             },
         ],
     },
@@ -44,7 +43,7 @@ export const BattleZones: Record<BattleZoneEnum, BattleZone> = {
             {
                 id: 'spider-4',
                 quantity: 4,
-                template: CharTemplateEnum.Spider,
+                template: 'Spider',
             },
         ],
     },

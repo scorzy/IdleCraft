@@ -1,7 +1,7 @@
-import { CharTemplateEnum } from '../characters/templates/characterTemplateEnum'
+import { CharacterId } from '../characters/templates/characterRegistry'
 
 export interface KillQuestTarget {
-    targetId: CharTemplateEnum
+    targetId: CharacterId
     targetCount: number
     killedCount: number
     locationId?: string

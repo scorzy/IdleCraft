@@ -6,7 +6,6 @@ import { GetInitialGameState } from '../../game/InitialGameState'
 import { Icons } from '../../icons/Icons'
 import { DamageTypes } from '../../items/Item'
 import { PLAYER_ID } from '../charactersConst'
-import { CharTemplateEnum } from '../templates/characterTemplateEnum'
 import { createEnemies } from './createEnemies'
 import { dealDamage } from './dealDamage'
 
@@ -24,7 +23,7 @@ describe('dealDamage', () => {
     beforeEach(() => {
         initialize()
         state = GetInitialGameState()
-        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Wolf }])
+        createEnemies(state, [{ quantity: 1, template: 'Wolf' }])
         enemyId = state.characters.ids.find((id) => id !== PLAYER_ID)!
     })
 
@@ -54,7 +53,7 @@ describe('dealDamage', () => {
     it('applies multiple damage types cumulatively', () => {
         const single = (() => {
             const s = GetInitialGameState()
-            createEnemies(s, [{ quantity: 1, template: CharTemplateEnum.Wolf }])
+            createEnemies(s, [{ quantity: 1, template: 'Wolf' }])
             const id = s.characters.ids.find((i) => i !== PLAYER_ID)!
             const before = s.characters.entries[id]!.health
             dealDamage(s, id, { [DamageTypes.Slashing]: 5 }, abilityLog)

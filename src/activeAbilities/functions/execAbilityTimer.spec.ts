@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { PLAYER_ID } from '../../characters/charactersConst'
-import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
 import { createEnemies } from '../../characters/functions/createEnemies'
 import { initialize } from '../../game/functions/initialize'
 import { GameState } from '../../game/GameState'
@@ -17,7 +16,7 @@ describe('execAbilityTimer', () => {
     beforeEach(() => {
         initialize()
         state = GetInitialGameState()
-        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Wolf }])
+        createEnemies(state, [{ quantity: 1, template: 'Wolf' }])
     })
 
     it('does nothing when the cast entry no longer exists', () => {

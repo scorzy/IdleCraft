@@ -1,7 +1,7 @@
 import { GameState } from '../../game/GameState'
+import { initCharacterStdItems } from '../../items/stdItems'
 import { CharacterAdapter } from '../characterAdapter'
-import { CharTemplateEnum } from '../templates/characterTemplateEnum'
-import { CharTemplatesData } from '../templates/charTemplateData'
+import { CharacterData, CharacterId, reconcileCharacterData } from '../templates/characterRegistry'
 import { generateCharacter } from '../templates/generateCharacter'
 import { resetHealth } from './resetHealth'
 import { resetMana } from './resetMana'
@@ -11,12 +11,14 @@ export function createEnemies(
     state: GameState,
     enemies: {
         quantity: number
-        template: CharTemplateEnum
+        template: CharacterId
     }[]
 ): void {
+    reconcileCharacterData()
+    initCharacterStdItems()
     enemies.forEach((enemyData) => {
         for (let i = 0; i < enemyData.quantity; i++) {
-            const enemy = generateCharacter(CharTemplatesData[enemyData.template])
+            const enemy = generateCharacter(enemyData.template, CharacterData[enemyData.template])
             enemy.isEnemy = true
             CharacterAdapter.create(state.characters, enemy)
         }

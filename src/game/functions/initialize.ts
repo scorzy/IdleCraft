@@ -70,6 +70,8 @@ import { longSwordRecipe } from '../../smithing/recipes/LongSwordRecipe'
 import { pantsRecipe } from '../../smithing/recipes/PantsRecipe'
 import { PickaxeRecipe } from '../../smithing/recipes/PickaxeRecipe'
 import { onItemDecreasedListeners, onItemRemovedListeners } from '../../storage/storageEvents'
+import { initCharacterStdItems } from '../../items/stdItems'
+import { reconcileCharacterData } from '../../characters/templates/characterRegistry'
 import { execTreeGrow } from '../../wood/forest/execTreeGrow'
 import { execIncreaseGrowSpeed } from '../../wood/functions/execIncreaseGrowSpeed'
 import { execWoodcutting } from '../../wood/functions/execWoodcutting'
@@ -96,6 +98,8 @@ import {
 } from '../globals'
 
 export function initialize() {
+    reconcileCharacterData()
+    initCharacterStdItems()
     initActivities()
     initRecipes()
     initAbilities()

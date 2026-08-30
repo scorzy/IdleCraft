@@ -3,7 +3,6 @@ import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Icons } from '../../icons/Icons'
 import { ItemTypes } from '../../items/Item'
-import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
 import { selectTranslations } from '../../msg/useTranslations'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { GenerateQuestDataData } from '../QuestTemplate'
@@ -49,7 +48,7 @@ export class FarmBoarTutorialQuest extends BaseQuestTemplate<GenerateQuestDataDa
             goldReward: 100,
             targets: [
                 {
-                    targetId: CharTemplateEnum.Boar,
+                    targetId: 'Boar',
                     targetCount: FARM_BOAR_KILL_COUNT,
                     killedCount: 0,
                 },

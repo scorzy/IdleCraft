@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { createEnemies } from '../../characters/functions/createEnemies'
-import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
 import { initialize } from '../../game/functions/initialize'
 import { GameState } from '../../game/GameState'
 import { GetInitialGameState } from '../../game/InitialGameState'
@@ -44,7 +43,7 @@ describe('NormalAttack', () => {
     })
 
     it('deals damage to a random enemy and logs it', () => {
-        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Wolf }])
+        createEnemies(state, [{ quantity: 1, template: 'Wolf' }])
         const enemyId = state.characters.ids.find((id) => id !== PLAYER_ID)!
         const before = state.characters.entries[enemyId]!.health
 

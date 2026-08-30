@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { PLAYER_ID } from '../../characters/charactersConst'
-import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
 import { createEnemies } from '../../characters/functions/createEnemies'
 import { ActivityTypes } from '../../activities/ActivityState'
 import { initialize } from '../../game/functions/initialize'
@@ -16,7 +15,7 @@ describe('endBattle', () => {
     beforeEach(() => {
         initialize()
         state = GetInitialGameState()
-        createEnemies(state, [{ quantity: 2, template: CharTemplateEnum.Wolf }])
+        createEnemies(state, [{ quantity: 2, template: 'Wolf' }])
     })
 
     it('removes all enemy characters but keeps the player', () => {

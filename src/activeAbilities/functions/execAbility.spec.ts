@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { ActivityAdapter } from '../../activities/ActivityState'
 import { PLAYER_ID } from '../../characters/charactersConst'
-import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
 import { createEnemies } from '../../characters/functions/createEnemies'
 import { initialize } from '../../game/functions/initialize'
 import { GameState } from '../../game/GameState'
@@ -22,7 +21,7 @@ describe('execAbility', () => {
     it('executes the ability and queues the caster next turn when the battle continues', () => {
         makeBattle(BattleZoneEnum.Wolf)(state)
         state.activityId = state.activities.ids[0]!
-        createEnemies(state, [{ quantity: 2, template: CharTemplateEnum.Wolf }])
+        createEnemies(state, [{ quantity: 2, template: 'Wolf' }])
 
         execAbility(state, AbilitiesEnum.NormalAttack, PLAYER_ID)
 
@@ -35,7 +34,7 @@ describe('execAbility', () => {
         const battleId = state.activities.ids[0]!
         state.activityId = battleId
 
-        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Chicken }])
+        createEnemies(state, [{ quantity: 1, template: 'Chicken' }])
         const enemyId = state.characters.ids.find((id) => id !== PLAYER_ID)!
         state.characters.entries[enemyId]!.health = 1
 
@@ -48,7 +47,7 @@ describe('execAbility', () => {
 
     it('does nothing further when there is no active activity', () => {
         state.activityId = null
-        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Wolf }])
+        createEnemies(state, [{ quantity: 1, template: 'Wolf' }])
 
         expect(() => execAbility(state, AbilitiesEnum.NormalAttack, PLAYER_ID)).not.toThrow()
     })

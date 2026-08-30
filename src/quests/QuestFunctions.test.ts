@@ -1,5 +1,4 @@
 import { beforeAll, describe, expect, test } from 'vitest'
-import { CharTemplateEnum } from '../characters/templates/characterTemplateEnum'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { GetInitialGameState } from '../game/InitialGameState'
 import { initialize } from '../game/functions/initialize'
@@ -37,7 +36,7 @@ describe('Quest Functions', () => {
                         ],
                         targets: [
                             {
-                                targetId: CharTemplateEnum.Boar,
+                                targetId: 'Boar' as const,
                                 targetCount: 5,
                                 killedCount: 0,
                             },
@@ -94,7 +93,7 @@ describe('Quest Functions', () => {
                         ],
                         targets: [
                             {
-                                targetId: CharTemplateEnum.Boar,
+                                targetId: 'Boar' as const,
                                 targetCount: 5,
                                 killedCount: 0,
                             },

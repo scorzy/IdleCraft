@@ -1,4 +1,3 @@
-import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Icons } from '../../icons/Icons'
@@ -38,7 +37,7 @@ export class TestQuestTemplate extends BaseQuestTemplate<GenerateQuestDataData> 
             itemsRewards: [{ itemId: 'DeadBoar', quantity: 10 }],
             targets: [
                 {
-                    targetId: CharTemplateEnum.Boar,
+                    targetId: 'Boar',
                     targetCount: 5,
                     killedCount: 0,
                 },

@@ -3,10 +3,10 @@ import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
 import { DamageData, DamageTypes, Item } from '../items/Item'
 import { EquipSlotsEnum } from './equipSlotsEnum'
-import { CharTemplateEnum } from './templates/characterTemplateEnum'
+import { CharacterId } from './templates/characterRegistry'
 
 export interface CharacterSelector {
-    TemplateId: (s: GameState) => CharTemplateEnum
+    TemplateId: (s: GameState) => CharacterId
     Name: (state: GameState) => string
     Icon: (state: GameState) => Icons
     Level: (state: GameState) => number

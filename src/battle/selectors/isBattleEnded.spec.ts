@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
 import { createEnemies } from '../../characters/functions/createEnemies'
 import { initialize } from '../../game/functions/initialize'
 import { GameState } from '../../game/GameState'
@@ -19,7 +18,7 @@ describe('isBattleEnded', () => {
     })
 
     it('returns false when at least one enemy character is alive', () => {
-        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Wolf }])
+        createEnemies(state, [{ quantity: 1, template: 'Wolf' }])
 
         expect(isBattleEnded(state)).toBe(false)
     })

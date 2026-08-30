@@ -9,7 +9,7 @@ import { test } from 'vitest'
 export default defineConfig({
     base: '/IdleCraft/',
     plugins: [
-        react({ compiler: true }),
+        react(),
         // svgr({
         //     include: '**/*.svg',
         // }),

@@ -1,4 +1,4 @@
-import { DeadAnimals } from '../characters/templates/DeadAnimals'
+import { CharacterItem } from '../characters/templates/characterInterfaces'
 import { makeMemoizedRecipe } from '../crafting/makeMemoizedRecipe'
 import {
     RecipeParameterItemFilter,
@@ -9,7 +9,8 @@ import {
 } from '../crafting/RecipeInterfaces'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
-import { ItemTypes } from '../items/Item'
+import { Item, ItemTypes } from '../items/Item'
+import { StdItems } from '../items/stdItems'
 
 export const butcheringRecipeParam: RecipeParameterItemFilter[] = [
     {
@@ -19,6 +20,10 @@ export const butcheringRecipeParam: RecipeParameterItemFilter[] = [
         itemFilter: { itemType: ItemTypes.Corpse },
     },
 ]
+
+function isCharacterCorpse(item: Item): item is CharacterItem {
+    return 'butchering' in item
+}
 
 export const butcheringRecipe = makeMemoizedRecipe({
     id: 'butcheringRecipe',
@@ -31,9 +36,9 @@ export const butcheringRecipe = makeMemoizedRecipe({
         if (!corpse) return
         if (!corpse.itemId) return
 
-        const animal = DeadAnimals[corpse.itemId]
+        const animal = StdItems[corpse.itemId]
         if (!animal) return
-        if (!animal.butchering) return
+        if (!isCharacterCorpse(animal) || !animal.butchering) return
 
         return {
             time: 3000,

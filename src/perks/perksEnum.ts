@@ -7,4 +7,3 @@ export enum PerksEnum {
     HIGH_PRICES = 'HIGH_PRICES',
     FAST_SELLING = 'FAST_SELLING',
 }
-export const PerksEnumKeys = Object.keys(PerksEnum)

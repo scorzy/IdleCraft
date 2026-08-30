@@ -1,4 +1,4 @@
-import { CharTemplateEnum } from '../characters/templates/characterTemplateEnum'
+import { CharacterId } from '../characters/templates/characterRegistry'
 import { Icons } from '../icons/Icons'
 import { Msg } from '../msg/Msg'
 
@@ -8,6 +8,6 @@ export interface BattleZone {
     enemies: {
         id: string
         quantity: number
-        template: CharTemplateEnum
+        template: CharacterId
     }[]
 }

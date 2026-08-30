@@ -6,7 +6,6 @@ import { createEnemies } from '../characters/functions/createEnemies'
 import { equipItem } from '../characters/characterFunctions'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
-import { CharTemplateEnum } from '../characters/templates/characterTemplateEnum'
 import { regenerateChars } from '../characters/functions/regenerateChars'
 import { AppliedEffectAdapter } from '../effects/types/AppliedEffect'
 import { GetInitialGameState } from '../game/InitialGameState'
@@ -134,7 +133,7 @@ describe('weapon coatings', () => {
         highValueCoating.value = 2
         ItemAdapter.create(state.craftedItems, lowValueCoating)
         ItemAdapter.create(state.craftedItems, highValueCoating)
-        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Chicken }])
+        createEnemies(state, [{ quantity: 1, template: 'Chicken' }])
         const enemyId = state.characters.ids.find((id) => id !== PLAYER_ID)
         if (!enemyId) throw new Error('expected enemy')
         const enemy = CharacterAdapter.selectEx(state.characters, enemyId)
@@ -161,7 +160,7 @@ describe('weapon coatings', () => {
         equipItem(state, PLAYER_ID, EquipSlotsEnum.MainHand, sword.id)
         expect(applyWeaponCoating(state, PLAYER_ID, poison.id)).toBe(true)
 
-        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Wolf }])
+        createEnemies(state, [{ quantity: 1, template: 'Wolf' }])
         const enemyId = state.characters.ids.find((id) => id !== PLAYER_ID)!
         new NormalAttack().exec({ state, characterId: PLAYER_ID })
         const effect = AppliedEffectAdapter.find(state.effects, (entry) => entry.target === enemyId)
@@ -190,7 +189,7 @@ describe('weapon coatings', () => {
         addItem(state, poison.id, 1)
         equipItem(state, PLAYER_ID, EquipSlotsEnum.MainHand, sword.id)
         applyWeaponCoating(state, PLAYER_ID, poison.id)
-        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Wolf }])
+        createEnemies(state, [{ quantity: 1, template: 'Wolf' }])
         const enemyId = state.characters.ids.find((id) => id !== PLAYER_ID)!
         CharacterAdapter.selectEx(state.characters, enemyId).health = 1
 
@@ -215,7 +214,7 @@ describe('weapon coatings', () => {
             addItem(state, coating.id, 1)
             equipItem(state, PLAYER_ID, EquipSlotsEnum.MainHand, sword.id)
             applyWeaponCoating(state, PLAYER_ID, coating.id)
-            createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Wolf }])
+            createEnemies(state, [{ quantity: 1, template: 'Wolf' }])
             const enemyId = state.characters.ids.find((id) => id !== PLAYER_ID)!
 
             onWeaponHit(state, PLAYER_ID, enemyId)
@@ -244,7 +243,7 @@ describe('weapon coatings', () => {
         addItem(state, coating.id, 1)
         equipItem(state, PLAYER_ID, EquipSlotsEnum.MainHand, sword.id)
         applyWeaponCoating(state, PLAYER_ID, coating.id)
-        createEnemies(state, [{ quantity: 1, template: CharTemplateEnum.Wolf }])
+        createEnemies(state, [{ quantity: 1, template: 'Wolf' }])
         const enemyId = state.characters.ids.find((id) => id !== PLAYER_ID)!
 
         onWeaponHit(state, PLAYER_ID, enemyId)

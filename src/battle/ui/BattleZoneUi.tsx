@@ -1,8 +1,7 @@
 import { memo, useCallback } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
-import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
-import { CharTemplatesData } from '../../characters/templates/charTemplateData'
+import { CharacterData, CharacterId } from '../../characters/templates/characterRegistry'
 import { generateCharacter } from '../../characters/templates/generateCharacter'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
@@ -115,10 +114,10 @@ const EnemyInfoUi = memo(function EnemyInfoUi({
     templateEnum,
 }: {
     quantity: number
-    templateEnum: CharTemplateEnum
+    templateEnum: CharacterId
 }) {
-    const template = CharTemplatesData[templateEnum]
-    const enemy = generateCharacter(template)
+    const template = CharacterData[templateEnum]
+    const enemy = generateCharacter(templateEnum, template)
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     return (
@@ -155,9 +154,9 @@ const EnemyInfoUi = memo(function EnemyInfoUi({
         </div>
     )
 })
-const EnemyDropsUi = memo(function EnemyDropsUi({ templateEnum }: { templateEnum: CharTemplateEnum }) {
-    const template = CharTemplatesData[templateEnum]
-    const enemy = generateCharacter(template)
+const EnemyDropsUi = memo(function EnemyDropsUi({ templateEnum }: { templateEnum: CharacterId }) {
+    const template = CharacterData[templateEnum]
+    const enemy = generateCharacter(templateEnum, template)
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     return (
@@ -176,7 +175,7 @@ const EnemyDropsUi = memo(function EnemyDropsUi({ templateEnum }: { templateEnum
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                    {template.loot.map((loot) => (
+                    {enemy.loot?.map((loot) => (
                         <div key={loot.itemId} className="flex justify-start gap-2 align-middle">
                             <ItemIconName itemId={loot.itemId} />
                             {loot.quantity > 1 && <span> x {f(loot.quantity)}</span>}

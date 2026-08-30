@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { GameState } from '../../game/GameState'
 import { GetInitialGameState } from '../../game/InitialGameState'
@@ -20,7 +19,7 @@ const buildQuest = (killedCount: number, targetCount: number): QuestState => ({
             [OUTCOME_ID]: {
                 id: OUTCOME_ID,
                 location: GameLocations.StartVillage,
-                targets: [{ targetId: CharTemplateEnum.Wolf, targetCount, killedCount }],
+                targets: [{ targetId: 'Wolf', targetCount, killedCount }],
             },
         },
     },
@@ -48,7 +47,7 @@ describe('killSelectors', () => {
     it('selectQuestTargets returns the target list', () => {
         QuestAdapter.create(state.quests, buildQuest(1, 3))
         expect(selectQuestTargets(state, QUEST_ID, OUTCOME_ID)).toEqual([
-            { targetId: CharTemplateEnum.Wolf, targetCount: 3, killedCount: 1 },
+            { targetId: 'Wolf', targetCount: 3, killedCount: 1 },
         ])
     })
 

@@ -13,7 +13,7 @@ import { GetItemNameParamsMemoized } from '../items/GetItemNameParamsMemoized'
 import { Item, ItemFilter, ItemSubType, ItemTypes } from '../items/Item'
 import { filterItem } from '../items/selectors/itemSelectors'
 import { selectItemNameMemoized } from '@/items/selectors/itemSelectorsMemo'
-import { StdItems, UnlimitedItems } from '../items/stdItems'
+import { getUnlimitedItems, StdItems } from '../items/stdItems'
 import { selectTranslations } from '../msg/useTranslations'
 
 import { ItemAdapter } from './ItemAdapter'
@@ -228,7 +228,7 @@ export const selectFilteredItems = (s: GameState, itemFilter: ItemFilter, includ
         if (item && filterItem(item, itemFilter)) ret.push(id)
     }
 
-    UnlimitedItems.forEach((item) => {
+    getUnlimitedItems().forEach((item) => {
         if (!item.unlimited) return
         if (filterItem(item, itemFilter)) ret.push(item.id)
     })

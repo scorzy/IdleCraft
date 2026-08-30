@@ -1,7 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { CharacterAdapter } from '../../characters/characterAdapter'
 import { createEnemies } from '../../characters/functions/createEnemies'
-import { CharTemplateEnum } from '../../characters/templates/characterTemplateEnum'
+import { CharacterId } from '../../characters/templates/characterRegistry'
 import { initialize } from '../../game/functions/initialize'
 import { GameState } from '../../game/GameState'
 import { GetInitialGameState } from '../../game/InitialGameState'
@@ -32,7 +32,7 @@ describe('questOnKillListener', () => {
                     k: {
                         id: 'k',
                         location,
-                        targets: [{ targetId: CharTemplateEnum.Boar, targetCount, killedCount: 0 }],
+                        targets: [{ targetId: 'Boar', targetCount, killedCount: 0 }],
                     },
                 },
             },
@@ -41,14 +41,14 @@ describe('questOnKillListener', () => {
         return quest
     }
 
-    function createEnemy(template: CharTemplateEnum) {
+    function createEnemy(template: CharacterId) {
         createEnemies(state, [{ quantity: 1, template }])
         return CharacterAdapter.find(state.characters, (character) => character.isEnemy)!.id
     }
 
     it('increments matching targets, ignores completed targets, and filters by location', () => {
         const quest = addKillQuest(2)
-        const boarId = createEnemy(CharTemplateEnum.Boar)
+        const boarId = createEnemy('Boar')
 
         questOnKillListener(state, boarId)
         expect(quest.outcomeData.entries.k!.targets![0]!.killedCount).toBe(1)
@@ -65,7 +65,7 @@ describe('questOnKillListener', () => {
 
     it('ignores accepted quests when the killed character template does not match', () => {
         const quest = addKillQuest()
-        const wolfId = createEnemy(CharTemplateEnum.Wolf)
+        const wolfId = createEnemy('Wolf')
 
         questOnKillListener(state, wolfId)
 
@@ -76,10 +76,10 @@ describe('questOnKillListener', () => {
         const quest = new UnlockZoneQuest().generateQuestData(state, {
             location: GameLocations.StartVillage,
             zone: GatheringZone.WolfLair,
-            enemies: [{ qta: 1, templateId: CharTemplateEnum.Boar }],
+            enemies: [{ qta: 1, templateId: 'Boar' }],
         })
         QuestAdapter.create(state.quests, quest)
-        const boarId = createEnemy(CharTemplateEnum.Boar)
+        const boarId = createEnemy('Boar')
 
         questOnKillListener(state, boarId)
 

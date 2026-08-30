@@ -5,16 +5,22 @@ import { CharacterState } from '../characterState'
 import { selectMaxHealthFromChar } from '../selectors/healthSelectors'
 import { selectMaxManaFromChar } from '../selectors/manaSelectors'
 import { selectMaxStaminaFromChar } from '../selectors/staminaSelectors'
-import { CharTemplate } from './charTemplates'
+import { CharacterDefinition } from './characterInterfaces'
+import { resolveCharacterItemRef } from './characterRegistry'
 
 const generateCharacterInt = memoize(
-    (template: CharTemplate) => {
+    (templateId: string, template: CharacterDefinition) => {
         const char: CharacterState = {
             id: getUniqueId(),
-            templateId: template.id,
+            templateId,
             nameId: template.nameId,
             iconId: template.iconId,
-            inventory: template.inventory,
+            inventory: Object.fromEntries(
+                Object.entries(template.inventory).map(([slot, item]) => [
+                    slot,
+                    item && { ...item, itemId: resolveCharacterItemRef(item.itemId) },
+                ])
+            ),
             skillsExp: template.skillsExp,
             skillsLevel: template.skillsLevel,
             exp: 0,
@@ -31,7 +37,7 @@ const generateCharacterInt = memoize(
             lastCombatAbilityId: null,
             lastCombatAbilityNum: 0,
             perks: {},
-            loot: template.loot,
+            loot: template.loot.map((loot) => ({ ...loot, itemId: resolveCharacterItemRef(loot.itemId) })),
         }
 
         char.health = selectMaxHealthFromChar(char).total
@@ -43,8 +49,8 @@ const generateCharacterInt = memoize(
     { maxSize: 100 }
 )
 
-export function generateCharacter(template: CharTemplate): CharacterState {
-    const char: CharacterState = structuredClone(generateCharacterInt(template))
+export function generateCharacter(templateId: string, template: CharacterDefinition): CharacterState {
+    const char: CharacterState = structuredClone(generateCharacterInt(templateId, template))
     char.id = getUniqueId()
 
     return char
