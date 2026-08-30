@@ -49,6 +49,7 @@ import {
     GiVisoredHelm,
     GiHutsVillage,
     GiReceiveMoney,
+    GiSpiderAlt,
 } from 'react-icons/gi'
 import { LuArrowDown, LuArrowDownUp, LuArrowUp } from 'react-icons/lu'
 
@@ -105,6 +106,7 @@ export enum Icons {
     FastCourier = 'FastCourier',
     Market = 'Market',
     Persuasion = 'Persuasion',
+    Spider = 'Spider',
 }
 export const IconsData: Record<Icons, ReactNode> = {
     Axe: <GiWoodAxe />,
@@ -159,4 +161,5 @@ export const IconsData: Record<Icons, ReactNode> = {
     FastCourier: <GiHorseHead />,
     Market: <GiReceiveMoney />,
     Persuasion: <GiConversation />,
+    Spider: <GiSpiderAlt />,
 }

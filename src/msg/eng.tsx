@@ -536,6 +536,8 @@ export const engMsg: Msg = {
     Rare: 'Rare',
     SaveStringEmpty: 'Save string is empty',
     SaveFileTooLarge: 'File too large. Max size is 5MB',
+    Spider: 'Spider',
+    Spiders: 'Spiders',
 }
 
 export const makeEngMsg: (msg: Msg, f: (value: number) => string) => MsgFunctions = (

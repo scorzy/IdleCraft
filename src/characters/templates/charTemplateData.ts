@@ -56,12 +56,30 @@ export const CharTemplatesData: Record<CharTemplateEnum, CharTemplate> = {
         skillsLevel: {},
         level: 3,
         healthPoints: 1,
-        staminaPoints: 1,
+        staminaPoints: 2,
         manaPoints: -8,
         loot: [
             {
                 quantity: 1,
                 itemId: 'DeadWolf',
+            },
+        ],
+    },
+    [CharTemplateEnum.Spider]: {
+        id: CharTemplateEnum.Spider,
+        nameId: 'Spider',
+        iconId: Icons.Spider,
+        inventory: {},
+        skillsExp: {},
+        skillsLevel: {},
+        level: 3,
+        healthPoints: 1,
+        staminaPoints: 2,
+        manaPoints: -8,
+        loot: [
+            {
+                quantity: 1,
+                itemId: 'DeadSpider',
             },
         ],
     },

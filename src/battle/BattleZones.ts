@@ -37,4 +37,15 @@ export const BattleZones: Record<BattleZoneEnum, BattleZone> = {
             },
         ],
     },
+    [BattleZoneEnum.Spider]: {
+        nameId: 'Spiders',
+        iconId: Icons.Spider,
+        enemies: [
+            {
+                id: 'spider-4',
+                quantity: 4,
+                template: CharTemplateEnum.Spider,
+            },
+        ],
+    },
 }

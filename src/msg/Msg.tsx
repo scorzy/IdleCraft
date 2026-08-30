@@ -532,4 +532,6 @@ export interface Msg {
     Rare: string
     SaveStringEmpty: string
     SaveFileTooLarge: string
+    Spider: string
+    Spiders: string
 }
