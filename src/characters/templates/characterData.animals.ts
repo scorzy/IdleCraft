@@ -124,31 +124,9 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                     damage: { Piercing: 8, Bludgeoning: 0, Slashing: 0 },
                 },
             },
-            SpiderPoison: {
-                id: 'SpiderPoison',
-                nameId: 'Spider',
-                icon: Icons.Spider,
-                type: ItemTypes.Potion,
-                value: 0,
-                volume: FINISHED_VOLUME,
-                weaponCoatingData: {
-                    kind: WeaponCoatingKind.Poison,
-                    charges: 20,
-                    iconId: Icons.Poison,
-                    nameId: 'Spider',
-                    effects: [
-                        {
-                            effect: Effects.DamageRegenHealth,
-                            value: 2,
-                            duration: 1e4,
-                        },
-                    ],
-                },
-            },
         },
         inventory: {
             TwoHand: { itemId: 'SpiderMainW' },
-            QuickSlot: { itemId: 'SpiderPoison', quantity: 10 },
         },
         skillsExp: {},
         skillsLevel: {},
@@ -157,5 +135,18 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         staminaPoints: 2,
         manaPoints: -8,
         loot: [],
+        weaponCoating: {
+            kind: WeaponCoatingKind.Poison,
+            charges: Number.POSITIVE_INFINITY,
+            iconId: Icons.Poison,
+            nameId: 'Spider',
+            effects: [
+                {
+                    effect: Effects.DamageRegenHealth,
+                    value: 2,
+                    duration: 1e4,
+                },
+            ],
+        },
     },
 }

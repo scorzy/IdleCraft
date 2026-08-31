@@ -59,4 +59,22 @@ describe('startBattleTimer', () => {
         expect(playerCast?.abilityId).toBe(AbilitiesEnum.ChargedAttack)
         expect(player.lastCombatAbilityNum).toBe(0)
     })
+
+    it('applies an enemy template coating before starting its first ability', () => {
+        makeBattle(BattleZoneEnum.Spider)(state)
+        const battleId = state.activities.ids[0]!
+        const timer: Timer = { id: 't1', from: 0, to: 0, type: ActivityTypes.StartBattle, actId: battleId }
+
+        startBattleTimer(state, timer)
+
+        const spiderId = state.characters.ids.find((id) => id !== PLAYER_ID)!
+        const spider = CharacterAdapter.selectEx(state.characters, spiderId)
+        expect(spider.weaponCoating).toMatchObject({
+            weaponItemId: 'SpiderSpiderMainW',
+            remainingCharges: Number.POSITIVE_INFINITY,
+        })
+        expect(
+            CastCharAbilityAdapter.find(state.castCharAbility, (cast) => cast.characterId === spiderId)
+        ).toBeDefined()
+    })
 })

@@ -21,6 +21,7 @@ import { EffectPotency } from '../effects/types/EffectPotency'
 import {
     applyWeaponCoating,
     autoApplyBestWeaponCoating,
+    applyTemplateWeaponCoating,
     getWeaponCoatingEffectiveness,
     onWeaponHit,
     scaleWeaponCoatingValue,
@@ -145,6 +146,28 @@ describe('weapon coatings', () => {
         expect(enemy.inventory[EquipSlotsEnum.Head]).toBeUndefined()
         expect(enemy.inventory[EquipSlotsEnum.QuickSlot]).toEqual({ itemId: lowValueCoating.id, quantity: 2 })
         expect(autoApplyBestWeaponCoating(state, enemy.id)).toBe(false)
+    })
+
+    it('applies an enemy template coating without consuming inventory and keeps infinite charges on hits', () => {
+        const state = GetInitialGameState()
+        createEnemies(state, [{ quantity: 1, template: 'Spider' }])
+        const enemyId = state.characters.ids.find((id) => id !== PLAYER_ID)
+        if (!enemyId) throw new Error('expected enemy')
+        const enemy = CharacterAdapter.selectEx(state.characters, enemyId)
+        const inventory = structuredClone(enemy.inventory)
+
+        expect(applyTemplateWeaponCoating(state, enemyId)).toBe(true)
+        expect(enemy.weaponCoating).toMatchObject({
+            weaponItemId: 'SpiderSpiderMainW',
+            remainingCharges: Number.POSITIVE_INFINITY,
+        })
+        expect(enemy.inventory).toEqual(inventory)
+
+        onWeaponHit(state, enemyId, PLAYER_ID)
+        onWeaponHit(state, enemyId, PLAYER_ID)
+
+        expect(enemy.weaponCoating?.remainingCharges).toBe(Number.POSITIVE_INFINITY)
+        expect(AppliedEffectAdapter.findMany(state.effects, (effect) => effect.target === PLAYER_ID)).toHaveLength(1)
     })
 
     it('consumes a charge on a hit, refreshes the target effect, and clears the final charge', () => {

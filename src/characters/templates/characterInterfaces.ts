@@ -7,6 +7,7 @@ import { Icons } from '../../icons/Icons'
 import { Item } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { Loot } from '../../storage/storageTypes'
+import { WeaponCoatingData } from '../../weaponCoatings/weaponCoatingTypes'
 import { CharInventory } from '../inventory'
 
 export type CharacterItem = Item & { butchering?: RecipeItem[] }
@@ -26,6 +27,7 @@ export interface CharacterDefinition {
     staminaPoints: number
     manaPoints: number
     loot: CharacterLoot[]
+    weaponCoating?: WeaponCoatingData
     combatAbilities?: AbilitiesEnum[]
     allCombatAbilities?: InitialState<CharAbility>
     randomizeAbilitiesOrder?: boolean

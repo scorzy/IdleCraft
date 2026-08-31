@@ -8,7 +8,7 @@ import { GameState } from '../../game/GameState'
 import { Timer } from '../../timers/Timer'
 import { isBattle } from '../BattleTypes'
 import { BattleZones } from '../BattleZones'
-import { autoApplyBestWeaponCoating } from '../../weaponCoatings/weaponCoatingFunctions'
+import { autoApplyBestWeaponCoating, applyTemplateWeaponCoating } from '../../weaponCoatings/weaponCoatingFunctions'
 
 export function startBattleTimer(state: GameState, timer: Timer): void {
     const data = ActivityAdapter.selectEx(state.activities, timer.actId)
@@ -28,6 +28,7 @@ export function startBattleTimer(state: GameState, timer: Timer): void {
         const char = CharacterAdapter.selectEx(state.characters, charId)
         char.lastCombatAbilityNum = 0
         char.lastCombatAbilityId = null
+        applyTemplateWeaponCoating(state, charId)
         autoApplyBestWeaponCoating(state, charId)
         startNextAbility(state, charId)
     }

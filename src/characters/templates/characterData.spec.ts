@@ -78,6 +78,17 @@ describe('character data', () => {
         ])
     })
 
+    it('defines the spider poison as an infinite template weapon coating', () => {
+        const spider = AnimalCharacterData.Spider!
+
+        expect(spider.items.SpiderPoison).toBeUndefined()
+        expect(spider.inventory.QuickSlot).toBeUndefined()
+        expect(spider.weaponCoating).toMatchObject({
+            charges: Number.POSITIVE_INFINITY,
+            effects: [{ effect: 'DamageRegenHealth', value: 2, duration: 10_000 }],
+        })
+    })
+
     it('infers unique available combat abilities from a template rotation', () => {
         const character = generateCharacter('Boar', {
             nameId: 'Boar',

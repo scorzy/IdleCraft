@@ -8,6 +8,7 @@ import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { getCharacterSelector } from '../characters/getCharacterSelector'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
+import { CharacterData } from '../characters/templates/characterRegistry'
 import { getUniqueId } from '../utils/getUniqueId'
 import { WEAPON_COATING_EFFECTIVENESS_BPS } from './weaponCoatingConst'
 import { ActiveWeaponCoating, isWeaponCoatingEffect, WeaponCoatingData } from './weaponCoatingTypes'
@@ -120,6 +121,26 @@ export function autoApplyBestWeaponCoating(state: GameState, charId: string): bo
     if (quantity === 1) delete char.inventory[slot]
     else inventoryItem.quantity = quantity - 1
     removeCraftItemIfUnused(state, item.id)
+    return true
+}
+
+export function applyTemplateWeaponCoating(state: GameState, charId: string): boolean {
+    const char = CharacterAdapter.select(state.characters, charId)
+    if (!char?.isEnemy) return false
+
+    clearWeaponCoatingIfWeaponChanged(state, charId)
+    if (getActiveWeaponCoating(state, charId)) return false
+
+    const coatingData = CharacterData[char.templateId]?.weaponCoating
+    const weapon = getCharacterSelector(charId).MainWeapon(state)
+    if (!coatingData || !weapon) return false
+
+    char.weaponCoating = {
+        weaponItemId: weapon.id,
+        coatingInstanceId: getUniqueId(),
+        remainingCharges: coatingData.charges,
+        data: structuredClone(coatingData),
+    }
     return true
 }
 

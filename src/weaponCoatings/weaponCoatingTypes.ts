@@ -31,7 +31,7 @@ export interface WeaponCoatingData {
 
 export interface ActiveWeaponCoating {
     weaponItemId: string
-    coatingItemId: string
+    coatingItemId?: string
     coatingInstanceId: string
     remainingCharges: number
     data: WeaponCoatingData
