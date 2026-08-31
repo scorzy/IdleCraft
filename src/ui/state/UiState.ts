@@ -8,6 +8,7 @@ import { OreTypes } from '../../mining/OreTypes'
 import { WoodTypes } from '../../wood/WoodTypes'
 import { VendorTypes } from '../../vendors/VendorTypes'
 import { CollapsedEnum } from '../sidebar/CollapsedEnum'
+import { BattleZoneEnum } from '../../battle/BattleZoneEnum'
 import { UiPages } from './UiPages'
 
 export interface UiState {
@@ -31,7 +32,7 @@ export interface UiState {
     showAvailablePerks: boolean
     showUnavailablePerks: boolean
     showOwnedPerks: boolean
-    battleZone: string | null
+    battleZone: BattleZoneEnum | null
     selectedCharId: string
     collapsed: Partial<Record<CollapsedEnum, boolean>>
     defaultClosed: Record<string, boolean>

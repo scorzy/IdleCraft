@@ -21,7 +21,7 @@ import { ItemIconName } from '../../items/ui/ItemIconName'
 import { useTranslations } from '../../msg/useTranslations'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
-import { MyListItem } from '../../ui/sidebar/MenuItem'
+import { CollapsibleMenu, MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
 import { CharacterState } from '../../characters/characterState'
 import { getTemplateWeaponCoating } from '../../weaponCoatings/weaponCoatingFunctions'
@@ -49,13 +49,12 @@ const getTemplateCharacter = (templateId: CharacterId) => {
 }
 
 export const CombatPage = memo(function CombatPage() {
-    const btId = useGameStore(selectBattleZone)
-    const bt = BattleAreasList.find((ba) => ba.id === btId)
+    const battleZoneEnum = useGameStore(selectBattleZone)
 
     return (
         <MyPageAll sidebar={<CombatSidebar />}>
-            <MyPage className={classes.areaCards}>
-                {bt && bt.zones.map((z) => <BattleZoneInfoUi key={z} battleZoneEnum={z} />)}
+            <MyPage className={classes.areaCards} key={battleZoneEnum}>
+                {battleZoneEnum && <BattleZoneInfoUi battleZoneEnum={battleZoneEnum} />}
             </MyPage>
         </MyPageAll>
     )
@@ -72,9 +71,25 @@ const CombatSidebar = memo(function CombatSidebar() {
 })
 
 const BattleAreasListUi = memo(function BattleAreasListUi({ bt }: { bt: BattleAreas }) {
+    return (
+        <CollapsibleMenu
+            collapsedId={bt.collapsedId}
+            name={bt.nameId}
+            parentCollapsedId={CollapsedEnum.Combat}
+            icon={IconsData[bt.iconId]}
+        >
+            {bt.zones.map((z) => (
+                <EnemyLink battleZoneEnum={z} key={z} />
+            ))}
+        </CollapsibleMenu>
+    )
+})
+
+const EnemyLink = memo(function EnemyLink({ battleZoneEnum }: { battleZoneEnum: BattleZoneEnum }) {
     const { t } = useTranslations()
-    const set = useCallback(() => setArea(bt.id), [bt.id])
-    const active = useGameStore(isBattleZoneSelected(bt.id))
+    const set = useCallback(() => setArea(battleZoneEnum), [battleZoneEnum])
+    const active = useGameStore(isBattleZoneSelected(battleZoneEnum))
+    const bt = BattleZones[battleZoneEnum]
 
     return (
         <MyListItem
