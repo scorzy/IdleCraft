@@ -8,13 +8,13 @@ import { IconsData } from '../../icons/Icons'
 import { TrashIcon } from '../../icons/IconsMemo'
 import { useTranslations } from '../../msg/useTranslations'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
-import { isCharReadonly } from '../../ui/state/uiSelectors'
+import { isCharReadonly, selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { ActiveAbilityData } from '../ActiveAbilityData'
 import { addRotation } from '../functions/addRotation'
 import { changeCombatAbility } from '../functions/changeCombatAbility'
 import { removeRotation } from '../functions/removeRotation'
 import { selectAllCombatAbilities } from '../selectors/selectAllCombatAbilities'
-import { selectCombatAbilities } from '../selectors/selectCombatAbilities'
+import { selectCombatAbilities, selectCombatRotationChar } from '../selectors/selectCombatAbilities'
 import { selectCombatAbility, selectCombatAbilityId } from '../selectors/selectCombatAbility'
 import { selectCombatAbilityById } from '../selectors/selectCombatAbilityById'
 import classes from './combatAbilities.module.css'
@@ -22,6 +22,7 @@ import classes from './combatAbilities.module.css'
 export const CombatAbilities = memo(function CombatAbilities() {
     const { t } = useTranslations()
     const selected = useGameStore(selectCombatAbilities)
+    const selectedCharId = useGameStore(selectSelectedCharId)
     const readonly = useGameStore(isCharReadonly)
 
     return (
@@ -41,10 +42,7 @@ export const CombatAbilities = memo(function CombatAbilities() {
                 )}
                 {readonly && (
                     <>
-                        {selected.map((c, index) => (
-                            // eslint-disable-next-line @eslint-react/no-array-index-key
-                            <CombatAbilitiesReadOnly index={index} key={c + index} />
-                        ))}
+                        <CombatAbilitiesReadOnly charId={selectedCharId} />
                     </>
                 )}
             </CardContent>
@@ -52,12 +50,18 @@ export const CombatAbilities = memo(function CombatAbilities() {
     )
 })
 
-export const CombatAbilitiesReadOnly = memo(function CombatAbilitiesReadOnly(props: { index: number }) {
-    const { index } = props
-    const selectedId = useGameStore(selectCombatAbilityId(index))
-    if (!selectedId) return
+export const CombatAbilitiesReadOnly = memo(function CombatAbilitiesReadOnly(props: { charId: string }) {
+    const { charId } = props
+    const selected = useGameStore(selectCombatRotationChar(charId))
 
-    return <SelectedAbility selectedId={selectedId} />
+    return (
+        <div className={classes.readOnlyAbilities}>
+            {selected.map((selectedId, index) => (
+                // eslint-disable-next-line @eslint-react/no-array-index-key
+                <SelectedAbility charId={charId} selectedId={selectedId} key={selectedId + index} />
+            ))}
+        </div>
+    )
 })
 
 const CombatAbility = memo(function CombatAbility(props: { index: number }) {
@@ -104,14 +108,14 @@ const Ability = memo(function Ability(props: { id: string; onSelect: (value: str
     )
 })
 
-const SelectedAbility = memo(function SelectedAbility(props: { selectedId: string }) {
-    const { selectedId } = props
+const SelectedAbility = memo(function SelectedAbility(props: { selectedId: string; charId?: string }) {
+    const { selectedId, charId } = props
     const { t } = useTranslations()
-    const charAbility = useGameStore(selectCombatAbilityById(selectedId))
+    const selectedCharId = useGameStore(selectSelectedCharId)
+    const characterId = charId ?? selectedCharId
+    const charAbility = useGameStore(selectCombatAbilityById(selectedId, characterId))
     const ability = ActiveAbilityData.getEx(charAbility.abilityId)
-    const iconId = useGameStore((state: GameState) =>
-        ability.getIconId({ state, characterId: state.ui.selectedCharId })
-    )
+    const iconId = useGameStore((state: GameState) => ability.getIconId({ state, characterId }))
 
     return (
         <span className="select-trigger">

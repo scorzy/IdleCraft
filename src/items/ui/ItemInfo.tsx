@@ -40,16 +40,20 @@ export const ItemInfo = memo(function ItemInfo(props: { item: Item }) {
 
 export const WeaponCoatingDataUi = memo(function WeaponCoatingDataUi({
     coatingData,
+    showCharges = true,
 }: {
     coatingData: WeaponCoatingData
+    showCharges?: boolean
 }) {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
     return (
         <div>
-            <div>
-                <span className="text-muted-foreground">{t.CoatingCharges}</span> {f(coatingData.charges)}
-            </div>
+            {showCharges && (
+                <div>
+                    <span className="text-muted-foreground">{t.CoatingCharges}</span> {f(coatingData.charges)}
+                </div>
+            )}
             {coatingData.effects.map((effect) => (
                 <div key={effect.effect}>
                     <span className="text-muted-foreground">{t.DamagePerSec}</span> {f(effect.value)}{' '}

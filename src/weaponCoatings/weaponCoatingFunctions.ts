@@ -5,6 +5,7 @@ import { DamageTypes, Item } from '../items/Item'
 import { selectGameItem, selectItemQta } from '../storage/StorageSelectors'
 import { removeCraftItemIfUnused, removeItem } from '../storage/storageFunctions'
 import { CharacterAdapter } from '../characters/characterAdapter'
+import { CharacterState } from '../characters/characterState'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { getCharacterSelector } from '../characters/getCharacterSelector'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
@@ -124,6 +125,19 @@ export function autoApplyBestWeaponCoating(state: GameState, charId: string): bo
     return true
 }
 
+export function getTemplateWeaponCoating(state: GameState, char: CharacterState): ActiveWeaponCoating | undefined {
+    const coatingData = CharacterData[char.templateId]?.weaponCoating
+    const weapon = getCharacterSelector(char.id, char).MainWeapon(state)
+    if (!coatingData || !weapon) return
+
+    return {
+        weaponItemId: weapon.id,
+        coatingInstanceId: getUniqueId(),
+        remainingCharges: coatingData.charges,
+        data: structuredClone(coatingData),
+    }
+}
+
 export function applyTemplateWeaponCoating(state: GameState, charId: string): boolean {
     const char = CharacterAdapter.select(state.characters, charId)
     if (!char?.isEnemy) return false
@@ -131,16 +145,9 @@ export function applyTemplateWeaponCoating(state: GameState, charId: string): bo
     clearWeaponCoatingIfWeaponChanged(state, charId)
     if (getActiveWeaponCoating(state, charId)) return false
 
-    const coatingData = CharacterData[char.templateId]?.weaponCoating
-    const weapon = getCharacterSelector(charId).MainWeapon(state)
-    if (!coatingData || !weapon) return false
-
-    char.weaponCoating = {
-        weaponItemId: weapon.id,
-        coatingInstanceId: getUniqueId(),
-        remainingCharges: coatingData.charges,
-        data: structuredClone(coatingData),
-    }
+    const coating = getTemplateWeaponCoating(state, char)
+    if (!coating) return false
+    char.weaponCoating = coating
     return true
 }
 

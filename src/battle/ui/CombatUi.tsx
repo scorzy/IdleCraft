@@ -1,14 +1,14 @@
-import { memo, useCallback, useMemo, useState } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
 import { useShallow } from 'zustand/react/shallow'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { useItemName } from '@/items/selectors/useItemName'
 import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
 import { ActiveAbilityData } from '../../activeAbilities/ActiveAbilityData'
-import { selectCombatAbilitiesChar } from '../../activeAbilities/selectors/selectCombatAbilities'
+import { getCombatRotation, selectCombatRotationChar } from '../../activeAbilities/selectors/selectCombatAbilities'
 import { selectCombatAbilityById } from '../../activeAbilities/selectors/selectCombatAbilityById'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
 import { getCharacterSelector } from '../../characters/getCharacterSelector'
+import { CharacterState } from '../../characters/characterState'
 import { consumeQuickSlotPotionClick } from '../../characters/quickSlotFunctions'
 import {
     selectCharMainAttack,
@@ -38,15 +38,16 @@ import { MyPage } from '../../ui/pages/MyPage'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { TimerProgressFromId } from '../../ui/progress/TimerProgress'
 import classes from './combat.module.css'
-import { RxCaretSort } from 'react-icons/rx'
 import { ItemIcon } from '../../items/ui/ItemIcon'
 import { ItemIconName } from '../../items/ui/ItemIconName'
+import { WeaponCoatingDataUi } from '../../items/ui/ItemInfo'
 import {
     selectActiveWeaponCoating,
     selectWeaponCoatingEffects,
     WeaponCoatingEffectGroup,
 } from '../../weaponCoatings/weaponCoatingSelectors'
 import { memoize } from 'proxy-memoize'
+import { AbilitiesEnum } from '../../activeAbilities/abilitiesEnum'
 
 export const CombatUi = memo(function CombatUi() {
     return (
@@ -76,7 +77,6 @@ const CombatChars = memo(function CombatChars() {
 })
 const CharCard = memo(function CharCard(props: { charId: string }) {
     const { charId } = props
-    const { t } = useTranslations()
     const charSel = getCharacterSelector(charId)
 
     const name = useGameStore(useCallback((s: GameState) => charSel.Name(s), [charSel]))
@@ -84,8 +84,6 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
     const isEnemy = useGameStore(
         useCallback((s: GameState) => s.characters.entries[charId]?.isEnemy ?? false, [charId])
     )
-
-    const [isAttOpen, setIsAttOpen] = useState(false)
 
     return (
         <Card>
@@ -101,42 +99,41 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
                     <MainAttack charId={charId} />
                     <CombatAbilitiesList charId={charId} />
                     {!isEnemy && <CombatQuickSlotsList charId={charId} />}
-
-                    <Collapsible open={isAttOpen} onOpenChange={setIsAttOpen} className="text-sm">
-                        <CollapsibleTrigger
-                            render={
-                                <Button variant="ghost" className="w-full">
-                                    {t.Stats}
-                                    <RxCaretSort />
-                                </Button>
-                            }
-                        />
-
-                        <CollapsibleContent className="CollapsibleContent">
-                            <CardContent className="grid gap-2">
-                                <CharCombatInfo charId={charId} />
-                            </CardContent>
-                        </CollapsibleContent>
-                    </Collapsible>
+                    <div className={classes.combatStats}>
+                        <CharCombatInfo charId={charId} />
+                    </div>
                 </div>
             </CardContent>
         </Card>
     )
 })
 
-const ActiveWeaponCoating = memo(function ActiveWeaponCoating({ charId }: { charId: string }) {
-    const coating = useGameStore(useCallback((state: GameState) => selectActiveWeaponCoating(charId)(state), [charId]))
+type CharacterCombatProps = { charId: string; char?: CharacterState } | { char: CharacterState; charId?: string }
+
+export const ActiveWeaponCoating = memo(function ActiveWeaponCoating(props: CharacterCombatProps) {
+    const charId = props.char?.id ?? props.charId
+    const { char } = props
+    const coating = useGameStore(
+        useCallback(
+            (state: GameState) =>
+                charId ? (char?.weaponCoating ?? selectActiveWeaponCoating(charId)(state)) : undefined,
+            [char, charId]
+        )
+    )
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
-    if (!coating) return null
+    if (!charId || !coating) return null
 
     return (
-        <div className="grid grid-flow-col items-center justify-start gap-1 text-sm">
-            {IconsData[coating.data.iconId]}
-            <span>{t[coating.data.nameId]}</span>
-            <span>
-                {t.CoatingCharges}: {f(coating.remainingCharges)}
-            </span>
+        <div className="grid gap-0.5 text-sm">
+            <div className="grid grid-flow-col items-center justify-start gap-1">
+                {IconsData[coating.data.iconId]}
+                <span>{t[coating.data.nameId]}</span>
+                <span>
+                    {t.CoatingCharges}: {f(coating.remainingCharges)}
+                </span>
+            </div>
+            <WeaponCoatingDataUi coatingData={coating.data} showCharges={false} />
         </div>
     )
 })
@@ -264,19 +261,40 @@ const MainAttack = memo(function MainAttack(props: { charId: string }) {
         </div>
     )
 })
-const CombatAbilitiesList = memo(function CombatAbilitiesList(props: { charId: string }) {
-    const { charId } = props
-    const allAbilities = useGameStore(selectCombatAbilitiesChar(charId))
+export const CombatAbilitiesList = memo(function CombatAbilitiesList(props: CharacterCombatProps) {
+    const charId = props.char?.id ?? props.charId
+    const { char } = props
+    const { t } = useTranslations()
+    const allAbilities = useGameStore(
+        useCallback(
+            (state: GameState) =>
+                charId
+                    ? char
+                        ? getCombatRotation(char.combatAbilities)
+                        : selectCombatRotationChar(charId)(state)
+                    : [],
+            [char, charId]
+        )
+    )
+    if (!charId) return null
+    if (allAbilities.length === 0) return null
+    if (allAbilities.length === 1 && allAbilities[0] === AbilitiesEnum.NormalAttack) return null
 
     return (
-        <div className={classes.abilitiesList}>
-            {allAbilities.map((id, index) => (
-                // eslint-disable-next-line @eslint-react/no-array-index-key
-                <CombatAbilityBadge characterId={charId} abilityId={id} key={id + charId + index} index={index} />
-            ))}
-            {allAbilities.length === 0 && (
-                <CombatAbilityBadge characterId={charId} abilityId="NormalAttack" index={0} />
-            )}
+        <div>
+            <span className={classes.rotationLabel}>{t.SkillRotation}</span>
+            <div className={classes.abilitiesList}>
+                {allAbilities.map((id, index) => (
+                    // eslint-disable-next-line @eslint-react/no-array-index-key
+                    <CombatAbilityBadge
+                        characterId={charId}
+                        char={char}
+                        abilityId={id}
+                        key={id + charId + index}
+                        index={index}
+                    />
+                ))}
+            </div>
         </div>
     )
 })
@@ -328,12 +346,20 @@ const CombatQuickSlot = memo(function CombatQuickSlot({ charId, index }: { charI
 })
 const CombatAbilityBadge = memo(function CombatAbilityBadge(props: {
     characterId: string
+    char?: CharacterState
     abilityId: string
     index: number
 }) {
-    const { characterId, abilityId, index } = props
+    const { characterId, char, abilityId, index } = props
     const { t } = useTranslations()
-    const charAbility = useGameStore(selectCombatAbilityById(abilityId, characterId))
+    getCharacterSelector(characterId, char)
+    const charAbility = useGameStore(
+        useCallback(
+            (state: GameState) =>
+                char?.allCombatAbilities.entries[abilityId] ?? selectCombatAbilityById(abilityId, characterId)(state),
+            [abilityId, char, characterId]
+        )
+    )
     const ability = ActiveAbilityData.getEx(charAbility.abilityId)
     const iconId = useGameStore((state: GameState) => ability.getIconId({ state, characterId }))
     const desc = useGameStore((state: GameState) => ability.getDesc({ state, characterId }))

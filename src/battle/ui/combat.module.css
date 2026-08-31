@@ -27,6 +27,14 @@
     flex-wrap: wrap;
     gap: 0.375rem;
 }
+.rotationLabel {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+.combatStats {
+    display: grid;
+    gap: 0.25rem;
+}
 .charCard {
     display: grid;
     grid-auto-flow: row;

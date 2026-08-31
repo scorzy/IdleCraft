@@ -29,6 +29,7 @@ import { setSelectedChar } from '../../ui/state/uiFunctions'
 import { isCharReadonly, isCharSelected, selectSelectedCharId } from '../../ui/state/uiSelectors'
 import { addHealthPointClick, addManaPointClick, addStaminaPointClick } from '../characterFunctions'
 import { getCharacterSelector } from '../getCharacterSelector'
+import { CharacterState } from '../characterState'
 import { selectCharactersTeamIds } from '../selectors/characterSelectors'
 import { CharEquipments } from './CharEquipments'
 import classes from './charactersUi.module.css'
@@ -163,20 +164,23 @@ const CharInfo = memo(function CharInfo() {
     )
 })
 
-export const CharCombatInfo = memo(function CharCombatInfo(props: { charId: string }) {
+type CharacterCombatInfoProps = { charId: string; char?: CharacterState } | { char: CharacterState; charId?: string }
+
+export const CharCombatInfo = memo(function CharCombatInfo(props: CharacterCombatInfoProps) {
     const { t } = useTranslations()
-    const { charId } = props
+    const charId = props.char?.id ?? props.charId
+    if (!charId) return null
     return (
         <>
             <CardTitle className="mt-2">
                 {IconsData[Icons.Sword]} {t.Attack}
             </CardTitle>
-            <AttackInfo charId={charId} />
+            <AttackInfo charId={charId} char={props.char} />
 
             <CardTitle className="mt-2">
                 {IconsData[Icons.Shield]} {t.Defence}
             </CardTitle>
-            <ArmourInfo charId={charId} />
+            <ArmourInfo charId={charId} char={props.char} />
         </>
     )
 })
@@ -357,22 +361,26 @@ const CharLevelUi = memo(function CharLevelUi(props: { charId: string }) {
 
 const armourTypes = Object.values(DamageTypes).toSorted()
 
-export const ArmourInfo = memo(function ArmourInfo(props: { charId: string }) {
-    const { charId } = props
+export const ArmourInfo = memo(function ArmourInfo(props: { charId: string; char?: CharacterState }) {
+    const { charId, char } = props
 
     return (
         <ul>
             {armourTypes.map((type) => (
-                <ArmourTypeInfo key={type} type={type} charId={charId} />
+                <ArmourTypeInfo key={type} type={type} charId={charId} char={char} />
             ))}
         </ul>
     )
 })
-const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; charId: string }) {
-    const { type, charId } = props
+const ArmourTypeInfo = memo(function ArmourTypeInfo(props: {
+    type: DamageTypes
+    charId: string
+    char?: CharacterState
+}) {
+    const { type, charId, char } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
-    const charSel = getCharacterSelector(charId)
+    const charSel = getCharacterSelector(charId, char)
     const value = useGameStore(useCallback((s) => charSel.armour[type].Armour(s), [charSel, type]))
     const list = charSel.armour[type].ArmourList
     const data = DamageTypesData[type]
@@ -384,11 +392,11 @@ const ArmourTypeInfo = memo(function ArmourTypeInfo(props: { type: DamageTypes; 
         </li>
     )
 })
-export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
-    const { charId } = props
+export const AttackInfo = memo(function AttackInfo(props: { charId: string; char?: CharacterState }) {
+    const { charId, char } = props
     const { t, fun } = useTranslations()
 
-    const charSel = getCharacterSelector(charId)
+    const charSel = getCharacterSelector(charId, char)
 
     const damage = useGameStore(charSel.AllAttackDamage)
     const speed = useGameStore(charSel.AttackSpeed)
@@ -408,6 +416,7 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
                             <AttackTypeInfo
                                 key={kv[0]}
                                 charId={charId}
+                                char={char}
                                 damage={kv[1]}
                                 damageType={kv[0] as DamageTypes}
                             ></AttackTypeInfo>
@@ -419,14 +428,15 @@ export const AttackInfo = memo(function AttackInfo(props: { charId: string }) {
 })
 export const AttackTypeInfo = memo(function AttackTypeInfo(props: {
     charId: string
+    char?: CharacterState
     damage: number
     damageType: DamageTypes
 }) {
-    const { charId, damage, damageType } = props
+    const { charId, char, damage, damageType } = props
     const { f } = useNumberFormatter()
     const { t } = useTranslations()
 
-    const damageList = getCharacterSelector(charId).damage[damageType].DamageList
+    const damageList = getCharacterSelector(charId, char).damage[damageType].DamageList
     return (
         <li className="grid grid-flow-col items-center justify-start gap-2">
             {t[DamageTypesData[damageType].DamageName]} {f(damage)}

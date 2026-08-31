@@ -3,12 +3,15 @@ import { consumePotion, generatePotion } from '../alchemy/alchemyFunctions'
 import { AlchemyItems } from '../alchemy/alchemyItems'
 import { NormalAttack } from '../activeAbilities/abilities/NormalAttack'
 import { createEnemies } from '../characters/functions/createEnemies'
+import { getCharacterDefinition } from '../characters/templates/characterRegistry'
+import { generateCharacter } from '../characters/templates/generateCharacter'
 import { equipItem } from '../characters/characterFunctions'
 import { CharacterAdapter } from '../characters/characterAdapter'
 import { PLAYER_ID } from '../characters/charactersConst'
 import { regenerateChars } from '../characters/functions/regenerateChars'
 import { AppliedEffectAdapter } from '../effects/types/AppliedEffect'
 import { GetInitialGameState } from '../game/InitialGameState'
+import { initialize } from '../game/functions/initialize'
 import { ItemAdapter } from '../storage/ItemAdapter'
 import { addItem } from '../storage/storageFunctions'
 import { DamageTypes, Item, ItemTypes } from '../items/Item'
@@ -22,6 +25,7 @@ import {
     applyWeaponCoating,
     autoApplyBestWeaponCoating,
     applyTemplateWeaponCoating,
+    getTemplateWeaponCoating,
     getWeaponCoatingEffectiveness,
     onWeaponHit,
     scaleWeaponCoatingValue,
@@ -168,6 +172,17 @@ describe('weapon coatings', () => {
 
         expect(enemy.weaponCoating?.remainingCharges).toBe(Number.POSITIVE_INFINITY)
         expect(AppliedEffectAdapter.findMany(state.effects, (effect) => effect.target === PLAYER_ID)).toHaveLength(1)
+    })
+
+    it('creates a template coating for an enemy preview outside game state', () => {
+        initialize()
+        const state = GetInitialGameState()
+        const preview = generateCharacter('Spider', getCharacterDefinition('Spider'))
+
+        expect(getTemplateWeaponCoating(state, preview)).toMatchObject({
+            weaponItemId: 'SpiderSpiderMainW',
+            remainingCharges: Number.POSITIVE_INFINITY,
+        })
     })
 
     it('consumes a charge on a hit, refreshes the target effect, and clears the final charge', () => {

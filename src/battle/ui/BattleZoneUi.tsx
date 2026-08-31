@@ -3,6 +3,7 @@ import { GiHearts, GiMagicPalm, GiStrong } from 'react-icons/gi'
 import { AddActivityDialog } from '../../activities/ui/AddActivityDialog'
 import { CharacterId, getCharacterDefinition } from '../../characters/templates/characterRegistry'
 import { generateCharacter } from '../../characters/templates/generateCharacter'
+import { CharCombatInfo } from '../../characters/ui/CharactersUi'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import {
@@ -22,6 +23,8 @@ import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
 import { CollapsedEnum } from '../../ui/sidebar/CollapsedEnum'
 import { MyListItem } from '../../ui/sidebar/MenuItem'
 import { SidebarContainer } from '../../ui/sidebar/SidebarContainer'
+import { CharacterState } from '../../characters/characterState'
+import { getTemplateWeaponCoating } from '../../weaponCoatings/weaponCoatingFunctions'
 import { BattleZoneEnum } from '../BattleZoneEnum'
 import { BattleZones } from '../BattleZones'
 import { BattleAreas, BattleAreasList } from '../battleAreas'
@@ -29,7 +32,21 @@ import { addBattle } from '../functions/addBattle'
 import { setArea } from '../functions/setArea'
 import { isBattleZoneSelected } from '../selectors/isBattleZoneSelected'
 import { selectBattleZone } from '../selectors/selectBattleZone'
+import { ActiveWeaponCoating, CombatAbilitiesList } from './CombatUi'
 import classes from './battleZone.module.css'
+import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
+
+const templateCharacters = new Map<CharacterId, CharacterState>()
+
+const getTemplateCharacter = (templateId: CharacterId) => {
+    let character = templateCharacters.get(templateId)
+    if (!character) {
+        character = generateCharacter(templateId, getCharacterDefinition(templateId))
+        character.weaponCoating = getTemplateWeaponCoating(useGameStore.getState(), character)
+        templateCharacters.set(templateId, character)
+    }
+    return character
+}
 
 export const CombatPage = memo(function CombatPage() {
     const btId = useGameStore(selectBattleZone)
@@ -116,47 +133,47 @@ const EnemyInfoUi = memo(function EnemyInfoUi({
     quantity: number
     templateEnum: CharacterId
 }) {
-    const template = getCharacterDefinition(templateEnum)
-    const enemy = generateCharacter(templateEnum, template)
+    const enemy = getTemplateCharacter(templateEnum)
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     return (
-        <div className={classes.enemyInfoUi}>
-            <span className="relative flex h-9 w-9 shrink-0 overflow-hidden text-4xl">
-                <span className="aspect-square h-full w-full">{IconsData[enemy.iconId]}</span>
-            </span>
-            <div className="space-y-1">
-                <p className="text-sm leading-none font-medium">
-                    {t[enemy.nameId as keyof typeof t]}
-                    {quantity > 1 && <span className="text-muted-foreground"> X {f(quantity)}</span>}
-                </p>
-                <p className="grid grid-flow-col items-center justify-start gap-2 text-sm">
-                    <span>
-                        {t.Lv} {f(enemy.level)}
-                    </span>
-                    <span className="text-health">
-                        <GiHearts className="inline" />
-                        {f(enemy.health)}
-                    </span>
-                    <span className="text-stamina">
-                        <GiStrong className="inline" />
-                        {f(enemy.stamina)}
-                    </span>
-                    <span className="text-mana">
-                        <GiMagicPalm className="inline" />
-                        {f(enemy.mana)}
-                    </span>
-                </p>
-            </div>
-            <div>
-                <EnemyDropsUi templateEnum={templateEnum} />
-            </div>
+        <div>
+            <MyCardHeaderTitle
+                title={
+                    quantity > 1
+                        ? `${t[enemy.nameId as keyof typeof t]} (x${f(quantity)})`
+                        : t[enemy.nameId as keyof typeof t]
+                }
+                icon={IconsData[enemy.iconId]}
+            />
+
+            <p className="grid grid-flow-col items-center justify-start gap-2 text-sm">
+                <span>
+                    {t.Lv} {f(enemy.level)}
+                </span>
+
+                <span className="text-health">
+                    <GiHearts className="inline" />
+                    {f(enemy.health)}
+                </span>
+                <span className="text-stamina">
+                    <GiStrong className="inline" />
+                    {f(enemy.stamina)}
+                </span>
+                <span className="text-mana">
+                    <GiMagicPalm className="inline" />
+                    {f(enemy.mana)}
+                </span>
+            </p>
+            <EnemyDropsUi templateEnum={templateEnum} />
+            <ActiveWeaponCoating char={enemy} />
+            <CombatAbilitiesList char={enemy} />
+            <CharCombatInfo char={enemy} />
         </div>
     )
 })
 const EnemyDropsUi = memo(function EnemyDropsUi({ templateEnum }: { templateEnum: CharacterId }) {
-    const template = getCharacterDefinition(templateEnum)
-    const enemy = generateCharacter(templateEnum, template)
+    const enemy = getTemplateCharacter(templateEnum)
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     return (

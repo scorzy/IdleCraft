@@ -9,6 +9,7 @@ import { selectTranslations } from '../msg/useTranslations'
 import { createInventoryNoQta, selectGameItem, selectGameItemFromCraft } from '../storage/StorageSelectors'
 import { myMemoizeOne } from '../utils/myMemoizeOne'
 import { CharacterSelector } from './CharacterSelector'
+import { CharacterState } from './characterState'
 import { CharacterAdapter } from './characterAdapter'
 import { EquipSlotsEnum } from './equipSlotsEnum'
 import { selectHealthRegenList, selectMaxHealthList } from './selectors/healthSelectors'
@@ -16,13 +17,16 @@ import { selectManaRegenList, selectMaxManaList } from './selectors/manaSelector
 import { selectMaxStaminaList, selectStaminaRegenList } from './selectors/staminaSelectors'
 import { CharacterId } from './templates/characterRegistry'
 
-export const makeCharacterSelector: (charId: string) => CharacterSelector = (charId: string) => {
-    const selChar = (s: GameState) => CharacterAdapter.selectEx(s.characters, charId)
+export const makeCharacterSelector: (charId: string, character?: CharacterState) => CharacterSelector = (
+    charId: string,
+    character?: CharacterState
+) => {
+    const selChar = (s: GameState) => character ?? CharacterAdapter.selectEx(s.characters, charId)
 
     const TemplateId = (s: GameState): CharacterId => selChar(s).templateId
 
     const Name = (state: GameState) => {
-        const char = CharacterAdapter.selectEx(state.characters, charId)
+        const char = selChar(state)
         if (char.name) return char.name
         const t = selectTranslations(state)
         const nameId = char.nameId
