@@ -207,7 +207,7 @@ export const AlchemyItems: Record<string, Item> = {
 
     SpiderEggSac: {
         id: 'SpiderEggSac',
-        icon: Icons.Spider,
+        icon: Icons.EggClutch,
         nameId: 'SpiderEggSac',
         value: 7,
         volume: RAW_VOLUME,
