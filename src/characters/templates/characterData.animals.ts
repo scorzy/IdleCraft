@@ -124,6 +124,18 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                     damage: { Piercing: 8, Bludgeoning: 0, Slashing: 0 },
                 },
             },
+            DeadSpider: {
+                id: 'DeadSpider',
+                icon: Icons.Spider,
+                nameId: 'DeadSpider',
+                type: ItemTypes.Corpse,
+                value: 8,
+                volume: RAW_VOLUME,
+                butchering: [
+                    { id: 'VenomGland', stdItemId: 'VenomGland', qta: 1 },
+                    { id: 'SpiderEggSac', stdItemId: 'SpiderEggSac', qta: 1 },
+                ],
+            },
         },
         inventory: {
             TwoHand: { itemId: 'SpiderMainW' },
@@ -134,7 +146,7 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         healthPoints: 1,
         staminaPoints: 2,
         manaPoints: -8,
-        loot: [],
+        loot: [{ quantity: 1, itemId: 'DeadSpider' }],
         weaponCoating: {
             kind: WeaponCoatingKind.Poison,
             charges: Number.POSITIVE_INFINITY,

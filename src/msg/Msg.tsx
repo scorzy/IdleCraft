@@ -400,6 +400,7 @@ export interface Msg {
 
     Chicken: string
     DeadChicken: string
+    DeadSpider: string
 
     RedMeat: string
     WhiteMeat: string
@@ -413,6 +414,8 @@ export interface Msg {
     Nightshade: string
     VenomLeaf: string
     ToxicMushroom: string
+    VenomGland: string
+    SpiderEggSac: string
     DamageStaminaPotion: string
     FarmBoarTutorialName: string
     FarmBoarTutorialDescription: string

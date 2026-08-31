@@ -76,6 +76,10 @@ describe('character data', () => {
         expect((StdItems.ChickenDeadChicken as CharacterItem).butchering).toEqual([
             { id: 'WhiteMeat', stdItemId: 'WhiteMeat', qta: 1 },
         ])
+        expect((StdItems.SpiderDeadSpider as CharacterItem).butchering).toEqual([
+            { id: 'VenomGland', stdItemId: 'VenomGland', qta: 1 },
+            { id: 'SpiderEggSac', stdItemId: 'SpiderEggSac', qta: 1 },
+        ])
     })
 
     it('defines the spider poison as an infinite template weapon coating', () => {

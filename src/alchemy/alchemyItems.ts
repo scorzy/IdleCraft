@@ -187,6 +187,42 @@ export const AlchemyItems: Record<string, Item> = {
         },
     },
 
+    VenomGland: {
+        id: 'VenomGland',
+        icon: Icons.Poison,
+        nameId: 'VenomGland',
+        value: 8,
+        volume: RAW_VOLUME,
+        color: 'text-health',
+        type: ItemTypes.CraftingIngredient,
+        ingredientData: {
+            stability: 10,
+            type: IngredientTypes.Animal,
+            effects: [
+                { potency: EffectPotency.Medium, effect: Effects.DamageHealth },
+                { potency: EffectPotency.Low, effect: Effects.DamageRegenHealth },
+            ],
+        },
+    },
+
+    SpiderEggSac: {
+        id: 'SpiderEggSac',
+        icon: Icons.Spider,
+        nameId: 'SpiderEggSac',
+        value: 7,
+        volume: RAW_VOLUME,
+        color: 'text-stamina',
+        type: ItemTypes.CraftingIngredient,
+        ingredientData: {
+            stability: 10,
+            type: IngredientTypes.Animal,
+            effects: [
+                { potency: EffectPotency.Medium, effect: Effects.DamageStamina },
+                { potency: EffectPotency.Low, effect: Effects.DamageRegenStamina },
+            ],
+        },
+    },
+
     HealingFungus: {
         id: 'HealingFungus',
         icon: Icons.Mushroom,

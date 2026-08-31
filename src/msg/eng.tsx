@@ -406,6 +406,7 @@ export const engMsg: Msg = {
 
     Chicken: 'Chicken',
     DeadChicken: 'Dead Chicken',
+    DeadSpider: 'Dead Spider',
 
     RedMeat: 'Red Meat',
     WhiteMeat: 'White Meat',
@@ -419,6 +420,8 @@ export const engMsg: Msg = {
     Nightshade: 'Nightshade',
     VenomLeaf: 'Venom Leaf',
     ToxicMushroom: 'Toxic Mushroom',
+    VenomGland: 'Venom Gland',
+    SpiderEggSac: 'Spider Egg Sac',
     DamageStaminaPotion: 'Stamina Poison',
     FarmBoarTutorialName: 'Boars at the Family Farm',
     FarmBoarTutorialDescription:
