@@ -8,6 +8,20 @@
     }
 }
 
+@keyframes timer-progress-reverse {
+    from {
+        transform: translateX(var(--timer-progress));
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
 .animate {
     animation: timer-progress var(--timer-time) linear;
+}
+
+.reverse {
+    animation-name: timer-progress-reverse;
 }

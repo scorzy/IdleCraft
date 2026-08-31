@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
 import { useShallow } from 'zustand/react/shallow'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -43,10 +43,10 @@ import { ItemIcon } from '../../items/ui/ItemIcon'
 import { ItemIconName } from '../../items/ui/ItemIconName'
 import {
     selectActiveWeaponCoating,
-    selectWeaponCoatingEffectRemaining,
     selectWeaponCoatingEffects,
+    WeaponCoatingEffectGroup,
 } from '../../weaponCoatings/weaponCoatingSelectors'
-import { AppliedEffect } from '../../effects/types/AppliedEffect'
+import { memoize } from 'proxy-memoize'
 
 export const CombatUi = memo(function CombatUi() {
     return (
@@ -142,37 +142,46 @@ const ActiveWeaponCoating = memo(function ActiveWeaponCoating({ charId }: { char
 })
 
 const WeaponCoatingEffects = memo(function WeaponCoatingEffects({ charId }: { charId: string }) {
-    const selectEffects = useCallback((state: GameState) => selectWeaponCoatingEffects(charId)(state), [charId])
-    const effects = useGameStore(useShallow(selectEffects))
+    const selectEffectsMemo = useMemo(() => memoize(selectWeaponCoatingEffects(charId)), [charId])
+    const effects = useGameStore(selectEffectsMemo)
     if (effects.length === 0) return null
 
     return (
         <div className="grid gap-1">
             {effects.map((effect) => (
-                <WeaponCoatingEffect key={effect.id} effect={effect} />
+                <WeaponCoatingEffect key={effect.effect.id} effect={effect} />
             ))}
         </div>
     )
 })
 
-const WeaponCoatingEffect = memo(function WeaponCoatingEffect({ effect }: { effect: AppliedEffect }) {
+const WeaponCoatingEffect = memo(function WeaponCoatingEffect({ effect }: { effect: WeaponCoatingEffectGroup }) {
     const { f } = useNumberFormatter()
     const { t, fun } = useTranslations()
-    const remaining = useGameStore(selectWeaponCoatingEffectRemaining(effect.id))
+    const now = useGameStore((state) => state.now)
+    const remaining = Math.max(effect.timer.to - now, 0)
     const color =
-        effect.effect === 'DamageRegenMana'
+        effect.effect.effect === 'DamageRegenMana'
             ? 'text-mana'
-            : effect.effect === 'DamageRegenStamina'
+            : effect.effect.effect === 'DamageRegenStamina'
               ? 'text-stamina'
               : 'text-health'
     return (
-        <div className={`${color} grid grid-flow-col items-center justify-start gap-1 text-sm`}>
-            {IconsData[effect.iconId]}
-            <span>{t[effect.nameId]}</span>
-            <span>
-                {f(Math.abs(effect.value ?? 0))} {t.PerSec}
-            </span>
-            <span className="text-muted-foreground">({fun.formatTime(remaining)})</span>
+        <div className={`${color} grid gap-0.5 text-sm`}>
+            <div className="grid grid-flow-col items-center justify-start gap-1">
+                {IconsData[effect.effect.iconId]}
+                <span>{t[effect.effect.nameId]}</span>
+                <span>
+                    {f(effect.totalValue)} {t.PerSec}
+                </span>
+                <span className="text-muted-foreground">×{effect.count}</span>
+                <span className="text-muted-foreground">({fun.formatTime(remaining)})</span>
+            </div>
+            <TimerProgressFromId
+                timerId={effect.timer.id}
+                color={color.replace('text-', '') as 'health' | 'stamina' | 'mana'}
+                reverse
+            />
         </div>
     )
 })

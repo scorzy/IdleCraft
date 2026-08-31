@@ -12,24 +12,30 @@ const TimerProgress = memo(function TimerProgress(props: {
     start: number | undefined
     end: number | undefined
     color: Colors
+    reverse?: boolean
 }) {
-    const { className, start, end, color } = props
+    const { className, start, end, color, reverse = false } = props
     const inputElRef = useRef<HTMLDivElement>(null)
 
     useLayoutEffect(() => {
         if (!inputElRef.current) return
         const now = Date.now()
         const time = end ? end - now : 0
-        const progress = start && end ? `${-100 + (100 * (now - start)) / (end - start)}` : '-100'
+        const progress =
+            start && end
+                ? `${reverse ? (-100 * (now - start)) / (end - start) : -100 + (100 * (now - start)) / (end - start)}`
+                : '-100'
 
         inputElRef.current.style.setProperty('--timer-progress', `${progress}%`)
         inputElRef.current.style.setProperty('--timer-time', `${time}ms`)
-    }, [start, end])
+    }, [start, end, reverse])
 
     const classes = className ?? ''
     return (
         <div className={`theme progress__root ${classes} ${color}`}>
-            {start !== undefined && <div ref={inputElRef} className={`progress__bar ${styles.animate}`} />}
+            {start !== undefined && (
+                <div ref={inputElRef} className={`progress__bar ${styles.animate} ${reverse ? styles.reverse : ''}`} />
+            )}
         </div>
     )
 })
@@ -39,20 +45,22 @@ const TimerProgressFix = memo(function TimerProgressFix(props: {
     start: number | undefined
     end: number | undefined
     color: Colors
+    reverse?: boolean
 }) {
-    const { className, start, end, color } = props
+    const { className, start, end, color, reverse = false } = props
     const v = usePageVisibility()
 
     const key = (start?.toString() ?? '') + (end?.toString() ?? '') + v.toString()
-    return <TimerProgress className={className} start={start} end={end} key={key} color={color} />
+    return <TimerProgress className={className} start={start} end={end} key={key} color={color} reverse={reverse} />
 })
 
 export const GameTimerProgress = memo(function GameTimerProgress(props: {
     className?: string
     actionId?: string | null
     color: Colors
+    reverse?: boolean
 }) {
-    const { className, actionId, color } = props
+    const { className, actionId, color, reverse } = props
 
     const timer = useGameStore(
         useCallback(
@@ -62,19 +70,38 @@ export const GameTimerProgress = memo(function GameTimerProgress(props: {
         )
     )
 
-    return <TimerProgressFix className={className} start={timer?.from} end={timer?.to} key={timer?.id} color={color} />
+    return (
+        <TimerProgressFix
+            className={className}
+            start={timer?.from}
+            end={timer?.to}
+            key={timer?.id}
+            color={color}
+            reverse={reverse}
+        />
+    )
 })
 
 export const TimerProgressFromId = memo(function TimerProgressFromId(props: {
     className?: string
     timerId?: string
     color: Colors
+    reverse?: boolean
 }) {
-    const { className, timerId, color } = props
+    const { className, timerId, color, reverse } = props
 
     const timer = useGameStore(
         useCallback((s: GameState) => (timerId !== undefined ? s.timers.entries[timerId] : undefined), [timerId])
     )
 
-    return <TimerProgressFix className={className} start={timer?.from} end={timer?.to} key={timerId} color={color} />
+    return (
+        <TimerProgressFix
+            className={className}
+            start={timer?.from}
+            end={timer?.to}
+            key={timerId}
+            color={color}
+            reverse={reverse}
+        />
+    )
 })
