@@ -264,7 +264,6 @@ const MainAttack = memo(function MainAttack(props: { charId: string }) {
 export const CombatAbilitiesList = memo(function CombatAbilitiesList(props: CharacterCombatProps) {
     const charId = props.char?.id ?? props.charId
     const { char } = props
-    const { t } = useTranslations()
     const allAbilities = useGameStore(
         useCallback(
             (state: GameState) =>
@@ -282,10 +281,8 @@ export const CombatAbilitiesList = memo(function CombatAbilitiesList(props: Char
 
     return (
         <div>
-            <span className={classes.rotationLabel}>{t.SkillRotation}</span>
             <div className={classes.abilitiesList}>
                 {allAbilities.map((id, index) => (
-                    // eslint-disable-next-line @eslint-react/no-array-index-key
                     <CombatAbilityBadge
                         characterId={charId}
                         char={char}
