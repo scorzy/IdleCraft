@@ -35,6 +35,17 @@ describe('Exp Functions', () => {
         expect(char.level).toEqual(0)
         expect(char.exp).toEqual(100)
     })
+    test('preserves fractional XP', () => {
+        const state = GetInitialGameState()
+
+        addExp(state, ExpEnum.LightArmour, 0.25, PLAYER_ID)
+        addExp(state, ExpEnum.LightArmour, 0.25, PLAYER_ID)
+        addExp(state, ExpEnum.Mining, 0.25)
+
+        const char = CharacterAdapter.selectEx(state.characters, PLAYER_ID)
+        expect(char.skillsExp[ExpEnum.LightArmour]).toEqual(0.5)
+        expect(char.skillsExp[ExpEnum.Mining]).toEqual(0.25)
+    })
     test('addExp level', () => {
         const state = GetInitialGameState()
         addExp(state, ExpEnum.Mining, 1000)

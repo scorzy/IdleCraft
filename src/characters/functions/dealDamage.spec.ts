@@ -4,8 +4,11 @@ import { initialize } from '../../game/functions/initialize'
 import { GameState } from '../../game/GameState'
 import { GetInitialGameState } from '../../game/InitialGameState'
 import { Icons } from '../../icons/Icons'
-import { DamageTypes } from '../../items/Item'
+import { ArmourType, DamageTypes, EquipmentSlot, Item, ItemType } from '../../items/Item'
+import { ItemAdapter } from '../../storage/ItemAdapter'
+import { ExpEnum } from '../../experience/ExpEnum'
 import { PLAYER_ID } from '../charactersConst'
+import { EquipSlotsEnum } from '../equipSlotsEnum'
 import { createEnemies } from './createEnemies'
 import { dealDamage } from './dealDamage'
 
@@ -15,6 +18,24 @@ const abilityLog: AbilityLog = {
     targets: 'Wolf',
     abilityId: 'NormalAttack',
 }
+
+const makeArmour = (
+    id: string,
+    armourType: ArmourType,
+    equipmentSlot: EquipmentSlot,
+    equipSlot: EquipSlotsEnum
+): Item => ({
+    id,
+    nameId: 'Armour',
+    icon: Icons.Breastplate,
+    type: ItemType.Armour,
+    armourType,
+    equipmentSlot,
+    equipSlot,
+    value: 0,
+    volume: 0,
+    armourData: {},
+})
 
 describe('dealDamage', () => {
     let state: GameState
@@ -65,5 +86,38 @@ describe('dealDamage', () => {
         const totalLoss = before - state.characters.entries[enemyId]!.health
 
         expect(totalLoss).toBeGreaterThan(single)
+    })
+
+    it('awards fractional armour XP once per equipped piece from total health damage', () => {
+        const light = makeArmour('C_light', ArmourType.Light, EquipmentSlot.Head, EquipSlotsEnum.Head)
+        const medium = makeArmour('C_medium', ArmourType.Medium, EquipmentSlot.Body, EquipSlotsEnum.Body)
+        const heavy = makeArmour('C_heavy', ArmourType.Heavy, EquipmentSlot.Legs, EquipSlotsEnum.Legs)
+        ItemAdapter.create(state.craftedItems, light)
+        ItemAdapter.create(state.craftedItems, medium)
+        ItemAdapter.create(state.craftedItems, heavy)
+        state.characters.entries[PLAYER_ID]!.inventory = {
+            [EquipSlotsEnum.Head]: { itemId: light.id },
+            [EquipSlotsEnum.Body]: { itemId: medium.id },
+            [EquipSlotsEnum.Legs]: { itemId: heavy.id },
+        }
+
+        dealDamage(state, PLAYER_ID, { [DamageTypes.Slashing]: 2, [DamageTypes.Piercing]: 3 }, abilityLog)
+        dealDamage(state, PLAYER_ID, { [DamageTypes.Slashing]: 2, [DamageTypes.Piercing]: 3 }, abilityLog)
+
+        const player = state.characters.entries[PLAYER_ID]!
+        expect(player.skillsExp[ExpEnum.LightArmour]).toBeCloseTo(0.5)
+        expect(player.skillsExp[ExpEnum.MediumArmour]).toBeCloseTo(1)
+        expect(player.skillsExp[ExpEnum.HeavyArmour]).toBeCloseTo(1.5)
+        expect(player.skillsExp[ExpEnum.Archery]).toBeUndefined()
+    })
+
+    it('does not award armour XP to enemies', () => {
+        const armour = makeArmour('C_enemy-heavy', ArmourType.Heavy, EquipmentSlot.Head, EquipSlotsEnum.Head)
+        ItemAdapter.create(state.craftedItems, armour)
+        state.characters.entries[enemyId]!.inventory = { [EquipSlotsEnum.Head]: { itemId: armour.id } }
+
+        dealDamage(state, enemyId, { [DamageTypes.Slashing]: 5 }, abilityLog)
+
+        expect(state.characters.entries[enemyId]!.skillsExp[ExpEnum.HeavyArmour]).toBeUndefined()
     })
 })

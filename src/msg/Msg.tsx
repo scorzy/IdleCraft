@@ -184,6 +184,9 @@ export interface Msg {
     OneHanded: string
     TwoHanded: string
     Block: string
+    LightArmour: string
+    MediumArmour: string
+    HeavyArmour: string
 
     Skills: string
     Start: string

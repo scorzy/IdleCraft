@@ -2,11 +2,12 @@ import { memoize } from 'proxy-memoize'
 import { Bonus, BonusResult } from '../bonus/Bonus'
 import { bonusFromItem, getTotal } from '../bonus/BonusFunctions'
 import { WEAPON_DAMAGE_PER_LEVEL } from '../const'
+import { ARMOUR_SKILL_BONUS_PER_LEVEL, ArmourSkillData } from '../experience/ArmourSkills'
 import { ExpEnum } from '../experience/ExpEnum'
 import { getCharLevelExp } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
-import { DamageData, DamageTypes, Item } from '../items/Item'
+import { ArmourType, DamageData, DamageTypes, Item, ItemType } from '../items/Item'
 import { selectTranslations } from '../msg/useTranslations'
 import { createInventoryNoQta, selectGameItem, selectGameItemFromCraft } from '../storage/StorageSelectors'
 import { myMemoizeOne } from '../utils/myMemoizeOne'
@@ -102,19 +103,41 @@ export const makeCharacterSelector: (charId: string, character?: CharacterState)
     const makeArmourSelectors = (type: DamageTypes) => {
         const ArmourList = (s: GameState) => {
             const bonuses: Bonus[] = []
+            const armourByType: Record<ArmourType, number> = {
+                [ArmourType.Light]: 0,
+                [ArmourType.Medium]: 0,
+                [ArmourType.Heavy]: 0,
+            }
 
             const inventory = AllCharInventory(s)
 
             Object.entries(inventory).forEach((kv) => {
                 const item = kv[1]
-                if (!item.armourData) return
+                if (item.type !== ItemType.Armour || !item.armourData) return
                 const add = item.armourData[type]
-                if (add && add !== 0)
+                if (add && add !== 0) {
+                    armourByType[item.armourType] += add
                     bonuses.push(
                         bonusFromItem(item, {
                             add,
                         })
                     )
+                }
+            })
+
+            Object.values(ArmourType).forEach((armourType) => {
+                const subtotal = armourByType[armourType]
+                const skillData = ArmourSkillData[armourType]
+                const level = selChar(s).skillsLevel[skillData.expType] ?? 0
+                const add = (subtotal * level * ARMOUR_SKILL_BONUS_PER_LEVEL) / 100
+
+                if (add !== 0)
+                    bonuses.push({
+                        id: skillData.expType,
+                        nameId: skillData.nameId,
+                        iconId: Icons.Shield,
+                        add,
+                    })
             })
 
             const bonusList: BonusResult = {

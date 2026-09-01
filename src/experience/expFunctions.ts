@@ -13,7 +13,7 @@ export function addExp(state: GameState, expType: ExpEnum, expQta: number, chara
     const currentExp = char.skillsExp[expType] ?? 0
     const currentLevel = char.skillsLevel[expType] ?? -1
 
-    const skillExp = Math.floor(currentExp + expQta)
+    const skillExp = currentExp + expQta
     const skillLevel =
         skillExp < EXP_BASE_PRICE
             ? 0

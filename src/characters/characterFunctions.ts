@@ -25,7 +25,6 @@ export function equipItem(
         char.inventory[slot] = { itemId, quantity }
         removeItem(state, itemId, quantity)
     } else {
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete char.inventory[slot]
     }
 

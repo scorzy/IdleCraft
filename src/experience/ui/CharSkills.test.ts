@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { ExpData } from '../ExpData'
+import { ExpEnum } from '../ExpEnum'
 import { skillMatchesSearch } from './CharSkills'
 
 describe('skillMatchesSearch', () => {
@@ -14,5 +16,11 @@ describe('skillMatchesSearch', () => {
 
     it('does not match unrelated skill names', () => {
         expect(skillMatchesSearch('Mining Level', 'archery')).toBe(false)
+    })
+
+    it('includes the armour skills in skill metadata', () => {
+        expect(ExpData[ExpEnum.LightArmour].nameId).toBe('LightArmour')
+        expect(ExpData[ExpEnum.MediumArmour].nameId).toBe('MediumArmour')
+        expect(ExpData[ExpEnum.HeavyArmour].nameId).toBe('HeavyArmour')
     })
 })

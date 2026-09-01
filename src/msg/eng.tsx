@@ -186,6 +186,9 @@ export const engMsg: Msg = {
     OneHanded: 'One Handed',
     TwoHanded: 'Two Handed ',
     Block: 'Block',
+    LightArmour: 'Light Armour',
+    MediumArmour: 'Medium Armour',
+    HeavyArmour: 'Heavy Armour',
 
     Skills: 'Skills',
     Start: 'Start',
