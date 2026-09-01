@@ -49,9 +49,6 @@ export const EnemyInfoUi = memo(function EnemyInfoUi({
             />
             <CardContent className="grid gap-2">
                 <p className="grid grid-flow-col items-center justify-start gap-2 text-sm">
-                    <span>
-                        {t.Lv} {f(enemy.level)}
-                    </span>
                     <span className="text-health">
                         <GiHearts className="inline" />
                         {f(enemy.health)}
