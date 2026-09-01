@@ -56,7 +56,7 @@ export const twoHSwordRecipe = makeMemoizedRecipe({
             value: getItemValue(components, true),
             volume: getItemVolume(components),
             weaponData: {
-                expType: ExpEnum.OneHanded,
+                expType: ExpEnum.TwoHanded,
                 attackSpeed: Math.floor((1.4 * BASE_SWORD_SPEED) / (barItem.craftingData.speedBonus ?? 1)),
                 damage: {
                     [DamageTypes.Slashing]: Math.floor(

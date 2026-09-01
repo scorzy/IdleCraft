@@ -1,6 +1,8 @@
 import { memoize } from 'proxy-memoize'
 import { Bonus, BonusResult } from '../bonus/Bonus'
 import { bonusFromItem, getTotal } from '../bonus/BonusFunctions'
+import { WEAPON_DAMAGE_PER_LEVEL } from '../const'
+import { ExpEnum } from '../experience/ExpEnum'
 import { getCharLevelExp } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
@@ -153,6 +155,18 @@ export const makeCharacterSelector: (charId: string, character?: CharacterState)
                         iconId: weapon.icon,
                         nameId: weapon.nameId,
                     })
+
+                const expType = weapon.weaponData.expType
+                if (expType === ExpEnum.OneHanded || expType === ExpEnum.TwoHanded) {
+                    const level = selChar(s).skillsLevel[expType] ?? 0
+                    if (level > 0)
+                        bonuses.push({
+                            id: expType,
+                            nameId: expType === ExpEnum.OneHanded ? 'OneHanded' : 'TwoHanded',
+                            iconId: weapon.icon,
+                            multi: level * WEAPON_DAMAGE_PER_LEVEL,
+                        })
+                }
             } else
                 bonuses.push({
                     id: 'unharmed',
