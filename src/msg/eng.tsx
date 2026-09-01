@@ -342,7 +342,7 @@ export const engMsg: Msg = {
     LowStabilityNotCraftableDesc: 'Stability is too low.',
 
     Lv: 'Lv.',
-    Drops: 'Show Drops',
+    Drops: 'Drops',
 
     IncreaseMaxHealthBy: 'Increase max health by',
     IncreaseMaxManaBy: 'Increase max mana by',
