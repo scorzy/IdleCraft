@@ -4,7 +4,7 @@ import { GetInitialGameState } from '../../game/InitialGameState'
 import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Icons } from '../../icons/Icons'
-import { ItemTypes } from '../../items/Item'
+import { ItemType, WeaponType } from '../../items/Item'
 import { addItem } from '../../storage/storageFunctions'
 import { TimerAdapter } from '../../timers/Timer'
 import { CaravanTierId } from '../CaravanConst'
@@ -144,7 +144,8 @@ describe('dispatch', () => {
                     id: craftedId,
                     icon: Icons.Sword,
                     nameId: 'LongSword',
-                    type: ItemTypes.OneHand,
+                    type: ItemType.Weapon,
+                    weaponType: WeaponType.OneHand,
                     value: 100,
                     volume: 0.1,
                 },

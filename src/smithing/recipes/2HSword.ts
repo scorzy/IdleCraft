@@ -13,7 +13,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { DamageTypes, Item, ItemTypes } from '../../items/Item'
+import { DamageTypes, Item, ItemType, WeaponType, CraftingType } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
@@ -22,7 +22,7 @@ const twoHSwordParams: RecipeParameterItemFilter[] = [
         id: 'bar',
         nameId: 'Bar',
         type: RecipeParamType.ItemType,
-        itemFilter: { itemType: ItemTypes.Bar },
+        itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Bar] },
     },
 ]
 
@@ -51,7 +51,8 @@ export const twoHSwordRecipe = makeMemoizedRecipe({
             nameId: 'TwoHSword',
             materials,
             icon: Icons.Broadsword,
-            type: ItemTypes.TwoHands,
+            type: ItemType.Weapon,
+            weaponType: WeaponType.TwoHands,
             equipSlot: EquipSlotsEnum.TwoHand,
             value: getItemValue(components, true),
             volume: getItemVolume(components),

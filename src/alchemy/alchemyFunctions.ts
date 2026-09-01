@@ -7,7 +7,7 @@ import { Effects } from '../effects/types/Effects'
 import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
 import { Icons } from '../icons/Icons'
-import { Item, ItemTypes } from '../items/Item'
+import { Item, ItemType } from '../items/Item'
 import { selectGameItem } from '../storage/StorageSelectors'
 import { removeItem } from '../storage/storageFunctions'
 import {
@@ -113,7 +113,7 @@ export function generatePotion(
             nameId: itemData?.nameId ?? 'UnknownPotion',
             icon: itemData?.icon ?? Icons.Potion,
             color: itemData?.color ?? 'text-muted-foreground',
-            type: ItemTypes.Potion,
+            type: ItemType.Consumable,
             value: getPotionValue(potionData),
             volume: FINISHED_VOLUME,
             potionData,

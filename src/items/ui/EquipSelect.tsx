@@ -12,7 +12,7 @@ import { IconsData } from '../../icons/Icons'
 import { DEF_PICKAXE } from '../../mining/miningSelectors'
 import { Msg } from '../../msg/Msg'
 import { useTranslations } from '../../msg/useTranslations'
-import { selectGameItem, selectItemsByType } from '../../storage/StorageSelectors'
+import { selectGameItem, selectItemsByFilter } from '../../storage/StorageSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { DEF_WOOD_AXE } from '../../wood/selectors/WoodcuttingSelectors'
 import { Item } from '../Item'
@@ -35,7 +35,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
     const itemId = useGameStore(useCallback((s: GameState) => selectEquipId(slot, charId)(s), [slot, charId]))
 
     const itemsId = useGameStore(
-        useShallow(useCallback((s: GameState) => selectItemsByType(slotData.ItemType)(s), [slotData]))
+        useShallow(useCallback((s: GameState) => selectItemsByFilter(slotData.itemFilter)(s), [slotData]))
     )
 
     let name = t.None
@@ -47,7 +47,7 @@ export const EquipItemUi = memo(function EquipItemUi(props: { slot: EquipSlotsEn
 
     return (
         <Card>
-            <MyCardHeaderTitle title={t[slotData.ItemType as keyof Msg]} />
+            <MyCardHeaderTitle title={t[slotData.nameId as keyof Msg]} />
             <CardContent>
                 <ComboBoxResponsive
                     selectedId={itemId ?? '-'}

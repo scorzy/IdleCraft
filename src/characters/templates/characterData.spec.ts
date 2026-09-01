@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { AbilitiesEnum } from '../../activeAbilities/abilitiesEnum'
 import { ExpEnum } from '../../experience/ExpEnum'
 import { Icons } from '../../icons/Icons'
-import { ItemTypes } from '../../items/Item'
+import { ItemType, WeaponType } from '../../items/Item'
 import { StdItems } from '../../items/stdItems'
 import { initialize } from '../../game/functions/initialize'
 import { CharacterDefinition, CharacterItem } from './characterInterfaces'
@@ -40,11 +40,12 @@ describe('character data', () => {
     })
 
     it('normalizes inline character item references in generated runtime state', () => {
-        const inlineWeapon = {
+        const inlineWeapon: CharacterItem = {
             id: 'InlineWeapon',
             nameId: 'Chicken' as const,
             icon: Icons.Chicken,
-            type: ItemTypes.TwoHands,
+            type: ItemType.Weapon,
+            weaponType: WeaponType.TwoHands,
             value: 0,
             volume: 1,
             weaponData: { attackSpeed: 1000, expType: ExpEnum.TwoHanded, damage: { Piercing: 1 } },

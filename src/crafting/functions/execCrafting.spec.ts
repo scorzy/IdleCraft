@@ -4,7 +4,7 @@ import { initialize } from '../../game/functions/initialize'
 import { GameState } from '../../game/GameState'
 import { GetInitialGameState } from '../../game/InitialGameState'
 import { Icons } from '../../icons/Icons'
-import { ItemTypes } from '../../items/Item'
+import { ItemType, CraftingType } from '../../items/Item'
 import { addItem } from '../../storage/storageFunctions'
 import { Timer } from '../../timers/Timer'
 import { ExpEnum } from '../../experience/ExpEnum'
@@ -102,7 +102,8 @@ describe('execCrafting', () => {
                             id: '',
                             nameId: 'Plank',
                             icon: Icons.Plank,
-                            type: ItemTypes.Plank,
+                            type: ItemType.Crafting,
+                            craftingTypes: [CraftingType.Plank],
                             value: 1,
                             volume: 1,
                         },

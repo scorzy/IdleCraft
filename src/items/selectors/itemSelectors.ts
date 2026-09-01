@@ -2,8 +2,8 @@ import { CharacterAdapter } from '../../characters/characterAdapter'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { GameState } from '../../game/GameState'
-import { getItemSubType } from '../getItemSubType'
-import { Item, ItemFilter } from '../Item'
+import { hasCraftingTypes } from '../itemTypeUtils'
+import { Item, ItemFilter, ItemType } from '../Item'
 
 export const selectEquipId =
     (slot: EquipSlotsEnum, characterId = PLAYER_ID) =>
@@ -18,9 +18,14 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
     if (filter.nameId && item.nameId !== filter.nameId) return false
     if (filter.equipSlot && item.equipSlot !== filter.equipSlot) return false
     if (filter.itemType && item.type !== filter.itemType) return false
+    if (filter.equipmentSlot && (item.type !== ItemType.Armour || item.equipmentSlot !== filter.equipmentSlot))
+        return false
+    if (filter.armourType && (item.type !== ItemType.Armour || item.armourType !== filter.armourType)) return false
+    if (filter.weaponType && (item.type !== ItemType.Weapon || item.weaponType !== filter.weaponType)) return false
+    if (filter.toolType && (item.type !== ItemType.Tool || item.toolType !== filter.toolType)) return false
+    if (filter.craftingTypes && !hasCraftingTypes(item, filter.craftingTypes)) return false
     if (filter.unlimitedItems !== undefined && filter.unlimitedItems && !item.unlimited) return false
     if (filter.unlimitedItems !== undefined && !filter.unlimitedItems && item.unlimited) return false
-    if (filter.itemSubType && getItemSubType(item.type) !== filter.itemSubType) return false
     if (filter.potionEffects?.some((effect) => !item.potionData?.effects.some((entry) => entry.effect === effect)))
         return false
     if (filter.minStats)
@@ -29,7 +34,8 @@ export const filterItem = (item: Item, filter: ItemFilter) => {
             if (item[itemKey] === undefined || item[itemKey] < kv[1]) return false
         }
 
-    if (filter.has) for (const key of filter.has) if (item[key] === undefined) return false
+    if (filter.has)
+        for (const key of filter.has) if ((item as unknown as Record<string, unknown>)[key] === undefined) return false
 
     for (const kv of Object.entries(filter)) {
         if (kv[0] === 'minStats' || kv[0] === 'has' || kv[0] === 'potionEffects') continue

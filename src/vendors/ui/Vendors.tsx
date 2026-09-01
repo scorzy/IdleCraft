@@ -9,7 +9,7 @@ import { useGameStore } from '../../game/state'
 import { GameLocationDataMap } from '../../gameLocations/GameLocations'
 import { Icons, IconsData } from '../../icons/Icons'
 import { GetItemNameParamsMemoized } from '../../items/GetItemNameParamsMemoized'
-import { getItemSubType } from '../../items/getItemSubType'
+import { matchesItemDetail } from '../../items/itemTypeUtils'
 import { selectItemNameMemoized } from '../../items/selectors/itemSelectorsMemo'
 import { StdItems } from '../../items/stdItems'
 import { ItemIconName } from '../../items/ui/ItemIconName'
@@ -18,7 +18,7 @@ import { selectItemQta, selectItemTotalQta } from '../../storage/StorageSelector
 import { ItemFilters } from '../../storage/ui/ItemFilters'
 import { ItemLocationsDialog } from '../../storage/ui/ItemLocationsDialog'
 import { MyPage, MyPageAll } from '../../ui/pages/MyPage'
-import { selectItemFilterSearch, selectItemFilterSubType, selectItemFilterType } from '../../ui/state/uiSelectors'
+import { selectItemFilterDetail, selectItemFilterSearch, selectItemFilterType } from '../../ui/state/uiSelectors'
 import { getVendorOffers, VendorOffer } from '../VendorData'
 import { buyVendorItem } from '../vendorFunctions'
 import { VendorTypes } from '../VendorTypes'
@@ -29,20 +29,17 @@ const QUICK_BUY_QUANTITIES = [1, 10, 100, 1000] as const
 export const Vendors = memo(function Vendors() {
     const location = useGameStore((state) => state.location)
     const vendorType = useGameStore((state) => state.ui.vendorType)
-    const itemFilterSubType = useGameStore(selectItemFilterSubType)
+    const itemFilterDetail = useGameStore(selectItemFilterDetail)
     const itemFilterType = useGameStore(selectItemFilterType)
     const itemFilterSearch = useGameStore(selectItemFilterSearch)
     const translations = useTranslations()
     const offers = useMemo(() => {
         const search = itemFilterSearch.trim().toLocaleLowerCase()
-        const useTypeFilter =
-            itemFilterType && itemFilterSubType && getItemSubType(itemFilterType) === itemFilterSubType
-
         return getVendorOffers(location, vendorType).filter((offer) => {
             const item = StdItems[offer.itemId]
             if (!item) return false
-            if (itemFilterSubType && getItemSubType(item.type) !== itemFilterSubType) return false
-            if (useTypeFilter && item.type !== itemFilterType) return false
+            if (itemFilterType && item.type !== itemFilterType) return false
+            if (itemFilterDetail && !matchesItemDetail(item, itemFilterDetail)) return false
             if (!search) return true
 
             const name = selectItemNameMemoized(
@@ -52,7 +49,7 @@ export const Vendors = memo(function Vendors() {
             )
             return name.toLocaleLowerCase().includes(search)
         })
-    }, [itemFilterSearch, itemFilterSubType, itemFilterType, location, translations, vendorType])
+    }, [itemFilterDetail, itemFilterSearch, itemFilterType, location, translations, vendorType])
 
     return (
         <MyPageAll sidebar={<VendorSidebar />} header={<VendorHeader />}>

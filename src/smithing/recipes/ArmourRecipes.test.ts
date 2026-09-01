@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { Recipe } from '../../crafting/Recipe'
 import { GetInitialGameState } from '../../game/InitialGameState'
-import { DamageTypes, ItemTypes } from '../../items/Item'
+import { DamageTypes, EquipmentSlot, ItemType } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { armourRecipe } from './ArmourRecipes'
 import { bootsRecipe } from './BootsRecipe'
@@ -14,7 +14,8 @@ interface ArmourRecipeCase {
     name: string
     recipe: Recipe
     itemName: keyof Msg
-    itemType: ItemTypes
+    itemType: ItemType
+    equipmentSlot: EquipmentSlot
     equipSlot: EquipSlotsEnum
     barQta: number
     armour: number
@@ -25,7 +26,8 @@ const armourRecipeCases: ArmourRecipeCase[] = [
         name: 'body armour',
         recipe: armourRecipe,
         itemName: 'Armour',
-        itemType: ItemTypes.Body,
+        itemType: ItemType.Armour,
+        equipmentSlot: EquipmentSlot.Body,
         equipSlot: EquipSlotsEnum.Body,
         barQta: 4,
         armour: 10,
@@ -34,7 +36,8 @@ const armourRecipeCases: ArmourRecipeCase[] = [
         name: 'pants',
         recipe: pantsRecipe,
         itemName: 'Cuisses',
-        itemType: ItemTypes.Legs,
+        itemType: ItemType.Armour,
+        equipmentSlot: EquipmentSlot.Legs,
         equipSlot: EquipSlotsEnum.Legs,
         barQta: 3,
         armour: 7,
@@ -43,7 +46,8 @@ const armourRecipeCases: ArmourRecipeCase[] = [
         name: 'helmet',
         recipe: helmetRecipe,
         itemName: 'Helmet',
-        itemType: ItemTypes.Head,
+        itemType: ItemType.Armour,
+        equipmentSlot: EquipmentSlot.Head,
         equipSlot: EquipSlotsEnum.Head,
         barQta: 2,
         armour: 5,
@@ -52,7 +56,8 @@ const armourRecipeCases: ArmourRecipeCase[] = [
         name: 'hands',
         recipe: handsRecipe,
         itemName: 'Gauntlets',
-        itemType: ItemTypes.Hands,
+        itemType: ItemType.Armour,
+        equipmentSlot: EquipmentSlot.Hands,
         equipSlot: EquipSlotsEnum.Hands,
         barQta: 2,
         armour: 3,
@@ -61,7 +66,8 @@ const armourRecipeCases: ArmourRecipeCase[] = [
         name: 'boots',
         recipe: bootsRecipe,
         itemName: 'Boots',
-        itemType: ItemTypes.Feet,
+        itemType: ItemType.Armour,
+        equipmentSlot: EquipmentSlot.Feet,
         equipSlot: EquipSlotsEnum.Feet,
         barQta: 2,
         armour: 3,

@@ -3,7 +3,7 @@ import { consumePotion } from '../alchemy/alchemyFunctions'
 import { Effects } from '../effects/types/Effects'
 import { GetInitialGameState } from '../game/InitialGameState'
 import { Icons } from '../icons/Icons'
-import { Item, ItemTypes } from '../items/Item'
+import { Item, ItemType } from '../items/Item'
 import { ItemAdapter } from '../storage/ItemAdapter'
 import { selectGameItem, selectItemQta } from '../storage/StorageSelectors'
 import { addItem } from '../storage/storageFunctions'
@@ -18,7 +18,7 @@ const healthPotion: Item = {
     id: 'C_health-potion',
     nameId: 'HealthPotion',
     icon: Icons.Potion,
-    type: ItemTypes.Potion,
+    type: ItemType.Consumable,
     value: 1,
     volume: 1,
     potionData: {
@@ -88,13 +88,26 @@ describe('quick slots', () => {
     it('rejects invalid quick slot equipment without changing inventory', () => {
         const state = setupState()
         addItem(state, healthPotion.id, 2)
+        const flask: Item = {
+            id: 'C_flask',
+            nameId: 'GlassFlask',
+            icon: Icons.RoundPotion,
+            type: ItemType.Consumable,
+            value: 1,
+            volume: 1,
+            flaskData: { reusePercent: 0 },
+        }
+        ItemAdapter.create(state.craftedItems, flask)
+        addItem(state, flask.id, 1)
 
         equipQuickSlot(state, PLAYER_ID, 0, 'OakLog', 1)
+        equipQuickSlot(state, PLAYER_ID, 0, flask.id, 1)
         equipQuickSlot(state, PLAYER_ID, 0, healthPotion.id, 3)
         equipQuickSlot(state, PLAYER_ID, 1, healthPotion.id, 1)
 
         expect(state.characters.entries[PLAYER_ID]?.inventory[EquipSlotsEnum.QuickSlot]).toBeUndefined()
         expect(selectItemQta(null, healthPotion.id)(state)).toBe(2)
+        expect(selectItemQta(null, flask.id)(state)).toBe(1)
     })
 
     it('keeps an equipped crafted potion available after its storage stack reaches zero', () => {

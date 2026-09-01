@@ -5,15 +5,16 @@ import { EquipSlotsEnum } from './equipSlotsEnum'
 import { ExpEnum } from '../experience/ExpEnum'
 import { GetInitialGameState } from '../game/InitialGameState'
 import { Icons } from '../icons/Icons'
-import { DamageTypes, Item, ItemTypes } from '../items/Item'
+import { DamageTypes, Item, ItemType, WeaponType } from '../items/Item'
 import { ItemAdapter } from '../storage/ItemAdapter'
 import { makeCharacterSelector } from './makeCharacterSelector'
 
-const makeWeapon = (id: string, expType: ExpEnum, type: ItemTypes, slot: EquipSlotsEnum): Item => ({
+const makeWeapon = (id: string, expType: ExpEnum, weaponType: WeaponType, slot: EquipSlotsEnum): Item => ({
     id,
     nameId: 'NormalAttack',
     icon: Icons.Dagger,
-    type,
+    type: ItemType.Weapon,
+    weaponType,
     equipSlot: slot,
     value: 0,
     volume: 0,
@@ -26,8 +27,8 @@ const makeWeapon = (id: string, expType: ExpEnum, type: ItemTypes, slot: EquipSl
 
 describe('makeCharacterSelector damage', () => {
     it.each([
-        [ExpEnum.OneHanded, ItemTypes.OneHand, EquipSlotsEnum.MainHand],
-        [ExpEnum.TwoHanded, ItemTypes.TwoHands, EquipSlotsEnum.TwoHand],
+        [ExpEnum.OneHanded, WeaponType.OneHand, EquipSlotsEnum.MainHand],
+        [ExpEnum.TwoHanded, WeaponType.TwoHands, EquipSlotsEnum.TwoHand],
     ])('increases %s weapon damage by 1%% per level', (expType, type, slot) => {
         const state = GetInitialGameState()
         const weapon = makeWeapon(`C_weapon-${expType}`, expType, type, slot)

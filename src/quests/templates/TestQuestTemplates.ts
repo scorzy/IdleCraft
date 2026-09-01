@@ -1,7 +1,7 @@
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Icons } from '../../icons/Icons'
-import { ItemTypes } from '../../items/Item'
+import { ItemType, CraftingType } from '../../items/Item'
 import { selectTranslations } from '../../msg/useTranslations'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { GenerateQuestDataData } from '../QuestTemplate'
@@ -67,7 +67,8 @@ export class TestQuestTemplate extends BaseQuestTemplate<GenerateQuestDataData> 
                     id: '2',
                     itemCount: itemCount2,
                     itemFilter: {
-                        itemType: ItemTypes.Plank,
+                        itemType: ItemType.Crafting,
+                        craftingTypes: [CraftingType.Plank],
                         minStats: {
                             value,
                         },

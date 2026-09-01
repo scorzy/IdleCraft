@@ -3,7 +3,7 @@ import { GameLocationAdapter } from '../../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { GameState } from '../../game/GameState'
 import { GetInitialGameState } from '../../game/InitialGameState'
-import { ItemTypes } from '../../items/Item'
+import { ItemType, CraftingType } from '../../items/Item'
 import { QuestAdapter, QuestState, QuestStatus } from '../QuestTypes'
 import { onCollectQuestComplete } from './onCollectQuestComplete'
 
@@ -25,7 +25,7 @@ const buildQuest = (): QuestState => ({
                     {
                         id: 'req-1',
                         itemCount: 5,
-                        itemFilter: { itemType: ItemTypes.Plank },
+                        itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Plank] },
                         selectedItem1: 'OakPlank',
                     },
                 ],

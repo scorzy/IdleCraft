@@ -8,37 +8,47 @@ import { Msg } from '../msg/Msg'
 import { ItemsMaterials } from './materials/ItemsMaterials'
 import { WeaponCoatingData } from '../weaponCoatings/weaponCoatingTypes'
 
-export enum ItemTypes {
+export enum ItemType {
+    Weapon = 'Weapon',
+    Armour = 'Armour',
+    Tool = 'Tool',
+    Crafting = 'Crafting',
+    Consumable = 'Consumable',
+}
+export enum EquipmentSlot {
+    Head = 'Head',
+    Body = 'Body',
+    Legs = 'Legs',
+    Hands = 'Hands',
+    Feet = 'Feet',
+}
+export enum ArmourType {
+    Light = 'Light',
+    Medium = 'Medium',
+    Heavy = 'Heavy',
+}
+export enum WeaponType {
+    OneHand = 'OneHand',
+    TwoHands = 'TwoHands',
+}
+export enum ToolType {
+    WoodAxe = 'WoodAxe',
+    Pickaxe = 'Pickaxe',
+}
+export enum CraftingType {
     Log = 'Log',
     Plank = 'Plank',
     Handle = 'Handle',
     Ore = 'Ore',
     Gem = 'Gem',
     Bar = 'Bar',
-    WoodAxe = 'WoodAxe',
-    Pickaxe = 'Pickaxe',
-    OneHand = 'OneHand',
-    TwoHands = 'TwoHands',
-    Head = 'Head',
-    Body = 'Body',
-    Legs = 'Legs',
-    Hands = 'Hands',
-    Feet = 'Feet',
     Corpse = 'Corpse',
-    RawFood = 'RawFood',
+    Food = 'Food',
     RawSkin = 'RawSkin',
-    Potion = 'Potion',
-    Flask = 'Flask',
-    CraftingIngredient = 'CraftingIngredient',
+    AlchemyIngredient = 'AlchemyIngredient',
     Solvent = 'Solvent',
 }
-export enum ItemSubType {
-    Weapon = 'Weapon',
-    Armour = 'Armour',
-    Tool = 'Tool',
-    Crafting = 'Crafting',
-    Potion = 'Potion',
-}
+export type ItemDetailType = WeaponType | EquipmentSlot | ToolType | CraftingType
 
 export enum DamageTypes {
     Slashing = 'Slashing',
@@ -69,14 +79,13 @@ export interface WeaponData {
     attackSpeed: number
 }
 
-export interface Item {
+interface ItemBase {
     id: string
     nameId: keyof Msg
     nameFunc?: keyof MsgFunctions
     icon: Icons
     color?: string
     materials?: ItemsMaterials
-    type: ItemTypes
     value: number
     volume: number
     equipSlot?: EquipSlotsEnum
@@ -94,14 +103,42 @@ export interface Item {
     weaponCoatingData?: WeaponCoatingData
     unlimited?: boolean
 }
+export type NonEmptyArray<T> = [T, ...T[]]
+export interface WeaponItem extends ItemBase {
+    type: ItemType.Weapon
+    weaponType: WeaponType
+}
+export interface ArmourItem extends ItemBase {
+    type: ItemType.Armour
+    equipmentSlot: EquipmentSlot
+    armourType: ArmourType
+}
+export interface ToolItem extends ItemBase {
+    type: ItemType.Tool
+    toolType: ToolType
+}
+export interface CraftingItem extends ItemBase {
+    type: ItemType.Crafting
+    craftingTypes: NonEmptyArray<CraftingType>
+}
+export interface PotionItem extends ItemBase {
+    type: ItemType.Consumable
+}
+export type Item = WeaponItem | ArmourItem | ToolItem | CraftingItem | PotionItem
+type UnionKeys<T> = T extends unknown ? keyof T : never
+type ItemKey = UnionKeys<Item>
 export interface ItemFilter {
     descriptionId?: keyof Msg
     itemId?: string
     nameId?: keyof Msg
-    itemType?: ItemTypes
-    itemSubType?: ItemSubType
-    has?: (keyof Item)[]
-    minStats?: Partial<Item>
+    itemType?: ItemType
+    equipmentSlot?: EquipmentSlot
+    armourType?: ArmourType
+    weaponType?: WeaponType
+    toolType?: ToolType
+    craftingTypes?: CraftingType[]
+    has?: ItemKey[]
+    minStats?: Partial<ItemBase>
     equipSlot?: EquipSlotsEnum
     craftingData?: Partial<CraftingData>
     woodAxeData?: Partial<WoodAxeData>

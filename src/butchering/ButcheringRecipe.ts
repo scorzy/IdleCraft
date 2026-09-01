@@ -9,7 +9,7 @@ import {
 } from '../crafting/RecipeInterfaces'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
-import { Item, ItemTypes } from '../items/Item'
+import { Item, ItemType, CraftingType } from '../items/Item'
 import { StdItems } from '../items/stdItems'
 
 export const butcheringRecipeParam: RecipeParameterItemFilter[] = [
@@ -17,7 +17,7 @@ export const butcheringRecipeParam: RecipeParameterItemFilter[] = [
         id: 'corpse',
         nameId: 'Corpse',
         type: RecipeParamType.ItemType,
-        itemFilter: { itemType: ItemTypes.Corpse },
+        itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Corpse] },
     },
 ]
 

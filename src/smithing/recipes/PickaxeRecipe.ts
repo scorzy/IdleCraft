@@ -12,7 +12,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { Item, ItemTypes } from '../../items/Item'
+import { Item, ItemType, ToolType, CraftingType } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
@@ -21,13 +21,13 @@ const pickaxeParam: RecipeParameterItemFilter[] = [
         id: 'bar',
         nameId: 'Bar',
         type: RecipeParamType.ItemType,
-        itemFilter: { itemType: ItemTypes.Bar },
+        itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Bar] },
     },
     {
         id: 'handle',
         nameId: 'Handle',
         type: RecipeParamType.ItemType,
-        itemFilter: { itemType: ItemTypes.Handle },
+        itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Handle] },
     },
 ]
 
@@ -68,7 +68,8 @@ export const PickaxeRecipe = makeMemoizedRecipe({
             nameId: 'Pickaxe',
             materials,
             icon: Icons.Pickaxe,
-            type: ItemTypes.Pickaxe,
+            type: ItemType.Tool,
+            toolType: ToolType.Pickaxe,
             equipSlot: EquipSlotsEnum.Pickaxe,
             value: getItemValue(components, true),
             volume: getItemVolume(components),

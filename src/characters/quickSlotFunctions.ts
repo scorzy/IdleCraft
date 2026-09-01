@@ -1,7 +1,7 @@
 import { applyPotionEffects } from '../alchemy/alchemyFunctions'
 import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
-import { ItemTypes } from '../items/Item'
+import { ItemType } from '../items/Item'
 import { selectGameItem, selectItemQta } from '../storage/StorageSelectors'
 import { addItem, removeCraftItemIfUnused, removeItem } from '../storage/storageFunctions'
 import { CharacterAdapter } from './characterAdapter'
@@ -33,7 +33,8 @@ export function equipQuickSlot(
     const item = selectGameItem(itemId)(state)
     if (
         !item ||
-        item.type !== ItemTypes.Potion ||
+        item.type !== ItemType.Consumable ||
+        !item.potionData ||
         quantity === undefined ||
         !Number.isSafeInteger(quantity) ||
         quantity < 1
@@ -63,7 +64,7 @@ export function consumeQuickSlotPotion(state: GameState, charId: string, index: 
     if (!quickSlot || !Number.isSafeInteger(quantity) || quantity < 1) return
 
     const item = selectGameItem(quickSlot.itemId)(state)
-    if (!item || item.type !== ItemTypes.Potion || !item.potionData) return
+    if (!item || item.type !== ItemType.Consumable || !item.potionData) return
 
     applyPotionEffects(state, charId, item)
     if (quantity === 1) {

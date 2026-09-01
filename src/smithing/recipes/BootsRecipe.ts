@@ -11,7 +11,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { DamageData, DamageTypes, Item, ItemTypes } from '../../items/Item'
+import { DamageData, DamageTypes, Item, ItemType, ArmourType, EquipmentSlot, CraftingType } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
@@ -20,7 +20,7 @@ const bootsParams: RecipeParameterItemFilter[] = [
         id: 'bar',
         nameId: 'Bar',
         type: RecipeParamType.ItemType,
-        itemFilter: { itemType: ItemTypes.Bar },
+        itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Bar] },
     },
 ]
 
@@ -55,7 +55,9 @@ export const bootsRecipe = makeMemoizedRecipe({
             nameId: 'Boots',
             materials,
             icon: Icons.Boots,
-            type: ItemTypes.Feet,
+            type: ItemType.Armour,
+            equipmentSlot: EquipmentSlot.Feet,
+            armourType: ArmourType.Heavy,
             equipSlot: EquipSlotsEnum.Feet,
             value: getItemValue(components, true),
             volume: getItemVolume(components),

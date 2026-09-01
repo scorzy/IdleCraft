@@ -2,7 +2,7 @@ import { RAW_VOLUME, REFINED_VOLUME } from '../caravans/CaravanConst'
 import { EffectPotency } from '../effects/types/EffectPotency'
 import { Effects } from '../effects/types/Effects'
 import { Icons } from '../icons/Icons'
-import { Item, ItemTypes } from '../items/Item'
+import { Item, ItemType, CraftingType } from '../items/Item'
 import { IngredientTypes } from './alchemyTypes'
 
 export const AlchemyItems: Record<string, Item> = {
@@ -12,7 +12,7 @@ export const AlchemyItems: Record<string, Item> = {
         nameId: 'GlassFlask',
         value: 10,
         volume: REFINED_VOLUME,
-        type: ItemTypes.Flask,
+        type: ItemType.Consumable,
         flaskData: {
             reusePercent: 0,
         },
@@ -24,7 +24,8 @@ export const AlchemyItems: Record<string, Item> = {
         color: 'text-mana',
         value: 1,
         volume: REFINED_VOLUME,
-        type: ItemTypes.Solvent,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Solvent],
         unlimited: true,
         solventData: {
             potency: EffectPotency.Low,
@@ -37,7 +38,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 3,
         volume: RAW_VOLUME,
         color: 'text-health',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 10,
             type: IngredientTypes.Herb,
@@ -54,7 +56,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 3,
         volume: RAW_VOLUME,
         color: 'text-mana',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 10,
             type: IngredientTypes.Herb,
@@ -71,7 +74,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 3,
         volume: RAW_VOLUME,
         color: 'text-stamina',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 10,
             type: IngredientTypes.Herb,
@@ -89,7 +93,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 4,
         volume: RAW_VOLUME,
         color: 'text-health',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 20,
             type: IngredientTypes.Herb,
@@ -104,7 +109,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 4,
         volume: RAW_VOLUME,
         color: 'text-mana',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 20,
             type: IngredientTypes.Herb,
@@ -119,7 +125,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 4,
         volume: RAW_VOLUME,
         color: 'text-stamina',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 20,
             type: IngredientTypes.Herb,
@@ -134,7 +141,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 4,
         volume: RAW_VOLUME,
         color: 'text-stamina',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 15,
             type: IngredientTypes.Herb,
@@ -149,7 +157,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 5,
         volume: RAW_VOLUME,
         color: 'text-stamina',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 15,
             type: IngredientTypes.Herb,
@@ -164,7 +173,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 6,
         volume: RAW_VOLUME,
         color: 'text-health',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 20,
             type: IngredientTypes.Herb,
@@ -179,7 +189,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 7,
         volume: RAW_VOLUME,
         color: 'text-health',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 20,
             type: IngredientTypes.Herb,
@@ -194,7 +205,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 8,
         volume: RAW_VOLUME,
         color: 'text-health',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 10,
             type: IngredientTypes.Animal,
@@ -212,7 +224,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 7,
         volume: RAW_VOLUME,
         color: 'text-stamina',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 10,
             type: IngredientTypes.Animal,
@@ -230,7 +243,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 6,
         volume: RAW_VOLUME,
         color: 'text-health',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 0,
             type: IngredientTypes.Herb,
@@ -245,7 +259,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 6,
         volume: RAW_VOLUME,
         color: 'text-mana',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 0,
             type: IngredientTypes.Herb,
@@ -260,7 +275,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 10,
         volume: RAW_VOLUME,
         color: 'text-health',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 5,
             type: IngredientTypes.Mineral,
@@ -275,7 +291,8 @@ export const AlchemyItems: Record<string, Item> = {
         value: 10,
         volume: RAW_VOLUME,
         color: 'text-mana',
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         ingredientData: {
             stability: 5,
             type: IngredientTypes.Mineral,

@@ -12,7 +12,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { DamageTypes, Item, ItemTypes } from '../../items/Item'
+import { DamageTypes, Item, ItemType, WeaponType, CraftingType } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 import { selectGameItem } from '../../storage/StorageSelectors'
 
@@ -21,7 +21,7 @@ const longSwordParams: RecipeParameterItemFilter[] = [
         id: 'bar',
         nameId: 'Bar',
         type: RecipeParamType.ItemType,
-        itemFilter: { itemType: ItemTypes.Bar },
+        itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Bar] },
     },
 ]
 
@@ -50,7 +50,8 @@ export const longSwordRecipe = makeMemoizedRecipe({
             nameId: 'LongSword',
             materials,
             icon: Icons.Sword,
-            type: ItemTypes.OneHand,
+            type: ItemType.Weapon,
+            weaponType: WeaponType.OneHand,
             equipSlot: EquipSlotsEnum.MainHand,
             value: getItemValue(components, true),
             volume: getItemVolume(components),

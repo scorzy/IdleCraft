@@ -15,6 +15,13 @@ export interface Msg {
     XP: string
     Progress: string
     Crafting: string
+    Weapon: string
+    Tool: string
+    Consumable: string
+    Light: string
+    Medium: string
+    Heavy: string
+    Food: string
     Gathering: string
     ItemType: string
     Info: string

@@ -82,6 +82,13 @@ export const engMsg: Msg = {
     Smithing: 'Smithing',
 
     Crafting: 'Crafting',
+    Weapon: 'Weapon',
+    Tool: 'Tool',
+    Consumable: 'Consumable',
+    Light: 'Light',
+    Medium: 'Medium',
+    Heavy: 'Heavy',
+    Food: 'Food',
     Gathering: 'Gathering',
     ItemType: 'Type',
     Damage: 'Damage',
@@ -335,7 +342,7 @@ export const engMsg: Msg = {
     RestoreStamina: 'Restore Stamina',
 
     CraftingIngredient: 'Ingredient',
-    AlchemyIngredient: 'Alchemy Ingredient:',
+    AlchemyIngredient: 'Alchemy Ingredient',
     UnknownProperty: 'Unknown Property',
 
     LowStabilityNotCraftable: 'Not Craftable',

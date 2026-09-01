@@ -2,6 +2,7 @@
 
 import { minifyStateKeys, restoreStateKeys } from './stateKeyMinifier'
 import { jsonToToon, toonToJson } from './toonParser'
+import { migrateItemTaxonomy } from './itemTaxonomyMigration'
 
 const textEncoder = new TextEncoder()
 const textDecoder = new TextDecoder()
@@ -93,7 +94,7 @@ async function importSave(value) {
     }
 
     if (!isSaveEnvelopeV1(parsed)) throw new Error('Unsupported save format or version')
-    return restoreStateKeys(parsed.state)
+    return migrateItemTaxonomy(restoreStateKeys(parsed.state))
 }
 
 async function handleMessage(request) {

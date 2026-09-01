@@ -3,7 +3,7 @@ import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
 import { ExpEnum } from '../../experience/ExpEnum'
 import { Effects } from '../../effects/types/Effects'
 import { Icons } from '../../icons/Icons'
-import { Item, ItemSubType, ItemTypes } from '../Item'
+import { CraftingType, Item, ItemType, WeaponType } from '../Item'
 import { filterItem } from './itemSelectors'
 
 describe('filterItem', () => {
@@ -14,7 +14,8 @@ describe('filterItem', () => {
         value: 100,
         volume: 0.005,
         equipSlot: EquipSlotsEnum.MainHand,
-        type: ItemTypes.OneHand,
+        type: ItemType.Weapon,
+        weaponType: WeaponType.OneHand,
         craftingData: { prestige: 1, speedBonus: 2 },
         woodAxeData: undefined,
         craftingWoodAxeData: undefined,
@@ -44,13 +45,26 @@ describe('filterItem', () => {
     })
 
     it('filters by itemType', () => {
-        expect(filterItem(baseItem, { itemType: ItemTypes.OneHand })).toBe(true)
-        expect(filterItem(baseItem, { itemType: ItemTypes.Bar })).toBe(false)
+        expect(filterItem(baseItem, { itemType: ItemType.Weapon, weaponType: WeaponType.OneHand })).toBe(true)
+        expect(filterItem(baseItem, { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Bar] })).toBe(false)
     })
 
-    it('filters by itemSubType', () => {
-        expect(filterItem(baseItem, { itemSubType: ItemSubType.Weapon })).toBe(true)
-        expect(filterItem(baseItem, { itemSubType: ItemSubType.Crafting })).toBe(false)
+    it('filters by item type details', () => {
+        expect(filterItem(baseItem, { weaponType: WeaponType.OneHand })).toBe(true)
+        expect(filterItem(baseItem, { craftingTypes: [CraftingType.Bar] })).toBe(false)
+    })
+    it('requires every requested crafting type', () => {
+        const foodAndIngredient: Item = {
+            ...baseItem,
+            type: ItemType.Crafting,
+            craftingTypes: [CraftingType.Food, CraftingType.AlchemyIngredient],
+        }
+
+        expect(filterItem(foodAndIngredient, { craftingTypes: [CraftingType.Food] })).toBe(true)
+        expect(
+            filterItem(foodAndIngredient, { craftingTypes: [CraftingType.Food, CraftingType.AlchemyIngredient] })
+        ).toBe(true)
+        expect(filterItem(foodAndIngredient, { craftingTypes: [CraftingType.Bar] })).toBe(false)
     })
     it('filters by craftingData', () => {
         expect(filterItem(baseItem, { craftingData: { speedBonus: 1 } })).toBe(true)
@@ -100,7 +114,7 @@ describe('filterItem', () => {
     it('filters potions by required effects', () => {
         const poison: Item = {
             ...baseItem,
-            type: ItemTypes.Potion,
+            type: ItemType.Consumable,
             potionData: {
                 effects: [{ effect: Effects.DamageStamina, value: 20, duration: 0 }],
             },

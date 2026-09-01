@@ -3,7 +3,7 @@ import { RAW_VOLUME, FINISHED_VOLUME } from '../../caravans/CaravanConst'
 import { Effects } from '../../effects/types/Effects'
 import { ExpEnum } from '../../experience/ExpEnum'
 import { Icons } from '../../icons/Icons'
-import { ItemTypes } from '../../items/Item'
+import { ItemType, CraftingType, WeaponType } from '../../items/Item'
 import { WeaponCoatingKind } from '../../weaponCoatings/weaponCoatingTypes'
 import type { CharacterDefinition } from './characterInterfaces'
 
@@ -16,7 +16,8 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                 id: 'ChickenBeak',
                 nameId: 'Chicken',
                 icon: Icons.Chicken,
-                type: ItemTypes.TwoHands,
+                type: ItemType.Weapon,
+                weaponType: WeaponType.TwoHands,
                 value: 0,
                 volume: FINISHED_VOLUME,
                 weaponData: {
@@ -29,7 +30,8 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                 id: 'DeadChicken',
                 icon: Icons.Chicken,
                 nameId: 'DeadChicken',
-                type: ItemTypes.Corpse,
+                type: ItemType.Crafting,
+                craftingTypes: [CraftingType.Corpse],
                 value: 5,
                 volume: RAW_VOLUME,
                 butchering: [{ id: 'WhiteMeat', stdItemId: 'WhiteMeat', qta: 1 }],
@@ -52,7 +54,8 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                 id: 'BoarTusk',
                 nameId: 'BoarTusk',
                 icon: Icons.Boar,
-                type: ItemTypes.TwoHands,
+                type: ItemType.Weapon,
+                weaponType: WeaponType.TwoHands,
                 value: 0,
                 volume: FINISHED_VOLUME,
                 weaponData: {
@@ -65,7 +68,8 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                 id: 'DeadBoar',
                 icon: Icons.Boar,
                 nameId: 'DeadBoar',
-                type: ItemTypes.Corpse,
+                type: ItemType.Crafting,
+                craftingTypes: [CraftingType.Corpse],
                 value: 5,
                 volume: RAW_VOLUME,
                 butchering: [{ id: 'RedMeat', stdItemId: 'RedMeat', qta: 2 }],
@@ -90,7 +94,8 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                 id: 'DeadWolf',
                 icon: Icons.WolfHead,
                 nameId: 'DeadWolf',
-                type: ItemTypes.Corpse,
+                type: ItemType.Crafting,
+                craftingTypes: [CraftingType.Corpse],
                 value: 8,
                 volume: RAW_VOLUME,
                 butchering: [{ id: 'RedMeat', stdItemId: 'RedMeat', qta: 2 }],
@@ -115,7 +120,8 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                 id: 'SpiderMainW',
                 nameId: 'Spider',
                 icon: Icons.Spider,
-                type: ItemTypes.TwoHands,
+                type: ItemType.Weapon,
+                weaponType: WeaponType.TwoHands,
                 value: 0,
                 volume: FINISHED_VOLUME,
                 weaponData: {
@@ -128,7 +134,8 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                 id: 'DeadSpider',
                 icon: Icons.Spider,
                 nameId: 'DeadSpider',
-                type: ItemTypes.Corpse,
+                type: ItemType.Crafting,
+                craftingTypes: [CraftingType.Corpse],
                 value: 8,
                 volume: RAW_VOLUME,
                 butchering: [

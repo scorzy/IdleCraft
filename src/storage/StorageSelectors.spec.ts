@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { GetInitialGameState } from '../game/InitialGameState'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
-import { ItemTypes } from '../items/Item'
+import { ItemType, CraftingType } from '../items/Item'
 import { addItem } from './storageFunctions'
 import { selectFilteredItems, selectItemLocationQuantities, selectItemTotalQta } from './StorageSelectors'
 
@@ -34,7 +34,7 @@ describe('item location quantity selectors', () => {
 
     it('optionally includes matching vendor items that are not owned', () => {
         const state = GetInitialGameState()
-        const filter = { itemType: ItemTypes.Ore }
+        const filter = { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Ore] }
 
         expect(selectFilteredItems(state, filter)).not.toContain('CopperOre')
         expect(selectFilteredItems(state, filter, true)).toContain('CopperOre')

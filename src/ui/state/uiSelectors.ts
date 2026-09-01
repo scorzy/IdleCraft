@@ -33,8 +33,8 @@ export const selectIsStorageOrderQuantity = (s: GameState) => s.ui.storageOrder 
 export const selectIsStorageOrderValue = (s: GameState) => s.ui.storageOrder === 'value'
 export const getSidebarWidth = (id?: CollapsedEnum) => (s: UiTempStore) => (id ? (s.sidebarWidths[id] ?? 0) : -1)
 
-export const selectItemFilterSubType = (s: GameState) => s.ui.itemFilterSubType
 export const selectItemFilterType = (s: GameState) => s.ui.itemFilterType
+export const selectItemFilterDetail = (s: GameState) => s.ui.itemFilterDetail
 export const selectItemFilterSearch = (s: GameState) => s.ui.itemFilterSearch
 export const selectPage = (state: GameState) => state.ui.page
 export const selectSelectedGameLocation = (state: GameState) => state.ui.selectedLocation

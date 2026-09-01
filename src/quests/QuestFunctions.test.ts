@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { GetInitialGameState } from '../game/InitialGameState'
 import { initialize } from '../game/functions/initialize'
-import { ItemTypes } from '../items/Item'
+import { ItemType, CraftingType } from '../items/Item'
 import { GatheringZone } from '../gathering/gatheringZones'
 import { UnlockZoneQuest } from '../gathering/functions/UnlockZoneQuest'
 import { QuestData } from './QuestData'
@@ -48,7 +48,8 @@ describe('Quest Functions', () => {
                                 selectedItem1: 'item',
                                 selectedItem2: 'otherItem',
                                 itemFilter: {
-                                    itemType: ItemTypes.Plank,
+                                    itemType: ItemType.Crafting,
+                                    craftingTypes: [CraftingType.Plank],
                                     minStats: {
                                         value: 10,
                                     },
@@ -105,7 +106,8 @@ describe('Quest Functions', () => {
                                 selectedItem1: 'item',
                                 selectedItem2: 'otherItem',
                                 itemFilter: {
-                                    itemType: ItemTypes.Plank,
+                                    itemType: ItemType.Crafting,
+                                    craftingTypes: [CraftingType.Plank],
                                     minStats: {
                                         value: 10,
                                     },

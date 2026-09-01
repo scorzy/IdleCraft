@@ -1,13 +1,14 @@
 import { RAW_VOLUME } from '../caravans/CaravanConst'
 import { Icons } from '../icons/Icons'
-import { Item, ItemTypes } from '../items/Item'
+import { Item, ItemType, CraftingType } from '../items/Item'
 
 export const ButcheringItems: Record<string, Item> = {
     WhiteMeat: {
         id: 'WhiteMeat',
         icon: Icons.Steak,
         nameId: 'WhiteMeat',
-        type: ItemTypes.RawFood,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Food],
         value: 5,
         volume: RAW_VOLUME,
     },
@@ -15,7 +16,8 @@ export const ButcheringItems: Record<string, Item> = {
         id: 'RedMeat',
         icon: Icons.Steak,
         nameId: 'RedMeat',
-        type: ItemTypes.RawFood,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Food],
         value: 6,
         volume: RAW_VOLUME,
     },
@@ -23,7 +25,8 @@ export const ButcheringItems: Record<string, Item> = {
         id: 'BoarSkin',
         icon: Icons.AnimalHide,
         nameId: 'BoarSkin',
-        type: ItemTypes.RawSkin,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.RawSkin],
         value: 5,
         volume: RAW_VOLUME,
     },

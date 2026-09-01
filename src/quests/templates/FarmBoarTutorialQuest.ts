@@ -2,7 +2,7 @@ import { Effects } from '../../effects/types/Effects'
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Icons } from '../../icons/Icons'
-import { ItemTypes } from '../../items/Item'
+import { ItemType, CraftingType } from '../../items/Item'
 import { selectTranslations } from '../../msg/useTranslations'
 import { getUniqueId } from '../../utils/getUniqueId'
 import { GenerateQuestDataData } from '../QuestTemplate'
@@ -63,7 +63,7 @@ export class FarmBoarTutorialQuest extends BaseQuestTemplate<GenerateQuestDataDa
                 {
                     id: 'FenceLogs',
                     itemCount: FARM_BOAR_LOG_COUNT,
-                    itemFilter: { itemType: ItemTypes.Log },
+                    itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Log] },
                 },
             ],
         }
@@ -78,7 +78,7 @@ export class FarmBoarTutorialQuest extends BaseQuestTemplate<GenerateQuestDataDa
                     itemCount: FARM_BOAR_POTION_COUNT,
                     itemFilter: {
                         descriptionId: 'DamageStaminaPotion',
-                        itemType: ItemTypes.Potion,
+                        itemType: ItemType.Consumable,
                         potionEffects: [Effects.DamageStamina],
                     },
                 },

@@ -10,7 +10,7 @@ import { CollapsedEnum } from '../sidebar/CollapsedEnum'
 import { UiPages } from './UiPages'
 import { UiPagesData } from './UiPagesData'
 import { useUiTempStore } from './uiTempStore'
-import { ItemSubType, ItemTypes } from '../../items/Item'
+import { ItemDetailType, ItemType } from '../../items/Item'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { VendorTypes } from '../../vendors/VendorTypes'
 
@@ -121,14 +121,15 @@ export const setSidebarWidth = (id: CollapsedEnum, width: number) =>
         sidebarWidths: { ...s.sidebarWidths, [id]: width },
     }))
 
-export const setItemFilterSubType = (itemFilterSubType: ItemSubType | undefined) =>
-    setState((s) => {
-        s.ui.itemFilterSubType = itemFilterSubType
-    })
-
-export const setItemFilterType = (itemFilterType: ItemTypes | undefined) =>
+export const setItemFilterType = (itemFilterType: ItemType | undefined) =>
     setState((s) => {
         s.ui.itemFilterType = itemFilterType
+        s.ui.itemFilterDetail = undefined
+    })
+
+export const setItemFilterDetail = (itemFilterDetail: ItemDetailType | undefined) =>
+    setState((s) => {
+        s.ui.itemFilterDetail = itemFilterDetail
     })
 
 export const setItemFilterSearch = (itemFilterSearch: string) =>

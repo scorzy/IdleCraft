@@ -22,15 +22,14 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
     const arr: React.ReactElement[] = []
 
     if (itemFilter.itemType !== undefined) pre = <>{t[itemFilter.itemType as keyof Msg]}</>
-    else if (itemFilter.itemSubType !== undefined) pre = <>{t[itemFilter.itemSubType as keyof Msg]}</>
     else pre = <>{t.items}</>
 
-    if (itemFilter.itemSubType !== undefined)
-        arr.push(
-            <>
-                {t.ItemType} {t[itemFilter.itemSubType as keyof Msg]}
-            </>
-        )
+    if (itemFilter.equipmentSlot !== undefined) arr.push(<>{t[itemFilter.equipmentSlot as keyof Msg]}</>)
+    if (itemFilter.armourType !== undefined) arr.push(<>{t[itemFilter.armourType as keyof Msg]}</>)
+    if (itemFilter.weaponType !== undefined) arr.push(<>{t[itemFilter.weaponType as keyof Msg]}</>)
+    if (itemFilter.toolType !== undefined) arr.push(<>{t[itemFilter.toolType as keyof Msg]}</>)
+    if (itemFilter.craftingTypes !== undefined)
+        arr.push(...itemFilter.craftingTypes.map((craftingType) => <>{t[craftingType as keyof Msg]}</>))
 
     if (itemFilter.equipSlot !== undefined) arr.push(<>{t[itemFilter.equipSlot as keyof Msg]}</>)
     if (itemFilter?.minStats?.value !== undefined)

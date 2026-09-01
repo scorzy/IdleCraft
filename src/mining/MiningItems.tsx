@@ -1,6 +1,6 @@
 import { RAW_VOLUME } from '../caravans/CaravanConst'
 import { Icons } from '../icons/Icons'
-import { Item, ItemTypes } from '../items/Item'
+import { Item, ItemType, CraftingType } from '../items/Item'
 import { Materials } from '../items/materials/materials'
 
 export const MiningItems = {
@@ -9,7 +9,8 @@ export const MiningItems = {
         id: 'CopperOre',
         nameId: 'Ore',
         materials: { primary: Materials.Copper },
-        type: ItemTypes.Ore,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Ore],
         value: 5,
         volume: RAW_VOLUME,
     },
@@ -17,7 +18,8 @@ export const MiningItems = {
         icon: Icons.Ore,
         id: 'TinOre',
         nameId: 'Ore',
-        type: ItemTypes.Ore,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Ore],
         materials: { primary: Materials.Tin },
         value: 10,
         volume: RAW_VOLUME,
@@ -26,7 +28,8 @@ export const MiningItems = {
         icon: Icons.Ore,
         id: 'Ruby',
         nameId: 'Ruby',
-        type: ItemTypes.Gem,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Gem],
         value: 65,
         volume: RAW_VOLUME,
     },
@@ -34,7 +37,8 @@ export const MiningItems = {
         icon: Icons.Ore,
         id: 'Sapphire',
         nameId: 'Sapphire',
-        type: ItemTypes.Gem,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Gem],
         value: 75,
         volume: RAW_VOLUME,
     },
@@ -42,7 +46,8 @@ export const MiningItems = {
         icon: Icons.Ore,
         id: 'Emerald',
         nameId: 'Emerald',
-        type: ItemTypes.Gem,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Gem],
         value: 85,
         volume: RAW_VOLUME,
     },

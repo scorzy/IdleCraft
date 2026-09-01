@@ -14,7 +14,7 @@ import { GetInitialGameState } from '../game/InitialGameState'
 import { initialize } from '../game/functions/initialize'
 import { ItemAdapter } from '../storage/ItemAdapter'
 import { addItem } from '../storage/storageFunctions'
-import { DamageTypes, Item, ItemTypes } from '../items/Item'
+import { DamageTypes, Item, ItemType, WeaponType } from '../items/Item'
 import { Icons } from '../icons/Icons'
 import { EquipSlotsEnum } from '../characters/equipSlotsEnum'
 import { ExpEnum } from '../experience/ExpEnum'
@@ -35,7 +35,8 @@ const weapon = (id: string, damage: Partial<Record<DamageTypes, number>>): Item 
     id,
     nameId: 'Dagger',
     icon: Icons.Dagger,
-    type: ItemTypes.OneHand,
+    type: ItemType.Weapon,
+    weaponType: WeaponType.OneHand,
     equipSlot: EquipSlotsEnum.MainHand,
     value: 1,
     volume: 1,

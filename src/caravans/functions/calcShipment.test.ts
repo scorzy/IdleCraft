@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { InitialState } from '@/entityAdapter/InitialState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Icons } from '../../icons/Icons'
-import { Item, ItemTypes } from '../../items/Item'
+import { CraftingType, Item, ItemType } from '../../items/Item'
 import { ItemAdapter } from '../../storage/ItemAdapter'
 import { StorageState } from '../../storage/storageTypes'
 import { CaravanTier, CaravanTierId, RouteConfig, VOLUME_REF } from '../CaravanConst'
@@ -10,7 +10,15 @@ import { calcCargoValue, calcCost, calcDuration, calcTotalVolume } from './calcS
 import { getTier } from './getRoute'
 
 function makeItem(id: string, volume: number, value: number): Item {
-    return { id, nameId: 'Log', icon: Icons.Log, type: ItemTypes.Log, value, volume }
+    return {
+        id,
+        nameId: 'Log',
+        icon: Icons.Log,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Log],
+        value,
+        volume,
+    }
 }
 
 function makeCraftedItems(items: Item[]): InitialState<Item> {

@@ -1,80 +1,67 @@
 import { memo } from 'react'
 import { Card, CardContent } from '../../components/ui/card'
 import { useGameStore } from '../../game/state'
-import { selectItemFilterSearch, selectItemFilterSubType, selectItemFilterType } from '../../ui/state/uiSelectors'
+import { selectItemFilterDetail, selectItemFilterSearch, selectItemFilterType } from '../../ui/state/uiSelectors'
 import { Toggle } from '@/components/ui/toggle'
 import { Icons, IconsData } from '../../icons/Icons'
-import { setItemFilterSearch, setItemFilterSubType, setItemFilterType } from '../../ui/state/uiFunctions'
-import { ItemSubType, ItemTypes } from '../../items/Item'
-import { getItemSubType } from '../../items/getItemSubType'
-import { ItemTypesData } from '../../items/ItemTypesData'
-import { memoize } from 'micro-memoize'
-import { Msg } from '../../msg/Msg'
+import { setItemFilterDetail, setItemFilterSearch, setItemFilterType } from '../../ui/state/uiFunctions'
+import { CraftingType, EquipmentSlot, ItemType, ToolType, WeaponType } from '../../items/Item'
+import { ItemDetailData, ItemTypeData } from '../../items/ItemTypeData'
 import { useTranslations } from '../../msg/useTranslations'
 import { TextInput } from '../../components/ui/textInput'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../components/ui/tooltip'
 
-interface UiFilter {
-    subType: ItemSubType
-    icon: Icons
-    nameId: keyof Msg
-}
-const filtersType: UiFilter[] = [
-    { subType: ItemSubType.Weapon, icon: Icons.Sword, nameId: 'Weapons' },
-    { subType: ItemSubType.Armour, icon: Icons.Shield, nameId: 'Armours' },
-    { subType: ItemSubType.Tool, icon: Icons.Pickaxe, nameId: 'Tools' },
-    { subType: ItemSubType.Crafting, icon: Icons.Bar, nameId: 'Crafting' },
-    { subType: ItemSubType.Potion, icon: Icons.Potion, nameId: 'Consumables' },
-]
+type ItemFilterDetailType = WeaponType | EquipmentSlot | ToolType | CraftingType
 interface UiTypeFilter {
-    type: ItemTypes
+    type: ItemFilterDetailType
     icon: Icons
     name: string
 }
-const getItemTypesForSubType: (subType: ItemSubType) => UiTypeFilter[] = memoize(
-    (subType: ItemSubType) => {
-        return (Object.keys(ItemTypes) as Array<keyof typeof ItemTypes>)
-            .filter((key) => getItemSubType(ItemTypes[key]) === subType)
-            .map((key) => ({
-                type: ItemTypes[key],
-                icon: ItemTypesData[key].icon,
-                name: ItemTypesData[key].nameId,
-            }))
-    },
-    { maxSize: 100 }
-)
+const getItemDetailsForType = (itemType: ItemType): UiTypeFilter[] => {
+    const details =
+        itemType === ItemType.Weapon
+            ? Object.values(WeaponType)
+            : itemType === ItemType.Armour
+              ? Object.values(EquipmentSlot)
+              : itemType === ItemType.Tool
+                ? Object.values(ToolType)
+                : itemType === ItemType.Crafting
+                  ? Object.values(CraftingType)
+                  : []
+    return details.map((type) => ({ type, icon: ItemDetailData[type].icon, name: ItemDetailData[type].nameId }))
+}
 export const ItemFilters = memo(function ItemFilters() {
     return (
         <Card>
             <CardContent className="flex flex-col gap-1">
-                <ItemFilterSubType />
                 <ItemFilterType />
+                <ItemFilterDetail />
                 <ItemSearch />
             </CardContent>
         </Card>
     )
 })
-export const ItemFilterSubType = memo(function ItemFilterSubType() {
-    const itemFilter = useGameStore(selectItemFilterSubType)
+export const ItemFilterType = memo(function ItemFilterType() {
+    const itemFilterType = useGameStore(selectItemFilterType)
 
     return (
         <div className="flex items-center space-x-2">
-            {filtersType.map((filter) => (
+            {Object.values(ItemType).map((itemType) => (
                 <UIFilterType
-                    key={filter.subType}
-                    title={filter.nameId}
-                    icon={filter.icon}
-                    pressed={itemFilter === filter.subType}
-                    onClick={(pressed) => setItemFilterSubType(pressed ? filter.subType : undefined)}
+                    key={itemType}
+                    title={ItemTypeData[itemType].nameId}
+                    icon={ItemTypeData[itemType].icon}
+                    pressed={itemFilterType === itemType}
+                    onClick={(pressed) => setItemFilterType(pressed ? itemType : undefined)}
                 />
             ))}
         </div>
     )
 })
-export const ItemFilterType = memo(function ItemFilterType() {
-    const itemFilter = useGameStore(selectItemFilterSubType)
+export const ItemFilterDetail = memo(function ItemFilterDetail() {
     const itemFilterType = useGameStore(selectItemFilterType)
-    const typesData = itemFilter ? getItemTypesForSubType(itemFilter) : []
+    const itemFilterDetail = useGameStore(selectItemFilterDetail)
+    const typesData = itemFilterType ? getItemDetailsForType(itemFilterType) : []
 
     return (
         <div className="flex items-center space-x-2">
@@ -83,8 +70,8 @@ export const ItemFilterType = memo(function ItemFilterType() {
                     key={filter.type}
                     title={filter.name}
                     icon={filter.icon}
-                    pressed={itemFilterType === filter.type}
-                    onClick={(pressed) => setItemFilterType(pressed ? filter.type : undefined)}
+                    pressed={itemFilterDetail === filter.type}
+                    onClick={(pressed) => setItemFilterDetail(pressed ? filter.type : undefined)}
                 />
             ))}
         </div>

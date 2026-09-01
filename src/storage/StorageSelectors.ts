@@ -10,7 +10,7 @@ import { GameState } from '../game/GameState'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { GetItemNameParamsMemoized } from '../items/GetItemNameParamsMemoized'
-import { Item, ItemFilter, ItemSubType, ItemTypes } from '../items/Item'
+import { Item, ItemDetailType, ItemFilter, ItemType } from '../items/Item'
 import { filterItem } from '../items/selectors/itemSelectors'
 import { selectItemNameMemoized } from '@/items/selectors/itemSelectorsMemo'
 import { getUnlimitedItems, StdItems } from '../items/stdItems'
@@ -20,13 +20,13 @@ import { ItemAdapter } from './ItemAdapter'
 import { StorageAdapter } from './storageAdapter'
 import { isCrafted } from './storageFunctions'
 import { InventoryNoQta, StorageState } from './storageTypes'
-import { getItemSubType } from '../items/getItemSubType'
+import { matchesItemDetail } from '../items/itemTypeUtils'
 import { getVendorPurchaseOptions } from '../vendors/VendorData'
 import { useMemo } from 'react'
 import { useGameStore } from '../game/state'
 import {
     selectStorageOrder,
-    selectItemFilterSubType,
+    selectItemFilterDetail,
     selectItemFilterType,
     selectItemFilterSearch,
 } from '../ui/state/uiSelectors'
@@ -85,8 +85,8 @@ const sortFunc = (sel: (state: GameState) => ItemId[]) => (s: GameState) => {
 const selectLocationItemsSelector = (
     location: GameLocations,
     storageOrder: string,
-    itemSubType: ItemSubType | undefined,
-    itemType: ItemTypes | undefined,
+    itemDetail: ItemDetailType | undefined,
+    itemType: ItemType | undefined,
     itemSearch: string | undefined
 ) => {
     let selector: (state: GameState) => string[]
@@ -95,13 +95,12 @@ const selectLocationItemsSelector = (
         const itemIds: ItemId[] = []
         const t = selectTranslations(state)
         const itemSearchStr = itemSearch?.toLowerCase() ?? ''
-        const checkType = itemType && itemSubType && getItemSubType(itemType) === itemSubType
         const storage = GameLocationAdapter.selectEx(state.locations, location).storage
         StorageAdapter.forEach(storage, (st) => {
             const item = selectGameItem(st.itemId)(state)
             if (!item) return
-            if (itemSubType && getItemSubType(item.type) !== itemSubType) return
-            if (checkType && item.type !== itemType) return
+            if (itemType && item.type !== itemType) return
+            if (itemDetail && !matchesItemDetail(item, itemDetail)) return
             const name = selectItemNameMemoized(
                 item.nameFunc,
                 GetItemNameParamsMemoized(item.nameId, item.materials),
@@ -127,13 +126,13 @@ const selectLocationItemsSelector = (
 
 export const useLocationItems = (location: GameLocations) => {
     const storageOrder = useGameStore(selectStorageOrder)
-    const itemSubType = useGameStore(selectItemFilterSubType)
+    const itemDetail = useGameStore(selectItemFilterDetail)
     const itemType = useGameStore(selectItemFilterType)
     const itemSearch = useGameStore(selectItemFilterSearch)
 
     const selectLocationItemsSelectorMemo = useMemo(
-        () => memoize(selectLocationItemsSelector(location, storageOrder, itemSubType, itemType, itemSearch)),
-        [location, storageOrder, itemSubType, itemType, itemSearch]
+        () => memoize(selectLocationItemsSelector(location, storageOrder, itemDetail, itemType, itemSearch)),
+        [location, storageOrder, itemDetail, itemType, itemSearch]
     )
 
     return useGameStore(selectLocationItemsSelectorMemo)
@@ -190,17 +189,13 @@ export const isSelectedItemCurrentLocation = (state: GameState) => {
     if (!state.ui.selectedItemLocation) return false
     return state.ui.selectedItemLocation === state.location
 }
-export const selectItemsByType = (itemType: ItemTypes | undefined) => (state: GameState) => {
-    if (!itemType) return EMPTY_ARRAY
+export const selectItemsByFilter = (itemFilter: ItemFilter) => (state: GameState) => {
     const ret: string[] = []
-
     StorageAdapter.forEach(GameLocationAdapter.selectEx(state.locations, state.location).storage, (st) => {
         const item = selectGameItemFromCraft(st.itemId, state.craftedItems)
-        if (item && item.type === itemType) ret.push(st.itemId)
+        if (item && filterItem(item, itemFilter)) ret.push(st.itemId)
     })
-
-    if (ret.length === 0) return EMPTY_ARRAY
-    return ret
+    return ret.length === 0 ? EMPTY_ARRAY : ret
 }
 
 export const createInventoryNoQta = (inventory: CharInventory) => {

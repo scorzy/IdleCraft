@@ -6,7 +6,7 @@ import { GetInitialGameState } from '../game/InitialGameState'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
 import { Icons } from '../icons/Icons'
-import { ItemTypes } from '../items/Item'
+import { ItemType, CraftingType } from '../items/Item'
 import { onItemDecreasedListeners } from './storageEvents'
 import { addItem, hasGold, hasItem, removeItem, spendGold } from './storageFunctions'
 
@@ -101,7 +101,8 @@ describe('Storage Functions', () => {
                     id: craftedId,
                     icon: Icons.Axe,
                     nameId: 'Craft',
-                    type: ItemTypes.Bar,
+                    type: ItemType.Crafting,
+                    craftingTypes: [CraftingType.Bar],
                     value: 1,
                     volume: 0.001,
                 },
@@ -230,7 +231,8 @@ describe('Storage Functions', () => {
                     id: craftedId,
                     icon: Icons.Axe,
                     nameId: 'Craft',
-                    type: ItemTypes.Bar,
+                    type: ItemType.Crafting,
+                    craftingTypes: [CraftingType.Bar],
                     value: 1,
                     volume: 0.001,
                 },

@@ -8,7 +8,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { ItemTypes } from '../../items/Item'
+import { ItemType, CraftingType } from '../../items/Item'
 import { WoodData } from '../WoodData'
 
 export const PlankToHandle = new Map<string, string>()
@@ -19,7 +19,7 @@ export const handleParam: RecipeParameterItemFilter[] = [
         id: 'plank',
         nameId: 'Plank',
         type: RecipeParamType.ItemType,
-        itemFilter: { itemType: ItemTypes.Plank },
+        itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Plank] },
     },
 ]
 

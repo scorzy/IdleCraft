@@ -11,7 +11,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { DamageData, DamageTypes, Item, ItemTypes } from '../../items/Item'
+import { DamageData, DamageTypes, Item, ItemType, ArmourType, EquipmentSlot, CraftingType } from '../../items/Item'
 import { ItemsMaterials } from '../../items/materials/ItemsMaterials'
 
 import { selectGameItem } from '../../storage/StorageSelectors'
@@ -21,7 +21,7 @@ const pantsParams: RecipeParameterItemFilter[] = [
         id: 'bar',
         nameId: 'Bar',
         type: RecipeParamType.ItemType,
-        itemFilter: { itemType: ItemTypes.Bar },
+        itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Bar] },
     },
 ]
 
@@ -56,7 +56,9 @@ export const pantsRecipe = makeMemoizedRecipe({
             nameId: 'Cuisses',
             materials,
             icon: Icons.Cuisses,
-            type: ItemTypes.Legs,
+            type: ItemType.Armour,
+            equipmentSlot: EquipmentSlot.Legs,
+            armourType: ArmourType.Heavy,
             equipSlot: EquipSlotsEnum.Legs,
             value: getItemValue(components, true),
             volume: getItemVolume(components),

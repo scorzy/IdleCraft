@@ -3,7 +3,7 @@ import { EffectPotency } from '../effects/types/EffectPotency'
 import { Effects } from '../effects/types/Effects'
 import { GetInitialGameState } from '../game/InitialGameState'
 import { Icons } from '../icons/Icons'
-import { Item, ItemTypes } from '../items/Item'
+import { Item, ItemType, CraftingType } from '../items/Item'
 import { selectItemName } from '../items/selectors/selectItemName'
 import { IngredientTypes } from './alchemyTypes'
 import { generatePotion } from './alchemyFunctions'
@@ -13,7 +13,8 @@ function ingredient(id: string, effects: { effect: Effects; potency: EffectPoten
         id,
         nameId: 'Ingredient',
         icon: Icons.Leaf,
-        type: ItemTypes.CraftingIngredient,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.AlchemyIngredient],
         value: 1,
         volume: 1,
         ingredientData: {

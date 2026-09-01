@@ -8,9 +8,9 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
 import { IconsData } from '../../icons/Icons'
-import { Item, ItemTypes } from '../../items/Item'
+import { Item, ItemType } from '../../items/Item'
 import { useTranslations } from '../../msg/useTranslations'
-import { selectGameItem, selectItemQta, selectItemsByType } from '../../storage/StorageSelectors'
+import { selectGameItem, selectItemQta, selectItemsByFilter } from '../../storage/StorageSelectors'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { equipQuickSlotClick } from '../quickSlotFunctions'
 import { Inventory } from '../inventory'
@@ -63,11 +63,11 @@ const QuickSlotStorageEditor = memo(function QuickSlotStorageEditor({
         useShallow(
             useCallback(
                 (state: GameState) => {
-                    const ids = selectItemsByType(ItemTypes.Potion)(state)
+                    const ids = selectItemsByFilter({ itemType: ItemType.Consumable, has: ['potionData'] })(state)
                     if (!equipped) return ids
 
                     const equippedPotion = selectGameItem(equipped.itemId)(state)
-                    if (equippedPotion?.type !== ItemTypes.Potion || ids.includes(equipped.itemId)) return ids
+                    if (equippedPotion?.type !== ItemType.Consumable || ids.includes(equipped.itemId)) return ids
                     return [...ids, equipped.itemId]
                 },
                 [equipped]
@@ -121,7 +121,7 @@ const QuickSlotStorageEditor = memo(function QuickSlotStorageEditor({
         setQuantity(1)
     }, [charId, slotIndex])
 
-    if (quickSlots.length === 0 || (item && (item.type !== ItemTypes.Potion || !item.potionData))) return null
+    if (quickSlots.length === 0 || (item && (item.type !== ItemType.Consumable || !item.potionData))) return null
 
     const isFixedSlot = index !== undefined
     const equippedName = equippedItem ? t[equippedItem.nameId] : t.None

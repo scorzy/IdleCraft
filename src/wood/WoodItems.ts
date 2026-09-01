@@ -1,6 +1,6 @@
 import { RAW_VOLUME, REFINED_VOLUME } from '../caravans/CaravanConst'
 import { Icons } from '../icons/Icons'
-import { Item, ItemTypes } from '../items/Item'
+import { Item, ItemType, CraftingType } from '../items/Item'
 import { PRIMARY_MATERIAL_KEY } from '../items/itemsConst'
 import { Materials } from '../items/materials/materials'
 
@@ -10,7 +10,8 @@ export const WoodItems = {
         icon: Icons.Log,
         nameId: 'Log',
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.DeadWood },
-        type: ItemTypes.Log,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Log],
         value: 5,
         volume: RAW_VOLUME,
     },
@@ -19,7 +20,8 @@ export const WoodItems = {
         icon: Icons.Log,
         nameId: 'Log',
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.Oak },
-        type: ItemTypes.Log,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Log],
         value: 6,
         volume: RAW_VOLUME,
     },
@@ -30,7 +32,8 @@ export const WoodItems = {
         icon: Icons.Plank,
         nameId: 'Plank',
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.DeadWood },
-        type: ItemTypes.Plank,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Plank],
         value: 10,
         volume: REFINED_VOLUME,
     },
@@ -39,7 +42,8 @@ export const WoodItems = {
         icon: Icons.Plank,
         nameId: 'Plank',
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.Oak },
-        type: ItemTypes.Plank,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Plank],
         value: 12,
         volume: REFINED_VOLUME,
     },
@@ -50,7 +54,8 @@ export const WoodItems = {
         icon: Icons.Handle,
         nameId: 'Handle',
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.DeadWood },
-        type: ItemTypes.Handle,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Handle],
         value: 15,
         volume: REFINED_VOLUME,
         craftingData: {
@@ -63,7 +68,8 @@ export const WoodItems = {
         icon: Icons.Handle,
         nameId: 'Handle',
         materials: { [PRIMARY_MATERIAL_KEY]: Materials.Oak },
-        type: ItemTypes.Handle,
+        type: ItemType.Crafting,
+        craftingTypes: [CraftingType.Handle],
         value: 20,
         volume: REFINED_VOLUME,
         craftingData: {

@@ -9,7 +9,7 @@ import {
 } from '../../crafting/RecipeInterfaces'
 import { GameState } from '../../game/GameState'
 import { Icons } from '../../icons/Icons'
-import { ItemTypes } from '../../items/Item'
+import { ItemType, CraftingType } from '../../items/Item'
 import { OreData } from '../../mining/OreData'
 
 export const OreToBar = new Map<string, string>()
@@ -20,7 +20,7 @@ const barParam: RecipeParameterItemFilter[] = [
         id: 'ore',
         nameId: 'Ore',
         type: RecipeParamType.ItemType,
-        itemFilter: { itemType: ItemTypes.Ore },
+        itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Ore] },
     },
 ]
 
