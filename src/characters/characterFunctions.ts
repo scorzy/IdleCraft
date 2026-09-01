@@ -17,7 +17,7 @@ export function equipItem(
     let char = CharacterAdapter.selectEx(state.characters, charId)
 
     const equipped = char.inventory[slot]
-    if (equipped && itemId) addItem(state, itemId, equipped.quantity ?? 1)
+    if (equipped) addItem(state, equipped.itemId, equipped.quantity ?? 1)
 
     char = CharacterAdapter.selectEx(state.characters, charId)
 
