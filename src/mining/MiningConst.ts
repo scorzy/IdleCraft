@@ -1,0 +1,1 @@
+export const MINING_DAMAGE_PER_LEVEL = 1

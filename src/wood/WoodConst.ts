@@ -1,2 +1,3 @@
 export const FAST_WOODCUTTING_PERK = 30
 export const MAX_GROWING_TREES = 10
+export const WOODCUTTING_DAMAGE_PER_LEVEL = 1
