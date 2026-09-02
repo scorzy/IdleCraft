@@ -81,6 +81,28 @@ export const acceptQuest = (state: GameState, questId: string) => {
 
 export const acceptClick = (questId: string) => setState((state: GameState) => acceptQuest(state, questId))
 
+export const discardQuest = (state: GameState, questId: string) => {
+    const quest = QuestAdapter.selectEx(state.quests, questId)
+    if (quest.main) return
+
+    const questIds = quest.state === QuestStatus.ACCEPTED ? selectAcceptedQuests(state) : selectAvailableQuests(state)
+    const oldIndex = questIds.indexOf(questId)
+
+    QuestAdapter.remove(state.quests, questId)
+
+    if (state.ui.selectedQuestId !== questId) return
+
+    const sameStatusQuests =
+        quest.state === QuestStatus.ACCEPTED ? selectAcceptedQuests(state) : selectAvailableQuests(state)
+    const otherStatusQuests =
+        quest.state === QuestStatus.ACCEPTED ? selectAvailableQuests(state) : selectAcceptedQuests(state)
+
+    state.ui.selectedQuestId =
+        sameStatusQuests[Math.min(oldIndex, sameStatusQuests.length - 1)] ?? otherStatusQuests[0] ?? null
+}
+
+export const discardClick = (questId: string) => setState((state: GameState) => discardQuest(state, questId))
+
 export const setExpandedOutcome = (questId: string | null, outcomeId: string) => {
     if (!questId) return
 

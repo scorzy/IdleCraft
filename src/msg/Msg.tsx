@@ -254,6 +254,9 @@ export interface Msg {
     AvailableQuests: string
     Complete: string
     Accept: string
+    Abandon: string
+    abandonConfirmTitle: string
+    abandonConfirmDesc: string
     Gold: string
 
     KillRequestDesc: string

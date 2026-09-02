@@ -26,6 +26,7 @@ export interface QuestOutcome {
 export interface QuestState {
     id: string
     state: QuestStatus
+    main?: boolean
     expandedOutcome: string
     templateId: string
     parameters?: Record<string, unknown>

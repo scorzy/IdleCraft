@@ -1,9 +1,20 @@
 import { memoize } from 'proxy-memoize'
-import { memo, ReactNode, useCallback, useMemo } from 'react'
+import { memo, ReactNode, useCallback, useMemo, useState } from 'react'
 import { GiTiedScroll } from 'react-icons/gi'
 import { useItemName } from '@/items/selectors/useItemName'
 import { getCharacterDefinition } from '../../characters/templates/characterRegistry'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '../../components/ui/alert-dialog'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../components/ui/card'
@@ -29,13 +40,14 @@ import { CollectRequestUi } from '../collectRequest/CollectRequestUi'
 import { isCollectReq } from '../collectRequest/collectSelectors'
 import { KillQuestTarget } from '../KillQuestTarget'
 import { isKillingReq, KillQuestRequestSelectors, selectQuestTargets } from '../killRequest/killSelectors'
-import { acceptClick, completeQuest, selectQuest, setExpandedOutcome } from '../QuestFunctions'
+import { acceptClick, completeQuest, discardClick, selectQuest, setExpandedOutcome } from '../QuestFunctions'
 import { QuestStatus } from '../QuestTypes'
 import {
     isOutcomeCompleted,
     isQuestSelected,
     selectExpandedOutcomeId,
     selectIsQuestAuto,
+    selectIsQuestMain,
     selectOutcomeDescription,
     selectOutcomeGoldReward,
     selectOutcomeIds,
@@ -131,6 +143,7 @@ const QUestSidebar = () => {
 export const QuestDetailUi = memo(function QuestDetailUi({ questId }: { questId: string }) {
     const outcomeIds = useGameStore(useCallback((s: GameState) => selectOutcomeIds(questId)(s), [questId]))
     const state = useGameStore(useCallback((s: GameState) => selectQuestStatus(questId)(s), [questId]))
+    const main = useGameStore(useCallback((s: GameState) => selectIsQuestMain(questId)(s), [questId]))
 
     if (!questId || questId === '') return <></>
 
@@ -144,7 +157,9 @@ export const QuestDetailUi = memo(function QuestDetailUi({ questId }: { questId:
                         <QuestOutcomeUi questId={questId} outcomeId={outcomeId} key={outcomeId} />
                     ))}
                 </QuestAccordion>
-                {state === QuestStatus.AVAILABLE && <QuestButtons id={questId} />}
+                {(state === QuestStatus.AVAILABLE || !main) && (
+                    <QuestButtons id={questId} available={state === QuestStatus.AVAILABLE} main={main} />
+                )}
             </div>
         </>
     )
@@ -188,16 +203,36 @@ export const QuestAccordion = ({ questId, children }: { questId: string; childre
     )
 }
 
-const QuestButtons = (props: { id: string }) => {
-    const { id } = props
+const QuestButtons = (props: { id: string; available: boolean; main: boolean }) => {
+    const { id, available, main } = props
     const { t } = useTranslations()
+    const [discardOpen, setDiscardOpen] = useState(false)
 
-    const onClick = useCallback(() => acceptClick(id), [id])
+    const onAccept = useCallback(() => acceptClick(id), [id])
+    const onDiscard = useCallback(() => {
+        discardClick(id)
+        setDiscardOpen(false)
+    }, [id])
 
     return (
-        <Button onClick={onClick} className="justify-self-start">
-            {t.Accept}
-        </Button>
+        <div className="flex gap-2 justify-self-start">
+            {available && <Button onClick={onAccept}>{t.Accept}</Button>}
+            {!main && (
+                <AlertDialog open={discardOpen} onOpenChange={setDiscardOpen}>
+                    <AlertDialogTrigger render={<Button variant="destructive">{t.Abandon}</Button>} />
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>{t.abandonConfirmTitle}</AlertDialogTitle>
+                            <AlertDialogDescription>{t.abandonConfirmDesc}</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
+                            <AlertDialogAction onClick={onDiscard}>{t.Abandon}</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            )}
+        </div>
     )
 }
 

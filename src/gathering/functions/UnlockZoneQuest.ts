@@ -48,6 +48,7 @@ export class UnlockZoneQuest extends BaseQuestTemplate<GatheringZoneUnlockQuestD
         const quest: QuestState = {
             id: getGatheringQuestId(data.zone, data.location),
             state: QuestStatus.ACCEPTED,
+            main: true,
             templateId: 'UnlockZoneQuest',
             parameters: data,
             expandedOutcome: 'defeat',

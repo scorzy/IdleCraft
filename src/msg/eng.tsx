@@ -261,6 +261,9 @@ export const engMsg: Msg = {
 
     Complete: 'Complete',
     Accept: 'Accept',
+    Abandon: 'Abandon',
+    abandonConfirmTitle: 'Abandon this quest?',
+    abandonConfirmDesc: 'Your progress on this quest will be lost.',
     Gold: 'Gold',
 
     KillRequestDesc: 'Kill the following targets:',

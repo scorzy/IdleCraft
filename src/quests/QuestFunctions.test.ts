@@ -6,10 +6,11 @@ import { ItemType, CraftingType } from '../items/Item'
 import { GatheringZone } from '../gathering/gatheringZones'
 import { UnlockZoneQuest } from '../gathering/functions/UnlockZoneQuest'
 import { QuestData } from './QuestData'
-import { acceptQuest, completeQuest, updateQuests } from './QuestFunctions'
+import { acceptQuest, completeQuest, discardQuest, updateQuests } from './QuestFunctions'
 import { questOnItemRemove } from './collectRequest/questOnItemRemove'
 import { QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
 import { selectItemQta } from '../storage/StorageSelectors'
+import { FarmBoarTutorialQuest } from './templates/FarmBoarTutorialQuest'
 
 describe('Quest Functions', () => {
     beforeAll(() => initialize())
@@ -176,12 +177,57 @@ describe('Quest Functions', () => {
         expect(state.gold).toBe(0)
     })
 
+    test('discardQuest removes a non-main quest and selects the next quest with the same status', () => {
+        const state = GetInitialGameState()
+        const discarded = QuestData.getEx('kill-n').generateQuestData(state)
+        const fallback = QuestData.getEx('SupplyQuest').generateQuestData(state)
+        QuestAdapter.create(state.quests, discarded)
+        QuestAdapter.create(state.quests, fallback)
+        state.ui.selectedQuestId = discarded.id
+
+        discardQuest(state, discarded.id)
+
+        expect(QuestAdapter.select(state.quests, discarded.id)).toBeUndefined()
+        expect(state.ui.selectedQuestId).toBe(fallback.id)
+        expect(state.gold).toBe(0)
+        expect(state.completedQuestTemplates).toEqual([])
+    })
+
+    test('discardQuest falls back to a quest with the other status', () => {
+        const state = GetInitialGameState()
+        const discarded = QuestData.getEx('kill-n').generateQuestData(state)
+        discarded.state = QuestStatus.ACCEPTED
+        const fallback = QuestData.getEx('SupplyQuest').generateQuestData(state)
+        QuestAdapter.create(state.quests, discarded)
+        QuestAdapter.create(state.quests, fallback)
+        state.ui.selectedQuestId = discarded.id
+
+        discardQuest(state, discarded.id)
+
+        expect(QuestAdapter.select(state.quests, discarded.id)).toBeUndefined()
+        expect(state.ui.selectedQuestId).toBe(fallback.id)
+    })
+
+    test('discardQuest does not remove main quests', () => {
+        const state = GetInitialGameState()
+        const quest = new FarmBoarTutorialQuest().generateQuestData(state)
+        QuestAdapter.create(state.quests, quest)
+        state.ui.selectedQuestId = quest.id
+
+        discardQuest(state, quest.id)
+
+        expect(QuestAdapter.select(state.quests, quest.id)).toBeDefined()
+        expect(state.ui.selectedQuestId).toBe(quest.id)
+        expect(state.completedQuestTemplates).toEqual([])
+    })
+
     test('completing an unlock quest unlocks the zone and notifies the player', () => {
         const state = GetInitialGameState()
         const quest = new UnlockZoneQuest().generateQuestData(state, {
             location: GameLocations.StartVillage,
             zone: GatheringZone.WolfLair,
         })
+        expect(quest.main).toBe(true)
         QuestAdapter.create(state.quests, quest)
 
         completeQuest(state, quest.id, 'defeat')
@@ -200,7 +246,7 @@ describe('Quest Functions', () => {
         const idsAfterFirstUpdate = QuestAdapter.getIds(state.quests).slice()
         updateQuests(state)
 
-        expect(QuestAdapter.find(state.quests, (quest) => quest.templateId === 'FarmBoarTutorial')).toBeDefined()
+        expect(QuestAdapter.find(state.quests, (quest) => quest.templateId === 'FarmBoarTutorial')?.main).toBe(true)
         expect(QuestAdapter.findMany(state.quests, (quest) => quest.templateId === 'kill-n')).toHaveLength(2)
         expect(QuestAdapter.findMany(state.quests, (quest) => quest.templateId === 'SupplyQuest')).toHaveLength(2)
         expect(idsAfterFirstUpdate).toHaveLength(3)
