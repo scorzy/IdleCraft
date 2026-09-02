@@ -92,9 +92,11 @@ const CollectRequest = ({ questId, outcomeId, reqId }: { questId: string; outcom
 
     return (
         <div>
-            <TypographyP>
-                {fun.collectN(req.itemCount)}
-                <ItemFilterDescription itemFilter={req.itemFilter} />
+            <TypographyP className="flex items-center gap-1">
+                <span>{fun.collectN(req.itemCount)}</span>
+                <span className="inline-flex items-center whitespace-nowrap">
+                    <ItemFilterDescription itemFilter={req.itemFilter} />
+                </span>
             </TypographyP>
             <div className="grid grow basis-0 grid-flow-col items-center justify-start gap-1">
                 {req.itemCount <= totalQta && Check}

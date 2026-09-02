@@ -94,7 +94,7 @@ export class FamilyFarmCraftingTutorialQuest extends BaseQuestTemplate<GenerateQ
     }
 
     generateQuestData = (_state: GameState) =>
-        createMainQuest(FAMILY_FARM_CRAFTING_TUTORIAL_ID, QuestStatus.AVAILABLE, [
+        createMainQuest(FAMILY_FARM_CRAFTING_TUTORIAL_ID, QuestStatus.ACCEPTED, [
             {
                 id: CRAFT_PLANK_OUTCOME_ID,
                 location: GameLocations.StartVillage,
@@ -125,7 +125,7 @@ export class HunterApprenticeshipQuest extends BaseQuestTemplate<GenerateQuestDa
         selectTranslations(state).t.HunterApprenticeshipOutcomeDescription
 
     generateQuestData = (_state: GameState) =>
-        createMainQuest(HUNTER_APPRENTICESHIP_QUEST_ID, QuestStatus.AVAILABLE, [
+        createMainQuest(HUNTER_APPRENTICESHIP_QUEST_ID, QuestStatus.ACCEPTED, [
             {
                 id: HUNTER_APPRENTICESHIP_OUTCOME_ID,
                 location: GameLocations.StartVillage,
@@ -146,7 +146,7 @@ export class CarpenterApprenticeshipQuest extends BaseQuestTemplate<GenerateQues
         selectTranslations(state).t.CarpenterApprenticeshipOutcomeDescription
 
     generateQuestData = (_state: GameState) =>
-        createMainQuest(CARPENTER_APPRENTICESHIP_QUEST_ID, QuestStatus.AVAILABLE, [
+        createMainQuest(CARPENTER_APPRENTICESHIP_QUEST_ID, QuestStatus.ACCEPTED, [
             {
                 id: CARPENTER_APPRENTICESHIP_OUTCOME_ID,
                 location: GameLocations.StartVillage,
@@ -173,7 +173,7 @@ export class AlchemistApprenticeshipQuest extends BaseQuestTemplate<GenerateQues
         selectTranslations(state).t.AlchemistApprenticeshipOutcomeDescription
 
     generateQuestData = (_state: GameState) =>
-        createMainQuest(ALCHEMIST_APPRENTICESHIP_QUEST_ID, QuestStatus.AVAILABLE, [
+        createMainQuest(ALCHEMIST_APPRENTICESHIP_QUEST_ID, QuestStatus.ACCEPTED, [
             {
                 id: ALCHEMIST_APPRENTICESHIP_OUTCOME_ID,
                 location: GameLocations.StartVillage,

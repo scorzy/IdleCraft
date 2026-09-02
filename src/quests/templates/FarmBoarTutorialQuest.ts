@@ -98,7 +98,7 @@ export class FarmBoarTutorialQuest extends BaseQuestTemplate<GenerateQuestDataDa
 
         return {
             id: getUniqueId(),
-            state: QuestStatus.AVAILABLE,
+            state: QuestStatus.ACCEPTED,
             main: true,
             templateId: FARM_BOAR_TUTORIAL_ID,
             expandedOutcome: FARM_BOAR_KILL_OUTCOME_ID,

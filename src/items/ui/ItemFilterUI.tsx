@@ -1,14 +1,10 @@
-import { Fragment, useCallback } from 'react'
+import { Fragment } from 'react'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
-import { GameState } from '../../game/GameState'
-import { useGameStore } from '../../game/state'
-import { IconsData } from '../../icons/Icons'
 import { Msg } from '../../msg/Msg'
 import { useTranslations } from '../../msg/useTranslations'
-import { selectGameItem } from '../../storage/StorageSelectors'
 import { DamageTypesData } from '../damageTypes'
 import { DamageTypes, ItemFilter } from '../Item'
-import { useItemName } from '../selectors/useItemName'
+import { ItemIconName } from './ItemIconName'
 
 export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }) {
     const { f } = useNumberFormatter()
@@ -16,7 +12,7 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
 
     if (itemFilter.descriptionId) return t[itemFilter.descriptionId]
 
-    if (itemFilter.itemId !== undefined) return <ItemFilterUiItemId itemId={itemFilter.itemId} />
+    if (itemFilter.itemId !== undefined) return <ItemIconName itemId={itemFilter.itemId} />
 
     let pre: React.ReactElement
     const arr: React.ReactElement[] = []
@@ -87,27 +83,11 @@ export function ItemFilterDescription({ itemFilter }: { itemFilter: ItemFilter }
             {' '}
             {pre}{' '}
             {arr.map((el, i) => (
-                // eslint-disable-next-line @eslint-react/no-array-index-key
                 <Fragment key={i}>
                     {el}
                     {i < arr.length - 1 && ' , '}
                 </Fragment>
             ))}
         </>
-    )
-}
-
-function ItemFilterUiItemId(props: { itemId: string }) {
-    const { itemId } = props
-
-    const item = useGameStore(useCallback((s: GameState) => selectGameItem(itemId)(s), [itemId]))
-    const itemName = useItemName(item)
-
-    if (!item) return
-
-    return (
-        <span>
-            {IconsData[item.icon]} {itemName}
-        </span>
     )
 }

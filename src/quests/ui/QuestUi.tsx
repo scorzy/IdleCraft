@@ -312,6 +312,8 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
     )
     const items = useGameStore(selectItems)
 
+    if (gold <= 0 && items.length < 1) return null
+
     return (
         <div>
             <CardTitle>{t.Rewards}</CardTitle>

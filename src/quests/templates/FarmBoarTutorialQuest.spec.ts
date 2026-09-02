@@ -57,7 +57,7 @@ describe('FarmBoarTutorialQuest', () => {
 
         expect(quest).toMatchObject({
             main: true,
-            state: QuestStatus.AVAILABLE,
+            state: QuestStatus.ACCEPTED,
             templateId: FAMILY_FARM_CRAFTING_TUTORIAL_ID,
         })
         expect(quest.outcomeData.ids).toEqual([
@@ -71,6 +71,8 @@ describe('FarmBoarTutorialQuest', () => {
     it('offers the three requested solutions with deterministic quantities', () => {
         const state = GetInitialGameState()
         const quest = new FarmBoarTutorialQuest().generateQuestData(state)
+
+        expect(quest).toMatchObject({ main: true, state: QuestStatus.ACCEPTED })
 
         expect(quest.outcomeData.ids).toEqual([
             FARM_BOAR_KILL_OUTCOME_ID,
@@ -115,7 +117,7 @@ describe('FarmBoarTutorialQuest', () => {
             QuestAdapter.find(state.quests, (quest) => quest.templateId === HUNTER_APPRENTICESHIP_QUEST_ID)
         ).toMatchObject({
             main: true,
-            state: QuestStatus.AVAILABLE,
+            state: QuestStatus.ACCEPTED,
         })
     })
 
