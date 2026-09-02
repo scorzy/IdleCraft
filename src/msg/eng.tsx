@@ -447,6 +447,35 @@ export const engMsg: Msg = {
     FarmBoarRepellentTitle: 'Create a repellent',
     FarmBoarRepellentDescription:
         'Gather alchemical ingredients, then brew and deliver 3 poison potions with the Damage Stamina effect.',
+    FamilyFarmGatheringName: 'Supplies for the Family Farm',
+    FamilyFarmGatheringDescription:
+        'The family farm needs basic supplies before you can deal with the boars. Gather dead wood and copper from the nearby land.',
+    FamilyFarmGatheringOutcomeTitle: 'Gather starter materials',
+    FamilyFarmGatheringOutcomeDescription: 'Bring 10 dead wood logs and 10 copper ore to the family farm.',
+    FamilyFarmCraftingName: 'Learn a Useful Craft',
+    FamilyFarmCraftingDescription:
+        'Choose one simple craft to prepare for the work ahead. Each option uses materials from the family farm.',
+    FamilyFarmCraftPlankTitle: 'Saw a dead wood plank',
+    FamilyFarmCraftPlankDescription: 'Turn a dead wood log into a plank.',
+    FamilyFarmCraftHandleTitle: 'Carve a dead wood handle',
+    FamilyFarmCraftHandleDescription: 'First make a plank, then carve it into a sturdy handle.',
+    FamilyFarmSmeltCopperTitle: 'Smelt a copper bar',
+    FamilyFarmSmeltCopperDescription: 'Refine copper ore into a bar at the smithy.',
+    HunterApprenticeshipName: "The Hunter's Offer",
+    HunterApprenticeshipDescription:
+        'The hunter saw you defend the family farm from the boars. Impressed by your work, she offers to take you on as an apprentice.',
+    HunterApprenticeshipOutcomeTitle: 'Track wolves',
+    HunterApprenticeshipOutcomeDescription: 'Hunt 5 wolves to prove you can track prey beyond the farm.',
+    CarpenterApprenticeshipName: "The Carpenter's Offer",
+    CarpenterApprenticeshipDescription:
+        'The carpenter admires the fence that saved your family crops and offers to teach you the trade.',
+    CarpenterApprenticeshipOutcomeTitle: 'Prepare building planks',
+    CarpenterApprenticeshipOutcomeDescription: 'Craft and deliver 10 planks for the carpenter.',
+    AlchemistApprenticeshipName: "The Alchemist's Offer",
+    AlchemistApprenticeshipDescription:
+        'Your boar repellent impressed the village alchemist, who offers you an apprenticeship at the laboratory.',
+    AlchemistApprenticeshipOutcomeTitle: 'Brew a fresh poison',
+    AlchemistApprenticeshipOutcomeDescription: 'Brew and deliver a poison with the Damage Stamina effect.',
     HeartCrystalDust: 'Heart Crystal Dust',
     ManaCrystalDust: 'Mana Crystal Dust',
     UnknownEffects: 'Unknown Effects, potion may have unexpected results',

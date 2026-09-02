@@ -7,6 +7,7 @@ export interface GenerateQuestDataData extends Record<string, unknown> {}
 export interface QuestTemplate<T extends GenerateQuestDataData> {
     id: string
     nextQuestId?: string
+    getNextQuestId?: (questId: string, outcomeId: string) => string | undefined
     visible?: boolean
     auto?: boolean
     generateQuestData: (state: GameState, data?: T) => QuestState

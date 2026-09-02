@@ -58,6 +58,18 @@ import { QuestData } from '../../quests/QuestData'
 import { SupplyQuestTemplate } from '../../quests/templates/SupplyQuestTemplate'
 import { TestQuestTemplate } from '../../quests/templates/TestQuestTemplates'
 import { FarmBoarTutorialQuest, FARM_BOAR_TUTORIAL_ID } from '../../quests/templates/FarmBoarTutorialQuest'
+import {
+    AlchemistApprenticeshipQuest,
+    CarpenterApprenticeshipQuest,
+    FamilyFarmCraftingTutorialQuest,
+    FamilyFarmGatheringTutorialQuest,
+    HUNTER_APPRENTICESHIP_QUEST_ID,
+    HunterApprenticeshipQuest,
+    ALCHEMIST_APPRENTICESHIP_QUEST_ID,
+    CARPENTER_APPRENTICESHIP_QUEST_ID,
+    FAMILY_FARM_CRAFTING_TUTORIAL_ID,
+    FAMILY_FARM_GATHERING_TUTORIAL_ID,
+} from '../../quests/templates/FamilyFarmTutorialQuests'
 import { twoHSwordRecipe } from '../../smithing/recipes/2HSword'
 import { armourRecipe } from '../../smithing/recipes/ArmourRecipes'
 import { axeRecipe } from '../../smithing/recipes/AxeRecipe'
@@ -196,7 +208,12 @@ function initAbilities() {
 }
 
 function initQuests() {
+    QuestData.set(FAMILY_FARM_GATHERING_TUTORIAL_ID, new FamilyFarmGatheringTutorialQuest())
+    QuestData.set(FAMILY_FARM_CRAFTING_TUTORIAL_ID, new FamilyFarmCraftingTutorialQuest())
     QuestData.set(FARM_BOAR_TUTORIAL_ID, new FarmBoarTutorialQuest())
+    QuestData.set(HUNTER_APPRENTICESHIP_QUEST_ID, new HunterApprenticeshipQuest())
+    QuestData.set(CARPENTER_APPRENTICESHIP_QUEST_ID, new CarpenterApprenticeshipQuest())
+    QuestData.set(ALCHEMIST_APPRENTICESHIP_QUEST_ID, new AlchemistApprenticeshipQuest())
     QuestData.set('kill-n', new TestQuestTemplate())
     QuestData.set('SupplyQuest', new SupplyQuestTemplate())
     QuestData.set('UnlockZoneQuest', new UnlockZoneQuest())

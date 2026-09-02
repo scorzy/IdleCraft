@@ -43,6 +43,7 @@ import classes from './start.module.css'
 import { useGameStore } from './state'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
+import { startFamilyFarmTutorial } from '../quests/QuestFunctions'
 
 const startGame = (name: string) => () => {
     if (name === '') return
@@ -53,6 +54,7 @@ const startGame = (name: string) => () => {
         const player = s.characters.entries[PLAYER_ID]
         if (player) player.name = name
         GameLocationAdapter.remove(s.locations, GameLocations.Test)
+        startFamilyFarmTutorial(s)
         return s
     })
 }

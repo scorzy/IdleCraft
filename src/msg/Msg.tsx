@@ -438,6 +438,30 @@ export interface Msg {
     FarmBoarFenceDescription: string
     FarmBoarRepellentTitle: string
     FarmBoarRepellentDescription: string
+    FamilyFarmGatheringName: string
+    FamilyFarmGatheringDescription: string
+    FamilyFarmGatheringOutcomeTitle: string
+    FamilyFarmGatheringOutcomeDescription: string
+    FamilyFarmCraftingName: string
+    FamilyFarmCraftingDescription: string
+    FamilyFarmCraftPlankTitle: string
+    FamilyFarmCraftPlankDescription: string
+    FamilyFarmCraftHandleTitle: string
+    FamilyFarmCraftHandleDescription: string
+    FamilyFarmSmeltCopperTitle: string
+    FamilyFarmSmeltCopperDescription: string
+    HunterApprenticeshipName: string
+    HunterApprenticeshipDescription: string
+    HunterApprenticeshipOutcomeTitle: string
+    HunterApprenticeshipOutcomeDescription: string
+    CarpenterApprenticeshipName: string
+    CarpenterApprenticeshipDescription: string
+    CarpenterApprenticeshipOutcomeTitle: string
+    CarpenterApprenticeshipOutcomeDescription: string
+    AlchemistApprenticeshipName: string
+    AlchemistApprenticeshipDescription: string
+    AlchemistApprenticeshipOutcomeTitle: string
+    AlchemistApprenticeshipOutcomeDescription: string
     HeartCrystalDust: string
     ManaCrystalDust: string
 

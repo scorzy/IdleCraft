@@ -8,6 +8,11 @@ import { getUniqueId } from '../../utils/getUniqueId'
 import { GenerateQuestDataData } from '../QuestTemplate'
 import { QuestOutcome, QuestState, QuestStatus } from '../QuestTypes'
 import { BaseQuestTemplate } from './BaseQuestTemplate'
+import {
+    ALCHEMIST_APPRENTICESHIP_QUEST_ID,
+    CARPENTER_APPRENTICESHIP_QUEST_ID,
+    HUNTER_APPRENTICESHIP_QUEST_ID,
+} from './FamilyFarmTutorialQuests'
 
 export const FARM_BOAR_TUTORIAL_ID = 'FarmBoarTutorial'
 export const FARM_BOAR_KILL_OUTCOME_ID = 'HuntBoars'
@@ -20,6 +25,12 @@ export const FARM_BOAR_POTION_COUNT = 3
 export class FarmBoarTutorialQuest extends BaseQuestTemplate<GenerateQuestDataData> {
     id = FARM_BOAR_TUTORIAL_ID
     nextQuestId = undefined
+    getNextQuestId = (_questId: string, outcomeId: string) => {
+        if (outcomeId === FARM_BOAR_KILL_OUTCOME_ID) return HUNTER_APPRENTICESHIP_QUEST_ID
+        if (outcomeId === FARM_BOAR_FENCE_OUTCOME_ID) return CARPENTER_APPRENTICESHIP_QUEST_ID
+        if (outcomeId === FARM_BOAR_REPELLENT_OUTCOME_ID) return ALCHEMIST_APPRENTICESHIP_QUEST_ID
+        return undefined
+    }
 
     getName = () => (state: GameState) => selectTranslations(state).t.FarmBoarTutorialName
     getDescription = () => (state: GameState) => selectTranslations(state).t.FarmBoarTutorialDescription

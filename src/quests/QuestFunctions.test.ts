@@ -6,11 +6,12 @@ import { ItemType, CraftingType } from '../items/Item'
 import { GatheringZone } from '../gathering/gatheringZones'
 import { UnlockZoneQuest } from '../gathering/functions/UnlockZoneQuest'
 import { QuestData } from './QuestData'
-import { acceptQuest, completeQuest, discardQuest, updateQuests } from './QuestFunctions'
+import { acceptQuest, completeQuest, discardQuest, startFamilyFarmTutorial, updateQuests } from './QuestFunctions'
 import { questOnItemRemove } from './collectRequest/questOnItemRemove'
 import { QuestAdapter, QuestState, QuestStatus } from './QuestTypes'
 import { selectItemQta } from '../storage/StorageSelectors'
 import { FarmBoarTutorialQuest } from './templates/FarmBoarTutorialQuest'
+import { FAMILY_FARM_GATHERING_TUTORIAL_ID } from './templates/FamilyFarmTutorialQuests'
 
 describe('Quest Functions', () => {
     beforeAll(() => initialize())
@@ -221,6 +222,19 @@ describe('Quest Functions', () => {
         expect(state.completedQuestTemplates).toEqual([])
     })
 
+    test('startFamilyFarmTutorial creates and selects the accepted main quest', () => {
+        const state = GetInitialGameState()
+
+        startFamilyFarmTutorial(state)
+
+        const tutorial = QuestAdapter.find(
+            state.quests,
+            (quest) => quest.templateId === FAMILY_FARM_GATHERING_TUTORIAL_ID
+        )
+        expect(tutorial).toMatchObject({ main: true, state: QuestStatus.ACCEPTED })
+        expect(state.ui.selectedQuestId).toBe(tutorial?.id)
+    })
+
     test('completing an unlock quest unlocks the zone and notifies the player', () => {
         const state = GetInitialGameState()
         const quest = new UnlockZoneQuest().generateQuestData(state, {
@@ -246,7 +260,9 @@ describe('Quest Functions', () => {
         const idsAfterFirstUpdate = QuestAdapter.getIds(state.quests).slice()
         updateQuests(state)
 
-        expect(QuestAdapter.find(state.quests, (quest) => quest.templateId === 'FarmBoarTutorial')?.main).toBe(true)
+        expect(
+            QuestAdapter.find(state.quests, (quest) => quest.templateId === FAMILY_FARM_GATHERING_TUTORIAL_ID)?.main
+        ).toBe(true)
         expect(QuestAdapter.findMany(state.quests, (quest) => quest.templateId === 'kill-n')).toHaveLength(2)
         expect(QuestAdapter.findMany(state.quests, (quest) => quest.templateId === 'SupplyQuest')).toHaveLength(2)
         expect(idsAfterFirstUpdate).toHaveLength(3)

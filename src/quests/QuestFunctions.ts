@@ -8,7 +8,7 @@ import { addNotification } from '../notification/addNotification'
 import { addGold, addItem } from '../storage/storageFunctions'
 import { onCollectQuestComplete } from './collectRequest/onCollectQuestComplete'
 import { QuestData } from './QuestData'
-import { FARM_BOAR_TUTORIAL_ID } from './templates/FarmBoarTutorialQuest'
+import { FAMILY_FARM_GATHERING_TUTORIAL_ID } from './templates/FamilyFarmTutorialQuests'
 import { QuestAdapter, QuestOutcome, QuestOutcomeAdapter, QuestState, QuestStatus } from './QuestTypes'
 import {
     isOutcomeCompleted,
@@ -45,10 +45,10 @@ function unlockGatheringZone(state: GameState, outcome: QuestOutcome) {
 
 export function updateQuests(state: GameState): void {
     const hasTutorial = QuestAdapter.getIds(state.quests).some(
-        (questId) => QuestAdapter.selectEx(state.quests, questId).templateId === FARM_BOAR_TUTORIAL_ID
+        (questId) => QuestAdapter.selectEx(state.quests, questId).templateId === FAMILY_FARM_GATHERING_TUTORIAL_ID
     )
-    if (!hasTutorial && !state.completedQuestTemplates.includes(FARM_BOAR_TUTORIAL_ID)) {
-        QuestAdapter.create(state.quests, GenerateQuestState(state, FARM_BOAR_TUTORIAL_ID))
+    if (!hasTutorial && !state.completedQuestTemplates.includes(FAMILY_FARM_GATHERING_TUTORIAL_ID)) {
+        QuestAdapter.create(state.quests, GenerateQuestState(state, FAMILY_FARM_GATHERING_TUTORIAL_ID))
     }
 
     if (selectAvailableQuests(state).length > MAX_AVAILABLE_QUESTS) return
@@ -71,6 +71,17 @@ export function updateQuests(state: GameState): void {
         const newQuest: QuestState = GenerateQuestState(state, 'SupplyQuest')
         QuestAdapter.create(state.quests, newQuest)
     }
+}
+
+export function startFamilyFarmTutorial(state: GameState): void {
+    const hasTutorial = QuestAdapter.getIds(state.quests).some(
+        (questId) => QuestAdapter.selectEx(state.quests, questId).templateId === FAMILY_FARM_GATHERING_TUTORIAL_ID
+    )
+    if (hasTutorial || state.completedQuestTemplates.includes(FAMILY_FARM_GATHERING_TUTORIAL_ID)) return
+
+    const tutorial = GenerateQuestState(state, FAMILY_FARM_GATHERING_TUTORIAL_ID)
+    QuestAdapter.create(state.quests, tutorial)
+    state.ui.selectedQuestId = tutorial.id
 }
 export const acceptQuest = (state: GameState, questId: string) => {
     const quest = QuestAdapter.selectEx(state.quests, questId)
@@ -134,8 +145,9 @@ export const completeQuest = (state: GameState, questId: string, outcomeId: stri
 
     QuestAdapter.remove(state.quests, questId)
 
-    if (questTemplate.nextQuestId) {
-        const newQuest: QuestState = GenerateQuestState(state, questTemplate.nextQuestId)
+    const nextQuestId = questTemplate.getNextQuestId?.(questId, outcomeId) ?? questTemplate.nextQuestId
+    if (nextQuestId) {
+        const newQuest: QuestState = GenerateQuestState(state, nextQuestId)
         QuestAdapter.create(state.quests, newQuest)
         state.ui.selectedQuestId = newQuest.id
     } else {
