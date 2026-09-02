@@ -133,7 +133,7 @@ export const QuestUi = memo(function QuestUi() {
 
 const QUestSidebar = () => {
     return (
-        <SidebarContainer collapsedId={CollapsedEnum.Quest}>
+        <SidebarContainer collapsedId={CollapsedEnum.Quest} expandedWidth="clamp(20rem, 28vw, 32rem)">
             <SidebarQuestAccepted />
             <SidebarQuestAvailable />
         </SidebarContainer>

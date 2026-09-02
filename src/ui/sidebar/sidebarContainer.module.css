@@ -38,7 +38,7 @@
 @container (min-width: 900px) {
     .collapseContainer {
         transition-duration: 300ms;
-        width: 250px;
+        width: var(--sidebar-expanded-width, 250px);
         transition-property: width, max-width;
     }
     .btnExpand {

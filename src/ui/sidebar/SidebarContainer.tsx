@@ -1,5 +1,5 @@
 import { clsx } from 'clsx'
-import { memo, ReactNode, useCallback, useEffect, useRef } from 'react'
+import { CSSProperties, memo, ReactNode, useCallback, useEffect, useRef } from 'react'
 import { LuChevronLeft } from 'react-icons/lu'
 import { useMeasure } from 'react-use'
 import { useGameStore } from '../../game/state'
@@ -13,8 +13,9 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
     children?: ReactNode
     className?: string
     collapsedId: CollapsedEnum
+    expandedWidth?: string
 }) {
-    const { children, className, collapsedId } = props
+    const { children, className, collapsedId, expandedWidth } = props
 
     const collapseClick = useCallback(() => collapse(collapsedId), [collapsedId])
     const collapsed = useGameStore(isCollapsed(collapsedId))
@@ -32,6 +33,7 @@ export const SidebarContainer = memo(function SidebarContainer(props: {
     return (
         <nav
             ref={containerRef}
+            style={expandedWidth ? ({ '--sidebar-expanded-width': expandedWidth } as CSSProperties) : undefined}
             className={clsx(
                 classes.collapseContainer,
                 { [classes.collapsedContainer!]: collapsed },
