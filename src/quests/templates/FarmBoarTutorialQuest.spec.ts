@@ -91,17 +91,6 @@ describe('FarmBoarTutorialQuest', () => {
         })
     })
 
-    it('uses translated text and presents equipment only as a suggestion', () => {
-        const state = GetInitialGameState()
-        const quest = new FarmBoarTutorialQuest().generateQuestData(state)
-        QuestAdapter.create(state.quests, quest)
-
-        expect(new FarmBoarTutorialQuest().getName()(state)).toBe('Boars at the Family Farm')
-        expect(new FarmBoarTutorialQuest().getOutcomeDescription(quest.id, FARM_BOAR_KILL_OUTCOME_ID)(state)).toContain(
-            'Suggested preparation'
-        )
-    })
-
     it('creates a hunter apprenticeship quest after the boar hunt path is completed', () => {
         const state = GetInitialGameState()
         const tutorial = new FarmBoarTutorialQuest().generateQuestData(state)

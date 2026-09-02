@@ -436,46 +436,85 @@ export const engMsg: Msg = {
     VenomGland: 'Venom Gland',
     SpiderEggSac: 'Spider Egg Sac',
     DamageStaminaPotion: 'Stamina Poison',
-    FarmBoarTutorialName: 'Boars at the Family Farm',
+    FarmBoarTutorialName: 'Trouble at the Family Farm',
+
     FarmBoarTutorialDescription:
-        "Boars are destroying your family's crops. Choose one of three ways to solve the problem.",
-    FarmBoarHuntTitle: 'Defend the farm',
+        "The boars have discovered the potato field, and they're not planning to leave any for the family. Find a way to put an end to their nightly feast.",
+
+    FarmBoarHuntTitle: 'Drive off the boars',
+
     FarmBoarHuntDescription:
-        'Kill 10 boars. Suggested preparation: craft at least a copper dagger, the weakest available metal, and copper body armour.',
-    FarmBoarFenceTitle: 'Build a fence',
-    FarmBoarFenceDescription: 'Deliver 30 logs so the family can build a sturdy fence around the fields.',
-    FarmBoarRepellentTitle: 'Create a repellent',
+        'Sometimes the simplest solution has tusks on one side and a weapon on the other. Kill 10 boars and make the fields safe again. Proper weapons and armour are strongly recommended.',
+
+    FarmBoarFenceTitle: 'Keep them out',
+
+    FarmBoarFenceDescription:
+        "The boars can't eat what they can't reach. Deliver 30 logs so the family can build a sturdy fence around the potato field.",
+
+    FarmBoarRepellentTitle: 'Make the potatoes unappetizing',
+
     FarmBoarRepellentDescription:
-        'Gather alchemical ingredients, then brew and deliver 3 poison potions with the Damage Stamina effect.',
-    FamilyFarmGatheringName: 'Supplies for the Family Farm',
+        'Boars will eat almost anything. Almost. Brew and deliver 3 poison potions with the Damage Stamina effect, and the family will use them to make the potato field far less inviting.',
+
+    FamilyFarmGatheringName: 'A Farm Always Needs Something',
+
     FamilyFarmGatheringDescription:
-        'The family farm needs basic supplies before you can deal with the boars. Gather dead wood and copper from the nearby land.',
-    FamilyFarmGatheringOutcomeTitle: 'Gather starter materials',
-    FamilyFarmGatheringOutcomeDescription: 'Bring 10 dead wood logs and 10 copper ore to the family farm.',
-    FamilyFarmCraftingName: 'Learn a Useful Craft',
+        "There's no shortage of work on the family farm, but there is a shortage of materials. Before anything useful can be made or repaired, you'll need to see what the nearby land can provide.",
+
+    FamilyFarmGatheringOutcomeTitle: 'Gather what you can',
+
+    FamilyFarmGatheringOutcomeDescription: 'Gather 10 dead wood logs and 10 copper ore from the land around the farm.',
+
+    FamilyFarmCraftingName: 'Put It to Good Use',
+
     FamilyFarmCraftingDescription:
-        'Choose one simple craft to prepare for the work ahead. Each option uses materials from the family farm.',
+        "A pile of wood and ore won't fix much by itself. Turn some of what you gathered into something useful and learn what raw materials can become.",
+
     FamilyFarmCraftPlankTitle: 'Saw a dead wood plank',
-    FamilyFarmCraftPlankDescription: 'Turn a dead wood log into a plank.',
+
+    FamilyFarmCraftPlankDescription:
+        'Turn a dead wood log into a plank. Nothing impressive yet, but nearly every wooden project starts here.',
+
     FamilyFarmCraftHandleTitle: 'Carve a dead wood handle',
-    FamilyFarmCraftHandleDescription: 'First make a plank, then carve it into a sturdy handle.',
+
+    FamilyFarmCraftHandleDescription:
+        'Saw a plank, then carve it into a sturdy handle. A good tool is only as useful as the bit you hold onto.',
+
     FamilyFarmSmeltCopperTitle: 'Smelt a copper bar',
-    FamilyFarmSmeltCopperDescription: 'Refine copper ore into a bar at the smithy.',
+
+    FamilyFarmSmeltCopperDescription:
+        'Take some copper ore to the smithy and smelt it into a bar. Ore is useful; metal is better.',
+
     HunterApprenticeshipName: "The Hunter's Offer",
+
     HunterApprenticeshipDescription:
-        'The hunter saw you defend the family farm from the boars. Impressed by your work, she offers to take you on as an apprentice.',
-    HunterApprenticeshipOutcomeTitle: 'Track wolves',
-    HunterApprenticeshipOutcomeDescription: 'Hunt 5 wolves to prove you can track prey beyond the farm.',
+        'Word travels quickly in a small village. After hearing how you dealt with the boars, a local hunter thinks you might have the makings of something more than a farmhand.',
+
+    HunterApprenticeshipOutcomeTitle: 'Follow the wolf tracks',
+
+    HunterApprenticeshipOutcomeDescription:
+        "Boars wander into fields. Wolves know better. Hunt 5 wolves and prove you can track prey when it isn't standing in the middle of your family's potatoes.",
+
     CarpenterApprenticeshipName: "The Carpenter's Offer",
+
     CarpenterApprenticeshipDescription:
-        'The carpenter admires the fence that saved your family crops and offers to teach you the trade.',
-    CarpenterApprenticeshipOutcomeTitle: 'Prepare building planks',
-    CarpenterApprenticeshipOutcomeDescription: 'Craft and deliver 10 planks for the carpenter.',
+        'The new fence has attracted some attention. The village carpenter is less interested in the boars than in the fact that you solved a problem with timber instead of a sword.',
+
+    CarpenterApprenticeshipOutcomeTitle: 'Show your workmanship',
+
+    CarpenterApprenticeshipOutcomeDescription:
+        'Craft and deliver 10 planks for the carpenter. Straight ones, preferably.',
+
     AlchemistApprenticeshipName: "The Alchemist's Offer",
+
     AlchemistApprenticeshipDescription:
-        'Your boar repellent impressed the village alchemist, who offers you an apprenticeship at the laboratory.',
-    AlchemistApprenticeshipOutcomeTitle: 'Brew a fresh poison',
-    AlchemistApprenticeshipOutcomeDescription: 'Brew and deliver a poison with the Damage Stamina effect.',
+        'Apparently, poisoning potatoes is one way to get noticed. The village alchemist is intrigued by your solution to the boar problem and invites you to the laboratory.',
+
+    AlchemistApprenticeshipOutcomeTitle: 'Brew something useful',
+
+    AlchemistApprenticeshipOutcomeDescription:
+        'Brew and deliver a poison with the Damage Stamina effect. The alchemist wants to see whether your first success was skill or unusually bad-tasting potatoes.',
+
     HeartCrystalDust: 'Heart Crystal Dust',
     ManaCrystalDust: 'Mana Crystal Dust',
     UnknownEffects: 'Unknown Effects, potion may have unexpected results',
