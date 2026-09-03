@@ -96,6 +96,29 @@ describe('character data', () => {
         })
     })
 
+    it('gives boars and wolves distinct, tiered physical combat profiles', () => {
+        const boar = AnimalCharacterData.Boar!
+        const wolf = AnimalCharacterData.Wolf!
+
+        expect(wolf.healthPoints).toBeGreaterThan(boar.healthPoints)
+        expect(boar.baseStats?.attack.damage).toMatchObject({
+            Piercing: expect.any(Number),
+            Bludgeoning: expect.any(Number),
+        })
+        expect(boar.baseStats?.attack.damage.Slashing).toBeUndefined()
+        expect(boar.baseStats?.defense).toMatchObject({ Piercing: expect.any(Number), Slashing: expect.any(Number) })
+        expect(wolf.baseStats?.attack.damage).toMatchObject({
+            Piercing: expect.any(Number),
+            Slashing: expect.any(Number),
+        })
+        expect(wolf.baseStats?.attack.damage.Bludgeoning).toBeUndefined()
+        expect(wolf.baseStats?.defense).toMatchObject({
+            Bludgeoning: expect.any(Number),
+            Piercing: expect.any(Number),
+            Slashing: expect.any(Number),
+        })
+    })
+
     it('infers unique available combat abilities from a template rotation', () => {
         const character = generateCharacter('Boar', {
             nameId: 'Boar',

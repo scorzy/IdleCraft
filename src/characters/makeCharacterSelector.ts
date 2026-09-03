@@ -218,7 +218,7 @@ export const makeCharacterSelector: (charId: string, character?: CharacterState)
             } else
                 bonuses.push({
                     id: 'unharmed',
-                    add: 30,
+                    add: 5,
                     iconId: Icons.Punch,
                     nameId: 'Unharmed',
                 })

@@ -60,7 +60,7 @@ export const longSwordRecipe = makeMemoizedRecipe({
                 attackSpeed: BASE_SWORD_SPEED / (barItem.craftingData.speedBonus ?? 1),
                 damage: {
                     [DamageTypes.Slashing]: Math.floor(
-                        BASE_SWORD_DAMAGE * (barItem.craftingData.damage?.Slashing ?? 1)
+                        1.1 * BASE_SWORD_DAMAGE * (barItem.craftingData.damage?.Slashing ?? 1)
                     ),
                 },
             },

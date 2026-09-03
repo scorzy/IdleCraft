@@ -61,7 +61,7 @@ export const twoHSwordRecipe = makeMemoizedRecipe({
                 attackSpeed: Math.floor((1.4 * BASE_SWORD_SPEED) / (barItem.craftingData.speedBonus ?? 1)),
                 damage: {
                     [DamageTypes.Slashing]: Math.floor(
-                        1.4 * BASE_SWORD_DAMAGE * (barItem.craftingData.damage?.Slashing ?? 1)
+                        2 * BASE_SWORD_DAMAGE * (barItem.craftingData.damage?.Slashing ?? 1)
                     ),
                 },
             },
