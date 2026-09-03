@@ -106,10 +106,10 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         skillsLevel: {},
         level: 3,
         healthPoints: 1,
-        staminaPoints: 2,
-        manaPoints: -8,
+        staminaPoints: 4,
+        manaPoints: -9,
         loot: [{ quantity: 1, itemId: 'DeadWolf' }],
-        combatAbilities: [AbilitiesEnum.NormalAttack, AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
+        combatAbilities: [AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
         randomizeAbilitiesOrder: true,
     },
     Spider: {
