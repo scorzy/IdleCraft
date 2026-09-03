@@ -60,7 +60,7 @@ describe('weapon coatings', () => {
 
         expect(result?.item?.weaponCoatingData).toMatchObject({ charges: 10 })
         expect(result?.item?.weaponCoatingData?.effects).toMatchObject([
-            { effect: 'DamageRegenHealth', value: 4, duration: 10_000 },
+            { effect: 'DamageRegenHealth', value: 4, duration: 20_000 },
         ])
     })
 

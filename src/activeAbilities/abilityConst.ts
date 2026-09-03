@@ -1,3 +1,3 @@
 export const CHARGED_ATTACK_DAMAGE_BONUS = 2
 export const CHARGED_ATTACK_TIME = 1.25
-export const CHARGED_ATTACK_STAMINA = 2
+export const CHARGED_ATTACK_STAMINA = 10

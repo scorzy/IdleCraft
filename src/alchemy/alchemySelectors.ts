@@ -33,11 +33,11 @@ export function getPotionEffect(
         value = potencies.reduce((sum, potency) => {
             switch (potency) {
                 case EffectPotency.Low:
-                    return sum + 10
-                case EffectPotency.Medium:
                     return sum + 25
-                case EffectPotency.High:
+                case EffectPotency.Medium:
                     return sum + 50
+                case EffectPotency.High:
+                    return sum + 100
             }
         }, 0)
     } else {
@@ -55,9 +55,9 @@ export function getPotionEffect(
         duration = potencies.reduce((sum, potency) => {
             switch (potency) {
                 case EffectPotency.Low:
-                    return sum + 5 * 1e3
+                    return sum + 10 * 1e3
                 case EffectPotency.Medium:
-                    return sum + 15 * 1e3
+                    return sum + 20 * 1e3
                 case EffectPotency.High:
                     return sum + 30 * 1e3
             }
