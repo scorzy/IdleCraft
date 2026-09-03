@@ -1,4 +1,5 @@
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
+import { BASE_ARMOUR, FEET_ARMOUR_RATIO } from '../../const'
 import { getCraftingTime, getItemValue, getItemVolume } from '../../crafting/CraftingFunctions'
 import { makeMemoizedRecipe } from '../../crafting/makeMemoizedRecipe'
 import {
@@ -44,7 +45,9 @@ export const bootsRecipe = makeMemoizedRecipe({
         if (!barArmourData) return
 
         const armourData: DamageData = {}
-        Object.entries(barArmourData).forEach((kv) => (armourData[kv[0] as DamageTypes] = 3 * kv[1]))
+        Object.entries(barArmourData).forEach(
+            (kv) => (armourData[kv[0] as DamageTypes] = Math.floor(BASE_ARMOUR * FEET_ARMOUR_RATIO * kv[1]))
+        )
 
         const primaryMat = barItem.materials?.primary
         const materials: ItemsMaterials = {}

@@ -11,14 +11,14 @@ import { ArmourType, DamageData, DamageTypes, Item, ItemType } from '../items/It
 import { selectTranslations } from '../msg/useTranslations'
 import { createInventoryNoQta, selectGameItem, selectGameItemFromCraft } from '../storage/StorageSelectors'
 import { myMemoizeOne } from '../utils/myMemoizeOne'
-import { CharacterSelector } from './CharacterSelector'
+import { CharacterSelector, CharacterWeapon } from './CharacterSelector'
 import { CharacterState } from './characterState'
 import { CharacterAdapter } from './characterAdapter'
 import { EquipSlotsEnum } from './equipSlotsEnum'
 import { selectHealthRegenList, selectMaxHealthList } from './selectors/healthSelectors'
 import { selectManaRegenList, selectMaxManaList } from './selectors/manaSelectors'
 import { selectMaxStaminaList, selectStaminaRegenList } from './selectors/staminaSelectors'
-import { CharacterId } from './templates/characterRegistry'
+import { CharacterData, CharacterId } from './templates/characterRegistry'
 
 export const makeCharacterSelector: (charId: string, character?: CharacterState) => CharacterSelector = (
     charId: string,
@@ -81,8 +81,23 @@ export const makeCharacterSelector: (charId: string, character?: CharacterState)
         return selectGameItem(equipped.itemId)(s)
     }
 
-    const MainWeapon = (s: GameState) =>
-        EquippedItem(s, EquipSlotsEnum.MainHand) ?? EquippedItem(s, EquipSlotsEnum.TwoHand)
+    const BaseStats = (s: GameState) => CharacterData[TemplateId(s)]?.baseStats
+
+    const MainWeapon = myMemoizeOne((s: GameState): CharacterWeapon | undefined => {
+        const equipped = EquippedItem(s, EquipSlotsEnum.MainHand) ?? EquippedItem(s, EquipSlotsEnum.TwoHand)
+        if (equipped?.weaponData) return equipped as Item & CharacterWeapon
+
+        const baseAttack = BaseStats(s)?.attack
+        if (!baseAttack) return
+
+        const char = selChar(s)
+        return {
+            id: `${char.templateId}BaseWeapon`,
+            nameId: char.nameId ?? 'Unharmed',
+            icon: char.iconId,
+            weaponData: baseAttack,
+        }
+    })
 
     const selectInventoryNoQta = (s: GameState) => createInventoryNoQta(selChar(s).inventory)
 
@@ -110,6 +125,7 @@ export const makeCharacterSelector: (charId: string, character?: CharacterState)
             }
 
             const inventory = AllCharInventory(s)
+            const hasArmour = Object.values(inventory).some((item) => item.type === ItemType.Armour)
 
             Object.entries(inventory).forEach((kv) => {
                 const item = kv[1]
@@ -124,6 +140,15 @@ export const makeCharacterSelector: (charId: string, character?: CharacterState)
                     )
                 }
             })
+
+            const baseDefense = BaseStats(s)?.defense[type]
+            if (!hasArmour && baseDefense)
+                bonuses.push({
+                    id: 'base-defense',
+                    add: baseDefense,
+                    iconId: Icon(s),
+                    nameId: selChar(s).nameId ?? 'Unharmed',
+                })
 
             Object.values(ArmourType).forEach((armourType) => {
                 const subtotal = armourByType[armourType]
@@ -169,7 +194,7 @@ export const makeCharacterSelector: (charId: string, character?: CharacterState)
             const bonuses: Bonus[] = []
             const weapon = MainWeapon(s)
 
-            if (weapon && weapon.weaponData) {
+            if (weapon) {
                 const add = weapon.weaponData.damage[type]
                 if (add)
                     bonuses.push({
@@ -237,7 +262,7 @@ export const makeCharacterSelector: (charId: string, character?: CharacterState)
         const bonuses: Bonus[] = []
         const weapon = MainWeapon(s)
 
-        if (weapon && weapon.weaponData) {
+        if (weapon) {
             bonuses.push({
                 id: `w_${weapon.id}`,
                 add: weapon.weaponData.attackSpeed,

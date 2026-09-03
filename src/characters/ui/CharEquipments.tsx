@@ -5,13 +5,13 @@ import { QuickSlots } from './QuickSlots'
 import { selectActiveWeaponCoating } from '../../weaponCoatings/weaponCoatingSelectors'
 import { getCharacterSelector } from '../getCharacterSelector'
 import { useGameStore } from '../../game/state'
-import { PLAYER_ID } from '../charactersConst'
 import { Card, CardContent } from '../../components/ui/card'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { IconsData } from '../../icons/Icons'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useTranslations } from '../../msg/useTranslations'
 import { getWeaponCoatingEffectiveness, scaleWeaponCoatingValue } from '../../weaponCoatings/weaponCoatingFunctions'
+import { selectSelectedCharId } from '../../ui/state/uiSelectors'
 
 const equipments = Object.keys(EquipSlotsEnum).filter((slot) => slot !== EquipSlotsEnum.QuickSlot)
 export const CharEquipments = memo(function CharEquipments() {
@@ -27,8 +27,9 @@ export const CharEquipments = memo(function CharEquipments() {
 })
 
 const ActiveWeaponCoatingUi = memo(function ActiveWeaponCoatingUi() {
-    const coating = useGameStore(selectActiveWeaponCoating(PLAYER_ID))
-    const weapon = useGameStore(getCharacterSelector(PLAYER_ID).MainWeapon)
+    const charId = useGameStore(selectSelectedCharId)
+    const coating = useGameStore(selectActiveWeaponCoating(charId))
+    const weapon = useGameStore(getCharacterSelector(charId).MainWeapon)
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
     if (!coating || !weapon) return null

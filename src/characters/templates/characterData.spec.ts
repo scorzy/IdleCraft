@@ -70,10 +70,12 @@ describe('character data', () => {
         expect(character.loot).toEqual([{ itemId: 'InlineCharacterInlineWeapon', quantity: 1 }])
     })
 
-    it('registers nested enemy items during initialization', () => {
+    it('registers only animal loot items during initialization', () => {
         initialize()
 
-        expect(StdItems.ChickenChickenBeak).toBeDefined()
+        expect(StdItems.ChickenChickenBeak).toBeUndefined()
+        expect(StdItems.BoarBoarTusk).toBeUndefined()
+        expect(StdItems.SpiderSpiderMainW).toBeUndefined()
         expect((StdItems.ChickenDeadChicken as CharacterItem).butchering).toEqual([
             { id: 'WhiteMeat', stdItemId: 'WhiteMeat', qta: 1 },
         ])

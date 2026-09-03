@@ -70,7 +70,7 @@ describe('startBattleTimer', () => {
         const spiderId = state.characters.ids.find((id) => id !== PLAYER_ID)!
         const spider = CharacterAdapter.selectEx(state.characters, spiderId)
         expect(spider.weaponCoating).toMatchObject({
-            weaponItemId: 'SpiderSpiderMainW',
+            weaponItemId: 'SpiderBaseWeapon',
             remainingCharges: Number.POSITIVE_INFINITY,
         })
         expect(

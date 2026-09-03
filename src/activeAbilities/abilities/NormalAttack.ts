@@ -58,8 +58,8 @@ export class NormalAttack implements ActiveAbility {
 
         if (!caster.isEnemy) {
             const weapon = getCharacterSelector(characterId).MainWeapon(state)
-            if (weapon && weapon.weaponData)
-                addExp(state, weapon.weaponData.expType, sumDamage(damage) * DAMAGE_EXP_MULTI)
+            const expType = weapon?.weaponData.expType
+            if (expType) addExp(state, expType, sumDamage(damage) * DAMAGE_EXP_MULTI)
         }
 
         dealDamage(state, enemyId, damage, {

@@ -163,7 +163,7 @@ describe('weapon coatings', () => {
 
         expect(applyTemplateWeaponCoating(state, enemyId)).toBe(true)
         expect(enemy.weaponCoating).toMatchObject({
-            weaponItemId: 'SpiderSpiderMainW',
+            weaponItemId: 'SpiderBaseWeapon',
             remainingCharges: Number.POSITIVE_INFINITY,
         })
         expect(enemy.inventory).toEqual(inventory)
@@ -181,7 +181,7 @@ describe('weapon coatings', () => {
         const preview = generateCharacter('Spider', getCharacterDefinition('Spider'))
 
         expect(getTemplateWeaponCoating(state, preview)).toMatchObject({
-            weaponItemId: 'SpiderSpiderMainW',
+            weaponItemId: 'SpiderBaseWeapon',
             remainingCharges: Number.POSITIVE_INFINITY,
         })
     })

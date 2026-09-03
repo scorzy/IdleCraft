@@ -1,9 +1,8 @@
 import { AbilitiesEnum } from '../../activeAbilities/abilitiesEnum'
-import { RAW_VOLUME, FINISHED_VOLUME } from '../../caravans/CaravanConst'
+import { RAW_VOLUME } from '../../caravans/CaravanConst'
 import { Effects } from '../../effects/types/Effects'
-import { ExpEnum } from '../../experience/ExpEnum'
 import { Icons } from '../../icons/Icons'
-import { ItemType, CraftingType, WeaponType } from '../../items/Item'
+import { ItemType, CraftingType } from '../../items/Item'
 import { WeaponCoatingKind } from '../../weaponCoatings/weaponCoatingTypes'
 import type { CharacterDefinition } from './characterInterfaces'
 
@@ -12,20 +11,6 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         nameId: 'Chicken',
         iconId: Icons.Chicken,
         items: {
-            ChickenBeak: {
-                id: 'ChickenBeak',
-                nameId: 'Chicken',
-                icon: Icons.Chicken,
-                type: ItemType.Weapon,
-                weaponType: WeaponType.TwoHands,
-                value: 0,
-                volume: FINISHED_VOLUME,
-                weaponData: {
-                    attackSpeed: 3e3,
-                    expType: ExpEnum.TwoHanded,
-                    damage: { Piercing: 2, Bludgeoning: 0, Slashing: 0 },
-                },
-            },
             DeadChicken: {
                 id: 'DeadChicken',
                 icon: Icons.Chicken,
@@ -37,7 +22,7 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                 butchering: [{ id: 'WhiteMeat', stdItemId: 'WhiteMeat', qta: 1 }],
             },
         },
-        inventory: { TwoHand: { itemId: 'ChickenBeak' } },
+        inventory: {},
         skillsExp: {},
         skillsLevel: {},
         level: 1,
@@ -45,25 +30,15 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         staminaPoints: -8,
         manaPoints: -8,
         loot: [{ quantity: 1, itemId: 'DeadChicken' }],
+        baseStats: {
+            attack: { attackSpeed: 3e3, damage: { Piercing: 2 } },
+            defense: {},
+        },
     },
     Boar: {
         nameId: 'Boar',
         iconId: Icons.Boar,
         items: {
-            BoarTusk: {
-                id: 'BoarTusk',
-                nameId: 'BoarTusk',
-                icon: Icons.Boar,
-                type: ItemType.Weapon,
-                weaponType: WeaponType.TwoHands,
-                value: 0,
-                volume: FINISHED_VOLUME,
-                weaponData: {
-                    attackSpeed: 4e3,
-                    expType: ExpEnum.TwoHanded,
-                    damage: { Piercing: 10, Bludgeoning: 0, Slashing: 0 },
-                },
-            },
             DeadBoar: {
                 id: 'DeadBoar',
                 icon: Icons.Boar,
@@ -75,7 +50,7 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                 butchering: [{ id: 'RedMeat', stdItemId: 'RedMeat', qta: 2 }],
             },
         },
-        inventory: { TwoHand: { itemId: 'BoarTusk' } },
+        inventory: {},
         skillsExp: {},
         skillsLevel: {},
         level: 2,
@@ -83,6 +58,10 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         staminaPoints: -3,
         manaPoints: -8,
         loot: [{ quantity: 1, itemId: 'DeadBoar' }],
+        baseStats: {
+            attack: { attackSpeed: 3.5e3, damage: { Piercing: 10, Bludgeoning: 20, Slashing: 20 } },
+            defense: {},
+        },
         combatAbilities: [AbilitiesEnum.NormalAttack, AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
         randomizeAbilitiesOrder: true,
     },
@@ -109,6 +88,14 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         staminaPoints: 4,
         manaPoints: -9,
         loot: [{ quantity: 1, itemId: 'DeadWolf' }],
+        baseStats: {
+            attack: { attackSpeed: 4e3, damage: { Bludgeoning: 30, Piercing: 15, Slashing: 20 } },
+            defense: {
+                Bludgeoning: 20,
+                Piercing: 5,
+                Slashing: 10,
+            },
+        },
         combatAbilities: [AbilitiesEnum.NormalAttack, AbilitiesEnum.ChargedAttack],
         randomizeAbilitiesOrder: true,
     },
@@ -116,20 +103,6 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         nameId: 'Spider',
         iconId: Icons.Spider,
         items: {
-            SpiderMainW: {
-                id: 'SpiderMainW',
-                nameId: 'Spider',
-                icon: Icons.Spider,
-                type: ItemType.Weapon,
-                weaponType: WeaponType.TwoHands,
-                value: 0,
-                volume: FINISHED_VOLUME,
-                weaponData: {
-                    attackSpeed: 2.5e3,
-                    expType: ExpEnum.TwoHanded,
-                    damage: { Piercing: 8, Bludgeoning: 0, Slashing: 0 },
-                },
-            },
             DeadSpider: {
                 id: 'DeadSpider',
                 icon: Icons.Spider,
@@ -144,9 +117,7 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
                 ],
             },
         },
-        inventory: {
-            TwoHand: { itemId: 'SpiderMainW' },
-        },
+        inventory: {},
         skillsExp: {},
         skillsLevel: {},
         level: 3,
@@ -154,6 +125,14 @@ export const AnimalCharacterData: Record<string, CharacterDefinition> = {
         staminaPoints: 2,
         manaPoints: -8,
         loot: [{ quantity: 1, itemId: 'DeadSpider' }],
+        baseStats: {
+            attack: { attackSpeed: 2.5e3, damage: { Piercing: 25 } },
+            defense: {
+                Bludgeoning: 5,
+                Piercing: 5,
+                Slashing: 5,
+            },
+        },
         weaponCoating: {
             kind: WeaponCoatingKind.Poison,
             charges: Number.POSITIVE_INFINITY,

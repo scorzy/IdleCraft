@@ -1,9 +1,17 @@
 import { BonusResult } from '../bonus/Bonus'
 import { GameState } from '../game/GameState'
 import { Icons } from '../icons/Icons'
-import { DamageData, DamageTypes, Item } from '../items/Item'
+import { DamageData, DamageTypes, Item, WeaponData } from '../items/Item'
+import { Msg } from '../msg/Msg'
 import { EquipSlotsEnum } from './equipSlotsEnum'
 import { CharacterId } from './templates/characterRegistry'
+
+export interface CharacterWeapon {
+    id: string
+    nameId: keyof Msg
+    icon: Icons
+    weaponData: Pick<WeaponData, 'attackSpeed' | 'damage'> & Partial<Pick<WeaponData, 'expType'>>
+}
 
 export interface CharacterSelector {
     TemplateId: (s: GameState) => CharacterId
@@ -61,7 +69,7 @@ export interface CharacterSelector {
     AttackSpeed: (state: GameState) => number
 
     EquippedItem: (state: GameState, slot: EquipSlotsEnum) => Item | undefined
-    MainWeapon: (state: GameState) => Item | undefined
+    MainWeapon: (state: GameState) => CharacterWeapon | undefined
 
     AllCharInventory: (state: GameState) => Partial<Record<EquipSlotsEnum, Item>>
 }

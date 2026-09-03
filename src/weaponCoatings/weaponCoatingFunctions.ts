@@ -1,7 +1,7 @@
 import { applyEffect } from '../effects/effectsFunctions'
 import { GameState } from '../game/GameState'
 import { setState } from '../game/setState'
-import { DamageTypes, Item } from '../items/Item'
+import { DamageTypes, Item, WeaponData } from '../items/Item'
 import { selectGameItem, selectItemQta } from '../storage/StorageSelectors'
 import { removeCraftItemIfUnused, removeItem } from '../storage/storageFunctions'
 import { CharacterAdapter } from '../characters/characterAdapter'
@@ -14,7 +14,7 @@ import { getUniqueId } from '../utils/getUniqueId'
 import { WEAPON_COATING_EFFECTIVENESS_BPS } from './weaponCoatingConst'
 import { ActiveWeaponCoating, isWeaponCoatingEffect, WeaponCoatingData } from './weaponCoatingTypes'
 
-export function getWeaponCoatingEffectiveness(weapon: Item | undefined): number {
+export function getWeaponCoatingEffectiveness(weapon: { weaponData?: Pick<WeaponData, 'damage'> } | undefined): number {
     const damage = weapon?.weaponData?.damage
     if (!damage) return 10_000
 

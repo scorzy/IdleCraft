@@ -4,7 +4,7 @@ import { RecipeItem } from '../../crafting/RecipeInterfaces'
 import { InitialState } from '../../entityAdapter/InitialState'
 import { ExpState } from '../../experience/ExpState'
 import { Icons } from '../../icons/Icons'
-import { Item } from '../../items/Item'
+import { DamageData, Item, WeaponData } from '../../items/Item'
 import { Msg } from '../../msg/Msg'
 import { Loot } from '../../storage/storageTypes'
 import { WeaponCoatingData } from '../../weaponCoatings/weaponCoatingTypes'
@@ -14,6 +14,11 @@ export type CharacterItem = Item & { butchering?: RecipeItem[] }
 export type CharacterItemRef = string | CharacterItem
 export type CharacterInventory = Partial<Record<keyof CharInventory, { itemId: CharacterItemRef; quantity?: number }>>
 export type CharacterLoot = Omit<Loot, 'itemId'> & { itemId: CharacterItemRef }
+
+export interface CharacterBaseStats {
+    attack: Pick<WeaponData, 'attackSpeed' | 'damage'>
+    defense: DamageData
+}
 
 export interface CharacterDefinition {
     nameId: keyof Msg
@@ -27,6 +32,7 @@ export interface CharacterDefinition {
     staminaPoints: number
     manaPoints: number
     loot: CharacterLoot[]
+    baseStats?: CharacterBaseStats
     weaponCoating?: WeaponCoatingData
     combatAbilities?: AbilitiesEnum[]
     allCombatAbilities?: InitialState<CharAbility>
