@@ -19,6 +19,13 @@ export function equipItem(
     const equipped = char.inventory[slot]
     if (equipped) addItem(state, equipped.itemId, equipped.quantity ?? 1)
 
+    if (slot === EquipSlotsEnum.MainHand || slot === EquipSlotsEnum.TwoHand) {
+        const otherSlot = slot === EquipSlotsEnum.MainHand ? EquipSlotsEnum.TwoHand : EquipSlotsEnum.MainHand
+        const otherEquipped = char.inventory[otherSlot]
+        if (otherEquipped) addItem(state, otherEquipped.itemId, otherEquipped.quantity ?? 1)
+        delete char.inventory[otherSlot]
+    }
+
     char = CharacterAdapter.selectEx(state.characters, charId)
 
     if (itemId) {
