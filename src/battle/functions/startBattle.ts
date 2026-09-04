@@ -5,7 +5,7 @@ import { GameState } from '../../game/GameState'
 import { startTimer } from '../../timers/startTimer'
 
 export const startBattle = makeStartActivity((state: GameState, id: string) => {
-    startTimer(state, 3e3, ActivityTypes.StartBattle, id)
+    startTimer(state, 1, ActivityTypes.StartBattle, id)
 
     return ActivityStartResult.Started
 })
