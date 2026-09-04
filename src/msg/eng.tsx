@@ -37,6 +37,7 @@ export const engMsg: Msg = {
     StartNow: 'Start Now',
     Ago: 'ago',
     Fight: 'Fight',
+    Flee: 'Flee',
     CraftingUnknown: 'Crafting ??',
     DeadTree: 'Dead Tree',
     Oak: 'Oak',

@@ -4,6 +4,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useItemName } from '@/items/selectors/useItemName'
 import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
 import { ActiveAbilityData } from '../../activeAbilities/ActiveAbilityData'
+import { removeActivity } from '../../activities/functions/removeActivity'
 import { getCombatRotation, selectCombatRotationChar } from '../../activeAbilities/selectors/selectCombatAbilities'
 import { selectCombatAbilityById } from '../../activeAbilities/selectors/selectCombatAbilityById'
 import { BattleLogUi } from '../../battleLog/ui/BattleLogUi'
@@ -48,16 +49,32 @@ import {
 } from '../../weaponCoatings/weaponCoatingSelectors'
 import { memoize } from 'proxy-memoize'
 import { AbilitiesEnum } from '../../activeAbilities/abilitiesEnum'
+import { selectCurrentBattleActivityId } from '../selectors/battleSelectors'
 
 export const CombatUi = memo(function CombatUi() {
     return (
         <MyPage>
+            <FleeButton />
             <div className={classes.mainContainer}>
                 <CombatChars />
                 <BattleLogUi className={classes.log} />
                 <BattleLootUi />
             </div>
         </MyPage>
+    )
+})
+
+const FleeButton = memo(function FleeButton() {
+    const { t } = useTranslations()
+    const activityId = useGameStore(selectCurrentBattleActivityId)
+    const onClick = useCallback(() => removeActivity(activityId), [activityId])
+
+    return (
+        <div className="mb-2 flex justify-start">
+            <Button variant="destructive" disabled={!activityId} onClick={onClick}>
+                {t.Flee}
+            </Button>
+        </div>
     )
 })
 

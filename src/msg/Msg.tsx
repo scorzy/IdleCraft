@@ -35,6 +35,7 @@ export interface Msg {
     StartNow: string
     Ago: string
     Fight: string
+    Flee: string
 
     CraftingUnknown: string
     Woodworking: string
