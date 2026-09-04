@@ -3,7 +3,7 @@
     gap: 0.5rem;
     flex-wrap: wrap;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .stats {
@@ -12,15 +12,21 @@
     container-type: inline-size;
 }
 .stat {
-    min-width: 10ch;
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
+    flex-direction: row;
 }
 .max {
     text-align: right;
+    text-wrap: nowrap;
 }
 @container (min-width: 380px) {
     .line {
         flex-direction: row;
+    }
+    .stat {
+        min-width: 10ch;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        text-wrap: nowrap;
     }
 }

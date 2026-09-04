@@ -198,7 +198,7 @@ const StatsInfo = memo(function StatsInfo() {
 
     return (
         <div className={clsx(classes.stats, 'text-sm')}>
-            <span>
+            <span className="mb-4">
                 {t.Points} {f(usedPoints)}/{f(maxPoints)}
             </span>
             <HealthInfoUi />
@@ -216,8 +216,8 @@ const HealthInfoUi = memo(function HealthInfoUi() {
     const usedPoints = useGameStore(useCallback((s: GameState) => charSel.UsedAttributes(s), [charSel]))
 
     const maxPoints = useGameStore(useCallback((s: GameState) => charSel.MaxAttributes(s), [charSel]))
-    const health = useGameStore(useCallback((s: GameState) => charSel.Health(s), [charSel]))
-    const maxH = useGameStore(useCallback((s: GameState) => charSel.MaxHealth(s), [charSel]))
+    const health = useGameStore(useCallback((s: GameState) => Math.floor(charSel.Health(s)), [charSel]))
+    const maxH = useGameStore(useCallback((s: GameState) => Math.floor(charSel.MaxHealth(s)), [charSel]))
     const maxHB = charSel.MaxHealthListMemo.bind(charSel)
     const healthRegen = useGameStore(useCallback((s: GameState) => charSel.HealthRegen(s), [charSel]))
     const healthRegenB = charSel.HealthRegenList.bind(charSel)
@@ -230,7 +230,9 @@ const HealthInfoUi = memo(function HealthInfoUi() {
         <div className={classes.line}>
             <MyLabel>
                 <GiHearts />
-                <span className={classes.stat}>{t.Health}</span>{' '}
+                <span className={classes.stat}>{t.Health}</span>
+            </MyLabel>
+            <MyLabel>
                 <span className={classes.max}>
                     {f(health)} / {f(maxH)}
                 </span>
@@ -262,8 +264,8 @@ const StaminaInfoUi = memo(function StaminaInfoUi() {
     const charSel = getCharacterSelector(charId)
     const usedPoints = useGameStore(useCallback((s: GameState) => charSel.UsedAttributes(s), [charSel]))
     const maxPoints = useGameStore(useCallback((s: GameState) => charSel.MaxAttributes(s), [charSel]))
-    const stamina = useGameStore(useCallback((s: GameState) => charSel.Stamina(s), [charSel]))
-    const maxS = useGameStore(useCallback((s: GameState) => charSel.MaxStamina(s), [charSel]))
+    const stamina = useGameStore(useCallback((s: GameState) => Math.floor(charSel.Stamina(s)), [charSel]))
+    const maxS = useGameStore(useCallback((s: GameState) => Math.floor(charSel.MaxStamina(s)), [charSel]))
     const maxSB = charSel.MaxStaminaListMemo.bind(charSel)
     const staminaRegen = useGameStore(useCallback((s: GameState) => charSel.StaminaRegen(s), [charSel]))
     const staminaRegenB = charSel.StaminaRegenList.bind(charSel)
@@ -275,7 +277,9 @@ const StaminaInfoUi = memo(function StaminaInfoUi() {
         <div className={classes.line}>
             <MyLabel>
                 <GiStrong />
-                <span className={classes.stat}>{t.Stamina} </span>{' '}
+                <span className={classes.stat}>{t.Stamina} </span>
+            </MyLabel>
+            <MyLabel>
                 <span className={classes.max}>
                     {f(stamina)} / {f(maxS)}
                 </span>
@@ -307,8 +311,8 @@ const ManaInfoUi = memo(function ManaInfoUi() {
     const charSel = getCharacterSelector(charId)
     const usedPoints = useGameStore(useCallback((s: GameState) => charSel.UsedAttributes(s), [charSel]))
     const maxPoints = useGameStore(useCallback((s: GameState) => charSel.MaxAttributes(s), [charSel]))
-    const mana = useGameStore(useCallback((s: GameState) => charSel.Mana(s), [charSel]))
-    const maxM = useGameStore(useCallback((s: GameState) => charSel.MaxMana(s), [charSel]))
+    const mana = useGameStore(useCallback((s: GameState) => Math.floor(charSel.Mana(s)), [charSel]))
+    const maxM = useGameStore(useCallback((s: GameState) => Math.floor(charSel.MaxMana(s)), [charSel]))
     const maxMB = charSel.MaxManaListMemo.bind(charSel)
     const manaRegen = useGameStore(useCallback((s: GameState) => charSel.ManaRegen(s), [charSel]))
     const manaRegenB = charSel.ManaRegenList.bind(charSel)
@@ -320,7 +324,9 @@ const ManaInfoUi = memo(function ManaInfoUi() {
         <div className={classes.line}>
             <MyLabel>
                 <GiMagicPalm />
-                <span className={classes.stat}>{t.Mana} </span>{' '}
+                <span className={classes.stat}>{t.Mana} </span>
+            </MyLabel>
+            <MyLabel>
                 <span className={classes.max}>
                     {f(mana)} / {f(maxM)}
                 </span>
