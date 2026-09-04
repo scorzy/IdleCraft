@@ -9,6 +9,7 @@ import { WoodTypes } from '../../wood/WoodTypes'
 import { CollapsedEnum } from '../sidebar/CollapsedEnum'
 import { UiPages } from './UiPages'
 import { UiPagesData } from './UiPagesData'
+import { isPageUnlocked } from './pageUnlocks'
 import { useUiTempStore } from './uiTempStore'
 import { ItemDetailType, ItemType } from '../../items/Item'
 import { GameLocations } from '../../gameLocations/GameLocations'
@@ -30,18 +31,21 @@ export const toggle = () =>
     setState((s) => {
         s.ui.open = !s.ui.open
     })
-export const setPage = (page: UiPages) =>
-    setState((s) => {
-        const data = UiPagesData[page]
+export const setPageState = (s: GameState, page: UiPages) => {
+    const data = UiPagesData[page]
 
-        if (s.ui.recipeType !== data.recipeType) {
-            s.ui.recipeType = data.recipeType
-            changeRecipeState(s, '')
-        }
-        s.ui.page = page
-        s.ui.open = false
+    s.ui.page = page
+    s.ui.open = false
+    if (!isPageUnlocked(s, page)) return
+
+    if (s.ui.recipeType !== data.recipeType) {
         s.ui.recipeType = data.recipeType
-    })
+        changeRecipeState(s, '')
+    }
+    s.ui.recipeType = data.recipeType
+}
+
+export const setPage = (page: UiPages) => setState((s) => setPageState(s, page))
 export const setWood = (woodType: WoodTypes) =>
     setState((s) => {
         s.ui.woodType = woodType

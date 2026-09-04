@@ -20,6 +20,8 @@ import { selectPrimaryMaterialName } from './selectors/selectPrimaryMaterialName
 export const engMsg: Msg = {
     LevelToLow: 'Level to low',
     Activities: 'Activities',
+    Locked: 'Locked',
+    CompleteMoreQuestsToUnlock: 'Locked. Complete more quests to unlock.',
     Abilities: 'Abilities',
     Storage: 'Storage',
     Woodcutting: 'Woodcutting',

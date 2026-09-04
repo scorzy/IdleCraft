@@ -43,6 +43,7 @@ export interface LocationState {
 }
 export interface GameState {
     gameId: string
+    pageUnlockProgressionEnabled: boolean
     isTimer: boolean
     gold: number
     lastRegen: number

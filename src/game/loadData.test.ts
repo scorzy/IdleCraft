@@ -66,4 +66,9 @@ describe('loadData', () => {
             paramsValue: [{ id: 'ore', itemId: 'CopperOre' }],
         })
     })
+
+    it('preserves unrestricted page access for saves created before page unlock progression', () => {
+        expect(loadData({}).pageUnlockProgressionEnabled).toBe(false)
+        expect(loadData({ pageUnlockProgressionEnabled: true }).pageUnlockProgressionEnabled).toBe(true)
+    })
 })

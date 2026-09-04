@@ -1,6 +1,8 @@
 export interface Msg {
     LevelToLow: string
     Activities: string
+    Locked: string
+    CompleteMoreQuestsToUnlock: string
     Abilities: string
     Storage: string
     Woodcutting: string

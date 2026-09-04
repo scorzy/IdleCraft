@@ -28,6 +28,9 @@ import { UiPagesData } from '../state/UiPagesData'
 import { sidebarOpen, toggle } from '../state/uiFunctions'
 import classes from './appShell.module.css'
 import { selectPage } from '../state/uiSelectors'
+import { lockedIcon } from '../state/uiFunctions'
+import { selectPageUnlocked } from '../state/pageUnlocks'
+import { LockedPage } from '../pages/LockedPage'
 
 export const AppShell = memo(function AppShell() {
     const open = useGameStore(sidebarOpen)
@@ -66,20 +69,24 @@ const Header = memo(function Header() {
 
 const HeaderTitle = memo(function HeaderTitle() {
     const page = useGameStore(selectPage)
+    const unlocked = useGameStore(selectPageUnlocked(page))
     const { t } = useTranslations()
 
     const uiPage = UiPagesData[page]
     if (!uiPage) return null
     return (
         <CardTitle>
-            {uiPage.icon}
-            {t[uiPage.nameId]}
+            {lockedIcon(uiPage.icon, unlocked)}
+            {unlocked ? t[uiPage.nameId] : t.Locked}
         </CardTitle>
     )
 })
 
 const PageContent = memo(function PageContent() {
     const page = useGameStore(selectPage)
+    const unlocked = useGameStore(selectPageUnlocked(page))
+    if (!unlocked) return <LockedPage />
+
     switch (page) {
         case UiPages.Woodcutting:
             return <Woodcutting />

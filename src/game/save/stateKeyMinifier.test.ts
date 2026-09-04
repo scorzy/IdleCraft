@@ -6,6 +6,7 @@ describe('stateKeyMinifier', () => {
     it('minifies only mapped GameState and LocationState keys', () => {
         const input = {
             gameId: 'g1',
+            pageUnlockProgressionEnabled: true,
             isTimer: true,
             customFutureKey: 'keep-me',
             locations: {
@@ -25,6 +26,7 @@ describe('stateKeyMinifier', () => {
         const minified = minifyStateKeys(input) as Record<string, unknown>
 
         expect(minified.gi).toBe('g1')
+        expect(minified.pu).toBe(true)
         expect(minified.it).toBe(true)
         expect(minified.customFutureKey).toBe('keep-me')
         expect(minified.gameId).toBeUndefined()
@@ -41,6 +43,7 @@ describe('stateKeyMinifier', () => {
     it('restores minified keys and preserves unknown keys', () => {
         const input = {
             gi: 'g1',
+            pu: true,
             it: false,
             someNewTopLevelKey: 'safe',
             ls: {
@@ -59,6 +62,7 @@ describe('stateKeyMinifier', () => {
         const restored = restoreStateKeys(input) as Record<string, unknown>
 
         expect(restored.gameId).toBe('g1')
+        expect(restored.pageUnlockProgressionEnabled).toBe(true)
         expect(restored.isTimer).toBe(false)
         expect(restored.someNewTopLevelKey).toBe('safe')
         expect(restored.gi).toBeUndefined()

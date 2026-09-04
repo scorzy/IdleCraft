@@ -103,6 +103,7 @@ const getInitialLocations = () => {
 
 export const InitialGameState: GameState = {
     gameId: '',
+    pageUnlockProgressionEnabled: true,
     isTimer: false,
     lastRegen: 0,
     gold: 0,

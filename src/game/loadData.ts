@@ -21,6 +21,7 @@ export function loadData(data: object): GameState {
     delete saveData.caravanSlots
     if ('locations' in saveData) saveData.locations = GameLocationAdapter.load(saveData.locations)
     const state = deepMerge(initial, saveData as Partial<GameState>)
+    if (typeof saveData.pageUnlockProgressionEnabled !== 'boolean') state.pageUnlockProgressionEnabled = false
     if (typeof legacyCaravanSlots === 'number')
         GameLocationAdapter.selectEx(state.locations, state.location).caravanSlots = legacyCaravanSlots
     if (!CharacterAdapter.select(state.characters, PLAYER_ID)) CharacterAdapter.create(state.characters, PLAYER_CHAR)

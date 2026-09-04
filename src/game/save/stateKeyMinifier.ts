@@ -2,6 +2,7 @@ type AnyRecord = Record<string, unknown>
 
 const gameStateKeyMap = {
     gameId: 'gi',
+    pageUnlockProgressionEnabled: 'pu',
     isTimer: 'it',
     gold: 'go',
     lastRegen: 'lr',

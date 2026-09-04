@@ -1,14 +1,16 @@
-import { memo } from 'react'
+import { memo, ReactNode } from 'react'
 import { GiAllForOne, GiAnvilImpact, GiThreeLeaves } from 'react-icons/gi'
 import { selectActivityNum } from '../../activities/ActivitySelectors'
 import { Badge } from '../../components/ui/badge'
 import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useGameStore } from '../../game/state'
 import { Icons, IconsData } from '../../icons/Icons'
+import { useTranslations } from '../../msg/useTranslations'
 import { UiPages } from '../state/UiPages'
-import { sidebarOpen } from '../state/uiFunctions'
+import { selectAnyPageUnlocked } from '../state/pageUnlocks'
+import { lockedIcon, sidebarOpen } from '../state/uiFunctions'
 import { CollapsedEnum } from './CollapsedEnum'
-import { CollapsibleMenu, MenuItem } from './MenuItem'
+import { CollapsibleMenu, MenuItem, MyListItem } from './MenuItem'
 import { SidebarContainer } from './SidebarContainer'
 
 export const Sidebar = memo(function Sidebar() {
@@ -48,6 +50,9 @@ const VendorGoldBadge = memo(function VendorGoldBadge() {
 })
 const SidebarBattle = memo(function SidebarGathering() {
     const open = useGameStore(sidebarOpen)
+    const unlocked = useGameStore(selectAnyPageUnlocked([UiPages.CombatZones, UiPages.Combat]))
+
+    if (!unlocked) return <LockedSidebarGroup icon={<GiAllForOne />} />
 
     return (
         <CollapsibleMenu
@@ -82,6 +87,11 @@ const SidebarGathering = memo(function SidebarGathering() {
 })
 const SidebarCraft = memo(function SidebarCraft() {
     const open = useGameStore(sidebarOpen)
+    const unlocked = useGameStore(
+        selectAnyPageUnlocked([UiPages.Woodworking, UiPages.Smithing, UiPages.Butchering, UiPages.Alchemy])
+    )
+
+    if (!unlocked) return <LockedSidebarGroup icon={<GiAnvilImpact />} />
 
     return (
         <CollapsibleMenu
@@ -96,5 +106,13 @@ const SidebarCraft = memo(function SidebarCraft() {
             <MenuItem page={UiPages.Butchering} collapsedId={CollapsedEnum.Sidebar} />
             <MenuItem page={UiPages.Alchemy} collapsedId={CollapsedEnum.Sidebar} />
         </CollapsibleMenu>
+    )
+})
+
+const LockedSidebarGroup = memo(function LockedSidebarGroup({ icon }: { icon: ReactNode }) {
+    const { t } = useTranslations()
+
+    return (
+        <MyListItem active={false} collapsedId={CollapsedEnum.Sidebar} icon={lockedIcon(icon, false)} text={t.Locked} />
     )
 })

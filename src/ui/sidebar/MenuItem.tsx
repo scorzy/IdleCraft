@@ -11,6 +11,8 @@ import { useTranslations } from '../../msg/useTranslations'
 import { UiPages } from '../state/UiPages'
 import { UiPagesData } from '../state/UiPagesData'
 import { collapse, setPage } from '../state/uiFunctions'
+import { lockedIcon } from '../state/uiFunctions'
+import { selectPageUnlocked } from '../state/pageUnlocks'
 import { getSidebarWidth, isCollapsed } from '../state/uiSelectors'
 import { useUiTempStore } from '../state/uiTempStore'
 import { CollapsedEnum } from './CollapsedEnum'
@@ -25,14 +27,15 @@ export const MenuItem = memo(function MenuItem(props: {
     const { t } = useTranslations()
     const data = UiPagesData[page]
     const active = useGameStore((s) => s.ui.page === page)
+    const unlocked = useGameStore(selectPageUnlocked(page))
     const onClick = useCallback(() => setPage(page), [page])
 
     return (
         <MyListItem
             onClick={onClick}
-            text={t[data.nameId]}
+            text={unlocked ? t[data.nameId] : t.Locked}
             active={active}
-            icon={data.icon}
+            icon={lockedIcon(data.icon, unlocked)}
             collapsedId={collapsedId}
             right={right}
         />
