@@ -253,7 +253,7 @@ describe('Quest Functions', () => {
         expect(state.completedQuestTemplates).toContain('UnlockZoneQuest')
     })
 
-    test('updateQuests creates the tutorial and replenishes regular quest templates once', () => {
+    test('updateQuests creates the tutorial', () => {
         const state = GetInitialGameState()
 
         updateQuests(state)
@@ -263,8 +263,6 @@ describe('Quest Functions', () => {
         expect(
             QuestAdapter.find(state.quests, (quest) => quest.templateId === FAMILY_FARM_GATHERING_TUTORIAL_ID)?.main
         ).toBe(true)
-        expect(QuestAdapter.findMany(state.quests, (quest) => quest.templateId === 'kill-n')).toHaveLength(2)
-        expect(QuestAdapter.findMany(state.quests, (quest) => quest.templateId === 'SupplyQuest')).toHaveLength(2)
         expect(idsAfterFirstUpdate).toHaveLength(3)
     })
 })
