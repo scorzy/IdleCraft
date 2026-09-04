@@ -2,7 +2,7 @@ import { memoize } from 'micro-memoize'
 import { ExpEnum } from '@/experience/ExpEnum'
 import { ActivityAdapter } from '../activities/ActivityState'
 import { PLAYER_ID } from '../characters/charactersConst'
-import { selectLevelExp } from '../experience/expSelectors'
+import { selectLevel } from '../experience/expSelectors'
 import { GameState } from '../game/GameState'
 import { GameLocationAdapter } from '../gameLocations/GameLocationAdapter'
 import { GameLocations } from '../gameLocations/GameLocations'
@@ -50,4 +50,4 @@ export const selectOre = (state: GameState, oreType: OreTypes) => {
 export const selectMiningId = (s: GameState, oreType: OreTypes) =>
     ActivityAdapter.find(s.activities, (act) => isMining(act) && act.oreType === oreType)?.id
 export const isOreEnabled = (oreType: OreTypes) => (state: GameState) =>
-    selectLevelExp(ExpEnum.Mining, PLAYER_ID)(state) >= OreData[oreType].requiredLevel
+    selectLevel(ExpEnum.Mining, PLAYER_ID)(state) >= OreData[oreType].requiredLevel

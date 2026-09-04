@@ -3,7 +3,7 @@ import { BaseBonus } from '../../bonus/Bonus'
 import { CharacterAdapter } from '../../characters/characterAdapter'
 import { PLAYER_ID } from '../../characters/charactersConst'
 import { EquipSlotsEnum } from '../../characters/equipSlotsEnum'
-import { selectLevelExp } from '../../experience/expSelectors'
+import { selectLevel } from '../../experience/expSelectors'
 import { GameState } from '../../game/GameState'
 import { GameLocations } from '../../gameLocations/GameLocations'
 import { Icons } from '../../icons/Icons'
@@ -30,14 +30,14 @@ export function selectAxe(state: GameState): Item | undefined {
 }
 
 export const isWoodEnabled = (woodType: WoodTypes) => (state: GameState) => {
-    const woodLevel = selectLevelExp(ExpEnum.Woodcutting, PLAYER_ID)(state)
+    const woodLevel = selectLevel(ExpEnum.Woodcutting, PLAYER_ID)(state)
     const data = WoodData[woodType]
     return woodLevel >= data.requiredLevel
 }
 
 export const isSelectedWoodEnabled = (state: GameState) => {
     const woodType = state.ui.woodType
-    const woodLevel = selectLevelExp(ExpEnum.Woodcutting, PLAYER_ID)(state)
+    const woodLevel = selectLevel(ExpEnum.Woodcutting, PLAYER_ID)(state)
     const data = WoodData[woodType]
     return woodLevel >= data.requiredLevel
 }
