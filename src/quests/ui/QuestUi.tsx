@@ -315,7 +315,7 @@ const OutcomeReward = (props: { questId: string; outcomeId: string }) => {
     if (gold <= 0 && items.length < 1) return null
 
     return (
-        <div>
+        <div className="mt-4">
             <CardTitle>{t.Rewards}</CardTitle>
             <div className="mt-2 flex flex-wrap gap-2">
                 {gold > 0 && (

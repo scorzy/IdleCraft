@@ -23,7 +23,7 @@ export const HUNTER_APPRENTICESHIP_OUTCOME_ID = 'HuntWolves'
 export const CARPENTER_APPRENTICESHIP_OUTCOME_ID = 'CraftPlanks'
 export const ALCHEMIST_APPRENTICESHIP_OUTCOME_ID = 'BrewPoison'
 
-export const STARTER_MATERIAL_COUNT = 10
+export const STARTER_MATERIAL_COUNT = 1
 
 function createMainQuest(templateId: string, state: QuestStatus, outcomes: QuestOutcome[]): QuestState {
     return {
@@ -57,7 +57,7 @@ export class FamilyFarmGatheringTutorialQuest extends BaseQuestTemplate<Generate
                 location: GameLocations.StartVillage,
                 reqItems: [
                     {
-                        id: 'DeadWoodLogs',
+                        id: 'DeadTreeLog',
                         itemCount: STARTER_MATERIAL_COUNT,
                         itemFilter: { itemId: 'DeadTreeLog' },
                     },
@@ -65,6 +65,16 @@ export class FamilyFarmGatheringTutorialQuest extends BaseQuestTemplate<Generate
                         id: 'CopperOre',
                         itemCount: STARTER_MATERIAL_COUNT,
                         itemFilter: { itemId: 'CopperOre' },
+                    },
+                ],
+                itemsRewards: [
+                    {
+                        itemId: 'DeadTreeLog',
+                        quantity: 2 * STARTER_MATERIAL_COUNT,
+                    },
+                    {
+                        itemId: 'CopperOre',
+                        quantity: 2 * STARTER_MATERIAL_COUNT,
                     },
                 ],
             },

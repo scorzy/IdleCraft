@@ -18,7 +18,7 @@ const DAMAGE_BASE: Bonus = {
 export const selectMiningDamageAll = (s: GameState) => {
     const pickaxe = selectPickaxe(s)
     const level = selectLevel(ExpEnum.Mining, PLAYER_ID)(s)
-    const ret: BonusResult = { total: DEF_PICKAXE.damage, bonuses: [] }
+    const ret: BonusResult = { total: 0, bonuses: [] }
 
     if (pickaxe && pickaxe.pickaxeData) ret.bonuses.push(bonusFromItem(pickaxe, { add: pickaxe.pickaxeData.damage }))
     else ret.bonuses.push(DAMAGE_BASE)

@@ -62,12 +62,12 @@ export function updateQuests(state: GameState): void {
         if (quest.templateId === 'SupplyQuest') nCollectQuests++
     }
 
-    if (nKillQuests < 3) {
+    if (nKillQuests < 1) {
         const newQuest: QuestState = GenerateQuestState(state, 'kill-n')
         QuestAdapter.create(state.quests, newQuest)
     }
 
-    if (nCollectQuests < 3) {
+    if (nCollectQuests < 1) {
         const newQuest: QuestState = GenerateQuestState(state, 'SupplyQuest')
         QuestAdapter.create(state.quests, newQuest)
     }

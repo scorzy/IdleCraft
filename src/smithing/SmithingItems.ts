@@ -28,12 +28,12 @@ export const SmithingItems: Record<string, Item> = {
             },
         },
         craftingWoodAxeData: {
-            damage: 50,
+            damage: 30,
             time: 4e3,
         },
         craftingPickaxeData: {
-            damage: 15,
-            armourPen: 0,
+            damage: 30,
+            armourPen: 1,
             time: 4e3,
         },
     },
@@ -61,12 +61,12 @@ export const SmithingItems: Record<string, Item> = {
             },
         },
         craftingWoodAxeData: {
-            damage: 60,
+            damage: 45,
             time: 4e3,
         },
         craftingPickaxeData: {
-            damage: 20,
-            armourPen: 1,
+            damage: 45,
+            armourPen: 2,
             time: 4e3,
         },
     },

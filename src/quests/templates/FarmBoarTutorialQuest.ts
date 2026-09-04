@@ -18,8 +18,8 @@ export const FARM_BOAR_TUTORIAL_ID = 'FarmBoarTutorial'
 export const FARM_BOAR_KILL_OUTCOME_ID = 'HuntBoars'
 export const FARM_BOAR_FENCE_OUTCOME_ID = 'BuildFence'
 export const FARM_BOAR_REPELLENT_OUTCOME_ID = 'BrewRepellent'
-export const FARM_BOAR_KILL_COUNT = 10
-export const FARM_BOAR_LOG_COUNT = 30
+export const FARM_BOAR_KILL_COUNT = 2
+export const FARM_BOAR_LOG_COUNT = 5
 export const FARM_BOAR_POTION_COUNT = 3
 
 export class FarmBoarTutorialQuest extends BaseQuestTemplate<GenerateQuestDataData> {
@@ -74,7 +74,7 @@ export class FarmBoarTutorialQuest extends BaseQuestTemplate<GenerateQuestDataDa
                 {
                     id: 'FenceLogs',
                     itemCount: FARM_BOAR_LOG_COUNT,
-                    itemFilter: { itemType: ItemType.Crafting, craftingTypes: [CraftingType.Log] },
+                    itemFilter: { craftingTypes: [CraftingType.Log] },
                 },
             ],
         }

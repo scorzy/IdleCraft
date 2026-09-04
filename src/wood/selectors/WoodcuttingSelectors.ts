@@ -15,8 +15,8 @@ import { WoodData } from '../WoodData'
 import { WoodTypes } from '../WoodTypes'
 
 export const DEF_WOOD_AXE: WoodAxeData = {
-    damage: 10,
-    time: 6e3,
+    damage: 15,
+    time: 5e3,
 }
 export const WoodBase: BaseBonus = {
     nameId: 'Base',

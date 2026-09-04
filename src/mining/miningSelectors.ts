@@ -14,8 +14,8 @@ import { OreData } from './OreData'
 import { OreTypes } from './OreTypes'
 
 export const DEF_PICKAXE: PickaxeData = {
-    damage: 10,
-    time: 6e3,
+    damage: 15,
+    time: 5e3,
     armourPen: 0,
 }
 

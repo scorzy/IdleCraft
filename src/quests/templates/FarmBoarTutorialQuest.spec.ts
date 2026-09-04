@@ -46,7 +46,7 @@ describe('FarmBoarTutorialQuest', () => {
             templateId: FAMILY_FARM_GATHERING_TUTORIAL_ID,
         })
         expect(quest.outcomeData.entries[FAMILY_FARM_GATHERING_OUTCOME_ID]?.reqItems).toEqual([
-            { id: 'DeadWoodLogs', itemCount: STARTER_MATERIAL_COUNT, itemFilter: { itemId: 'DeadTreeLog' } },
+            { id: 'DeadTreeLog', itemCount: STARTER_MATERIAL_COUNT, itemFilter: { itemId: 'DeadTreeLog' } },
             { id: 'CopperOre', itemCount: STARTER_MATERIAL_COUNT, itemFilter: { itemId: 'CopperOre' } },
         ])
     })
