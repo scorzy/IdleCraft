@@ -30,6 +30,7 @@ describe('execAbility', () => {
     })
 
     it('ends the battle and clears enemies when the last enemy dies', () => {
+        state.actAutoRemove = false
         makeBattle(BattleZoneEnum.Wolf)(state)
         const battleId = state.activities.ids[0]!
         state.activityId = battleId
