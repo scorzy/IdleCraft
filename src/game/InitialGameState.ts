@@ -178,7 +178,7 @@ export const InitialGameState: GameState = {
     removeOtherActivities: false,
     startActNow: false,
     actRepetitions: 1,
-    actAutoRemove: false,
+    actAutoRemove: true,
     shipments: ShipmentAdapter.getInitialState(),
     caravanDispatchForm: {
         toId: undefined,

@@ -102,7 +102,7 @@ export const AddActivityDialog = memo(function AddActivityDialog({
                             min={1}
                             step={1}
                         />
-                        <FieldLabel>{t.Repetitions}</FieldLabel>
+                        <FieldLabel>{t.RunsPerCycle}</FieldLabel>
                     </Field>
                     <ComboBoxResponsive
                         selectedId={typeAdd}

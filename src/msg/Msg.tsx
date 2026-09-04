@@ -471,7 +471,7 @@ export interface Msg {
 
     RemoveWhenCompleted: string
     RemoveOthers: string
-    Repetitions: string
+    RunsPerCycle: string
     StartActNow: string
 
     AddLast: string
