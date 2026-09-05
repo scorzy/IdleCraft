@@ -9,7 +9,8 @@
         "ignore": [
           "user-select",
           "accent-color",
-          "container-type"
+          "container-type",
+          "@container"
         ]
       }
     ],
