@@ -11,12 +11,6 @@
     font-size: 1.25rem;
 }
 
-.page-container {
-    display: grid;
-    column-gap: 0.5rem;
-    row-gap: 0.5rem;
-}
-
 .my-container {
     container-type: inline-size;
     display: grid;
@@ -25,13 +19,7 @@
     grid-template-columns: 1fr;
     align-items: start;
 }
-.grid-span-2 {
-    container-type: inline-size;
-}
 @container (min-width: 600px) {
-    .grid-span-2 {
-        grid-column: 1 / span 2;
-    }
     .my-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -85,9 +73,6 @@
     align-items: center;
     justify-content: start;
     gap: 0.5rem;
-}
-.inlineSize {
-    container-type: inline-size;
 }
 
 .SidebarContainer__Full .CollapsibleMenu__Items {

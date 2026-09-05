@@ -29,12 +29,3 @@
     width: 100%;
     text-align: start;
 }
-
-.seleBtn {
-    container-type: inline-size;
-}
-@container (min-width: 300px) {
-    .text {
-        min-width: 10em;
-    }
-}

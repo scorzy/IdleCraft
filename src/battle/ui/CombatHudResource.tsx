@@ -6,7 +6,7 @@ import { useNumberFormatter } from '../../formatters/selectNumberFormatter'
 import { useGameStore } from '../../game/state'
 import { useTranslations } from '../../msg/useTranslations'
 import { ProgressBar } from '../../ui/progress/ProgressBar'
-import classes from './globalCombatHud.module.css'
+import classes from './combatHudResource.module.css'
 
 export type CombatResource = 'health' | 'stamina' | 'mana'
 

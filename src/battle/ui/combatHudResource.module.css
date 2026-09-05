@@ -1,0 +1,54 @@
+.resources {
+    display: grid;
+    gap: 0.1rem;
+}
+
+.quickSlots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.resource {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.resourceIcon {
+    display: grid;
+    place-items: center;
+    font-size: 0.875rem;
+}
+
+.resourceValue {
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.health {
+    color: var(--health);
+}
+
+.stamina {
+    color: var(--stamina);
+}
+
+.mana {
+    color: var(--mana);
+}
+
+@container (min-width: 760px) {
+    .inner {
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+    }
+
+    .party {
+        justify-content: flex-start;
+    }
+    .actions {
+        flex-direction: column;
+    }
+}

@@ -52,7 +52,7 @@
 
 @container (min-width: 900px) {
     .page__main {
-        grid-template-columns: repeat(auto-fit, minmax(380px, 700px));
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
     }
     .page__main2 {
         overflow: auto;
