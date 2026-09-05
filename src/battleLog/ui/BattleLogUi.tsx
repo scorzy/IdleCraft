@@ -24,7 +24,7 @@ export const BattleLogUi = memo(function BattleLogUi(props: { className?: string
     return (
         <Card className={className}>
             <MyCardHeaderTitle title={t.Log} icon={LIST_ICON} />
-            <CardContent className="grid h-80 grid-cols-1 pr-0">
+            <CardContent className="grid h-60 grid-cols-1 pr-0">
                 <BattleLogs />
             </CardContent>
         </Card>

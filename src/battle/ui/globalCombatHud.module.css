@@ -69,6 +69,21 @@
     gap: 0.1rem;
 }
 
+.quickSlots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.quickSlot {
+    min-width: 2.5rem;
+    padding-inline: 0.25rem;
+}
+
+.quickSlotIcon {
+    font-size: 0.875rem;
+}
+
 .resource {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;

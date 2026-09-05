@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo } from 'react'
-import { GiHearts, GiMagicPalm, GiStrong, GiSwapBag } from 'react-icons/gi'
+import { GiSwapBag } from 'react-icons/gi'
 import { useShallow } from 'zustand/react/shallow'
 import { useItemName } from '@/items/selectors/useItemName'
 import { ActiveAbility } from '../../activeAbilities/ActiveAbility'
@@ -36,7 +36,6 @@ import { LootId } from '../../storage/storageTypes'
 import { MyHoverCard } from '../../ui/MyHoverCard'
 import { MyCardHeaderTitle } from '../../ui/myCard/MyCard'
 import { MyPage } from '../../ui/pages/MyPage'
-import { ProgressBar } from '../../ui/progress/ProgressBar'
 import { TimerProgressFromId } from '../../ui/progress/TimerProgress'
 import classes from './combat.module.css'
 import { ItemIcon } from '../../items/ui/ItemIcon'
@@ -50,6 +49,7 @@ import {
 import { memoize } from 'proxy-memoize'
 import { AbilitiesEnum } from '../../activeAbilities/abilitiesEnum'
 import { selectCurrentBattleActivityId } from '../selectors/battleSelectors'
+import { CombatHudResource } from './CombatHudResource'
 
 export const CombatUi = memo(function CombatUi() {
     return (
@@ -107,9 +107,10 @@ const CharCard = memo(function CharCard(props: { charId: string }) {
             <MyCardHeaderTitle title={name} icon={IconsData[icon]} />
             <CardContent>
                 <div className={classes.charCard}>
-                    <CharHealth charId={charId} />
-                    <CharStamina charId={charId} />
-                    <CharMana charId={charId} />
+                    <CombatHudResource charId={charId} resource="health" />
+                    <CombatHudResource charId={charId} resource="stamina" />
+                    <CombatHudResource charId={charId} resource="mana" />
+
                     <ActiveWeaponCoating charId={charId} />
                     <WeaponCoatingEffects charId={charId} />
 
@@ -196,63 +197,6 @@ const WeaponCoatingEffect = memo(function WeaponCoatingEffect({ effect }: { effe
                 color={color.replace('text-', '') as 'health' | 'stamina' | 'mana'}
                 reverse
             />
-        </div>
-    )
-})
-
-const CharHealth = memo(function CharHealth(props: { charId: string }) {
-    const { charId } = props
-    const { f } = useNumberFormatter()
-    const charSel = getCharacterSelector(charId)
-    const health = useGameStore(useCallback((s: GameState) => charSel.Health(s), [charSel]))
-    const maxHealth = useGameStore(useCallback((s: GameState) => charSel.MaxHealth(s), [charSel]))
-    const hPercent = Math.floor((100 * health) / maxHealth)
-
-    return (
-        <div>
-            <span className={classes.label}>
-                <GiHearts />
-                {f(health)}/{f(maxHealth)}
-            </span>
-            <ProgressBar color="health" value={hPercent} />
-        </div>
-    )
-})
-
-const CharStamina = memo(function CharStamina(props: { charId: string }) {
-    const { charId } = props
-    const { f } = useNumberFormatter()
-    const charSel = getCharacterSelector(charId)
-    const stamina = useGameStore(useCallback((s: GameState) => charSel.Stamina(s), [charSel]))
-    const maxStamina = useGameStore(useCallback((s: GameState) => charSel.MaxStamina(s), [charSel]))
-    const sPercent = Math.floor((100 * stamina) / maxStamina)
-
-    return (
-        <div>
-            <span className={classes.label}>
-                <GiStrong />
-                {f(stamina)}/{f(maxStamina)}
-            </span>
-            <ProgressBar color="stamina" value={sPercent} />
-        </div>
-    )
-})
-
-const CharMana = memo(function CharMana(props: { charId: string }) {
-    const { charId } = props
-    const { f } = useNumberFormatter()
-    const charSel = getCharacterSelector(charId)
-    const mana = useGameStore(useCallback((s: GameState) => charSel.Mana(s), [charSel]))
-    const maxMana = useGameStore(useCallback((s: GameState) => charSel.MaxMana(s), [charSel]))
-    const mPercent = Math.floor((100 * mana) / maxMana)
-
-    return (
-        <div>
-            <span className={classes.label}>
-                <GiMagicPalm />
-                {f(mana)}/{f(maxMana)}
-            </span>
-            <ProgressBar color="mana" value={mPercent} />
         </div>
     )
 })
@@ -415,7 +359,7 @@ function BattleLootUi() {
     return (
         <Card className={classes.loot}>
             <MyCardHeaderTitle title={t.Loot} icon={BAG_ICON} />
-            <CardContent className="grid h-80 grid-cols-1 pr-0">
+            <CardContent className="grid h-60 grid-cols-1 pr-0">
                 <AutoScroll
                     totalCount={loots.length}
                     estimateSize={estimateLootSize}
