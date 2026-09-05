@@ -5,6 +5,8 @@ import { Activities, ActivityProgress } from '../../activities/ui/Activities'
 import { selectActivityIcon, selectActivityTitle } from '../../activities/ActivitySelectors'
 import { CombatPage } from '../../battle/ui/BattleZoneUi'
 import { CombatUi } from '../../battle/ui/CombatUi'
+import { GlobalCombatHud } from '../../battle/ui/GlobalCombatHud'
+import { selectCurrentBattleActivityId } from '../../battle/selectors/battleSelectors'
 import { CaravanUi } from '../../caravans/ui/CaravanUi'
 import { CharactersUi } from '../../characters/ui/CharactersUi'
 import { DeadDialog } from '../../characters/ui/DeadDialog'
@@ -38,16 +40,26 @@ import { LockedPage } from '../pages/LockedPage'
 
 export const AppShell = memo(function AppShell() {
     const open = useGameStore(sidebarOpen)
+    const battleActivityId = useGameStore(selectCurrentBattleActivityId)
 
     return (
-        <div className={clsx(classes.container, { sideOpen: open }, { contentOpen: !open })}>
+        <div
+            className={clsx(classes.container, battleActivityId !== undefined && classes.withCombatHud, {
+                sideOpen: open,
+                contentOpen: !open,
+            })}
+        >
             <Header />
 
             <div className={classes.side}>
                 <Sidebar />
             </div>
 
-            <PageContent />
+            <div className={classes.content}>
+                <PageContent />
+            </div>
+
+            <GlobalCombatHud />
 
             <DeadDialog />
         </div>

@@ -15,3 +15,10 @@ export const selectCurrentBattleActivityId = (state: GameState) => {
     const activity = ActivityAdapter.select(state.activities, activityId)
     return activity && isBattle(activity) ? activityId : undefined
 }
+
+export const selectCurrentBattleZone = (state: GameState) => {
+    const activityId = selectCurrentBattleActivityId(state)
+    if (!activityId) return
+
+    return getBattleActivity(state, activityId).battleZoneEnum
+}

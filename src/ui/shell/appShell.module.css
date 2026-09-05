@@ -3,12 +3,17 @@
     padding: 0;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(50px, auto) 1fr;
+    grid-template-rows: minmax(50px, auto) minmax(0, 1fr);
     container-type: inline-size;
 }
 
+.withCombatHud {
+    grid-template-rows: minmax(50px, auto) minmax(0, 1fr) auto;
+}
+
 .header {
-    grid-column: 1 / span 2;
+    grid-column: 1 / -1;
+    grid-row: 1;
     display: flex;
     flex-wrap: wrap;
     border-bottom-width: 1px;
@@ -19,9 +24,20 @@
     padding-right: 0.5rem;
 }
 .side {
+    grid-column: 1;
+    grid-row: 2;
     display: grid;
     align-items: stretch;
     overflow: auto;
+}
+
+.content {
+    grid-column: 1;
+    grid-row: 2;
+    display: grid;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
 }
 
 :global(.contentOpen) .side,
@@ -32,15 +48,19 @@
 @media (min-width: 900px) {
     .container {
         grid-template-columns: auto 1fr;
-        grid-template-rows: minmax(50px, auto) 1fr;
     }
     .header {
-        grid-column: 2 / span 2;
+        grid-column: 2;
         padding-left: 1rem;
     }
     .side {
+        grid-column: 1;
         grid-row: 1 / span 2;
         border-right-width: 1px;
+    }
+    .content {
+        grid-column: 2;
+        grid-row: 2;
     }
     .menu {
         display: none;
