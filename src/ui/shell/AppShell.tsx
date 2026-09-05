@@ -1,18 +1,22 @@
 import { clsx } from 'clsx'
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { LuMenu } from 'react-icons/lu'
-import { Activities } from '../../activities/ui/Activities'
+import { Activities, ActivityProgress } from '../../activities/ui/Activities'
+import { selectActivityIcon, selectActivityTitle } from '../../activities/ActivitySelectors'
 import { CombatPage } from '../../battle/ui/BattleZoneUi'
 import { CombatUi } from '../../battle/ui/CombatUi'
 import { CaravanUi } from '../../caravans/ui/CaravanUi'
 import { CharactersUi } from '../../characters/ui/CharactersUi'
 import { DeadDialog } from '../../characters/ui/DeadDialog'
+import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { CardTitle } from '../../components/ui/card'
 import { CraftingUi } from '../../crafting/ui/CraftingUi'
+import { GameState } from '../../game/GameState'
 import { useGameStore } from '../../game/state'
 import { SaveExportDialog } from '../../game/save/ui/SaveExportDialog'
 import { Gathering } from '../../gathering/ui/Gathering'
+import { IconsData } from '../../icons/Icons'
 import { Market } from '../../market/ui/Market'
 import { Mining } from '../../mining/ui/Mining'
 import { useTranslations } from '../../msg/useTranslations'
@@ -58,12 +62,43 @@ const Header = memo(function Header() {
                     <LuMenu />
                 </Button>
                 <HeaderTitle />
+                <CurrentActivity />
             </div>
             <div className={classes.headerRight}>
                 <SaveExportDialog />
                 <ModeToggle />
             </div>
         </header>
+    )
+})
+
+const CurrentActivity = memo(function CurrentActivity() {
+    const activityId = useGameStore((state) => state.activityId)
+    const title = useGameStore(
+        useCallback(
+            (state: GameState) => (activityId ? selectActivityTitle(activityId)(state) : undefined),
+            [activityId]
+        )
+    )
+    const icon = useGameStore(
+        useCallback(
+            (state: GameState) => (activityId ? selectActivityIcon(activityId)(state) : undefined),
+            [activityId]
+        )
+    )
+    if (!activityId) return null
+
+    if (!title || !icon) return null
+
+    return (
+        <Badge variant="secondary" className={classes.currentActivity}>
+            {IconsData[icon]}
+
+            <span className={classes.currentActivityTitle}>{title}</span>
+            <span className={classes.currentActivityProgress}>
+                <ActivityProgress id={activityId} />
+            </span>
+        </Badge>
     )
 })
 
@@ -75,7 +110,7 @@ const HeaderTitle = memo(function HeaderTitle() {
     const uiPage = UiPagesData[page]
     if (!uiPage) return null
     return (
-        <CardTitle>
+        <CardTitle className={classes.headerTitle}>
             {lockedIcon(uiPage.icon, unlocked)}
             {unlocked ? t[uiPage.nameId] : t.Locked}
         </CardTitle>

@@ -3,23 +3,17 @@
     padding: 0;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: minmax(50px, auto) 1fr;
     container-type: inline-size;
 }
 
 .header {
     grid-column: 1 / span 2;
-    overflow: auto;
-    display: grid;
-    justify-items: start;
-    align-items: center;
     display: flex;
-    gap: 10px;
-    display: grid;
-    align-content: space-between;
+    flex-wrap: wrap;
     border-bottom-width: 1px;
-    grid-template-columns: 1fr auto;
-    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
     align-content: center;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -38,7 +32,7 @@
 @media (min-width: 900px) {
     .container {
         grid-template-columns: auto 1fr;
-        grid-template-rows: 50px 1fr;
+        grid-template-rows: minmax(50px, auto) 1fr;
     }
     .header {
         grid-column: 2 / span 2;
@@ -60,14 +54,35 @@
     }
 }
 .headerLeft {
-    display: grid;
-    grid-auto-flow: column;
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
     gap: 1rem;
     align-items: center;
+    min-width: 0;
+}
+
+.currentActivity {
+    max-width: 20rem;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.currentActivityTitle {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.currentActivityProgress {
+    flex: none;
+    white-space: nowrap;
 }
 
 .headerRight {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    margin-left: auto;
 }

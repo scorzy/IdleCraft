@@ -170,6 +170,16 @@ export const ActivityCard = memo(function ActivityCard({
 })
 
 export const ActivityCardBadge = memo(function ActivityCardBadge({ id }: { id: string }) {
+    const active = useGameStore((s) => s.activityId === id)
+
+    return (
+        <Badge variant={active ? 'default' : 'secondary'}>
+            <ActivityProgress id={id} />
+        </Badge>
+    )
+})
+
+export const ActivityProgress = memo(function ActivityProgress({ id }: { id: string }) {
     const { t } = useTranslations()
     const { f } = useNumberFormatter()
 
@@ -178,8 +188,8 @@ export const ActivityCardBadge = memo(function ActivityCardBadge({ id }: { id: s
     const cur = useGameStore((s) => (active ? s.activityDone + 1 : 0))
 
     return (
-        <Badge variant={active ? 'default' : 'secondary'}>
+        <>
             {active ? t.Active : t.InQueue} {f(cur)}/{f(max)}
-        </Badge>
+        </>
     )
 })
